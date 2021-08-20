@@ -22,6 +22,7 @@
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@types/node": "^16.6.1",
+    "esbuild-plugin-solid": "^0.3.1",
     "eslint": "^7.32.0",
     "eslint-config-lxsmnsyc": "^0.2.3",
     "pridepack": "^0.10.0",
@@ -41,6 +42,5 @@
     "clean": "pridepack clean",
     "watch": "pridepack watch"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
