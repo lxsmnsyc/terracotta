@@ -43,7 +43,7 @@ export default function App(): JSX.Element {
             {(state) => (
               <div
                 className={applyStyle(state(), {
-                  className: 'w-full h-full transform transition',
+                  className: 'w-full h-full bg-white rounded-md shadow-lg transform transition',
                   enter: 'duration-[400ms]',
                   enterFrom: 'opacity-0 rotate-[-120deg] scale-50',
                   enterTo: 'opacity-100 rotate-0 scale-100',
@@ -51,9 +51,7 @@ export default function App(): JSX.Element {
                   leaveFrom: 'opacity-100 rotate-0 scale-100 ',
                   leaveTo: 'opacity-0 scale-95 ',
                 })}
-              >
-                <div className="w-full h-full bg-white rounded-md shadow-lg" />
-              </div>
+              />
             )}
           </TransitionChild>
         </TransitionRoot>
