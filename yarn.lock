@@ -21,7 +21,7 @@
   resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.15.0.tgz#2dbaf8b85334796cafbb0f5793a90a2fc010b176"
   integrity sha512-0NqAC1IJE0S0+lL1SWFMxMkz1pKCNCjI4tr2Zx4LJSXxCLAdr6KyArnY+sno5m3yH9g737ygOyPABDsnXkpxiA==
 
-"@babel/core@^7.1.0", "@babel/core@^7.14.6", "@babel/core@^7.14.8", "@babel/core@^7.7.5":
+"@babel/core@^7.1.0", "@babel/core@^7.14.6", "@babel/core@^7.7.5":
   version "7.15.0"
   resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.15.0.tgz#749e57c68778b73ad8082775561f67f5196aafa8"
   integrity sha512-tXtmTminrze5HEUPn/a0JtOzzfp0nk+UEXQ/tqIJo3WDGypl/2OFQEMll/zSFU8f/lfmfLXvTaORHF3cfXIQMw==
@@ -1279,7 +1279,7 @@
     npmlog "^4.1.2"
     write-file-atomic "^3.0.3"
 
-"@lyonph/react-hooks@^0.5.0":
+"@lyonph/react-hooks@^0.5.1":
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/@lyonph/react-hooks/-/react-hooks-0.5.1.tgz#1ed564bf5948edcfa2f762cd62996f4aa1d7ca8b"
   integrity sha512-Rh7z7DfYzoox9MOFK7lznBHp0ZUnwdlnFiVwe+KWPijkDVcJMFqZgxzJVISWjLAFToAFgwoOzXmeL+zMfZzf2Q==
@@ -2175,7 +2175,7 @@ babel-preset-jest@^26.6.2:
     babel-plugin-jest-hoist "^26.6.2"
     babel-preset-current-node-syntax "^1.0.0"
 
-babel-preset-solid@^1.0.1, babel-preset-solid@^1.0.6, babel-preset-solid@^1.1.1:
+babel-preset-solid@^1.0.1, babel-preset-solid@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/babel-preset-solid/-/babel-preset-solid-1.1.1.tgz#be8a381cdc92323e3bc636f216cd24622d8183a1"
   integrity sha512-+TfQbS+7eVogM+8BnaDTMhF7ya9MvaeuEy/fSJTclfjLupuSInc7zxgGAH65FNJ6AzRLNN+WmIiYYwFykgTxKw==
@@ -2404,7 +2404,7 @@ chalk@^2.0.0:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1:
+chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1, chalk@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
   integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
@@ -3218,26 +3218,15 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-esbuild-plugin-solid@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/esbuild-plugin-solid/-/esbuild-plugin-solid-0.3.1.tgz#b6f0f3cd756484a64f42083f0b67cbaa0e912aa6"
-  integrity sha512-qVblNJeYSKkj6Pu7uOjHcqwmXa9iK6v87Xhn4QLO0xj8+apw6lqeCvBgTu8lY6YqGHZF2FUClr1vSr8JD+LRKg==
-  dependencies:
-    "@babel/core" "^7.14.8"
-    "@babel/preset-typescript" "^7.14.5"
-    babel-preset-solid "^1.0.6"
-    esbuild "^0.12.17"
-    solid-js "^1.0.7"
-
 esbuild@^0.12.17:
   version "0.12.21"
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.12.21.tgz#7ff32a9ac73ce4310f9cb61ea4c3da9756570d46"
   integrity sha512-7hyXbU3g94aREufI/5nls7Xcc+RGQeZWZApm6hoBaFvt2BPtpT4TjFMQ9Tb1jU8XyBGz00ShmiyflCogphMHFQ==
 
-esbuild@^0.12.8:
-  version "0.12.20"
-  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.12.20.tgz#4d3c9d83c99a4031e027b42a4c398c23b6827cb0"
-  integrity sha512-u7+0qTo9Z64MD9PhooEngCmzyEYJ6ovFhPp8PLNh3UasR5Ihjv6HWVXqm8uHmasdQlpsAf0IsY4U0YVUfCpt4Q==
+esbuild@^0.12.19:
+  version "0.12.22"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.12.22.tgz#6031a1257b8d0307d306bed673b79c3668607f51"
+  integrity sha512-yWCr9RoFehpqoe/+MwZXJpYOEIt7KOEvNnjIeMZpMSyQt+KCBASM3y7yViiN5dJRphf1wGdUz1+M4rTtWd/ulA==
 
 escalade@^3.1.1:
   version "3.1.1"
@@ -4401,7 +4390,7 @@ ink-spinner@^4.0.2:
   dependencies:
     cli-spinners "^2.3.0"
 
-ink@^3.0.8:
+ink@^3.0.9:
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/ink/-/ink-3.0.9.tgz#57950c7ffe02cb1b2b1537465f6b8d26f7728957"
   integrity sha512-BN+SyJ1rLbKzGPxGYkk22dYB0b58OtyMI4uN0dYucQ8MlIu5TpXJzaP6Bt8Mgqi1dkNZT55bjGyZ2iVLTkJ70w==
@@ -6758,20 +6747,20 @@ pretty-hrtime@^1.0.3:
   resolved "https://registry.yarnpkg.com/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz#b7e3ea42435a4c9b2759d99e0f201eb195802ee1"
   integrity sha1-t+PqQkNaTJsnWdmeDyAesZWALuE=
 
-pridepack@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/pridepack/-/pridepack-0.10.0.tgz#da12ad7c36568209cf072b93eada7a99eae27983"
-  integrity sha512-Kugu0kNqOMAaGmZdd1ciitmx9zKnC+/iSvE9qou0K7vjx55Zp36gJ6swGUE9w3WqJdSett7ayQebTqAnBY7XLw==
+pridepack@^0.12.2:
+  version "0.12.2"
+  resolved "https://registry.yarnpkg.com/pridepack/-/pridepack-0.12.2.tgz#d864244860da67d5eeae2d262a742ae821cbe988"
+  integrity sha512-fTXL2XRpg7gFprgcnzfX/LlXtmJ47ch6I7aIAaPg1F3hWoT4sukzt/I6QckKDUr4l05KnjawGDfwky7e4rj67g==
   dependencies:
     "@jest/types" "^26.6.2"
-    "@lyonph/react-hooks" "^0.5.0"
-    chalk "^4.1.1"
+    "@lyonph/react-hooks" "^0.5.1"
+    chalk "^4.1.2"
     dotenv "^10.0.0"
-    esbuild "^0.12.8"
-    eslint "^7.28.0"
+    esbuild "^0.12.19"
+    eslint "^7.32.0"
     execa "^5.1.1"
     fs-extra "^10.0.0"
-    ink "^3.0.8"
+    ink "^3.0.9"
     ink-spinner "^4.0.2"
     jest "^26.6.3"
     package-json-type "^1.0.3"
@@ -6779,8 +6768,8 @@ pridepack@^0.10.0:
     resolve.exports "^1.0.2"
     ts-jest "^26.5.6"
     tslib "^2.3.0"
-    typescript "^4.3.2"
-    yargs "^17.0.1"
+    typescript "^4.3.5"
+    yargs "^17.1.0"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
@@ -7509,7 +7498,7 @@ socks@^2.3.3:
     ip "^1.1.5"
     smart-buffer "^4.1.0"
 
-solid-js@^1.0.3, solid-js@^1.0.7, solid-js@^1.1.0, solid-js@^1.1.1:
+solid-js@^1.0.3, solid-js@^1.1.0, solid-js@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/solid-js/-/solid-js-1.1.1.tgz#d9bdd333bf2ac792edd39bfe58f6b7320ba694aa"
   integrity sha512-BtNNMUjBGtkx4viW5q/oqU4DOHa3WRhylN302cVVIeiBUGw6uzAE+NhNF12bAvSYJOCHLyGHpUEIeWklkeGgsg==
@@ -8683,7 +8672,7 @@ yargs@^16.2.0:
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
 
-yargs@^17.0.1:
+yargs@^17.1.0:
   version "17.1.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-17.1.1.tgz#c2a8091564bdb196f7c0a67c1d12e5b85b8067ba"
   integrity sha512-c2k48R0PwKIqKhPMWjeiF6y2xY/gPMUlro0sgxqXpbOIohWiLNXWslsootttv7E1e73QPAMQSg5FeySbVcpsPQ==

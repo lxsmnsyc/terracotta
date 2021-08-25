@@ -12,17 +12,20 @@ interface Styles {
 }
 
 function applyStyle(state: TransitionStates, style: Styles): string {
+  console.log(state);
   switch (state) {
     case 'before-enter':
-    case 'during-enter':
       return `${style.className} ${style.enter} ${style.enterFrom}`;
-    case 'after-enter':
+    case 'during-enter':
       return `${style.className} ${style.enter} ${style.enterTo}`;
+    case 'after-enter':
+      return style.className;
     case 'before-leave':
-    case 'during-leave':
       return `${style.className} ${style.leave} ${style.leaveFrom}`;
-    case 'after-leave':
+    case 'during-leave':
       return `${style.className} ${style.leave} ${style.leaveTo}`;
+    case 'after-leave':
+      return style.className;
     default:
       return style.className;
   }
@@ -36,22 +39,24 @@ export default function App(): JSX.Element {
       <div className="w-32 h-32">
         <TransitionRoot
           show={isShowing()}
-          afterEnterDuration={400}
+          duringEnterDuration={400}
           afterLeaveDuration={200}
         >
           <TransitionChild>
             {(state) => (
-              <div
-                className={applyStyle(state(), {
-                  className: 'w-full h-full bg-white rounded-md shadow-lg transform transition',
-                  enter: 'duration-[400ms]',
-                  enterFrom: 'opacity-0 rotate-[-120deg] scale-50',
-                  enterTo: 'opacity-100 rotate-0 scale-100',
-                  leave: 'duration-200 ease-in-out',
-                  leaveFrom: 'opacity-100 rotate-0 scale-100 ',
-                  leaveTo: 'opacity-0 scale-95 ',
-                })}
-              />
+              <Show when={state() !== 'after-leave'}>
+                <div
+                  className={applyStyle(state(), {
+                    className: 'w-full h-full bg-white rounded-md shadow-lg transform transition',
+                    enter: 'duration-[400ms]',
+                    enterFrom: 'opacity-0 rotate-[-120deg] scale-50',
+                    enterTo: 'opacity-100 rotate-0 scale-100',
+                    leave: 'duration-200 ease-in-out',
+                    leaveFrom: 'opacity-100 rotate-0 scale-100 ',
+                    leaveTo: 'opacity-0 scale-95 ',
+                  })}
+                />
+              </Show>
             )}
           </TransitionChild>
         </TransitionRoot>

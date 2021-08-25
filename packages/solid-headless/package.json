@@ -2,10 +2,10 @@
   "version": "0.0.0",
   "types": "dist/types/index.d.ts",
   "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "module": "dist/esm/index.jsx",
   "exports": {
     "require": "./dist/cjs/index.js",
-    "import": "./dist/esm/index.js"
+    "import": "./dist/esm/index.jsx"
   },
   "files": [
     "dist",
@@ -22,10 +22,9 @@
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@types/node": "^16.6.1",
-    "esbuild-plugin-solid": "^0.3.1",
     "eslint": "^7.32.0",
     "eslint-config-lxsmnsyc": "^0.2.3",
-    "pridepack": "^0.10.0",
+    "pridepack": "^0.12.2",
     "solid-js": "^1.1.1",
     "tslib": "^2.3.1",
     "typescript": "^4.3.5"
