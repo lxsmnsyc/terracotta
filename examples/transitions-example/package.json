@@ -1,25 +1,25 @@
 {
   "name": "transitions-example",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },
   "devDependencies": {
-    "typescript": "^4.3.2",
-    "vite": "^2.4.4",
+    "autoprefixer": "^10.2.6",
     "babel-preset-solid": "^1.1.1",
-    "vite-plugin-solid": "^2.0.1",
     "eslint": "^7.32.0",
     "eslint-config-lxsmnsyc": "^0.2.3",
-    "autoprefixer": "^10.2.6",
-    "postcss": "^8.3.5"
+    "postcss": "^8.3.5",
+    "typescript": "^4.3.2",
+    "vite": "^2.4.4",
+    "vite-plugin-solid": "^2.0.1"
   },
   "dependencies": {
-    "tailwindcss": "^2.2.4",
-    "solid-headless": "0.0.0",
-    "solid-js": "^1.1.0"
+    "solid-headless": "0.1.0",
+    "solid-js": "^1.1.0",
+    "tailwindcss": "^2.2.4"
   },
   "private": true,
   "publishConfig": {
