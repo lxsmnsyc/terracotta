@@ -34,22 +34,15 @@ export function useHeadlessDisclosure(
 
 const HeadlessDisclosureContext = createContext<HeadlessDisclosureProperties>();
 
-export interface DisclosureRootProps extends HeadlessDisclosureOptions {
-  children: ((...properties: HeadlessDisclosureProperties) => JSX.Element) | JSX.Element;
+export interface HeadlessDisclosureRootProps extends HeadlessDisclosureOptions {
+  children: (...properties: HeadlessDisclosureProperties) => JSX.Element;
 }
 
-export function HeadlessDisclosureRoot(props: DisclosureRootProps): JSX.Element {
+export function HeadlessDisclosureRoot(props: HeadlessDisclosureRootProps): JSX.Element {
   const properties = useHeadlessDisclosure(props);
-  if (typeof props.children === 'function') {
-    return (
-      <HeadlessDisclosureContext.Provider value={properties}>
-        {props.children(...properties)}
-      </HeadlessDisclosureContext.Provider>
-    );
-  }
   return (
     <HeadlessDisclosureContext.Provider value={properties}>
-      {props.children}
+      {props.children(...properties)}
     </HeadlessDisclosureContext.Provider>
   );
 }

@@ -11,6 +11,7 @@ module.exports = {
     "@typescript-eslint/no-unsafe-return": "off",
     "react-hooks/rules-of-hooks": "off",
     "react/destructuring-assignment": "off",
-    "@typescript-eslint/no-non-null-assertion": "off"
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "react/jsx-props-no-spreading": "off"
   }
 };

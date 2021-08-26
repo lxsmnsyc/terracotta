@@ -121,7 +121,7 @@ export function useHeadlessTransition(
 const HeadlessTransitionRootContext = createContext<HeadlessTransitionOptions>();
 
 export interface HeadlessTransitionRootProps extends HeadlessTransitionOptions {
-  children: JSX.Element
+  children?: JSX.Element
 }
 
 export function HeadlessTransitionRoot(props: HeadlessTransitionRootProps): JSX.Element {
@@ -198,6 +198,5 @@ export interface HeadlessTransitionChildProps extends HeadlessTransitionOptions 
 }
 
 export function HeadlessTransitionChild(props: HeadlessTransitionChildProps): JSX.Element {
-  const state = useHeadlessTransitionChild(props);
-  return props.children(state);
+  return props.children(useHeadlessTransitionChild(props));
 }
