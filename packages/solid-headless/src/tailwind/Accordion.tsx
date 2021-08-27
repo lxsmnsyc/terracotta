@@ -56,12 +56,14 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
         'children',
         'disabled',
         'onChange',
-        'type',
+        'multiple',
+        'toggleable',
         'value',
       ])}
     >
       <HeadlessSelectRoot
-        type={props.type}
+        multiple={props.multiple}
+        toggleable={props.toggleable}
         value={props.value}
         disabled={props.disabled}
         onChange={props.onChange}
