@@ -26,7 +26,7 @@ function ChevronUpIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
 
 export default function App(): JSX.Element {
   return (
-    <div class="w-full px-4 pt-16">
+    <div class="w-full">
       <div class="w-full max-w-md p-2 mx-auto bg-white rounded-2xl">
         <TailwindDisclosure>
           <TailwindDisclosureButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
@@ -55,7 +55,7 @@ export default function App(): JSX.Element {
               </>
             )}
           </TailwindDisclosureButton>
-          <TailwindDisclosurePanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+          <TailwindDisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
             No.
           </TailwindDisclosurePanel>
         </TailwindDisclosure>

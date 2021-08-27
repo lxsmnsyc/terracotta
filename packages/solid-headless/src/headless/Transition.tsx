@@ -207,8 +207,9 @@ function isHeadlessTransitionChildRenderProp(
 
 export function HeadlessTransitionChild(props: HeadlessTransitionChildProps): JSX.Element {
   const state = useHeadlessTransitionChild(props);
-  if (isHeadlessTransitionChildRenderProp(props.children)) {
-    return props.children(state);
+  const body = props.children;
+  if (isHeadlessTransitionChildRenderProp(body)) {
+    return body(state);
   }
-  return props.children;
+  return body;
 }

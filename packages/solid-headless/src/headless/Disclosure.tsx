@@ -50,16 +50,15 @@ export interface HeadlessDisclosureRootProps extends HeadlessDisclosureOptions {
 
 export function HeadlessDisclosureRoot(props: HeadlessDisclosureRootProps): JSX.Element {
   const properties = useHeadlessDisclosure(props);
-  if (isHeadlessDisclosureRootRenderProp(props.children)) {
-    return (
-      <HeadlessDisclosureContext.Provider value={properties}>
-        {props.children(...properties)}
-      </HeadlessDisclosureContext.Provider>
-    );
-  }
   return (
     <HeadlessDisclosureContext.Provider value={properties}>
-      {props.children}
+      {(() => {
+        const body = props.children;
+        if (isHeadlessDisclosureRootRenderProp(body)) {
+          return body(...properties);
+        }
+        return body;
+      })()}
     </HeadlessDisclosureContext.Provider>
   );
 }
@@ -88,8 +87,9 @@ export interface HeadlessDisclosureChildProps {
 
 export function HeadlessDisclosureChild(props: HeadlessDisclosureChildProps): JSX.Element {
   const [state, setState] = useHeadlessDisclosureChild();
-  if (isHeadlessDisclosureChildRenderProp(props.children)) {
-    return props.children(state, setState);
+  const body = props.children;
+  if (isHeadlessDisclosureChildRenderProp(body)) {
+    return body(state, setState);
   }
-  return props.children;
+  return body;
 }

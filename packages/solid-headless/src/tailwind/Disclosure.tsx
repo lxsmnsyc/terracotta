@@ -1,6 +1,9 @@
 import { JSX } from 'solid-js/jsx-runtime';
 import {
+  createContext,
+  createUniqueId,
   Show,
+  useContext,
 } from 'solid-js';
 import {
   Dynamic,
@@ -16,15 +19,36 @@ import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
 import { excludeProps } from '../utils/exclude-props';
 import Fragment from '../utils/Fragment';
 
+interface TailwindDisclosureContext {
+  buttonID: string;
+  panelID: string;
+}
+
+const TailwindDisclosureContext = createContext<TailwindDisclosureContext>();
+
+function useTailwindDisclosureContext(componentName: string): TailwindDisclosureContext {
+  const context = useContext(TailwindDisclosureContext);
+
+  if (context) {
+    return context;
+  }
+  throw new Error(`<${componentName}> must be used inside a <TailwindDisclosure>`);
+}
+
 export type TailwindDisclosureProps<T extends ValidConstructor = typeof Fragment> = {
   as?: T;
 } & HeadlessDisclosureRootProps & Omit<DynamicProps<T>, 'children'>;
 
 export function TailwindDisclosure(props: TailwindDisclosureProps): JSX.Element {
+  const buttonID = createUniqueId();
+  const panelID = createUniqueId();
+
   return (
-    <HeadlessDisclosureRoot
-      isOpen={props.isOpen}
-      initialOpen={props.initialOpen}
+    <TailwindDisclosureContext.Provider
+      value={{
+        buttonID,
+        panelID,
+      }}
     >
       <Dynamic
         component={props.as ?? Fragment}
@@ -35,11 +59,14 @@ export function TailwindDisclosure(props: TailwindDisclosureProps): JSX.Element 
           'children',
         ])}
       >
-        <HeadlessDisclosureChild>
+        <HeadlessDisclosureRoot
+          isOpen={props.isOpen}
+          initialOpen={props.initialOpen}
+        >
           {props.children}
-        </HeadlessDisclosureChild>
+        </HeadlessDisclosureRoot>
       </Dynamic>
-    </HeadlessDisclosureRoot>
+    </TailwindDisclosureContext.Provider>
   );
 }
 
@@ -50,6 +77,7 @@ export type TailwindDisclosureButtonProps<T extends ValidConstructor = 'button'>
 export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
   props: TailwindDisclosureButtonProps<T>,
 ): JSX.Element {
+  const context = useTailwindDisclosureContext('TailwindDisclosureButton');
   const [visible, setVisible] = useHeadlessDisclosureChild();
 
   return (
@@ -60,9 +88,12 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
         'onClick',
         'children',
       ])}
-      onClick={() => {
+      id={context.buttonID}
+      aria-expanded={visible()}
+      aria-controls={visible() && context.panelID}
+      onClick={(e) => {
         if (props.as && typeof props.as !== 'function' && 'onClick' in props) {
-          props.onClick();
+          props.onClick(e);
         }
         setVisible(!visible());
       }}
@@ -82,6 +113,7 @@ export type TailwindDisclosurePanelProps<T extends ValidConstructor = 'div'> = {
 export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
   props: TailwindDisclosurePanelProps<T>,
 ): JSX.Element {
+  const context = useTailwindDisclosureContext('TailwindDisclosurePanel');
   const [visible] = useHeadlessDisclosureChild();
   return (
     <>
@@ -98,6 +130,8 @@ export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
                   'unmount',
                   'children',
                 ])}
+                id={context.panelID}
+                aria-labelledby={context.buttonID}
               >
                 <HeadlessDisclosureChild>
                   {props.children}
@@ -114,6 +148,7 @@ export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
               'unmount',
               'children',
             ])}
+            id={context.panelID}
           >
             <HeadlessDisclosureChild>
               {props.children}
