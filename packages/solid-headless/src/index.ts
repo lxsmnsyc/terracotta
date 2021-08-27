@@ -72,3 +72,13 @@ export {
   TailwindAccordionPanelProps,
   TailwindAccordionProps,
 } from './tailwind/Accordion';
+export {
+  TailwindRadioGroup,
+  TailwindRadioGroupDescription,
+  TailwindRadioGroupDescriptionProps,
+  TailwindRadioGroupLabel,
+  TailwindRadioGroupLabelProps,
+  TailwindRadioGroupOption,
+  TailwindRadioGroupOptionProps,
+  TailwindRadioGroupProps,
+} from './tailwind/RadioGroup';

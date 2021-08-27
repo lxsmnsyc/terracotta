@@ -43,7 +43,7 @@ function useTailwindAccordionItemContext(componentName: string): TailwindAccordi
 
 export type TailwindAccordionProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
-} & HeadlessSelectRootProps<V> & Omit<DynamicProps<T>, 'children'>;
+} & HeadlessSelectRootProps<V> & Omit<DynamicProps<T>, 'children' | 'onChange'>;
 
 export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
   props: TailwindAccordionProps<V, T>,

@@ -8,7 +8,8 @@ import {
 } from 'solid-js';
 
 export interface HeadlessSelectOptions<T> {
-  type: 'single' | 'multiple';
+  multiple?: boolean;
+  toggleable?: boolean;
   value: T;
   onChange?: (value: T) => void;
   disabled?: boolean;
@@ -33,14 +34,14 @@ export function useHeadlessSelect<T>(
 
   function select(value: T) {
     if (!options.disabled) {
-      if (selectedValues.has(value)) {
-        selectedValues.delete(value);
-      } else {
+      if (!selectedValues.has(value)) {
         options.onChange?.(value);
-        if (options.type !== 'multiple') {
+        if (!options.multiple) {
           selectedValues.clear();
         }
         selectedValues.add(value);
+      } else if (options.toggleable) {
+        selectedValues.delete(value);
       }
       updateTrack((current) => current + 1);
     }
