@@ -1,6 +1,8 @@
 import {
   createContext,
+  createEffect,
   createUniqueId,
+  onCleanup,
   useContext,
 } from 'solid-js';
 import {
@@ -13,6 +15,7 @@ import {
   HeadlessSelectOptionProps,
   HeadlessSelectRoot,
   HeadlessSelectRootProps,
+  useHeadlessSelectChild,
 } from '../headless/Select';
 import {
   DynamicProps,
@@ -36,6 +39,23 @@ function useTailwindRadioGroupContext(componentName: string): TailwindRadioGroup
   throw new Error(`<${componentName}> must be used inside a <TailwindRadioGroup> or <TailwindRadioGroupOption>`);
 }
 
+interface TailwindRadioGroupRootContext {
+  setChecked: (node: Element) => void;
+  setPrevChecked: (node: Element) => void;
+  setNextChecked: (node: Element) => void;
+}
+
+const TailwindRadioGroupRootContext = createContext<TailwindRadioGroupRootContext>();
+
+function useTailwindRadioGroupRootContext(componentName: string): TailwindRadioGroupRootContext {
+  const context = useContext(TailwindRadioGroupRootContext);
+
+  if (context) {
+    return context;
+  }
+  throw new Error(`<${componentName}> must be used inside a <TailwindRadioGroup>`);
+}
+
 export type TailwindRadioGroupProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
 } & Omit<HeadlessSelectRootProps<V>, 'type'> & Omit<DynamicProps<T>, 'children' | 'onChange'>;
@@ -46,35 +66,92 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
   const descriptionID = createUniqueId();
   const labelID = createUniqueId();
 
+  let internalRef: HTMLElement;
+  const nodes: Element[] = [];
+  let firstNode: Element;
+  let lastNode: Element;
+
+  // https://www.w3.org/TR/2017/WD-wai-aria-practices-1.1-20170628/examples/radio/radio-1/js/radioGroup.js
+  createEffect(() => {
+    const radios = internalRef.querySelectorAll('[role=radio]');
+    const len = radios.length;
+    for (let i = 0; i < len; i += 1) {
+      const node = radios[i];
+      nodes[i] = node;
+      if (!firstNode) {
+        firstNode = node;
+      }
+      lastNode = node;
+    }
+  });
+
+  function setChecked(node: Element) {
+    (node as HTMLElement).focus();
+  }
+
+  function setNextChecked(node: Element) {
+    if (node === lastNode) {
+      setChecked(firstNode);
+    } else {
+      const index = nodes.indexOf(node);
+      setChecked(nodes[index + 1]);
+    }
+  }
+
+  function setPrevChecked(node: Element) {
+    if (node === firstNode) {
+      setChecked(lastNode);
+    } else {
+      const index = nodes.indexOf(node);
+      setChecked(nodes[index - 1]);
+    }
+  }
+
   return (
-    <TailwindRadioGroupContext.Provider
+    <TailwindRadioGroupRootContext.Provider
       value={{
-        descriptionID,
-        labelID,
+        setChecked,
+        setNextChecked,
+        setPrevChecked,
       }}
     >
-      <Dynamic
-        component={props.as ?? 'div'}
-        {...excludeProps(props, [
-          'as',
-          'children',
-          'value',
-          'disabled',
-          'onChange',
-        ])}
-        role="radiogroup"
-        aria-labelledby={labelID}
-        aria-describedby={descriptionID}
+      <TailwindRadioGroupContext.Provider
+        value={{
+          descriptionID,
+          labelID,
+        }}
       >
-        <HeadlessSelectRoot
-          value={props.value}
-          disabled={props.disabled}
-          onChange={props.onChange}
+        <Dynamic
+          component={props.as ?? 'div'}
+          {...excludeProps(props, [
+            'as',
+            'children',
+            'value',
+            'disabled',
+          ])}
+          role="radiogroup"
+          aria-labelledby={labelID}
+          aria-describedby={descriptionID}
+          ref={(e) => {
+            const outerRef = props.ref;
+            if (typeof outerRef === 'function') {
+              outerRef(e);
+            } else {
+              props.ref = e;
+            }
+            internalRef = e;
+          }}
         >
-          {props.children}
-        </HeadlessSelectRoot>
-      </Dynamic>
-    </TailwindRadioGroupContext.Provider>
+          <HeadlessSelectRoot
+            value={props.value}
+            disabled={props.disabled}
+            onChange={props.onChange}
+          >
+            {props.children}
+          </HeadlessSelectRoot>
+        </Dynamic>
+      </TailwindRadioGroupContext.Provider>
+    </TailwindRadioGroupRootContext.Provider>
   );
 }
 
@@ -85,8 +162,55 @@ export type TailwindRadioGroupOptionProps<V, T extends ValidConstructor = 'div'>
 export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
   props: TailwindRadioGroupOptionProps<V, T>,
 ): JSX.Element {
+  const context = useTailwindRadioGroupRootContext('TailwindRadioGroupOption');
+  const properties = useHeadlessSelectChild<V>();
+
   const descriptionID = createUniqueId();
   const labelID = createUniqueId();
+
+  let internalRef: HTMLElement;
+
+  createEffect(() => {
+    const [, setSelected, disabled] = properties;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (!(disabled() || props.disabled)) {
+        switch (e.key) {
+          case 'ArrowLeft':
+          case 'ArrowUp':
+            context.setPrevChecked(internalRef);
+            break;
+          case 'ArrowRight':
+          case 'ArrowDown':
+            context.setNextChecked(internalRef);
+            break;
+          case 'Space':
+          case 'Enter':
+            context.setChecked(internalRef);
+            break;
+          default:
+            break;
+        }
+      }
+    };
+
+    internalRef.addEventListener('keydown', onKeyDown);
+    onCleanup(() => {
+      internalRef.removeEventListener('keydown', onKeyDown);
+    });
+
+    const onClick = () => {
+      if (!(disabled() || props.disabled)) {
+        setSelected(props.value);
+      }
+    };
+
+    internalRef.addEventListener('click', onClick);
+    internalRef.addEventListener('focus', onClick);
+    onCleanup(() => {
+      internalRef.removeEventListener('click', onClick);
+      internalRef.removeEventListener('focus', onClick);
+    });
+  });
 
   return (
     <TailwindRadioGroupContext.Provider
@@ -99,7 +223,7 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
         value={props.value}
         disabled={props.disabled}
       >
-        {(isSelected, toggleSelected, disabled) => (
+        {(isSelected, _, disabled) => (
           <Dynamic
             component={props.as ?? 'div'}
             {...excludeProps(props, [
@@ -113,11 +237,15 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
             aria-labelledby={labelID}
             aria-describedby={descriptionID}
             disabled={disabled()}
-            onClick={(e) => {
-              if (props.as && typeof props.as !== 'function' && 'onClick' in props) {
-                props.onClick(e);
+            tabindex={isSelected() ? 0 : -1}
+            ref={(e) => {
+              const outerRef = props.ref;
+              if (typeof outerRef === 'function') {
+                outerRef(e);
+              } else {
+                props.ref = e;
               }
-              toggleSelected();
+              internalRef = e;
             }}
           >
             <HeadlessSelectOptionChild>

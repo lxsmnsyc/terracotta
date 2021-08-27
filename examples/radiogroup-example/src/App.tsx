@@ -42,6 +42,10 @@ function CheckIcon(props: JSX.IntrinsicElements['svg']) {
   );
 }
 
+function classNames(...classes: (string | boolean | undefined)[]): string {
+  return classes.filter(Boolean).join(' ');
+}
+
 export default function App() {
   const [selected, setSelected] = createSignal(plans[0]);
 
@@ -54,53 +58,58 @@ export default function App() {
             setSelected(value);
           }}
         >
-          <TailwindRadioGroupLabel className="sr-only">
-            Server size
-          </TailwindRadioGroupLabel>
-          <div className="space-y-2">
-            <For each={plans}>
-              {(plan) => (
-                <TailwindRadioGroupOption
-                  value={plan}
-                >
-                  {(checked) => (
-                    <div
-                      class={`${checked() ? 'bg-blue-900 bg-opacity-75 text-white' : 'bg-white'} relative rounded-lg shadow-md px-5 py-4 cursor-pointer flex focus:outline-none`}
+          {(selected) => (
+            <>
+              <TailwindRadioGroupLabel className="sr-only">
+                Server size
+              </TailwindRadioGroupLabel>
+              <div className="space-y-2">
+                <For each={plans}>
+                  {(plan) => (
+                    <TailwindRadioGroupOption
+                      value={plan}
+                      class={classNames(
+                        selected(plan) ? 'bg-blue-900 bg-opacity-75 text-white' : 'bg-white',
+                        'focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-300 focus:ring-white focus:ring-opacity-60',
+                        'relative rounded-lg shadow-md px-5 py-4 cursor-pointer flex focus:outline-none',
+                      )}
                     >
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center">
-                          <div className="text-sm">
-                            <TailwindRadioGroupLabel
-                              as="p"
-                              className={`font-medium ${checked() ? 'text-white' : 'text-gray-900'}`}
-                            >
-                              {plan.name}
-                            </TailwindRadioGroupLabel>
-                            <TailwindRadioGroupDescription
-                              as="span"
-                              className={`inline ${checked() ? 'text-sky-100' : 'text-gray-500'}`}
-                            >
-                              <span>
-                                {plan.ram}/{plan.cpus}
-                              </span>{' '}
-                              <span aria-hidden="true">&middot;</span>{' '}
-                              <span>{plan.disk}</span>
-                            </TailwindRadioGroupDescription>
+                      {(checked) => (
+                        <div className="flex items-center justify-between w-full">
+                          <div className="flex items-center">
+                            <div className="text-sm">
+                              <TailwindRadioGroupLabel
+                                as="p"
+                                className={`font-medium ${checked() ? 'text-white' : 'text-gray-900'}`}
+                              >
+                                {plan.name}
+                              </TailwindRadioGroupLabel>
+                              <TailwindRadioGroupDescription
+                                as="span"
+                                className={`inline ${checked() ? 'text-sky-100' : 'text-gray-500'}`}
+                              >
+                                <span>
+                                  {plan.ram}/{plan.cpus}
+                                </span>{' '}
+                                <span aria-hidden="true">&middot;</span>{' '}
+                                <span>{plan.disk}</span>
+                              </TailwindRadioGroupDescription>
+                            </div>
                           </div>
+                          {checked() && (
+                            <div className="flex-shrink-0 text-white">
+                              <CheckIcon className="w-6 h-6" />
+                            </div>
+                          )}
                         </div>
-                        {checked() && (
-                          <div className="flex-shrink-0 text-white">
-                            <CheckIcon className="w-6 h-6" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </TailwindRadioGroupOption>
+                      )}
+                    </TailwindRadioGroupOption>
 
-              )}
-            </For>
-          </div>
+                  )}
+                </For>
+              </div>
+            </>
+          )}
         </TailwindRadioGroup>
       </div>
     </div>
