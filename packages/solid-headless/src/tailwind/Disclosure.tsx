@@ -109,7 +109,6 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
       component={(props.as ?? 'button') as T}
       {...excludeProps(props, [
         'as',
-        'onClick',
         'children',
       ])}
       id={context.buttonID}

@@ -256,7 +256,7 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
 
 export type TailwindRadioGroupLabelProps<T extends ValidConstructor = 'label'> = {
   as?: T;
-} & DynamicProps<T>;
+} & Omit<DynamicProps<T>, 'as'>;
 
 export function TailwindRadioGroupLabel<T extends ValidConstructor = 'label'>(
   props: TailwindRadioGroupLabelProps<T>,
@@ -267,7 +267,6 @@ export function TailwindRadioGroupLabel<T extends ValidConstructor = 'label'>(
       component={props.as ?? 'label'}
       {...excludeProps(props, [
         'as',
-        'children',
       ])}
       id={context.labelID}
     >
@@ -278,7 +277,7 @@ export function TailwindRadioGroupLabel<T extends ValidConstructor = 'label'>(
 
 export type TailwindRadioGroupDescriptionProps<T extends ValidConstructor = 'div'> = {
   as?: T;
-} & DynamicProps<T>;
+} & Omit<DynamicProps<T>, 'as'>;
 
 export function TailwindRadioGroupDescription<T extends ValidConstructor = 'div'>(
   props: TailwindRadioGroupDescriptionProps<T>,
@@ -289,7 +288,6 @@ export function TailwindRadioGroupDescription<T extends ValidConstructor = 'div'
       component={props.as ?? 'div'}
       {...excludeProps(props, [
         'as',
-        'children',
       ])}
       id={context.descriptionID}
     >
