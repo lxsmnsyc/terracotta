@@ -1,7 +1,9 @@
 import { JSX } from 'solid-js/jsx-runtime';
 import {
   createContext,
+  createEffect,
   createUniqueId,
+  onCleanup,
   Show,
   useContext,
 } from 'solid-js';
@@ -80,6 +82,28 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
   const context = useTailwindDisclosureContext('TailwindDisclosureButton');
   const [visible, setVisible] = useHeadlessDisclosureChild();
 
+  let internalRef: HTMLElement;
+
+  createEffect(() => {
+    const toggle = () => {
+      setVisible(!visible());
+    };
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === ' ' || e.key === 'Enter') {
+        toggle();
+      }
+    };
+
+    internalRef.addEventListener('click', toggle);
+    internalRef.addEventListener('keydown', onKeyDown);
+
+    onCleanup(() => {
+      internalRef.removeEventListener('click', toggle);
+      internalRef.removeEventListener('keydown', onKeyDown);
+    });
+  });
+
   return (
     <Dynamic
       component={(props.as ?? 'button') as T}
@@ -91,11 +115,14 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
       id={context.buttonID}
       aria-expanded={visible()}
       aria-controls={visible() && context.panelID}
-      onClick={(e) => {
-        if (props.as && typeof props.as !== 'function' && 'onClick' in props) {
-          props.onClick(e);
+      ref={(e) => {
+        const outerRef = props.ref;
+        if (typeof outerRef === 'function') {
+          outerRef(e);
+        } else {
+          props.ref = e;
         }
-        setVisible(!visible());
+        internalRef = e;
       }}
     >
       <HeadlessDisclosureChild>
