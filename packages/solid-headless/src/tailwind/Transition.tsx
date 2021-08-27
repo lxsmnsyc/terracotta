@@ -2,6 +2,7 @@ import { JSX } from 'solid-js/jsx-runtime';
 import { Show } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import {
+  HeadlessTransitionChild,
   HeadlessTransitionChildProps,
   HeadlessTransitionRoot,
   TransitionStates,
@@ -77,7 +78,9 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
                   ])}
                   class={applyStyle(data(), props)}
                 >
-                  {props.children(data)}
+                  <HeadlessTransitionChild>
+                    {props.children}
+                  </HeadlessTransitionChild>
                 </Dynamic>
               </Show>
             );
@@ -98,7 +101,9 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
               ])}
               class={applyStyle(data(), props)}
             >
-              {props.children(data)}
+              <HeadlessTransitionChild>
+                {props.children}
+              </HeadlessTransitionChild>
             </Dynamic>
           );
         })()

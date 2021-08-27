@@ -6,6 +6,7 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
+  HeadlessDisclosureChild,
   HeadlessDisclosureChildProps,
   HeadlessDisclosureRoot,
   HeadlessDisclosureRootProps,
@@ -25,19 +26,19 @@ export function TailwindDisclosure(props: TailwindDisclosureProps): JSX.Element 
       isOpen={props.isOpen}
       initialOpen={props.initialOpen}
     >
-      {(state, setState) => (
-        <Dynamic
-          component={props.as ?? Fragment}
-          {...excludeProps(props, [
-            'initialOpen',
-            'isOpen',
-            'as',
-            'children',
-          ])}
-        >
-          {props.children(state, setState)}
-        </Dynamic>
-      )}
+      <Dynamic
+        component={props.as ?? Fragment}
+        {...excludeProps(props, [
+          'initialOpen',
+          'isOpen',
+          'as',
+          'children',
+        ])}
+      >
+        <HeadlessDisclosureChild>
+          {props.children}
+        </HeadlessDisclosureChild>
+      </Dynamic>
     </HeadlessDisclosureRoot>
   );
 }
@@ -66,7 +67,9 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
         setVisible(!visible());
       }}
     >
-      {props.children(visible, setVisible)}
+      <HeadlessDisclosureChild>
+        {props.children}
+      </HeadlessDisclosureChild>
     </Dynamic>
   );
 }
@@ -79,7 +82,7 @@ export type TailwindDisclosurePanelProps<T extends ValidConstructor = 'div'> = {
 export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
   props: TailwindDisclosurePanelProps<T>,
 ): JSX.Element {
-  const [visible, setVisible] = useHeadlessDisclosureChild();
+  const [visible] = useHeadlessDisclosureChild();
   return (
     <>
       {(() => {
@@ -96,7 +99,9 @@ export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
                   'children',
                 ])}
               >
-                {props.children(visible, setVisible)}
+                <HeadlessDisclosureChild>
+                  {props.children}
+                </HeadlessDisclosureChild>
               </Dynamic>
             </Show>
           );
@@ -110,7 +115,9 @@ export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
               'children',
             ])}
           >
-            {props.children(visible, setVisible)}
+            <HeadlessDisclosureChild>
+              {props.children}
+            </HeadlessDisclosureChild>
           </Dynamic>
         );
       })()}

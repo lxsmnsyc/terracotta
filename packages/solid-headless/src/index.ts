@@ -2,6 +2,7 @@
 export {
   HeadlessTransitionChild,
   HeadlessTransitionChildProps,
+  HeadlessTransitionChildRenderProp,
   HeadlessTransitionDuration,
   HeadlessTransitionOptions,
   HeadlessTransitionRoot,
@@ -14,10 +15,12 @@ export {
 export {
   HeadlessDisclosureChild,
   HeadlessDisclosureChildProps,
+  HeadlessDisclosureChildRenderProp,
   HeadlessDisclosureOptions,
   HeadlessDisclosureProperties,
   HeadlessDisclosureRoot,
   HeadlessDisclosureRootProps,
+  HeadlessDisclosureRootRenderProp,
   useHeadlessDisclosure,
   useHeadlessDisclosureChild,
 } from './headless/Disclosure';

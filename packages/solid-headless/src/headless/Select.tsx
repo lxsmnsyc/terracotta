@@ -33,16 +33,33 @@ export function useHeadlessSelect<T>(
 
 const HeadlessSelectContext = createContext<HeadlessSelectProperties<any>>();
 
+export type HeadlessSelectRootRenderProp<T> = (
+  (...properties: HeadlessSelectProperties<T>) => JSX.Element
+);
+
+function isHeadlessSelectRootRenderProp<T>(
+  children: HeadlessSelectRootRenderProp<T> | JSX.Element,
+): children is HeadlessSelectRootRenderProp<T> {
+  return typeof children === 'function' && children.length > 0;
+}
+
 export interface HeadlessSelectRootProps<T>
   extends HeadlessSelectOptions<T> {
-  children: ((...properties: HeadlessSelectProperties<T>) => JSX.Element);
+  children?: HeadlessSelectRootRenderProp<T> | JSX.Element;
 }
 
 export function HeadlessSelectRoot<T>(props: HeadlessSelectRootProps<T>): JSX.Element {
   const properties = useHeadlessSelect(props);
+  if (isHeadlessSelectRootRenderProp(props.children)) {
+    return (
+      <HeadlessSelectContext.Provider value={properties}>
+        {props.children(...properties)}
+      </HeadlessSelectContext.Provider>
+    );
+  }
   return (
     <HeadlessSelectContext.Provider value={properties}>
-      {props.children(...properties)}
+      {props.children}
     </HeadlessSelectContext.Provider>
   );
 }
@@ -64,13 +81,27 @@ export function useHeadlessSelectChild<T>(value: () => T): HeadlessSelectChildPr
   throw new Error('`useHeadlessSelectChild` must be used within HeadlessSelectRoot.');
 }
 
+export type HeadlessSelectChildRenderProp = (
+  (...properties: HeadlessSelectChildProperties) => JSX.Element
+);
+
+function isHeadlessSelectChildRenderProp(
+  children: HeadlessSelectChildRenderProp | JSX.Element,
+): children is HeadlessSelectChildRenderProp {
+  return typeof children === 'function' && children.length > 0;
+}
+
 export interface HeadlessSelectChildProps<T> {
   value: T;
-  children: (...properties: HeadlessSelectChildProperties) => JSX.Element;
+  children?: HeadlessSelectChildRenderProp | JSX.Element;
 }
 
 export function HeadlessDisclosureChild<T>(
   props: HeadlessSelectChildProps<T>,
 ): JSX.Element {
-  return props.children(...useHeadlessSelectChild(() => props.value));
+  const [state, setState] = useHeadlessSelectChild(() => props.value);
+  if (isHeadlessSelectChildRenderProp(props.children)) {
+    return props.children(state, setState);
+  }
+  return props.children;
 }

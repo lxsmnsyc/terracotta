@@ -29,47 +29,35 @@ export default function App(): JSX.Element {
     <div class="w-full px-4 pt-16">
       <div class="w-full max-w-md p-2 mx-auto bg-white rounded-2xl">
         <TailwindDisclosure>
-          {() => (
-            <>
-              <TailwindDisclosureButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                {(open) => (
-                  <>
-                    <span>What is your refund policy?</span>
-                    <ChevronUpIcon
-                      class={`${open() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
-                    />
-                  </>
-                )}
-              </TailwindDisclosureButton>
-              <TailwindDisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
-                {() => (
-                  <>
-                    If you're unhappy with your purchase for any reason, email us
-                    within 90 days and we'll refund you in full, no questions asked.
-                  </>
-                )}
-              </TailwindDisclosurePanel>
-            </>
-          )}
+          <TailwindDisclosureButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+            {(open) => (
+              <>
+                <span>What is your refund policy?</span>
+                <ChevronUpIcon
+                  class={`${open() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                />
+              </>
+            )}
+          </TailwindDisclosureButton>
+          <TailwindDisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
+            If you're unhappy with your purchase for any reason, email us
+            within 90 days and we'll refund you in full, no questions asked.
+          </TailwindDisclosurePanel>
         </TailwindDisclosure>
         <TailwindDisclosure as="div" class="mt-2">
-          {() => (
-            <>
-              <TailwindDisclosureButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                {(open) => (
-                  <>
-                    <span>Do you offer technical support?</span>
-                    <ChevronUpIcon
-                      class={`${open() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
-                    />
-                  </>
-                )}
-              </TailwindDisclosureButton>
-              <TailwindDisclosurePanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-                {() => <>No.</>}
-              </TailwindDisclosurePanel>
-            </>
-          )}
+          <TailwindDisclosureButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+            {(open) => (
+              <>
+                <span>Do you offer technical support?</span>
+                <ChevronUpIcon
+                  class={`${open() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                />
+              </>
+            )}
+          </TailwindDisclosureButton>
+          <TailwindDisclosurePanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+            No.
+          </TailwindDisclosurePanel>
         </TailwindDisclosure>
       </div>
     </div>

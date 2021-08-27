@@ -34,15 +34,32 @@ export function useHeadlessDisclosure(
 
 const HeadlessDisclosureContext = createContext<HeadlessDisclosureProperties>();
 
+export type HeadlessDisclosureRootRenderProp = (
+  (...properties: HeadlessDisclosureProperties) => JSX.Element
+);
+
+function isHeadlessDisclosureRootRenderProp(
+  children: HeadlessDisclosureRootRenderProp | JSX.Element,
+): children is HeadlessDisclosureRootRenderProp {
+  return typeof children === 'function' && children.length > 0;
+}
+
 export interface HeadlessDisclosureRootProps extends HeadlessDisclosureOptions {
-  children: (...properties: HeadlessDisclosureProperties) => JSX.Element;
+  children?: HeadlessDisclosureRootRenderProp | JSX.Element;
 }
 
 export function HeadlessDisclosureRoot(props: HeadlessDisclosureRootProps): JSX.Element {
   const properties = useHeadlessDisclosure(props);
+  if (isHeadlessDisclosureRootRenderProp(props.children)) {
+    return (
+      <HeadlessDisclosureContext.Provider value={properties}>
+        {props.children(...properties)}
+      </HeadlessDisclosureContext.Provider>
+    );
+  }
   return (
     <HeadlessDisclosureContext.Provider value={properties}>
-      {props.children(...properties)}
+      {props.children}
     </HeadlessDisclosureContext.Provider>
   );
 }
@@ -55,10 +72,24 @@ export function useHeadlessDisclosureChild(): HeadlessDisclosureProperties {
   throw new Error('`useDisclosureChild` must be used within DisclosureRoot.');
 }
 
+export type HeadlessDisclosureChildRenderProp = (
+  (...properties: HeadlessDisclosureProperties) => JSX.Element
+);
+
+function isHeadlessDisclosureChildRenderProp(
+  children: HeadlessDisclosureChildRenderProp | JSX.Element,
+): children is HeadlessDisclosureChildRenderProp {
+  return typeof children === 'function' && children.length > 0;
+}
+
 export interface HeadlessDisclosureChildProps {
-  children: (...properties: HeadlessDisclosureProperties) => JSX.Element;
+  children?: HeadlessDisclosureChildRenderProp | JSX.Element;
 }
 
 export function HeadlessDisclosureChild(props: HeadlessDisclosureChildProps): JSX.Element {
-  return props.children(...useHeadlessDisclosureChild());
+  const [state, setState] = useHeadlessDisclosureChild();
+  if (isHeadlessDisclosureChildRenderProp(props.children)) {
+    return props.children(state, setState);
+  }
+  return props.children;
 }

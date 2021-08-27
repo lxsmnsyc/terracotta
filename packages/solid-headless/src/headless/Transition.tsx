@@ -193,10 +193,22 @@ export function useHeadlessTransitionChild(
   throw new Error('`useTransitionChild` must be used within a TransitionRoot.');
 }
 
+export type HeadlessTransitionChildRenderProp = (state: () => TransitionStates) => JSX.Element;
+
 export interface HeadlessTransitionChildProps extends HeadlessTransitionOptions {
-  children: (state: () => TransitionStates) => JSX.Element;
+  children?: HeadlessTransitionChildRenderProp | JSX.Element;
+}
+
+function isHeadlessTransitionChildRenderProp(
+  children: HeadlessTransitionChildRenderProp | JSX.Element,
+): children is HeadlessTransitionChildRenderProp {
+  return typeof children === 'function' && children.length > 0;
 }
 
 export function HeadlessTransitionChild(props: HeadlessTransitionChildProps): JSX.Element {
-  return props.children(useHeadlessTransitionChild(props));
+  const state = useHeadlessTransitionChild(props);
+  if (isHeadlessTransitionChildRenderProp(props.children)) {
+    return props.children(state);
+  }
+  return props.children;
 }
