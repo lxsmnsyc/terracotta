@@ -192,21 +192,17 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
         }
       }
     };
-
-    internalRef.addEventListener('keydown', onKeyDown);
-    onCleanup(() => {
-      internalRef.removeEventListener('keydown', onKeyDown);
-    });
-
     const onClick = () => {
       if (!(disabled() || props.disabled)) {
         setSelected(props.value);
       }
     };
 
+    internalRef.addEventListener('keydown', onKeyDown);
     internalRef.addEventListener('click', onClick);
     internalRef.addEventListener('focus', onClick);
     onCleanup(() => {
+      internalRef.removeEventListener('keydown', onKeyDown);
       internalRef.removeEventListener('click', onClick);
       internalRef.removeEventListener('focus', onClick);
     });
