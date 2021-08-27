@@ -131,7 +131,6 @@ export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
                   'children',
                 ])}
                 id={context.panelID}
-                aria-labelledby={context.buttonID}
               >
                 <HeadlessDisclosureChild>
                   {props.children}
