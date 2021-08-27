@@ -183,7 +183,7 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
           case 'ArrowDown':
             context.setNextChecked(internalRef);
             break;
-          case 'Space':
+          case ' ':
           case 'Enter':
             context.setChecked(internalRef);
             break;
