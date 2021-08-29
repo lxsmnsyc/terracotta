@@ -11,7 +11,6 @@ import {
 import { JSX } from 'solid-js/jsx-runtime';
 import {
   HeadlessSelectOption,
-  HeadlessSelectOptionChild,
   HeadlessSelectOptionProps,
   HeadlessSelectRoot,
   HeadlessSelectRootProps,
@@ -179,6 +178,9 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
             break;
           case ' ':
           case 'Enter':
+            if (internalRef.tagName === 'BUTTON') {
+              e.preventDefault();
+            }
             context.setChecked(internalRef);
             break;
           default:
@@ -222,42 +224,37 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
         labelID,
       }}
     >
-      <HeadlessSelectOption
-        value={props.value}
-        disabled={props.disabled}
+      <Dynamic
+        component={props.as ?? 'div'}
+        {...excludeProps(props, [
+          'as',
+          'children',
+          'value',
+          'disabled',
+        ])}
+        role="radio"
+        aria-checked={properties.isSelected(props.value)}
+        aria-labelledby={labelID}
+        aria-describedby={descriptionID}
+        tabindex={properties.isSelected(props.value) ? 0 : -1}
+        ref={(e) => {
+          const outerRef = props.ref;
+          if (typeof outerRef === 'function') {
+            outerRef(e);
+          } else {
+            props.ref = e;
+          }
+          internalRef = e;
+        }}
+        data-sh-radio={context.ownerID}
       >
-        {(optionProperties) => (
-          <Dynamic
-            component={props.as ?? 'div'}
-            {...excludeProps(props, [
-              'as',
-              'children',
-              'value',
-              'disabled',
-            ])}
-            role="radio"
-            aria-checked={optionProperties.isSelected()}
-            aria-labelledby={labelID}
-            aria-describedby={descriptionID}
-            disabled={optionProperties.disabled()}
-            tabindex={optionProperties.isSelected() ? 0 : -1}
-            ref={(e) => {
-              const outerRef = props.ref;
-              if (typeof outerRef === 'function') {
-                outerRef(e);
-              } else {
-                props.ref = e;
-              }
-              internalRef = e;
-            }}
-            data-sh-radio={context.ownerID}
-          >
-            <HeadlessSelectOptionChild>
-              {props.children}
-            </HeadlessSelectOptionChild>
-          </Dynamic>
-        )}
-      </HeadlessSelectOption>
+        <HeadlessSelectOption
+          value={props.value}
+          disabled={props.disabled}
+        >
+          {props.children}
+        </HeadlessSelectOption>
+      </Dynamic>
     </TailwindRadioGroupContext.Provider>
   );
 }

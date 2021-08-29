@@ -19,7 +19,9 @@ export interface HeadlessSelectOptions<T> {
 export interface HeadlessSelectProperties<T> {
   isSelected(value: T): boolean;
   select(value: T): void;
+  hasSelected(): boolean;
   isActive(value: T): boolean;
+  hasActive(): boolean;
   focus(value: T): void;
   blur(): void;
   disabled(): boolean;
@@ -59,8 +61,15 @@ export function useHeadlessSelect<T>(
   return {
     isSelected,
     select,
+    hasSelected() {
+      track();
+      return selectedValues.size > 0;
+    },
     disabled() {
       return !!options.disabled;
+    },
+    hasActive() {
+      return !!active();
     },
     isActive(value) {
       const ref = active();

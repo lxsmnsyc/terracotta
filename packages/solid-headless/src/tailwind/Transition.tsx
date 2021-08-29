@@ -8,7 +8,7 @@ import {
   TransitionStates,
   useHeadlessTransitionChild,
 } from '../headless/Transition';
-import { excludeProps, pickProps } from '../utils/exclude-props';
+import { excludeProps } from '../utils/exclude-props';
 import {
   DynamicProps,
   ValidConstructor,
@@ -75,6 +75,7 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
                     'leaveTo',
                     'unmount',
                     'duration',
+                    'show',
                   ])}
                   class={applyStyle(data(), props)}
                 >
@@ -100,6 +101,9 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
                 'duration',
               ])}
               class={applyStyle(data(), props)}
+              style={{
+                visibility: data() === 'after-leave' ? 'hidden' : 'visible',
+              }}
             >
               <HeadlessTransitionChild>
                 {props.children}
@@ -120,11 +124,9 @@ export function TailwindTransition<T extends ValidConstructor = 'div'>(
 ): JSX.Element {
   return (
     <HeadlessTransitionRoot
-      {...pickProps(props, [
-        'appear',
-        'show',
-        'duration',
-      ])}
+      appear={props.appear}
+      show={props.show}
+      duration={props.duration}
     >
       <TailwindTransitionChild {...props} />
     </HeadlessTransitionRoot>

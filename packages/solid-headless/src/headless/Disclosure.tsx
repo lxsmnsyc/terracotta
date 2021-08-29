@@ -9,6 +9,7 @@ import {
 
 export interface HeadlessDisclosureOptions {
   isOpen?: boolean;
+  defaultOpen?: boolean;
   disabled?: boolean;
 }
 
@@ -21,7 +22,7 @@ export interface HeadlessDisclosureProperties {
 export function useHeadlessDisclosure(
   options: HeadlessDisclosureOptions = {},
 ): HeadlessDisclosureProperties {
-  const [signal, setSignal] = createSignal(untrack(() => !!options.isOpen));
+  const [signal, setSignal] = createSignal(untrack(() => !!options.defaultOpen));
 
   createEffect(() => {
     setSignal(!!options.isOpen);

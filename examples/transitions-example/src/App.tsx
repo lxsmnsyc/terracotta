@@ -16,7 +16,7 @@ export default function App(): JSX.Element {
               during: 400,
             },
             leave: {
-              during: 200,
+              after: 200,
             },
           }}
           className="w-full h-full bg-white rounded-md shadow-lg transform transition"
@@ -26,6 +26,7 @@ export default function App(): JSX.Element {
           leave="duration-200 ease-in-out"
           leaveFrom="opacity-100 rotate-0 scale-100"
           leaveTo="opacity-0 scale-95"
+          unmount={false}
         />
       </div>
 

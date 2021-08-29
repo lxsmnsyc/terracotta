@@ -82,3 +82,15 @@ export {
   TailwindRadioGroupOptionProps,
   TailwindRadioGroupProps,
 } from './tailwind/RadioGroup';
+export {
+  TailwindListbox,
+  TailwindListboxButton,
+  TailwindListboxButtonProps,
+  TailwindListboxLabel,
+  TailwindListboxLabelProps,
+  TailwindListboxOption,
+  TailwindListboxOptionProps,
+  TailwindListboxOptions,
+  TailwindListboxOptionsProps,
+  TailwindListboxProps,
+} from './tailwind/Listbox';
