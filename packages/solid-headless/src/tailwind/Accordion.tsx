@@ -3,6 +3,8 @@ import {
   createUniqueId,
   useContext,
   Show,
+  createEffect,
+  onCleanup,
 } from 'solid-js';
 import { JSX } from 'solid-js/jsx-runtime';
 import {
@@ -24,6 +26,26 @@ import {
 import {
   excludeProps,
 } from '../utils/exclude-props';
+
+interface TailwindAccordionContext {
+  ownerID: string;
+  setChecked: (node: Element) => void;
+  setPrevChecked: (node: Element) => void;
+  setNextChecked: (node: Element) => void;
+  setFirstChecked: () => void;
+  setLastChecked: () => void;
+}
+
+const TailwindAccordionContext = createContext<TailwindAccordionContext>();
+
+function useTailwindAccordionContext(componentName: string): TailwindAccordionContext {
+  const context = useContext(TailwindAccordionContext);
+
+  if (context) {
+    return context;
+  }
+  throw new Error(`<${componentName}> must be used inside a <TailwindAccordion>`);
+}
 
 interface TailwindAccordionItemContext {
   buttonID: string;
@@ -48,29 +70,94 @@ export type TailwindAccordionProps<V, T extends ValidConstructor = 'div'> = {
 export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
   props: TailwindAccordionProps<V, T>,
 ): JSX.Element {
+  const ownerID = createUniqueId();
+
+  let internalRef: HTMLElement;
+
+  function setChecked(node: Element) {
+    (node as HTMLElement).focus();
+  }
+
+  function setNextChecked(node: Element) {
+    const radios = internalRef.querySelectorAll(`[data-sh-accordion-button="${ownerID}"]`);
+    for (let i = 0, len = radios.length; i < len; i += 1) {
+      if (node === radios[i]) {
+        if (i === len - 1) {
+          setChecked(radios[0]);
+        } else {
+          setChecked(radios[i + 1]);
+        }
+      }
+    }
+  }
+
+  function setPrevChecked(node: Element) {
+    const radios = internalRef.querySelectorAll(`[data-sh-accordion-button="${ownerID}"]`);
+    for (let i = 0, len = radios.length; i < len; i += 1) {
+      if (node === radios[i]) {
+        if (i === 0) {
+          setChecked(radios[len - 1]);
+        } else {
+          setChecked(radios[i - 1]);
+        }
+      }
+    }
+  }
+
+  function setFirstChecked() {
+    const radios = internalRef.querySelectorAll(`[data-sh-accordion-button="${ownerID}"]`);
+    setChecked(radios[0]);
+  }
+
+  function setLastChecked() {
+    const radios = internalRef.querySelectorAll(`[data-sh-accordion-button="${ownerID}"]`);
+    setChecked(radios[radios.length - 1]);
+  }
+
   return (
-    <Dynamic
-      component={props.as ?? 'div'}
-      {...excludeProps(props, [
-        'as',
-        'children',
-        'disabled',
-        'onChange',
-        'multiple',
-        'toggleable',
-        'value',
-      ])}
+    <TailwindAccordionContext.Provider
+      value={{
+        ownerID,
+        setChecked,
+        setNextChecked,
+        setPrevChecked,
+        setFirstChecked,
+        setLastChecked,
+      }}
     >
-      <HeadlessSelectRoot
-        multiple={props.multiple}
-        toggleable={props.toggleable}
-        value={props.value}
-        disabled={props.disabled}
-        onChange={props.onChange}
+      <Dynamic
+        component={props.as ?? 'div'}
+        {...excludeProps(props, [
+          'as',
+          'children',
+          'disabled',
+          'onChange',
+          'multiple',
+          'toggleable',
+          'value',
+        ])}
+        ref={(e) => {
+          const outerRef = props.ref;
+          if (typeof outerRef === 'function') {
+            outerRef(e);
+          } else {
+            props.ref = e;
+          }
+          internalRef = e;
+        }}
+        data-sh-accordion={ownerID}
       >
-        {props.children}
-      </HeadlessSelectRoot>
-    </Dynamic>
+        <HeadlessSelectRoot
+          multiple={props.multiple}
+          toggleable={props.toggleable}
+          value={props.value}
+          disabled={props.disabled}
+          onChange={props.onChange}
+        >
+          {props.children}
+        </HeadlessSelectRoot>
+      </Dynamic>
+    </TailwindAccordionContext.Provider>
   );
 }
 
@@ -140,8 +227,52 @@ export type TailwindAccordionButtonProps<T extends ValidConstructor = 'button'> 
 export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
   props: TailwindAccordionButtonProps<T>,
 ): JSX.Element {
-  const context = useTailwindAccordionItemContext('TailwindAccordionButton');
+  const rootContext = useTailwindAccordionContext('TailwindAccordionButton');
+  const itemContext = useTailwindAccordionItemContext('TailwindAccordionButton');
   const [isSelected, addSelected, disabled] = useHeadlessSelectOptionChild();
+
+  let internalRef: HTMLElement;
+
+  createEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (!(disabled() || props.disabled)) {
+        switch (e.key) {
+          case 'ArrowUp':
+            rootContext.setPrevChecked(internalRef);
+            break;
+          case 'ArrowDown':
+            rootContext.setNextChecked(internalRef);
+            break;
+          case ' ':
+          case 'Enter':
+            rootContext.setChecked(internalRef);
+            break;
+          case 'Home':
+            rootContext.setFirstChecked();
+            break;
+          case 'End':
+            rootContext.setLastChecked();
+            break;
+          default:
+            break;
+        }
+      }
+    };
+    const onClick = () => {
+      if (!(disabled() || props.disabled)) {
+        addSelected();
+      }
+    };
+
+    internalRef.addEventListener('keydown', onKeyDown);
+    internalRef.addEventListener('click', onClick);
+    internalRef.addEventListener('focus', onClick);
+    onCleanup(() => {
+      internalRef.removeEventListener('keydown', onKeyDown);
+      internalRef.removeEventListener('click', onClick);
+      internalRef.removeEventListener('focus', onClick);
+    });
+  });
 
   return (
     <Dynamic
@@ -150,16 +281,20 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
         'as',
         'children',
       ])}
-      id={context.buttonID}
+      id={itemContext.buttonID}
       aria-expanded={isSelected()}
-      aria-controls={isSelected() && context.panelID}
-      onClick={(e) => {
-        if (props.as && typeof props.as !== 'function' && 'onClick' in props) {
-          props.onClick(e);
-        }
-        addSelected();
-      }}
+      aria-controls={isSelected() && itemContext.panelID}
       disabled={disabled()}
+      ref={(e) => {
+        const outerRef = props.ref;
+        if (typeof outerRef === 'function') {
+          outerRef(e);
+        } else {
+          props.ref = e;
+        }
+        internalRef = e;
+      }}
+      data-sh-accordion-button={rootContext.ownerID}
     >
       <HeadlessSelectOptionChild>
         {props.children}

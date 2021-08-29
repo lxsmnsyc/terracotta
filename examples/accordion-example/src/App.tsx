@@ -66,6 +66,40 @@ export default function App(): JSX.Element {
               No.
             </TailwindAccordionPanel>
           </TailwindAccordionItem>
+          <TailwindAccordionItem value="3" class="mt-2">
+            <TailwindAccordionHeader>
+              <TailwindAccordionButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                {(open) => (
+                  <>
+                    <span>Do you offer technical support?</span>
+                    <ChevronUpIcon
+                      class={`${open() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                    />
+                  </>
+                )}
+              </TailwindAccordionButton>
+            </TailwindAccordionHeader>
+            <TailwindAccordionPanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+              No.
+            </TailwindAccordionPanel>
+          </TailwindAccordionItem>
+          <TailwindAccordionItem value="4" class="mt-2">
+            <TailwindAccordionHeader>
+              <TailwindAccordionButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                {(open) => (
+                  <>
+                    <span>Do you offer technical support?</span>
+                    <ChevronUpIcon
+                      class={`${open() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                    />
+                  </>
+                )}
+              </TailwindAccordionButton>
+            </TailwindAccordionHeader>
+            <TailwindAccordionPanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+              No.
+            </TailwindAccordionPanel>
+          </TailwindAccordionItem>
         </TailwindAccordion>
       </div>
     </div>
