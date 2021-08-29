@@ -34,63 +34,79 @@ export default function App(): JSX.Element {
           <TailwindAccordionItem value="1">
             <TailwindAccordionHeader>
               <TailwindAccordionButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                {(open) => (
+                {({ isSelected }) => (
                   <>
-                    <span>What is your refund policy?</span>
+                    <span>Magic Conch Shell, will I ever get married? </span>
                     <ChevronUpIcon
-                      class={`${open() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                      class={`${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
                     />
                   </>
                 )}
               </TailwindAccordionButton>
             </TailwindAccordionHeader>
             <TailwindAccordionPanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
-              If you're unhappy with your purchase for any reason, email us
-              within 90 days and we'll refund you in full, no questions asked.
+              Maybe someday.
             </TailwindAccordionPanel>
           </TailwindAccordionItem>
           <TailwindAccordionItem value="2" class="mt-2">
             <TailwindAccordionHeader>
               <TailwindAccordionButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                {(open) => (
+                {({ isSelected }) => (
                   <>
-                    <span>Do you offer technical support?</span>
+                    <span>Oh, Magic Conch Shell, what do we need to do to get out of the Kelp Forest?</span>
                     <ChevronUpIcon
-                      class={`${open() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                      class={`${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
                     />
                   </>
                 )}
               </TailwindAccordionButton>
             </TailwindAccordionHeader>
             <TailwindAccordionPanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-              No.
+              Nothing.
             </TailwindAccordionPanel>
           </TailwindAccordionItem>
           <TailwindAccordionItem value="3" class="mt-2">
             <TailwindAccordionHeader>
               <TailwindAccordionButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                {(open) => (
+                {({ isSelected }) => (
                   <>
-                    <span>Do you offer technical support?</span>
+                    <span>Uh, hello there. Magic Conch, uh, I was wondering... uh, should I have the spaghetti or the turkey?</span>
                     <ChevronUpIcon
-                      class={`${open() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                      class={`${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
                     />
                   </>
                 )}
               </TailwindAccordionButton>
             </TailwindAccordionHeader>
             <TailwindAccordionPanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-              No.
+              Neither.
             </TailwindAccordionPanel>
           </TailwindAccordionItem>
           <TailwindAccordionItem value="4" class="mt-2">
             <TailwindAccordionHeader>
               <TailwindAccordionButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                {(open) => (
+                {({ isSelected }) => (
                   <>
-                    <span>Do you offer technical support?</span>
+                    <span>Oh, then how about the soup?</span>
                     <ChevronUpIcon
-                      class={`${open() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                      class={`${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                    />
+                  </>
+                )}
+              </TailwindAccordionButton>
+            </TailwindAccordionHeader>
+            <TailwindAccordionPanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+              I don't think so.
+            </TailwindAccordionPanel>
+          </TailwindAccordionItem>
+          <TailwindAccordionItem value="5" class="mt-2">
+            <TailwindAccordionHeader>
+              <TailwindAccordionButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                {({ isSelected }) => (
+                  <>
+                    <span>Could I have anything to eat?</span>
+                    <ChevronUpIcon
+                      class={`${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
                     />
                   </>
                 )}

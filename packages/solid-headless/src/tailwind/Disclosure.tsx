@@ -22,6 +22,7 @@ import { excludeProps } from '../utils/exclude-props';
 import Fragment from '../utils/Fragment';
 
 interface TailwindDisclosureContext {
+  ownerID: string;
   buttonID: string;
   panelID: string;
 }
@@ -42,12 +43,14 @@ export type TailwindDisclosureProps<T extends ValidConstructor = typeof Fragment
 } & HeadlessDisclosureRootProps & Omit<DynamicProps<T>, 'children'>;
 
 export function TailwindDisclosure(props: TailwindDisclosureProps): JSX.Element {
+  const ownerID = createUniqueId();
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
 
   return (
     <TailwindDisclosureContext.Provider
       value={{
+        ownerID,
         buttonID,
         panelID,
       }}
@@ -55,15 +58,15 @@ export function TailwindDisclosure(props: TailwindDisclosureProps): JSX.Element 
       <Dynamic
         component={props.as ?? Fragment}
         {...excludeProps(props, [
-          'initialOpen',
           'isOpen',
           'as',
           'children',
+          'disabled',
         ])}
+        data-sh-disclosure={ownerID}
       >
         <HeadlessDisclosureRoot
           isOpen={props.isOpen}
-          initialOpen={props.initialOpen}
         >
           {props.children}
         </HeadlessDisclosureRoot>
@@ -80,17 +83,22 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
   props: TailwindDisclosureButtonProps<T>,
 ): JSX.Element {
   const context = useTailwindDisclosureContext('TailwindDisclosureButton');
-  const [visible, setVisible] = useHeadlessDisclosureChild();
+  const properties = useHeadlessDisclosureChild();
 
   let internalRef: HTMLElement;
 
   createEffect(() => {
     const toggle = () => {
-      setVisible(!visible());
+      if (!properties.disabled()) {
+        properties.setState(!properties.isOpen());
+      }
     };
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === ' ' || e.key === 'Enter') {
+        if (internalRef.tagName === 'BUTTON') {
+          e.preventDefault();
+        }
         toggle();
       }
     };
@@ -112,8 +120,10 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
         'children',
       ])}
       id={context.buttonID}
-      aria-expanded={visible()}
-      aria-controls={visible() && context.panelID}
+      role="button"
+      aria-expanded={properties.isOpen()}
+      aria-controls={properties.isOpen() && context.panelID}
+      disabled={properties.disabled()}
       ref={(e) => {
         const outerRef = props.ref;
         if (typeof outerRef === 'function') {
@@ -123,6 +133,7 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
         }
         internalRef = e;
       }}
+      data-sh-disclosure-button={context.ownerID}
     >
       <HeadlessDisclosureChild>
         {props.children}
@@ -140,7 +151,7 @@ export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
   props: TailwindDisclosurePanelProps<T>,
 ): JSX.Element {
   const context = useTailwindDisclosureContext('TailwindDisclosurePanel');
-  const [visible] = useHeadlessDisclosureChild();
+  const properties = useHeadlessDisclosureChild();
   return (
     <>
       {(() => {
@@ -148,7 +159,7 @@ export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
         const unmount = props.unmount ?? true;
         if (unmount) {
           return (
-            <Show when={visible()}>
+            <Show when={properties.isOpen()}>
               <Dynamic
                 component={constructor}
                 {...excludeProps(props, [
@@ -157,6 +168,7 @@ export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
                   'children',
                 ])}
                 id={context.panelID}
+                data-sh-disclosure-panel={context.ownerID}
               >
                 <HeadlessDisclosureChild>
                   {props.children}
@@ -174,6 +186,7 @@ export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
               'children',
             ])}
             id={context.panelID}
+            data-sh-disclosure-panel={context.ownerID}
           >
             <HeadlessDisclosureChild>
               {props.children}

@@ -229,13 +229,13 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
 ): JSX.Element {
   const rootContext = useTailwindAccordionContext('TailwindAccordionButton');
   const itemContext = useTailwindAccordionItemContext('TailwindAccordionButton');
-  const [isSelected, addSelected, disabled] = useHeadlessSelectOptionChild();
+  const properties = useHeadlessSelectOptionChild();
 
   let internalRef: HTMLElement;
 
   createEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (!(disabled() || props.disabled)) {
+      if (!(properties.disabled() || props.disabled)) {
         switch (e.key) {
           case 'ArrowUp':
             rootContext.setPrevChecked(internalRef);
@@ -245,7 +245,11 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
             break;
           case ' ':
           case 'Enter':
+            if (internalRef.tagName === 'BUTTON') {
+              e.preventDefault();
+            }
             rootContext.setChecked(internalRef);
+            properties.select();
             break;
           case 'Home':
             rootContext.setFirstChecked();
@@ -259,16 +263,30 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
       }
     };
     const onClick = () => {
-      if (!(disabled() || props.disabled)) {
-        addSelected();
+      if (!(properties.disabled() || props.disabled)) {
+        properties.select();
+      }
+    };
+    const onFocus = () => {
+      if (!(properties.disabled() || props.disabled)) {
+        properties.focus();
+      }
+    };
+    const onBlur = () => {
+      if (!(properties.disabled() || props.disabled)) {
+        properties.blur();
       }
     };
 
     internalRef.addEventListener('keydown', onKeyDown);
     internalRef.addEventListener('click', onClick);
+    internalRef.addEventListener('focus', onFocus);
+    internalRef.addEventListener('blur', onBlur);
     onCleanup(() => {
       internalRef.removeEventListener('keydown', onKeyDown);
       internalRef.removeEventListener('click', onClick);
+      internalRef.removeEventListener('focus', onFocus);
+      internalRef.removeEventListener('blur', onBlur);
     });
   });
 
@@ -280,9 +298,9 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
         'children',
       ])}
       id={itemContext.buttonID}
-      aria-expanded={isSelected()}
-      aria-controls={isSelected() && itemContext.panelID}
-      disabled={disabled()}
+      aria-expanded={properties.isSelected()}
+      aria-controls={properties.isSelected() && itemContext.panelID}
+      disabled={properties.disabled()}
       ref={(e) => {
         const outerRef = props.ref;
         if (typeof outerRef === 'function') {
@@ -310,7 +328,7 @@ export function TailwindAccordionPanel<T extends ValidConstructor = 'div'>(
   props: TailwindAccordionPanelProps<T>,
 ): JSX.Element {
   const context = useTailwindAccordionItemContext('TailwindAccordionPanel');
-  const [isSelected] = useHeadlessSelectOptionChild();
+  const properties = useHeadlessSelectOptionChild();
 
   return (
     <>
@@ -319,7 +337,7 @@ export function TailwindAccordionPanel<T extends ValidConstructor = 'div'>(
         const unmount = props.unmount ?? true;
         if (unmount) {
           return (
-            <Show when={isSelected()}>
+            <Show when={properties.isSelected()}>
               <Dynamic
                 component={constructor}
                 {...excludeProps(props, [

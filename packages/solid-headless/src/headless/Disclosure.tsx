@@ -9,33 +9,41 @@ import {
 
 export interface HeadlessDisclosureOptions {
   isOpen?: boolean;
-  initialOpen?: boolean;
+  disabled?: boolean;
 }
 
-export type HeadlessDisclosureProperties = [
-  () => boolean,
-  (newState: boolean) => void,
-];
+export interface HeadlessDisclosureProperties {
+  isOpen(): boolean;
+  setState(newState: boolean): void;
+  disabled(): boolean;
+}
 
 export function useHeadlessDisclosure(
   options: HeadlessDisclosureOptions = {},
 ): HeadlessDisclosureProperties {
-  const [signal, setSignal] = createSignal(untrack(() => !!options.initialOpen));
+  const [signal, setSignal] = createSignal(untrack(() => !!options.isOpen));
 
   createEffect(() => {
     setSignal(!!options.isOpen);
   });
 
-  return [
-    signal,
-    setSignal,
-  ];
+  return {
+    isOpen() {
+      return signal();
+    },
+    setState(value) {
+      setSignal(value);
+    },
+    disabled() {
+      return !!options.disabled;
+    },
+  };
 }
 
 const HeadlessDisclosureContext = createContext<HeadlessDisclosureProperties>();
 
 export type HeadlessDisclosureRootRenderProp = (
-  (...properties: HeadlessDisclosureProperties) => JSX.Element
+  (properties: HeadlessDisclosureProperties) => JSX.Element
 );
 
 function isHeadlessDisclosureRootRenderProp(
@@ -55,7 +63,7 @@ export function HeadlessDisclosureRoot(props: HeadlessDisclosureRootProps): JSX.
       {(() => {
         const body = props.children;
         if (isHeadlessDisclosureRootRenderProp(body)) {
-          return body(...properties);
+          return body(properties);
         }
         return body;
       })()}
@@ -72,7 +80,7 @@ export function useHeadlessDisclosureChild(): HeadlessDisclosureProperties {
 }
 
 export type HeadlessDisclosureChildRenderProp = (
-  (...properties: HeadlessDisclosureProperties) => JSX.Element
+  (properties: HeadlessDisclosureProperties) => JSX.Element
 );
 
 function isHeadlessDisclosureChildRenderProp(
@@ -86,10 +94,10 @@ export interface HeadlessDisclosureChildProps {
 }
 
 export function HeadlessDisclosureChild(props: HeadlessDisclosureChildProps): JSX.Element {
-  const [state, setState] = useHeadlessDisclosureChild();
+  const properties = useHeadlessDisclosureChild();
   const body = props.children;
   if (isHeadlessDisclosureChildRenderProp(body)) {
-    return body(state, setState);
+    return body(properties);
   }
   return body;
 }

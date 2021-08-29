@@ -40,6 +40,7 @@ function useTailwindRadioGroupContext(componentName: string): TailwindRadioGroup
 }
 
 interface TailwindRadioGroupRootContext {
+  ownerID: string;
   setChecked: (node: Element) => void;
   setPrevChecked: (node: Element) => void;
   setNextChecked: (node: Element) => void;
@@ -63,6 +64,7 @@ export type TailwindRadioGroupProps<V, T extends ValidConstructor = 'div'> = {
 export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
   props: TailwindRadioGroupProps<V, T>,
 ): JSX.Element {
+  const ownerID = createUniqueId();
   const descriptionID = createUniqueId();
   const labelID = createUniqueId();
 
@@ -73,7 +75,7 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
   }
 
   function setNextChecked(node: Element) {
-    const radios = internalRef.querySelectorAll('[role=radio]');
+    const radios = internalRef.querySelectorAll(`[data-sh-radio="${ownerID}"]`);
     for (let i = 0, len = radios.length; i < len; i += 1) {
       if (node === radios[i]) {
         if (i === len - 1) {
@@ -86,7 +88,7 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
   }
 
   function setPrevChecked(node: Element) {
-    const radios = internalRef.querySelectorAll('[role=radio]');
+    const radios = internalRef.querySelectorAll(`[data-sh-radio="${ownerID}"]`);
     for (let i = 0, len = radios.length; i < len; i += 1) {
       if (node === radios[i]) {
         if (i === 0) {
@@ -101,6 +103,7 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
   return (
     <TailwindRadioGroupRootContext.Provider
       value={{
+        ownerID,
         setChecked,
         setNextChecked,
         setPrevChecked,
@@ -132,6 +135,7 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
             }
             internalRef = e;
           }}
+          data-sh-radiogroup={ownerID}
         >
           <HeadlessSelectRoot
             value={props.value}
@@ -148,7 +152,7 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
 
 export type TailwindRadioGroupOptionProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
-} & Omit<HeadlessSelectOptionProps<V>, 'type'> & Omit<DynamicProps<T>, 'children'>;
+} & Omit<HeadlessSelectOptionProps<V>, 'multiple'> & Omit<DynamicProps<T>, 'children'>;
 
 export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
   props: TailwindRadioGroupOptionProps<V, T>,
@@ -162,9 +166,8 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
   let internalRef: HTMLElement;
 
   createEffect(() => {
-    const [, setSelected, disabled] = properties;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (!(disabled() || props.disabled)) {
+      if (!(properties.disabled() || props.disabled)) {
         switch (e.key) {
           case 'ArrowLeft':
           case 'ArrowUp':
@@ -184,18 +187,31 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
       }
     };
     const onClick = () => {
-      if (!(disabled() || props.disabled)) {
-        setSelected(props.value);
+      if (!(properties.disabled() || props.disabled)) {
+        properties.select(props.value);
+      }
+    };
+    const onFocus = () => {
+      if (!(properties.disabled() || props.disabled)) {
+        properties.focus(props.value);
+        properties.select(props.value);
+      }
+    };
+    const onBlur = () => {
+      if (!(properties.disabled() || props.disabled)) {
+        properties.blur();
       }
     };
 
     internalRef.addEventListener('keydown', onKeyDown);
     internalRef.addEventListener('click', onClick);
-    internalRef.addEventListener('focus', onClick);
+    internalRef.addEventListener('focus', onFocus);
+    internalRef.addEventListener('blur', onBlur);
     onCleanup(() => {
       internalRef.removeEventListener('keydown', onKeyDown);
       internalRef.removeEventListener('click', onClick);
-      internalRef.removeEventListener('focus', onClick);
+      internalRef.removeEventListener('focus', onFocus);
+      internalRef.removeEventListener('blur', onBlur);
     });
   });
 
@@ -210,7 +226,7 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
         value={props.value}
         disabled={props.disabled}
       >
-        {(isSelected, _, disabled) => (
+        {(optionProperties) => (
           <Dynamic
             component={props.as ?? 'div'}
             {...excludeProps(props, [
@@ -220,11 +236,11 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
               'disabled',
             ])}
             role="radio"
-            aria-checked={isSelected()}
+            aria-checked={optionProperties.isSelected()}
             aria-labelledby={labelID}
             aria-describedby={descriptionID}
-            disabled={disabled()}
-            tabindex={isSelected() ? 0 : -1}
+            disabled={optionProperties.disabled()}
+            tabindex={optionProperties.isSelected() ? 0 : -1}
             ref={(e) => {
               const outerRef = props.ref;
               if (typeof outerRef === 'function') {
@@ -234,6 +250,7 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
               }
               internalRef = e;
             }}
+            data-sh-radio={context.ownerID}
           >
             <HeadlessSelectOptionChild>
               {props.children}
