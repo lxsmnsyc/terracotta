@@ -67,43 +67,34 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
   const labelID = createUniqueId();
 
   let internalRef: HTMLElement;
-  const nodes: Element[] = [];
-  let firstNode: Element;
-  let lastNode: Element;
-
-  // https://www.w3.org/TR/2017/WD-wai-aria-practices-1.1-20170628/examples/radio/radio-1/js/radioGroup.js
-  createEffect(() => {
-    const radios = internalRef.querySelectorAll('[role=radio]');
-    const len = radios.length;
-    for (let i = 0; i < len; i += 1) {
-      const node = radios[i];
-      nodes[i] = node;
-      if (!firstNode) {
-        firstNode = node;
-      }
-      lastNode = node;
-    }
-  });
 
   function setChecked(node: Element) {
     (node as HTMLElement).focus();
   }
 
   function setNextChecked(node: Element) {
-    if (node === lastNode) {
-      setChecked(firstNode);
-    } else {
-      const index = nodes.indexOf(node);
-      setChecked(nodes[index + 1]);
+    const radios = internalRef.querySelectorAll('[role=radio]');
+    for (let i = 0, len = radios.length; i < len; i += 1) {
+      if (node === radios[i]) {
+        if (i === len - 1) {
+          setChecked(radios[0]);
+        } else {
+          setChecked(radios[i + 1]);
+        }
+      }
     }
   }
 
   function setPrevChecked(node: Element) {
-    if (node === firstNode) {
-      setChecked(lastNode);
-    } else {
-      const index = nodes.indexOf(node);
-      setChecked(nodes[index - 1]);
+    const radios = internalRef.querySelectorAll('[role=radio]');
+    for (let i = 0, len = radios.length; i < len; i += 1) {
+      if (node === radios[i]) {
+        if (i === 0) {
+          setChecked(radios[len - 1]);
+        } else {
+          setChecked(radios[i - 1]);
+        }
+      }
     }
   }
 
