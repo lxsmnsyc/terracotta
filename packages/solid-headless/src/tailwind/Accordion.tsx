@@ -266,11 +266,9 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
 
     internalRef.addEventListener('keydown', onKeyDown);
     internalRef.addEventListener('click', onClick);
-    internalRef.addEventListener('focus', onClick);
     onCleanup(() => {
       internalRef.removeEventListener('keydown', onKeyDown);
       internalRef.removeEventListener('click', onClick);
-      internalRef.removeEventListener('focus', onClick);
     });
   });
 
