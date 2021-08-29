@@ -27,6 +27,7 @@ import {
   HeadlessDisclosureRootProps,
   useHeadlessDisclosureChild,
 } from '../headless/Disclosure';
+import useClickOutside from '../utils/use-click-outside';
 
 interface TailwindListboxContext {
   horizontal?: boolean;
@@ -312,6 +313,10 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
     if (!selectProperties.hasSelected()) {
       setFirstChecked();
     }
+  });
+
+  useClickOutside(() => internalRef, () => {
+    properties.setState(false);
   });
 
   return (
