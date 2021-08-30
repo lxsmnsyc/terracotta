@@ -106,15 +106,6 @@ export function TailwindListbox<V, T extends ValidConstructor = typeof Fragment>
           'toggleable',
           'value',
         ])}
-        ref={(e) => {
-          const outerRef = props.ref;
-          if (typeof outerRef === 'function') {
-            outerRef(e);
-          } else {
-            props.ref = e;
-          }
-          internalRef = e;
-        }}
         aria-labelledby={labelID}
         data-sh-listbox={ownerID}
       >
