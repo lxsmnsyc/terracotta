@@ -11,3 +11,7 @@ export type DynamicProps<T extends ValidConstructor> =
   T extends ValidComponent<infer U>
     ? U
     : never;
+
+export interface WithRef<T> {
+  ref?: T | ((value: T) => void);
+}
