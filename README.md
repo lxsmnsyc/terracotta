@@ -37,9 +37,9 @@ Here's the current goals:
   - [ ] Keyboard Interaction
   - [ ] States
 - `Dialog (Modal)`
-  - [ ] Accessibility
-  - [ ] Keyboard Interaction
-  - [ ] States
+  - [x] Accessibility
+  - [x] Keyboard Interaction
+  - [x] States
 - `Disclosure (Show/Hide)`
   - [x] Accessibility
   - [x] Keyboard Interaction
@@ -56,7 +56,11 @@ Here's the current goals:
   - [ ] Accessibility
   - [ ] Keyboard Interaction
   - [ ] States
-- `Listbox`
+- `Listbox (Select)`
+  - [x] Accessibility
+  - [x] Keyboard Interaction
+  - [x] States
+- `Listbox (Dropdown)`
   - [x] Accessibility
   - [x] Keyboard Interaction
   - [x] States
@@ -92,9 +96,9 @@ Here's the current goals:
   - [ ] Keyboard Interaction
   - [ ] States
 - `Toolbar`
-  - [ ] Accessibility
-  - [ ] Keyboard Interaction
-  - [ ] States
+  - [x] Accessibility
+  - [x] Keyboard Interaction
+  - [x] States
 - `Tooltip (proposal)`
 - `Tree View`
   - [ ] Accessibility
