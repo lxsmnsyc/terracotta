@@ -6,7 +6,7 @@ import {
   TailwindListboxOptions,
   TailwindTransition,
 } from 'solid-headless';
-import { createSignal, JSX } from 'solid-js';
+import { createSignal, JSX, For } from 'solid-js';
 
 function CheckIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
   return (
@@ -54,12 +54,11 @@ const people = [
   { name: 'Hellen Schmidt' },
 ];
 
-
 function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Example() {
+export default function Example(): JSX.Element {
   const [selected, setSelected] = createSignal(people[0]);
 
   return (

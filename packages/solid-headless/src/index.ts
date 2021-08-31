@@ -2,7 +2,9 @@
 export {
   HeadlessTransitionChild,
   HeadlessTransitionChildProps,
-  HeadlessTransitionChildRenderProp,
+  HeadlessTransitionConsumer,
+  HeadlessTransitionConsumerProps,
+  HeadlessTransitionConsumerRenderProp,
   HeadlessTransitionDuration,
   HeadlessTransitionOptions,
   HeadlessTransitionRoot,
@@ -94,3 +96,9 @@ export {
   TailwindListboxOptionsProps,
   TailwindListboxProps,
 } from './tailwind/Listbox';
+export {
+  TailwindDialog,
+  TailwindDialogPanel,
+  TailwindDialogDescription,
+  TailwindDialogTitle,
+} from './tailwind/Dialog';
