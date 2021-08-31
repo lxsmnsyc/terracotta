@@ -5,7 +5,7 @@ import {
   TailwindAccordionItem,
   TailwindAccordionPanel,
 } from 'solid-headless';
-import { JSX } from 'solid-js';
+import { For, JSX } from 'solid-js';
 
 function ChevronUpIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
   return (
@@ -26,96 +26,63 @@ function ChevronUpIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
   );
 }
 
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+const FAQS: FAQ[] = [
+  {
+    question: 'Magic Conch Shell, will I ever get married?',
+    answer: 'Maybe someday.',
+  },
+  {
+    question: 'Oh, Magic Conch Shell, what do we need to do to get out of the Kelp Forest?',
+    answer: 'Nothing.',
+  },
+  {
+    question: 'Uh, hello there. Magic Conch, uh, I was wondering... uh, should I have the spaghetti or the turkey?',
+    answer: 'Neither.',
+  },
+  {
+    question: 'Oh, then how about the soup?',
+    answer: 'I don\'t think so.',
+  },
+  {
+    question: 'Could I have anything to eat?',
+    answer: 'No.',
+  },
+];
+
 export default function App(): JSX.Element {
   return (
     <div class="w-full">
       <div class="w-full max-w-md p-2 mx-auto bg-white rounded-2xl">
-        <TailwindAccordion toggleable value="0">
-          <TailwindAccordionItem value="1">
-            <TailwindAccordionHeader>
-              <TailwindAccordionButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                {({ isSelected }) => (
-                  <>
-                    <span>Magic Conch Shell, will I ever get married? </span>
-                    <ChevronUpIcon
-                      class={`${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
-                    />
-                  </>
-                )}
-              </TailwindAccordionButton>
-            </TailwindAccordionHeader>
-            <TailwindAccordionPanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
-              Maybe someday.
-            </TailwindAccordionPanel>
-          </TailwindAccordionItem>
-          <TailwindAccordionItem value="2" class="mt-2">
-            <TailwindAccordionHeader>
-              <TailwindAccordionButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                {({ isSelected }) => (
-                  <>
-                    <span>Oh, Magic Conch Shell, what do we need to do to get out of the Kelp Forest?</span>
-                    <ChevronUpIcon
-                      class={`${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
-                    />
-                  </>
-                )}
-              </TailwindAccordionButton>
-            </TailwindAccordionHeader>
-            <TailwindAccordionPanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-              Nothing.
-            </TailwindAccordionPanel>
-          </TailwindAccordionItem>
-          <TailwindAccordionItem value="3" class="mt-2">
-            <TailwindAccordionHeader>
-              <TailwindAccordionButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                {({ isSelected }) => (
-                  <>
-                    <span>Uh, hello there. Magic Conch, uh, I was wondering... uh, should I have the spaghetti or the turkey?</span>
-                    <ChevronUpIcon
-                      class={`${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
-                    />
-                  </>
-                )}
-              </TailwindAccordionButton>
-            </TailwindAccordionHeader>
-            <TailwindAccordionPanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-              Neither.
-            </TailwindAccordionPanel>
-          </TailwindAccordionItem>
-          <TailwindAccordionItem value="4" class="mt-2">
-            <TailwindAccordionHeader>
-              <TailwindAccordionButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                {({ isSelected }) => (
-                  <>
-                    <span>Oh, then how about the soup?</span>
-                    <ChevronUpIcon
-                      class={`${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
-                    />
-                  </>
-                )}
-              </TailwindAccordionButton>
-            </TailwindAccordionHeader>
-            <TailwindAccordionPanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-              I don't think so.
-            </TailwindAccordionPanel>
-          </TailwindAccordionItem>
-          <TailwindAccordionItem value="5" class="mt-2">
-            <TailwindAccordionHeader>
-              <TailwindAccordionButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                {({ isSelected }) => (
-                  <>
-                    <span>Could I have anything to eat?</span>
-                    <ChevronUpIcon
-                      class={`${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
-                    />
-                  </>
-                )}
-              </TailwindAccordionButton>
-            </TailwindAccordionHeader>
-            <TailwindAccordionPanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-              No.
-            </TailwindAccordionPanel>
-          </TailwindAccordionItem>
+        <TailwindAccordion<FAQ | undefined> toggleable value={undefined}>
+          <For each={FAQS}>
+            {(faq) => (
+              <TailwindAccordionItem value={faq} class="mt-2">
+                <TailwindAccordionHeader>
+                  <TailwindAccordionButton
+                    as="div"
+                    class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
+                  >
+                    {({ isSelected }) => (
+                      <>
+                        <span>{faq.question}</span>
+                        <ChevronUpIcon
+                          class={`${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                        />
+                      </>
+                    )}
+                  </TailwindAccordionButton>
+                </TailwindAccordionHeader>
+                <TailwindAccordionPanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                  {faq.answer}
+                </TailwindAccordionPanel>
+              </TailwindAccordionItem>
+            )}
+          </For>
         </TailwindAccordion>
       </div>
     </div>

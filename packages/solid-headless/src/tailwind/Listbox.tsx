@@ -28,6 +28,7 @@ import {
   useHeadlessDisclosureChild,
 } from '../headless/Disclosure';
 import useClickOutside from '../utils/use-click-outside';
+import { TailwindButton } from './Button';
 
 interface TailwindListboxContext {
   horizontal?: boolean;
@@ -182,11 +183,6 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
         switch (e.key) {
           case 'ArrowUp':
           case 'ArrowDown':
-          case ' ':
-          case 'Enter':
-            if (internalRef.tagName === 'BUTTON') {
-              e.preventDefault();
-            }
             toggle();
             break;
           default:
@@ -206,11 +202,12 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
 
   return (
     <Dynamic
-      component={props.as ?? 'button'}
+      component={TailwindButton}
       {...excludeProps(props, [
         'as',
         'children',
       ])}
+      as={props.as}
       id={context.buttonID}
       aria-haspopup="listbox"
       aria-expanded={properties.isOpen()}

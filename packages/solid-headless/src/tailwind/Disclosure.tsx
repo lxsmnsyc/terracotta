@@ -20,6 +20,7 @@ import {
 import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
 import { excludeProps } from '../utils/exclude-props';
 import Fragment from '../utils/Fragment';
+import { TailwindButton } from './Button';
 
 interface TailwindDisclosureContext {
   ownerID: string;
@@ -98,33 +99,22 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
       }
     };
 
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === ' ' || e.key === 'Enter') {
-        if (internalRef.tagName === 'BUTTON') {
-          e.preventDefault();
-        }
-        toggle();
-      }
-    };
-
     internalRef.addEventListener('click', toggle);
-    internalRef.addEventListener('keydown', onKeyDown);
 
     onCleanup(() => {
       internalRef.removeEventListener('click', toggle);
-      internalRef.removeEventListener('keydown', onKeyDown);
     });
   });
 
   return (
     <Dynamic
-      component={(props.as ?? 'button') as T}
+      component={TailwindButton}
       {...excludeProps(props, [
         'as',
         'children',
       ])}
+      as={props.as}
       id={context.buttonID}
-      role="button"
       aria-expanded={properties.isOpen()}
       aria-controls={properties.isOpen() && context.panelID}
       disabled={properties.disabled()}

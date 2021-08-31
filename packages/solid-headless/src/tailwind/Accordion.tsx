@@ -26,6 +26,7 @@ import {
 import {
   excludeProps,
 } from '../utils/exclude-props';
+import { TailwindButton } from './Button';
 
 interface TailwindAccordionContext {
   ownerID: string;
@@ -247,14 +248,6 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
           case 'ArrowDown':
             rootContext.setNextChecked(internalRef);
             break;
-          case ' ':
-          case 'Enter':
-            if (internalRef.tagName === 'BUTTON') {
-              e.preventDefault();
-            }
-            rootContext.setChecked(internalRef);
-            properties.select();
-            break;
           case 'Home':
             rootContext.setFirstChecked();
             break;
@@ -296,11 +289,12 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
 
   return (
     <Dynamic
-      component={props.as ?? 'button'}
+      component={TailwindButton}
       {...excludeProps(props, [
         'as',
         'children',
       ])}
+      as={props.as}
       id={itemContext.buttonID}
       aria-expanded={properties.isSelected()}
       aria-controls={properties.isSelected() && itemContext.panelID}

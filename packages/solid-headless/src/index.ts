@@ -116,3 +116,7 @@ export {
   TailwindSelectOptionProps,
   TailwindSelectProps,
 } from './tailwind/Select';
+export {
+  TailwindButton,
+  TailwindButtonProps,
+} from './tailwind/Button';
