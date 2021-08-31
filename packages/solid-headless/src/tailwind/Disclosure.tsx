@@ -158,47 +158,41 @@ export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
   const context = useTailwindDisclosureContext('TailwindDisclosurePanel');
   const properties = useHeadlessDisclosureChild();
   return (
-    <>
-      {(() => {
-        const constructor = (props.as ?? 'div') as T;
-        const unmount = props.unmount ?? true;
-        if (unmount) {
-          return (
-            <Show when={properties.isOpen()}>
-              <Dynamic
-                component={constructor}
-                {...excludeProps(props, [
-                  'as',
-                  'unmount',
-                  'children',
-                ])}
-                id={context.panelID}
-                data-sh-disclosure-panel={context.ownerID}
-              >
-                <HeadlessDisclosureChild>
-                  {props.children}
-                </HeadlessDisclosureChild>
-              </Dynamic>
-            </Show>
-          );
-        }
-        return (
-          <Dynamic
-            component={constructor}
-            {...excludeProps(props, [
-              'as',
-              'unmount',
-              'children',
-            ])}
-            id={context.panelID}
-            data-sh-disclosure-panel={context.ownerID}
-          >
-            <HeadlessDisclosureChild>
-              {props.children}
-            </HeadlessDisclosureChild>
-          </Dynamic>
-        );
-      })()}
-    </>
+    <Show
+      when={props.unmount ?? true}
+      fallback={(
+        <Dynamic
+          component={props.as ?? 'div'}
+          {...excludeProps(props, [
+            'as',
+            'unmount',
+            'children',
+          ])}
+          id={context.panelID}
+          data-sh-disclosure-panel={context.ownerID}
+        >
+          <HeadlessDisclosureChild>
+            {props.children}
+          </HeadlessDisclosureChild>
+        </Dynamic>
+      )}
+    >
+      <Show when={properties.isOpen()}>
+        <Dynamic
+          component={props.as ?? 'div'}
+          {...excludeProps(props, [
+            'as',
+            'unmount',
+            'children',
+          ])}
+          id={context.panelID}
+          data-sh-disclosure-panel={context.ownerID}
+        >
+          <HeadlessDisclosureChild>
+            {props.children}
+          </HeadlessDisclosureChild>
+        </Dynamic>
+      </Show>
+    </Show>
   );
 }

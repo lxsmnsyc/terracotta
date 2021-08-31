@@ -336,45 +336,39 @@ export function TailwindAccordionPanel<T extends ValidConstructor = 'div'>(
   const properties = useHeadlessSelectOptionChild();
 
   return (
-    <>
-      {(() => {
-        const constructor = (props.as ?? 'div') as T;
-        const unmount = props.unmount ?? true;
-        if (unmount) {
-          return (
-            <Show when={properties.isSelected()}>
-              <Dynamic
-                component={constructor}
-                {...excludeProps(props, [
-                  'as',
-                  'children',
-                ])}
-                id={context.panelID}
-                aria-labelledby={context.buttonID}
-              >
-                <HeadlessSelectOptionChild>
-                  {props.children}
-                </HeadlessSelectOptionChild>
-              </Dynamic>
-            </Show>
-          );
-        }
-        return (
-          <Dynamic
-            component={constructor}
-            {...excludeProps(props, [
-              'as',
-              'children',
-            ])}
-            id={context.panelID}
-            aria-labelledby={context.buttonID}
-          >
-            <HeadlessSelectOptionChild>
-              {props.children}
-            </HeadlessSelectOptionChild>
-          </Dynamic>
-        );
-      })()}
-    </>
+    <Show
+      when={props.unmount ?? true}
+      fallback={(
+        <Dynamic
+          component={props.as ?? 'div'}
+          {...excludeProps(props, [
+            'as',
+            'children',
+          ])}
+          id={context.panelID}
+          aria-labelledby={context.buttonID}
+        >
+          <HeadlessSelectOptionChild>
+            {props.children}
+          </HeadlessSelectOptionChild>
+        </Dynamic>
+      )}
+    >
+      <Show when={properties.isSelected()}>
+        <Dynamic
+          component={props.as ?? 'div'}
+          {...excludeProps(props, [
+            'as',
+            'children',
+          ])}
+          id={context.panelID}
+          aria-labelledby={context.buttonID}
+        >
+          <HeadlessSelectOptionChild>
+            {props.children}
+          </HeadlessSelectOptionChild>
+        </Dynamic>
+      </Show>
+    </Show>
   );
 }
