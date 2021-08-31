@@ -1,6 +1,7 @@
 import { JSX } from 'solid-js/jsx-runtime';
 import {
   createContext,
+  createEffect,
   createSignal,
   Show,
   useContext,
@@ -79,6 +80,12 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
     }
   }
 
+  createEffect(() => {
+    if (context?.register) {
+      context.register(props.leaveDuration ?? 0);
+    }
+  });
+
   return (
     <TailwindTransitionContext.Provider
       value={{
@@ -91,82 +98,81 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
         show={props.show}
         duration={{
           enter: {
-            before: props.unmount ? 0 : context?.baseEnter,
-            during: props.enterDuration,
+            during: (props.unmount ? 0 : (context?.baseEnter ?? 0)) + (props.enterDuration ?? 0),
           },
           leave: {
-            before: baseLeave(),
+            during: baseLeave(),
             after: props.leaveDuration,
           },
         }}
       >
         {(data) => (
-          <>
-            {
-              (() => {
-                const constructor = (props.as ?? 'div') as T;
-                const unmount = props.unmount ?? true;
-                if (unmount) {
-                  return (
-                    <Show when={data() !== 'after-leave'}>
-                      <Dynamic
-                        component={constructor}
-                        {...excludeProps(props, [
-                          'as',
-                          'enter',
-                          'enterFrom',
-                          'enterTo',
-                          'leave',
-                          'leaveFrom',
-                          'leaveTo',
-                          'unmount',
-                          'show',
-                        ])}
-                        class={applyStyle(data(), props)}
-                      >
-                        <HeadlessTransitionConsumer>
-                          {props.children}
-                        </HeadlessTransitionConsumer>
-                      </Dynamic>
-                    </Show>
-                  );
-                }
-                return (
-                  <Dynamic
-                    component={constructor}
-                    {...excludeProps(props, [
-                      'as',
-                      'enter',
-                      'enterFrom',
-                      'enterTo',
-                      'leave',
-                      'leaveFrom',
-                      'leaveTo',
-                      'unmount',
-                    ])}
-                    class={applyStyle(data(), props)}
-                    style={{
-                      visibility: data() === 'after-leave' ? 'hidden' : 'visible',
-                    }}
-                  >
-                    <HeadlessTransitionConsumer>
-                      {props.children}
-                    </HeadlessTransitionConsumer>
-                  </Dynamic>
-                );
-              })()
-            }
-          </>
+          <Show
+            when={props.unmount ?? true}
+            fallback={(
+              <Dynamic
+                component={props.as ?? 'div'}
+                {...excludeProps(props, [
+                  'as',
+                  'enter',
+                  'enterFrom',
+                  'enterTo',
+                  'leave',
+                  'leaveFrom',
+                  'leaveTo',
+                  'unmount',
+                  'leaveDuration',
+                  'enterDuration',
+                  'appear',
+                  'class',
+                  'className',
+                ])}
+                class={applyStyle(data(), props)}
+                style={{
+                  visibility: data() === 'after-leave' ? 'hidden' : 'visible',
+                }}
+              >
+                <HeadlessTransitionConsumer>
+                  {props.children}
+                </HeadlessTransitionConsumer>
+              </Dynamic>
+            )}
+          >
+            <Show when={data() !== 'after-leave'}>
+              <Dynamic
+                component={props.as ?? 'div'}
+                {...excludeProps(props, [
+                  'as',
+                  'enter',
+                  'enterFrom',
+                  'enterTo',
+                  'leave',
+                  'leaveFrom',
+                  'leaveTo',
+                  'unmount',
+                  'show',
+                  'leaveDuration',
+                  'enterDuration',
+                  'appear',
+                  'class',
+                  'className',
+                ])}
+                class={applyStyle(data(), props)}
+              >
+                <HeadlessTransitionConsumer>
+                  {props.children}
+                </HeadlessTransitionConsumer>
+              </Dynamic>
+            </Show>
+          </Show>
         )}
       </HeadlessTransitionChild>
     </TailwindTransitionContext.Provider>
   );
 }
 
-export type TailwindTransitionProps<T extends ValidConstructor = 'div'> = {
-  enterDuration?: number;
-  leaveDuration?: number;
-} & Omit<TailwindTransitionChildProps<T>, 'duration'>;
+export type TailwindTransitionProps<T extends ValidConstructor = 'div'> =
+  TailwindTransitionChildProps<T>;
 
 export function TailwindTransition<T extends ValidConstructor = 'div'>(
   props: TailwindTransitionProps<T>,
@@ -183,6 +189,7 @@ export function TailwindTransition<T extends ValidConstructor = 'div'>(
           after: props.leaveDuration,
         },
       }}
+      on={props.on}
     >
       <TailwindTransitionChild {...props} />
     </HeadlessTransitionRoot>
