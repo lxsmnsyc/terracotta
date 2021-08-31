@@ -65,7 +65,8 @@ function useTailwindAccordionItemContext(componentName: string): TailwindAccordi
 
 export type TailwindAccordionProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
-} & HeadlessSelectRootProps<V> & Omit<DynamicProps<T>, 'children' | 'onChange'>;
+} & HeadlessSelectRootProps<V>
+  & Omit<DynamicProps<T>, keyof HeadlessSelectRootProps<V>>;
 
 export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
   props: TailwindAccordionProps<V, T>,
@@ -163,7 +164,8 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
 
 export type TailwindAccordionItemProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
-} & HeadlessSelectOptionProps<V> & Omit<DynamicProps<T>, 'children' | 'value'>;
+} & HeadlessSelectOptionProps<V>
+  & Omit<DynamicProps<T>, keyof HeadlessSelectOptionProps<V>>;
 
 export function TailwindAccordionItem<V, T extends ValidConstructor = 'div'>(
   props: TailwindAccordionItemProps<V, T>,
@@ -200,7 +202,8 @@ export function TailwindAccordionItem<V, T extends ValidConstructor = 'div'>(
 
 export type TailwindAccordionHeaderProps<T extends ValidConstructor = 'h3'> = {
   as?: T;
-} & HeadlessSelectOptionChildProps & Omit<DynamicProps<T>, 'children'>;
+} & HeadlessSelectOptionChildProps
+  & Omit<DynamicProps<T>, keyof HeadlessSelectOptionChildProps>;
 
 export function TailwindAccordionHeader<T extends ValidConstructor = 'h3'>(
   props: TailwindAccordionHeaderProps<T>,
@@ -222,7 +225,8 @@ export function TailwindAccordionHeader<T extends ValidConstructor = 'h3'>(
 
 export type TailwindAccordionButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T;
-} & HeadlessSelectOptionChildProps & Omit<DynamicProps<T>, 'children'>;
+} & HeadlessSelectOptionChildProps
+  & Omit<DynamicProps<T>, keyof HeadlessSelectOptionChildProps>;
 
 export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
   props: TailwindAccordionButtonProps<T>,
@@ -322,7 +326,8 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
 export type TailwindAccordionPanelProps<T extends ValidConstructor = 'div'> = {
   as?: T;
   unmount?: boolean;
-} & HeadlessSelectOptionChildProps & Omit<DynamicProps<T>, 'children'>;
+} & HeadlessSelectOptionChildProps
+  & Omit<DynamicProps<T>, keyof HeadlessSelectOptionChildProps>;
 
 export function TailwindAccordionPanel<T extends ValidConstructor = 'div'>(
   props: TailwindAccordionPanelProps<T>,

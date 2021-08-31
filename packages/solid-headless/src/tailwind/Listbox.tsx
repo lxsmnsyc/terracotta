@@ -74,7 +74,7 @@ export type TailwindListboxProps<V, T extends ValidConstructor = typeof Fragment
   horizontal?: boolean;
 } & Omit<HeadlessSelectRootProps<V>, 'children'>
   & HeadlessDisclosureRootProps
-  & Omit<DynamicProps<T>, 'children' | 'onChange'>;
+  & Omit<DynamicProps<T>, keyof HeadlessDisclosureRootProps | keyof HeadlessSelectRootProps<V>>;
 
 export function TailwindListbox<V, T extends ValidConstructor = typeof Fragment>(
   props: TailwindListboxProps<V, T>,
@@ -132,7 +132,7 @@ export type TailwindListboxLabelProps<T extends ValidConstructor = 'label'> = {
   as?: T;
 }
   & HeadlessDisclosureChildProps
-  & Omit<DynamicProps<T>, 'children'>;
+  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindListboxLabel<T extends ValidConstructor = 'label'>(
   props: TailwindListboxLabelProps<T>,
@@ -160,7 +160,7 @@ export type TailwindListboxButtonProps<T extends ValidConstructor = 'button'> = 
   as?: T;
 }
   & HeadlessDisclosureChildProps
-  & Omit<DynamicProps<T>, 'children'>;
+  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
   props: TailwindListboxButtonProps<T>,
@@ -238,7 +238,7 @@ export type TailwindListboxOptionsProps<V, T extends ValidConstructor = 'ul'> = 
   as?: T;
 }
   & HeadlessSelectChildProps<V>
-  & Omit<DynamicProps<T>, 'children'>;
+  & Omit<DynamicProps<T>, keyof HeadlessSelectChildProps<V>>;
 
 export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
   props: TailwindListboxOptionsProps<V, T>,
@@ -356,7 +356,7 @@ export type TailwindListboxOptionProps<V, T extends ValidConstructor = 'li'> = {
   as?: T;
 }
   & HeadlessSelectOptionProps<V>
-  & Omit<DynamicProps<T>, 'children' | 'value'>;
+  & Omit<DynamicProps<T>, keyof HeadlessSelectOptionProps<V>>;
 
 export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
   props: TailwindListboxOptionProps<V, T>,

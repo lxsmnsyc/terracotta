@@ -40,7 +40,8 @@ function useTailwindDisclosureContext(componentName: string): TailwindDisclosure
 
 export type TailwindDisclosureProps<T extends ValidConstructor = typeof Fragment> = {
   as?: T;
-} & HeadlessDisclosureRootProps & Omit<DynamicProps<T>, 'children'>;
+} & HeadlessDisclosureRootProps
+  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindDisclosure(props: TailwindDisclosureProps): JSX.Element {
   const ownerID = createUniqueId();
@@ -79,7 +80,8 @@ export function TailwindDisclosure(props: TailwindDisclosureProps): JSX.Element 
 
 export type TailwindDisclosureButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T;
-} & HeadlessDisclosureChildProps & Omit<DynamicProps<T>, 'children'>;
+} & HeadlessDisclosureChildProps
+  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
   props: TailwindDisclosureButtonProps<T>,
@@ -147,7 +149,8 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
 export type TailwindDisclosurePanelProps<T extends ValidConstructor = 'div'> = {
   as?: T;
   unmount?: boolean;
-} & HeadlessDisclosureChildProps & Omit<DynamicProps<T>, 'children'>;
+} & HeadlessDisclosureChildProps
+  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
   props: TailwindDisclosurePanelProps<T>,
