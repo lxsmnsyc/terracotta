@@ -163,7 +163,7 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
 
 export type TailwindAccordionItemProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
-} & HeadlessSelectOptionProps<V> & Omit<DynamicProps<T>, 'children'>;
+} & HeadlessSelectOptionProps<V> & Omit<DynamicProps<T>, 'children' | 'value'>;
 
 export function TailwindAccordionItem<V, T extends ValidConstructor = 'div'>(
   props: TailwindAccordionItemProps<V, T>,

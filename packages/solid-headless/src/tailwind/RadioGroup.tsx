@@ -58,7 +58,7 @@ function useTailwindRadioGroupRootContext(componentName: string): TailwindRadioG
 
 export type TailwindRadioGroupProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
-} & Omit<HeadlessSelectRootProps<V>, 'type'> & Omit<DynamicProps<T>, 'children' | 'onChange'>;
+} & Omit<HeadlessSelectRootProps<V>, 'type'> & Omit<DynamicProps<T>, 'children' | 'onChange' | 'value'>;
 
 export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
   props: TailwindRadioGroupProps<V, T>,
@@ -151,7 +151,7 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
 
 export type TailwindRadioGroupOptionProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
-} & Omit<HeadlessSelectOptionProps<V>, 'multiple'> & Omit<DynamicProps<T>, 'children'>;
+} & Omit<HeadlessSelectOptionProps<V>, 'multiple'> & Omit<DynamicProps<T>, 'children' | 'value'>;
 
 export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
   props: TailwindRadioGroupOptionProps<V, T>,

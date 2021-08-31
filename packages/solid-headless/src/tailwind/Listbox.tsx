@@ -356,7 +356,7 @@ export type TailwindListboxOptionProps<V, T extends ValidConstructor = 'li'> = {
   as?: T;
 }
   & HeadlessSelectOptionProps<V>
-  & Omit<DynamicProps<T>, 'children'>;
+  & Omit<DynamicProps<T>, 'children' | 'value'>;
 
 export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
   props: TailwindListboxOptionProps<V, T>,
