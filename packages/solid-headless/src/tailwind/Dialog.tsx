@@ -101,7 +101,6 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
                   'isOpen',
                   'disabled',
                   'onClose',
-                  'returnElement',
                 ])}
                 id={ownerID}
                 role="dialog"
@@ -127,7 +126,6 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
                   'isOpen',
                   'disabled',
                   'onClose',
-                  'returnElement',
                 ])}
                 id={ownerID}
                 role="dialog"
@@ -174,13 +172,13 @@ export function TailwindDialogTitle<T extends ValidConstructor = 'h2'>(
   );
 }
 
-export type TailwindDialogOverlayProps<T extends ValidConstructor = 'div'> = {
+export type TailwindDialogPanelProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
-  props: TailwindDialogOverlayProps<T>,
+  props: TailwindDialogPanelProps<T>,
 ): JSX.Element {
   const context = useTailwindDialogContext('TailwindDialogPanel');
 

@@ -58,7 +58,7 @@ function useTailwindRadioGroupRootContext(componentName: string): TailwindRadioG
 
 export type TailwindRadioGroupProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
-} & Omit<HeadlessSelectRootProps<V>, 'type'>
+} & Omit<HeadlessSelectRootProps<V>, 'multiple' | 'toggleable'>
   & Omit<DynamicProps<T>, keyof HeadlessSelectRootProps<V>>;
 
 export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
@@ -122,6 +122,7 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
             'children',
             'value',
             'disabled',
+            'onChange',
           ])}
           role="radiogroup"
           aria-labelledby={labelID}

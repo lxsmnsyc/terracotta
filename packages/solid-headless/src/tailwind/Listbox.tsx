@@ -334,6 +334,7 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
         aria-labelledby={context.buttonID}
         aria-orientation={context.horizontal ? 'horizontal' : 'vertical'}
         data-sh-listbox-options={context.ownerID}
+        tabindex={0}
         ref={(e) => {
           const outerRef = props.ref;
           if (typeof outerRef === 'function') {
