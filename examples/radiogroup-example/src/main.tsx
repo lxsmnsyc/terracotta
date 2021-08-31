@@ -5,7 +5,7 @@ import './style.css';
 
 function Root() {
   return (
-    <div className="bg-gradient-to-r from-cyan-400 to-sky-500 w-screen h-screen flex">
+    <div className="bg-gradient-to-r from-cyan-400 to-sky-500 w-screen h-screen flex overflow-hidden">
       <div className="flex flex-col items-center justify-center w-full">
         <App />
       </div>
