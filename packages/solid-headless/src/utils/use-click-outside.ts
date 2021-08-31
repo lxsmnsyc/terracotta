@@ -5,17 +5,28 @@ export default function useClickOutside(
   callback: () => void,
 ): void {
   createEffect(() => {
-    const onClick = (e: MouseEvent) => {
+    let alive = true;
+    const onClick = (e: Event) => {
+      if (!alive) {
+        return;
+      }
       const el = ref();
-      const { target } = e;
+      const { target, type } = e;
+      const isTouch = type === 'touchend';
+      if (type === 'click' && isTouch) {
+        return;
+      }
       if (el && target && !el.contains(target as Node)) {
         callback();
       }
     };
 
-    document.addEventListener('click', onClick);
+    document.addEventListener('click', onClick, true);
+    document.addEventListener('touchend', onClick, true);
     onCleanup(() => {
-      document.removeEventListener('click', onClick);
+      alive = false;
+      document.removeEventListener('click', onClick, true);
+      document.removeEventListener('touchend', onClick, true);
     });
   });
 }
