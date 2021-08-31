@@ -15,8 +15,8 @@ interface States<T> {
 }
 
 export interface HeadlessTransitionDuration {
-  enter: Partial<States<number>>;
-  leave: Partial<States<number>>;
+  enter?: Partial<States<number>>;
+  leave?: Partial<States<number>>;
 }
 
 export interface HeadlessTransitionOptions {
@@ -152,40 +152,7 @@ export function useHeadlessTransitionChild(
         return options.show ?? root!.show;
       },
       get duration() {
-        const durationBase = options.duration;
-        const durationRoot = root?.duration;
-        return {
-          get enter() {
-            const enterBase = durationBase?.enter;
-            const enterRoot = durationRoot?.enter;
-            return {
-              get before() {
-                return enterBase?.before ?? enterRoot?.before;
-              },
-              get during() {
-                return enterBase?.during ?? enterRoot?.during;
-              },
-              get after() {
-                return enterBase?.after ?? enterRoot?.after;
-              },
-            };
-          },
-          get leave() {
-            const leaveBase = durationBase?.leave;
-            const leaveRoot = durationRoot?.leave;
-            return {
-              get before() {
-                return leaveBase?.before ?? leaveRoot?.before;
-              },
-              get during() {
-                return leaveBase?.during ?? leaveRoot?.during;
-              },
-              get after() {
-                return leaveBase?.after ?? leaveRoot?.after;
-              },
-            };
-          },
-        };
+        return options.duration;
       },
     });
   }
@@ -193,23 +160,46 @@ export function useHeadlessTransitionChild(
   throw new Error('`useTransitionChild` must be used within a TransitionRoot.');
 }
 
-export type HeadlessTransitionChildRenderProp = (state: () => TransitionStates) => JSX.Element;
+const HeadlessTransitionContext = createContext<() => TransitionStates>();
 
-export interface HeadlessTransitionChildProps extends HeadlessTransitionOptions {
-  children?: HeadlessTransitionChildRenderProp | JSX.Element;
+export type HeadlessTransitionConsumerRenderProp = (state: () => TransitionStates) => JSX.Element;
+
+export interface HeadlessTransitionConsumerProps {
+  children?: HeadlessTransitionConsumerRenderProp | JSX.Element;
 }
 
-function isHeadlessTransitionChildRenderProp(
-  children: HeadlessTransitionChildRenderProp | JSX.Element,
-): children is HeadlessTransitionChildRenderProp {
+function isHeadlessTransitionConsumerProps(
+  children: HeadlessTransitionConsumerRenderProp | JSX.Element,
+): children is HeadlessTransitionConsumerRenderProp {
   return typeof children === 'function' && children.length > 0;
+}
+
+export function HeadlessTransitionConsumer(
+  props: HeadlessTransitionConsumerProps,
+): JSX.Element {
+  const state = useContext(HeadlessTransitionContext);
+
+  if (!state) {
+    throw new Error('<HeadlessTransitionConsumer> must be used inside a <HeadlessTransitionChild>');
+  }
+
+  const body = props.children;
+  if (isHeadlessTransitionConsumerProps(body)) {
+    return body(state);
+  }
+  return body;
+}
+export interface HeadlessTransitionChildProps extends HeadlessTransitionOptions {
+  children?: HeadlessTransitionConsumerRenderProp | JSX.Element;
 }
 
 export function HeadlessTransitionChild(props: HeadlessTransitionChildProps): JSX.Element {
   const state = useHeadlessTransitionChild(props);
-  const body = props.children;
-  if (isHeadlessTransitionChildRenderProp(body)) {
-    return body(state);
-  }
-  return body;
+  return (
+    <HeadlessTransitionContext.Provider value={state}>
+      <HeadlessTransitionConsumer>
+        {props.children}
+      </HeadlessTransitionConsumer>
+    </HeadlessTransitionContext.Provider>
+  );
 }

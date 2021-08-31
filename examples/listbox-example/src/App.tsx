@@ -79,13 +79,12 @@ export default function Example() {
             {({ isOpen }) => (
               <TailwindTransition
                 show={isOpen()}
-                duration={{
-                  enter: {},
-                  leave: {
-                    after: 100,
-                  },
-                }}
-                leave="transition ease-in duration-100"
+                enterDuration={100}
+                leaveDuration={100}
+                enter="transition ease-in duration-100"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="transition ease-out duration-100"
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >

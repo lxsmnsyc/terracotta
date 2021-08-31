@@ -11,14 +11,8 @@ export default function App(): JSX.Element {
       <div className="w-32 h-32">
         <TailwindTransition
           show={isShowing()}
-          duration={{
-            enter: {
-              during: 400,
-            },
-            leave: {
-              after: 200,
-            },
-          }}
+          enterDuration={400}
+          leaveDuration={200}
           className="w-full h-full bg-white rounded-md shadow-lg transform transition"
           enter="duration-[400ms]"
           enterFrom="opacity-0 rotate-[-120deg] scale-50"
