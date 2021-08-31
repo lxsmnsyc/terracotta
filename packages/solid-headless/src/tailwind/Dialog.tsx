@@ -4,7 +4,6 @@ import {
   createUniqueId,
   useContext,
   Show,
-  createSignal,
   onCleanup,
 } from 'solid-js';
 import { JSX } from 'solid-js/jsx-runtime';
@@ -57,6 +56,22 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
   const titleID = createUniqueId();
   const descriptionID = createUniqueId();
 
+  const returnElement = document.activeElement as HTMLElement | null;
+
+  createEffect(() => {
+    if (!props.isOpen) {
+      props.onClose?.();
+      returnElement?.focus();
+    }
+  });
+
+  onCleanup(() => {
+    if (!props.isOpen) {
+      props.onClose?.();
+      returnElement?.focus();
+    }
+  });
+
   return (
     <TailwindDialogContext.Provider
       value={{
@@ -85,6 +100,8 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
                   'unmount',
                   'isOpen',
                   'disabled',
+                  'onClose',
+                  'returnElement',
                 ])}
                 id={ownerID}
                 role="dialog"
@@ -109,6 +126,8 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
                   'unmount',
                   'isOpen',
                   'disabled',
+                  'onClose',
+                  'returnElement',
                 ])}
                 id={ownerID}
                 role="dialog"
@@ -168,6 +187,11 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
   let internalRef: HTMLElement;
 
   createEffect(() => {
+    const initialNodes = getFocusableElements(internalRef);
+    if (initialNodes.length) {
+      initialNodes[0].focus();
+    }
+
     const onKeyDown = (e: KeyboardEvent) => {
       if (!props.disabled) {
         if (e.key === 'Tab') {
@@ -175,7 +199,7 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
 
           const nodes = getFocusableElements(internalRef);
           if (e.shiftKey) {
-            if (document.activeElement) {
+            if (!document.activeElement || !internalRef.contains(document.activeElement)) {
               nodes[nodes.length - 1].focus();
             } else {
               for (let i = 0, len = nodes.length; i < len; i += 1) {
@@ -188,8 +212,8 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
                 }
               }
             }
-          } else if (document.activeElement) {
-            nodes[nodes.length - 1].focus();
+          } else if (!document.activeElement || !internalRef.contains(document.activeElement)) {
+            nodes[0].focus();
           } else {
             for (let i = 0, len = nodes.length; i < len; i += 1) {
               if (document.activeElement === nodes[i]) {
