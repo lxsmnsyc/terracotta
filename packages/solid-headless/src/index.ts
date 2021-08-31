@@ -98,7 +98,21 @@ export {
 } from './tailwind/Listbox';
 export {
   TailwindDialog,
+  TailwindDialogProps,
+  TailwindDialogPanelProps,
   TailwindDialogPanel,
+  TailwindDialogDescriptionProps,
   TailwindDialogDescription,
   TailwindDialogTitle,
+  TailwindDialogTitleProps,
 } from './tailwind/Dialog';
+export {
+  TailwindToolbar,
+  TailwindToolbarProps,
+} from './tailwind/Toolbar';
+export {
+  TailwindSelect,
+  TailwindSelectOption,
+  TailwindSelectOptionProps,
+  TailwindSelectProps,
+} from './tailwind/Select';
