@@ -19,10 +19,16 @@ export interface HeadlessTransitionDuration {
   leave?: Partial<States<number>>;
 }
 
+export interface HeadlessTransitionCallback {
+  enter?: Partial<States<() => void>>;
+  leave?: Partial<States<() => void>>;
+}
+
 export interface HeadlessTransitionOptions {
   appear?: boolean;
   show?: boolean;
   duration?: HeadlessTransitionDuration;
+  on?: HeadlessTransitionCallback;
 }
 
 export type TransitionStates =
@@ -80,6 +86,10 @@ export function useHeadlessTransition(
       ? options.duration?.enter
       : options.duration?.leave;
 
+    const handlers = options.show
+      ? options.on?.enter
+      : options.on?.leave;
+
     function applyTransition(
       current: keyof States<any>,
       newState: States<TransitionStates>,
@@ -90,14 +100,20 @@ export function useHeadlessTransition(
       }
       const currentDuration = duration?.[current];
       const target = newState[current];
-      timeout = setTimeout(() => {
+      function sync() {
         setSignal(target);
+        handlers?.[current]?.();
         if (current === 'before') {
           applyTransition('during', newState, duration);
         } else if (current === 'during') {
           applyTransition('after', newState, duration);
         }
-      }, currentDuration ?? 0);
+      }
+      if (currentDuration) {
+        timeout = setTimeout(sync, currentDuration);
+      } else {
+        sync();
+      }
     }
 
     if (cond) {
