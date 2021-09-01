@@ -35,12 +35,12 @@ export function TailwindButton<T extends ValidConstructor = 'button'>(
     <Dynamic
       component={props.as ?? 'button'}
       id={buttonID}
+      tabindex={0}
+      role="button"
       {...excludeProps(props, [
         'as',
       ])}
-      role="button"
       data-sh-button={buttonID}
-      tabindex={0}
       ref={(e) => {
         const outerRef = props.ref;
         if (typeof outerRef === 'function') {

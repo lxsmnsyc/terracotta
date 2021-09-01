@@ -486,7 +486,8 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
 
   return (
     <Dynamic
-      component={props.as ?? 'li'}
+      component={TailwindButton}
+      as={props.as ?? 'li'}
       {...excludeProps(props, [
         'as',
         'children',

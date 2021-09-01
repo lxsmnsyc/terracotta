@@ -17,6 +17,7 @@ import {
 } from '../headless/Select';
 import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
 import { excludeProps } from '../utils/exclude-props';
+import { TailwindButton } from './Button';
 
 interface TailwindSelectContext {
   ownerID: string;
@@ -278,7 +279,8 @@ export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
 
   return (
     <Dynamic
-      component={props.as ?? 'li'}
+      component={TailwindButton}
+      as={props.as ?? 'li'}
       {...excludeProps(props, [
         'as',
         'children',
