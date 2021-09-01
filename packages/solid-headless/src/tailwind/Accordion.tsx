@@ -26,7 +26,7 @@ import {
 import {
   excludeProps,
 } from '../utils/exclude-props';
-import { TailwindButton } from './Button';
+import { TailwindButton, TailwindButtonProps } from './Button';
 
 interface TailwindAccordionContext {
   ownerID: string;
@@ -227,7 +227,7 @@ export function TailwindAccordionHeader<T extends ValidConstructor = 'h3'>(
 export type TailwindAccordionButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T;
 } & HeadlessSelectOptionChildProps
-  & Omit<DynamicProps<T>, keyof HeadlessSelectOptionChildProps>;
+  & Omit<TailwindButtonProps<T>, keyof HeadlessSelectOptionChildProps>;
 
 export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
   props: TailwindAccordionButtonProps<T>,

@@ -164,7 +164,7 @@ export type TailwindSelectOptionProps<V, T extends ValidConstructor = 'li'> = {
   as?: T;
 }
   & HeadlessSelectOptionProps<V>
-  & Omit<DynamicProps<T>, keyof HeadlessSelectOptionProps<V>>;
+  & Omit<TailwindButtonProps<T>, keyof HeadlessSelectOptionProps<V>>;
 
 export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
   props: TailwindSelectOptionProps<V, T>,
@@ -285,8 +285,8 @@ export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
         'as',
         'children',
         'value',
-        'disabled',
       ])}
+      disabled={props.disabled}
       role="option"
       aria-selected={properties.isSelected(props.value)}
       tabindex={-1}

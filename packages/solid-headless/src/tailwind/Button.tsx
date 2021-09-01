@@ -6,6 +6,7 @@ import { excludeProps } from '../utils/exclude-props';
 
 export type TailwindButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T,
+  disabled?: boolean;
 } & Omit<DynamicProps<T>, 'as'>
 
 export function TailwindButton<T extends ValidConstructor = 'button'>(
@@ -37,9 +38,11 @@ export function TailwindButton<T extends ValidConstructor = 'button'>(
       id={buttonID}
       tabindex={0}
       role="button"
+      disabled={(props.as ?? 'button') === 'button' ? props.disabled : undefined}
       {...excludeProps(props, [
         'as',
       ])}
+      aria-disabled={props.disabled}
       data-sh-button={buttonID}
       ref={(e) => {
         const outerRef = props.ref;

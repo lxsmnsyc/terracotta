@@ -20,7 +20,7 @@ import {
 import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
 import { excludeProps } from '../utils/exclude-props';
 import Fragment from '../utils/Fragment';
-import { TailwindButton } from './Button';
+import { TailwindButton, TailwindButtonProps } from './Button';
 
 interface TailwindDisclosureContext {
   ownerID: string;
@@ -82,7 +82,7 @@ export function TailwindDisclosure(props: TailwindDisclosureProps): JSX.Element 
 export type TailwindDisclosureButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
+  & Omit<TailwindButtonProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
   props: TailwindDisclosureButtonProps<T>,
