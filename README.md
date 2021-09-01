@@ -21,6 +21,10 @@ Here's the current goals:
   - [ ] Accessibility
   - [ ] States
 - `Button`
+  - [x] Accessibility
+  - [x] Keyboard Interaction
+  - [x] States
+- `Button (Toggle)`
   - [ ] Accessibility
   - [ ] Keyboard Interaction
   - [ ] States
