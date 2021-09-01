@@ -120,3 +120,7 @@ export {
   TailwindButton,
   TailwindButtonProps,
 } from './tailwind/Button';
+export {
+  TailwindToggleProps,
+  TailwindToggle,
+} from './tailwind/Toggle';
