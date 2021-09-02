@@ -40,5 +40,19 @@
     "test": "pridepack test --passWithNoTests",
     "clean": "pridepack clean",
     "watch": "pridepack watch"
-  }
+  },
+  "description": "Headless UI for SolidJS",
+  "repository": {
+    "url": "https://github.com/lxsmnsyc/solid-tiptap.git",
+    "type": "git"
+  },
+  "homepage": "https://github.com/lxsmnsyc/solid-tiptap/tree/main/packages/solid-tiptap",
+  "bugs": {
+    "url": "https://github.com/lxsmnsyc/solid-tiptap/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Alexis Munsayac",
+  "private": false
 }
