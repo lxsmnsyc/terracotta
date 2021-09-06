@@ -1,6 +1,6 @@
 {
   "name": "transitions-example",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,7 +17,7 @@
     "vite-plugin-solid": "^2.0.1"
   },
   "dependencies": {
-    "solid-headless": "0.5.0",
+    "solid-headless": "0.5.1",
     "solid-js": "^1.1.0",
     "tailwindcss": "^2.2.4"
   },
