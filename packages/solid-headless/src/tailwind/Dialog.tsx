@@ -84,6 +84,7 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
     >
       <HeadlessDisclosureRoot
         isOpen={props.isOpen}
+        onChange={props.onChange}
         defaultOpen={props.defaultOpen}
         disabled={props.disabled}
       >
@@ -101,6 +102,7 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
                   'isOpen',
                   'disabled',
                   'onClose',
+                  'onChange',
                 ])}
                 id={ownerID}
                 role="dialog"

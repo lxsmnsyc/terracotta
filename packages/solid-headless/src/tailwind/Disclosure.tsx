@@ -65,11 +65,14 @@ export function TailwindDisclosure(props: TailwindDisclosureProps): JSX.Element 
           'children',
           'disabled',
           'defaultOpen',
+          'onChange',
         ])}
         data-sh-disclosure={ownerID}
       >
         <HeadlessDisclosureRoot
           isOpen={props.isOpen}
+          onChange={props.onChange}
+          disabled={props.disabled}
           defaultOpen={props.defaultOpen}
         >
           {props.children}

@@ -73,8 +73,10 @@ function useTailwindListboxOptionsContext(componentName: string): TailwindListbo
 export type TailwindListboxProps<V, T extends ValidConstructor = typeof Fragment> = {
   as?: T;
   horizontal?: boolean;
-} & Omit<HeadlessSelectRootProps<V>, 'children'>
-  & HeadlessDisclosureRootProps
+  onSelectChange?: (value: V) => void;
+  onDisclosureChange?: (value: boolean) => void;
+} & Omit<HeadlessSelectRootProps<V>, 'children' | 'onChange'>
+  & Omit<HeadlessDisclosureRootProps, 'onChange'>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureRootProps | keyof HeadlessSelectRootProps<V>>;
 
 export function TailwindListbox<V, T extends ValidConstructor = typeof Fragment>(
@@ -101,25 +103,31 @@ export function TailwindListbox<V, T extends ValidConstructor = typeof Fragment>
         {...excludeProps(props, [
           'as',
           'children',
+          'defaultOpen',
           'disabled',
-          'onChange',
+          'horizontal',
+          'isOpen',
           'multiple',
+          'onDisclosureChange',
+          'onSelectChange',
           'toggleable',
           'value',
         ])}
         aria-labelledby={labelID}
         data-sh-listbox={ownerID}
       >
-        <HeadlessSelectRoot
+        <HeadlessSelectRoot<V>
           multiple={props.multiple}
           toggleable={props.toggleable}
           value={props.value}
           disabled={props.disabled}
-          onChange={props.onChange}
+          onChange={props.onSelectChange}
         >
           <HeadlessDisclosureRoot
             isOpen={props.isOpen}
+            defaultOpen={props.defaultOpen}
             disabled={props.disabled}
+            onChange={props.onDisclosureChange}
           >
             {props.children}
           </HeadlessDisclosureRoot>

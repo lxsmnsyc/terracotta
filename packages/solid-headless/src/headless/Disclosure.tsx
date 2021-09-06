@@ -11,6 +11,7 @@ export interface HeadlessDisclosureOptions {
   isOpen?: boolean;
   defaultOpen?: boolean;
   disabled?: boolean;
+  onChange?: (state: boolean) => void;
 }
 
 export interface HeadlessDisclosureProperties {
@@ -24,8 +25,14 @@ export function useHeadlessDisclosure(
 ): HeadlessDisclosureProperties {
   const [signal, setSignal] = createSignal(untrack(() => !!options.defaultOpen));
 
+  let initial = true;
+
   createEffect(() => {
-    setSignal(!!options.isOpen);
+    if (initial) {
+      initial = false;
+    } else {
+      setSignal(!!options.isOpen);
+    }
   });
 
   return {
@@ -33,7 +40,10 @@ export function useHeadlessDisclosure(
       return signal();
     },
     setState(value) {
-      setSignal(value);
+      if (!options.disabled) {
+        setSignal(value);
+        options.onChange?.(value);
+      }
     },
     disabled() {
       return !!options.disabled;
