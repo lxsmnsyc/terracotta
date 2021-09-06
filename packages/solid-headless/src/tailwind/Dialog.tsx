@@ -128,6 +128,7 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
                   'isOpen',
                   'disabled',
                   'onClose',
+                  'onChange',
                 ])}
                 id={ownerID}
                 role="dialog"

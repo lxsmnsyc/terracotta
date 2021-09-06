@@ -28,10 +28,11 @@ export function useHeadlessDisclosure(
   let initial = true;
 
   createEffect(() => {
+    const value = options.isOpen;
     if (initial) {
       initial = false;
     } else {
-      setSignal(!!options.isOpen);
+      setSignal(!!value);
     }
   });
 

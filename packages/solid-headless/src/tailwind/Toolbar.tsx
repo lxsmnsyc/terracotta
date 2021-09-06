@@ -76,7 +76,6 @@ export function TailwindToolbar<T extends ValidConstructor = 'div'>(
         focusedElement.focus();
       } else {
         const nodes = getFocusableElements(internalRef);
-        console.log(nodes);
         if (nodes.length) {
           nodes[0].focus();
         }
