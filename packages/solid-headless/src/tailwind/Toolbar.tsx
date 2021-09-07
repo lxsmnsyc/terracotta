@@ -69,10 +69,8 @@ export function TailwindToolbar<T extends ValidConstructor = 'div'>(
       }
     };
 
-    const onFocus = (e: FocusEvent) => {
-      if (e.target !== internalRef) {
-        focusedElement = e.target as HTMLElement;
-      } else if (focusedElement) {
+    const onFocus = () => {
+      if (focusedElement) {
         focusedElement.focus();
       } else {
         const nodes = getFocusableElements(internalRef);
@@ -82,11 +80,19 @@ export function TailwindToolbar<T extends ValidConstructor = 'div'>(
       }
     };
 
+    const onFocusIn = (e: FocusEvent) => {
+      if (e.target && e.target !== internalRef) {
+        focusedElement = e.target as HTMLElement;
+      }
+    };
+
     internalRef.addEventListener('keydown', onKeyDown);
     internalRef.addEventListener('focus', onFocus);
+    internalRef.addEventListener('focusin', onFocusIn);
     onCleanup(() => {
       internalRef.removeEventListener('keydown', onKeyDown);
       internalRef.removeEventListener('focus', onFocus);
+      internalRef.removeEventListener('focusin', onFocusIn);
     });
   });
 

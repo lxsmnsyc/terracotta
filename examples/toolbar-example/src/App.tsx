@@ -1,6 +1,7 @@
 import {
   TailwindSelect,
   TailwindSelectOption,
+  TailwindToggle,
   TailwindToolbar,
 } from 'solid-headless';
 import { JSX, For } from 'solid-js';
@@ -45,6 +46,7 @@ const FONT_OPTIONS = [
   { label: 'B', title: 'Bold', class: 'font-bold' },
   { label: 'I', title: 'Italic', class: 'italic' },
   { label: 'U', title: 'Underlined', class: 'underline' },
+  { label: 'S', title: 'Strike Through', class: 'line-through' },
 ];
 
 export default function App(): JSX.Element {
@@ -52,54 +54,19 @@ export default function App(): JSX.Element {
     <div class="w-auto">
       <div class="p-2 bg-white rounded-lg">
         <TailwindToolbar class="flex w-full space-x-1">
-          <TailwindSelect<ToolbarOption | undefined>
-            value={undefined}
-            multiple
-            toggleable
-            horizontal
-            class="flex space-x-1"
-          >
-            {({ isSelected, isActive }) => (
-              <For each={FONT_OPTIONS}>
-                {(item) => (
-                  <TailwindSelectOption
-                    value={item}
-                    class={classNames(
-                      isSelected(item) ? 'text-color-600 bg-purple-200' : '',
-                      isActive(item) ? 'outline-none ring ring-purple-400 ring-opacity-75' : '',
-                      'w-6 h-6 flex items-center justify-center rounded',
-                    )}
-                  >
-                    <span class={item.class}>{item.label}</span>
-                  </TailwindSelectOption>
+          <For each={FONT_OPTIONS}>
+            {(item) => (
+              <TailwindToggle
+                class={classNames(
+                  // isSelected(item) ? 'text-color-600 bg-purple-200' : '',
+                  // isActive(item) ? 'outline-none ring ring-purple-400 ring-opacity-75' : '',
+                  'w-6 h-6 flex items-center justify-center rounded',
                 )}
-              </For>
+              >
+                <span class={item.class}>{item.label}</span>
+              </TailwindToggle>
             )}
-          </TailwindSelect>
-          <Separator />
-          <TailwindSelect<ToolbarOption | undefined>
-            value={undefined}
-            multiple
-            toggleable
-            class="flex space-x-1"
-          >
-            {({ isSelected, isActive }) => (
-              <For each={FONT_OPTIONS}>
-                {(item) => (
-                  <TailwindSelectOption
-                    value={item}
-                    class={classNames(
-                      isSelected(item) ? 'text-color-600 bg-purple-200' : '',
-                      isActive(item) ? 'outline-none ring ring-purple-400 ring-opacity-75' : '',
-                      'w-6 h-6 flex items-center justify-center rounded',
-                    )}
-                  >
-                    <span class={item.class}>{item.label}</span>
-                  </TailwindSelectOption>
-                )}
-              </For>
-            )}
-          </TailwindSelect>
+          </For>
         </TailwindToolbar>
       </div>
     </div>
