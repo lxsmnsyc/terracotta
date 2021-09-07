@@ -389,23 +389,23 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
     const onKeyDown = (e: KeyboardEvent) => {
       if (!(properties.disabled() || props.disabled)) {
         switch (e.key) {
-          case 'ArrowUp':
-            if (!rootContext.horizontal) {
-              context.setPrevChecked(internalRef);
-            }
-            break;
-          case 'ArrowDown':
-            if (!rootContext.horizontal) {
-              context.setNextChecked(internalRef);
-            }
-            break;
           case 'ArrowLeft':
             if (rootContext.horizontal) {
               context.setPrevChecked(internalRef);
             }
             break;
+          case 'ArrowUp':
+            if (!rootContext.horizontal) {
+              context.setPrevChecked(internalRef);
+            }
+            break;
           case 'ArrowRight':
             if (rootContext.horizontal) {
+              context.setNextChecked(internalRef);
+            }
+            break;
+          case 'ArrowDown':
+            if (!rootContext.horizontal) {
               context.setNextChecked(internalRef);
             }
             break;

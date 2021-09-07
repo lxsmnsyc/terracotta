@@ -8,7 +8,6 @@ import {
 import { JSX } from 'solid-js/jsx-runtime';
 import { Dynamic } from 'solid-js/web';
 import {
-  HeadlessSelectChild,
   HeadlessSelectOption,
   HeadlessSelectOptionProps,
   HeadlessSelectRoot,
@@ -17,7 +16,7 @@ import {
 } from '../headless/Select';
 import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
 import { excludeProps } from '../utils/exclude-props';
-import { TailwindButton } from './Button';
+import { TailwindButton, TailwindButtonProps } from './Button';
 
 interface TailwindSelectContext {
   ownerID: string;
@@ -190,18 +189,24 @@ export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
       if (!(properties.disabled() || props.disabled)) {
         switch (e.key) {
           case 'ArrowUp':
-          case 'ArrowLeft':
-            if (context.horizontal && e.key !== 'ArrowLeft') {
-              break;
+            if (!context.horizontal) {
+              context.setPrevChecked(internalRef);
             }
-            context.setPrevChecked(internalRef);
+            break;
+          case 'ArrowLeft':
+            if (context.horizontal) {
+              context.setPrevChecked(internalRef);
+            }
             break;
           case 'ArrowDown':
-          case 'ArrowRight':
-            if (context.horizontal && e.key !== 'ArrowRight') {
-              break;
+            if (!context.horizontal) {
+              context.setNextChecked(internalRef);
             }
-            context.setNextChecked(internalRef);
+            break;
+          case 'ArrowRight':
+            if (context.horizontal) {
+              context.setNextChecked(internalRef);
+            }
             break;
           case ' ':
           case 'Enter':
