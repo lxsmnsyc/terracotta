@@ -267,6 +267,7 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
         } else {
           setChecked(radios[i + 1]);
         }
+        break;
       }
     }
   }
@@ -280,6 +281,7 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
         } else {
           setChecked(radios[i - 1]);
         }
+        break;
       }
     }
   }

@@ -68,6 +68,7 @@ export function TailwindSelect<V, T extends ValidConstructor = 'ul'>(
         } else {
           setChecked(radios[i + 1]);
         }
+        break;
       }
     }
   }
@@ -81,6 +82,7 @@ export function TailwindSelect<V, T extends ValidConstructor = 'ul'>(
         } else {
           setChecked(radios[i - 1]);
         }
+        break;
       }
     }
   }
@@ -188,24 +190,18 @@ export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
       if (!(properties.disabled() || props.disabled)) {
         switch (e.key) {
           case 'ArrowUp':
-            if (!context.horizontal) {
-              context.setPrevChecked(internalRef);
+          case 'ArrowLeft':
+            if (context.horizontal && e.key !== 'ArrowLeft') {
+              break;
             }
+            context.setPrevChecked(internalRef);
             break;
           case 'ArrowDown':
-            if (!context.horizontal) {
-              context.setNextChecked(internalRef);
-            }
-            break;
-          case 'ArrowLeft':
-            if (context.horizontal) {
-              context.setPrevChecked(internalRef);
-            }
-            break;
           case 'ArrowRight':
-            if (context.horizontal) {
-              context.setNextChecked(internalRef);
+            if (context.horizontal && e.key !== 'ArrowRight') {
+              break;
             }
+            context.setNextChecked(internalRef);
             break;
           case ' ':
           case 'Enter':

@@ -210,6 +210,7 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
                   } else {
                     nodes[i - 1].focus();
                   }
+                  break;
                 }
               }
             }
@@ -223,6 +224,7 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
                 } else {
                   nodes[i + 1].focus();
                 }
+                break;
               }
             }
           }

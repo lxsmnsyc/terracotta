@@ -83,6 +83,7 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
         } else {
           setChecked(radios[i + 1]);
         }
+        break;
       }
     }
   }
@@ -96,6 +97,7 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
         } else {
           setChecked(radios[i - 1]);
         }
+        break;
       }
     }
   }

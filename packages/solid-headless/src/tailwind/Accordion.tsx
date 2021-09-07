@@ -89,6 +89,7 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
         } else {
           setChecked(radios[i + 1]);
         }
+        break;
       }
     }
   }
@@ -102,6 +103,7 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
         } else {
           setChecked(radios[i - 1]);
         }
+        break;
       }
     }
   }
