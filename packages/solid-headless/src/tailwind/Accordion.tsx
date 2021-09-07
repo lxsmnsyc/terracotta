@@ -338,6 +338,7 @@ export function TailwindAccordionPanel<T extends ValidConstructor = 'div'>(
           {...excludeProps(props, [
             'as',
             'children',
+            'unmount',
           ])}
           id={context.panelID}
           aria-labelledby={context.buttonID}
@@ -354,6 +355,7 @@ export function TailwindAccordionPanel<T extends ValidConstructor = 'div'>(
           {...excludeProps(props, [
             'as',
             'children',
+            'unmount',
           ])}
           id={context.panelID}
           aria-labelledby={context.buttonID}
