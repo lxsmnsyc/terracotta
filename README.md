@@ -25,9 +25,9 @@ Here's the current goals:
   - [x] Keyboard Interaction
   - [x] States
 - `Button (Toggle)`
-  - [ ] Accessibility
-  - [ ] Keyboard Interaction
-  - [ ] States
+  - [x] Accessibility
+  - [x] Keyboard Interaction
+  - [x] States
 - `Carousel`
   - [ ] Accessibility
   - [ ] Keyboard Interaction
@@ -44,6 +44,10 @@ Here's the current goals:
   - [x] Accessibility
   - [x] Keyboard Interaction
   - [x] States
+- `Dialog (Popover)`
+  - [ ] Accessibility
+  - [ ] Keyboard Interaction
+  - [ ] States
 - `Disclosure (Show/Hide)`
   - [x] Accessibility
   - [x] Keyboard Interaction
@@ -104,6 +108,9 @@ Here's the current goals:
   - [x] Keyboard Interaction
   - [x] States
 - `Tooltip (proposal)`
+  - [ ] Accessibility
+  - [ ] Keyboard Interaction
+  - [ ] States
 - `Tree View`
   - [ ] Accessibility
   - [ ] Keyboard Interaction
@@ -121,10 +128,6 @@ Others:
 
 - `Transition`
   - [X] States
-- `Popover`
-  - [ ] Accessibility
-  - [ ] Keyboard Interaction
-  - [ ] States
 
 ## FAQ
 
