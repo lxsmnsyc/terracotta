@@ -53,7 +53,7 @@ export default function App(): JSX.Element {
   return (
     <div class="w-auto">
       <div class="p-2 bg-white rounded-lg">
-        <TailwindToolbar class="flex w-full space-x-1">
+        <TailwindToolbar class="flex w-full space-x-1" horizontal>
           <For each={FONT_OPTIONS}>
             {(item) => (
               <TailwindToggle

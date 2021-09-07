@@ -24,48 +24,68 @@ export function TailwindToolbar<T extends ValidConstructor = 'div'>(
 
   createEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') {
-        const nodes = getFocusableElements(internalRef);
-        if (props.horizontal
-          && document.activeElement
-          && internalRef.contains(document.activeElement)
-        ) {
-          for (let i = 0, len = nodes.length; i < len; i += 1) {
-            if (document.activeElement === nodes[i]) {
-              if (i === 0) {
-                nodes[len - 1].focus();
-              } else {
-                nodes[i - 1].focus();
+      switch (e.key) {
+        case 'ArrowLeft':
+        case 'ArrowUp': {
+          if (props.horizontal && e.key !== 'ArrowLeft') {
+            return;
+          }
+          const nodes = getFocusableElements(internalRef);
+          if (document.activeElement
+            && internalRef.contains(document.activeElement)
+          ) {
+            for (let i = 0, len = nodes.length; i < len; i += 1) {
+              if (document.activeElement === nodes[i]) {
+                if (i === 0) {
+                  nodes[len - 1].focus();
+                } else {
+                  nodes[i - 1].focus();
+                }
+                break;
               }
             }
           }
         }
-      } else if (e.key === 'ArrowRight') {
-        const nodes = getFocusableElements(internalRef);
-        if (props.horizontal
-          && document.activeElement
-          && internalRef.contains(document.activeElement)
-        ) {
-          for (let i = 0, len = nodes.length; i < len; i += 1) {
-            if (document.activeElement === nodes[i]) {
-              if (i === len - 1) {
-                nodes[0].focus();
-              } else {
-                nodes[i + 1].focus();
+          break;
+        case 'ArrowRight':
+        case 'ArrowDown': {
+          if (props.horizontal && e.key !== 'ArrowRight') {
+            return;
+          }
+          const nodes = getFocusableElements(internalRef);
+          if (props.horizontal
+            && document.activeElement
+            && internalRef.contains(document.activeElement)
+          ) {
+            for (let i = 0, len = nodes.length; i < len; i += 1) {
+              if (document.activeElement === nodes[i]) {
+                if (i === len - 1) {
+                  nodes[0].focus();
+                } else {
+                  nodes[i + 1].focus();
+                }
+                break;
               }
             }
           }
         }
-      } else if (e.key === 'Home') {
-        const nodes = getFocusableElements(internalRef);
-        if (nodes.length) {
-          nodes[0].focus();
+          break;
+        case 'Home': {
+          const nodes = getFocusableElements(internalRef);
+          if (nodes.length) {
+            nodes[0].focus();
+          }
         }
-      } else if (e.key === 'End') {
-        const nodes = getFocusableElements(internalRef);
-        if (nodes.length) {
-          nodes[nodes.length - 1].focus();
+          break;
+        case 'End': {
+          const nodes = getFocusableElements(internalRef);
+          if (nodes.length) {
+            nodes[nodes.length - 1].focus();
+          }
         }
+          break;
+        default:
+          break;
       }
     };
 
