@@ -124,3 +124,11 @@ export {
   TailwindToggleProps,
   TailwindToggle,
 } from './tailwind/Toggle';
+export {
+  TailwindPopover,
+  TailwindPopoverButton,
+  TailwindPopoverButtonProps,
+  TailwindPopoverPanel,
+  TailwindPopoverPanelProps,
+  TailwindPopoverProps,
+} from './tailwind/Popover';

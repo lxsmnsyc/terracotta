@@ -1,45 +1,11 @@
 import {
-  TailwindSelect,
-  TailwindSelectOption,
   TailwindToggle,
   TailwindToolbar,
 } from 'solid-headless';
 import { JSX, For } from 'solid-js';
 
-function ChevronUpIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      {...props}
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M5 15l7-7 7 7"
-      />
-    </svg>
-  );
-}
-
-function Separator() {
-  return (
-    <div class="flex items-center" aria-hidden="true">
-      <div class="h-full border-l border-gray-500" />
-    </div>
-  );
-}
-
 function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
-}
-
-interface ToolbarOption {
-  label: string;
-  title: string;
 }
 
 const FONT_OPTIONS = [
@@ -59,7 +25,7 @@ export default function App(): JSX.Element {
               <TailwindToggle
                 class={classNames(
                   // isSelected(item) ? 'text-color-600 bg-purple-200' : '',
-                  // isActive(item) ? 'outline-none ring ring-purple-400 ring-opacity-75' : '',
+                  'focus:outline-none focus-visible:ring focus-visible:ring-purple-400 focus-visible:ring-opacity-75',
                   'w-6 h-6 flex items-center justify-center rounded',
                 )}
               >
