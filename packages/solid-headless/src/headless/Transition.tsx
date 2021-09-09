@@ -101,6 +101,7 @@ export function useHeadlessTransition(
       const currentDuration = duration?.[current];
       const target = newState[current];
       function sync() {
+        timeout = undefined;
         setSignal(target);
         handlers?.[current]?.();
         if (current === 'before') {
