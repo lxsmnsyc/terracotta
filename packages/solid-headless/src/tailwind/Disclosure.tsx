@@ -44,7 +44,9 @@ export type TailwindDisclosureProps<T extends ValidConstructor = typeof Fragment
 } & HeadlessDisclosureRootProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindDisclosure(props: TailwindDisclosureProps): JSX.Element {
+export function TailwindDisclosure<T extends ValidConstructor = typeof Fragment>(
+  props: TailwindDisclosureProps<T>,
+): JSX.Element {
   const ownerID = createUniqueId();
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
