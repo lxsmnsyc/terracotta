@@ -13,6 +13,7 @@ import {
   HeadlessDisclosureChildProps,
   HeadlessDisclosureRoot,
   HeadlessDisclosureRootProps,
+  useHeadlessDisclosureChild,
 } from '../headless/Disclosure';
 import {
   DynamicProps,
@@ -184,64 +185,67 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
   props: TailwindDialogPanelProps<T>,
 ): JSX.Element {
   const context = useTailwindDialogContext('TailwindDialogPanel');
+  const properties = useHeadlessDisclosureChild();
 
   let internalRef: HTMLElement;
 
   createEffect(() => {
-    const initialNodes = getFocusableElements(internalRef);
-    if (initialNodes.length) {
-      initialNodes[0].focus();
-    }
+    if (properties.isOpen()) {
+      const initialNodes = getFocusableElements(internalRef);
+      if (initialNodes.length) {
+        initialNodes[0].focus();
+      }
 
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (!props.disabled) {
-        if (e.key === 'Tab') {
-          e.preventDefault();
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (!props.disabled) {
+          if (e.key === 'Tab') {
+            e.preventDefault();
 
-          const nodes = getFocusableElements(internalRef);
-          if (e.shiftKey) {
-            if (!document.activeElement || !internalRef.contains(document.activeElement)) {
-              nodes[nodes.length - 1].focus();
+            const nodes = getFocusableElements(internalRef);
+            if (e.shiftKey) {
+              if (!document.activeElement || !internalRef.contains(document.activeElement)) {
+                nodes[nodes.length - 1].focus();
+              } else {
+                for (let i = 0, len = nodes.length; i < len; i += 1) {
+                  if (document.activeElement === nodes[i]) {
+                    if (i === 0) {
+                      nodes[len - 1].focus();
+                    } else {
+                      nodes[i - 1].focus();
+                    }
+                    break;
+                  }
+                }
+              }
+            } else if (!document.activeElement || !internalRef.contains(document.activeElement)) {
+              nodes[0].focus();
             } else {
               for (let i = 0, len = nodes.length; i < len; i += 1) {
                 if (document.activeElement === nodes[i]) {
-                  if (i === 0) {
-                    nodes[len - 1].focus();
+                  if (i === len - 1) {
+                    nodes[0].focus();
                   } else {
-                    nodes[i - 1].focus();
+                    nodes[i + 1].focus();
                   }
                   break;
                 }
               }
             }
-          } else if (!document.activeElement || !internalRef.contains(document.activeElement)) {
-            nodes[0].focus();
-          } else {
-            for (let i = 0, len = nodes.length; i < len; i += 1) {
-              if (document.activeElement === nodes[i]) {
-                if (i === len - 1) {
-                  nodes[0].focus();
-                } else {
-                  nodes[i + 1].focus();
-                }
-                break;
-              }
-            }
+          } else if (e.key === 'Escape') {
+            properties.setState(false);
           }
-        } else if (e.key === 'Escape') {
-          context.onClose?.();
         }
-      }
-    };
+      };
 
-    internalRef.addEventListener('keydown', onKeyDown);
-    onCleanup(() => {
-      internalRef.removeEventListener('keydown', onKeyDown);
-    });
+      internalRef.addEventListener('keydown', onKeyDown);
+      onCleanup(() => {
+        internalRef.removeEventListener('keydown', onKeyDown);
+      });
+    }
   });
 
   useClickOutside(() => internalRef, () => {
-    context.onClose?.();
+    properties.setState(false);
   });
 
   return (
