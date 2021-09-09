@@ -3,6 +3,7 @@ import { createEffect, onCleanup } from 'solid-js';
 export default function useClickOutside(
   ref: () => HTMLElement | undefined | null,
   callback: () => void,
+  anchor?: () => HTMLElement | undefined | null,
 ): void {
   createEffect(() => {
     let alive = true;
@@ -16,7 +17,13 @@ export default function useClickOutside(
       if (type === 'click' && isTouch) {
         return;
       }
-      if (el && target && !el.contains(target as Node)) {
+      const anchorEl = anchor?.();
+      const contains = el
+        && target
+        && !el.contains(target as Node)
+        && ((anchorEl && !anchorEl.contains(target as Node)) || (!anchorEl));
+
+      if (contains) {
         callback();
       }
     };

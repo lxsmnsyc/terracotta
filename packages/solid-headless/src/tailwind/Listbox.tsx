@@ -1,6 +1,7 @@
 import {
   createContext,
   createEffect,
+  createSignal,
   createUniqueId,
   onCleanup,
   untrack,
@@ -37,6 +38,7 @@ interface TailwindListboxContext {
   labelID: string;
   buttonID: string;
   optionsID: string;
+  anchor?: HTMLElement | null;
 }
 
 const TailwindListboxContext = createContext<TailwindListboxContext>();
@@ -229,6 +231,7 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
           props.ref = e;
         }
         internalRef = e;
+        context.anchor = e;
       }}
       data-sh-listbox-button={context.ownerID}
     >
@@ -313,9 +316,13 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
     }
   });
 
-  useClickOutside(() => internalRef, () => {
-    properties.setState(false);
-  });
+  useClickOutside(
+    () => internalRef,
+    () => {
+      properties.setState(false);
+    },
+    () => context.anchor,
+  );
 
   return (
     <TailwindListboxOptionsContext.Provider
