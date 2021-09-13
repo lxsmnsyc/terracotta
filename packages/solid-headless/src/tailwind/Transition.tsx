@@ -98,7 +98,7 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
         show={props.show}
         duration={{
           enter: {
-            before: (props.unmount ? 0 : (context?.baseEnter ?? 0)),
+            before: props.unmount ? undefined : context?.baseEnter,
             during: props.enterDuration,
           },
           leave: {
