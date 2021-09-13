@@ -5,6 +5,7 @@ import {
   useContext,
   Show,
   onCleanup,
+  untrack,
 } from 'solid-js';
 import { JSX } from 'solid-js/jsx-runtime';
 import { Dynamic } from 'solid-js/web';
@@ -57,17 +58,12 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
   const titleID = createUniqueId();
   const descriptionID = createUniqueId();
 
+  let passiveState = untrack(() => props.isOpen);
+
   const returnElement = document.activeElement as HTMLElement | null;
 
-  createEffect(() => {
-    if (!props.isOpen) {
-      props.onClose?.();
-      returnElement?.focus();
-    }
-  });
-
   onCleanup(() => {
-    if (!props.isOpen) {
+    if (!passiveState) {
       props.onClose?.();
       returnElement?.focus();
     }
@@ -85,7 +81,16 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
     >
       <HeadlessDisclosureRoot
         isOpen={props.isOpen}
-        onChange={props.onChange}
+        onChange={(state) => {
+          props.onChange?.(state);
+
+          if (!state) {
+            props.onClose?.();
+            returnElement?.focus();
+          }
+
+          passiveState = state;
+        }}
         defaultOpen={props.defaultOpen}
         disabled={props.disabled}
       >
@@ -232,7 +237,11 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
               }
             }
           } else if (e.key === 'Escape') {
-            properties.setState(false);
+            if (context.onClose) {
+              context.onClose();
+            } else {
+              properties.setState(false);
+            }
           }
         }
       };
@@ -245,7 +254,11 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
   });
 
   useClickOutside(() => internalRef, () => {
-    properties.setState(false);
+    if (context.onClose) {
+      context.onClose();
+    } else {
+      properties.setState(false);
+    }
   });
 
   return (
