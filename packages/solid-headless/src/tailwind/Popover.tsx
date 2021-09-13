@@ -46,7 +46,9 @@ export type TailwindPopoverProps<T extends ValidConstructor = 'div'> = {
 } & HeadlessDisclosureRootProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindPopover(props: TailwindPopoverProps): JSX.Element {
+export function TailwindPopover<T extends ValidConstructor = 'div'>(
+  props: TailwindPopoverProps<T>,
+): JSX.Element {
   const ownerID = createUniqueId();
   const buttonID = createUniqueId();
   const panelID = createUniqueId();

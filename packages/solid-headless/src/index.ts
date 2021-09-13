@@ -132,3 +132,6 @@ export {
   TailwindPopoverPanelProps,
   TailwindPopoverProps,
 } from './tailwind/Popover';
+export {
+  default as Fragment,
+} from './utils/Fragment';
