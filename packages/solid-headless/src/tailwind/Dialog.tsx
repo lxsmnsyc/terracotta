@@ -5,7 +5,6 @@ import {
   useContext,
   Show,
   onCleanup,
-  untrack,
 } from 'solid-js';
 import { JSX } from 'solid-js/jsx-runtime';
 import { Dynamic } from 'solid-js/web';
@@ -58,15 +57,18 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
   const titleID = createUniqueId();
   const descriptionID = createUniqueId();
 
-  let passiveState = untrack(() => props.isOpen);
-
   const returnElement = document.activeElement as HTMLElement | null;
 
-  onCleanup(() => {
-    if (!passiveState) {
+  createEffect(() => {
+    if (!props.isOpen) {
       props.onClose?.();
       returnElement?.focus();
     }
+  });
+
+  onCleanup(() => {
+    props.onClose?.();
+    returnElement?.focus();
   });
 
   return (
@@ -81,16 +83,7 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
     >
       <HeadlessDisclosureRoot
         isOpen={props.isOpen}
-        onChange={(state) => {
-          props.onChange?.(state);
-
-          if (!state) {
-            props.onClose?.();
-            returnElement?.focus();
-          }
-
-          passiveState = state;
-        }}
+        onChange={props.onChange}
         defaultOpen={props.defaultOpen}
         disabled={props.disabled}
       >
