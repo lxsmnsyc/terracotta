@@ -246,14 +246,6 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
     }
   });
 
-  useClickOutside(() => internalRef, () => {
-    if (context.onClose) {
-      context.onClose();
-    } else {
-      properties.setState(false);
-    }
-  });
-
   return (
     <Dynamic
       component={(props.as ?? 'div') as T}
@@ -263,6 +255,60 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
       ])}
       id={context.panelID}
       data-sh-dialog-panel={context.ownerID}
+      ref={(e) => {
+        const outerRef = props.ref;
+        if (typeof outerRef === 'function') {
+          outerRef(e);
+        } else {
+          props.ref = e;
+        }
+        internalRef = e;
+      }}
+    >
+      <HeadlessDisclosureChild>
+        {props.children}
+      </HeadlessDisclosureChild>
+    </Dynamic>
+  );
+}
+
+export type TailwindDialogOverlayProps<T extends ValidConstructor = 'div'> = {
+  as?: T;
+} & HeadlessDisclosureChildProps
+  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
+
+export function TailwindDialogOverlay<T extends ValidConstructor = 'p'>(
+  props: TailwindDialogOverlayProps<T>,
+): JSX.Element {
+  const context = useTailwindDialogContext('TailwindDialogOverlay');
+  const properties = useHeadlessDisclosureChild();
+
+  let internalRef: HTMLElement;
+
+  createEffect(() => {
+    const onClick = () => {
+      if (context.onClose) {
+        context.onClose();
+      } else {
+        properties.setState(false);
+      }
+    };
+
+    internalRef.addEventListener('click', onClick);
+
+    onCleanup(() => {
+      internalRef.removeEventListener('click', onClick);
+    });
+  });
+
+  return (
+    <Dynamic
+      component={(props.as ?? 'div') as T}
+      {...excludeProps(props, [
+        'as',
+        'children',
+      ])}
+      data-sh-dialog-overlay={context.ownerID}
       ref={(e) => {
         const outerRef = props.ref;
         if (typeof outerRef === 'function') {

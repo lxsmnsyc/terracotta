@@ -227,14 +227,6 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
     }
   });
 
-  useClickOutside(
-    () => internalRef,
-    () => {
-      properties.setState(false);
-    },
-    () => context.anchor,
-  );
-
   return (
     <Show
       when={props.unmount ?? true}
@@ -290,5 +282,55 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
         </Dynamic>
       </Show>
     </Show>
+  );
+}
+
+export type TailwindPopoverOverlayProps<T extends ValidConstructor = 'div'> = {
+  as?: T;
+} & HeadlessDisclosureChildProps
+  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
+
+export function TailwindPopoverOverlay<T extends ValidConstructor = 'p'>(
+  props: TailwindPopoverOverlayProps<T>,
+): JSX.Element {
+  const context = useTailwindPopoverContext('TailwindPopoverOverlay');
+  const properties = useHeadlessDisclosureChild();
+
+  let internalRef: HTMLElement;
+
+  createEffect(() => {
+    const onClick = () => {
+      properties.setState(false);
+    };
+
+    internalRef.addEventListener('click', onClick);
+
+    onCleanup(() => {
+      internalRef.removeEventListener('click', onClick);
+    });
+  });
+
+  return (
+    <Dynamic
+      component={(props.as ?? 'div') as T}
+      {...excludeProps(props, [
+        'as',
+        'children',
+      ])}
+      data-sh-popover-overlay={context.ownerID}
+      ref={(e) => {
+        const outerRef = props.ref;
+        if (typeof outerRef === 'function') {
+          outerRef(e);
+        } else {
+          props.ref = e;
+        }
+        internalRef = e;
+      }}
+    >
+      <HeadlessDisclosureChild>
+        {props.children}
+      </HeadlessDisclosureChild>
+    </Dynamic>
   );
 }
