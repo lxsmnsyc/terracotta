@@ -1,7 +1,6 @@
 import {
   createContext,
   createEffect,
-  createSignal,
   createUniqueId,
   onCleanup,
   untrack,
@@ -28,7 +27,6 @@ import {
   HeadlessDisclosureRootProps,
   useHeadlessDisclosureChild,
 } from '../headless/Disclosure';
-import useClickOutside from '../utils/use-click-outside';
 import { TailwindButton, TailwindButtonProps } from './Button';
 
 interface TailwindListboxContext {
@@ -316,13 +314,18 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
     }
   });
 
-  useClickOutside(
-    () => internalRef,
-    () => {
-      properties.setState(false);
-    },
-    () => context.anchor,
-  );
+  createEffect(() => {
+    const onBlur = (e: FocusEvent) => {
+      console.log(e.relatedTarget, e.target, document.activeElement);
+      if (!e.relatedTarget || !internalRef.contains(e.relatedTarget as Node)) {
+        properties.setState(false);
+      }
+    };
+    internalRef.addEventListener('focusout', onBlur);
+    onCleanup(() => {
+      internalRef.removeEventListener('focusout', onBlur);
+    });
+  });
 
   return (
     <TailwindListboxOptionsContext.Provider
@@ -465,30 +468,16 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
         properties.blur();
       }
     };
-    const onMouseEnter = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        internalRef.focus();
-      }
-    };
-    const onMouseLeave = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        internalRef.blur();
-      }
-    };
 
     internalRef.addEventListener('keydown', onKeyDown);
     internalRef.addEventListener('click', onClick);
     internalRef.addEventListener('focus', onFocus);
     internalRef.addEventListener('blur', onBlur);
-    internalRef.addEventListener('mouseenter', onMouseEnter);
-    internalRef.addEventListener('mouseleave', onMouseLeave);
     onCleanup(() => {
       internalRef.removeEventListener('keydown', onKeyDown);
       internalRef.removeEventListener('click', onClick);
       internalRef.removeEventListener('focus', onFocus);
       internalRef.removeEventListener('blur', onBlur);
-      internalRef.removeEventListener('mouseenter', onMouseEnter);
-      internalRef.removeEventListener('mouseleave', onMouseLeave);
     });
   });
 

@@ -105,6 +105,8 @@ export {
   TailwindDialogDescription,
   TailwindDialogTitle,
   TailwindDialogTitleProps,
+  TailwindDialogOverlay,
+  TailwindDialogOverlayProps,
 } from './tailwind/Dialog';
 export {
   TailwindToolbar,
@@ -131,6 +133,8 @@ export {
   TailwindPopoverPanel,
   TailwindPopoverPanelProps,
   TailwindPopoverProps,
+  TailwindPopoverOverlay,
+  TailwindPopoverOverlayProps,
 } from './tailwind/Popover';
 export {
   default as Fragment,

@@ -4,6 +4,7 @@ import {
   TailwindDialogTitle,
   TailwindTransition,
   TailwindTransitionChild,
+  TailwindDialogOverlay,
 } from 'solid-headless';
 import { createSignal, JSX } from 'solid-js';
 
@@ -40,6 +41,24 @@ export default function App(): JSX.Element {
               onClose={closeModal}
             >
               <div class="min-h-screen px-4 flex items-center justify-center">
+                <TailwindTransitionChild
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <TailwindDialogOverlay className="fixed inset-0" />
+                </TailwindTransitionChild>
+
+                {/* This element is to trick the browser into centering the modal contents. */}
+                <span
+                  className="inline-block h-screen align-middle"
+                  aria-hidden="true"
+                >
+                  &#8203;
+                </span>
                 <TailwindTransitionChild
                   enterDuration={300}
                   leaveDuration={200}

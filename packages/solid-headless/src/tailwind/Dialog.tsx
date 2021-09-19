@@ -21,7 +21,6 @@ import {
 } from '../utils/dynamic-prop';
 import { excludeProps } from '../utils/exclude-props';
 import getFocusableElements from '../utils/get-focusable-elements';
-import useClickOutside from '../utils/use-click-outside';
 
 interface TailwindDialogContext {
   ownerID: string;

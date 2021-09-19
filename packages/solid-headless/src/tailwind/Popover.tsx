@@ -20,7 +20,6 @@ import {
 import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
 import { excludeProps } from '../utils/exclude-props';
 import { TailwindButton, TailwindButtonProps } from './Button';
-import useClickOutside from '../utils/use-click-outside';
 import getFocusableElements from '../utils/get-focusable-elements';
 
 interface TailwindPopoverContext {
@@ -220,9 +219,17 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
         }
       };
 
+      const onBlur = (e: FocusEvent) => {
+        if (!e.relatedTarget || !internalRef.contains(e.relatedTarget as Node)) {
+          properties.setState(false);
+        }
+      };
+
       internalRef.addEventListener('keydown', onKeyDown);
+      internalRef.addEventListener('focusout', onBlur);
       onCleanup(() => {
         internalRef.removeEventListener('keydown', onKeyDown);
+        internalRef.removeEventListener('focusout', onBlur);
       });
     }
   });
