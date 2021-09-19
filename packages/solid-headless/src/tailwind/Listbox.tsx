@@ -316,7 +316,6 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
 
   createEffect(() => {
     const onBlur = (e: FocusEvent) => {
-      console.log(e.relatedTarget, e.target, document.activeElement);
       if (!e.relatedTarget || !internalRef.contains(e.relatedTarget as Node)) {
         properties.setState(false);
       }

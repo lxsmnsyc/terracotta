@@ -90,11 +90,12 @@ export default function Example(): JSX.Element {
                 <TailwindListboxOptions class="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                   <For each={people}>
                     {(person) => (
-                      <TailwindListboxOption class="focus:outline-none" value={person}>
+                      <TailwindListboxOption class="focus:outline-none group" value={person}>
                         {({ isActive, isSelected }) => (
                           <div
                             class={classNames(
                               isActive() ? 'text-amber-900 bg-amber-100' : 'text-gray-900',
+                              'group-hover:text-amber-900 group-hover:bg-amber-100',
                               'cursor-default select-none relative py-2 pl-10 pr-4',
                             )}
                           >
@@ -110,6 +111,7 @@ export default function Example(): JSX.Element {
                               <span
                                 class={classNames(
                                   isActive() ? 'text-amber-600' : 'text-amber-600',
+                                  'group-hover:text-amber-600',
                                   'absolute inset-y-0 left-0 flex items-center pl-3',
                                 )}
                               >
