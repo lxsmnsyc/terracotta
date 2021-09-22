@@ -1,20 +1,5 @@
 // Headless
 export {
-  HeadlessTransitionChild,
-  HeadlessTransitionChildProps,
-  HeadlessTransitionConsumer,
-  HeadlessTransitionConsumerProps,
-  HeadlessTransitionConsumerRenderProp,
-  HeadlessTransitionDuration,
-  HeadlessTransitionOptions,
-  HeadlessTransitionRoot,
-  HeadlessTransitionRootProps,
-  useHeadlessTransition,
-  useHeadlessTransitionChild,
-  useHeadlessTransitionRoot,
-  TransitionStates,
-} from './headless/Transition';
-export {
   HeadlessDisclosureChild,
   HeadlessDisclosureChildProps,
   HeadlessDisclosureChildRenderProp,

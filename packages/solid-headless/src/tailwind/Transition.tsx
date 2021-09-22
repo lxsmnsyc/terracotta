@@ -3,196 +3,234 @@ import {
   createContext,
   createEffect,
   createSignal,
+  onCleanup,
   Show,
+  untrack,
   useContext,
 } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
-import {
-  HeadlessTransitionChild,
-  HeadlessTransitionChildProps,
-  HeadlessTransitionConsumer,
-  HeadlessTransitionRoot,
-  TransitionStates,
-} from '../headless/Transition';
 import { excludeProps } from '../utils/exclude-props';
 import {
   DynamicProps,
   ValidConstructor,
 } from '../utils/dynamic-prop';
 
-interface TailwindTransitionContext {
-  baseEnter: number;
-  register: (duration: number) => void;
+interface TransitionRootContext {
+  show: boolean;
 }
 
-const TailwindTransitionContext = createContext<TailwindTransitionContext>();
+interface TransitioningContext {
+  mounted: boolean;
+}
 
-interface Styles {
-  class?: string;
-  className?: string;
+const TransitionRootContext = createContext<TransitionRootContext>();
+const TransitioningContext = createContext<TransitioningContext>();
+
+function useTransitionRootContext(componentName: string): TransitionRootContext {
+  const context = useContext(TransitionRootContext);
+
+  if (context) {
+    return context;
+  }
+  throw new Error(`<${componentName}> must be used inside a <TailwindTransiiton>`);
+}
+
+export type TransitionStates =
+  | 'before-enter'
+  | 'during-enter'
+  | 'after-enter'
+  | 'before-leave'
+  | 'during-leave'
+  | 'after-leave';
+
+export type TailwindTransitionBaseChildProps<T extends ValidConstructor = 'div'> = {
+  as?: T;
+  unmount?: boolean;
+  appear?: boolean;
   enter?: string;
   enterFrom?: string;
   enterTo?: string;
   leave?: string;
   leaveFrom?: string;
   leaveTo?: string;
-}
+};
 
-function applyStyle(state: TransitionStates, style: Styles): string {
-  const enter = style.enter ?? '';
-  const leave = style.leave ?? '';
-  const className = style.className ?? style.class ?? '';
-  switch (state) {
-    case 'before-enter':
-      return `${className} ${enter} ${style.enterFrom ?? ''}`;
-    case 'during-enter':
-    case 'after-enter':
-      return `${className} ${enter} ${style.enterTo ?? ''}`;
-    case 'before-leave':
-      return `${className} ${leave} ${style.leaveFrom ?? ''}`;
-    case 'during-leave':
-    case 'after-leave':
-      return `${className} ${leave} ${style.leaveTo ?? ''}`;
-    default:
-      return className;
+function toggleClassList(ref: HTMLElement, classes: string[]) {
+  for (let i = 0, len = classes.length; i < len; i++) {
+    if (classes[i]) {
+      ref.classList.toggle(classes[i]);
+    }
   }
 }
 
-export type TailwindTransitionChildProps<T extends ValidConstructor = 'div'> = {
-  as?: T;
-  unmount?: boolean;
-  enterDuration?: number;
-  leaveDuration?: number;
-} & Omit<DynamicProps<T>, keyof HeadlessTransitionChildProps | keyof Styles>
-  & Omit<HeadlessTransitionChildProps, 'duration'>
-  & Styles;
+export type TailwindTransitionChildProps<T extends ValidConstructor = 'div'> =
+  TailwindTransitionBaseChildProps<T>
+    & Omit<DynamicProps<T>, keyof TailwindTransitionBaseChildProps<T>>;
 
 export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
   props: TailwindTransitionChildProps<T>,
 ): JSX.Element {
-  const context = useContext(TailwindTransitionContext);
+  const values = useTransitionRootContext('TailwindTransitionChild');
+  const parent = useContext(TransitioningContext);
 
-  const [baseLeave, setBaseLeave] = createSignal(0);
+  const [mounted, setMounted] = createSignal(false);
+  const [visible, setVisible] = createSignal(values.show);
+  const [ref, setRef] = createSignal<HTMLElement>();
 
-  function register(duration: number) {
-    if (baseLeave() < duration) {
-      setBaseLeave(duration);
-    }
-  }
+  let initial = true;
 
   createEffect(() => {
-    if (context?.register) {
-      context.register(props.leaveDuration ?? 0);
+    if (parent?.mounted ?? true) {
+      const shouldShow = values.show;
+
+      if (shouldShow) {
+        setVisible(true);
+      }
+
+      const internalRef = ref();
+      // Check for the ref
+      if (internalRef) {
+        console.log(internalRef, internalRef.getBoundingClientRect());
+        const previous = untrack(() => visible());
+        // Check if we should show
+        if (shouldShow) {
+          const shouldAppear = props.appear ?? false;
+          // If it is the initial show or a switch of state, make sure to transition first
+          if ((initial && shouldAppear) || !previous) {
+            const allClass = `${props.enter ?? ''} ${props.enterFrom ?? ''}`;
+            toggleClassList(internalRef, allClass.split(' '));
+            initial = false;
+            console.log(internalRef.getBoundingClientRect());
+          }
+          const allClass = `${props.enter ?? ''} ${props.enterTo ?? ''}`;
+          toggleClassList(internalRef, allClass.split(' '));
+        } else {
+          if (previous) {
+            const allClass = `${props.leave ?? ''} ${props.leaveFrom ?? ''}`;
+            toggleClassList(internalRef, allClass.split(' '));
+            internalRef.getBoundingClientRect();
+          }
+          const allClass = `${props.leave ?? ''} ${props.leaveTo ?? ''}`;
+          toggleClassList(internalRef, allClass.split(' '));
+        }
+
+        if (!props.enter && shouldShow) {
+          setMounted(true);
+        }
+        const onTransitionRun = () => {
+          // clearTimeout(timeout);
+        };
+        const onTransitionEnd = () => {
+          if (shouldShow) {
+            setMounted(true);
+          } else {
+            setVisible(false);
+            setMounted(false);
+          }
+        };
+        internalRef.addEventListener('transitionrun', onTransitionRun, false);
+        internalRef.addEventListener('transitionend', onTransitionEnd, false);
+        onCleanup(() => {
+          internalRef.removeEventListener('transitionrun', onTransitionRun, false);
+          internalRef.removeEventListener('transitionend', onTransitionEnd, false);
+        });
+      } else {
+        // Ref is missing, reset initial
+        initial = true;
+      }
     }
   });
 
   return (
-    <TailwindTransitionContext.Provider
+    <TransitioningContext.Provider
       value={{
-        baseEnter: props.enterDuration ?? 0,
-        register,
+        get mounted() {
+          return mounted();
+        },
       }}
     >
-      <HeadlessTransitionChild
-        appear={props.appear}
-        show={props.show}
-        duration={{
-          enter: {
-            before: props.unmount ? undefined : context?.baseEnter,
-            during: props.enterDuration,
-          },
-          leave: {
-            before: baseLeave(),
-            after: props.leaveDuration,
-          },
-        }}
-      >
-        {(data) => (
-          <Show
-            when={props.unmount ?? true}
-            fallback={(
-              <Dynamic
-                component={props.as ?? 'div'}
-                {...excludeProps(props, [
-                  'as',
-                  'enter',
-                  'enterFrom',
-                  'enterTo',
-                  'leave',
-                  'leaveFrom',
-                  'leaveTo',
-                  'unmount',
-                  'leaveDuration',
-                  'enterDuration',
-                  'appear',
-                  'class',
-                  'className',
-                ])}
-                class={applyStyle(data(), props)}
-                style={{
-                  visibility: data() === 'after-leave' ? 'hidden' : 'visible',
-                }}
-              >
-                <HeadlessTransitionConsumer>
-                  {props.children}
-                </HeadlessTransitionConsumer>
-              </Dynamic>
-            )}
+      <Show
+        when={props.unmount ?? true}
+        fallback={(
+          <Dynamic
+            component={props.as ?? 'div'}
+            {...excludeProps(props, [
+              'as',
+              'enter',
+              'enterFrom',
+              'enterTo',
+              'leave',
+              'leaveFrom',
+              'leaveTo',
+              'unmount',
+            ])}
+            ref={(e) => {
+              const outerRef = props.ref;
+              if (typeof outerRef === 'function') {
+                outerRef(e);
+              } else {
+                props.ref = e;
+              }
+              setRef(e);
+            }}
           >
-            <Show when={data() !== 'after-leave'}>
-              <Dynamic
-                component={props.as ?? 'div'}
-                {...excludeProps(props, [
-                  'as',
-                  'enter',
-                  'enterFrom',
-                  'enterTo',
-                  'leave',
-                  'leaveFrom',
-                  'leaveTo',
-                  'unmount',
-                  'show',
-                  'leaveDuration',
-                  'enterDuration',
-                  'appear',
-                  'class',
-                  'className',
-                ])}
-                class={applyStyle(data(), props)}
-              >
-                <HeadlessTransitionConsumer>
-                  {props.children}
-                </HeadlessTransitionConsumer>
-              </Dynamic>
-            </Show>
-          </Show>
+            {props.children}
+          </Dynamic>
         )}
-      </HeadlessTransitionChild>
-    </TailwindTransitionContext.Provider>
+      >
+        <Show when={visible()}>
+          <Dynamic
+            component={props.as ?? 'div'}
+            {...excludeProps(props, [
+              'as',
+              'enter',
+              'enterFrom',
+              'enterTo',
+              'leave',
+              'leaveFrom',
+              'leaveTo',
+              'unmount',
+            ])}
+            ref={(e) => {
+              const outerRef = props.ref;
+              if (typeof outerRef === 'function') {
+                outerRef(e);
+              } else {
+                props.ref = e;
+              }
+              setRef(e);
+            }}
+          >
+            {props.children}
+          </Dynamic>
+        </Show>
+      </Show>
+    </TransitioningContext.Provider>
   );
 }
 
-export type TailwindTransitionProps<T extends ValidConstructor = 'div'> =
-  TailwindTransitionChildProps<T>;
+export type TailwindTransitionProps<T extends ValidConstructor = 'div'> = {
+  show: boolean;
+  appear?: boolean;
+} & TailwindTransitionChildProps<T>;
 
 export function TailwindTransition<T extends ValidConstructor = 'div'>(
   props: TailwindTransitionProps<T>,
 ): JSX.Element {
   return (
-    <HeadlessTransitionRoot
-      appear={props.appear}
-      show={props.show}
-      duration={{
-        enter: {
-          during: props.enterDuration,
-        },
-        leave: {
-          after: props.leaveDuration,
+    <TransitionRootContext.Provider
+      value={{
+        get show() {
+          return props.show;
         },
       }}
-      on={props.on}
     >
-      <TailwindTransitionChild {...props} />
-    </HeadlessTransitionRoot>
+      <TailwindTransitionChild
+        {...excludeProps(props, [
+          'appear',
+          'show',
+        ])}
+      />
+    </TransitionRootContext.Provider>
   );
 }

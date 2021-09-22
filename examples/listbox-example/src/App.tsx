@@ -78,8 +78,6 @@ export default function Example(): JSX.Element {
             {({ isOpen }) => (
               <TailwindTransition
                 show={isOpen()}
-                enterDuration={100}
-                leaveDuration={100}
                 enter="transition ease-in duration-100"
                 enterFrom="opacity-0"
                 enterTo="opacity-100"

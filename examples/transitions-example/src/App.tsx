@@ -11,16 +11,13 @@ export default function App(): JSX.Element {
       <div className="w-32 h-32">
         <TailwindTransition
           show={isShowing()}
-          enterDuration={400}
-          leaveDuration={200}
-          className="w-full h-full bg-white rounded-md shadow-lg transform transition"
-          enter="duration-[400ms]"
+          className="w-full h-full bg-white rounded-md shadow-lg"
+          enter="transform transition duration-[400ms]"
           enterFrom="opacity-0 rotate-[-120deg] scale-50"
           enterTo="opacity-100 rotate-0 scale-100"
-          leave="duration-200 ease-in-out"
-          leaveFrom="opacity-100 rotate-0 scale-100"
-          leaveTo="opacity-0 scale-95"
-          unmount={false}
+          leave="transform duration-200 transition ease-in-out"
+          leaveFrom="opacity-100 rotate-0 scale-100 "
+          leaveTo="opacity-0 scale-95 "
         />
       </div>
 
