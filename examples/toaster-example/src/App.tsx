@@ -5,7 +5,7 @@ import {
   Toaster,
   useToaster,
 } from 'solid-headless';
-import { createSignal, JSX, For, createEffect } from 'solid-js';
+import { createSignal, JSX, For, createEffect, onCleanup } from 'solid-js';
 
 const notifications = new Toaster<string>();
 
@@ -77,8 +77,22 @@ export default function App(): JSX.Element {
     setIsOpen(false);
   }
 
+  function clearNotifs() {
+    notifications.clear();
+  }
+
   createEffect(() => {
-    setIsOpen(notifs().length > 0);
+    if (notifs().length > 0) {
+      setIsOpen(true);
+
+      const timeout = setTimeout(() => {
+        closeNotifs();
+      }, 5000);
+
+      onCleanup(() => {
+        clearTimeout(timeout);
+      });
+    }
   });
 
   return (
@@ -91,20 +105,25 @@ export default function App(): JSX.Element {
         >
           Create toast
         </button>
+        <button
+          type="button"
+          onClick={closeNotifs}
+          class="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        >
+          Clear toasts
+        </button>
       </div>
       <TailwindToaster class="absolute fixed-0 left-0 bottom-0 m-4">
         <TailwindTransition
           show={isOpen()}
           class="relative transition"
           enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
+          enterFrom="opacity-0 scale-50 translate-y-full"
+          enterTo="opacity-100 scale-100 translate-y-0"
           leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-          afterLeave={() => {
-            notifications.clear();
-          }}
+          leaveFrom="opacity-100 scale-100 translate-y-0"
+          leaveTo="opacity-0 scale-50  translate-y-full"
+          afterLeave={clearNotifs}
         >
           <div class="flex flex-col w-96 max-h-96 overflow-hidden rounded-xl shadow-xl bg-opacity-25 bg-indigo-900 p-4 space-y-2">
             <div class="flex-none flex items-center justify-between">
