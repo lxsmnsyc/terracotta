@@ -11,12 +11,11 @@ Here's the current goals:
   - [x] Keyboard Interaction
   - [x] States
 - `Alert`
-  - [ ] Accessibility
-  - [ ] States
+  - [x] Accessibility
 - `Alert Dialog`
-  - [ ] Accessibility
-  - [ ] Keyboard Interaction
-  - [ ] States
+  - [x] Accessibility
+  - [x] Keyboard Interaction
+  - [x] States
 - `Breadcrumb`
   - [ ] Accessibility
   - [ ] States
@@ -45,9 +44,9 @@ Here's the current goals:
   - [x] Keyboard Interaction
   - [x] States
 - `Dialog (Popover)`
-  - [ ] Accessibility
-  - [ ] Keyboard Interaction
-  - [ ] States
+  - [x] Accessibility
+  - [x] Keyboard Interaction
+  - [x] States
 - `Disclosure (Show/Hide)`
   - [x] Accessibility
   - [x] Keyboard Interaction
