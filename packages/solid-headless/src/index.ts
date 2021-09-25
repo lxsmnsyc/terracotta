@@ -124,3 +124,7 @@ export {
 export {
   default as Fragment,
 } from './utils/Fragment';
+export {
+  TailwindAlert,
+  TailwindAlertProps,
+} from './tailwind/Alert';
