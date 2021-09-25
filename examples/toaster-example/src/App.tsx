@@ -84,15 +84,15 @@ export default function App(): JSX.Element {
   createEffect(() => {
     if (notifs().length > 0) {
       setIsOpen(true);
-
-      const timeout = setTimeout(() => {
-        closeNotifs();
-      }, 5000);
-
-      onCleanup(() => {
-        clearTimeout(timeout);
-      });
     }
+
+    const timeout = setTimeout(() => {
+      closeNotifs();
+    }, 5000);
+
+    onCleanup(() => {
+      clearTimeout(timeout);
+    });
   });
 
   return (
@@ -133,7 +133,14 @@ export default function App(): JSX.Element {
               </button>
             </div>
             <div class="flex-1 flex flex-col space-y-1 overflow-y-scroll rounded-lg">
-              <For each={notifs().slice(0).reverse()}>
+              <For
+                each={notifs().slice(0).reverse()}
+                fallback={(
+                  <div class="bg-indigo-900 bg-opacity-20 flex items-center justify-center text-bold text-white p-4">
+                    There are no notifications.
+                  </div>
+                )}
+              >
                 {(item) => (
                   <Toast id={item.id} message={item.data} />
                 )}
