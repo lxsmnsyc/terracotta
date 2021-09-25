@@ -128,3 +128,15 @@ export {
   TailwindAlert,
   TailwindAlertProps,
 } from './tailwind/Alert';
+export {
+  TailwindAlertDialog,
+  TailwindAlertDialogDescription,
+  TailwindAlertDialogDescriptionProps,
+  TailwindAlertDialogOverlay,
+  TailwindAlertDialogOverlayProps,
+  TailwindAlertDialogPanel,
+  TailwindAlertDialogPanelProps,
+  TailwindAlertDialogProps,
+  TailwindAlertDialogTitle,
+  TailwindAlertDialogTitleProps,
+} from './tailwind/AlertDialog';
