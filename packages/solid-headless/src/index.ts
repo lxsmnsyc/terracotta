@@ -140,3 +140,13 @@ export {
   TailwindAlertDialogTitle,
   TailwindAlertDialogTitleProps,
 } from './tailwind/AlertDialog';
+export {
+  TailwindToast,
+  TailwindToaster,
+  TailwindToastProps,
+  TailwindToasterProps,
+  ToastData,
+  Toaster,
+  ToasterListener,
+  useToaster,
+} from './tailwind/Toast';

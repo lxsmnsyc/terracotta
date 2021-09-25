@@ -39,6 +39,10 @@ export type TailwindTransitionBaseChildProps<T extends ValidConstructor = 'div'>
   leave?: string;
   leaveFrom?: string;
   leaveTo?: string;
+  beforeEnter?: () => void;
+  afterEnter?: () => void;
+  beforeLeave?: () => void;
+  afterLeave?: () => void;
 };
 
 function addClassList(ref: HTMLElement, classes: string[]) {
@@ -76,6 +80,7 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
         const enterTo = props.enterTo?.split(' ') ?? [];
         const entered = props.entered?.split(' ') ?? [];
 
+        props.beforeEnter?.();
         addClassList(element, enter);
         addClassList(element, enterFrom);
 
@@ -83,6 +88,7 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
           removeClassList(element, enter);
           removeClassList(element, enterTo);
           addClassList(element, entered);
+          props.afterEnter?.();
         };
 
         requestAnimationFrame(() => {
@@ -97,6 +103,7 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
       const leaveFrom = props.leaveFrom?.split(' ') ?? [];
       const leaveTo = props.leaveTo?.split(' ') ?? [];
       const entered = props.entered?.split(' ') ?? [];
+      props.beforeLeave?.();
       removeClassList(element, entered);
       addClassList(element, leave);
       addClassList(element, leaveFrom);
@@ -108,6 +115,7 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
         removeClassList(element, leave);
         removeClassList(element, leaveTo);
         setVisible(false);
+        props.afterLeave?.();
       };
       element.addEventListener('transitionend', endTransition, { once: true });
       element.addEventListener('animationend', endTransition, { once: true });
@@ -146,6 +154,12 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
             'leaveFrom',
             'leaveTo',
             'unmount',
+            'afterEnter',
+            'afterLeave',
+            'appear',
+            'beforeEnter',
+            'beforeLeave',
+            'entered',
           ])}
           ref={(e) => {
             const outerRef = props.ref;
@@ -173,6 +187,12 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
             'leaveFrom',
             'leaveTo',
             'unmount',
+            'afterEnter',
+            'afterLeave',
+            'appear',
+            'beforeEnter',
+            'beforeLeave',
+            'entered',
           ])}
           ref={(e) => {
             const outerRef = props.ref;

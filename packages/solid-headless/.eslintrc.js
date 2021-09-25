@@ -12,6 +12,7 @@ module.exports = {
     "react-hooks/rules-of-hooks": "off",
     "react/destructuring-assignment": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "no-restricted-syntax": "off"
   }
 };
