@@ -3,9 +3,7 @@ import {
   createContext,
   createEffect,
   createSignal,
-  onCleanup,
   Show,
-  untrack,
   useContext,
 } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
@@ -19,12 +17,7 @@ interface TransitionRootContext {
   show: boolean;
 }
 
-interface TransitioningContext {
-  mounted: boolean;
-}
-
 const TransitionRootContext = createContext<TransitionRootContext>();
-const TransitioningContext = createContext<TransitioningContext>();
 
 function useTransitionRootContext(componentName: string): TransitionRootContext {
   const context = useContext(TransitionRootContext);
@@ -32,16 +25,8 @@ function useTransitionRootContext(componentName: string): TransitionRootContext 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindTransiiton>`);
+  throw new Error(`<${componentName}> must be used inside a <TailwindTransition>`);
 }
-
-export type TransitionStates =
-  | 'before-enter'
-  | 'during-enter'
-  | 'after-enter'
-  | 'before-leave'
-  | 'during-leave'
-  | 'after-leave';
 
 export type TailwindTransitionBaseChildProps<T extends ValidConstructor = 'div'> = {
   as?: T;
@@ -50,16 +35,22 @@ export type TailwindTransitionBaseChildProps<T extends ValidConstructor = 'div'>
   enter?: string;
   enterFrom?: string;
   enterTo?: string;
+  entered?: string;
   leave?: string;
   leaveFrom?: string;
   leaveTo?: string;
 };
 
-function toggleClassList(ref: HTMLElement, classes: string[]) {
-  for (let i = 0, len = classes.length; i < len; i++) {
-    if (classes[i]) {
-      ref.classList.toggle(classes[i]);
-    }
+function addClassList(ref: HTMLElement, classes: string[]) {
+  const filtered = classes.filter((value) => value);
+  if (filtered.length) {
+    ref.classList.add(...filtered);
+  }
+}
+function removeClassList(ref: HTMLElement, classes: string[]) {
+  const filtered = classes.filter((value) => value);
+  if (filtered.length) {
+    ref.classList.remove(...filtered);
   }
 }
 
@@ -71,141 +62,132 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
   props: TailwindTransitionChildProps<T>,
 ): JSX.Element {
   const values = useTransitionRootContext('TailwindTransitionChild');
-  const parent = useContext(TransitioningContext);
 
-  const [mounted, setMounted] = createSignal(false);
   const [visible, setVisible] = createSignal(values.show);
   const [ref, setRef] = createSignal<HTMLElement>();
 
   let initial = true;
 
-  createEffect(() => {
-    if (parent?.mounted ?? true) {
-      const shouldShow = values.show;
+  function transition(element: HTMLElement, shouldEnter: boolean): void {
+    if (shouldEnter) {
+      if (initial) {
+        const enter = props.enter?.split(' ') ?? [];
+        const enterFrom = props.enterFrom?.split(' ') ?? [];
+        const enterTo = props.enterTo?.split(' ') ?? [];
+        const entered = props.entered?.split(' ') ?? [];
 
-      if (shouldShow) {
-        setVisible(true);
-      }
+        addClassList(element, enter);
+        addClassList(element, enterFrom);
 
-      const internalRef = ref();
-      // Check for the ref
-      if (internalRef) {
-        console.log(internalRef, internalRef.getBoundingClientRect());
-        const previous = untrack(() => visible());
-        // Check if we should show
-        if (shouldShow) {
-          const shouldAppear = props.appear ?? false;
-          // If it is the initial show or a switch of state, make sure to transition first
-          if ((initial && shouldAppear) || !previous) {
-            const allClass = `${props.enter ?? ''} ${props.enterFrom ?? ''}`;
-            toggleClassList(internalRef, allClass.split(' '));
-            initial = false;
-            console.log(internalRef.getBoundingClientRect());
-          }
-          const allClass = `${props.enter ?? ''} ${props.enterTo ?? ''}`;
-          toggleClassList(internalRef, allClass.split(' '));
-        } else {
-          if (previous) {
-            const allClass = `${props.leave ?? ''} ${props.leaveFrom ?? ''}`;
-            toggleClassList(internalRef, allClass.split(' '));
-            internalRef.getBoundingClientRect();
-          }
-          const allClass = `${props.leave ?? ''} ${props.leaveTo ?? ''}`;
-          toggleClassList(internalRef, allClass.split(' '));
-        }
-
-        if (!props.enter && shouldShow) {
-          setMounted(true);
-        }
-        const onTransitionRun = () => {
-          // clearTimeout(timeout);
+        const endTransition = () => {
+          removeClassList(element, enter);
+          removeClassList(element, enterTo);
+          addClassList(element, entered);
         };
-        const onTransitionEnd = () => {
-          if (shouldShow) {
-            setMounted(true);
-          } else {
-            setVisible(false);
-            setMounted(false);
-          }
-        };
-        internalRef.addEventListener('transitionrun', onTransitionRun, false);
-        internalRef.addEventListener('transitionend', onTransitionEnd, false);
-        onCleanup(() => {
-          internalRef.removeEventListener('transitionrun', onTransitionRun, false);
-          internalRef.removeEventListener('transitionend', onTransitionEnd, false);
+
+        requestAnimationFrame(() => {
+          removeClassList(element, enterFrom);
+          addClassList(element, enterTo);
+          element.addEventListener('transitionend', endTransition, { once: true });
+          element.addEventListener('animationend', endTransition, { once: true });
         });
-      } else {
-        // Ref is missing, reset initial
-        initial = true;
       }
+    } else {
+      const leave = props.leave?.split(' ') ?? [];
+      const leaveFrom = props.leaveFrom?.split(' ') ?? [];
+      const leaveTo = props.leaveTo?.split(' ') ?? [];
+      const entered = props.entered?.split(' ') ?? [];
+      removeClassList(element, entered);
+      addClassList(element, leave);
+      addClassList(element, leaveFrom);
+      requestAnimationFrame(() => {
+        removeClassList(element, leaveFrom);
+        addClassList(element, leaveTo);
+      });
+      const endTransition = () => {
+        removeClassList(element, leave);
+        removeClassList(element, leaveTo);
+        setVisible(false);
+      };
+      element.addEventListener('transitionend', endTransition, { once: true });
+      element.addEventListener('animationend', endTransition, { once: true });
+    }
+  }
+
+  createEffect(() => {
+    const shouldShow = values.show;
+
+    if (shouldShow) {
+      setVisible(true);
+    }
+
+    const internalRef = ref();
+    // Check for the ref
+    if (internalRef) {
+      transition(internalRef, shouldShow);
+    } else {
+      // Ref is missing, reset initial
+      initial = true;
     }
   });
 
   return (
-    <TransitioningContext.Provider
-      value={{
-        get mounted() {
-          return mounted();
-        },
-      }}
+    <Show
+      when={props.unmount ?? true}
+      fallback={(
+        <Dynamic
+          component={props.as ?? 'div'}
+          {...excludeProps(props, [
+            'as',
+            'enter',
+            'enterFrom',
+            'enterTo',
+            'leave',
+            'leaveFrom',
+            'leaveTo',
+            'unmount',
+          ])}
+          ref={(e) => {
+            const outerRef = props.ref;
+            if (typeof outerRef === 'function') {
+              outerRef(e);
+            } else {
+              props.ref = e;
+            }
+            setRef(e);
+          }}
+        >
+          {props.children}
+        </Dynamic>
+      )}
     >
-      <Show
-        when={props.unmount ?? true}
-        fallback={(
-          <Dynamic
-            component={props.as ?? 'div'}
-            {...excludeProps(props, [
-              'as',
-              'enter',
-              'enterFrom',
-              'enterTo',
-              'leave',
-              'leaveFrom',
-              'leaveTo',
-              'unmount',
-            ])}
-            ref={(e) => {
-              const outerRef = props.ref;
-              if (typeof outerRef === 'function') {
-                outerRef(e);
-              } else {
-                props.ref = e;
-              }
-              setRef(e);
-            }}
-          >
-            {props.children}
-          </Dynamic>
-        )}
-      >
-        <Show when={visible()}>
-          <Dynamic
-            component={props.as ?? 'div'}
-            {...excludeProps(props, [
-              'as',
-              'enter',
-              'enterFrom',
-              'enterTo',
-              'leave',
-              'leaveFrom',
-              'leaveTo',
-              'unmount',
-            ])}
-            ref={(e) => {
-              const outerRef = props.ref;
-              if (typeof outerRef === 'function') {
-                outerRef(e);
-              } else {
-                props.ref = e;
-              }
-              setRef(e);
-            }}
-          >
-            {props.children}
-          </Dynamic>
-        </Show>
+      <Show when={visible()}>
+        <Dynamic
+          component={props.as ?? 'div'}
+          {...excludeProps(props, [
+            'as',
+            'enter',
+            'enterFrom',
+            'enterTo',
+            'leave',
+            'leaveFrom',
+            'leaveTo',
+            'unmount',
+          ])}
+          ref={(e) => {
+            const outerRef = props.ref;
+            if (typeof outerRef === 'function') {
+              outerRef(e);
+            } else {
+              props.ref = e;
+            }
+            setRef(e);
+          }}
+        >
+          {props.children}
+        </Dynamic>
       </Show>
-    </TransitioningContext.Provider>
+    </Show>
   );
 }
 

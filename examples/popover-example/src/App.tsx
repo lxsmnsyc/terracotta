@@ -4,7 +4,7 @@ import {
   TailwindPopoverPanel,
   TailwindTransition,
 } from 'solid-headless';
-import { For, JSX, Show } from 'solid-js';
+import { For, JSX } from 'solid-js';
 
 function IconOne() {
   return (
@@ -152,8 +152,6 @@ export default function App(): JSX.Element {
             </TailwindPopoverButton>
             <TailwindTransition
               show={isOpen()}
-              enterDuration={200}
-              leaveDuration={150}
               enter="transition duration-200"
               enterFrom="opacity-0 translate-y-1"
               enterTo="opacity-100 translate-y-0"
