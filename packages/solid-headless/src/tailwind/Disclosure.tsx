@@ -2,6 +2,7 @@ import { JSX } from 'solid-js/jsx-runtime';
 import {
   createContext,
   createEffect,
+  createSignal,
   createUniqueId,
   onCleanup,
   Show,
@@ -95,20 +96,24 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
   const context = useTailwindDisclosureContext('TailwindDisclosureButton');
   const properties = useHeadlessDisclosureChild();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   createEffect(() => {
-    const toggle = () => {
-      if (!properties.disabled()) {
-        properties.setState(!properties.isOpen());
-      }
-    };
+    const ref = internalRef();
 
-    internalRef.addEventListener('click', toggle);
+    if (ref) {
+      const toggle = () => {
+        if (!properties.disabled()) {
+          properties.setState(!properties.isOpen());
+        }
+      };
 
-    onCleanup(() => {
-      internalRef.removeEventListener('click', toggle);
-    });
+      ref.addEventListener('click', toggle);
+
+      onCleanup(() => {
+        ref.removeEventListener('click', toggle);
+      });
+    }
   });
 
   return (
@@ -130,7 +135,7 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
         } else {
           props.ref = e;
         }
-        internalRef = e;
+        setInternalRef(e);
       }}
       data-sh-disclosure-button={context.ownerID}
     >

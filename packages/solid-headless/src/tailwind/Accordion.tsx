@@ -5,6 +5,7 @@ import {
   Show,
   createEffect,
   onCleanup,
+  createSignal,
 } from 'solid-js';
 import { JSX } from 'solid-js/jsx-runtime';
 import {
@@ -238,55 +239,59 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
   const itemContext = useTailwindAccordionItemContext('TailwindAccordionButton');
   const properties = useHeadlessSelectOptionChild();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   createEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (!(properties.disabled() || props.disabled)) {
-        switch (e.key) {
-          case 'ArrowUp':
-            rootContext.setPrevChecked(internalRef);
-            break;
-          case 'ArrowDown':
-            rootContext.setNextChecked(internalRef);
-            break;
-          case 'Home':
-            rootContext.setFirstChecked();
-            break;
-          case 'End':
-            rootContext.setLastChecked();
-            break;
-          default:
-            break;
-        }
-      }
-    };
-    const onClick = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        properties.select();
-      }
-    };
-    const onFocus = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        properties.focus();
-      }
-    };
-    const onBlur = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        properties.blur();
-      }
-    };
+    const ref = internalRef();
 
-    internalRef.addEventListener('keydown', onKeyDown);
-    internalRef.addEventListener('click', onClick);
-    internalRef.addEventListener('focus', onFocus);
-    internalRef.addEventListener('blur', onBlur);
-    onCleanup(() => {
-      internalRef.removeEventListener('keydown', onKeyDown);
-      internalRef.removeEventListener('click', onClick);
-      internalRef.removeEventListener('focus', onFocus);
-      internalRef.removeEventListener('blur', onBlur);
-    });
+    if (ref) {
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (!(properties.disabled() || props.disabled)) {
+          switch (e.key) {
+            case 'ArrowUp':
+              rootContext.setPrevChecked(ref);
+              break;
+            case 'ArrowDown':
+              rootContext.setNextChecked(ref);
+              break;
+            case 'Home':
+              rootContext.setFirstChecked();
+              break;
+            case 'End':
+              rootContext.setLastChecked();
+              break;
+            default:
+              break;
+          }
+        }
+      };
+      const onClick = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          properties.select();
+        }
+      };
+      const onFocus = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          properties.focus();
+        }
+      };
+      const onBlur = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          properties.blur();
+        }
+      };
+
+      ref.addEventListener('keydown', onKeyDown);
+      ref.addEventListener('click', onClick);
+      ref.addEventListener('focus', onFocus);
+      ref.addEventListener('blur', onBlur);
+      onCleanup(() => {
+        ref.removeEventListener('keydown', onKeyDown);
+        ref.removeEventListener('click', onClick);
+        ref.removeEventListener('focus', onFocus);
+        ref.removeEventListener('blur', onBlur);
+      });
+    }
   });
 
   return (
@@ -308,7 +313,7 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
         } else {
           props.ref = e;
         }
-        internalRef = e;
+        setInternalRef(e);
       }}
       data-sh-accordion-button={rootContext.ownerID}
     >

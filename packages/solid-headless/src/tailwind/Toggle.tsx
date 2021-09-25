@@ -23,19 +23,22 @@ export function TailwindToggle<T extends ValidConstructor = 'button'>(
   const [state, setState] = createSignal(untrack(() => !!props.defaultPressed));
   const toggleID = createUniqueId();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   createEffect(() => {
-    const onClick = () => {
-      setState(!state());
+    const ref = internalRef();
+    if (ref) {
+      const onClick = () => {
+        setState(!state());
 
-      props.onChange?.(state());
-    };
+        props.onChange?.(state());
+      };
 
-    internalRef.addEventListener('click', onClick);
-    onCleanup(() => {
-      internalRef.removeEventListener('click', onClick);
-    });
+      ref.addEventListener('click', onClick);
+      onCleanup(() => {
+        ref.removeEventListener('click', onClick);
+      });
+    }
   });
 
   return (
@@ -56,7 +59,7 @@ export function TailwindToggle<T extends ValidConstructor = 'button'>(
         } else {
           props.ref = e;
         }
-        internalRef = e;
+        setInternalRef(e);
       }}
     />
   );

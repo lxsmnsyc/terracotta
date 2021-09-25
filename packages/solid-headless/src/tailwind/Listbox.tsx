@@ -1,6 +1,7 @@
 import {
   createContext,
   createEffect,
+  createSignal,
   createUniqueId,
   onCleanup,
   untrack,
@@ -177,35 +178,39 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
   const context = useTailwindListboxContext('TailwindListboxButton');
   const properties = useHeadlessDisclosureChild();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   createEffect(() => {
-    const toggle = () => {
-      if (!properties.disabled()) {
-        properties.setState(!properties.isOpen());
-      }
-    };
+    const ref = internalRef();
 
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (!properties.disabled()) {
-        switch (e.key) {
-          case 'ArrowUp':
-          case 'ArrowDown':
-            toggle();
-            break;
-          default:
-            break;
+    if (ref) {
+      const toggle = () => {
+        if (!properties.disabled()) {
+          properties.setState(!properties.isOpen());
         }
-      }
-    };
+      };
 
-    internalRef.addEventListener('click', toggle);
-    internalRef.addEventListener('keydown', onKeyDown);
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (!properties.disabled()) {
+          switch (e.key) {
+            case 'ArrowUp':
+            case 'ArrowDown':
+              toggle();
+              break;
+            default:
+              break;
+          }
+        }
+      };
 
-    onCleanup(() => {
-      internalRef.removeEventListener('click', toggle);
-      internalRef.removeEventListener('keydown', onKeyDown);
-    });
+      ref.addEventListener('click', toggle);
+      ref.addEventListener('keydown', onKeyDown);
+
+      onCleanup(() => {
+        ref.removeEventListener('click', toggle);
+        ref.removeEventListener('keydown', onKeyDown);
+      });
+    }
   });
 
   return (
@@ -228,7 +233,7 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
         } else {
           props.ref = e;
         }
-        internalRef = e;
+        setInternalRef(e);
         context.anchor = e;
       }}
       data-sh-listbox-button={context.ownerID}
@@ -253,57 +258,72 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
   const selectProperties = useHeadlessSelectChild();
   const properties = useHeadlessDisclosureChild();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   function setChecked(node: Element) {
     (node as HTMLElement).focus();
   }
 
   function setNextChecked(node: Element) {
-    const radios = internalRef.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
-    for (let i = 0, len = radios.length; i < len; i += 1) {
-      if (node === radios[i]) {
-        if (i === len - 1) {
-          setChecked(radios[0]);
-        } else {
-          setChecked(radios[i + 1]);
+    const ref = internalRef();
+    if (ref) {
+      const radios = ref.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
+      for (let i = 0, len = radios.length; i < len; i += 1) {
+        if (node === radios[i]) {
+          if (i === len - 1) {
+            setChecked(radios[0]);
+          } else {
+            setChecked(radios[i + 1]);
+          }
+          break;
         }
-        break;
       }
     }
   }
 
   function setPrevChecked(node: Element) {
-    const radios = internalRef.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
-    for (let i = 0, len = radios.length; i < len; i += 1) {
-      if (node === radios[i]) {
-        if (i === 0) {
-          setChecked(radios[len - 1]);
-        } else {
-          setChecked(radios[i - 1]);
+    const ref = internalRef();
+    if (ref) {
+      const radios = ref.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
+      for (let i = 0, len = radios.length; i < len; i += 1) {
+        if (node === radios[i]) {
+          if (i === 0) {
+            setChecked(radios[len - 1]);
+          } else {
+            setChecked(radios[i - 1]);
+          }
+          break;
         }
-        break;
       }
     }
   }
 
   function setFirstChecked() {
-    const radios = internalRef.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
-    setChecked(radios[0]);
+    const ref = internalRef();
+    if (ref) {
+      const radios = ref.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
+      setChecked(radios[0]);
+    }
   }
 
   function setLastChecked() {
-    const radios = internalRef.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
-    setChecked(radios[radios.length - 1]);
+    const ref = internalRef();
+    if (ref) {
+      const radios = ref.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
+      setChecked(radios[radios.length - 1]);
+    }
   }
 
   function setFirstMatch(character: string) {
-    const lower = character.toLowerCase();
-    const radios = internalRef.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
-    for (let i = 0, l = radios.length; i < l; i += 1) {
-      if (radios[i].textContent?.toLowerCase().startsWith(lower)) {
-        setChecked(radios[i]);
-        return;
+    const ref = internalRef();
+    if (ref) {
+      const lower = character.toLowerCase();
+      const radios = ref.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
+      for (let i = 0, l = radios.length; i < l; i += 1) {
+        if (radios[i].textContent?.toLowerCase().startsWith(lower)) {
+          setChecked(radios[i]);
+          return;
+        }
       }
     }
   }
@@ -315,15 +335,18 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
   });
 
   createEffect(() => {
-    const onBlur = (e: FocusEvent) => {
-      if (!e.relatedTarget || !internalRef.contains(e.relatedTarget as Node)) {
-        properties.setState(false);
-      }
-    };
-    internalRef.addEventListener('focusout', onBlur);
-    onCleanup(() => {
-      internalRef.removeEventListener('focusout', onBlur);
-    });
+    const ref = internalRef();
+    if (ref) {
+      const onBlur = (e: FocusEvent) => {
+        if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
+          properties.setState(false);
+        }
+      };
+      ref.addEventListener('focusout', onBlur);
+      onCleanup(() => {
+        ref.removeEventListener('focusout', onBlur);
+      });
+    }
   });
 
   return (
@@ -358,7 +381,7 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
           } else {
             props.ref = e;
           }
-          internalRef = e;
+          setInternalRef(e);
         }}
       >
         <HeadlessSelectChild>
@@ -383,7 +406,7 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
   const disclosure = useHeadlessDisclosureChild();
   const properties = useHeadlessSelectChild();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   let characters = '';
   let timeout: ReturnType<typeof setTimeout> | undefined;
@@ -395,97 +418,104 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
   });
 
   createEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (!(properties.disabled() || props.disabled)) {
-        switch (e.key) {
-          case 'ArrowLeft':
-            if (rootContext.horizontal) {
-              context.setPrevChecked(internalRef);
-            }
-            break;
-          case 'ArrowUp':
-            if (!rootContext.horizontal) {
-              context.setPrevChecked(internalRef);
-            }
-            break;
-          case 'ArrowRight':
-            if (rootContext.horizontal) {
-              context.setNextChecked(internalRef);
-            }
-            break;
-          case 'ArrowDown':
-            if (!rootContext.horizontal) {
-              context.setNextChecked(internalRef);
-            }
-            break;
-          case ' ':
-          case 'Enter':
-            if (internalRef.tagName === 'BUTTON') {
-              e.preventDefault();
-            }
-            properties.select(props.value);
-            if (!rootContext.multiple) {
-              disclosure.setState(false);
-            }
-            break;
-          case 'Home':
-            context.setFirstChecked();
-            break;
-          case 'End':
-            context.setLastChecked();
-            break;
-          default:
-            if (e.key.length === 1) {
-              characters = `${characters}${e.key}`;
-              if (timeout) {
-                clearTimeout(timeout);
-              }
-              timeout = setTimeout(() => {
-                context.setFirstMatch(characters);
-                characters = '';
-              }, 100);
-            }
-            break;
-        }
-      }
-    };
-    const onClick = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        properties.select(props.value);
-        if (!rootContext.multiple) {
-          disclosure.setState(false);
-        }
-      }
-    };
-    const onFocus = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        properties.focus(props.value);
-      }
-    };
-    const onBlur = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        properties.blur();
-      }
-    };
+    const ref = internalRef();
 
-    internalRef.addEventListener('keydown', onKeyDown);
-    internalRef.addEventListener('click', onClick);
-    internalRef.addEventListener('focus', onFocus);
-    internalRef.addEventListener('blur', onBlur);
-    onCleanup(() => {
-      internalRef.removeEventListener('keydown', onKeyDown);
-      internalRef.removeEventListener('click', onClick);
-      internalRef.removeEventListener('focus', onFocus);
-      internalRef.removeEventListener('blur', onBlur);
-    });
+    if (ref) {
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (!(properties.disabled() || props.disabled)) {
+          switch (e.key) {
+            case 'ArrowLeft':
+              if (rootContext.horizontal) {
+                context.setPrevChecked(ref);
+              }
+              break;
+            case 'ArrowUp':
+              if (!rootContext.horizontal) {
+                context.setPrevChecked(ref);
+              }
+              break;
+            case 'ArrowRight':
+              if (rootContext.horizontal) {
+                context.setNextChecked(ref);
+              }
+              break;
+            case 'ArrowDown':
+              if (!rootContext.horizontal) {
+                context.setNextChecked(ref);
+              }
+              break;
+            case ' ':
+            case 'Enter':
+              if (ref.tagName === 'BUTTON') {
+                e.preventDefault();
+              }
+              properties.select(props.value);
+              if (!rootContext.multiple) {
+                disclosure.setState(false);
+              }
+              break;
+            case 'Home':
+              context.setFirstChecked();
+              break;
+            case 'End':
+              context.setLastChecked();
+              break;
+            default:
+              if (e.key.length === 1) {
+                characters = `${characters}${e.key}`;
+                if (timeout) {
+                  clearTimeout(timeout);
+                }
+                timeout = setTimeout(() => {
+                  context.setFirstMatch(characters);
+                  characters = '';
+                }, 100);
+              }
+              break;
+          }
+        }
+      };
+      const onClick = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          properties.select(props.value);
+          if (!rootContext.multiple) {
+            disclosure.setState(false);
+          }
+        }
+      };
+      const onFocus = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          properties.focus(props.value);
+        }
+      };
+      const onBlur = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          properties.blur();
+        }
+      };
+  
+      ref.addEventListener('keydown', onKeyDown);
+      ref.addEventListener('click', onClick);
+      ref.addEventListener('focus', onFocus);
+      ref.addEventListener('blur', onBlur);
+      onCleanup(() => {
+        ref.removeEventListener('keydown', onKeyDown);
+        ref.removeEventListener('click', onClick);
+        ref.removeEventListener('focus', onFocus);
+        ref.removeEventListener('blur', onBlur);
+      });
+    }
   });
 
   createEffect(() => {
-    if (disclosure.isOpen()
-      && untrack(() => properties.isSelected(props.value))
-      && !(properties.disabled() || props.disabled)
-    ) {
-      internalRef.focus();
+    const ref = internalRef();
+    if (ref) {
+      if (disclosure.isOpen()
+        && untrack(() => properties.isSelected(props.value))
+        && !(properties.disabled() || props.disabled)
+      ) {
+        ref.focus();
+      }
     }
   });
 
@@ -510,7 +540,7 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
         } else {
           props.ref = e;
         }
-        internalRef = e;
+        setInternalRef(e);
       }}
     >
       <HeadlessSelectOption

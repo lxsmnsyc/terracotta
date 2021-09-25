@@ -1,6 +1,7 @@
 import {
   createContext,
   createEffect,
+  createSignal,
   createUniqueId,
   onCleanup,
   useContext,
@@ -173,7 +174,7 @@ export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
   const context = useTailwindSelectContext('TailwindSelect');
   const properties = useHeadlessSelectChild();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   let characters = '';
   let timeout: ReturnType<typeof setTimeout> | undefined;
@@ -185,97 +186,100 @@ export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
   });
 
   createEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (!(properties.disabled() || props.disabled)) {
-        switch (e.key) {
-          case 'ArrowUp':
-            if (!context.horizontal) {
-              context.setPrevChecked(internalRef);
-            }
-            break;
-          case 'ArrowLeft':
-            if (context.horizontal) {
-              context.setPrevChecked(internalRef);
-            }
-            break;
-          case 'ArrowDown':
-            if (!context.horizontal) {
-              context.setNextChecked(internalRef);
-            }
-            break;
-          case 'ArrowRight':
-            if (context.horizontal) {
-              context.setNextChecked(internalRef);
-            }
-            break;
-          case ' ':
-          case 'Enter':
-            if (internalRef.tagName === 'BUTTON') {
-              e.preventDefault();
-            }
-            properties.select(props.value);
-            break;
-          case 'Home':
-            context.setFirstChecked();
-            break;
-          case 'End':
-            context.setLastChecked();
-            break;
-          default:
-            if (e.key.length === 1) {
-              characters = `${characters}${e.key}`;
-              if (timeout) {
-                clearTimeout(timeout);
+    const ref = internalRef();
+    if (ref) {
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (!(properties.disabled() || props.disabled)) {
+          switch (e.key) {
+            case 'ArrowUp':
+              if (!context.horizontal) {
+                context.setPrevChecked(ref);
               }
-              timeout = setTimeout(() => {
-                context.setFirstMatch(characters);
-                characters = '';
-              }, 100);
-            }
-            break;
+              break;
+            case 'ArrowLeft':
+              if (context.horizontal) {
+                context.setPrevChecked(ref);
+              }
+              break;
+            case 'ArrowDown':
+              if (!context.horizontal) {
+                context.setNextChecked(ref);
+              }
+              break;
+            case 'ArrowRight':
+              if (context.horizontal) {
+                context.setNextChecked(ref);
+              }
+              break;
+            case ' ':
+            case 'Enter':
+              if (ref.tagName === 'BUTTON') {
+                e.preventDefault();
+              }
+              properties.select(props.value);
+              break;
+            case 'Home':
+              context.setFirstChecked();
+              break;
+            case 'End':
+              context.setLastChecked();
+              break;
+            default:
+              if (e.key.length === 1) {
+                characters = `${characters}${e.key}`;
+                if (timeout) {
+                  clearTimeout(timeout);
+                }
+                timeout = setTimeout(() => {
+                  context.setFirstMatch(characters);
+                  characters = '';
+                }, 100);
+              }
+              break;
+          }
         }
-      }
-    };
-    const onClick = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        properties.select(props.value);
-      }
-    };
-    const onFocus = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        properties.focus(props.value);
-      }
-    };
-    const onBlur = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        properties.blur();
-      }
-    };
-    const onMouseEnter = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        internalRef.focus();
-      }
-    };
-    const onMouseLeave = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        internalRef.blur();
-      }
-    };
+      };
+      const onClick = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          properties.select(props.value);
+        }
+      };
+      const onFocus = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          properties.focus(props.value);
+        }
+      };
+      const onBlur = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          properties.blur();
+        }
+      };
+      const onMouseEnter = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          ref.focus();
+        }
+      };
+      const onMouseLeave = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          ref.blur();
+        }
+      };
 
-    internalRef.addEventListener('keydown', onKeyDown);
-    internalRef.addEventListener('click', onClick);
-    internalRef.addEventListener('focus', onFocus);
-    internalRef.addEventListener('blur', onBlur);
-    internalRef.addEventListener('mouseenter', onMouseEnter);
-    internalRef.addEventListener('mouseleave', onMouseLeave);
-    onCleanup(() => {
-      internalRef.removeEventListener('keydown', onKeyDown);
-      internalRef.removeEventListener('click', onClick);
-      internalRef.removeEventListener('focus', onFocus);
-      internalRef.removeEventListener('blur', onBlur);
-      internalRef.removeEventListener('mouseenter', onMouseEnter);
-      internalRef.removeEventListener('mouseleave', onMouseLeave);
-    });
+      ref.addEventListener('keydown', onKeyDown);
+      ref.addEventListener('click', onClick);
+      ref.addEventListener('focus', onFocus);
+      ref.addEventListener('blur', onBlur);
+      ref.addEventListener('mouseenter', onMouseEnter);
+      ref.addEventListener('mouseleave', onMouseLeave);
+      onCleanup(() => {
+        ref.removeEventListener('keydown', onKeyDown);
+        ref.removeEventListener('click', onClick);
+        ref.removeEventListener('focus', onFocus);
+        ref.removeEventListener('blur', onBlur);
+        ref.removeEventListener('mouseenter', onMouseEnter);
+        ref.removeEventListener('mouseleave', onMouseLeave);
+      });
+    }
   });
 
   return (
@@ -299,7 +303,7 @@ export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
         } else {
           props.ref = e;
         }
-        internalRef = e;
+        setInternalRef(e);
       }}
     >
       <HeadlessSelectOption

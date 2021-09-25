@@ -5,6 +5,7 @@ import {
   useContext,
   Show,
   onCleanup,
+  createSignal,
 } from 'solid-js';
 import { JSX } from 'solid-js/jsx-runtime';
 import { Dynamic } from 'solid-js/web';
@@ -184,64 +185,67 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
   const context = useTailwindDialogContext('TailwindDialogPanel');
   const properties = useHeadlessDisclosureChild();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   createEffect(() => {
-    if (properties.isOpen()) {
-      const initialNodes = getFocusableElements(internalRef);
-      if (initialNodes.length) {
-        initialNodes[0].focus();
-      }
+    const ref = internalRef();
+    if (ref) {
+      if (properties.isOpen()) {
+        const initialNodes = getFocusableElements(ref);
+        if (initialNodes.length) {
+          initialNodes[0].focus();
+        }
 
-      const onKeyDown = (e: KeyboardEvent) => {
-        if (!props.disabled) {
-          if (e.key === 'Tab') {
-            e.preventDefault();
+        const onKeyDown = (e: KeyboardEvent) => {
+          if (!props.disabled) {
+            if (e.key === 'Tab') {
+              e.preventDefault();
 
-            const nodes = getFocusableElements(internalRef);
-            if (e.shiftKey) {
-              if (!document.activeElement || !internalRef.contains(document.activeElement)) {
-                nodes[nodes.length - 1].focus();
+              const nodes = getFocusableElements(ref);
+              if (e.shiftKey) {
+                if (!document.activeElement || !ref.contains(document.activeElement)) {
+                  nodes[nodes.length - 1].focus();
+                } else {
+                  for (let i = 0, len = nodes.length; i < len; i += 1) {
+                    if (document.activeElement === nodes[i]) {
+                      if (i === 0) {
+                        nodes[len - 1].focus();
+                      } else {
+                        nodes[i - 1].focus();
+                      }
+                      break;
+                    }
+                  }
+                }
+              } else if (!document.activeElement || !ref.contains(document.activeElement)) {
+                nodes[0].focus();
               } else {
                 for (let i = 0, len = nodes.length; i < len; i += 1) {
                   if (document.activeElement === nodes[i]) {
-                    if (i === 0) {
-                      nodes[len - 1].focus();
+                    if (i === len - 1) {
+                      nodes[0].focus();
                     } else {
-                      nodes[i - 1].focus();
+                      nodes[i + 1].focus();
                     }
                     break;
                   }
                 }
               }
-            } else if (!document.activeElement || !internalRef.contains(document.activeElement)) {
-              nodes[0].focus();
-            } else {
-              for (let i = 0, len = nodes.length; i < len; i += 1) {
-                if (document.activeElement === nodes[i]) {
-                  if (i === len - 1) {
-                    nodes[0].focus();
-                  } else {
-                    nodes[i + 1].focus();
-                  }
-                  break;
-                }
+            } else if (e.key === 'Escape') {
+              if (context.onClose) {
+                context.onClose();
+              } else {
+                properties.setState(false);
               }
             }
-          } else if (e.key === 'Escape') {
-            if (context.onClose) {
-              context.onClose();
-            } else {
-              properties.setState(false);
-            }
           }
-        }
-      };
+        };
 
-      internalRef.addEventListener('keydown', onKeyDown);
-      onCleanup(() => {
-        internalRef.removeEventListener('keydown', onKeyDown);
-      });
+        ref.addEventListener('keydown', onKeyDown);
+        onCleanup(() => {
+          ref.removeEventListener('keydown', onKeyDown);
+        });
+      }
     }
   });
 
@@ -261,7 +265,7 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
         } else {
           props.ref = e;
         }
-        internalRef = e;
+        setInternalRef(e);
       }}
     >
       <HeadlessDisclosureChild>
@@ -282,22 +286,26 @@ export function TailwindDialogOverlay<T extends ValidConstructor = 'p'>(
   const context = useTailwindDialogContext('TailwindDialogOverlay');
   const properties = useHeadlessDisclosureChild();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   createEffect(() => {
-    const onClick = () => {
-      if (context.onClose) {
-        context.onClose();
-      } else {
-        properties.setState(false);
-      }
-    };
+    const ref = internalRef();
 
-    internalRef.addEventListener('click', onClick);
+    if (ref) {
+      const onClick = () => {
+        if (context.onClose) {
+          context.onClose();
+        } else {
+          properties.setState(false);
+        }
+      };
 
-    onCleanup(() => {
-      internalRef.removeEventListener('click', onClick);
-    });
+      ref.addEventListener('click', onClick);
+
+      onCleanup(() => {
+        ref.removeEventListener('click', onClick);
+      });
+    }
   });
 
   return (
@@ -315,7 +323,7 @@ export function TailwindDialogOverlay<T extends ValidConstructor = 'p'>(
         } else {
           props.ref = e;
         }
-        internalRef = e;
+        setInternalRef(e);
       }}
     >
       <HeadlessDisclosureChild>

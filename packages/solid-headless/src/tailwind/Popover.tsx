@@ -2,6 +2,7 @@ import { JSX } from 'solid-js/jsx-runtime';
 import {
   createContext,
   createEffect,
+  createSignal,
   createUniqueId,
   onCleanup,
   Show,
@@ -110,20 +111,23 @@ export function TailwindPopoverButton<T extends ValidConstructor = 'button'>(
   const context = useTailwindPopoverContext('TailwindPopoverButton');
   const properties = useHeadlessDisclosureChild();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   createEffect(() => {
-    const toggle = () => {
-      if (!properties.disabled()) {
-        properties.setState(!properties.isOpen());
-      }
-    };
+    const ref = internalRef();
+    if (ref) {
+      const toggle = () => {
+        if (!properties.disabled()) {
+          properties.setState(!properties.isOpen());
+        }
+      };
 
-    internalRef.addEventListener('click', toggle);
+      ref.addEventListener('click', toggle);
 
-    onCleanup(() => {
-      internalRef.removeEventListener('click', toggle);
-    });
+      onCleanup(() => {
+        ref.removeEventListener('click', toggle);
+      });
+    }
   });
 
   return (
@@ -145,7 +149,7 @@ export function TailwindPopoverButton<T extends ValidConstructor = 'button'>(
         } else {
           props.ref = e;
         }
-        internalRef = e;
+        setInternalRef(e);
         context.anchor = e;
       }}
       data-sh-popover-button={context.ownerID}
@@ -169,68 +173,71 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
   const context = useTailwindPopoverContext('TailwindPopoverPanel');
   const properties = useHeadlessDisclosureChild();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   createEffect(() => {
-    if (properties.isOpen()) {
-      const initialNodes = getFocusableElements(internalRef);
-      if (initialNodes.length) {
-        initialNodes[0].focus();
-      }
+    const ref = internalRef();
+    if (ref) {
+      if (properties.isOpen()) {
+        const initialNodes = getFocusableElements(ref);
+        if (initialNodes.length) {
+          initialNodes[0].focus();
+        }
 
-      const onKeyDown = (e: KeyboardEvent) => {
-        if (!props.disabled) {
-          if (e.key === 'Tab') {
-            e.preventDefault();
+        const onKeyDown = (e: KeyboardEvent) => {
+          if (!props.disabled) {
+            if (e.key === 'Tab') {
+              e.preventDefault();
 
-            const nodes = getFocusableElements(internalRef);
-            if (e.shiftKey) {
-              if (!document.activeElement || !internalRef.contains(document.activeElement)) {
-                nodes[nodes.length - 1].focus();
+              const nodes = getFocusableElements(ref);
+              if (e.shiftKey) {
+                if (!document.activeElement || !ref.contains(document.activeElement)) {
+                  nodes[nodes.length - 1].focus();
+                } else {
+                  for (let i = 0, len = nodes.length; i < len; i += 1) {
+                    if (document.activeElement === nodes[i]) {
+                      if (i === 0) {
+                        nodes[len - 1].focus();
+                      } else {
+                        nodes[i - 1].focus();
+                      }
+                      break;
+                    }
+                  }
+                }
+              } else if (!document.activeElement || !ref.contains(document.activeElement)) {
+                nodes[0].focus();
               } else {
                 for (let i = 0, len = nodes.length; i < len; i += 1) {
                   if (document.activeElement === nodes[i]) {
-                    if (i === 0) {
-                      nodes[len - 1].focus();
+                    if (i === len - 1) {
+                      nodes[0].focus();
                     } else {
-                      nodes[i - 1].focus();
+                      nodes[i + 1].focus();
                     }
                     break;
                   }
                 }
               }
-            } else if (!document.activeElement || !internalRef.contains(document.activeElement)) {
-              nodes[0].focus();
-            } else {
-              for (let i = 0, len = nodes.length; i < len; i += 1) {
-                if (document.activeElement === nodes[i]) {
-                  if (i === len - 1) {
-                    nodes[0].focus();
-                  } else {
-                    nodes[i + 1].focus();
-                  }
-                  break;
-                }
-              }
+            } else if (e.key === 'Escape') {
+              properties.setState(false);
             }
-          } else if (e.key === 'Escape') {
+          }
+        };
+
+        const onBlur = (e: FocusEvent) => {
+          if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
             properties.setState(false);
           }
-        }
-      };
+        };
 
-      const onBlur = (e: FocusEvent) => {
-        if (!e.relatedTarget || !internalRef.contains(e.relatedTarget as Node)) {
-          properties.setState(false);
-        }
-      };
-
-      internalRef.addEventListener('keydown', onKeyDown);
-      internalRef.addEventListener('focusout', onBlur);
-      onCleanup(() => {
-        internalRef.removeEventListener('keydown', onKeyDown);
-        internalRef.removeEventListener('focusout', onBlur);
-      });
+        ref.addEventListener('keydown', onKeyDown);
+        ref.addEventListener('focusout', onBlur);
+        onCleanup(() => {
+          ref.removeEventListener('keydown', onKeyDown);
+          ref.removeEventListener('focusout', onBlur);
+        });
+      }
     }
   });
 
@@ -254,7 +261,7 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
             } else {
               props.ref = e;
             }
-            internalRef = e;
+            setInternalRef(e);
           }}
         >
           <HeadlessDisclosureChild>
@@ -280,7 +287,7 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
             } else {
               props.ref = e;
             }
-            internalRef = e;
+            setInternalRef(e);
           }}
         >
           <HeadlessDisclosureChild>
@@ -303,18 +310,21 @@ export function TailwindPopoverOverlay<T extends ValidConstructor = 'p'>(
   const context = useTailwindPopoverContext('TailwindPopoverOverlay');
   const properties = useHeadlessDisclosureChild();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   createEffect(() => {
-    const onClick = () => {
-      properties.setState(false);
-    };
+    const ref = internalRef();
+    if (ref) {
+      const onClick = () => {
+        properties.setState(false);
+      };
 
-    internalRef.addEventListener('click', onClick);
+      ref.addEventListener('click', onClick);
 
-    onCleanup(() => {
-      internalRef.removeEventListener('click', onClick);
-    });
+      onCleanup(() => {
+        ref.removeEventListener('click', onClick);
+      });
+    }
   });
 
   return (
@@ -332,7 +342,7 @@ export function TailwindPopoverOverlay<T extends ValidConstructor = 'p'>(
         } else {
           props.ref = e;
         }
-        internalRef = e;
+        setInternalRef(e);
       }}
     >
       <HeadlessDisclosureChild>

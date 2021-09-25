@@ -1,4 +1,4 @@
-import { createEffect, createUniqueId, onCleanup } from 'solid-js';
+import { createEffect, createSignal, createUniqueId, onCleanup } from 'solid-js';
 import { JSX } from 'solid-js/jsx-runtime';
 import { Dynamic } from 'solid-js/web';
 import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
@@ -14,21 +14,24 @@ export function TailwindButton<T extends ValidConstructor = 'button'>(
 ): JSX.Element {
   const buttonID = createUniqueId();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   createEffect(() => {
-    // This behavior is redundant for buttons
-    if (internalRef.tagName !== 'BUTTON') {
-      const onKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          internalRef.click();
-        }
-      };
+    const ref = internalRef();
+    if (ref) {
+      // This behavior is redundant for buttons
+      if (ref.tagName !== 'BUTTON') {
+        const onKeyDown = (e: KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            ref.click();
+          }
+        };
 
-      internalRef.addEventListener('keydown', onKeyDown);
-      onCleanup(() => {
-        internalRef.removeEventListener('keydown', onKeyDown);
-      });
+        ref.addEventListener('keydown', onKeyDown);
+        onCleanup(() => {
+          ref.removeEventListener('keydown', onKeyDown);
+        });
+      }
     }
   });
 
@@ -51,7 +54,7 @@ export function TailwindButton<T extends ValidConstructor = 'button'>(
         } else {
           props.ref = e;
         }
-        internalRef = e;
+        setInternalRef(e);
       }}
     />
   );

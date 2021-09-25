@@ -1,6 +1,7 @@
 import {
   createContext,
   createEffect,
+  createSignal,
   createUniqueId,
   onCleanup,
   useContext,
@@ -167,59 +168,62 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
   const descriptionID = createUniqueId();
   const labelID = createUniqueId();
 
-  let internalRef: HTMLElement;
+  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
 
   createEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (!(properties.disabled() || props.disabled)) {
-        switch (e.key) {
-          case 'ArrowLeft':
-          case 'ArrowUp':
-            context.setPrevChecked(internalRef);
-            break;
-          case 'ArrowRight':
-          case 'ArrowDown':
-            context.setNextChecked(internalRef);
-            break;
-          case ' ':
-          case 'Enter':
-            if (internalRef.tagName === 'BUTTON') {
-              e.preventDefault();
-            }
-            context.setChecked(internalRef);
-            break;
-          default:
-            break;
+    const ref = internalRef();
+    if (ref) {
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (!(properties.disabled() || props.disabled)) {
+          switch (e.key) {
+            case 'ArrowLeft':
+            case 'ArrowUp':
+              context.setPrevChecked(ref);
+              break;
+            case 'ArrowRight':
+            case 'ArrowDown':
+              context.setNextChecked(ref);
+              break;
+            case ' ':
+            case 'Enter':
+              if (ref.tagName === 'BUTTON') {
+                e.preventDefault();
+              }
+              context.setChecked(ref);
+              break;
+            default:
+              break;
+          }
         }
-      }
-    };
-    const onClick = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        properties.select(props.value);
-      }
-    };
-    const onFocus = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        properties.focus(props.value);
-        properties.select(props.value);
-      }
-    };
-    const onBlur = () => {
-      if (!(properties.disabled() || props.disabled)) {
-        properties.blur();
-      }
-    };
+      };
+      const onClick = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          properties.select(props.value);
+        }
+      };
+      const onFocus = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          properties.focus(props.value);
+          properties.select(props.value);
+        }
+      };
+      const onBlur = () => {
+        if (!(properties.disabled() || props.disabled)) {
+          properties.blur();
+        }
+      };
 
-    internalRef.addEventListener('keydown', onKeyDown);
-    internalRef.addEventListener('click', onClick);
-    internalRef.addEventListener('focus', onFocus);
-    internalRef.addEventListener('blur', onBlur);
-    onCleanup(() => {
-      internalRef.removeEventListener('keydown', onKeyDown);
-      internalRef.removeEventListener('click', onClick);
-      internalRef.removeEventListener('focus', onFocus);
-      internalRef.removeEventListener('blur', onBlur);
-    });
+      ref.addEventListener('keydown', onKeyDown);
+      ref.addEventListener('click', onClick);
+      ref.addEventListener('focus', onFocus);
+      ref.addEventListener('blur', onBlur);
+      onCleanup(() => {
+        ref.removeEventListener('keydown', onKeyDown);
+        ref.removeEventListener('click', onClick);
+        ref.removeEventListener('focus', onFocus);
+        ref.removeEventListener('blur', onBlur);
+      });
+    }
   });
 
   return (
@@ -249,7 +253,7 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
           } else {
             props.ref = e;
           }
-          internalRef = e;
+          setInternalRef(e);
         }}
         data-sh-radio={context.ownerID}
       >
