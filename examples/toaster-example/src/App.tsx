@@ -131,7 +131,7 @@ export default function App(): JSX.Element {
           leaveTo="opacity-0 scale-50  translate-y-full"
           afterLeave={clearNotifs}
         >
-          <div class="flex flex-col w-96 max-h-96 overflow-hidden rounded-xl shadow-xl bg-opacity-25 bg-rose-900 p-4 space-y-2">
+          <div class="flex flex-col w-80 max-h-96 overflow-hidden rounded-xl shadow-xl bg-opacity-25 bg-rose-900 p-4 space-y-2">
             <div class="flex-none flex items-center justify-between">
               <span class="text-xl font-bold text-white">Notifications</span>
               <button type="button" onClick={closeNotifs} class="w-6 h-6 p-1 text-white bg-opacity-25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
