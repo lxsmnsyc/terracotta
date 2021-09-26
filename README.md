@@ -127,6 +127,9 @@ Others:
 
 - `Transition`
   - [X] States
+- `Toaster`/`Toast`
+  - [X] States
+  - [X] Accessibility
 
 ## FAQ
 
