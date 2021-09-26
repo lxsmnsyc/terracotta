@@ -43,7 +43,7 @@ function Toast(props: ToastProps): JSX.Element {
   return (
     <TailwindTransition
       show={isOpen()}
-      class="relative transition rounded-lg p-4 bg-opacity-25 bg-indigo-900"
+      class="relative transition rounded-lg p-4 bg-opacity-25 bg-rose-900"
       enter="ease-out duration-300"
       enterFrom="opacity-0 scale-50"
       enterTo="opacity-100 scale-100"
@@ -56,7 +56,7 @@ function Toast(props: ToastProps): JSX.Element {
     >
       <TailwindToast class="flex justify-between items-center">
         <span class="text-sm font-semibold text-white">{props.message}</span>
-        <button type="button" class="w-6 h-6 p-1 text-white bg-opacity-25 bg-indigo-900 rounded-full" onClick={dismiss}>
+        <button type="button" class="w-6 h-6 p-1 text-white bg-opacity-25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75" onClick={dismiss}>
           <CloseIcon />
         </button>
       </TailwindToast>
@@ -125,10 +125,10 @@ export default function App(): JSX.Element {
           leaveTo="opacity-0 scale-50  translate-y-full"
           afterLeave={clearNotifs}
         >
-          <div class="flex flex-col w-96 max-h-96 overflow-hidden rounded-xl shadow-xl bg-opacity-25 bg-indigo-900 p-4 space-y-2">
+          <div class="flex flex-col w-96 max-h-96 overflow-hidden rounded-xl shadow-xl bg-opacity-25 bg-rose-900 p-4 space-y-2">
             <div class="flex-none flex items-center justify-between">
               <span class="text-xl font-bold text-white">Notifications</span>
-              <button type="button" onClick={closeNotifs} class="w-6 h-6 p-1 text-white bg-opacity-25 bg-indigo-900 rounded-full">
+              <button type="button" onClick={closeNotifs} class="w-6 h-6 p-1 text-white bg-opacity-25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
                 <CloseIcon />
               </button>
             </div>
@@ -136,7 +136,7 @@ export default function App(): JSX.Element {
               <For
                 each={notifs().slice(0).reverse()}
                 fallback={(
-                  <div class="bg-indigo-900 bg-opacity-20 flex items-center justify-center text-bold text-white p-4">
+                  <div class="bg-rose-900 bg-opacity-20 flex items-center justify-center text-bold text-white p-4">
                     There are no notifications.
                   </div>
                 )}
