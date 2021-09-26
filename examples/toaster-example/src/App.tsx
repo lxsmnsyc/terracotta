@@ -5,7 +5,13 @@ import {
   Toaster,
   useToaster,
 } from 'solid-headless';
-import { createSignal, JSX, For, createEffect, onCleanup } from 'solid-js';
+import {
+  createSignal,
+  JSX,
+  For,
+  createEffect,
+  onCleanup,
+} from 'solid-js';
 
 const notifications = new Toaster<string>();
 
