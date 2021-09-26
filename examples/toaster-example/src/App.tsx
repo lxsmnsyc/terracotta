@@ -61,8 +61,8 @@ function Toast(props: ToastProps): JSX.Element {
       }}
     >
       <TailwindToast class="flex justify-between items-center">
-        <span class="text-sm font-semibold text-white">{props.message}</span>
-        <button type="button" class="w-6 h-6 p-1 text-white bg-opacity-25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75" onClick={dismiss}>
+        <span class="flex-1 text-sm font-semibold text-white">{props.message}</span>
+        <button type="button" class="flex-none w-6 h-6 p-1 text-white bg-opacity-25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75" onClick={dismiss}>
           <CloseIcon />
         </button>
       </TailwindToast>
@@ -74,7 +74,7 @@ export default function App(): JSX.Element {
   const notifs = useToaster(notifications);
 
   function createToast() {
-    notifications.create(`This toast is created on ${new Date().toDateString()}`);
+    notifications.create(`This toast is created on ${new Date().toTimeString()}`);
   }
 
   const [isOpen, setIsOpen] = createSignal(false);
@@ -138,7 +138,7 @@ export default function App(): JSX.Element {
                 <CloseIcon />
               </button>
             </div>
-            <div class="flex-1 flex flex-col space-y-1 overflow-y-scroll rounded-lg">
+            <div class="flex-1 flex flex-col-reverse space-y-reverse space-y-1 overflow-y-scroll rounded-lg">
               <For
                 each={notifs().slice(0).reverse()}
                 fallback={(
