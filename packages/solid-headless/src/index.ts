@@ -162,3 +162,13 @@ export {
   ToasterListener,
   useToaster,
 } from './tailwind/Toast';
+export {
+  TailwindCheckbox,
+  TailwindCheckboxDescription,
+  TailwindCheckboxDescriptionProps,
+  TailwindCheckboxIndicator,
+  TailwindCheckboxIndicatorProps,
+  TailwindCheckboxLabel,
+  TailwindCheckboxLabelProps,
+  TailwindCheckboxProps,
+} from './tailwind/Checkbox';
