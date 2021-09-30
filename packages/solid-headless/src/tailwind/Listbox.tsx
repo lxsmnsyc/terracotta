@@ -116,6 +116,9 @@ export function TailwindListbox<V, T extends ValidConstructor = typeof Fragment>
         ])}
         aria-labelledby={labelID}
         data-sh-listbox={ownerID}
+        disabled={props.disabled}
+        aria-disabled={props.disabled}
+        data-sh-disabled={props.disabled}
       >
         <HeadlessSelectRoot<V>
           multiple={props.multiple}
@@ -225,6 +228,9 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
       aria-haspopup="listbox"
       aria-expanded={properties.isOpen()}
       aria-controls={context.optionsID}
+      aria-disabled={properties.disabled()}
+      data-sh-expanded={properties.isOpen()}
+      data-sh-disabled={properties.disabled()}
       disabled={properties.disabled()}
       ref={(e) => {
         const outerRef = props.ref;
@@ -373,6 +379,7 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
         aria-labelledby={context.buttonID}
         aria-orientation={context.horizontal ? 'horizontal' : 'vertical'}
         data-sh-listbox-options={context.ownerID}
+        data-sh-disabled={properties.disabled()}
         tabindex={0}
         ref={(e) => {
           const outerRef = props.ref;
@@ -493,7 +500,7 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
           properties.blur();
         }
       };
-  
+
       ref.addEventListener('keydown', onKeyDown);
       ref.addEventListener('click', onClick);
       ref.addEventListener('focus', onFocus);
@@ -530,9 +537,12 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
       ])}
       disabled={props.disabled}
       role="option"
+      aria-disabled={props.disabled}
       aria-selected={properties.isSelected(props.value)}
       tabindex={-1}
       data-sh-listbox-option={rootContext.ownerID}
+      data-sh-disabled={props.disabled}
+      data-sh-selected={properties.isSelected(props.value)}
       ref={(e) => {
         const outerRef = props.ref;
         if (typeof outerRef === 'function') {

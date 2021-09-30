@@ -52,6 +52,7 @@ export function TailwindToggle<T extends ValidConstructor = 'button'>(
       ])}
       data-sh-toggle={toggleID}
       aria-pressed={state()}
+      data-sh-pressed={state()}
       ref={(e) => {
         const outerRef = props.ref;
         if (typeof outerRef === 'function') {

@@ -130,6 +130,9 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
           role="radiogroup"
           aria-labelledby={labelID}
           aria-describedby={descriptionID}
+          aria-disabled={props.disabled}
+          data-sh-disabled={props.disabled}
+          disabled={props.disabled}
           ref={(e) => {
             const outerRef = props.ref;
             if (typeof outerRef === 'function') {
@@ -241,11 +244,6 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
           'value',
           'disabled',
         ])}
-        role="radio"
-        aria-checked={properties.isSelected(props.value)}
-        aria-labelledby={labelID}
-        aria-describedby={descriptionID}
-        tabindex={properties.isSelected(props.value) ? 0 : -1}
         ref={(e) => {
           const outerRef = props.ref;
           if (typeof outerRef === 'function') {
@@ -255,7 +253,16 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
           }
           setInternalRef(e);
         }}
+        role="radio"
+        disabled={props.disabled}
+        tabindex={properties.isSelected(props.value) ? 0 : -1}
+        aria-disabled={props.disabled}
+        aria-checked={properties.isSelected(props.value)}
+        aria-labelledby={labelID}
+        aria-describedby={descriptionID}
         data-sh-radio={context.ownerID}
+        data-sh-checked={properties.isSelected(props.value)}
+        data-sh-disabled={props.disabled}
       >
         <HeadlessSelectOption
           value={props.value}

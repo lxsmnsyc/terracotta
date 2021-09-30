@@ -85,6 +85,9 @@ export function TailwindPopover<T extends ValidConstructor = 'div'>(
           'defaultOpen',
           'onChange',
         ])}
+        disabled={props.disabled}
+        aria-disabled={props.disabled}
+        data-sh-disabled={props.disabled}
         data-sh-popover={ownerID}
       >
         <HeadlessDisclosureRoot
@@ -139,8 +142,11 @@ export function TailwindPopoverButton<T extends ValidConstructor = 'button'>(
       ])}
       as={props.as}
       id={context.buttonID}
+      aria-disabled={properties.disabled()}
       aria-expanded={properties.isOpen()}
       aria-controls={properties.isOpen() && context.panelID}
+      data-sh-disabled={properties.disabled()}
+      data-sh-expanded={properties.isOpen()}
       disabled={properties.disabled()}
       ref={(e) => {
         const outerRef = props.ref;

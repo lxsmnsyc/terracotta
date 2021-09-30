@@ -46,6 +46,7 @@ export function TailwindButton<T extends ValidConstructor = 'button'>(
         'as',
       ])}
       aria-disabled={props.disabled}
+      data-sh-disabled={props.disabled}
       data-sh-button={buttonID}
       ref={(e) => {
         const outerRef = props.ref;

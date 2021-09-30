@@ -70,6 +70,9 @@ export function TailwindDisclosure<T extends ValidConstructor = typeof Fragment>
           'defaultOpen',
           'onChange',
         ])}
+        disabled={props.disabled}
+        aria-disabled={props.disabled}
+        data-sh-disabled={props.disabled}
         data-sh-disclosure={ownerID}
       >
         <HeadlessDisclosureRoot
@@ -125,8 +128,11 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
       ])}
       as={props.as}
       id={context.buttonID}
+      aria-disabled={properties.disabled()}
       aria-expanded={properties.isOpen()}
       aria-controls={properties.isOpen() && context.panelID}
+      data-sh-expanded={properties.isOpen()}
+      data-sh-disabled={properties.disabled()}
       disabled={properties.disabled()}
       ref={(e) => {
         const outerRef = props.ref;

@@ -71,6 +71,9 @@ export function TailwindCheckbox<T extends ValidConstructor = typeof Fragment>(
           'defaultChecked',
           'onChange',
         ])}
+        disabled={props.disabled}
+        aria-disabled={props.disabled}
+        data-sh-disabled={props.disabled}
         data-sh-checkbox={ownerID}
       >
         <HeadlessToggleRoot
@@ -129,12 +132,15 @@ export function TailwindCheckboxIndicator<T extends ValidConstructor = 'button'>
         'as',
         'children',
       ])}
-      role="checkbox"
-      aria-checked={state.checked() == null ? 'mixed' : state.checked()}
-      data-sh-checkbox-indicator={context.ownerID}
       id={context.indicatorID}
+      role="checkbox"
+      data-sh-checkbox-indicator={context.ownerID}
       aria-labelledby={context.labelID}
       aria-describedby={context.descriptionID}
+      aria-disabled={state.disabled()}
+      aria-checked={state.checked() == null ? 'mixed' : state.checked()}
+      data-sh-disabled={state.disabled()}
+      data-sh-checked={state.checked()}
       disabled={state.disabled()}
       tabindex={0}
       ref={(e) => {
@@ -170,6 +176,7 @@ export function TailwindCheckboxLabel<T extends ValidConstructor = 'label'>(
         'as',
       ])}
       id={context.labelID}
+      for={context.indicatorID}
       data-sh-checkbox-label={context.ownerID}
     >
       {props.children}

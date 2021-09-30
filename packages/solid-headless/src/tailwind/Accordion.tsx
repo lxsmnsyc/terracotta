@@ -150,6 +150,9 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
           }
           internalRef = e;
         }}
+        disabled={props.disabled}
+        aria-disabled={props.disabled}
+        data-sh-disabled={props.disabled}
         data-sh-accordion={ownerID}
       >
         <HeadlessSelectRoot
@@ -192,6 +195,9 @@ export function TailwindAccordionItem<V, T extends ValidConstructor = 'div'>(
           'value',
           'disabled',
         ])}
+        disabled={props.disabled}
+        aria-disabled={props.disabled}
+        data-sh-disabled={props.disabled}
       >
         <HeadlessSelectOption
           value={props.value}
@@ -305,6 +311,10 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
       id={itemContext.buttonID}
       aria-expanded={properties.isSelected()}
       aria-controls={properties.isSelected() && itemContext.panelID}
+      aria-disabled={properties.disabled()}
+      data-sh-disabled={properties.disabled()}
+      data-sh-expanded={properties.isSelected()}
+      data-sh-active={properties.isActive()}
       disabled={properties.disabled()}
       ref={(e) => {
         const outerRef = props.ref;

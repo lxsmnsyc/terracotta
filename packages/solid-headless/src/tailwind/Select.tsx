@@ -135,9 +135,12 @@ export function TailwindSelect<V, T extends ValidConstructor = 'ul'>(
         ])}
         id={ownerID}
         role="listbox"
+        disabled={props.disabled}
         aria-multiselectable={props.multiple}
         aria-orientation={props.horizontal ? 'horizontal' : 'vertical'}
+        aria-disabled={props.disabled}
         data-sh-select={ownerID}
+        data-sh-disabled={props.disabled}
         ref={(e) => {
           const outerRef = props.ref;
           if (typeof outerRef === 'function') {
@@ -293,9 +296,12 @@ export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
       ])}
       disabled={props.disabled}
       role="option"
-      aria-selected={properties.isSelected(props.value)}
       tabindex={-1}
+      aria-selected={properties.isSelected(props.value)}
+      aria-disabled={props.disabled}
       data-sh-select-option={context.ownerID}
+      data-sh-selected={properties.isSelected(props.value)}
+      data-sh-disabled={props.disabled}
       ref={(e) => {
         const outerRef = props.ref;
         if (typeof outerRef === 'function') {
