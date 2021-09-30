@@ -3,6 +3,7 @@ import {
   createContext,
   createEffect,
   createSignal,
+  onCleanup,
   Show,
   useContext,
 } from 'solid-js';
@@ -80,16 +81,16 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
         const enterTo = props.enterTo?.split(' ') ?? [];
         const entered = props.entered?.split(' ') ?? [];
 
-        props.beforeEnter?.();
-        addClassList(element, enter);
-        addClassList(element, enterFrom);
-
         const endTransition = () => {
           removeClassList(element, enter);
           removeClassList(element, enterTo);
           addClassList(element, entered);
           props.afterEnter?.();
         };
+
+        props.beforeEnter?.();
+        addClassList(element, enter);
+        addClassList(element, enterFrom);
 
         requestAnimationFrame(() => {
           removeClassList(element, enterFrom);
@@ -130,7 +131,6 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
     }
 
     const internalRef = ref();
-    // Check for the ref
     if (internalRef) {
       transition(internalRef, shouldShow);
     } else {

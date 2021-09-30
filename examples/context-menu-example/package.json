@@ -1,0 +1,28 @@
+{
+  "name": "context-menu-example",
+  "version": "0.7.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.2.6",
+    "babel-preset-solid": "^1.1.1",
+    "eslint": "^7.32.0",
+    "eslint-config-lxsmnsyc": "^0.2.3",
+    "postcss": "^8.3.5",
+    "typescript": "^4.3.2",
+    "vite": "^2.4.4",
+    "vite-plugin-solid": "^2.0.1"
+  },
+  "dependencies": {
+    "solid-headless": "0.7.0",
+    "solid-js": "^1.1.0",
+    "tailwindcss": "^2.2.4"
+  },
+  "private": true,
+  "publishConfig": {
+    "access": "restricted"
+  }
+}

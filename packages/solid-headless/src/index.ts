@@ -178,3 +178,13 @@ export {
   TailwindMenuItemProps,
   TailwindMenuProps,
 } from './tailwind/Menu';
+export {
+  TailwindContextMenu,
+  TailwindContextMenuBoundary,
+  TailwindContextMenuBoundaryProps,
+  TailwindContextMenuOverlay,
+  TailwindContextMenuOverlayProps,
+  TailwindContextMenuPanel,
+  TailwindContextMenuPanelProps,
+  TailwindContextMenuProps,
+} from './tailwind/ContextMenu';
