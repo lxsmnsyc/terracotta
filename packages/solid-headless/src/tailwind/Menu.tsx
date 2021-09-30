@@ -78,7 +78,7 @@ export function TailwindMenu<T extends ValidConstructor = 'ul'>(
   }
 
   function setNextChecked(node: Element) {
-    const radios = internalRef.querySelectorAll(`[data-sh-select-option="${ownerID}"]`);
+    const radios = internalRef.querySelectorAll(`[data-sh-menu-item="${ownerID}"]`);
     for (let i = 0, len = radios.length; i < len; i += 1) {
       if (node === radios[i]) {
         if (i === len - 1) {
@@ -92,7 +92,7 @@ export function TailwindMenu<T extends ValidConstructor = 'ul'>(
   }
 
   function setPrevChecked(node: Element) {
-    const radios = internalRef.querySelectorAll(`[data-sh-select-option="${ownerID}"]`);
+    const radios = internalRef.querySelectorAll(`[data-sh-menu-item="${ownerID}"]`);
     for (let i = 0, len = radios.length; i < len; i += 1) {
       if (node === radios[i]) {
         if (i === 0) {
@@ -106,18 +106,18 @@ export function TailwindMenu<T extends ValidConstructor = 'ul'>(
   }
 
   function setFirstChecked() {
-    const radios = internalRef.querySelectorAll(`[data-sh-select-option="${ownerID}"]`);
+    const radios = internalRef.querySelectorAll(`[data-sh-menu-item="${ownerID}"]`);
     setChecked(radios[0]);
   }
 
   function setLastChecked() {
-    const radios = internalRef.querySelectorAll(`[data-sh-select-option="${ownerID}"]`);
+    const radios = internalRef.querySelectorAll(`[data-sh-menu-item="${ownerID}"]`);
     setChecked(radios[radios.length - 1]);
   }
 
   function setFirstMatch(character: string) {
     const lower = character.toLowerCase();
-    const radios = internalRef.querySelectorAll(`[data-sh-select-option="${ownerID}"]`);
+    const radios = internalRef.querySelectorAll(`[data-sh-menu-item="${ownerID}"]`);
     for (let i = 0, l = radios.length; i < l; i += 1) {
       if (radios[i].textContent?.toLowerCase().startsWith(lower)) {
         setChecked(radios[i]);
