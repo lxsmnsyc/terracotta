@@ -172,3 +172,9 @@ export {
   TailwindCheckboxLabelProps,
   TailwindCheckboxProps,
 } from './tailwind/Checkbox';
+export {
+  TailwindMenu,
+  TailwindMenuItem,
+  TailwindMenuItemProps,
+  TailwindMenuProps,
+} from './tailwind/Menu';
