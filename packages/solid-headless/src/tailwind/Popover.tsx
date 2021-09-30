@@ -27,6 +27,7 @@ interface TailwindPopoverContext {
   ownerID: string;
   buttonID: string;
   panelID: string;
+  hovering: boolean;
   anchor?: HTMLElement | null;
 }
 
@@ -49,6 +50,7 @@ export type TailwindPopoverProps<T extends ValidConstructor = 'div'> = {
 export function TailwindPopover<T extends ValidConstructor = 'div'>(
   props: TailwindPopoverProps<T>,
 ): JSX.Element {
+  const [hovering, setHovering] = createSignal(false);
   const ownerID = createUniqueId();
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
@@ -73,6 +75,12 @@ export function TailwindPopover<T extends ValidConstructor = 'div'>(
         ownerID,
         buttonID,
         panelID,
+        get hovering() {
+          return hovering();
+        },
+        set hovering(value: boolean) {
+          setHovering(value);
+        },
       }}
     >
       <Dynamic
@@ -129,6 +137,20 @@ export function TailwindPopoverButton<T extends ValidConstructor = 'button'>(
 
       onCleanup(() => {
         ref.removeEventListener('click', toggle);
+      });
+
+      const onMouseEnter = () => {
+        context.hovering = true;
+      };
+      const onMouseLeave = () => {
+        context.hovering = false;
+      };
+
+      ref.addEventListener('mouseenter', onMouseEnter);
+      ref.addEventListener('mouseleave', onMouseLeave);
+      onCleanup(() => {
+        ref.removeEventListener('mouseenter', onMouseEnter);
+        ref.removeEventListener('mouseleave', onMouseLeave);
       });
     }
   });
@@ -232,6 +254,9 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
         };
 
         const onBlur = (e: FocusEvent) => {
+          if (context.hovering) {
+            return;
+          }
           if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
             properties.setState(false);
           }
