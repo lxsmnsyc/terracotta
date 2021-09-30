@@ -6,26 +6,7 @@ import {
   TailwindMenu,
   TailwindMenuItem,
 } from 'solid-headless';
-import { createSignal, For, JSX } from 'solid-js';
-
-function ChevronDownIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      {...props}
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width={2}
-        d="M19 9l-7 7-7-7"
-      />
-    </svg>
-  );
-}
+import { createSignal, JSX } from 'solid-js';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -50,7 +31,7 @@ export default function App(): JSX.Element {
             <TailwindContextMenuBoundary
               class={classNames(
                 isOpen() && 'text-opacity-90',
-                'text-white group border border-dashed border-white p-16 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
+                'text-white group border border-dashed border-white p-32 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
               )}
               onContextMenu={(e: MouseEvent) => {
                 if (e.currentTarget) {
@@ -66,11 +47,11 @@ export default function App(): JSX.Element {
               show={isOpen()}
               class="absolute inset-0 w-0 h-0"
               enter="transition duration-200"
-              enterFrom="opacity-0 scale-90"
-              enterTo="opacity-100 scale-100"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
               leave="transition duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-90"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
             >
               <TailwindContextMenuPanel
                 unmount={false}
