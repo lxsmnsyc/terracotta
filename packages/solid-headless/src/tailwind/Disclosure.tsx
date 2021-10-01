@@ -118,7 +118,7 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
 
     if (ref instanceof HTMLElement) {
       const toggle = () => {
-        if (!properties.disabled()) {
+        if (!(properties.disabled() || props.disabled)) {
           properties.setState(!properties.isOpen());
         }
       };
@@ -136,14 +136,15 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
       component={TailwindButton}
       {...excludeProps(props, [
         'children',
+        'ref',
       ])}
       id={context.buttonID}
-      aria-disabled={properties.disabled()}
+      aria-disabled={properties.disabled() || props.disabled}
       aria-expanded={properties.isOpen()}
       aria-controls={properties.isOpen() && context.panelID}
       data-sh-expanded={properties.isOpen()}
-      data-sh-disabled={properties.disabled()}
-      disabled={properties.disabled()}
+      data-sh-disabled={properties.disabled() || props.disabled}
+      disabled={properties.disabled() || props.disabled}
       ref={createRef(props, (e) => {
         setInternalRef(() => e);
       })}
