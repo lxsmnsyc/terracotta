@@ -61,6 +61,8 @@ export function TailwindButton<T extends ValidConstructor = 'button'>(
       disabled={props.disabled}
       {...excludeProps(props, [
         'as',
+        'disabled',
+        'ref',
       ])}
       aria-disabled={props.disabled}
       data-sh-disabled={props.disabled}
