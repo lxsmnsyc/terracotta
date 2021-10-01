@@ -1,8 +1,19 @@
-import { createUniqueId } from 'solid-js';
-import { JSX } from 'solid-js/jsx-runtime';
-import { Dynamic } from 'solid-js/web';
-import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
-import { excludeProps } from '../utils/exclude-props';
+import {
+  createUniqueId,
+} from 'solid-js';
+import {
+  JSX,
+} from 'solid-js/jsx-runtime';
+import {
+  Dynamic,
+} from 'solid-js/web';
+import {
+  DynamicProps,
+  ValidConstructor,
+} from '../utils/dynamic-prop';
+import {
+  excludeProps,
+} from '../utils/exclude-props';
 
 export type TailwindAlertProps<T extends ValidConstructor = 'div'> = {
   as?: T,
