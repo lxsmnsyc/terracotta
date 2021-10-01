@@ -14,3 +14,12 @@ export function queryAccordionButtons<E extends Element>(
 ): NodeListOf<Element> {
   return queryNodes(el, ACCORDION_BUTTON, ownerID);
 }
+
+const LISTBOX_OPTION = 'listbox-option';
+
+export function queryListboxOptions<E extends Element>(
+  el: E,
+  ownerID: string,
+): NodeListOf<Element> {
+  return queryNodes(el, LISTBOX_OPTION, ownerID);
+}
