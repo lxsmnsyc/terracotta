@@ -6,9 +6,9 @@ import {
   onCleanup,
   untrack,
   useContext,
+  JSX,
 } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
-import { JSX } from 'solid-js/jsx-runtime';
 import {
   HeadlessSelectChild,
   HeadlessSelectChildProps,
@@ -18,8 +18,16 @@ import {
   HeadlessSelectRootProps,
   useHeadlessSelectChild,
 } from '../headless/Select';
-import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
-import { excludeProps } from '../utils/exclude-props';
+import {
+  createRef,
+  DynamicNode,
+  DynamicProps,
+  ValidConstructor,
+  WithRef,
+} from '../utils/dynamic-prop';
+import {
+  excludeProps,
+} from '../utils/exclude-props';
 import Fragment from '../utils/Fragment';
 import {
   HeadlessDisclosureChild,
@@ -28,7 +36,11 @@ import {
   HeadlessDisclosureRootProps,
   useHeadlessDisclosureChild,
 } from '../headless/Disclosure';
-import { TailwindButton, TailwindButtonProps } from './Button';
+import {
+  TailwindButton,
+  TailwindButtonProps,
+} from './Button';
+import { queryListboxOptions } from '../utils/query-nodes';
 
 interface TailwindListboxContext {
   horizontal?: boolean;
@@ -173,6 +185,7 @@ export type TailwindListboxButtonProps<T extends ValidConstructor = 'button'> = 
   as?: T;
 }
   & HeadlessDisclosureChildProps
+  & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
@@ -181,12 +194,12 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
   const context = useTailwindListboxContext('TailwindListboxButton');
   const properties = useHeadlessDisclosureChild();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   createEffect(() => {
     const ref = internalRef();
 
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const toggle = () => {
         if (!properties.disabled()) {
           properties.setState(!properties.isOpen());
@@ -230,16 +243,12 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
       data-sh-expanded={properties.isOpen()}
       data-sh-disabled={properties.disabled()}
       disabled={properties.disabled()}
-      ref={(e) => {
-        const outerRef = props.ref;
-        if (typeof outerRef === 'function') {
-          outerRef(e);
-        } else {
-          props.ref = e;
+      ref={createRef(props, (e) => {
+        setInternalRef(() => e);
+        if (e instanceof HTMLElement) {
+          context.anchor = e;
         }
-        setInternalRef(e);
-        context.anchor = e;
-      }}
+      })}
       data-sh-listbox-button={context.ownerID}
     >
       <HeadlessDisclosureChild>
@@ -253,6 +262,7 @@ export type TailwindListboxOptionsProps<V, T extends ValidConstructor = 'ul'> = 
   as?: T;
 }
   & HeadlessSelectChildProps<V>
+  & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectChildProps<V>>;
 
 export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
@@ -262,7 +272,7 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
   const selectProperties = useHeadlessSelectChild();
   const properties = useHeadlessDisclosureChild();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   function setChecked(node: Element) {
     (node as HTMLElement).focus();
@@ -270,14 +280,14 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
 
   function setNextChecked(node: Element) {
     const ref = internalRef();
-    if (ref) {
-      const radios = ref.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
-      for (let i = 0, len = radios.length; i < len; i += 1) {
-        if (node === radios[i]) {
+    if (ref instanceof HTMLElement) {
+      const options = queryListboxOptions(ref, context.ownerID);
+      for (let i = 0, len = options.length; i < len; i += 1) {
+        if (node === options[i]) {
           if (i === len - 1) {
-            setChecked(radios[0]);
+            setChecked(options[0]);
           } else {
-            setChecked(radios[i + 1]);
+            setChecked(options[i + 1]);
           }
           break;
         }
@@ -287,14 +297,14 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
 
   function setPrevChecked(node: Element) {
     const ref = internalRef();
-    if (ref) {
-      const radios = ref.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
-      for (let i = 0, len = radios.length; i < len; i += 1) {
-        if (node === radios[i]) {
+    if (ref instanceof HTMLElement) {
+      const options = queryListboxOptions(ref, context.ownerID);
+      for (let i = 0, len = options.length; i < len; i += 1) {
+        if (node === options[i]) {
           if (i === 0) {
-            setChecked(radios[len - 1]);
+            setChecked(options[len - 1]);
           } else {
-            setChecked(radios[i - 1]);
+            setChecked(options[i - 1]);
           }
           break;
         }
@@ -304,28 +314,28 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
 
   function setFirstChecked() {
     const ref = internalRef();
-    if (ref) {
-      const radios = ref.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
-      setChecked(radios[0]);
+    if (ref instanceof HTMLElement) {
+      const options = queryListboxOptions(ref, context.ownerID);
+      setChecked(options[0]);
     }
   }
 
   function setLastChecked() {
     const ref = internalRef();
-    if (ref) {
-      const radios = ref.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
-      setChecked(radios[radios.length - 1]);
+    if (ref instanceof HTMLElement) {
+      const options = queryListboxOptions(ref, context.ownerID);
+      setChecked(options[options.length - 1]);
     }
   }
 
   function setFirstMatch(character: string) {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
+      const options = queryListboxOptions(ref, context.ownerID);
       const lower = character.toLowerCase();
-      const radios = ref.querySelectorAll(`[data-sh-listbox-option="${context.ownerID}"]`);
-      for (let i = 0, l = radios.length; i < l; i += 1) {
-        if (radios[i].textContent?.toLowerCase().startsWith(lower)) {
-          setChecked(radios[i]);
+      for (let i = 0, l = options.length; i < l; i += 1) {
+        if (options[i].textContent?.toLowerCase().startsWith(lower)) {
+          setChecked(options[i]);
           return;
         }
       }
@@ -340,7 +350,7 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
 
   createEffect(() => {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const onBlur = (e: FocusEvent) => {
         if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
           properties.setState(false);
@@ -379,15 +389,9 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
         data-sh-listbox-options={context.ownerID}
         data-sh-disabled={properties.disabled()}
         tabindex={0}
-        ref={(e) => {
-          const outerRef = props.ref;
-          if (typeof outerRef === 'function') {
-            outerRef(e);
-          } else {
-            props.ref = e;
-          }
-          setInternalRef(e);
-        }}
+        ref={createRef(props, (e) => {
+          setInternalRef(() => e);
+        })}
       >
         <HeadlessSelectChild>
           {props.children}
@@ -401,6 +405,7 @@ export type TailwindListboxOptionProps<V, T extends ValidConstructor = 'li'> = {
   as?: T;
 }
   & HeadlessSelectOptionProps<V>
+  & WithRef<T>
   & Omit<TailwindButtonProps<T>, keyof HeadlessSelectOptionProps<V>>;
 
 export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
@@ -411,7 +416,7 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
   const disclosure = useHeadlessDisclosureChild();
   const properties = useHeadlessSelectChild();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   let characters = '';
   let timeout: ReturnType<typeof setTimeout> | undefined;
@@ -425,7 +430,7 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
   createEffect(() => {
     const ref = internalRef();
 
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const onKeyDown = (e: KeyboardEvent) => {
         if (!(properties.disabled() || props.disabled)) {
           switch (e.key) {
@@ -514,7 +519,7 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
 
   createEffect(() => {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       if (disclosure.isOpen()
         && untrack(() => properties.isSelected(props.value))
         && !(properties.disabled() || props.disabled)
@@ -541,15 +546,9 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
       data-sh-listbox-option={rootContext.ownerID}
       data-sh-disabled={props.disabled}
       data-sh-selected={properties.isSelected(props.value)}
-      ref={(e) => {
-        const outerRef = props.ref;
-        if (typeof outerRef === 'function') {
-          outerRef(e);
-        } else {
-          props.ref = e;
-        }
-        setInternalRef(e);
-      }}
+      ref={createRef(props, (e) => {
+        setInternalRef(() => e);
+      })}
     >
       <HeadlessSelectOption
         value={props.value}
