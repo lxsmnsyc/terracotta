@@ -153,6 +153,7 @@ export function TailwindToolbar<T extends ValidConstructor = 'div'>(
       {...excludeProps(props, [
         'as',
         'horizontal',
+        'ref',
       ])}
       role="toolbar"
       id={toolbarID}
