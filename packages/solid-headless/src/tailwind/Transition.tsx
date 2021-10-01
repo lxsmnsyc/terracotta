@@ -1,16 +1,23 @@
-import { JSX } from 'solid-js/jsx-runtime';
 import {
   createContext,
   createEffect,
   createSignal,
   Show,
   useContext,
+  JSX,
 } from 'solid-js';
-import { Dynamic } from 'solid-js/web';
-import { excludeProps } from '../utils/exclude-props';
 import {
+  Dynamic,
+} from 'solid-js/web';
+import {
+  excludeProps,
+} from '../utils/exclude-props';
+import {
+  createRef,
+  DynamicNode,
   DynamicProps,
   ValidConstructor,
+  WithRef,
 } from '../utils/dynamic-prop';
 
 interface TransitionRootContext {
@@ -60,6 +67,7 @@ function removeClassList(ref: HTMLElement, classes: string[]) {
 
 export type TailwindTransitionChildProps<T extends ValidConstructor = 'div'> =
   TailwindTransitionBaseChildProps<T>
+    & WithRef<T>
     & Omit<DynamicProps<T>, keyof TailwindTransitionBaseChildProps<T>>;
 
 export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
@@ -68,7 +76,7 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
   const values = useTransitionRootContext('TailwindTransitionChild');
 
   const [visible, setVisible] = createSignal(values.show);
-  const [ref, setRef] = createSignal<HTMLElement>();
+  const [ref, setRef] = createSignal<DynamicNode<T>>();
 
   let initial = true;
 
@@ -130,7 +138,7 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
     }
 
     const internalRef = ref();
-    if (internalRef) {
+    if (internalRef instanceof HTMLElement) {
       transition(internalRef, shouldShow);
     } else {
       // Ref is missing, reset initial
@@ -160,15 +168,9 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
             'beforeLeave',
             'entered',
           ])}
-          ref={(e) => {
-            const outerRef = props.ref;
-            if (typeof outerRef === 'function') {
-              outerRef(e);
-            } else {
-              props.ref = e;
-            }
-            setRef(e);
-          }}
+          ref={createRef(props, (e) => {
+            setRef(() => e);
+          })}
         >
           {props.children}
         </Dynamic>
@@ -193,15 +195,9 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
             'beforeLeave',
             'entered',
           ])}
-          ref={(e) => {
-            const outerRef = props.ref;
-            if (typeof outerRef === 'function') {
-              outerRef(e);
-            } else {
-              props.ref = e;
-            }
-            setRef(e);
-          }}
+          ref={createRef(props, (e) => {
+            setRef(() => e);
+          })}
         >
           {props.children}
         </Dynamic>
