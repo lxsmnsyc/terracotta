@@ -158,6 +158,7 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
           'multiple',
           'toggleable',
           'value',
+          'ref',
         ])}
         ref={createRef(props, (e) => {
           internalRef = e;
@@ -318,15 +319,18 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
       component={TailwindButton}
       {...excludeProps(props, [
         'children',
+        'ref',
+        'disabled',
+        'as',
       ])}
       id={itemContext.buttonID}
       aria-expanded={properties.isSelected()}
       aria-controls={properties.isSelected() && itemContext.panelID}
-      aria-disabled={properties.disabled()}
-      data-sh-disabled={properties.disabled()}
+      aria-disabled={properties.disabled() || props.disabled}
+      data-sh-disabled={properties.disabled() || props.disabled}
       data-sh-expanded={properties.isSelected()}
       data-sh-active={properties.isActive()}
-      disabled={properties.disabled()}
+      disabled={properties.disabled() || props.disabled}
       ref={createRef(props, (e) => {
         setInternalRef(() => e);
       })}
