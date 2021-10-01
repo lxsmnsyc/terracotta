@@ -41,3 +41,12 @@ export function queryRadios<E extends Element>(
 ): NodeListOf<Element> {
   return queryNodes(el, RADIO, ownerID);
 }
+
+const SELECT_OPTION = 'select-option';
+
+export function querySelectOptions<E extends Element>(
+  el: E,
+  ownerID: string,
+): NodeListOf<Element> {
+  return queryNodes(el, SELECT_OPTION, ownerID);
+}

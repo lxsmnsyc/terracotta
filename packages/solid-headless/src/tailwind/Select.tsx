@@ -5,8 +5,8 @@ import {
   createUniqueId,
   onCleanup,
   useContext,
+  JSX,
 } from 'solid-js';
-import { JSX } from 'solid-js/jsx-runtime';
 import { Dynamic } from 'solid-js/web';
 import {
   HeadlessSelectOption,
@@ -15,9 +15,23 @@ import {
   HeadlessSelectRootProps,
   useHeadlessSelectChild,
 } from '../headless/Select';
-import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
-import { excludeProps } from '../utils/exclude-props';
-import { TailwindButton, TailwindButtonProps } from './Button';
+import {
+  createRef,
+  DynamicNode,
+  DynamicProps,
+  ValidConstructor,
+  WithRef,
+} from '../utils/dynamic-prop';
+import {
+  excludeProps,
+} from '../utils/exclude-props';
+import {
+  querySelectOptions,
+} from '../utils/query-nodes';
+import {
+  TailwindButton,
+  TailwindButtonProps,
+} from './Button';
 
 interface TailwindSelectContext {
   ownerID: string;
@@ -46,6 +60,7 @@ export type TailwindSelectProps<V, T extends ValidConstructor = 'ul'> = {
   horizontal?: boolean;
 }
   & HeadlessSelectRootProps<V>
+  & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectRootProps<V>>;
 
 export function TailwindSelect<V, T extends ValidConstructor = 'ul'>(
@@ -53,57 +68,67 @@ export function TailwindSelect<V, T extends ValidConstructor = 'ul'>(
 ): JSX.Element {
   const ownerID = createUniqueId();
 
-  let internalRef: HTMLElement;
+  let internalRef: DynamicNode<T>;
 
   function setChecked(node: Element) {
     (node as HTMLElement).focus();
   }
 
   function setNextChecked(node: Element) {
-    const radios = internalRef.querySelectorAll(`[data-sh-select-option="${ownerID}"]`);
-    for (let i = 0, len = radios.length; i < len; i += 1) {
-      if (node === radios[i]) {
-        if (i === len - 1) {
-          setChecked(radios[0]);
-        } else {
-          setChecked(radios[i + 1]);
+    if (internalRef instanceof HTMLElement) {
+      const options = querySelectOptions(internalRef, ownerID);
+      for (let i = 0, len = options.length; i < len; i += 1) {
+        if (node === options[i]) {
+          if (i === len - 1) {
+            setChecked(options[0]);
+          } else {
+            setChecked(options[i + 1]);
+          }
+          break;
         }
-        break;
       }
     }
   }
 
   function setPrevChecked(node: Element) {
-    const radios = internalRef.querySelectorAll(`[data-sh-select-option="${ownerID}"]`);
-    for (let i = 0, len = radios.length; i < len; i += 1) {
-      if (node === radios[i]) {
-        if (i === 0) {
-          setChecked(radios[len - 1]);
-        } else {
-          setChecked(radios[i - 1]);
+    if (internalRef instanceof HTMLElement) {
+      const options = querySelectOptions(internalRef, ownerID);
+      for (let i = 0, len = options.length; i < len; i += 1) {
+        if (node === options[i]) {
+          if (i === 0) {
+            setChecked(options[len - 1]);
+          } else {
+            setChecked(options[i - 1]);
+          }
+          break;
         }
-        break;
       }
     }
   }
 
   function setFirstChecked() {
-    const radios = internalRef.querySelectorAll(`[data-sh-select-option="${ownerID}"]`);
-    setChecked(radios[0]);
+    if (internalRef instanceof HTMLElement) {
+      const options = querySelectOptions(internalRef, ownerID);
+      setChecked(options[0]);
+    }
   }
 
   function setLastChecked() {
-    const radios = internalRef.querySelectorAll(`[data-sh-select-option="${ownerID}"]`);
-    setChecked(radios[radios.length - 1]);
+    if (internalRef instanceof HTMLElement) {
+      const options = querySelectOptions(internalRef, ownerID);
+      setChecked(options[options.length - 1]);
+    }
   }
 
   function setFirstMatch(character: string) {
-    const lower = character.toLowerCase();
-    const radios = internalRef.querySelectorAll(`[data-sh-select-option="${ownerID}"]`);
-    for (let i = 0, l = radios.length; i < l; i += 1) {
-      if (radios[i].textContent?.toLowerCase().startsWith(lower)) {
-        setChecked(radios[i]);
-        return;
+    if (internalRef instanceof HTMLElement) {
+      const lower = character.toLowerCase();
+      const options = querySelectOptions(internalRef, ownerID);
+      for (let i = 0, l = options.length; i < l; i += 1) {
+        if (options[i].textContent?.toLowerCase().startsWith(lower)) {
+          setChecked(options[i]);
+          return;
+        }
       }
     }
   }
@@ -141,15 +166,9 @@ export function TailwindSelect<V, T extends ValidConstructor = 'ul'>(
         aria-disabled={props.disabled}
         data-sh-select={ownerID}
         data-sh-disabled={props.disabled}
-        ref={(e) => {
-          const outerRef = props.ref;
-          if (typeof outerRef === 'function') {
-            outerRef(e);
-          } else {
-            props.ref = e;
-          }
+        ref={createRef(props, (e) => {
           internalRef = e;
-        }}
+        })}
       >
         <HeadlessSelectRoot
           multiple={props.multiple}
@@ -169,6 +188,7 @@ export type TailwindSelectOptionProps<V, T extends ValidConstructor = 'li'> = {
   as?: T;
 }
   & HeadlessSelectOptionProps<V>
+  & WithRef<T>
   & Omit<TailwindButtonProps<T>, keyof HeadlessSelectOptionProps<V>>;
 
 export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
@@ -177,7 +197,7 @@ export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
   const context = useTailwindSelectContext('TailwindSelect');
   const properties = useHeadlessSelectChild();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   let characters = '';
   let timeout: ReturnType<typeof setTimeout> | undefined;
@@ -190,7 +210,7 @@ export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
 
   createEffect(() => {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const onKeyDown = (e: KeyboardEvent) => {
         if (!(properties.disabled() || props.disabled)) {
           switch (e.key) {
@@ -302,15 +322,9 @@ export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
       data-sh-select-option={context.ownerID}
       data-sh-selected={properties.isSelected(props.value)}
       data-sh-disabled={props.disabled}
-      ref={(e) => {
-        const outerRef = props.ref;
-        if (typeof outerRef === 'function') {
-          outerRef(e);
-        } else {
-          props.ref = e;
-        }
-        setInternalRef(e);
-      }}
+      ref={createRef(props, (e) => {
+        setInternalRef(() => e);
+      })}
     >
       <HeadlessSelectOption
         value={props.value}
