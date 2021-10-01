@@ -167,6 +167,7 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
             'beforeEnter',
             'beforeLeave',
             'entered',
+            'ref',
           ])}
           ref={createRef(props, (e) => {
             setRef(() => e);
@@ -194,6 +195,7 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
             'beforeEnter',
             'beforeLeave',
             'entered',
+            'ref',
           ])}
           ref={createRef(props, (e) => {
             setRef(() => e);
@@ -224,7 +226,6 @@ export function TailwindTransition<T extends ValidConstructor = 'div'>(
     >
       <TailwindTransitionChild
         {...excludeProps(props, [
-          'appear',
           'show',
         ])}
       />
