@@ -5,27 +5,37 @@ import {
   JSX,
   onCleanup,
 } from 'solid-js';
-import { Dynamic } from 'solid-js/web';
-import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
-import { excludeProps } from '../utils/exclude-props';
+import {
+  Dynamic,
+} from 'solid-js/web';
+import {
+  createRef,
+  DynamicNode,
+  DynamicProps,
+  ValidConstructor,
+  WithRef,
+} from '../utils/dynamic-prop';
+import {
+  excludeProps,
+} from '../utils/exclude-props';
 import getFocusableElements from '../utils/get-focusable-elements';
 
 export type TailwindToolbarProps<T extends ValidConstructor = 'div'> = {
   as?: T,
   horizontal?: boolean;
-} & Omit<DynamicProps<T>, 'as'>;
+} & Omit<DynamicProps<T>, 'as'> & WithRef<T>;
 
 export function TailwindToolbar<T extends ValidConstructor = 'div'>(
   props: TailwindToolbarProps<T>,
 ): JSX.Element {
   const toolbarID = createUniqueId();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
   let focusedElement: HTMLElement | undefined;
 
   function getNextFocusable(): void {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const nodes = getFocusableElements(ref);
       if (document.activeElement
         && ref.contains(document.activeElement)
@@ -46,7 +56,7 @@ export function TailwindToolbar<T extends ValidConstructor = 'div'>(
 
   function getPrevFocusable(): void {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const nodes = getFocusableElements(ref);
       if (document.activeElement
         && ref.contains(document.activeElement)
@@ -67,7 +77,7 @@ export function TailwindToolbar<T extends ValidConstructor = 'div'>(
 
   createEffect(() => {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const onKeyDown = (e: KeyboardEvent) => {
         switch (e.key) {
           case 'ArrowLeft':
@@ -148,15 +158,9 @@ export function TailwindToolbar<T extends ValidConstructor = 'div'>(
       id={toolbarID}
       aria-orientation={(props.horizontal ?? true) ? 'horizontal' : 'vertical'}
       tabindex={0}
-      ref={(e) => {
-        const outerRef = props.ref;
-        if (typeof outerRef === 'function') {
-          outerRef(e);
-        } else {
-          props.ref = e;
-        }
-        setInternalRef(e);
-      }}
+      ref={createRef(props, (e) => {
+        setInternalRef(() => e);
+      })}
       data-sh-toolbar={toolbarID}
     />
   );
