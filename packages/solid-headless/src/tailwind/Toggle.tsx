@@ -62,6 +62,7 @@ export function TailwindToggle<T extends ValidConstructor = 'button'>(
         'defaultPressed',
         'onChange',
         'pressed',
+        'ref',
       ])}
       data-sh-toggle={toggleID}
       aria-pressed={state()}
