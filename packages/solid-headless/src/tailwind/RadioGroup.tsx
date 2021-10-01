@@ -5,11 +5,11 @@ import {
   createUniqueId,
   onCleanup,
   useContext,
+  JSX,
 } from 'solid-js';
 import {
   Dynamic,
 } from 'solid-js/web';
-import { JSX } from 'solid-js/jsx-runtime';
 import {
   HeadlessSelectOption,
   HeadlessSelectOptionProps,
@@ -18,10 +18,16 @@ import {
   useHeadlessSelectChild,
 } from '../headless/Select';
 import {
+  createRef,
+  DynamicNode,
   DynamicProps,
   ValidConstructor,
+  WithRef,
 } from '../utils/dynamic-prop';
-import { excludeProps } from '../utils/exclude-props';
+import {
+  excludeProps,
+} from '../utils/exclude-props';
+import { queryRadios } from '../utils/query-nodes';
 
 interface TailwindRadioGroupContext {
   labelID: string;
@@ -60,6 +66,7 @@ function useTailwindRadioGroupRootContext(componentName: string): TailwindRadioG
 export type TailwindRadioGroupProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
 } & Omit<HeadlessSelectRootProps<V>, 'multiple' | 'toggleable'>
+  & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectRootProps<V>>;
 
 export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
@@ -69,36 +76,40 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
   const descriptionID = createUniqueId();
   const labelID = createUniqueId();
 
-  let internalRef: HTMLElement;
+  let internalRef: DynamicNode<T>;
 
   function setChecked(node: Element) {
     (node as HTMLElement).focus();
   }
 
   function setNextChecked(node: Element) {
-    const radios = internalRef.querySelectorAll(`[data-sh-radio="${ownerID}"]`);
-    for (let i = 0, len = radios.length; i < len; i += 1) {
-      if (node === radios[i]) {
-        if (i === len - 1) {
-          setChecked(radios[0]);
-        } else {
-          setChecked(radios[i + 1]);
+    if (internalRef instanceof HTMLElement) {
+      const radios = queryRadios(internalRef, ownerID);
+      for (let i = 0, len = radios.length; i < len; i += 1) {
+        if (node === radios[i]) {
+          if (i === len - 1) {
+            setChecked(radios[0]);
+          } else {
+            setChecked(radios[i + 1]);
+          }
+          break;
         }
-        break;
       }
     }
   }
 
   function setPrevChecked(node: Element) {
-    const radios = internalRef.querySelectorAll(`[data-sh-radio="${ownerID}"]`);
-    for (let i = 0, len = radios.length; i < len; i += 1) {
-      if (node === radios[i]) {
-        if (i === 0) {
-          setChecked(radios[len - 1]);
-        } else {
-          setChecked(radios[i - 1]);
+    if (internalRef instanceof HTMLElement) {
+      const radios = queryRadios(internalRef, ownerID);
+      for (let i = 0, len = radios.length; i < len; i += 1) {
+        if (node === radios[i]) {
+          if (i === 0) {
+            setChecked(radios[len - 1]);
+          } else {
+            setChecked(radios[i - 1]);
+          }
+          break;
         }
-        break;
       }
     }
   }
@@ -133,15 +144,9 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
           aria-disabled={props.disabled}
           data-sh-disabled={props.disabled}
           disabled={props.disabled}
-          ref={(e) => {
-            const outerRef = props.ref;
-            if (typeof outerRef === 'function') {
-              outerRef(e);
-            } else {
-              props.ref = e;
-            }
+          ref={createRef(props, (e) => {
             internalRef = e;
-          }}
+          })}
           data-sh-radiogroup={ownerID}
         >
           <HeadlessSelectRoot
@@ -160,6 +165,7 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
 export type TailwindRadioGroupOptionProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
 } & Omit<HeadlessSelectOptionProps<V>, 'multiple'>
+  & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectOptionProps<V>>;
 
 export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
@@ -171,11 +177,11 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
   const descriptionID = createUniqueId();
   const labelID = createUniqueId();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   createEffect(() => {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const onKeyDown = (e: KeyboardEvent) => {
         if (!(properties.disabled() || props.disabled)) {
           switch (e.key) {
@@ -244,15 +250,9 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
           'value',
           'disabled',
         ])}
-        ref={(e) => {
-          const outerRef = props.ref;
-          if (typeof outerRef === 'function') {
-            outerRef(e);
-          } else {
-            props.ref = e;
-          }
-          setInternalRef(e);
-        }}
+        ref={createRef(props, (e) => {
+          setInternalRef(() => e);
+        })}
         role="radio"
         disabled={props.disabled}
         tabindex={properties.isSelected(props.value) ? 0 : -1}
