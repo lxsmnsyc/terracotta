@@ -140,7 +140,7 @@ export function TailwindPopoverButton<T extends ValidConstructor = 'button'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const toggle = () => {
-        if (!properties.disabled()) {
+        if (!(properties.disabled() || props.disabled)) {
           properties.setState(!properties.isOpen());
         }
       };
@@ -172,14 +172,15 @@ export function TailwindPopoverButton<T extends ValidConstructor = 'button'>(
       component={TailwindButton}
       {...excludeProps(props, [
         'children',
+        'ref',
       ])}
       id={context.buttonID}
-      aria-disabled={properties.disabled()}
+      aria-disabled={properties.disabled() || props.disabled}
       aria-expanded={properties.isOpen()}
       aria-controls={properties.isOpen() && context.panelID}
-      data-sh-disabled={properties.disabled()}
+      data-sh-disabled={properties.disabled() || props.disabled}
       data-sh-expanded={properties.isOpen()}
-      disabled={properties.disabled()}
+      disabled={properties.disabled() || props.disabled}
       ref={createRef(props, (e) => {
         setInternalRef(() => e);
         if (e instanceof HTMLElement) {
@@ -289,6 +290,7 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
             'as',
             'unmount',
             'children',
+            'ref',
           ])}
           id={context.panelID}
           data-sh-popover-panel={context.ownerID}
@@ -309,6 +311,7 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
             'as',
             'unmount',
             'children',
+            'ref',
           ])}
           id={context.panelID}
           data-sh-popover-panel={context.ownerID}
@@ -360,6 +363,7 @@ export function TailwindPopoverOverlay<T extends ValidConstructor = 'p'>(
       {...excludeProps(props, [
         'as',
         'children',
+        'ref',
       ])}
       data-sh-popover-overlay={context.ownerID}
       ref={createRef(props, (e) => {
