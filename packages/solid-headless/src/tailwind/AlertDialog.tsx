@@ -285,7 +285,7 @@ export type TailwindAlertDialogOverlayProps<T extends ValidConstructor = 'div'> 
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindAlertDialogOverlay<T extends ValidConstructor = 'p'>(
+export function TailwindAlertDialogOverlay<T extends ValidConstructor = 'div'>(
   props: TailwindAlertDialogOverlayProps<T>,
 ): JSX.Element {
   const context = useTailwindAlertDialogContext('TailwindAlertDialogOverlay');
