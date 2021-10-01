@@ -32,3 +32,12 @@ export function queryMenuItems<E extends Element>(
 ): NodeListOf<Element> {
   return queryNodes(el, MENU_ITEM, ownerID);
 }
+
+const RADIO = 'radio';
+
+export function queryRadios<E extends Element>(
+  el: E,
+  ownerID: string,
+): NodeListOf<Element> {
+  return queryNodes(el, RADIO, ownerID);
+}
