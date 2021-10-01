@@ -201,13 +201,13 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
 
     if (ref instanceof HTMLElement) {
       const toggle = () => {
-        if (!properties.disabled()) {
+        if (!(properties.disabled() || props.disabled)) {
           properties.setState(!properties.isOpen());
         }
       };
 
       const onKeyDown = (e: KeyboardEvent) => {
-        if (!properties.disabled()) {
+        if (!(properties.disabled() || props.disabled)) {
           switch (e.key) {
             case 'ArrowUp':
             case 'ArrowDown':
@@ -234,15 +234,16 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
       component={TailwindButton}
       {...excludeProps(props, [
         'children',
+        'ref',
       ])}
       id={context.buttonID}
       aria-haspopup="listbox"
       aria-expanded={properties.isOpen()}
       aria-controls={context.optionsID}
-      aria-disabled={properties.disabled()}
+      aria-disabled={properties.disabled() || props.disabled}
       data-sh-expanded={properties.isOpen()}
-      data-sh-disabled={properties.disabled()}
-      disabled={properties.disabled()}
+      data-sh-disabled={properties.disabled() || props.disabled}
+      disabled={properties.disabled() || props.disabled}
       ref={createRef(props, (e) => {
         setInternalRef(() => e);
         if (e instanceof HTMLElement) {
@@ -379,15 +380,17 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
         {...excludeProps(props, [
           'as',
           'children',
+          'ref',
         ])}
         id={context.optionsID}
         role="listbox"
-        disabled={properties.disabled()}
+        disabled={properties.disabled() || props.disabled}
+        aria-disabled={properties.disabled() || props.disabled}
         aria-multiselectable={context.multiple}
         aria-labelledby={context.buttonID}
         aria-orientation={context.horizontal ? 'horizontal' : 'vertical'}
         data-sh-listbox-options={context.ownerID}
-        data-sh-disabled={properties.disabled()}
+        data-sh-disabled={properties.disabled() || props.disabled}
         tabindex={0}
         ref={createRef(props, (e) => {
           setInternalRef(() => e);
@@ -537,6 +540,7 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
         'as',
         'children',
         'value',
+        'ref',
       ])}
       disabled={props.disabled}
       role="option"
