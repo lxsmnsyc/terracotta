@@ -265,6 +265,7 @@ export function TailwindAlertDialogPanel<T extends ValidConstructor = 'div'>(
       {...excludeProps(props, [
         'as',
         'children',
+        'ref',
       ])}
       id={context.panelID}
       data-sh-alert-dialog-panel={context.ownerID}
@@ -319,6 +320,7 @@ export function TailwindAlertDialogOverlay<T extends ValidConstructor = 'div'>(
       {...excludeProps(props, [
         'as',
         'children',
+        'ref',
       ])}
       data-sh-alert-dialog-overlay={context.ownerID}
       ref={createRef(props, (e) => {
