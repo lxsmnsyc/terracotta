@@ -304,10 +304,8 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
     <Dynamic
       component={TailwindButton}
       {...excludeProps(props, [
-        'as',
         'children',
       ])}
-      as={props.as}
       id={itemContext.buttonID}
       aria-expanded={properties.isSelected()}
       aria-controls={properties.isSelected() && itemContext.panelID}

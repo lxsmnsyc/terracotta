@@ -123,10 +123,8 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
     <Dynamic
       component={TailwindButton}
       {...excludeProps(props, [
-        'as',
         'children',
       ])}
-      as={props.as}
       id={context.buttonID}
       aria-disabled={properties.disabled()}
       aria-expanded={properties.isOpen()}

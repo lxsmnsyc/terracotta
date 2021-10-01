@@ -220,10 +220,8 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
     <Dynamic
       component={TailwindButton}
       {...excludeProps(props, [
-        'as',
         'children',
       ])}
-      as={props.as}
       id={context.buttonID}
       aria-haspopup="listbox"
       aria-expanded={properties.isOpen()}

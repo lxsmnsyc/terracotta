@@ -3,7 +3,6 @@ import {
   createContext,
   createEffect,
   createSignal,
-  onCleanup,
   Show,
   useContext,
 } from 'solid-js';
