@@ -92,7 +92,7 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
   }
 
   function setNextChecked(node: Element) {
-    if (internalRef instanceof Element) {
+    if (internalRef instanceof HTMLElement) {
       const radios = queryAccordionButtons(internalRef, ownerID);
       for (let i = 0, len = radios.length; i < len; i += 1) {
         if (node === radios[i]) {
@@ -108,7 +108,7 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
   }
 
   function setPrevChecked(node: Element) {
-    if (internalRef instanceof Element) {
+    if (internalRef instanceof HTMLElement) {
       const radios = queryAccordionButtons(internalRef, ownerID);
       for (let i = 0, len = radios.length; i < len; i += 1) {
         if (node === radios[i]) {
@@ -124,14 +124,14 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
   }
 
   function setFirstChecked() {
-    if (internalRef instanceof Element) {
+    if (internalRef instanceof HTMLElement) {
       const radios = queryAccordionButtons(internalRef, ownerID);
       setChecked(radios[0]);
     }
   }
 
   function setLastChecked() {
-    if (internalRef instanceof Element) {
+    if (internalRef instanceof HTMLElement) {
       const radios = queryAccordionButtons(internalRef, ownerID);
       setChecked(radios[radios.length - 1]);
     }
