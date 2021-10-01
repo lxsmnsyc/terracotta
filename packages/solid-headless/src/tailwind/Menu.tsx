@@ -6,10 +6,23 @@ import {
   onCleanup,
   useContext,
 } from 'solid-js';
-import { JSX } from 'solid-js/jsx-runtime';
-import { Dynamic } from 'solid-js/web';
-import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
-import { excludeProps } from '../utils/exclude-props';
+import {
+  JSX,
+} from 'solid-js/jsx-runtime';
+import {
+  Dynamic,
+} from 'solid-js/web';
+import {
+  createRef,
+  DynamicNode,
+  DynamicProps,
+  ValidConstructor,
+  WithRef,
+} from '../utils/dynamic-prop';
+import {
+  excludeProps,
+} from '../utils/exclude-props';
+import { queryMenuItems } from '../utils/query-nodes';
 
 interface TailwindMenuContext {
   ownerID: string;
@@ -63,7 +76,7 @@ function TailwindMenuChild(props: TailwindMenuChildProps): JSX.Element {
 
 export type TailwindMenuProps<T extends ValidConstructor = 'ul'> = {
   as?: T;
-}
+} & WithRef<T>
   & Omit<DynamicProps<T>, 'as'>;
 
 export function TailwindMenu<T extends ValidConstructor = 'ul'>(
@@ -71,57 +84,67 @@ export function TailwindMenu<T extends ValidConstructor = 'ul'>(
 ): JSX.Element {
   const ownerID = createUniqueId();
 
-  let internalRef: HTMLElement;
+  let internalRef: DynamicNode<T>;
 
   function setChecked(node: Element) {
     (node as HTMLElement).focus();
   }
 
   function setNextChecked(node: Element) {
-    const radios = internalRef.querySelectorAll(`[data-sh-menu-item="${ownerID}"]`);
-    for (let i = 0, len = radios.length; i < len; i += 1) {
-      if (node === radios[i]) {
-        if (i === len - 1) {
-          setChecked(radios[0]);
-        } else {
-          setChecked(radios[i + 1]);
+    if (internalRef instanceof HTMLElement) {
+      const items = queryMenuItems(internalRef, ownerID);
+      for (let i = 0, len = items.length; i < len; i += 1) {
+        if (node === items[i]) {
+          if (i === len - 1) {
+            setChecked(items[0]);
+          } else {
+            setChecked(items[i + 1]);
+          }
+          break;
         }
-        break;
       }
     }
   }
 
   function setPrevChecked(node: Element) {
-    const radios = internalRef.querySelectorAll(`[data-sh-menu-item="${ownerID}"]`);
-    for (let i = 0, len = radios.length; i < len; i += 1) {
-      if (node === radios[i]) {
-        if (i === 0) {
-          setChecked(radios[len - 1]);
-        } else {
-          setChecked(radios[i - 1]);
+    if (internalRef instanceof HTMLElement) {
+      const items = queryMenuItems(internalRef, ownerID);
+      for (let i = 0, len = items.length; i < len; i += 1) {
+        if (node === items[i]) {
+          if (i === 0) {
+            setChecked(items[len - 1]);
+          } else {
+            setChecked(items[i - 1]);
+          }
+          break;
         }
-        break;
       }
     }
   }
 
   function setFirstChecked() {
-    const radios = internalRef.querySelectorAll(`[data-sh-menu-item="${ownerID}"]`);
-    setChecked(radios[0]);
+    if (internalRef instanceof HTMLElement) {
+      const items = queryMenuItems(internalRef, ownerID);
+      setChecked(items[0]);
+    }
   }
 
   function setLastChecked() {
-    const radios = internalRef.querySelectorAll(`[data-sh-menu-item="${ownerID}"]`);
-    setChecked(radios[radios.length - 1]);
+    if (internalRef instanceof HTMLElement) {
+      const items = queryMenuItems(internalRef, ownerID);
+      setChecked(items[items.length - 1]);
+    }
   }
 
   function setFirstMatch(character: string) {
-    const lower = character.toLowerCase();
-    const radios = internalRef.querySelectorAll(`[data-sh-menu-item="${ownerID}"]`);
-    for (let i = 0, l = radios.length; i < l; i += 1) {
-      if (radios[i].textContent?.toLowerCase().startsWith(lower)) {
-        setChecked(radios[i]);
-        return;
+    if (internalRef instanceof HTMLElement) {
+      const items = queryMenuItems(internalRef, ownerID);
+      const lower = character.toLowerCase();
+      for (let i = 0, l = items.length; i < l; i += 1) {
+        if (items[i].textContent?.toLowerCase().startsWith(lower)) {
+          setChecked(items[i]);
+          return;
+        }
       }
     }
   }
@@ -142,23 +165,14 @@ export function TailwindMenu<T extends ValidConstructor = 'ul'>(
         component={props.as ?? 'div'}
         {...excludeProps(props, [
           'as',
-          'children',
         ])}
         id={ownerID}
         role="menu"
         data-sh-menu={ownerID}
-        ref={(e) => {
-          const outerRef = props.ref;
-          if (typeof outerRef === 'function') {
-            outerRef(e);
-          } else {
-            props.ref = e;
-          }
+        ref={createRef(props, (e) => {
           internalRef = e;
-        }}
-      >
-        {props.children}
-      </Dynamic>
+        })}
+      />
     </TailwindMenuContext.Provider>
   );
 }
@@ -167,6 +181,7 @@ export type TailwindMenuItemProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 }
   & TailwindMenuChildProps
+  & WithRef<T>
   & Omit<DynamicProps<T>, keyof TailwindMenuChildProps>;
 
 export function TailwindMenuItem<T extends ValidConstructor = 'li'>(
@@ -174,7 +189,7 @@ export function TailwindMenuItem<T extends ValidConstructor = 'li'>(
 ): JSX.Element {
   const context = useTailwindMenuContext('TailwindMenu');
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   let characters = '';
   let timeout: ReturnType<typeof setTimeout> | undefined;
@@ -187,7 +202,7 @@ export function TailwindMenuItem<T extends ValidConstructor = 'li'>(
 
   createEffect(() => {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const onKeyDown = (e: KeyboardEvent) => {
         if (!props.disabled) {
           switch (e.key) {
@@ -248,15 +263,9 @@ export function TailwindMenuItem<T extends ValidConstructor = 'li'>(
       aria-disabled={props.disabled}
       data-sh-menu-item={context.ownerID}
       data-sh-disabled={props.disabled}
-      ref={(e) => {
-        const outerRef = props.ref;
-        if (typeof outerRef === 'function') {
-          outerRef(e);
-        } else {
-          props.ref = e;
-        }
-        setInternalRef(e);
-      }}
+      ref={createRef(props, (e) => {
+        setInternalRef(() => e);
+      })}
     >
       <TailwindMenuChild disabled={!!props.disabled}>
         {props.children}
