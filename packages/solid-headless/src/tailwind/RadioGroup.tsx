@@ -137,6 +137,7 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
             'value',
             'disabled',
             'onChange',
+            'ref',
           ])}
           role="radiogroup"
           aria-labelledby={labelID}
@@ -249,6 +250,7 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
           'children',
           'value',
           'disabled',
+          'ref',
         ])}
         ref={createRef(props, (e) => {
           setInternalRef(() => e);
