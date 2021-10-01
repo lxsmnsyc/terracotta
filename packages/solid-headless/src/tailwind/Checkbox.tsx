@@ -17,7 +17,13 @@ import {
   HeadlessToggleRootProps,
   useHeadlessToggleChild,
 } from '../headless/Toggle';
-import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
+import {
+  createRef,
+  DynamicNode,
+  DynamicProps,
+  ValidConstructor,
+  WithRef,
+} from '../utils/dynamic-prop';
 import { excludeProps } from '../utils/exclude-props';
 import Fragment from '../utils/Fragment';
 
@@ -92,6 +98,7 @@ export function TailwindCheckbox<T extends ValidConstructor = typeof Fragment>(
 export type TailwindCheckboxIndicatorProps<T extends ValidConstructor = 'button'> = {
   as?: T;
 } & HeadlessToggleChildProps
+  & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessToggleChildProps>;
 
 export function TailwindCheckboxIndicator<T extends ValidConstructor = 'button'>(
@@ -100,12 +107,12 @@ export function TailwindCheckboxIndicator<T extends ValidConstructor = 'button'>
   const context = useTailwindCheckboxContext('TailwindCheckboxIndicator');
   const state = useHeadlessToggleChild();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   createEffect(() => {
     const ref = internalRef();
 
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const toggle = () => {
         state.setState(!state.checked());
       };
@@ -143,15 +150,9 @@ export function TailwindCheckboxIndicator<T extends ValidConstructor = 'button'>
       data-sh-checked={state.checked()}
       disabled={state.disabled()}
       tabindex={0}
-      ref={(e) => {
-        const outerRef = props.ref;
-        if (typeof outerRef === 'function') {
-          outerRef(e);
-        } else {
-          props.ref = e;
-        }
-        setInternalRef(e);
-      }}
+      ref={createRef(props, (e) => {
+        setInternalRef(() => e);
+      })}
     >
       <HeadlessToggleChild>
         {props.children}
