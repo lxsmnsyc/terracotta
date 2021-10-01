@@ -148,6 +148,7 @@ export function TailwindContextMenuBoundary<T extends ValidConstructor = 'div'>(
       {...excludeProps(props, [
         'as',
         'children',
+        'ref',
       ])}
       id={context.boundaryID}
       aria-disabled={properties.disabled()}
@@ -257,6 +258,7 @@ export function TailwindContextMenuPanel<T extends ValidConstructor = 'div'>(
             'as',
             'unmount',
             'children',
+            'ref',
           ])}
           id={context.panelID}
           data-sh-context-menu-panel={context.ownerID}
@@ -277,6 +279,7 @@ export function TailwindContextMenuPanel<T extends ValidConstructor = 'div'>(
             'as',
             'unmount',
             'children',
+            'ref',
           ])}
           id={context.panelID}
           data-sh-context-menu-panel={context.ownerID}
@@ -328,6 +331,7 @@ export function TailwindContextMenuOverlay<T extends ValidConstructor = 'div'>(
       {...excludeProps(props, [
         'as',
         'children',
+        'ref',
       ])}
       data-sh-context-menu-overlay={context.ownerID}
       ref={createRef(props, (e) => {
