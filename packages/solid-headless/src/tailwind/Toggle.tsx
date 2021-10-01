@@ -4,18 +4,31 @@ import {
   createUniqueId,
   onCleanup,
   untrack,
+  JSX,
 } from 'solid-js';
-import { JSX } from 'solid-js/jsx-runtime';
-import { Dynamic } from 'solid-js/web';
-import { ValidConstructor } from '../utils/dynamic-prop';
-import { excludeProps } from '../utils/exclude-props';
-import { TailwindButton, TailwindButtonProps } from './Button';
+import {
+  Dynamic,
+} from 'solid-js/web';
+import {
+  DynamicNode,
+  ValidConstructor,
+  WithRef,
+  createRef,
+} from '../utils/dynamic-prop';
+import {
+  excludeProps,
+} from '../utils/exclude-props';
+import {
+  TailwindButton,
+  TailwindButtonProps,
+} from './Button';
 
 export type TailwindToggleProps<T extends ValidConstructor = 'button'> = {
   defaultPressed?: boolean;
   pressed?: boolean;
   onChange?: (value: boolean) => void;
 } & Omit<TailwindButtonProps<T>, 'defaultPressed' | 'pressed' | 'onChange'>
+  & WithRef<T>;
 
 export function TailwindToggle<T extends ValidConstructor = 'button'>(
   props: TailwindToggleProps<T>,
@@ -23,11 +36,11 @@ export function TailwindToggle<T extends ValidConstructor = 'button'>(
   const [state, setState] = createSignal(untrack(() => !!props.defaultPressed));
   const toggleID = createUniqueId();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   createEffect(() => {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const onClick = () => {
         setState(!state());
 
@@ -53,15 +66,9 @@ export function TailwindToggle<T extends ValidConstructor = 'button'>(
       data-sh-toggle={toggleID}
       aria-pressed={state()}
       data-sh-pressed={state()}
-      ref={(e) => {
-        const outerRef = props.ref;
-        if (typeof outerRef === 'function') {
-          outerRef(e);
-        } else {
-          props.ref = e;
-        }
-        setInternalRef(e);
-      }}
+      ref={createRef(props, (e) => {
+        setInternalRef(() => e);
+      })}
     />
   );
 }
