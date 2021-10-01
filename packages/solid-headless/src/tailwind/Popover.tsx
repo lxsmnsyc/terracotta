@@ -1,4 +1,3 @@
-import { JSX } from 'solid-js/jsx-runtime';
 import {
   createContext,
   createEffect,
@@ -7,6 +6,7 @@ import {
   onCleanup,
   Show,
   useContext,
+  JSX,
 } from 'solid-js';
 import {
   Dynamic,
@@ -18,9 +18,20 @@ import {
   HeadlessDisclosureRootProps,
   useHeadlessDisclosureChild,
 } from '../headless/Disclosure';
-import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
-import { excludeProps } from '../utils/exclude-props';
-import { TailwindButton, TailwindButtonProps } from './Button';
+import {
+  createRef,
+  DynamicNode,
+  DynamicProps,
+  ValidConstructor,
+  WithRef,
+} from '../utils/dynamic-prop';
+import {
+  excludeProps,
+} from '../utils/exclude-props';
+import {
+  TailwindButton,
+  TailwindButtonProps,
+} from './Button';
 import getFocusableElements from '../utils/get-focusable-elements';
 
 interface TailwindPopoverContext {
@@ -114,6 +125,7 @@ export function TailwindPopover<T extends ValidConstructor = 'div'>(
 export type TailwindPopoverButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
+  & WithRef<T>
   & Omit<TailwindButtonProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindPopoverButton<T extends ValidConstructor = 'button'>(
@@ -122,11 +134,11 @@ export function TailwindPopoverButton<T extends ValidConstructor = 'button'>(
   const context = useTailwindPopoverContext('TailwindPopoverButton');
   const properties = useHeadlessDisclosureChild();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   createEffect(() => {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const toggle = () => {
         if (!properties.disabled()) {
           properties.setState(!properties.isOpen());
@@ -168,16 +180,12 @@ export function TailwindPopoverButton<T extends ValidConstructor = 'button'>(
       data-sh-disabled={properties.disabled()}
       data-sh-expanded={properties.isOpen()}
       disabled={properties.disabled()}
-      ref={(e) => {
-        const outerRef = props.ref;
-        if (typeof outerRef === 'function') {
-          outerRef(e);
-        } else {
-          props.ref = e;
+      ref={createRef(props, (e) => {
+        setInternalRef(() => e);
+        if (e instanceof HTMLElement) {
+          context.anchor = e;
         }
-        setInternalRef(e);
-        context.anchor = e;
-      }}
+      })}
       data-sh-popover-button={context.ownerID}
     >
       <HeadlessDisclosureChild>
@@ -191,6 +199,7 @@ export type TailwindPopoverPanelProps<T extends ValidConstructor = 'div'> = {
   as?: T;
   unmount?: boolean;
 } & HeadlessDisclosureChildProps
+  & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
@@ -199,11 +208,11 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
   const context = useTailwindPopoverContext('TailwindPopoverPanel');
   const properties = useHeadlessDisclosureChild();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   createEffect(() => {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       if (properties.isOpen()) {
         const initialNodes = getFocusableElements(ref);
         if (initialNodes.length) {
@@ -283,15 +292,9 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
           ])}
           id={context.panelID}
           data-sh-popover-panel={context.ownerID}
-          ref={(e) => {
-            const outerRef = props.ref;
-            if (typeof outerRef === 'function') {
-              outerRef(e);
-            } else {
-              props.ref = e;
-            }
-            setInternalRef(e);
-          }}
+          ref={createRef(props, (e) => {
+            setInternalRef(() => e);
+          })}
         >
           <HeadlessDisclosureChild>
             {props.children}
@@ -309,15 +312,9 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
           ])}
           id={context.panelID}
           data-sh-popover-panel={context.ownerID}
-          ref={(e) => {
-            const outerRef = props.ref;
-            if (typeof outerRef === 'function') {
-              outerRef(e);
-            } else {
-              props.ref = e;
-            }
-            setInternalRef(e);
-          }}
+          ref={createRef(props, (e) => {
+            setInternalRef(() => e);
+          })}
         >
           <HeadlessDisclosureChild>
             {props.children}
@@ -331,6 +328,7 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
 export type TailwindPopoverOverlayProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
+  & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindPopoverOverlay<T extends ValidConstructor = 'p'>(
@@ -339,11 +337,11 @@ export function TailwindPopoverOverlay<T extends ValidConstructor = 'p'>(
   const context = useTailwindPopoverContext('TailwindPopoverOverlay');
   const properties = useHeadlessDisclosureChild();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   createEffect(() => {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const onClick = () => {
         properties.setState(false);
       };
@@ -364,15 +362,9 @@ export function TailwindPopoverOverlay<T extends ValidConstructor = 'p'>(
         'children',
       ])}
       data-sh-popover-overlay={context.ownerID}
-      ref={(e) => {
-        const outerRef = props.ref;
-        if (typeof outerRef === 'function') {
-          outerRef(e);
-        } else {
-          props.ref = e;
-        }
-        setInternalRef(e);
-      }}
+      ref={createRef(props, (e) => {
+        setInternalRef(() => e);
+      })}
     >
       <HeadlessDisclosureChild>
         {props.children}
