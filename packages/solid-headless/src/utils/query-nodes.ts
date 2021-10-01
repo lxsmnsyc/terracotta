@@ -23,3 +23,12 @@ export function queryListboxOptions<E extends Element>(
 ): NodeListOf<Element> {
   return queryNodes(el, LISTBOX_OPTION, ownerID);
 }
+
+const MENU_ITEM = 'menu-item';
+
+export function queryMenuItems<E extends Element>(
+  el: E,
+  ownerID: string,
+): NodeListOf<Element> {
+  return queryNodes(el, MENU_ITEM, ownerID);
+}
