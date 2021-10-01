@@ -17,7 +17,6 @@ import {
 
 export type TailwindAlertProps<T extends ValidConstructor = 'div'> = {
   as?: T,
-  disabled?: boolean;
 } & Omit<DynamicProps<T>, 'as'>
 
 export function TailwindAlert<T extends ValidConstructor = 'div'>(
