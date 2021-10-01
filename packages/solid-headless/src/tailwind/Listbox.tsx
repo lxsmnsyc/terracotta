@@ -49,6 +49,7 @@ interface TailwindListboxContext {
   labelID: string;
   buttonID: string;
   optionsID: string;
+  hovering: boolean;
   anchor?: HTMLElement | null;
 }
 
@@ -95,6 +96,7 @@ export type TailwindListboxProps<V, T extends ValidConstructor = typeof Fragment
 export function TailwindListbox<V, T extends ValidConstructor = typeof Fragment>(
   props: TailwindListboxProps<V, T>,
 ): JSX.Element {
+  const [hovering, setHovering] = createSignal(false);
   const ownerID = createUniqueId();
   const labelID = createUniqueId();
   const buttonID = createUniqueId();
@@ -109,6 +111,12 @@ export function TailwindListbox<V, T extends ValidConstructor = typeof Fragment>
         labelID,
         buttonID,
         optionsID,
+        get hovering() {
+          return hovering();
+        },
+        set hovering(value: boolean) {
+          setHovering(value);
+        },
       }}
     >
       <Dynamic
@@ -225,6 +233,20 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
       onCleanup(() => {
         ref.removeEventListener('click', toggle);
         ref.removeEventListener('keydown', onKeyDown);
+      });
+
+      const onMouseEnter = () => {
+        context.hovering = true;
+      };
+      const onMouseLeave = () => {
+        context.hovering = false;
+      };
+
+      ref.addEventListener('mouseenter', onMouseEnter);
+      ref.addEventListener('mouseleave', onMouseLeave);
+      onCleanup(() => {
+        ref.removeEventListener('mouseenter', onMouseEnter);
+        ref.removeEventListener('mouseleave', onMouseLeave);
       });
     }
   });
@@ -353,6 +375,9 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onBlur = (e: FocusEvent) => {
+        if (context.hovering) {
+          return;
+        }
         if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
           properties.setState(false);
         }
