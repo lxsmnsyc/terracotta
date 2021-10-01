@@ -6,9 +6,11 @@ import {
   Show,
   onCleanup,
   createSignal,
+  JSX,
 } from 'solid-js';
-import { JSX } from 'solid-js/jsx-runtime';
-import { Dynamic } from 'solid-js/web';
+import {
+  Dynamic,
+} from 'solid-js/web';
 import {
   HeadlessDisclosureChild,
   HeadlessDisclosureChildProps,
@@ -17,10 +19,15 @@ import {
   useHeadlessDisclosureChild,
 } from '../headless/Disclosure';
 import {
+  createRef,
+  DynamicNode,
   DynamicProps,
   ValidConstructor,
+  WithRef,
 } from '../utils/dynamic-prop';
-import { excludeProps } from '../utils/exclude-props';
+import {
+  excludeProps,
+} from '../utils/exclude-props';
 import getFocusableElements from '../utils/get-focusable-elements';
 
 interface TailwindDialogContext {
@@ -177,6 +184,7 @@ export function TailwindDialogTitle<T extends ValidConstructor = 'h2'>(
 export type TailwindDialogPanelProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
+  & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
@@ -185,11 +193,11 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
   const context = useTailwindDialogContext('TailwindDialogPanel');
   const properties = useHeadlessDisclosureChild();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   createEffect(() => {
     const ref = internalRef();
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       if (properties.isOpen()) {
         const initialNodes = getFocusableElements(ref);
         if (initialNodes.length) {
@@ -258,15 +266,9 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
       ])}
       id={context.panelID}
       data-sh-dialog-panel={context.ownerID}
-      ref={(e) => {
-        const outerRef = props.ref;
-        if (typeof outerRef === 'function') {
-          outerRef(e);
-        } else {
-          props.ref = e;
-        }
-        setInternalRef(e);
-      }}
+      ref={createRef(props, (e) => {
+        setInternalRef(() => e);
+      })}
     >
       <HeadlessDisclosureChild>
         {props.children}
@@ -278,6 +280,7 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
 export type TailwindDialogOverlayProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
+  & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindDialogOverlay<T extends ValidConstructor = 'p'>(
@@ -286,12 +289,12 @@ export function TailwindDialogOverlay<T extends ValidConstructor = 'p'>(
   const context = useTailwindDialogContext('TailwindDialogOverlay');
   const properties = useHeadlessDisclosureChild();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   createEffect(() => {
     const ref = internalRef();
 
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const onClick = () => {
         if (context.onClose) {
           context.onClose();
@@ -316,15 +319,9 @@ export function TailwindDialogOverlay<T extends ValidConstructor = 'p'>(
         'children',
       ])}
       data-sh-dialog-overlay={context.ownerID}
-      ref={(e) => {
-        const outerRef = props.ref;
-        if (typeof outerRef === 'function') {
-          outerRef(e);
-        } else {
-          props.ref = e;
-        }
-        setInternalRef(e);
-      }}
+      ref={createRef(props, (e) => {
+        setInternalRef(() => e);
+      })}
     >
       <HeadlessDisclosureChild>
         {props.children}
