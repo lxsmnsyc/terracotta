@@ -23,11 +23,20 @@ import {
 import {
   DynamicProps,
   ValidConstructor,
+  WithRef,
+  createRef,
+  DynamicNode,
 } from '../utils/dynamic-prop';
 import {
   excludeProps,
 } from '../utils/exclude-props';
-import { TailwindButton, TailwindButtonProps } from './Button';
+import {
+  queryAccordionButtons,
+} from '../utils/query-nodes';
+import {
+  TailwindButton,
+  TailwindButtonProps,
+} from './Button';
 
 interface TailwindAccordionContext {
   ownerID: string;
@@ -68,6 +77,7 @@ function useTailwindAccordionItemContext(componentName: string): TailwindAccordi
 export type TailwindAccordionProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessSelectRootProps<V>
+  & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectRootProps<V>>;
 
 export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
@@ -75,48 +85,56 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
 ): JSX.Element {
   const ownerID = createUniqueId();
 
-  let internalRef: HTMLElement;
+  let internalRef: DynamicNode<T>;
 
   function setChecked(node: Element) {
     (node as HTMLElement).focus();
   }
 
   function setNextChecked(node: Element) {
-    const radios = internalRef.querySelectorAll(`[data-sh-accordion-button="${ownerID}"]`);
-    for (let i = 0, len = radios.length; i < len; i += 1) {
-      if (node === radios[i]) {
-        if (i === len - 1) {
-          setChecked(radios[0]);
-        } else {
-          setChecked(radios[i + 1]);
+    if (internalRef instanceof Element) {
+      const radios = queryAccordionButtons(internalRef, ownerID);
+      for (let i = 0, len = radios.length; i < len; i += 1) {
+        if (node === radios[i]) {
+          if (i === len - 1) {
+            setChecked(radios[0]);
+          } else {
+            setChecked(radios[i + 1]);
+          }
+          break;
         }
-        break;
       }
     }
   }
 
   function setPrevChecked(node: Element) {
-    const radios = internalRef.querySelectorAll(`[data-sh-accordion-button="${ownerID}"]`);
-    for (let i = 0, len = radios.length; i < len; i += 1) {
-      if (node === radios[i]) {
-        if (i === 0) {
-          setChecked(radios[len - 1]);
-        } else {
-          setChecked(radios[i - 1]);
+    if (internalRef instanceof Element) {
+      const radios = queryAccordionButtons(internalRef, ownerID);
+      for (let i = 0, len = radios.length; i < len; i += 1) {
+        if (node === radios[i]) {
+          if (i === 0) {
+            setChecked(radios[len - 1]);
+          } else {
+            setChecked(radios[i - 1]);
+          }
+          break;
         }
-        break;
       }
     }
   }
 
   function setFirstChecked() {
-    const radios = internalRef.querySelectorAll(`[data-sh-accordion-button="${ownerID}"]`);
-    setChecked(radios[0]);
+    if (internalRef instanceof Element) {
+      const radios = queryAccordionButtons(internalRef, ownerID);
+      setChecked(radios[0]);
+    }
   }
 
   function setLastChecked() {
-    const radios = internalRef.querySelectorAll(`[data-sh-accordion-button="${ownerID}"]`);
-    setChecked(radios[radios.length - 1]);
+    if (internalRef instanceof Element) {
+      const radios = queryAccordionButtons(internalRef, ownerID);
+      setChecked(radios[radios.length - 1]);
+    }
   }
 
   return (
@@ -141,15 +159,9 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
           'toggleable',
           'value',
         ])}
-        ref={(e) => {
-          const outerRef = props.ref;
-          if (typeof outerRef === 'function') {
-            outerRef(e);
-          } else {
-            props.ref = e;
-          }
+        ref={createRef(props, (e) => {
           internalRef = e;
-        }}
+        })}
         disabled={props.disabled}
         aria-disabled={props.disabled}
         data-sh-disabled={props.disabled}
@@ -236,6 +248,7 @@ export function TailwindAccordionHeader<T extends ValidConstructor = 'h3'>(
 export type TailwindAccordionButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T;
 } & HeadlessSelectOptionChildProps
+  & WithRef<T>
   & Omit<TailwindButtonProps<T>, keyof HeadlessSelectOptionChildProps>;
 
 export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
@@ -245,12 +258,12 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
   const itemContext = useTailwindAccordionItemContext('TailwindAccordionButton');
   const properties = useHeadlessSelectOptionChild();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   createEffect(() => {
     const ref = internalRef();
 
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const onKeyDown = (e: KeyboardEvent) => {
         if (!(properties.disabled() || props.disabled)) {
           switch (e.key) {
@@ -314,15 +327,9 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
       data-sh-expanded={properties.isSelected()}
       data-sh-active={properties.isActive()}
       disabled={properties.disabled()}
-      ref={(e) => {
-        const outerRef = props.ref;
-        if (typeof outerRef === 'function') {
-          outerRef(e);
-        } else {
-          props.ref = e;
-        }
-        setInternalRef(e);
-      }}
+      ref={createRef(props, (e) => {
+        setInternalRef(() => e);
+      })}
       data-sh-accordion-button={rootContext.ownerID}
     >
       <HeadlessSelectOptionChild>
