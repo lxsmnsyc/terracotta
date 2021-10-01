@@ -165,6 +165,7 @@ export function TailwindMenu<T extends ValidConstructor = 'ul'>(
         component={props.as ?? 'div'}
         {...excludeProps(props, [
           'as',
+          'ref',
         ])}
         id={ownerID}
         role="menu"
@@ -256,6 +257,7 @@ export function TailwindMenuItem<T extends ValidConstructor = 'li'>(
       {...excludeProps(props, [
         'as',
         'disabled',
+        'ref',
       ])}
       disabled={props.disabled}
       role="menuitem"
