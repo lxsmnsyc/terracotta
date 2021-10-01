@@ -263,6 +263,7 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
       {...excludeProps(props, [
         'as',
         'children',
+        'ref',
       ])}
       id={context.panelID}
       data-sh-dialog-panel={context.ownerID}
@@ -317,6 +318,7 @@ export function TailwindDialogOverlay<T extends ValidConstructor = 'p'>(
       {...excludeProps(props, [
         'as',
         'children',
+        'ref',
       ])}
       data-sh-dialog-overlay={context.ownerID}
       ref={createRef(props, (e) => {
