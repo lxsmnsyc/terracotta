@@ -1,4 +1,3 @@
-import { JSX } from 'solid-js/jsx-runtime';
 import {
   createContext,
   createEffect,
@@ -7,6 +6,7 @@ import {
   onCleanup,
   Show,
   useContext,
+  JSX,
 } from 'solid-js';
 import {
   Dynamic,
@@ -18,10 +18,21 @@ import {
   HeadlessDisclosureRootProps,
   useHeadlessDisclosureChild,
 } from '../headless/Disclosure';
-import { DynamicProps, ValidConstructor } from '../utils/dynamic-prop';
-import { excludeProps } from '../utils/exclude-props';
+import {
+  createRef,
+  DynamicNode,
+  DynamicProps,
+  ValidConstructor,
+  WithRef,
+} from '../utils/dynamic-prop';
+import {
+  excludeProps,
+} from '../utils/exclude-props';
 import Fragment from '../utils/Fragment';
-import { TailwindButton, TailwindButtonProps } from './Button';
+import {
+  TailwindButton,
+  TailwindButtonProps,
+} from './Button';
 
 interface TailwindDisclosureContext {
   ownerID: string;
@@ -91,6 +102,7 @@ export function TailwindDisclosure<T extends ValidConstructor = typeof Fragment>
 export type TailwindDisclosureButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
+  & WithRef<T>
   & Omit<TailwindButtonProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
@@ -99,12 +111,12 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
   const context = useTailwindDisclosureContext('TailwindDisclosureButton');
   const properties = useHeadlessDisclosureChild();
 
-  const [internalRef, setInternalRef] = createSignal<HTMLElement>();
+  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   createEffect(() => {
     const ref = internalRef();
 
-    if (ref) {
+    if (ref instanceof HTMLElement) {
       const toggle = () => {
         if (!properties.disabled()) {
           properties.setState(!properties.isOpen());
@@ -132,15 +144,9 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
       data-sh-expanded={properties.isOpen()}
       data-sh-disabled={properties.disabled()}
       disabled={properties.disabled()}
-      ref={(e) => {
-        const outerRef = props.ref;
-        if (typeof outerRef === 'function') {
-          outerRef(e);
-        } else {
-          props.ref = e;
-        }
-        setInternalRef(e);
-      }}
+      ref={createRef(props, (e) => {
+        setInternalRef(() => e);
+      })}
       data-sh-disclosure-button={context.ownerID}
     >
       <HeadlessDisclosureChild>
