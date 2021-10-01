@@ -157,6 +157,7 @@ export function TailwindSelect<V, T extends ValidConstructor = 'ul'>(
           'multiple',
           'horizontal',
           'disabled',
+          'ref',
         ])}
         id={ownerID}
         role="listbox"
@@ -313,6 +314,7 @@ export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
         'as',
         'children',
         'value',
+        'ref',
       ])}
       disabled={props.disabled}
       role="option"
