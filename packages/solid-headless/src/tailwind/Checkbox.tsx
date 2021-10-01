@@ -138,6 +138,7 @@ export function TailwindCheckboxIndicator<T extends ValidConstructor = 'button'>
       {...excludeProps(props, [
         'as',
         'children',
+        'ref',
       ])}
       id={context.indicatorID}
       role="checkbox"
