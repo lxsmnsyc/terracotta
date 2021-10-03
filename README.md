@@ -32,9 +32,9 @@ Here's the current goals:
   - [ ] Keyboard Interaction
   - [ ] States
 - `Checkbox`
-  - [ ] Accessibility
-  - [ ] Keyboard Interaction
-  - [ ] States
+  - [x] Accessibility
+  - [x] Keyboard Interaction
+  - [x] States
 - `Combobox`
   - [ ] Accessibility
   - [ ] Keyboard Interaction
@@ -71,14 +71,10 @@ Here's the current goals:
   - [x] Accessibility
   - [x] Keyboard Interaction
   - [x] States
-- `Menu or Menu bar`
-  - [ ] Accessibility
-  - [ ] Keyboard Interaction
-  - [ ] States
-- `Menu Button`
-  - [ ] Accessibility
-  - [ ] Keyboard Interaction
-  - [ ] States
+- `Menu`
+  - [x] Accessibility
+  - [x] Keyboard Interaction
+  - [x] States
 - `Radio Group`
   - [X] Accessibility
   - [X] Keyboard Interaction
@@ -130,6 +126,10 @@ Others:
 - `Toaster`/`Toast`
   - [X] States
   - [X] Accessibility
+- `ContextMenu`
+  - [x] States
+  - [x] Keyboard Interaction
+  - [x] Accessibility
 
 ## FAQ
 
