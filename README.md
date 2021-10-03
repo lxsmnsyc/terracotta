@@ -1,4 +1,4 @@
-![solid-headless](/images/banner.png)
+# ![solid-headless](/images/banner.png)
 
 ## Hi!
 
