@@ -188,3 +188,17 @@ export {
   TailwindContextMenuPanelProps,
   TailwindContextMenuProps,
 } from './tailwind/ContextMenu';
+export {
+  TailwindFeedArticle,
+  TailwindFeedArticleDescription,
+  TailwindFeedArticleDescriptionProps,
+  TailwindFeedArticleLabel,
+  TailwindFeedArticleLabelProps,
+  TailwindFeedArticleProps,
+  TailwindFeedContent,
+  TailwindFeedContentProps,
+  TailwindFeedLabel,
+  TailwindFeedLabelProps,
+  TailwindFeedProps,
+  TailwindFeed,
+} from './tailwind/Feed';

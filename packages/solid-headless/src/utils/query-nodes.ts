@@ -50,3 +50,12 @@ export function querySelectOptions<E extends Element>(
 ): NodeListOf<Element> {
   return queryNodes(el, SELECT_OPTION, ownerID);
 }
+
+const FEED_ARTICLE = 'feed-article';
+
+export function queryFeedArticles<E extends Element>(
+  el: E,
+  ownerID: string,
+): NodeListOf<Element> {
+  return queryNodes(el, FEED_ARTICLE, ownerID);
+}
