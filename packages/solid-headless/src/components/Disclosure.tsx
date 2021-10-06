@@ -30,41 +30,41 @@ import {
 } from '../utils/exclude-props';
 import Fragment from '../utils/Fragment';
 import {
-  TailwindButton,
-  TailwindButtonProps,
+  Button,
+  ButtonProps,
 } from './Button';
 
-interface TailwindDisclosureContext {
+interface DisclosureContext {
   ownerID: string;
   buttonID: string;
   panelID: string;
 }
 
-const TailwindDisclosureContext = createContext<TailwindDisclosureContext>();
+const DisclosureContext = createContext<DisclosureContext>();
 
-function useTailwindDisclosureContext(componentName: string): TailwindDisclosureContext {
-  const context = useContext(TailwindDisclosureContext);
+function useDisclosureContext(componentName: string): DisclosureContext {
+  const context = useContext(DisclosureContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindDisclosure>`);
+  throw new Error(`<${componentName}> must be used inside a <Disclosure>`);
 }
 
-export type TailwindDisclosureProps<T extends ValidConstructor = typeof Fragment> = {
+export type DisclosureProps<T extends ValidConstructor = typeof Fragment> = {
   as?: T;
 } & HeadlessDisclosureRootProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindDisclosure<T extends ValidConstructor = typeof Fragment>(
-  props: TailwindDisclosureProps<T>,
+export function Disclosure<T extends ValidConstructor = typeof Fragment>(
+  props: DisclosureProps<T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
 
   return (
-    <TailwindDisclosureContext.Provider
+    <DisclosureContext.Provider
       value={{
         ownerID,
         buttonID,
@@ -95,20 +95,20 @@ export function TailwindDisclosure<T extends ValidConstructor = typeof Fragment>
           {props.children}
         </HeadlessDisclosureRoot>
       </Dynamic>
-    </TailwindDisclosureContext.Provider>
+    </DisclosureContext.Provider>
   );
 }
 
-export type TailwindDisclosureButtonProps<T extends ValidConstructor = 'button'> = {
+export type DisclosureButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & WithRef<T>
-  & Omit<TailwindButtonProps<T>, keyof HeadlessDisclosureChildProps>;
+  & Omit<ButtonProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
-  props: TailwindDisclosureButtonProps<T>,
+export function DisclosureButton<T extends ValidConstructor = 'button'>(
+  props: DisclosureButtonProps<T>,
 ): JSX.Element {
-  const context = useTailwindDisclosureContext('TailwindDisclosureButton');
+  const context = useDisclosureContext('DisclosureButton');
   const properties = useHeadlessDisclosureChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -133,7 +133,7 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
 
   return (
     <Dynamic
-      component={TailwindButton}
+      component={Button}
       {...excludeProps(props, [
         'children',
         'ref',
@@ -157,16 +157,16 @@ export function TailwindDisclosureButton<T extends ValidConstructor = 'button'>(
   );
 }
 
-export type TailwindDisclosurePanelProps<T extends ValidConstructor = 'div'> = {
+export type DisclosurePanelProps<T extends ValidConstructor = 'div'> = {
   as?: T;
   unmount?: boolean;
 } & HeadlessDisclosureChildProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindDisclosurePanel<T extends ValidConstructor = 'div'>(
-  props: TailwindDisclosurePanelProps<T>,
+export function DisclosurePanel<T extends ValidConstructor = 'div'>(
+  props: DisclosurePanelProps<T>,
 ): JSX.Element {
-  const context = useTailwindDisclosureContext('TailwindDisclosurePanel');
+  const context = useDisclosureContext('DisclosurePanel');
   const properties = useHeadlessDisclosureChild();
   return (
     <Show
