@@ -24,7 +24,7 @@ import {
 } from '../utils/exclude-props';
 import { queryMenuItems } from '../utils/query-nodes';
 
-interface TailwindMenuContext {
+interface MenuContext {
   ownerID: string;
   setChecked: (node: Element) => void;
   setPrevChecked: (node: Element) => void;
@@ -34,39 +34,39 @@ interface TailwindMenuContext {
   setFirstMatch: (character: string) => void;
 }
 
-const TailwindMenuContext = createContext<TailwindMenuContext>();
+const MenuContext = createContext<MenuContext>();
 
-function useTailwindMenuContext(componentName: string): TailwindMenuContext {
-  const context = useContext(TailwindMenuContext);
+function useMenuContext(componentName: string): MenuContext {
+  const context = useContext(MenuContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindMenu>`);
+  throw new Error(`<${componentName}> must be used inside a <Menu>`);
 }
 
-interface TailwindMenuProperties {
+interface MenuProperties {
   disabled: () => boolean;
 }
 
-type TailwindMenuChildRenderProp = (
-  (properties: TailwindMenuProperties) => JSX.Element
+type MenuChildRenderProp = (
+  (properties: MenuProperties) => JSX.Element
 );
 
-function isTailwindMenuChildRenderProp(
-  children: TailwindMenuChildRenderProp | JSX.Element,
-): children is TailwindMenuChildRenderProp {
+function isMenuChildRenderProp(
+  children: MenuChildRenderProp | JSX.Element,
+): children is MenuChildRenderProp {
   return typeof children === 'function' && children.length > 0;
 }
 
-interface TailwindMenuChildProps {
+interface MenuChildProps {
   disabled?: boolean;
-  children?: TailwindMenuChildRenderProp | JSX.Element;
+  children?: MenuChildRenderProp | JSX.Element;
 }
 
-function TailwindMenuChild(props: TailwindMenuChildProps): JSX.Element {
+function MenuChild(props: MenuChildProps): JSX.Element {
   const body = props.children;
-  if (isTailwindMenuChildRenderProp(body)) {
+  if (isMenuChildRenderProp(body)) {
     return body({
       disabled: () => !!props.disabled,
     });
@@ -74,13 +74,13 @@ function TailwindMenuChild(props: TailwindMenuChildProps): JSX.Element {
   return body;
 }
 
-export type TailwindMenuProps<T extends ValidConstructor = 'ul'> = {
+export type MenuProps<T extends ValidConstructor = 'ul'> = {
   as?: T;
 } & WithRef<T>
   & Omit<DynamicProps<T>, 'as'>;
 
-export function TailwindMenu<T extends ValidConstructor = 'ul'>(
-  props: TailwindMenuProps<T>,
+export function Menu<T extends ValidConstructor = 'ul'>(
+  props: MenuProps<T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
 
@@ -150,7 +150,7 @@ export function TailwindMenu<T extends ValidConstructor = 'ul'>(
   }
 
   return (
-    <TailwindMenuContext.Provider
+    <MenuContext.Provider
       value={{
         ownerID,
         setChecked,
@@ -174,21 +174,21 @@ export function TailwindMenu<T extends ValidConstructor = 'ul'>(
           internalRef = e;
         })}
       />
-    </TailwindMenuContext.Provider>
+    </MenuContext.Provider>
   );
 }
 
-export type TailwindMenuItemProps<T extends ValidConstructor = 'div'> = {
+export type MenuItemProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 }
-  & TailwindMenuChildProps
+  & MenuChildProps
   & WithRef<T>
-  & Omit<DynamicProps<T>, keyof TailwindMenuChildProps>;
+  & Omit<DynamicProps<T>, keyof MenuChildProps>;
 
-export function TailwindMenuItem<T extends ValidConstructor = 'li'>(
-  props: TailwindMenuItemProps<T>,
+export function MenuItem<T extends ValidConstructor = 'li'>(
+  props: MenuItemProps<T>,
 ): JSX.Element {
-  const context = useTailwindMenuContext('TailwindMenu');
+  const context = useMenuContext('Menu');
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
@@ -269,9 +269,9 @@ export function TailwindMenuItem<T extends ValidConstructor = 'li'>(
         setInternalRef(() => e);
       })}
     >
-      <TailwindMenuChild disabled={!!props.disabled}>
+      <MenuChild disabled={!!props.disabled}>
         {props.children}
-      </TailwindMenuChild>
+      </MenuChild>
     </Dynamic>
   );
 }
