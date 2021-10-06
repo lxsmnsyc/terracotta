@@ -29,11 +29,11 @@ import {
   querySelectOptions,
 } from '../utils/query-nodes';
 import {
-  TailwindButton,
-  TailwindButtonProps,
+  Button,
+  ButtonProps,
 } from './Button';
 
-interface TailwindSelectContext {
+interface SelectContext {
   ownerID: string;
   horizontal: boolean;
   setChecked: (node: Element) => void;
@@ -44,18 +44,18 @@ interface TailwindSelectContext {
   setFirstMatch: (character: string) => void;
 }
 
-const TailwindSelectContext = createContext<TailwindSelectContext>();
+const SelectContext = createContext<SelectContext>();
 
-function useTailwindSelectContext(componentName: string): TailwindSelectContext {
-  const context = useContext(TailwindSelectContext);
+function useSelectContext(componentName: string): SelectContext {
+  const context = useContext(SelectContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindSelect>`);
+  throw new Error(`<${componentName}> must be used inside a <Select>`);
 }
 
-export type TailwindSelectProps<V, T extends ValidConstructor = 'ul'> = {
+export type SelectProps<V, T extends ValidConstructor = 'ul'> = {
   as?: T;
   horizontal?: boolean;
 }
@@ -63,8 +63,8 @@ export type TailwindSelectProps<V, T extends ValidConstructor = 'ul'> = {
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectRootProps<V>>;
 
-export function TailwindSelect<V, T extends ValidConstructor = 'ul'>(
-  props: TailwindSelectProps<V, T>,
+export function Select<V, T extends ValidConstructor = 'ul'>(
+  props: SelectProps<V, T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
 
@@ -134,7 +134,7 @@ export function TailwindSelect<V, T extends ValidConstructor = 'ul'>(
   }
 
   return (
-    <TailwindSelectContext.Provider
+    <SelectContext.Provider
       value={{
         horizontal: !!props.horizontal,
         ownerID,
@@ -181,21 +181,21 @@ export function TailwindSelect<V, T extends ValidConstructor = 'ul'>(
           {props.children}
         </HeadlessSelectRoot>
       </Dynamic>
-    </TailwindSelectContext.Provider>
+    </SelectContext.Provider>
   );
 }
 
-export type TailwindSelectOptionProps<V, T extends ValidConstructor = 'li'> = {
+export type SelectOptionProps<V, T extends ValidConstructor = 'li'> = {
   as?: T;
 }
   & HeadlessSelectOptionProps<V>
   & WithRef<T>
-  & Omit<TailwindButtonProps<T>, keyof HeadlessSelectOptionProps<V>>;
+  & Omit<ButtonProps<T>, keyof HeadlessSelectOptionProps<V>>;
 
-export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
-  props: TailwindSelectOptionProps<V, T>,
+export function SelectOption<V, T extends ValidConstructor = 'li'>(
+  props: SelectOptionProps<V, T>,
 ): JSX.Element {
-  const context = useTailwindSelectContext('TailwindSelect');
+  const context = useSelectContext('Select');
   const properties = useHeadlessSelectChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -308,7 +308,7 @@ export function TailwindSelectOption<V, T extends ValidConstructor = 'li'>(
 
   return (
     <Dynamic
-      component={TailwindButton}
+      component={Button}
       as={props.as ?? 'li'}
       {...excludeProps(props, [
         'as',
