@@ -32,10 +32,10 @@ function useTransitionRootContext(componentName: string): TransitionRootContext 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindTransition>`);
+  throw new Error(`<${componentName}> must be used inside a <Transition>`);
 }
 
-export type TailwindTransitionBaseChildProps<T extends ValidConstructor = 'div'> = {
+export type TransitionBaseChildProps<T extends ValidConstructor = 'div'> = {
   as?: T;
   unmount?: boolean;
   appear?: boolean;
@@ -65,15 +65,15 @@ function removeClassList(ref: HTMLElement, classes: string[]) {
   }
 }
 
-export type TailwindTransitionChildProps<T extends ValidConstructor = 'div'> =
-  TailwindTransitionBaseChildProps<T>
+export type TransitionChildProps<T extends ValidConstructor = 'div'> =
+  TransitionBaseChildProps<T>
     & WithRef<T>
-    & Omit<DynamicProps<T>, keyof TailwindTransitionBaseChildProps<T>>;
+    & Omit<DynamicProps<T>, keyof TransitionBaseChildProps<T>>;
 
-export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
-  props: TailwindTransitionChildProps<T>,
+export function TransitionChild<T extends ValidConstructor = 'div'>(
+  props: TransitionChildProps<T>,
 ): JSX.Element {
-  const values = useTransitionRootContext('TailwindTransitionChild');
+  const values = useTransitionRootContext('TransitionChild');
 
   const [visible, setVisible] = createSignal(values.show);
   const [ref, setRef] = createSignal<DynamicNode<T>>();
@@ -208,13 +208,13 @@ export function TailwindTransitionChild<T extends ValidConstructor = 'div'>(
   );
 }
 
-export type TailwindTransitionProps<T extends ValidConstructor = 'div'> = {
+export type TransitionProps<T extends ValidConstructor = 'div'> = {
   show: boolean;
   appear?: boolean;
-} & TailwindTransitionChildProps<T>;
+} & TransitionChildProps<T>;
 
-export function TailwindTransition<T extends ValidConstructor = 'div'>(
-  props: TailwindTransitionProps<T>,
+export function Transition<T extends ValidConstructor = 'div'>(
+  props: TransitionProps<T>,
 ): JSX.Element {
   return (
     <TransitionRootContext.Provider
@@ -224,7 +224,7 @@ export function TailwindTransition<T extends ValidConstructor = 'div'>(
         },
       }}
     >
-      <TailwindTransitionChild
+      <TransitionChild
         {...excludeProps(props, [
           'show',
         ])}
