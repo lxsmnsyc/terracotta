@@ -37,12 +37,12 @@ import {
   useHeadlessDisclosureChild,
 } from '../headless/Disclosure';
 import {
-  TailwindButton,
-  TailwindButtonProps,
+  Button,
+  ButtonProps,
 } from './Button';
 import { queryListboxOptions } from '../utils/query-nodes';
 
-interface TailwindListboxContext {
+interface ListboxContext {
   horizontal?: boolean;
   multiple?: boolean;
   ownerID: string;
@@ -53,18 +53,18 @@ interface TailwindListboxContext {
   anchor?: HTMLElement | null;
 }
 
-const TailwindListboxContext = createContext<TailwindListboxContext>();
+const ListboxContext = createContext<ListboxContext>();
 
-function useTailwindListboxContext(componentName: string): TailwindListboxContext {
-  const context = useContext(TailwindListboxContext);
+function useListboxContext(componentName: string): ListboxContext {
+  const context = useContext(ListboxContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindListbox>`);
+  throw new Error(`<${componentName}> must be used inside a <Listbox>`);
 }
 
-interface TailwindListboxOptionsContext {
+interface ListboxOptionsContext {
   setChecked: (node: Element) => void;
   setPrevChecked: (node: Element) => void;
   setNextChecked: (node: Element) => void;
@@ -73,18 +73,18 @@ interface TailwindListboxOptionsContext {
   setFirstMatch: (character: string) => void;
 }
 
-const TailwindListboxOptionsContext = createContext<TailwindListboxOptionsContext>();
+const ListboxOptionsContext = createContext<ListboxOptionsContext>();
 
-function useTailwindListboxOptionsContext(componentName: string): TailwindListboxOptionsContext {
-  const context = useContext(TailwindListboxOptionsContext);
+function useListboxOptionsContext(componentName: string): ListboxOptionsContext {
+  const context = useContext(ListboxOptionsContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindListboxOptions>`);
+  throw new Error(`<${componentName}> must be used inside a <ListboxOptions>`);
 }
 
-export type TailwindListboxProps<V, T extends ValidConstructor = typeof Fragment> = {
+export type ListboxProps<V, T extends ValidConstructor = typeof Fragment> = {
   as?: T;
   horizontal?: boolean;
   onSelectChange?: (value: V) => void;
@@ -93,8 +93,8 @@ export type TailwindListboxProps<V, T extends ValidConstructor = typeof Fragment
   & Omit<HeadlessDisclosureRootProps, 'onChange'>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureRootProps | keyof HeadlessSelectRootProps<V>>;
 
-export function TailwindListbox<V, T extends ValidConstructor = typeof Fragment>(
-  props: TailwindListboxProps<V, T>,
+export function Listbox<V, T extends ValidConstructor = typeof Fragment>(
+  props: ListboxProps<V, T>,
 ): JSX.Element {
   const [hovering, setHovering] = createSignal(false);
   const ownerID = createUniqueId();
@@ -103,7 +103,7 @@ export function TailwindListbox<V, T extends ValidConstructor = typeof Fragment>
   const optionsID = createUniqueId();
 
   return (
-    <TailwindListboxContext.Provider
+    <ListboxContext.Provider
       value={{
         horizontal: props.horizontal,
         multiple: props.multiple,
@@ -157,20 +157,20 @@ export function TailwindListbox<V, T extends ValidConstructor = typeof Fragment>
           </HeadlessDisclosureRoot>
         </HeadlessSelectRoot>
       </Dynamic>
-    </TailwindListboxContext.Provider>
+    </ListboxContext.Provider>
   );
 }
 
-export type TailwindListboxLabelProps<T extends ValidConstructor = 'label'> = {
+export type ListboxLabelProps<T extends ValidConstructor = 'label'> = {
   as?: T;
 }
   & HeadlessDisclosureChildProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindListboxLabel<T extends ValidConstructor = 'label'>(
-  props: TailwindListboxLabelProps<T>,
+export function ListboxLabel<T extends ValidConstructor = 'label'>(
+  props: ListboxLabelProps<T>,
 ): JSX.Element {
-  const context = useTailwindListboxContext('TailwindListboxLabel');
+  const context = useListboxContext('ListboxLabel');
 
   return (
     <Dynamic
@@ -189,17 +189,17 @@ export function TailwindListboxLabel<T extends ValidConstructor = 'label'>(
   );
 }
 
-export type TailwindListboxButtonProps<T extends ValidConstructor = 'button'> = {
+export type ListboxButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T;
 }
   & HeadlessDisclosureChildProps
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
-  props: TailwindListboxButtonProps<T>,
+export function ListboxButton<T extends ValidConstructor = 'button'>(
+  props: ListboxButtonProps<T>,
 ): JSX.Element {
-  const context = useTailwindListboxContext('TailwindListboxButton');
+  const context = useListboxContext('ListboxButton');
   const properties = useHeadlessDisclosureChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -253,7 +253,7 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
 
   return (
     <Dynamic
-      component={TailwindButton}
+      component={Button}
       {...excludeProps(props, [
         'children',
         'ref',
@@ -281,17 +281,17 @@ export function TailwindListboxButton<T extends ValidConstructor = 'button'>(
   );
 }
 
-export type TailwindListboxOptionsProps<V, T extends ValidConstructor = 'ul'> = {
+export type ListboxOptionsProps<V, T extends ValidConstructor = 'ul'> = {
   as?: T;
 }
   & HeadlessSelectChildProps<V>
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectChildProps<V>>;
 
-export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
-  props: TailwindListboxOptionsProps<V, T>,
+export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
+  props: ListboxOptionsProps<V, T>,
 ): JSX.Element {
-  const context = useTailwindListboxContext('TailwindListboxOptions');
+  const context = useListboxContext('ListboxOptions');
   const selectProperties = useHeadlessSelectChild();
   const properties = useHeadlessDisclosureChild();
 
@@ -390,7 +390,7 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
   });
 
   return (
-    <TailwindListboxOptionsContext.Provider
+    <ListboxOptionsContext.Provider
       value={{
         setChecked,
         setFirstChecked,
@@ -425,22 +425,22 @@ export function TailwindListboxOptions<V, T extends ValidConstructor = 'ul'>(
           {props.children}
         </HeadlessSelectChild>
       </Dynamic>
-    </TailwindListboxOptionsContext.Provider>
+    </ListboxOptionsContext.Provider>
   );
 }
 
-export type TailwindListboxOptionProps<V, T extends ValidConstructor = 'li'> = {
+export type ListboxOptionProps<V, T extends ValidConstructor = 'li'> = {
   as?: T;
 }
   & HeadlessSelectOptionProps<V>
   & WithRef<T>
-  & Omit<TailwindButtonProps<T>, keyof HeadlessSelectOptionProps<V>>;
+  & Omit<ButtonProps<T>, keyof HeadlessSelectOptionProps<V>>;
 
-export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
-  props: TailwindListboxOptionProps<V, T>,
+export function ListboxOption<V, T extends ValidConstructor = 'li'>(
+  props: ListboxOptionProps<V, T>,
 ): JSX.Element {
-  const rootContext = useTailwindListboxContext('TailwindListboxOptions');
-  const context = useTailwindListboxOptionsContext('TailwindListboxOptions');
+  const rootContext = useListboxContext('ListboxOptions');
+  const context = useListboxOptionsContext('ListboxOptions');
   const disclosure = useHeadlessDisclosureChild();
   const properties = useHeadlessSelectChild();
 
@@ -559,7 +559,7 @@ export function TailwindListboxOption<V, T extends ValidConstructor = 'li'>(
 
   return (
     <Dynamic
-      component={TailwindButton}
+      component={Button}
       as={props.as ?? 'li'}
       {...excludeProps(props, [
         'as',
