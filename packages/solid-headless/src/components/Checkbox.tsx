@@ -27,31 +27,31 @@ import {
 import { excludeProps } from '../utils/exclude-props';
 import Fragment from '../utils/Fragment';
 
-interface TailwindCheckboxContext {
+interface CheckboxContext {
   ownerID: string;
   labelID: string;
   indicatorID: string;
   descriptionID: string;
 }
 
-const TailwindCheckboxContext = createContext<TailwindCheckboxContext>();
+const CheckboxContext = createContext<CheckboxContext>();
 
-function useTailwindCheckboxContext(componentName: string): TailwindCheckboxContext {
-  const context = useContext(TailwindCheckboxContext);
+function useCheckboxContext(componentName: string): CheckboxContext {
+  const context = useContext(CheckboxContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindCheckbox>`);
+  throw new Error(`<${componentName}> must be used inside a <Checkbox>`);
 }
 
-export type TailwindCheckboxProps<T extends ValidConstructor = typeof Fragment> = {
+export type CheckboxProps<T extends ValidConstructor = typeof Fragment> = {
   as?: T;
 } & HeadlessToggleRootProps
   & Omit<DynamicProps<T>, keyof HeadlessToggleRootProps>;
 
-export function TailwindCheckbox<T extends ValidConstructor = typeof Fragment>(
-  props: TailwindCheckboxProps<T>,
+export function Checkbox<T extends ValidConstructor = typeof Fragment>(
+  props: CheckboxProps<T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
   const labelID = createUniqueId();
@@ -59,7 +59,7 @@ export function TailwindCheckbox<T extends ValidConstructor = typeof Fragment>(
   const descriptionID = createUniqueId();
 
   return (
-    <TailwindCheckboxContext.Provider
+    <CheckboxContext.Provider
       value={{
         ownerID,
         labelID,
@@ -91,20 +91,20 @@ export function TailwindCheckbox<T extends ValidConstructor = typeof Fragment>(
           {props.children}
         </HeadlessToggleRoot>
       </Dynamic>
-    </TailwindCheckboxContext.Provider>
+    </CheckboxContext.Provider>
   );
 }
 
-export type TailwindCheckboxIndicatorProps<T extends ValidConstructor = 'button'> = {
+export type CheckboxIndicatorProps<T extends ValidConstructor = 'button'> = {
   as?: T;
 } & HeadlessToggleChildProps
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessToggleChildProps>;
 
-export function TailwindCheckboxIndicator<T extends ValidConstructor = 'button'>(
-  props: TailwindCheckboxIndicatorProps<T>,
+export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
+  props: CheckboxIndicatorProps<T>,
 ): JSX.Element {
-  const context = useTailwindCheckboxContext('TailwindCheckboxIndicator');
+  const context = useCheckboxContext('CheckboxIndicator');
   const state = useHeadlessToggleChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -162,15 +162,15 @@ export function TailwindCheckboxIndicator<T extends ValidConstructor = 'button'>
   );
 }
 
-export type TailwindCheckboxLabelProps<T extends ValidConstructor = 'label'> = {
+export type CheckboxLabelProps<T extends ValidConstructor = 'label'> = {
   as?: T;
 } & HeadlessToggleChildProps
   & Omit<DynamicProps<T>, keyof HeadlessToggleChildProps>;
 
-export function TailwindCheckboxLabel<T extends ValidConstructor = 'label'>(
-  props: TailwindCheckboxLabelProps<T>,
+export function CheckboxLabel<T extends ValidConstructor = 'label'>(
+  props: CheckboxLabelProps<T>,
 ): JSX.Element {
-  const context = useTailwindCheckboxContext('TailwindCheckboxLabel');
+  const context = useCheckboxContext('CheckboxLabel');
   return (
     <Dynamic
       component={props.as ?? 'label'}
@@ -186,15 +186,15 @@ export function TailwindCheckboxLabel<T extends ValidConstructor = 'label'>(
   );
 }
 
-export type TailwindCheckboxDescriptionProps<T extends ValidConstructor = 'p'> = {
+export type CheckboxDescriptionProps<T extends ValidConstructor = 'p'> = {
   as?: T;
 } & HeadlessToggleChildProps
   & Omit<DynamicProps<T>, keyof HeadlessToggleChildProps>;
 
-export function TailwindCheckboxDescription<T extends ValidConstructor = 'p'>(
-  props: TailwindCheckboxDescriptionProps<T>,
+export function CheckboxDescription<T extends ValidConstructor = 'p'>(
+  props: CheckboxDescriptionProps<T>,
 ): JSX.Element {
-  const context = useTailwindCheckboxContext('TailwindCheckboxDescription');
+  const context = useCheckboxContext('CheckboxDescription');
 
   return (
     <Dynamic
