@@ -1,10 +1,10 @@
 import {
-  TailwindDialog,
-  TailwindDialogPanel,
-  TailwindDialogTitle,
-  TailwindTransition,
-  TailwindTransitionChild,
-  TailwindDialogOverlay,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Transition,
+  TransitionChild,
+  DialogOverlay,
 } from 'solid-headless';
 import { createSignal, JSX } from 'solid-js';
 
@@ -31,15 +31,15 @@ export default function App(): JSX.Element {
         </button>
       </div>
 
-      <TailwindTransition appear show={isOpen()}>
-        <TailwindDialog
+      <Transition appear show={isOpen()}>
+        <Dialog
           defaultOpen
           isOpen
           class="fixed inset-0 z-10 overflow-y-auto"
           onClose={closeModal}
         >
           <div class="min-h-screen px-4 flex items-center justify-center">
-            <TailwindTransitionChild
+            <TransitionChild
               enter="ease-out duration-300"
               enterFrom="opacity-0"
               enterTo="opacity-100"
@@ -47,8 +47,8 @@ export default function App(): JSX.Element {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <TailwindDialogOverlay className="fixed inset-0" />
-            </TailwindTransitionChild>
+              <DialogOverlay className="fixed inset-0" />
+            </TransitionChild>
 
             {/* This element is to trick the browser into centering the modal contents. */}
             <span
@@ -57,7 +57,7 @@ export default function App(): JSX.Element {
             >
               &#8203;
             </span>
-            <TailwindTransitionChild
+            <TransitionChild
               enter="ease-out duration-300"
               enterFrom="opacity-0 scale-95"
               enterTo="opacity-100 scale-100"
@@ -65,13 +65,13 @@ export default function App(): JSX.Element {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <TailwindDialogPanel class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                <TailwindDialogTitle
+              <DialogPanel class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <DialogTitle
                   as="h3"
                   class="text-lg font-medium leading-6 text-gray-900"
                 >
                   Payment successful
-                </TailwindDialogTitle>
+                </DialogTitle>
                 <div class="mt-2">
                   <p class="text-sm text-gray-500">
                     Your payment has been successfully submitted. We’ve sent
@@ -88,11 +88,11 @@ export default function App(): JSX.Element {
                     Got it, thanks!
                   </button>
                 </div>
-              </TailwindDialogPanel>
-            </TailwindTransitionChild>
+              </DialogPanel>
+            </TransitionChild>
           </div>
-        </TailwindDialog>
-      </TailwindTransition>
+        </Dialog>
+      </Transition>
     </>
   );
 }

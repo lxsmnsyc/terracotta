@@ -1,11 +1,11 @@
 import {
-  TailwindFeed,
-  TailwindFeedArticle,
-  TailwindFeedArticleDescription,
-  TailwindFeedArticleLabel,
-  TailwindFeedContent,
-  TailwindFeedLabel,
-  TailwindTransition,
+  Feed,
+  FeedArticle,
+  FeedArticleDescription,
+  FeedArticleLabel,
+  FeedContent,
+  FeedLabel,
+  Transition,
 } from 'solid-headless';
 import {
   createSignal,
@@ -82,10 +82,10 @@ export default function App(): JSX.Element {
 
   return (
     <div className="w-full flex items-center justify-center">
-      <TailwindFeed class="max-h-96 w-96 flex flex-col" busy={busy()} size={articles().length}>
+      <Feed class="max-h-96 w-96 flex flex-col" busy={busy()} size={articles().length}>
         <div class="flex-none my-2 flex justify-between items-center">
-          <TailwindFeedLabel class="text-xl text-white font-bold">Feed</TailwindFeedLabel>
-          <TailwindTransition
+          <FeedLabel class="text-xl text-white font-bold">Feed</FeedLabel>
+          <Transition
             show={busy()}
             enter="transform transition duration-200 ease-in"
             enterFrom="opacity-0 scale-50"
@@ -95,9 +95,9 @@ export default function App(): JSX.Element {
             leave="transform transition duration-200 ease-out"
           >
             <SpinnerIcon class="animate-spin w-5 h-5 text-white" />
-          </TailwindTransition>
+          </Transition>
         </div>
-        <TailwindFeedContent
+        <FeedContent
           class="flex-1 overflow-y-scroll flex flex-col rounded-lg bg-indigo-900 bg-opacity-25 p-2"
           onScroll={(e) => {
             const el = e.target as HTMLElement;
@@ -112,15 +112,15 @@ export default function App(): JSX.Element {
         >
           <For each={articles()}>
             {(article, index) => (
-              <TailwindFeedArticle index={index()} class="p-2 m-2 flex flex-col space-y-1 bg-indigo-900 transition bg-opacity-25 rounded focus:outline-none focus-visible:ring focus:bg-indigo-700 focus-visible:ring-indigo-500 focus-visible:ring-opacity-75">
-                <TailwindFeedArticleLabel class="text-lg text-white font-bold">
+              <FeedArticle index={index()} class="p-2 m-2 flex flex-col space-y-1 bg-indigo-900 transition bg-opacity-25 rounded focus:outline-none focus-visible:ring focus:bg-indigo-700 focus-visible:ring-indigo-500 focus-visible:ring-opacity-75">
+                <FeedArticleLabel class="text-lg text-white font-bold">
                   {article.title}
-                </TailwindFeedArticleLabel>
+                </FeedArticleLabel>
                 <Separator />
-                <TailwindFeedArticleDescription class="text-sm text-white">
+                <FeedArticleDescription class="text-sm text-white">
                   {article.description}
-                </TailwindFeedArticleDescription>
-              </TailwindFeedArticle>
+                </FeedArticleDescription>
+              </FeedArticle>
             )}
           </For>
           <Show when={busy()}>
@@ -128,8 +128,8 @@ export default function App(): JSX.Element {
               <SpinnerIcon class="animate-spin w-5 h-5 text-white" />
             </div>
           </Show>
-        </TailwindFeedContent>
-      </TailwindFeed>
+        </FeedContent>
+      </Feed>
     </div>
   );
 }

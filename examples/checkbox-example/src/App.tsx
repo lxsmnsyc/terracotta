@@ -1,14 +1,14 @@
 import {
-  TailwindDialog,
-  TailwindDialogPanel,
-  TailwindDialogTitle,
-  TailwindTransition,
-  TailwindTransitionChild,
-  TailwindDialogOverlay,
-  TailwindCheckbox,
-  TailwindCheckboxIndicator,
-  TailwindCheckboxLabel,
-  TailwindCheckboxDescription,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Transition,
+  TransitionChild,
+  DialogOverlay,
+  Checkbox,
+  CheckboxIndicator,
+  CheckboxLabel,
+  CheckboxDescription,
 } from 'solid-headless';
 import { createSignal, JSX, Switch, Match } from 'solid-js';
 
@@ -74,13 +74,13 @@ export default function App(): JSX.Element {
   return (
     <>
       <div class="fixed inset-0 flex items-center justify-center">
-        <TailwindCheckbox
+        <Checkbox
           checked={checked()}
           onChange={setChecked}
           as="div"
           class="flex flex-row justify-between items-center space-x-4"
         >
-          <TailwindCheckboxIndicator
+          <CheckboxIndicator
             class="flex-none w-6 h-6 p-1 text-white bg-opacity-25 bg-fuchsia-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
           >
             <Switch>
@@ -97,16 +97,16 @@ export default function App(): JSX.Element {
                 <CloseIcon />
               </Match>
             </Switch>
-          </TailwindCheckboxIndicator>
+          </CheckboxIndicator>
           <div class="flex-1 flex flex-col text-white">
-            <TailwindCheckboxLabel class="font-bold">
+            <CheckboxLabel class="font-bold">
               This is a checkbox label
-            </TailwindCheckboxLabel>
-            <TailwindCheckboxDescription class="font-semibold text-xs opacity-50">
+            </CheckboxLabel>
+            <CheckboxDescription class="font-semibold text-xs opacity-50">
               This is a checkbox description
-            </TailwindCheckboxDescription>
+            </CheckboxDescription>
           </div>
-        </TailwindCheckbox>
+        </Checkbox>
       </div>
     </>
   );

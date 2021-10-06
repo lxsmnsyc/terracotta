@@ -1,8 +1,8 @@
 import {
-  TailwindToggle,
-  TailwindToolbar,
+  Toggle,
+  Toolbar,
 } from 'solid-headless';
-import { JSX, For, createSignal, createSelector } from 'solid-js';
+import { JSX, For, createSignal } from 'solid-js';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -25,12 +25,12 @@ export default function App(): JSX.Element {
   return (
     <div class="w-auto">
       <div class="p-2 bg-white rounded-lg">
-        <TailwindToolbar class="flex w-full space-x-1" horizontal>
+        <Toolbar class="flex w-full space-x-1" horizontal>
           <For each={FONT_OPTIONS}>
             {(item) => {
               const [checked, setChecked] = createSignal(false);
               return (
-                <TailwindToggle
+                <Toggle
                   class={classNames(
                     checked() ? 'text-color-600 bg-purple-200' : '',
                     'focus:outline-none focus-visible:ring focus-visible:ring-purple-400 focus-visible:ring-opacity-75',
@@ -39,11 +39,11 @@ export default function App(): JSX.Element {
                   onChange={setChecked}
                 >
                   <span class={item.class}>{item.label}</span>
-                </TailwindToggle>
+                </Toggle>
               );
             }}
           </For>
-        </TailwindToolbar>
+        </Toolbar>
       </div>
     </div>
   );

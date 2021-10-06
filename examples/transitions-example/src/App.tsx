@@ -1,5 +1,5 @@
 import {
-  TailwindTransition,
+  Transition,
 } from 'solid-headless';
 import { createSignal, JSX } from 'solid-js';
 
@@ -9,7 +9,7 @@ export default function App(): JSX.Element {
   return (
     <div className="flex flex-col items-center py-16">
       <div className="w-32 h-32">
-        <TailwindTransition
+        <Transition
           show={isShowing()}
           className="w-full h-full bg-white rounded-md shadow-lg"
           enter="transform transition duration-[400ms]"

@@ -1,8 +1,8 @@
 import {
-  TailwindToast,
-  TailwindToaster,
-  TailwindTransition,
+  Toast,
   Toaster,
+  Transition,
+  ToasterStore,
   useToaster,
 } from 'solid-headless';
 import {
@@ -13,7 +13,7 @@ import {
   onCleanup,
 } from 'solid-js';
 
-const notifications = new Toaster<string>();
+const notifications = new ToasterStore<string>();
 
 interface ToastProps {
   id: string;
@@ -39,7 +39,7 @@ function CloseIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
   );
 }
 
-function Toast(props: ToastProps): JSX.Element {
+function CustomToast(props: ToastProps): JSX.Element {
   const [isOpen, setIsOpen] = createSignal(true);
 
   function dismiss() {
@@ -47,7 +47,7 @@ function Toast(props: ToastProps): JSX.Element {
   }
 
   return (
-    <TailwindTransition
+    <Transition
       show={isOpen()}
       class="relative transition rounded-lg p-4 bg-opacity-25 bg-rose-900"
       enter="ease-out duration-300"
@@ -60,13 +60,13 @@ function Toast(props: ToastProps): JSX.Element {
         notifications.remove(props.id);
       }}
     >
-      <TailwindToast class="flex justify-between items-center">
+      <Toast class="flex justify-between items-center">
         <span class="flex-1 text-sm font-semibold text-white">{props.message}</span>
         <button type="button" class="flex-none w-6 h-6 p-1 text-white bg-opacity-25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75" onClick={dismiss}>
           <CloseIcon />
         </button>
-      </TailwindToast>
-    </TailwindTransition>
+      </Toast>
+    </Transition>
   );
 }
 
@@ -119,8 +119,8 @@ export default function App(): JSX.Element {
           Clear toasts
         </button>
       </div>
-      <TailwindToaster class="absolute fixed-0 left-0 bottom-0 m-4">
-        <TailwindTransition
+      <Toaster class="absolute fixed-0 left-0 bottom-0 m-4">
+        <Transition
           show={isOpen()}
           class="relative transition"
           enter="ease-out duration-300"
@@ -148,13 +148,13 @@ export default function App(): JSX.Element {
                 )}
               >
                 {(item) => (
-                  <Toast id={item.id} message={item.data} />
+                  <CustomToast id={item.id} message={item.data} />
                 )}
               </For>
             </div>
           </div>
-        </TailwindTransition>
-      </TailwindToaster>
+        </Transition>
+      </Toaster>
     </>
   );
 }

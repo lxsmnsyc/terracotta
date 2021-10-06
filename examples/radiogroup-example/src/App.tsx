@@ -1,8 +1,8 @@
 import {
-  TailwindRadioGroup,
-  TailwindRadioGroupDescription,
-  TailwindRadioGroupLabel,
-  TailwindRadioGroupOption,
+  RadioGroup,
+  RadioGroupDescription,
+  RadioGroupLabel,
+  RadioGroupOption,
 } from 'solid-headless';
 import { createSignal, JSX } from 'solid-js';
 
@@ -52,7 +52,7 @@ export default function App() {
   return (
     <div className="w-full px-4 py-16">
       <div className="w-full max-w-md mx-auto">
-        <TailwindRadioGroup
+        <RadioGroup
           value={selected}
           onChange={(value) => {
             setSelected(value);
@@ -60,13 +60,13 @@ export default function App() {
         >
           {({ isSelected, isActive }) => (
             <>
-              <TailwindRadioGroupLabel className="sr-only">
+              <RadioGroupLabel className="sr-only">
                 Server size
-              </TailwindRadioGroupLabel>
+              </RadioGroupLabel>
               <div className="space-y-2">
                 <For each={plans}>
                   {(plan) => (
-                    <TailwindRadioGroupOption
+                    <RadioGroupOption
                       value={plan}
                       class={classNames(
                         isSelected(plan) ? 'bg-sky-900 bg-opacity-75 text-white' : 'bg-white',
@@ -78,13 +78,13 @@ export default function App() {
                         <div className="flex items-center justify-between w-full">
                           <div className="flex items-center">
                             <div className="text-sm">
-                              <TailwindRadioGroupLabel
+                              <RadioGroupLabel
                                 as="p"
                                 className={`font-medium ${checked() ? 'text-white' : 'text-gray-900'}`}
                               >
                                 {plan.name}
-                              </TailwindRadioGroupLabel>
-                              <TailwindRadioGroupDescription
+                              </RadioGroupLabel>
+                              <RadioGroupDescription
                                 as="span"
                                 className={`inline ${checked() ? 'text-sky-100' : 'text-gray-500'}`}
                               >
@@ -93,7 +93,7 @@ export default function App() {
                                 </span>{' '}
                                 <span aria-hidden="true">&middot;</span>{' '}
                                 <span>{plan.disk}</span>
-                              </TailwindRadioGroupDescription>
+                              </RadioGroupDescription>
                             </div>
                           </div>
                           {checked() && (
@@ -103,14 +103,14 @@ export default function App() {
                           )}
                         </div>
                       )}
-                    </TailwindRadioGroupOption>
+                    </RadioGroupOption>
 
                   )}
                 </For>
               </div>
             </>
           )}
-        </TailwindRadioGroup>
+        </RadioGroup>
       </div>
     </div>
   );
