@@ -21,13 +21,13 @@ import {
   excludeProps,
 } from '../utils/exclude-props';
 
-export type TailwindButtonProps<T extends ValidConstructor = 'button'> = {
+export type ButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T,
   disabled?: boolean;
 } & WithRef<T> & Omit<DynamicProps<T>, 'as' | 'disabled' | 'ref'>;
 
-export function TailwindButton<T extends ValidConstructor = 'button'>(
-  props: TailwindButtonProps<T>,
+export function Button<T extends ValidConstructor = 'button'>(
+  props: ButtonProps<T>,
 ): JSX.Element {
   const buttonID = createUniqueId();
 
