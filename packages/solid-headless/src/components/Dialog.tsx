@@ -30,7 +30,7 @@ import {
 } from '../utils/exclude-props';
 import getFocusableElements from '../utils/get-focusable-elements';
 
-interface TailwindDialogContext {
+interface DialogContext {
   ownerID: string;
   panelID: string;
   titleID: string;
@@ -38,26 +38,26 @@ interface TailwindDialogContext {
   onClose?: () => void;
 }
 
-const TailwindDialogContext = createContext<TailwindDialogContext>();
+const DialogContext = createContext<DialogContext>();
 
-function useTailwindDialogContext(componentName: string): TailwindDialogContext {
-  const context = useContext(TailwindDialogContext);
+function useDialogContext(componentName: string): DialogContext {
+  const context = useContext(DialogContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindDialog>`);
+  throw new Error(`<${componentName}> must be used inside a <Dialog>`);
 }
 
-export type TailwindDialogProps<T extends ValidConstructor = 'div'> = {
+export type DialogProps<T extends ValidConstructor = 'div'> = {
   as?: T;
   unmount?: boolean;
   onClose?: () => void;
 } & HeadlessDisclosureRootProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureRootProps | 'unmount'>;
 
-export function TailwindDialog<T extends ValidConstructor = 'div'>(
-  props: TailwindDialogProps<T>,
+export function Dialog<T extends ValidConstructor = 'div'>(
+  props: DialogProps<T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
   const panelID = createUniqueId();
@@ -79,7 +79,7 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
   });
 
   return (
-    <TailwindDialogContext.Provider
+    <DialogContext.Provider
       value={{
         ownerID,
         panelID,
@@ -151,19 +151,19 @@ export function TailwindDialog<T extends ValidConstructor = 'div'>(
           </Show>
         )}
       </HeadlessDisclosureRoot>
-    </TailwindDialogContext.Provider>
+    </DialogContext.Provider>
   );
 }
 
-export type TailwindDialogTitleProps<T extends ValidConstructor = 'h2'> = {
+export type DialogTitleProps<T extends ValidConstructor = 'h2'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindDialogTitle<T extends ValidConstructor = 'h2'>(
-  props: TailwindDialogTitleProps<T>,
+export function DialogTitle<T extends ValidConstructor = 'h2'>(
+  props: DialogTitleProps<T>,
 ): JSX.Element {
-  const context = useTailwindDialogContext('TailwindDialogTitle');
+  const context = useDialogContext('DialogTitle');
   return (
     <Dynamic
       component={(props.as ?? 'h2') as T}
@@ -181,16 +181,16 @@ export function TailwindDialogTitle<T extends ValidConstructor = 'h2'>(
   );
 }
 
-export type TailwindDialogPanelProps<T extends ValidConstructor = 'div'> = {
+export type DialogPanelProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
-  props: TailwindDialogPanelProps<T>,
+export function DialogPanel<T extends ValidConstructor = 'div'>(
+  props: DialogPanelProps<T>,
 ): JSX.Element {
-  const context = useTailwindDialogContext('TailwindDialogPanel');
+  const context = useDialogContext('DialogPanel');
   const properties = useHeadlessDisclosureChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -278,16 +278,16 @@ export function TailwindDialogPanel<T extends ValidConstructor = 'div'>(
   );
 }
 
-export type TailwindDialogOverlayProps<T extends ValidConstructor = 'div'> = {
+export type DialogOverlayProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindDialogOverlay<T extends ValidConstructor = 'p'>(
-  props: TailwindDialogOverlayProps<T>,
+export function DialogOverlay<T extends ValidConstructor = 'p'>(
+  props: DialogOverlayProps<T>,
 ): JSX.Element {
-  const context = useTailwindDialogContext('TailwindDialogOverlay');
+  const context = useDialogContext('DialogOverlay');
   const properties = useHeadlessDisclosureChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -332,15 +332,15 @@ export function TailwindDialogOverlay<T extends ValidConstructor = 'p'>(
   );
 }
 
-export type TailwindDialogDescriptionProps<T extends ValidConstructor = 'p'> = {
+export type DialogDescriptionProps<T extends ValidConstructor = 'p'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindDialogDescription<T extends ValidConstructor = 'p'>(
-  props: TailwindDialogDescriptionProps<T>,
+export function DialogDescription<T extends ValidConstructor = 'p'>(
+  props: DialogDescriptionProps<T>,
 ): JSX.Element {
-  const context = useTailwindDialogContext('TailwindDialogDescription');
+  const context = useDialogContext('DialogDescription');
 
   return (
     <Dynamic
