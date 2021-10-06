@@ -32,7 +32,7 @@ import {
 } from '../utils/exclude-props';
 import getFocusableElements from '../utils/get-focusable-elements';
 
-interface TailwindAlertDialogContext {
+interface AlertDialogContext {
   ownerID: string;
   panelID: string;
   titleID: string;
@@ -40,26 +40,26 @@ interface TailwindAlertDialogContext {
   onClose?: () => void;
 }
 
-const TailwindAlertDialogContext = createContext<TailwindAlertDialogContext>();
+const AlertDialogContext = createContext<AlertDialogContext>();
 
-function useTailwindAlertDialogContext(componentName: string): TailwindAlertDialogContext {
-  const context = useContext(TailwindAlertDialogContext);
+function useAlertDialogContext(componentName: string): AlertDialogContext {
+  const context = useContext(AlertDialogContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindAlertDialog>`);
+  throw new Error(`<${componentName}> must be used inside a <AlertDialog>`);
 }
 
-export type TailwindAlertDialogProps<T extends ValidConstructor = 'div'> = {
+export type AlertDialogProps<T extends ValidConstructor = 'div'> = {
   as?: T;
   unmount?: boolean;
   onClose?: () => void;
 } & HeadlessDisclosureRootProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureRootProps | 'unmount'>;
 
-export function TailwindAlertDialog<T extends ValidConstructor = 'div'>(
-  props: TailwindAlertDialogProps<T>,
+export function AlertDialog<T extends ValidConstructor = 'div'>(
+  props: AlertDialogProps<T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
   const panelID = createUniqueId();
@@ -81,7 +81,7 @@ export function TailwindAlertDialog<T extends ValidConstructor = 'div'>(
   });
 
   return (
-    <TailwindAlertDialogContext.Provider
+    <AlertDialogContext.Provider
       value={{
         ownerID,
         panelID,
@@ -153,19 +153,19 @@ export function TailwindAlertDialog<T extends ValidConstructor = 'div'>(
           </Show>
         )}
       </HeadlessDisclosureRoot>
-    </TailwindAlertDialogContext.Provider>
+    </AlertDialogContext.Provider>
   );
 }
 
-export type TailwindAlertDialogTitleProps<T extends ValidConstructor = 'h2'> = {
+export type AlertDialogTitleProps<T extends ValidConstructor = 'h2'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindAlertDialogTitle<T extends ValidConstructor = 'h2'>(
-  props: TailwindAlertDialogTitleProps<T>,
+export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
+  props: AlertDialogTitleProps<T>,
 ): JSX.Element {
-  const context = useTailwindAlertDialogContext('TailwindAlertDialogTitle');
+  const context = useAlertDialogContext('AlertDialogTitle');
   return (
     <Dynamic
       component={(props.as ?? 'h2') as T}
@@ -183,16 +183,16 @@ export function TailwindAlertDialogTitle<T extends ValidConstructor = 'h2'>(
   );
 }
 
-export type TailwindAlertDialogPanelProps<T extends ValidConstructor = 'div'> = {
+export type AlertDialogPanelProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindAlertDialogPanel<T extends ValidConstructor = 'div'>(
-  props: TailwindAlertDialogPanelProps<T>,
+export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
+  props: AlertDialogPanelProps<T>,
 ): JSX.Element {
-  const context = useTailwindAlertDialogContext('TailwindAlertDialogPanel');
+  const context = useAlertDialogContext('AlertDialogPanel');
   const properties = useHeadlessDisclosureChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -280,16 +280,16 @@ export function TailwindAlertDialogPanel<T extends ValidConstructor = 'div'>(
   );
 }
 
-export type TailwindAlertDialogOverlayProps<T extends ValidConstructor = 'div'> = {
+export type AlertDialogOverlayProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindAlertDialogOverlay<T extends ValidConstructor = 'div'>(
-  props: TailwindAlertDialogOverlayProps<T>,
+export function AlertDialogOverlay<T extends ValidConstructor = 'div'>(
+  props: AlertDialogOverlayProps<T>,
 ): JSX.Element {
-  const context = useTailwindAlertDialogContext('TailwindAlertDialogOverlay');
+  const context = useAlertDialogContext('AlertDialogOverlay');
   const properties = useHeadlessDisclosureChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -334,15 +334,15 @@ export function TailwindAlertDialogOverlay<T extends ValidConstructor = 'div'>(
   );
 }
 
-export type TailwindAlertDialogDescriptionProps<T extends ValidConstructor = 'p'> = {
+export type AlertDialogDescriptionProps<T extends ValidConstructor = 'p'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindAlertDialogDescription<T extends ValidConstructor = 'p'>(
-  props: TailwindAlertDialogDescriptionProps<T>,
+export function AlertDialogDescription<T extends ValidConstructor = 'p'>(
+  props: AlertDialogDescriptionProps<T>,
 ): JSX.Element {
-  const context = useTailwindAlertDialogContext('TailwindAlertDialogDescription');
+  const context = useAlertDialogContext('AlertDialogDescription');
 
   return (
     <Dynamic
