@@ -15,12 +15,12 @@ import {
   excludeProps,
 } from '../utils/exclude-props';
 
-export type TailwindAlertProps<T extends ValidConstructor = 'div'> = {
+export type AlertProps<T extends ValidConstructor = 'div'> = {
   as?: T,
 } & Omit<DynamicProps<T>, 'as'>
 
-export function TailwindAlert<T extends ValidConstructor = 'div'>(
-  props: TailwindAlertProps<T>,
+export function Alert<T extends ValidConstructor = 'div'>(
+  props: AlertProps<T>,
 ): JSX.Element {
   const alertID = createUniqueId();
 
