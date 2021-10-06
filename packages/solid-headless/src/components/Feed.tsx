@@ -23,7 +23,7 @@ import {
 import getFocusableElements from '../utils/get-focusable-elements';
 import { queryFeedArticles } from '../utils/query-nodes';
 
-interface TailwindFeedContext {
+interface FeedContext {
   ownerID: string;
   labelID: string;
   contentID: string;
@@ -33,58 +33,58 @@ interface TailwindFeedContext {
   focusNext: () => void;
 }
 
-const TailwindFeedContext = createContext<TailwindFeedContext>();
+const FeedContext = createContext<FeedContext>();
 
-function useTailwindFeedContext(componentName: string): TailwindFeedContext {
-  const context = useContext(TailwindFeedContext);
+function useFeedContext(componentName: string): FeedContext {
+  const context = useContext(FeedContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindFeed>`);
+  throw new Error(`<${componentName}> must be used inside a <Feed>`);
 }
 
-interface TailwindFeedContentContext {
+interface FeedContentContext {
   focusPrev: (el: Element) => void;
   focusNext: (el: Element) => void;
 }
 
-const TailwindFeedContentContext = createContext<TailwindFeedContentContext>();
+const FeedContentContext = createContext<FeedContentContext>();
 
-function useTailwindFeedContentContext(componentName: string): TailwindFeedContentContext {
-  const context = useContext(TailwindFeedContentContext);
+function useFeedContentContext(componentName: string): FeedContentContext {
+  const context = useContext(FeedContentContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindFeedContent>`);
+  throw new Error(`<${componentName}> must be used inside a <FeedContent>`);
 }
 
-interface TailwindFeedArticleContext {
+interface FeedArticleContext {
   ownerID: string;
   labelID: string;
   descriptionID: string;
 }
 
-const TailwindFeedArticleContext = createContext<TailwindFeedArticleContext>();
+const FeedArticleContext = createContext<FeedArticleContext>();
 
-function useTailwindFeedArticleContext(componentName: string): TailwindFeedArticleContext {
-  const context = useContext(TailwindFeedArticleContext);
+function useFeedArticleContext(componentName: string): FeedArticleContext {
+  const context = useContext(FeedArticleContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindFeedArticle>`);
+  throw new Error(`<${componentName}> must be used inside a <FeedArticle>`);
 }
 
-export type TailwindFeedProps<T extends ValidConstructor = 'div'> = {
+export type FeedProps<T extends ValidConstructor = 'div'> = {
   as?: T;
   size: number;
   busy?: boolean;
 } & WithRef<T> & Omit<DynamicProps<T>, 'size' | 'busy'>;
 
-export function TailwindFeed<T extends ValidConstructor = 'div'>(
-  props: TailwindFeedProps<T>,
+export function Feed<T extends ValidConstructor = 'div'>(
+  props: FeedProps<T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
   const labelID = createUniqueId();
@@ -93,7 +93,7 @@ export function TailwindFeed<T extends ValidConstructor = 'div'>(
   let internalRef: DynamicNode<T>;
 
   return (
-    <TailwindFeedContext.Provider
+    <FeedContext.Provider
       value={{
         ownerID,
         labelID,
@@ -145,18 +145,18 @@ export function TailwindFeed<T extends ValidConstructor = 'div'>(
           internalRef = e;
         })}
       />
-    </TailwindFeedContext.Provider>
+    </FeedContext.Provider>
   );
 }
 
-export type TailwindFeedLabelProps<T extends ValidConstructor = 'span'> = {
+export type FeedLabelProps<T extends ValidConstructor = 'span'> = {
   as?: T;
 } & DynamicProps<T>;
 
-export function TailwindFeedLabel<T extends ValidConstructor = 'span'>(
-  props: TailwindFeedLabelProps<T>,
+export function FeedLabel<T extends ValidConstructor = 'span'>(
+  props: FeedLabelProps<T>,
 ): JSX.Element {
-  const context = useTailwindFeedContext('TailwindFeedLabel');
+  const context = useFeedContext('FeedLabel');
   return (
     <Dynamic
       component={(props.as ?? 'span') as T}
@@ -169,14 +169,14 @@ export function TailwindFeedLabel<T extends ValidConstructor = 'span'>(
   );
 }
 
-export type TailwindFeedContentProps<T extends ValidConstructor = 'div'> = {
+export type FeedContentProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & WithRef<T> & DynamicProps<T>;
 
-export function TailwindFeedContent<T extends ValidConstructor = 'div'>(
-  props: TailwindFeedContentProps<T>,
+export function FeedContent<T extends ValidConstructor = 'div'>(
+  props: FeedContentProps<T>,
 ): JSX.Element {
-  const context = useTailwindFeedContext('TailwindFeedContent');
+  const context = useFeedContext('FeedContent');
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
@@ -236,7 +236,7 @@ export function TailwindFeedContent<T extends ValidConstructor = 'div'>(
   });
 
   return (
-    <TailwindFeedContentContext.Provider
+    <FeedContentContext.Provider
       value={{
         focusNext,
         focusPrev,
@@ -256,20 +256,20 @@ export function TailwindFeedContent<T extends ValidConstructor = 'div'>(
           setInternalRef(() => e);
         })}
       />
-    </TailwindFeedContentContext.Provider>
+    </FeedContentContext.Provider>
   );
 }
 
-export type TailwindFeedArticleProps<T extends ValidConstructor = 'article'> = {
+export type FeedArticleProps<T extends ValidConstructor = 'article'> = {
   as?: T;
   index: number;
 } & WithRef<T> & Omit<DynamicProps<T>, 'index'>;
 
-export function TailwindFeedArticle<T extends ValidConstructor = 'article'>(
-  props: TailwindFeedArticleProps<T>,
+export function FeedArticle<T extends ValidConstructor = 'article'>(
+  props: FeedArticleProps<T>,
 ): JSX.Element {
-  const rootContext = useTailwindFeedContext('TailwindFeedArticle');
-  const contentContext = useTailwindFeedContentContext('TailwindFeedArticle');
+  const rootContext = useFeedContext('FeedArticle');
+  const contentContext = useFeedContentContext('FeedArticle');
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
@@ -301,7 +301,7 @@ export function TailwindFeedArticle<T extends ValidConstructor = 'article'>(
   const descriptionID = createUniqueId();
 
   return (
-    <TailwindFeedArticleContext.Provider
+    <FeedArticleContext.Provider
       value={{
         ownerID,
         labelID,
@@ -324,18 +324,18 @@ export function TailwindFeedArticle<T extends ValidConstructor = 'article'>(
           setInternalRef(() => e);
         })}
       />
-    </TailwindFeedArticleContext.Provider>
+    </FeedArticleContext.Provider>
   );
 }
 
-export type TailwindFeedArticleLabelProps<T extends ValidConstructor = 'span'> = {
+export type FeedArticleLabelProps<T extends ValidConstructor = 'span'> = {
   as?: T;
 } & DynamicProps<T>;
 
-export function TailwindFeedArticleLabel<T extends ValidConstructor = 'span'>(
-  props: TailwindFeedArticleLabelProps<T>,
+export function FeedArticleLabel<T extends ValidConstructor = 'span'>(
+  props: FeedArticleLabelProps<T>,
 ): JSX.Element {
-  const context = useTailwindFeedArticleContext('TailwindFeedArticleLabel');
+  const context = useFeedArticleContext('FeedArticleLabel');
   return (
     <Dynamic
       component={(props.as ?? 'span') as T}
@@ -348,14 +348,14 @@ export function TailwindFeedArticleLabel<T extends ValidConstructor = 'span'>(
   );
 }
 
-export type TailwindFeedArticleDescriptionProps<T extends ValidConstructor = 'p'> = {
+export type FeedArticleDescriptionProps<T extends ValidConstructor = 'p'> = {
   as?: T;
 } & DynamicProps<T>;
 
-export function TailwindFeedArticleDescription<T extends ValidConstructor = 'p'>(
-  props: TailwindFeedArticleDescriptionProps<T>,
+export function FeedArticleDescription<T extends ValidConstructor = 'p'>(
+  props: FeedArticleDescriptionProps<T>,
 ): JSX.Element {
-  const context = useTailwindFeedArticleContext('TailwindFeedArticleDescription');
+  const context = useFeedArticleContext('FeedArticleDescription');
   return (
     <Dynamic
       component={(props.as ?? 'p') as T}
