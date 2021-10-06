@@ -19,19 +19,19 @@ import {
   excludeProps,
 } from '../utils/exclude-props';
 import {
-  TailwindButton,
-  TailwindButtonProps,
+  Button,
+  ButtonProps,
 } from './Button';
 
-export type TailwindToggleProps<T extends ValidConstructor = 'button'> = {
+export type ToggleProps<T extends ValidConstructor = 'button'> = {
   defaultPressed?: boolean;
   pressed?: boolean;
   onChange?: (value: boolean) => void;
-} & Omit<TailwindButtonProps<T>, 'defaultPressed' | 'pressed' | 'onChange'>
+} & Omit<ButtonProps<T>, 'defaultPressed' | 'pressed' | 'onChange'>
   & WithRef<T>;
 
-export function TailwindToggle<T extends ValidConstructor = 'button'>(
-  props: TailwindToggleProps<T>,
+export function Toggle<T extends ValidConstructor = 'button'>(
+  props: ToggleProps<T>,
 ): JSX.Element {
   const [state, setState] = createSignal(untrack(() => !!props.defaultPressed));
   const toggleID = createUniqueId();
@@ -56,7 +56,7 @@ export function TailwindToggle<T extends ValidConstructor = 'button'>(
 
   return (
     <Dynamic
-      component={TailwindButton}
+      component={Button}
       as={props.as}
       {...excludeProps(props, [
         'defaultPressed',
