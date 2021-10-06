@@ -20,13 +20,13 @@ import {
 } from '../utils/exclude-props';
 import getFocusableElements from '../utils/get-focusable-elements';
 
-export type TailwindToolbarProps<T extends ValidConstructor = 'div'> = {
+export type ToolbarProps<T extends ValidConstructor = 'div'> = {
   as?: T,
   horizontal?: boolean;
 } & Omit<DynamicProps<T>, 'as'> & WithRef<T>;
 
-export function TailwindToolbar<T extends ValidConstructor = 'div'>(
-  props: TailwindToolbarProps<T>,
+export function Toolbar<T extends ValidConstructor = 'div'>(
+  props: ToolbarProps<T>,
 ): JSX.Element {
   const toolbarID = createUniqueId();
 
