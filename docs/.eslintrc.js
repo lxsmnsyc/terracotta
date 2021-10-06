@@ -8,5 +8,8 @@ module.exports = {
     "tsconfigRootDir": __dirname,
   },
   "rules": {
+    "react/destructuring-assignment": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/no-unknown-property": "off"
   }
 };
