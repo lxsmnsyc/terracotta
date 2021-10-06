@@ -34,11 +34,11 @@ import {
   queryAccordionButtons,
 } from '../utils/query-nodes';
 import {
-  TailwindButton,
-  TailwindButtonProps,
+  Button,
+  ButtonProps,
 } from './Button';
 
-interface TailwindAccordionContext {
+interface AccordionContext {
   ownerID: string;
   setChecked: (node: Element) => void;
   setPrevChecked: (node: Element) => void;
@@ -47,41 +47,41 @@ interface TailwindAccordionContext {
   setLastChecked: () => void;
 }
 
-const TailwindAccordionContext = createContext<TailwindAccordionContext>();
+const AccordionContext = createContext<AccordionContext>();
 
-function useTailwindAccordionContext(componentName: string): TailwindAccordionContext {
-  const context = useContext(TailwindAccordionContext);
+function useAccordionContext(componentName: string): AccordionContext {
+  const context = useContext(AccordionContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindAccordion>`);
+  throw new Error(`<${componentName}> must be used inside a <Accordion>`);
 }
 
-interface TailwindAccordionItemContext {
+interface AccordionItemContext {
   buttonID: string;
   panelID: string;
 }
 
-const TailwindAccordionItemContext = createContext<TailwindAccordionItemContext>();
+const AccordionItemContext = createContext<AccordionItemContext>();
 
-function useTailwindAccordionItemContext(componentName: string): TailwindAccordionItemContext {
-  const context = useContext(TailwindAccordionItemContext);
+function useAccordionItemContext(componentName: string): AccordionItemContext {
+  const context = useContext(AccordionItemContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindAccordionItem>`);
+  throw new Error(`<${componentName}> must be used inside a <AccordionItem>`);
 }
 
-export type TailwindAccordionProps<V, T extends ValidConstructor = 'div'> = {
+export type AccordionProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessSelectRootProps<V>
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectRootProps<V>>;
 
-export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
-  props: TailwindAccordionProps<V, T>,
+export function Accordion<V, T extends ValidConstructor = 'div'>(
+  props: AccordionProps<V, T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
 
@@ -138,7 +138,7 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
   }
 
   return (
-    <TailwindAccordionContext.Provider
+    <AccordionContext.Provider
       value={{
         ownerID,
         setChecked,
@@ -178,23 +178,23 @@ export function TailwindAccordion<V, T extends ValidConstructor = 'div'>(
           {props.children}
         </HeadlessSelectRoot>
       </Dynamic>
-    </TailwindAccordionContext.Provider>
+    </AccordionContext.Provider>
   );
 }
 
-export type TailwindAccordionItemProps<V, T extends ValidConstructor = 'div'> = {
+export type AccordionItemProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessSelectOptionProps<V>
   & Omit<DynamicProps<T>, keyof HeadlessSelectOptionProps<V>>;
 
-export function TailwindAccordionItem<V, T extends ValidConstructor = 'div'>(
-  props: TailwindAccordionItemProps<V, T>,
+export function AccordionItem<V, T extends ValidConstructor = 'div'>(
+  props: AccordionItemProps<V, T>,
 ): JSX.Element {
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
 
   return (
-    <TailwindAccordionItemContext.Provider
+    <AccordionItemContext.Provider
       value={{
         buttonID,
         panelID,
@@ -219,17 +219,17 @@ export function TailwindAccordionItem<V, T extends ValidConstructor = 'div'>(
           {props.children}
         </HeadlessSelectOption>
       </Dynamic>
-    </TailwindAccordionItemContext.Provider>
+    </AccordionItemContext.Provider>
   );
 }
 
-export type TailwindAccordionHeaderProps<T extends ValidConstructor = 'h3'> = {
+export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> = {
   as?: T;
 } & HeadlessSelectOptionChildProps
   & Omit<DynamicProps<T>, keyof HeadlessSelectOptionChildProps>;
 
-export function TailwindAccordionHeader<T extends ValidConstructor = 'h3'>(
-  props: TailwindAccordionHeaderProps<T>,
+export function AccordionHeader<T extends ValidConstructor = 'h3'>(
+  props: AccordionHeaderProps<T>,
 ): JSX.Element {
   return (
     <Dynamic
@@ -246,17 +246,17 @@ export function TailwindAccordionHeader<T extends ValidConstructor = 'h3'>(
   );
 }
 
-export type TailwindAccordionButtonProps<T extends ValidConstructor = 'button'> = {
+export type AccordionButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T;
 } & HeadlessSelectOptionChildProps
   & WithRef<T>
-  & Omit<TailwindButtonProps<T>, keyof HeadlessSelectOptionChildProps>;
+  & Omit<ButtonProps<T>, keyof HeadlessSelectOptionChildProps>;
 
-export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
-  props: TailwindAccordionButtonProps<T>,
+export function AccordionButton<T extends ValidConstructor = 'button'>(
+  props: AccordionButtonProps<T>,
 ): JSX.Element {
-  const rootContext = useTailwindAccordionContext('TailwindAccordionButton');
-  const itemContext = useTailwindAccordionItemContext('TailwindAccordionButton');
+  const rootContext = useAccordionContext('AccordionButton');
+  const itemContext = useAccordionItemContext('AccordionButton');
   const properties = useHeadlessSelectOptionChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -316,7 +316,7 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
 
   return (
     <Dynamic
-      component={TailwindButton}
+      component={Button}
       {...excludeProps(props, [
         'children',
         'ref',
@@ -343,16 +343,16 @@ export function TailwindAccordionButton<T extends ValidConstructor = 'button'>(
   );
 }
 
-export type TailwindAccordionPanelProps<T extends ValidConstructor = 'div'> = {
+export type AccordionPanelProps<T extends ValidConstructor = 'div'> = {
   as?: T;
   unmount?: boolean;
 } & HeadlessSelectOptionChildProps
   & Omit<DynamicProps<T>, keyof HeadlessSelectOptionChildProps>;
 
-export function TailwindAccordionPanel<T extends ValidConstructor = 'div'>(
-  props: TailwindAccordionPanelProps<T>,
+export function AccordionPanel<T extends ValidConstructor = 'div'>(
+  props: AccordionPanelProps<T>,
 ): JSX.Element {
-  const context = useTailwindAccordionItemContext('TailwindAccordionPanel');
+  const context = useAccordionItemContext('AccordionPanel');
   const properties = useHeadlessSelectOptionChild();
 
   return (
