@@ -29,12 +29,12 @@ import {
   excludeProps,
 } from '../utils/exclude-props';
 import {
-  TailwindButton,
-  TailwindButtonProps,
+  Button,
+  ButtonProps,
 } from './Button';
 import getFocusableElements from '../utils/get-focusable-elements';
 
-interface TailwindPopoverContext {
+interface PopoverContext {
   ownerID: string;
   buttonID: string;
   panelID: string;
@@ -42,24 +42,24 @@ interface TailwindPopoverContext {
   anchor?: HTMLElement | null;
 }
 
-const TailwindPopoverContext = createContext<TailwindPopoverContext>();
+const PopoverContext = createContext<PopoverContext>();
 
-function useTailwindPopoverContext(componentName: string): TailwindPopoverContext {
-  const context = useContext(TailwindPopoverContext);
+function usePopoverContext(componentName: string): PopoverContext {
+  const context = useContext(PopoverContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindPopover>`);
+  throw new Error(`<${componentName}> must be used inside a <Popover>`);
 }
 
-export type TailwindPopoverProps<T extends ValidConstructor = 'div'> = {
+export type PopoverProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessDisclosureRootProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindPopover<T extends ValidConstructor = 'div'>(
-  props: TailwindPopoverProps<T>,
+export function Popover<T extends ValidConstructor = 'div'>(
+  props: PopoverProps<T>,
 ): JSX.Element {
   const [hovering, setHovering] = createSignal(false);
   const ownerID = createUniqueId();
@@ -81,7 +81,7 @@ export function TailwindPopover<T extends ValidConstructor = 'div'>(
   });
 
   return (
-    <TailwindPopoverContext.Provider
+    <PopoverContext.Provider
       value={{
         ownerID,
         buttonID,
@@ -118,20 +118,20 @@ export function TailwindPopover<T extends ValidConstructor = 'div'>(
           {props.children}
         </HeadlessDisclosureRoot>
       </Dynamic>
-    </TailwindPopoverContext.Provider>
+    </PopoverContext.Provider>
   );
 }
 
-export type TailwindPopoverButtonProps<T extends ValidConstructor = 'button'> = {
+export type PopoverButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & WithRef<T>
-  & Omit<TailwindButtonProps<T>, keyof HeadlessDisclosureChildProps>;
+  & Omit<ButtonProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindPopoverButton<T extends ValidConstructor = 'button'>(
-  props: TailwindPopoverButtonProps<T>,
+export function PopoverButton<T extends ValidConstructor = 'button'>(
+  props: PopoverButtonProps<T>,
 ): JSX.Element {
-  const context = useTailwindPopoverContext('TailwindPopoverButton');
+  const context = usePopoverContext('PopoverButton');
   const properties = useHeadlessDisclosureChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -169,7 +169,7 @@ export function TailwindPopoverButton<T extends ValidConstructor = 'button'>(
 
   return (
     <Dynamic
-      component={TailwindButton}
+      component={Button}
       {...excludeProps(props, [
         'children',
         'ref',
@@ -196,17 +196,17 @@ export function TailwindPopoverButton<T extends ValidConstructor = 'button'>(
   );
 }
 
-export type TailwindPopoverPanelProps<T extends ValidConstructor = 'div'> = {
+export type PopoverPanelProps<T extends ValidConstructor = 'div'> = {
   as?: T;
   unmount?: boolean;
 } & HeadlessDisclosureChildProps
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
-  props: TailwindPopoverPanelProps<T>,
+export function PopoverPanel<T extends ValidConstructor = 'div'>(
+  props: PopoverPanelProps<T>,
 ): JSX.Element {
-  const context = useTailwindPopoverContext('TailwindPopoverPanel');
+  const context = usePopoverContext('PopoverPanel');
   const properties = useHeadlessDisclosureChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -328,16 +328,16 @@ export function TailwindPopoverPanel<T extends ValidConstructor = 'div'>(
   );
 }
 
-export type TailwindPopoverOverlayProps<T extends ValidConstructor = 'div'> = {
+export type PopoverOverlayProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindPopoverOverlay<T extends ValidConstructor = 'p'>(
-  props: TailwindPopoverOverlayProps<T>,
+export function PopoverOverlay<T extends ValidConstructor = 'p'>(
+  props: PopoverOverlayProps<T>,
 ): JSX.Element {
-  const context = useTailwindPopoverContext('TailwindPopoverOverlay');
+  const context = usePopoverContext('PopoverOverlay');
   const properties = useHeadlessDisclosureChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
