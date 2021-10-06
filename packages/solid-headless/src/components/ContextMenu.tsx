@@ -30,31 +30,31 @@ import {
 } from '../utils/exclude-props';
 import getFocusableElements from '../utils/get-focusable-elements';
 
-interface TailwindContextMenuContext {
+interface ContextMenuContext {
   ownerID: string;
   boundaryID: string;
   panelID: string;
   anchor?: HTMLElement | null;
 }
 
-const TailwindContextMenuContext = createContext<TailwindContextMenuContext>();
+const ContextMenuContext = createContext<ContextMenuContext>();
 
-function useTailwindContextMenuContext(componentName: string): TailwindContextMenuContext {
-  const context = useContext(TailwindContextMenuContext);
+function useContextMenuContext(componentName: string): ContextMenuContext {
+  const context = useContext(ContextMenuContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindContextMenu>`);
+  throw new Error(`<${componentName}> must be used inside a <ContextMenu>`);
 }
 
-export type TailwindContextMenuProps<T extends ValidConstructor = 'div'> = {
+export type ContextMenuProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessDisclosureRootProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindContextMenu<T extends ValidConstructor = 'div'>(
-  props: TailwindContextMenuProps<T>,
+export function ContextMenu<T extends ValidConstructor = 'div'>(
+  props: ContextMenuProps<T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
   const boundaryID = createUniqueId();
@@ -75,7 +75,7 @@ export function TailwindContextMenu<T extends ValidConstructor = 'div'>(
   });
 
   return (
-    <TailwindContextMenuContext.Provider
+    <ContextMenuContext.Provider
       value={{
         ownerID,
         boundaryID,
@@ -106,20 +106,20 @@ export function TailwindContextMenu<T extends ValidConstructor = 'div'>(
           {props.children}
         </HeadlessDisclosureRoot>
       </Dynamic>
-    </TailwindContextMenuContext.Provider>
+    </ContextMenuContext.Provider>
   );
 }
 
-export type TailwindContextMenuBoundaryProps<T extends ValidConstructor = 'div'> = {
+export type ContextMenuBoundaryProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindContextMenuBoundary<T extends ValidConstructor = 'div'>(
-  props: TailwindContextMenuBoundaryProps<T>,
+export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
+  props: ContextMenuBoundaryProps<T>,
 ): JSX.Element {
-  const context = useTailwindContextMenuContext('TailwindContextMenuBoundary');
+  const context = useContextMenuContext('ContextMenuBoundary');
   const properties = useHeadlessDisclosureChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -172,17 +172,17 @@ export function TailwindContextMenuBoundary<T extends ValidConstructor = 'div'>(
   );
 }
 
-export type TailwindContextMenuPanelProps<T extends ValidConstructor = 'div'> = {
+export type ContextMenuPanelProps<T extends ValidConstructor = 'div'> = {
   as?: T;
   unmount?: boolean;
 } & HeadlessDisclosureChildProps
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindContextMenuPanel<T extends ValidConstructor = 'div'>(
-  props: TailwindContextMenuPanelProps<T>,
+export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
+  props: ContextMenuPanelProps<T>,
 ): JSX.Element {
-  const context = useTailwindContextMenuContext('TailwindContextMenuPanel');
+  const context = useContextMenuContext('ContextMenuPanel');
   const properties = useHeadlessDisclosureChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -296,16 +296,16 @@ export function TailwindContextMenuPanel<T extends ValidConstructor = 'div'>(
   );
 }
 
-export type TailwindContextMenuOverlayProps<T extends ValidConstructor = 'div'> = {
+export type ContextMenuOverlayProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & HeadlessDisclosureChildProps
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
-export function TailwindContextMenuOverlay<T extends ValidConstructor = 'div'>(
-  props: TailwindContextMenuOverlayProps<T>,
+export function ContextMenuOverlay<T extends ValidConstructor = 'div'>(
+  props: ContextMenuOverlayProps<T>,
 ): JSX.Element {
-  const context = useTailwindContextMenuContext('TailwindContextMenuOverlay');
+  const context = useContextMenuContext('ContextMenuOverlay');
   const properties = useHeadlessDisclosureChild();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
