@@ -29,48 +29,48 @@ import {
 } from '../utils/exclude-props';
 import { queryRadios } from '../utils/query-nodes';
 
-interface TailwindRadioGroupContext {
+interface RadioGroupContext {
   labelID: string;
   descriptionID: string;
 }
 
-const TailwindRadioGroupContext = createContext<TailwindRadioGroupContext>();
+const RadioGroupContext = createContext<RadioGroupContext>();
 
-function useTailwindRadioGroupContext(componentName: string): TailwindRadioGroupContext {
-  const context = useContext(TailwindRadioGroupContext);
+function useRadioGroupContext(componentName: string): RadioGroupContext {
+  const context = useContext(RadioGroupContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindRadioGroup> or <TailwindRadioGroupOption>`);
+  throw new Error(`<${componentName}> must be used inside a <RadioGroup> or <RadioGroupOption>`);
 }
 
-interface TailwindRadioGroupRootContext {
+interface RadioGroupRootContext {
   ownerID: string;
   setChecked: (node: Element) => void;
   setPrevChecked: (node: Element) => void;
   setNextChecked: (node: Element) => void;
 }
 
-const TailwindRadioGroupRootContext = createContext<TailwindRadioGroupRootContext>();
+const RadioGroupRootContext = createContext<RadioGroupRootContext>();
 
-function useTailwindRadioGroupRootContext(componentName: string): TailwindRadioGroupRootContext {
-  const context = useContext(TailwindRadioGroupRootContext);
+function useRadioGroupRootContext(componentName: string): RadioGroupRootContext {
+  const context = useContext(RadioGroupRootContext);
 
   if (context) {
     return context;
   }
-  throw new Error(`<${componentName}> must be used inside a <TailwindRadioGroup>`);
+  throw new Error(`<${componentName}> must be used inside a <RadioGroup>`);
 }
 
-export type TailwindRadioGroupProps<V, T extends ValidConstructor = 'div'> = {
+export type RadioGroupProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
 } & Omit<HeadlessSelectRootProps<V>, 'multiple' | 'toggleable'>
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectRootProps<V>>;
 
-export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
-  props: TailwindRadioGroupProps<V, T>,
+export function RadioGroup<V, T extends ValidConstructor = 'div'>(
+  props: RadioGroupProps<V, T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
   const descriptionID = createUniqueId();
@@ -115,7 +115,7 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
   }
 
   return (
-    <TailwindRadioGroupRootContext.Provider
+    <RadioGroupRootContext.Provider
       value={{
         ownerID,
         setChecked,
@@ -123,7 +123,7 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
         setPrevChecked,
       }}
     >
-      <TailwindRadioGroupContext.Provider
+      <RadioGroupContext.Provider
         value={{
           descriptionID,
           labelID,
@@ -158,21 +158,21 @@ export function TailwindRadioGroup<V, T extends ValidConstructor = 'div'>(
             {props.children}
           </HeadlessSelectRoot>
         </Dynamic>
-      </TailwindRadioGroupContext.Provider>
-    </TailwindRadioGroupRootContext.Provider>
+      </RadioGroupContext.Provider>
+    </RadioGroupRootContext.Provider>
   );
 }
 
-export type TailwindRadioGroupOptionProps<V, T extends ValidConstructor = 'div'> = {
+export type RadioGroupOptionProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
 } & Omit<HeadlessSelectOptionProps<V>, 'multiple'>
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectOptionProps<V>>;
 
-export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
-  props: TailwindRadioGroupOptionProps<V, T>,
+export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
+  props: RadioGroupOptionProps<V, T>,
 ): JSX.Element {
-  const context = useTailwindRadioGroupRootContext('TailwindRadioGroupOption');
+  const context = useRadioGroupRootContext('RadioGroupOption');
   const properties = useHeadlessSelectChild<V>();
 
   const descriptionID = createUniqueId();
@@ -237,7 +237,7 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
   });
 
   return (
-    <TailwindRadioGroupContext.Provider
+    <RadioGroupContext.Provider
       value={{
         descriptionID,
         labelID,
@@ -273,18 +273,18 @@ export function TailwindRadioGroupOption<V, T extends ValidConstructor = 'div'>(
           {props.children}
         </HeadlessSelectOption>
       </Dynamic>
-    </TailwindRadioGroupContext.Provider>
+    </RadioGroupContext.Provider>
   );
 }
 
-export type TailwindRadioGroupLabelProps<T extends ValidConstructor = 'label'> = {
+export type RadioGroupLabelProps<T extends ValidConstructor = 'label'> = {
   as?: T;
 } & Omit<DynamicProps<T>, 'as'>;
 
-export function TailwindRadioGroupLabel<T extends ValidConstructor = 'label'>(
-  props: TailwindRadioGroupLabelProps<T>,
+export function RadioGroupLabel<T extends ValidConstructor = 'label'>(
+  props: RadioGroupLabelProps<T>,
 ): JSX.Element {
-  const context = useTailwindRadioGroupContext('TailwindRadioGroupLabel');
+  const context = useRadioGroupContext('RadioGroupLabel');
   return (
     <Dynamic
       component={props.as ?? 'label'}
@@ -298,14 +298,14 @@ export function TailwindRadioGroupLabel<T extends ValidConstructor = 'label'>(
   );
 }
 
-export type TailwindRadioGroupDescriptionProps<T extends ValidConstructor = 'div'> = {
+export type RadioGroupDescriptionProps<T extends ValidConstructor = 'div'> = {
   as?: T;
 } & Omit<DynamicProps<T>, 'as'>;
 
-export function TailwindRadioGroupDescription<T extends ValidConstructor = 'div'>(
-  props: TailwindRadioGroupDescriptionProps<T>,
+export function RadioGroupDescription<T extends ValidConstructor = 'div'>(
+  props: RadioGroupDescriptionProps<T>,
 ): JSX.Element {
-  const context = useTailwindRadioGroupContext('TailwindRadioGroupLabel');
+  const context = useRadioGroupContext('RadioGroupLabel');
   return (
     <Dynamic
       component={props.as ?? 'div'}
