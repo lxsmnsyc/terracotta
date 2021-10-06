@@ -16,13 +16,13 @@ import {
   excludeProps,
 } from '../utils/exclude-props';
 
-export type TailwindToastProps<T extends ValidConstructor = 'div'> = {
+export type ToastProps<T extends ValidConstructor = 'div'> = {
   as?: T,
   disabled?: boolean;
 } & Omit<DynamicProps<T>, 'as'>
 
-export function TailwindToast<T extends ValidConstructor = 'div'>(
-  props: TailwindToastProps<T>,
+export function Toast<T extends ValidConstructor = 'div'>(
+  props: ToastProps<T>,
 ): JSX.Element {
   const toastID = createUniqueId();
 
@@ -40,13 +40,13 @@ export function TailwindToast<T extends ValidConstructor = 'div'>(
   );
 }
 
-export type TailwindToasterProps<T extends ValidConstructor = 'div'> = {
+export type ToasterProps<T extends ValidConstructor = 'div'> = {
   as?: T,
   disabled?: boolean;
 } & Omit<DynamicProps<T>, 'as'>
 
-export function TailwindToaster<T extends ValidConstructor = 'div'>(
-  props: TailwindToasterProps<T>,
+export function Toaster<T extends ValidConstructor = 'div'>(
+  props: ToasterProps<T>,
 ): JSX.Element {
   const toasterID = createUniqueId();
 
@@ -69,7 +69,7 @@ export interface ToastData<T> {
 
 export type ToasterListener<T> = (queue: ToastData<T>[]) => void;
 
-export class Toaster<T> {
+export class ToasterStore<T> {
   private static toasterID = 0;
 
   private id: number;
@@ -81,8 +81,8 @@ export class Toaster<T> {
   private toastID = 0;
 
   constructor() {
-    this.id = Toaster.toasterID;
-    Toaster.toasterID += 1;
+    this.id = ToasterStore.toasterID;
+    ToasterStore.toasterID += 1;
   }
 
   subscribe(callback: ToasterListener<T>): () => void {
@@ -125,7 +125,7 @@ export class Toaster<T> {
   }
 }
 
-export function useToaster<T>(toaster: Toaster<T>): () => ToastData<T>[] {
+export function useToaster<T>(toaster: ToasterStore<T>): () => ToastData<T>[] {
   const [signal, setSignal] = createSignal(toaster.getQueue());
 
   createEffect(() => {
