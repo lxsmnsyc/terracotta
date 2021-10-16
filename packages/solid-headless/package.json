@@ -1,11 +1,39 @@
 {
   "version": "0.8.0",
   "types": "dist/types/index.d.ts",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.jsx",
+  "main": "dist/cjs/production/index.jsx",
+  "module": "dist/esm/production/index.jsx",
   "exports": {
-    "require": "./dist/cjs/index.js",
-    "import": "./dist/esm/index.jsx"
+    ".": {
+      "development": {
+        "require": "./dist/cjs/development/index.jsx",
+        "import": "./dist/esm/development/index.jsx"
+      },
+      "require": "./dist/cjs/production/index.jsx",
+      "import": "./dist/esm/production/index.jsx",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./dev": {
+      "production": {
+        "require": "./dist/cjs/production/index.jsx",
+        "import": "./dist/esm/production/index.jsx"
+      },
+      "require": "./dist/cjs/development/index.jsx",
+      "import": "./dist/esm/development/index.jsx",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./esm": {
+      "development": "./dist/esm/development/index.jsx",
+      "production": "./dist/esm/production/index.jsx",
+      "default": "./dist/esm/production/index.jsx",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./cjs": {
+      "development": "./dist/cjs/development/index.jsx",
+      "production": "./dist/cjs/production/index.jsx",
+      "default": "./dist/cjs/production/index.jsx",
+      "types": "./dist/types/index.d.ts"
+    }
   },
   "files": [
     "dist",
@@ -23,8 +51,8 @@
     "@types/jest": "^27.0.1",
     "@types/node": "^16.6.1",
     "eslint": "^7.32.0",
-    "eslint-config-lxsmnsyc": "^0.2.3",
-    "pridepack": "^0.12.2",
+    "eslint-config-lxsmnsyc": "^0.3.0",
+    "pridepack": "^1.0.1",
     "solid-js": "^1.1.1",
     "tslib": "^2.3.1",
     "typescript": "^4.3.5"
@@ -33,7 +61,7 @@
     "solid-js": "^1.1.1"
   },
   "scripts": {
-    "prepublish": "pridepack clean && pridepack build",
+    "prepublishOnly": "pridepack clean && pridepack build",
     "build": "pridepack build",
     "type-check": "pridepack check",
     "lint": "pridepack lint",
@@ -43,12 +71,12 @@
   },
   "description": "Headless UI for SolidJS",
   "repository": {
-    "url": "https://github.com/lxsmnsyc/solid-tiptap.git",
+    "url": "https://github.com/lxsmnsyc/solid-headless.git",
     "type": "git"
   },
-  "homepage": "https://github.com/lxsmnsyc/solid-tiptap/tree/main/packages/solid-tiptap",
+  "homepage": "https://github.com/lxsmnsyc/solid-headless/tree/main/packages/solid-headless",
   "bugs": {
-    "url": "https://github.com/lxsmnsyc/solid-tiptap/issues"
+    "url": "https://github.com/lxsmnsyc/solid-headless/issues"
   },
   "publishConfig": {
     "access": "public"
