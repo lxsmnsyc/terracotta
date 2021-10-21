@@ -52,9 +52,9 @@ Here's the current goals:
   - [x] Keyboard Interaction
   - [x] States
 - `Feed`
-  - [ ] Accessibility
-  - [ ] Keyboard Interaction
-  - [ ] States
+  - [x] Accessibility
+  - [x] Keyboard Interaction
+  - [x] States
 - `Grid`
   - [ ] Accessibility
   - [ ] Keyboard Interaction
