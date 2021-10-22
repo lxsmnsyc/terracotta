@@ -19,7 +19,7 @@
   "dependencies": {
     "solid-headless": "0.8.0",
     "solid-js": "^1.1.7",
-    "tailwindcss": "^2.2.7"
+    "tailwindcss": "^2.2.17"
   },
   "private": true,
   "publishConfig": {
