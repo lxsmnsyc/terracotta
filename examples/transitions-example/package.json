@@ -8,18 +8,18 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.3.7",
-    "babel-preset-solid": "^1.1.5",
+    "babel-preset-solid": "^1.1.7",
     "eslint": "^7.32.0",
     "eslint-config-lxsmnsyc": "^0.3.0",
-    "postcss": "^8.3.9",
+    "postcss": "^8.3.11",
     "typescript": "^4.4.4",
-    "vite": "^2.6.7",
+    "vite": "^2.6.10",
     "vite-plugin-solid": "^2.1.1"
   },
   "dependencies": {
     "solid-headless": "0.8.0",
-    "solid-js": "^1.1.6",
-    "tailwindcss": "^2.2.7"
+    "solid-js": "^1.1.7",
+    "tailwindcss": "^2.2.17"
   },
   "private": true,
   "publishConfig": {
