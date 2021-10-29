@@ -64,12 +64,14 @@ export function Dialog<T extends ValidConstructor = 'div'>(
   const titleID = createUniqueId();
   const descriptionID = createUniqueId();
 
-  const returnElement = document.activeElement as HTMLElement | null;
+  let returnElement = document.activeElement as HTMLElement | null;
 
   createEffect(() => {
     if (!props.isOpen) {
       props.onClose?.();
       returnElement?.focus();
+    } else {
+      returnElement = document.activeElement as HTMLElement | null;
     }
   });
 

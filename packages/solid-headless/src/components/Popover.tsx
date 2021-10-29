@@ -66,11 +66,13 @@ export function Popover<T extends ValidConstructor = 'div'>(
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
 
-  const returnElement = document.activeElement as HTMLElement | null;
+  let returnElement = document.activeElement as HTMLElement | null;
 
   createEffect(() => {
     if (!props.isOpen) {
       returnElement?.focus();
+    } else {
+      returnElement = document.activeElement as HTMLElement | null;
     }
   });
 
