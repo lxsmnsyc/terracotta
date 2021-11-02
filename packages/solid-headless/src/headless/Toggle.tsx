@@ -10,6 +10,7 @@ export interface HeadlessToggleOptions {
   defaultChecked?: boolean;
   disabled?: boolean;
   onChange?: (state?: boolean) => void;
+  CONTROLLED?: boolean;
 }
 
 export interface HeadlessToggleProperties {
@@ -23,7 +24,7 @@ export function useHeadlessToggle(
 ): HeadlessToggleProperties {
   const [signal, setSignal] = useControlledSignal(
     options.defaultChecked,
-    'checked' in options ? () => options.checked : undefined,
+    (options.CONTROLLED || 'checked' in options) ? () => options.checked : undefined,
     (value) => options.onChange?.(value),
   );
 

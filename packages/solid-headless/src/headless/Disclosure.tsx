@@ -11,6 +11,7 @@ export interface HeadlessDisclosureOptions {
   defaultOpen?: boolean;
   disabled?: boolean;
   onChange?: (state: boolean) => void;
+  CONTROLLED?: boolean;
 }
 
 export interface HeadlessDisclosureProperties {
@@ -24,7 +25,7 @@ export function useHeadlessDisclosure(
 ): HeadlessDisclosureProperties {
   const [signal, setSignal] = useControlledSignal(
     !!options.defaultOpen,
-    ('isOpen' in options) ? (() => !!options.isOpen) : undefined,
+    (options.CONTROLLED || 'isOpen' in options) ? (() => !!options.isOpen) : undefined,
     (value) => options.onChange?.(value),
   );
 

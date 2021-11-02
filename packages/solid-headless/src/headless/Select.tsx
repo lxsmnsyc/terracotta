@@ -15,6 +15,7 @@ export interface HeadlessSelectMultipleOptions<T> {
   value?: T[];
   onChange?: (value: T[]) => void;
   disabled?: boolean;
+  CONTROLLED?: boolean;
 }
 
 export interface HeadlessSelectSingleOptions<T> {
@@ -24,6 +25,7 @@ export interface HeadlessSelectSingleOptions<T> {
   value?: T;
   onChange?: (value?: T) => void;
   disabled?: boolean;
+  CONTROLLED?: boolean;
 }
 
 export type HeadlessSelectOptions<T> =
@@ -94,7 +96,7 @@ export function useHeadlessSelect<T>(
 
   const [selectedValue, setSelectedValue] = useControlledSignal(
     options.defaultValue ?? undefined,
-    ('value' in options) ? (() => options.value) : undefined,
+    (options.CONTROLLED || ('value' in options)) ? (() => options.value) : undefined,
     (value) => options.onChange?.(value),
   );
 
