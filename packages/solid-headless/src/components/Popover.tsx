@@ -55,7 +55,9 @@ function usePopoverContext(componentName: string): PopoverContext {
 
 export type PopoverProps<T extends ValidConstructor = 'div'> = {
   as?: T;
-} & HeadlessDisclosureRootProps
+  onClose?: () => void;
+  onOpen?: () => void;
+} & Omit<HeadlessDisclosureRootProps, 'CONTROLLED'>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function Popover<T extends ValidConstructor = 'div'>(
@@ -68,18 +70,8 @@ export function Popover<T extends ValidConstructor = 'div'>(
 
   let returnElement = document.activeElement as HTMLElement | null;
 
-  createEffect(() => {
-    if (!props.isOpen) {
-      returnElement?.focus();
-    } else {
-      returnElement = document.activeElement as HTMLElement | null;
-    }
-  });
-
   onCleanup(() => {
-    if (!props.isOpen) {
-      returnElement?.focus();
-    }
+    returnElement?.focus();
   });
 
   return (
@@ -112,8 +104,18 @@ export function Popover<T extends ValidConstructor = 'div'>(
         data-sh-popover={ownerID}
       >
         <HeadlessDisclosureRoot
+          CONTROLLED={'isOpen' in props}
           isOpen={props.isOpen}
-          onChange={props.onChange}
+          onChange={(value) => {
+            props.onChange?.(value);
+            if (!value) {
+              props.onClose?.();
+              returnElement?.focus();
+            } else {
+              props.onOpen?.();
+              returnElement = document.activeElement as HTMLElement | null;
+            }
+          }}
           disabled={props.disabled}
           defaultOpen={props.defaultOpen}
         >
