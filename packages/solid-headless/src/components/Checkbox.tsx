@@ -47,7 +47,7 @@ function useCheckboxContext(componentName: string): CheckboxContext {
 
 export type CheckboxProps<T extends ValidConstructor = typeof Fragment> = {
   as?: T;
-} & HeadlessToggleRootProps
+} & Omit<HeadlessToggleRootProps, 'CONTROLLED'>
   & Omit<DynamicProps<T>, keyof HeadlessToggleRootProps>;
 
 export function Checkbox<T extends ValidConstructor = typeof Fragment>(
@@ -83,6 +83,7 @@ export function Checkbox<T extends ValidConstructor = typeof Fragment>(
         data-sh-checkbox={ownerID}
       >
         <HeadlessToggleRoot
+          CONTROLLED={'checked' in props}
           checked={props.checked}
           onChange={props.onChange}
           disabled={props.disabled}
