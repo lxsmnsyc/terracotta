@@ -62,11 +62,14 @@ export function useHeadlessSelect<T>(
         return new Set(selectedValues()).has(value);
       },
       select(value) {
+        const set = new Set(untrack(selectedValues));
+        if (set.has(value)) {
+          set.delete(value);
+        } else {
+          set.add(value);
+        }
         setSelectedValues([
-          ...new Set([
-            ...untrack(selectedValues),
-            value,
-          ]),
+          ...set,
         ]);
       },
       hasSelected() {
