@@ -34,7 +34,6 @@ export default function App(): JSX.Element {
       <Transition appear show={isOpen()}>
         <Dialog
           defaultOpen
-          isOpen
           class="fixed inset-0 z-10 overflow-y-auto"
           onClose={closeModal}
         >
@@ -47,7 +46,7 @@ export default function App(): JSX.Element {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <DialogOverlay className="fixed inset-0" />
+              <DialogOverlay className="fixed inset-0 bg-gray-900 bg-opacity-50" />
             </TransitionChild>
 
             {/* This element is to trick the browser into centering the modal contents. */}
