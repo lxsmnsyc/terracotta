@@ -84,13 +84,27 @@ function useListboxOptionsContext(componentName: string): ListboxOptionsContext 
   throw new Error(`<${componentName}> must be used inside a <ListboxOptions>`);
 }
 
+interface ListboxMultipleProps<V> {
+  multiple: true;
+  onSelectChange?: (value: V[]) => void;
+}
+
+interface ListboxSingleProps<V> {
+  multiple?: false;
+  onSelectChange?: (value?: V) => void;
+}
+
+type ListboxBaseProps<V> =
+  | ListboxMultipleProps<V>
+  | ListboxSingleProps<V>;
+
 export type ListboxProps<V, T extends ValidConstructor = typeof Fragment> = {
   as?: T;
   horizontal?: boolean;
-  onSelectChange?: (value: V) => void;
   onDisclosureChange?: (value: boolean) => void;
-} & Omit<HeadlessSelectRootProps<V>, 'children' | 'onChange'>
-  & Omit<HeadlessDisclosureRootProps, 'onChange'>
+} & ListboxBaseProps<V>
+  & Omit<HeadlessSelectRootProps<V>, 'multiple' | 'children' | 'onChange' | 'CONTROLLED'>
+  & Omit<HeadlessDisclosureRootProps, 'onChange' | 'CONTROLLED'>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureRootProps | keyof HeadlessSelectRootProps<V>>;
 
 export function Listbox<V, T extends ValidConstructor = typeof Fragment>(
@@ -133,6 +147,7 @@ export function Listbox<V, T extends ValidConstructor = typeof Fragment>(
           'onSelectChange',
           'toggleable',
           'value',
+          'defaultValue',
         ])}
         aria-labelledby={labelID}
         data-sh-listbox={ownerID}
@@ -141,13 +156,16 @@ export function Listbox<V, T extends ValidConstructor = typeof Fragment>(
         data-sh-disabled={props.disabled}
       >
         <HeadlessSelectRoot<V>
+          CONTROLLED={'value' in props}
           multiple={props.multiple}
           toggleable={props.toggleable}
+          defaultValue={props.defaultValue}
           value={props.value}
           disabled={props.disabled}
           onChange={props.onSelectChange}
         >
           <HeadlessDisclosureRoot
+            CONTROLLED={'isOpen' in props}
             isOpen={props.isOpen}
             defaultOpen={props.defaultOpen}
             disabled={props.disabled}
