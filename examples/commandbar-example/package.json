@@ -1,0 +1,28 @@
+{
+  "name": "commandbar-example",
+  "version": "0.9.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.3.7",
+    "babel-preset-solid": "^1.1.7",
+    "eslint": "^7.32.0",
+    "eslint-config-lxsmnsyc": "^0.3.0",
+    "postcss": "^8.3.11",
+    "typescript": "^4.4.4",
+    "vite": "^2.6.13",
+    "vite-plugin-solid": "^2.1.1"
+  },
+  "dependencies": {
+    "solid-headless": "0.9.0",
+    "solid-js": "^1.1.7",
+    "tailwindcss": "^2.2.17"
+  },
+  "private": true,
+  "publishConfig": {
+    "access": "restricted"
+  }
+}
