@@ -1,11 +1,10 @@
 import {
   createContext,
   createEffect,
-  createSignal,
   JSX,
-  untrack,
   useContext,
 } from 'solid-js';
+import useControlledSignal from '../utils/use-controlled-signal';
 
 export interface HeadlessDisclosureOptions {
   isOpen?: boolean;
@@ -23,7 +22,11 @@ export interface HeadlessDisclosureProperties {
 export function useHeadlessDisclosure(
   options: HeadlessDisclosureOptions = {},
 ): HeadlessDisclosureProperties {
-  const [signal, setSignal] = createSignal(untrack(() => !!options.defaultOpen));
+  const [signal, setSignal] = useControlledSignal(
+    !!options.defaultOpen,
+    ('isOpen' in options) ? (() => !!options.isOpen) : undefined,
+    (value) => options.onChange?.(value),
+  );
 
   let initial = true;
 
@@ -43,7 +46,6 @@ export function useHeadlessDisclosure(
     setState(value) {
       if (!options.disabled) {
         setSignal(value);
-        options.onChange?.(value);
       }
     },
     disabled() {

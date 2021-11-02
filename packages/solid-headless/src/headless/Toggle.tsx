@@ -1,11 +1,9 @@
 import {
   createContext,
-  createEffect,
-  createSignal,
   JSX,
-  untrack,
   useContext,
 } from 'solid-js';
+import useControlledSignal from '../utils/use-controlled-signal';
 
 export interface HeadlessToggleOptions {
   checked?: boolean;
@@ -23,18 +21,11 @@ export interface HeadlessToggleProperties {
 export function useHeadlessToggle(
   options: HeadlessToggleOptions = {},
 ): HeadlessToggleProperties {
-  const [signal, setSignal] = createSignal(untrack(() => options.defaultChecked));
-
-  let initial = true;
-
-  createEffect(() => {
-    const value = options.checked;
-    if (initial) {
-      initial = false;
-    } else {
-      setSignal(!!value);
-    }
-  });
+  const [signal, setSignal] = useControlledSignal(
+    options.defaultChecked,
+    'checked' in options ? () => options.checked : undefined,
+    (value) => options.onChange?.(value),
+  );
 
   return {
     checked() {

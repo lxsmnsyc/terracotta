@@ -1,20 +1,34 @@
 import {
   createContext,
-  createEffect,
   createSignal,
   JSX,
-  on,
+  untrack,
   useContext,
 } from 'solid-js';
 import { Ref } from '../utils/types';
+import useControlledSignal from '../utils/use-controlled-signal';
 
-export interface HeadlessSelectOptions<T> {
-  multiple?: boolean;
+export interface HeadlessSelectMultipleOptions<T> {
+  multiple: true;
   toggleable?: boolean;
-  value: T;
-  onChange?: (value: T) => void;
+  defaultValue?: T[];
+  value?: T[];
+  onChange?: (value: T[]) => void;
   disabled?: boolean;
 }
+
+export interface HeadlessSelectSingleOptions<T> {
+  multiple?: false;
+  toggleable?: boolean;
+  defaultValue?: T;
+  value?: T;
+  onChange?: (value?: T) => void;
+  disabled?: boolean;
+}
+
+export type HeadlessSelectOptions<T> =
+  | HeadlessSelectSingleOptions<T>
+  | HeadlessSelectMultipleOptions<T>;
 
 export interface HeadlessSelectProperties<T> {
   isSelected(value: T): boolean;
@@ -30,40 +44,69 @@ export interface HeadlessSelectProperties<T> {
 export function useHeadlessSelect<T>(
   options: HeadlessSelectOptions<T>,
 ): HeadlessSelectProperties<T> {
-  const selectedValues = new Set();
-  const [track, updateTrack] = createSignal(0);
   const [active, setActive] = createSignal<Ref<T>>();
 
-  function isSelected(value: T): boolean {
-    track();
-    return selectedValues.has(value);
-  }
+  if (options.multiple) {
+    const [selectedValues, setSelectedValues] = useControlledSignal(
+      options.defaultValue ?? [],
+      ('value' in options) ? (() => options.value ?? []) : undefined,
+      (value) => options.onChange?.(value ?? []),
+    );
 
-  function select(value: T) {
-    if (!options.disabled) {
-      if (!selectedValues.has(value)) {
-        options.onChange?.(value);
-        if (!options.multiple) {
-          selectedValues.clear();
+    return {
+      isSelected(value) {
+        return new Set(selectedValues()).has(value);
+      },
+      select(value) {
+        setSelectedValues([
+          ...new Set([
+            ...untrack(selectedValues),
+            value,
+          ]),
+        ]);
+      },
+      hasSelected() {
+        return selectedValues().length > 0;
+      },
+      disabled() {
+        return !!options.disabled;
+      },
+      hasActive() {
+        return !!active();
+      },
+      isActive(value) {
+        const ref = active();
+        if (ref) {
+          return Object.is(value, ref.value);
         }
-        selectedValues.add(value);
-      } else if (options.toggleable) {
-        selectedValues.delete(value);
-      }
-      updateTrack((current) => current + 1);
-    }
+        return false;
+      },
+      focus(value) {
+        return setActive({
+          value,
+        });
+      },
+      blur() {
+        return setActive(undefined);
+      },
+    };
   }
 
-  createEffect(on(() => options.value, (current) => {
-    select(current);
-  }));
+  const [selectedValue, setSelectedValue] = useControlledSignal(
+    options.defaultValue ?? undefined,
+    ('value' in options) ? (() => options.value) : undefined,
+    (value) => options.onChange?.(value),
+  );
 
   return {
-    isSelected,
-    select,
+    isSelected(value) {
+      return Object.is(selectedValue(), value);
+    },
+    select(value) {
+      setSelectedValue(value);
+    },
     hasSelected() {
-      track();
-      return selectedValues.size > 0;
+      return selectedValue() != null;
     },
     disabled() {
       return !!options.disabled;
@@ -101,10 +144,9 @@ function isHeadlessSelectRootRenderProp<T>(
   return typeof children === 'function' && children.length > 0;
 }
 
-export interface HeadlessSelectRootProps<T>
-  extends HeadlessSelectOptions<T> {
+export type HeadlessSelectRootProps<T> = {
   children?: HeadlessSelectRootRenderProp<T> | JSX.Element;
-}
+} & HeadlessSelectOptions<T>;
 
 export function HeadlessSelectRoot<T>(props: HeadlessSelectRootProps<T>): JSX.Element {
   const properties = useHeadlessSelect(props);
