@@ -65,7 +65,7 @@ function useRadioGroupRootContext(componentName: string): RadioGroupRootContext 
 
 export type RadioGroupProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
-} & Omit<HeadlessSelectRootProps<V>, 'multiple' | 'toggleable'>
+} & Omit<HeadlessSelectRootProps<V>, 'multiple' | 'toggleable' | 'CONTROLLED'>
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectRootProps<V>>;
 
@@ -138,6 +138,7 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
             'disabled',
             'onChange',
             'ref',
+            'defaultValue',
           ])}
           role="radiogroup"
           aria-labelledby={labelID}
@@ -151,6 +152,8 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
           data-sh-radiogroup={ownerID}
         >
           <HeadlessSelectRoot
+            CONTROLLED={'value' in props}
+            defaultValue={props.defaultValue}
             value={props.value}
             disabled={props.disabled}
             onChange={props.onChange}
