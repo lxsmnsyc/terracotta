@@ -4,7 +4,12 @@ import {
   RadioGroupLabel,
   RadioGroupOption,
 } from 'solid-headless';
-import { createSignal, JSX } from 'solid-js';
+import {
+  createEffect,
+  createSignal,
+  JSX,
+  For,
+} from 'solid-js';
 
 const plans = [
   {
@@ -53,10 +58,8 @@ export default function App() {
     <div className="w-full px-4 py-16">
       <div className="w-full max-w-md mx-auto">
         <RadioGroup
-          value={selected}
-          onChange={(value) => {
-            setSelected(value);
-          }}
+          value={selected()}
+          onChange={setSelected}
         >
           {({ isSelected, isActive }) => (
             <>
