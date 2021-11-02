@@ -87,6 +87,7 @@ export function Disclosure<T extends ValidConstructor = typeof Fragment>(
         data-sh-disclosure={ownerID}
       >
         <HeadlessDisclosureRoot
+          CONTROLLED={'isOpen' in props}
           isOpen={props.isOpen}
           onChange={props.onChange}
           disabled={props.disabled}
@@ -101,7 +102,7 @@ export function Disclosure<T extends ValidConstructor = typeof Fragment>(
 
 export type DisclosureButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T;
-} & HeadlessDisclosureChildProps
+} & Omit<HeadlessDisclosureChildProps, 'CONTROLLED'>
   & WithRef<T>
   & Omit<ButtonProps<T>, keyof HeadlessDisclosureChildProps>;
 
