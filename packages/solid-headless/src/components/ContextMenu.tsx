@@ -50,7 +50,9 @@ function useContextMenuContext(componentName: string): ContextMenuContext {
 
 export type ContextMenuProps<T extends ValidConstructor = 'div'> = {
   as?: T;
-} & HeadlessDisclosureRootProps
+  onOpen?: () => void;
+  onClose?: () => void;
+} & Omit<HeadlessDisclosureRootProps, 'CONTROLLED'>
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
 
 export function ContextMenu<T extends ValidConstructor = 'div'>(
@@ -62,18 +64,8 @@ export function ContextMenu<T extends ValidConstructor = 'div'>(
 
   let returnElement = document.activeElement as HTMLElement | null;
 
-  createEffect(() => {
-    if (!props.isOpen) {
-      returnElement?.focus();
-    } else {
-      returnElement = document.activeElement as HTMLElement | null;
-    }
-  });
-
   onCleanup(() => {
-    if (!props.isOpen) {
-      returnElement?.focus();
-    }
+    returnElement?.focus();
   });
 
   return (
@@ -100,8 +92,18 @@ export function ContextMenu<T extends ValidConstructor = 'div'>(
         data-sh-context-menu={ownerID}
       >
         <HeadlessDisclosureRoot
+          CONTROLLED={'isOpen' in props}
           isOpen={props.isOpen}
-          onChange={props.onChange}
+          onChange={(value) => {
+            props.onChange?.(value);
+            if (!value) {
+              props.onClose?.();
+              returnElement?.focus();
+            } else {
+              props.onOpen?.();
+              returnElement = document.activeElement as HTMLElement | null;
+            }
+          }}
           disabled={props.disabled}
           defaultOpen={props.defaultOpen}
         >
