@@ -154,6 +154,7 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
           'as',
           'children',
           'disabled',
+          'defaultValue',
           'onChange',
           'multiple',
           'toggleable',
@@ -168,15 +169,31 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
         data-sh-disabled={props.disabled}
         data-sh-accordion={ownerID}
       >
-        <HeadlessSelectRoot
-          multiple={props.multiple}
-          toggleable={props.toggleable}
-          value={props.value}
-          disabled={props.disabled}
-          onChange={props.onChange}
+        <Show
+          when={'value' in props}
+          fallback={(
+            <HeadlessSelectRoot
+              multiple={props.multiple}
+              defaultValue={props.defaultValue}
+              toggleable={props.toggleable}
+              disabled={props.disabled}
+              onChange={props.onChange}
+            >
+              {props.children}
+            </HeadlessSelectRoot>
+          )}
         >
-          {props.children}
-        </HeadlessSelectRoot>
+          <HeadlessSelectRoot
+            multiple={props.multiple}
+            value={props.value}
+            defaultValue={props.defaultValue}
+            toggleable={props.toggleable}
+            disabled={props.disabled}
+            onChange={props.onChange}
+          >
+            {props.children}
+          </HeadlessSelectRoot>
+        </Show>
       </Dynamic>
     </AccordionContext.Provider>
   );
