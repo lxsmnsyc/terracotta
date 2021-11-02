@@ -59,7 +59,7 @@ export type SelectProps<V, T extends ValidConstructor = 'ul'> = {
   as?: T;
   horizontal?: boolean;
 }
-  & HeadlessSelectRootProps<V>
+  & Omit<HeadlessSelectRootProps<V>, 'CONTROLLED'>
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectRootProps<V>>;
 
@@ -158,6 +158,7 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
           'horizontal',
           'disabled',
           'ref',
+          'defaultValue',
         ])}
         id={ownerID}
         role="listbox"
@@ -172,8 +173,10 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
         })}
       >
         <HeadlessSelectRoot
+          CONTROLLED={'value' in props}
           multiple={props.multiple}
           toggleable={props.toggleable}
+          defaultValue={props.defaultValue}
           value={props.value}
           onChange={props.onChange}
           disabled={props.disabled}
