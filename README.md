@@ -126,7 +126,11 @@ Others:
 - `Toaster`/`Toast`
   - [X] States
   - [X] Accessibility
-- `ContextMenu`
+- `ContextMenu (Dialog)`
+  - [x] States
+  - [x] Keyboard Interaction
+  - [x] Accessibility
+- `CommandBar (Dialog)`
   - [x] States
   - [x] Keyboard Interaction
   - [x] Accessibility
