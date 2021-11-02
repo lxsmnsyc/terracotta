@@ -49,9 +49,11 @@ export function useHeadlessSelect<T>(
   const [active, setActive] = createSignal<Ref<T>>();
 
   if (options.multiple) {
+    const isControlled = 'CONTROLLED' in options ? options.CONTROLLED : 'value' in options;
+
     const [selectedValues, setSelectedValues] = useControlledSignal(
       options.defaultValue ?? [],
-      ('value' in options) ? (() => options.value ?? []) : undefined,
+      isControlled ? () => options.value ?? [] : undefined,
       (value) => options.onChange?.(value ?? []),
     );
 
