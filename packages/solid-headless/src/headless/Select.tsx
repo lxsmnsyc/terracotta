@@ -94,9 +94,11 @@ export function useHeadlessSelect<T>(
     };
   }
 
+  const isControlled = 'CONTROLLED' in options ? options.CONTROLLED : 'value' in options;
+
   const [selectedValue, setSelectedValue] = useControlledSignal(
     options.defaultValue ?? undefined,
-    (options.CONTROLLED || ('value' in options)) ? (() => options.value) : undefined,
+    isControlled ? (() => options.value) : undefined,
     (value) => options.onChange?.(value),
   );
 

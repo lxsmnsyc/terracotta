@@ -22,9 +22,11 @@ export interface HeadlessToggleProperties {
 export function useHeadlessToggle(
   options: HeadlessToggleOptions = {},
 ): HeadlessToggleProperties {
+  const isControlled = 'CONTROLLED' in options ? options.CONTROLLED : 'checked' in options;
+
   const [signal, setSignal] = useControlledSignal(
     options.defaultChecked,
-    (options.CONTROLLED || 'checked' in options) ? () => options.checked : undefined,
+    isControlled ? () => options.checked : undefined,
     (value) => options.onChange?.(value),
   );
 
