@@ -35,7 +35,6 @@ interface DialogContext {
   panelID: string;
   titleID: string;
   descriptionID: string;
-  onClose?: () => void;
 }
 
 const DialogContext = createContext<DialogContext>();
@@ -52,6 +51,7 @@ function useDialogContext(componentName: string): DialogContext {
 export type DialogProps<T extends ValidConstructor = 'div'> = {
   as?: T;
   unmount?: boolean;
+  onOpen?: () => void;
   onClose?: () => void;
 } & HeadlessDisclosureRootProps
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureRootProps | 'unmount'>;
@@ -66,17 +66,7 @@ export function Dialog<T extends ValidConstructor = 'div'>(
 
   let returnElement = document.activeElement as HTMLElement | null;
 
-  createEffect(() => {
-    if (!props.isOpen) {
-      props.onClose?.();
-      returnElement?.focus();
-    } else {
-      returnElement = document.activeElement as HTMLElement | null;
-    }
-  });
-
   onCleanup(() => {
-    props.onClose?.();
     returnElement?.focus();
   });
 
@@ -87,12 +77,21 @@ export function Dialog<T extends ValidConstructor = 'div'>(
         panelID,
         titleID,
         descriptionID,
-        onClose: props.onClose,
       }}
     >
       <HeadlessDisclosureRoot
+        CONTROLLED={'isOpen' in props}
         isOpen={props.isOpen}
-        onChange={props.onChange}
+        onChange={(value) => {
+          props.onChange?.(value);
+          if (!value) {
+            props.onClose?.();
+            returnElement?.focus();
+          } else {
+            props.onOpen?.();
+            returnElement = document.activeElement as HTMLElement | null;
+          }
+        }}
         defaultOpen={props.defaultOpen}
         disabled={props.disabled}
       >
@@ -242,11 +241,7 @@ export function DialogPanel<T extends ValidConstructor = 'div'>(
                 }
               }
             } else if (e.key === 'Escape') {
-              if (context.onClose) {
-                context.onClose();
-              } else {
-                properties.setState(false);
-              }
+              properties.setState(false);
             }
           }
         };
@@ -299,11 +294,7 @@ export function DialogOverlay<T extends ValidConstructor = 'p'>(
 
     if (ref instanceof HTMLElement) {
       const onClick = () => {
-        if (context.onClose) {
-          context.onClose();
-        } else {
-          properties.setState(false);
-        }
+        properties.setState(false);
       };
 
       ref.addEventListener('click', onClick);
