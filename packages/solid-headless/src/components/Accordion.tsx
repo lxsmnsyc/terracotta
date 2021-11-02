@@ -76,7 +76,7 @@ function useAccordionItemContext(componentName: string): AccordionItemContext {
 
 export type AccordionProps<V, T extends ValidConstructor = 'div'> = {
   as?: T;
-} & HeadlessSelectRootProps<V>
+} & Omit<HeadlessSelectRootProps<V>, 'CONTROLLED'>
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectRootProps<V>>;
 
@@ -169,31 +169,17 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
         data-sh-disabled={props.disabled}
         data-sh-accordion={ownerID}
       >
-        <Show
-          when={'value' in props}
-          fallback={(
-            <HeadlessSelectRoot
-              multiple={props.multiple}
-              defaultValue={props.defaultValue}
-              toggleable={props.toggleable}
-              disabled={props.disabled}
-              onChange={props.onChange}
-            >
-              {props.children}
-            </HeadlessSelectRoot>
-          )}
+        <HeadlessSelectRoot
+          CONTROLLED={'value' in props}
+          multiple={props.multiple}
+          value={props.value}
+          defaultValue={props.defaultValue}
+          toggleable={props.toggleable}
+          disabled={props.disabled}
+          onChange={props.onChange}
         >
-          <HeadlessSelectRoot
-            multiple={props.multiple}
-            value={props.value}
-            defaultValue={props.defaultValue}
-            toggleable={props.toggleable}
-            disabled={props.disabled}
-            onChange={props.onChange}
-          >
-            {props.children}
-          </HeadlessSelectRoot>
-        </Show>
+          {props.children}
+        </HeadlessSelectRoot>
       </Dynamic>
     </AccordionContext.Provider>
   );
