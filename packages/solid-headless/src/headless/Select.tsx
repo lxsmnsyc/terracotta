@@ -63,7 +63,7 @@ export function useHeadlessSelect<T>(
       },
       select(value) {
         const set = new Set(untrack(selectedValues));
-        if (set.has(value)) {
+        if (options.toggleable && set.has(value)) {
           set.delete(value);
         } else {
           set.add(value);
@@ -109,10 +109,14 @@ export function useHeadlessSelect<T>(
 
   return {
     isSelected(value) {
-      return Object.is(selectedValue(), value);
+      return Object.is(value, selectedValue());
     },
     select(value) {
-      setSelectedValue(value);
+      if (options.toggleable && Object.is(untrack(selectedValue), value)) {
+        setSelectedValue(undefined);
+      } else {
+        setSelectedValue(value);
+      }
     },
     hasSelected() {
       return selectedValue() != null;
