@@ -201,3 +201,15 @@ export {
   FeedProps,
   Feed,
 } from './components/Feed';
+export {
+  CommandBar,
+  CommandBarDescription,
+  CommandBarDescriptionProps,
+  CommandBarOverlay,
+  CommandBarOverlayProps,
+  CommandBarPanel,
+  CommandBarPanelProps,
+  CommandBarTitle,
+  CommandBarProps,
+  CommandBarTitleProps,
+} from './components/CommandBar';
