@@ -12,6 +12,7 @@ export default function App(): JSX.Element {
   const [isOpen, setIsOpen] = createSignal(false);
 
   function closeModal() {
+    console.log('Closed!');
     setIsOpen(false);
   }
 
@@ -31,9 +32,12 @@ export default function App(): JSX.Element {
         </button>
       </div>
 
-      <Transition appear show={isOpen()}>
+      <Transition
+        appear
+        show={isOpen()}
+      >
         <Dialog
-          defaultOpen
+          isOpen
           class="fixed inset-0 z-10 overflow-y-auto"
           onClose={closeModal}
         >
