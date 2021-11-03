@@ -80,6 +80,8 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
 
   let initial = true;
 
+  console.log('TransitionChild');
+
   function transition(element: HTMLElement, shouldEnter: boolean): void {
     if (shouldEnter) {
       if (initial) {
@@ -216,6 +218,9 @@ export type TransitionProps<T extends ValidConstructor = 'div'> = {
 export function Transition<T extends ValidConstructor = 'div'>(
   props: TransitionProps<T>,
 ): JSX.Element {
+  const excludedProps = excludeProps(props, [
+    'show',
+  ]);
   return (
     <TransitionRootContext.Provider
       value={{
@@ -225,9 +230,7 @@ export function Transition<T extends ValidConstructor = 'div'>(
       }}
     >
       <TransitionChild
-        {...excludeProps(props, [
-          'show',
-        ])}
+        {...excludedProps}
       />
     </TransitionRootContext.Provider>
   );
