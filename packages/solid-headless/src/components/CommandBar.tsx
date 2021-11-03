@@ -110,8 +110,8 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
             returnElement?.focus();
             props.onClose?.();
           } else {
-            props.onOpen?.();
             returnElement = document.activeElement as HTMLElement | null;
+            props.onOpen?.();
           }
         }}
         defaultOpen={props.defaultOpen}
