@@ -32,7 +32,7 @@ export default function App(): JSX.Element {
       </div>
 
       <CommandBar
-        defaultOpen
+        isOpen
         class="fixed inset-0 z-10 overflow-y-auto"
         onOpen={openModal}
         onClose={closeModal}
