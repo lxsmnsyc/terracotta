@@ -80,8 +80,6 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
 
   let initial = true;
 
-  console.log('TransitionChild');
-
   function transition(element: HTMLElement, shouldEnter: boolean): void {
     if (shouldEnter) {
       if (initial) {
