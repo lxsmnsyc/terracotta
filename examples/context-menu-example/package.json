@@ -1,6 +1,6 @@
 {
   "name": "context-menu-example",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,7 +17,7 @@
     "vite-plugin-solid": "^2.1.1"
   },
   "dependencies": {
-    "solid-headless": "0.10.1",
+    "solid-headless": "0.10.2",
     "solid-js": "^1.1.7",
     "tailwindcss": "^2.2.17"
   },
