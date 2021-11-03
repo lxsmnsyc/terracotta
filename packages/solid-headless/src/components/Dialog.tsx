@@ -85,8 +85,8 @@ export function Dialog<T extends ValidConstructor = 'div'>(
         onChange={(value) => {
           props.onChange?.(value);
           if (!value) {
-            props.onClose?.();
             returnElement?.focus();
+            props.onClose?.();
           } else {
             props.onOpen?.();
             returnElement = document.activeElement as HTMLElement | null;

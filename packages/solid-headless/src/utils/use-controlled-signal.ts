@@ -12,8 +12,8 @@ export default function useControlledSignal<T>(
   return [
     signal,
     (value: T) => {
-      write(value);
       setSignal(() => value);
+      write(value);
     },
   ];
 }

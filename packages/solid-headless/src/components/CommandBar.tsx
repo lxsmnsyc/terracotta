@@ -63,7 +63,8 @@ function CommandBarEvents(props: { children: JSX.Element }): JSX.Element {
 
   createEffect(() => {
     const onKeyDown = (ev: KeyboardEvent) => {
-      if ((ev.metaKey || ev.ctrlKey) && ev.key === 'k') {
+      if ((ev.metaKey || ev.ctrlKey) && ev.key === 'k' && ev.defaultPrevented === false) {
+        ev.preventDefault();
         properties.setState(true);
       }
     };
@@ -106,8 +107,8 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
         onChange={(value) => {
           props.onChange?.(value);
           if (!value) {
-            props.onClose?.();
             returnElement?.focus();
+            props.onClose?.();
           } else {
             props.onOpen?.();
             returnElement = document.activeElement as HTMLElement | null;
