@@ -1,6 +1,5 @@
 import {
   createContext,
-  createEffect,
   JSX,
   useContext,
 } from 'solid-js';
@@ -30,17 +29,6 @@ export function useHeadlessDisclosure(
     isControlled ? () => !!options.isOpen : undefined,
     (value) => options.onChange?.(value),
   );
-
-  let initial = true;
-
-  createEffect(() => {
-    const value = options.isOpen;
-    if (initial) {
-      initial = false;
-    } else {
-      setSignal(!!value);
-    }
-  });
 
   return {
     isOpen() {
