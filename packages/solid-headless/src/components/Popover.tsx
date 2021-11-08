@@ -68,7 +68,10 @@ export function Popover<T extends ValidConstructor = 'div'>(
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
 
-  let returnElement = document.activeElement as HTMLElement | null;
+  let returnElement: HTMLElement | null = null;
+  if (typeof document !== 'undefined') {
+    returnElement = document.activeElement as HTMLElement | null;
+  }
 
   onCleanup(() => {
     returnElement?.focus();

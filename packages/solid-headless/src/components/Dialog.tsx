@@ -64,7 +64,10 @@ export function Dialog<T extends ValidConstructor = 'div'>(
   const titleID = createUniqueId();
   const descriptionID = createUniqueId();
 
-  let returnElement = document.activeElement as HTMLElement | null;
+  let returnElement: HTMLElement | null = null;
+  if (typeof document !== 'undefined') {
+    returnElement = document.activeElement as HTMLElement | null;
+  }
 
   onCleanup(() => {
     returnElement?.focus();
