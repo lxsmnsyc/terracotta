@@ -1,6 +1,6 @@
 {
   "name": "dropdown-menu-example",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,7 +17,7 @@
     "vite-plugin-solid": "^2.1.1"
   },
   "dependencies": {
-    "solid-headless": "0.10.4",
+    "solid-headless": "0.10.5",
     "solid-js": "^1.2.1",
     "tailwindcss": "^2.2.17"
   },
