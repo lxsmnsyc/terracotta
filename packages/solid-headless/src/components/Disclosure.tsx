@@ -54,7 +54,7 @@ function useDisclosureContext(componentName: string): DisclosureContext {
 export type DisclosureProps<T extends ValidConstructor = typeof Fragment> = {
   as?: T;
 } & HeadlessDisclosureRootProps
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
+  & Omit<DynamicProps<T>, keyof HeadlessDisclosureRootProps>;
 
 export function Disclosure<T extends ValidConstructor = typeof Fragment>(
   props: DisclosureProps<T>,

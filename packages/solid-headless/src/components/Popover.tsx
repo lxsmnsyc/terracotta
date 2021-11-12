@@ -58,7 +58,7 @@ export type PopoverProps<T extends ValidConstructor = 'div'> = {
   onClose?: () => void;
   onOpen?: () => void;
 } & Omit<HeadlessDisclosureRootProps, 'CONTROLLED'>
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
+  & Omit<DynamicProps<T>, keyof HeadlessDisclosureRootProps>;
 
 export function Popover<T extends ValidConstructor = 'div'>(
   props: PopoverProps<T>,

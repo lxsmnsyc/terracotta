@@ -53,7 +53,7 @@ export type ContextMenuProps<T extends ValidConstructor = 'div'> = {
   onOpen?: () => void;
   onClose?: () => void;
 } & Omit<HeadlessDisclosureRootProps, 'CONTROLLED'>
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
+  & Omit<DynamicProps<T>, keyof HeadlessDisclosureRootProps>;
 
 export function ContextMenu<T extends ValidConstructor = 'div'>(
   props: ContextMenuProps<T>,
