@@ -1,6 +1,6 @@
 {
   "name": "docs",
-  "version": "0.10.6",
+  "version": "0.10.7",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -19,7 +19,7 @@
   "dependencies": {
     "esbuild-wasm": "^0.13.4",
     "solid-app-router": "^0.1.7",
-    "solid-headless": "0.10.6",
+    "solid-headless": "0.10.7",
     "solid-js": "^1.2.1",
     "solid-use": "^0.1.0",
     "tailwindcss": "^2.2.17"
