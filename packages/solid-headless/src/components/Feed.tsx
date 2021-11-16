@@ -11,15 +11,15 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   createRef,
   DynamicNode,
   DynamicProps,
   ValidConstructor,
   WithRef,
 } from '../utils/dynamic-prop';
-import {
-  excludeProps,
-} from '../utils/exclude-props';
 import getFocusableElements from '../utils/get-focusable-elements';
 import { queryFeedArticles } from '../utils/query-nodes';
 
@@ -134,7 +134,7 @@ export function Feed<T extends ValidConstructor = 'div'>(
     >
       <Dynamic
         component={props.as ?? 'div'}
-        {...excludeProps(props, [
+        {...omitProps(props, [
           'as',
           'busy',
           'size',
@@ -160,7 +160,7 @@ export function FeedLabel<T extends ValidConstructor = 'span'>(
   return (
     <Dynamic
       component={(props.as ?? 'span') as T}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
       ])}
       id={context.labelID}
@@ -244,7 +244,7 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
     >
       <Dynamic
         component={(props.as ?? 'div') as T}
-        {...excludeProps(props, [
+        {...omitProps(props, [
           'as',
         ])}
         id={context.contentID}
@@ -310,7 +310,7 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
     >
       <Dynamic
         component={props.as ?? 'article'}
-        {...excludeProps(props, [
+        {...omitProps(props, [
           'as',
         ])}
         id={ownerID}
@@ -339,7 +339,7 @@ export function FeedArticleLabel<T extends ValidConstructor = 'span'>(
   return (
     <Dynamic
       component={(props.as ?? 'span') as T}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
       ])}
       id={context.labelID}
@@ -359,7 +359,7 @@ export function FeedArticleDescription<T extends ValidConstructor = 'p'>(
   return (
     <Dynamic
       component={(props.as ?? 'p') as T}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
       ])}
       id={context.descriptionID}

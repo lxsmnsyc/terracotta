@@ -11,6 +11,9 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   HeadlessToggleChild,
   HeadlessToggleChildProps,
   HeadlessToggleRoot,
@@ -24,7 +27,6 @@ import {
   ValidConstructor,
   WithRef,
 } from '../utils/dynamic-prop';
-import { excludeProps } from '../utils/exclude-props';
 import Fragment from '../utils/Fragment';
 
 interface CheckboxContext {
@@ -69,7 +71,7 @@ export function Checkbox<T extends ValidConstructor = typeof Fragment>(
     >
       <Dynamic
         component={props.as ?? Fragment}
-        {...excludeProps(props, [
+        {...omitProps(props, [
           'checked',
           'as',
           'children',
@@ -136,7 +138,7 @@ export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
   return (
     <Dynamic
       component={props.as ?? 'button'}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'children',
         'ref',
@@ -175,7 +177,7 @@ export function CheckboxLabel<T extends ValidConstructor = 'label'>(
   return (
     <Dynamic
       component={props.as ?? 'label'}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
       ])}
       id={context.labelID}
@@ -200,7 +202,7 @@ export function CheckboxDescription<T extends ValidConstructor = 'p'>(
   return (
     <Dynamic
       component={(props.as ?? 'p') as T}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'children',
       ])}

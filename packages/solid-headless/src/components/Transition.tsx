@@ -10,8 +10,8 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
-  excludeProps,
-} from '../utils/exclude-props';
+  omitProps,
+} from 'solid-use';
 import {
   createRef,
   DynamicNode,
@@ -152,7 +152,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
       fallback={(
         <Dynamic
           component={props.as ?? 'div'}
-          {...excludeProps(props, [
+          {...omitProps(props, [
             'as',
             'enter',
             'enterFrom',
@@ -180,7 +180,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
       <Show when={visible()}>
         <Dynamic
           component={props.as ?? 'div'}
-          {...excludeProps(props, [
+          {...omitProps(props, [
             'as',
             'enter',
             'enterFrom',
@@ -216,7 +216,7 @@ export type TransitionProps<T extends ValidConstructor = 'div'> = {
 export function Transition<T extends ValidConstructor = 'div'>(
   props: TransitionProps<T>,
 ): JSX.Element {
-  const excludedProps = excludeProps(props, [
+  const excludedProps = omitProps(props, [
     'show',
   ]);
   return (

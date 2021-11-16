@@ -9,6 +9,9 @@ import {
 } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   HeadlessSelectOption,
   HeadlessSelectOptionProps,
   HeadlessSelectRoot,
@@ -22,9 +25,6 @@ import {
   ValidConstructor,
   WithRef,
 } from '../utils/dynamic-prop';
-import {
-  excludeProps,
-} from '../utils/exclude-props';
 import {
   querySelectOptions,
 } from '../utils/query-nodes';
@@ -148,7 +148,7 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
     >
       <Dynamic
         component={props.as ?? 'ul'}
-        {...excludeProps(props, [
+        {...omitProps(props, [
           'as',
           'children',
           'toggleable',
@@ -313,7 +313,7 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
     <Dynamic
       component={Button}
       as={props.as ?? 'li'}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'children',
         'value',

@@ -9,12 +9,12 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   DynamicProps,
   ValidConstructor,
 } from '../utils/dynamic-prop';
-import {
-  excludeProps,
-} from '../utils/exclude-props';
 
 export type ToastProps<T extends ValidConstructor = 'div'> = {
   as?: T,
@@ -30,7 +30,7 @@ export function Toast<T extends ValidConstructor = 'div'>(
     <Dynamic
       component={props.as ?? 'div'}
       id={toastID}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
       ])}
       role="status"
@@ -54,7 +54,7 @@ export function Toaster<T extends ValidConstructor = 'div'>(
     <Dynamic
       component={props.as ?? 'div'}
       id={toasterID}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
       ])}
       data-sh-toast={toasterID}

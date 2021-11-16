@@ -13,15 +13,15 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   createRef,
   DynamicNode,
   DynamicProps,
   ValidConstructor,
   WithRef,
 } from '../utils/dynamic-prop';
-import {
-  excludeProps,
-} from '../utils/exclude-props';
 import { queryMenuItems } from '../utils/query-nodes';
 
 interface MenuContext {
@@ -163,7 +163,7 @@ export function Menu<T extends ValidConstructor = 'ul'>(
     >
       <Dynamic
         component={props.as ?? 'div'}
-        {...excludeProps(props, [
+        {...omitProps(props, [
           'as',
           'ref',
         ])}
@@ -254,7 +254,7 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
   return (
     <Dynamic
       component={props.as ?? 'div'}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'disabled',
         'ref',

@@ -12,6 +12,9 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   HeadlessSelectOption,
   HeadlessSelectOptionChild,
   HeadlessSelectOptionChildProps,
@@ -27,9 +30,6 @@ import {
   createRef,
   DynamicNode,
 } from '../utils/dynamic-prop';
-import {
-  excludeProps,
-} from '../utils/exclude-props';
 import {
   queryAccordionButtons,
 } from '../utils/query-nodes';
@@ -150,7 +150,7 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
     >
       <Dynamic
         component={props.as ?? 'div'}
-        {...excludeProps(props, [
+        {...omitProps(props, [
           'as',
           'children',
           'disabled',
@@ -205,7 +205,7 @@ export function AccordionItem<V, T extends ValidConstructor = 'div'>(
     >
       <Dynamic
         component={props.as ?? 'div'}
-        {...excludeProps(props, [
+        {...omitProps(props, [
           'as',
           'children',
           'value',
@@ -237,7 +237,7 @@ export function AccordionHeader<T extends ValidConstructor = 'h3'>(
   return (
     <Dynamic
       component={props.as ?? 'h3'}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'children',
       ])}
@@ -320,7 +320,7 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
   return (
     <Dynamic
       component={Button}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'children',
         'ref',
         'disabled',
@@ -364,7 +364,7 @@ export function AccordionPanel<T extends ValidConstructor = 'div'>(
       fallback={(
         <Dynamic
           component={props.as ?? 'div'}
-          {...excludeProps(props, [
+          {...omitProps(props, [
             'as',
             'children',
             'unmount',
@@ -381,7 +381,7 @@ export function AccordionPanel<T extends ValidConstructor = 'div'>(
       <Show when={properties.isSelected()}>
         <Dynamic
           component={props.as ?? 'div'}
-          {...excludeProps(props, [
+          {...omitProps(props, [
             'as',
             'children',
             'unmount',

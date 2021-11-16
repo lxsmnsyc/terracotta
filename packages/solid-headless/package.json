@@ -52,12 +52,15 @@
     "eslint": "^7.32.0",
     "eslint-config-lxsmnsyc": "^0.3.0",
     "pridepack": "^1.0.3",
-    "solid-js": "^1.1.7",
+    "solid-js": "^1.2.3",
     "tslib": "^2.3.1",
     "typescript": "^4.4.4"
   },
   "peerDependencies": {
-    "solid-js": "^1.1.7"
+    "solid-js": "^1.0.0"
+  },
+  "dependencies": {
+    "solid-use": "^0.3.0"
   },
   "scripts": {
     "prepublishOnly": "pridepack clean && pridepack build",

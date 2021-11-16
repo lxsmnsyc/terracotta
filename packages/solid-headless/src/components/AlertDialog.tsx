@@ -14,6 +14,9 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   HeadlessDisclosureChild,
   HeadlessDisclosureChildProps,
   HeadlessDisclosureRoot,
@@ -27,9 +30,6 @@ import {
   ValidConstructor,
   WithRef,
 } from '../utils/dynamic-prop';
-import {
-  excludeProps,
-} from '../utils/exclude-props';
 import getFocusableElements from '../utils/get-focusable-elements';
 
 interface AlertDialogContext {
@@ -106,7 +106,7 @@ export function AlertDialog<T extends ValidConstructor = 'div'>(
             fallback={(
               <Dynamic
                 component={props.as ?? 'div'}
-                {...excludeProps(props, [
+                {...omitProps(props, [
                   'as',
                   'children',
                   'defaultOpen',
@@ -132,7 +132,7 @@ export function AlertDialog<T extends ValidConstructor = 'div'>(
             <Show when={isOpen()}>
               <Dynamic
                 component={props.as ?? 'div'}
-                {...excludeProps(props, [
+                {...omitProps(props, [
                   'as',
                   'children',
                   'defaultOpen',
@@ -173,7 +173,7 @@ export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
   return (
     <Dynamic
       component={(props.as ?? 'h2') as T}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'children',
       ])}
@@ -262,7 +262,7 @@ export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
   return (
     <Dynamic
       component={(props.as ?? 'div') as T}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'children',
         'ref',
@@ -313,7 +313,7 @@ export function AlertDialogOverlay<T extends ValidConstructor = 'div'>(
   return (
     <Dynamic
       component={(props.as ?? 'div') as T}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'children',
         'ref',
@@ -343,7 +343,7 @@ export function AlertDialogDescription<T extends ValidConstructor = 'p'>(
   return (
     <Dynamic
       component={(props.as ?? 'p') as T}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'children',
       ])}

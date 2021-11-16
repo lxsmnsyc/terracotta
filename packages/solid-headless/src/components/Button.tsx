@@ -11,15 +11,15 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   createRef,
   DynamicNode,
   DynamicProps,
   ValidConstructor,
   WithRef,
 } from '../utils/dynamic-prop';
-import {
-  excludeProps,
-} from '../utils/exclude-props';
 
 export type ButtonProps<T extends ValidConstructor = 'button'> = {
   as?: T,
@@ -59,7 +59,7 @@ export function Button<T extends ValidConstructor = 'button'>(
       tabindex={0}
       role="button"
       disabled={props.disabled}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'disabled',
         'ref',

@@ -9,15 +9,15 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   createRef,
   DynamicNode,
   DynamicProps,
   ValidConstructor,
   WithRef,
 } from '../utils/dynamic-prop';
-import {
-  excludeProps,
-} from '../utils/exclude-props';
 import getFocusableElements from '../utils/get-focusable-elements';
 
 export type ToolbarProps<T extends ValidConstructor = 'div'> = {
@@ -150,7 +150,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
   return (
     <Dynamic
       component={props.as ?? 'div'}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'horizontal',
         'ref',

@@ -10,14 +10,14 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   DynamicNode,
   ValidConstructor,
   WithRef,
   createRef,
 } from '../utils/dynamic-prop';
-import {
-  excludeProps,
-} from '../utils/exclude-props';
 import {
   Button,
   ButtonProps,
@@ -58,7 +58,7 @@ export function Toggle<T extends ValidConstructor = 'button'>(
     <Dynamic
       component={Button}
       as={props.as}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'defaultPressed',
         'onChange',
         'pressed',

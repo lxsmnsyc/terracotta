@@ -10,6 +10,9 @@ import {
 } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   HeadlessSelectChild,
   HeadlessSelectChildProps,
   HeadlessSelectOption,
@@ -25,9 +28,6 @@ import {
   ValidConstructor,
   WithRef,
 } from '../utils/dynamic-prop';
-import {
-  excludeProps,
-} from '../utils/exclude-props';
 import Fragment from '../utils/Fragment';
 import {
   HeadlessDisclosureChild,
@@ -135,7 +135,7 @@ export function Listbox<V, T extends ValidConstructor = typeof Fragment>(
     >
       <Dynamic
         component={props.as ?? Fragment}
-        {...excludeProps(props, [
+        {...omitProps(props, [
           'as',
           'children',
           'defaultOpen',
@@ -193,7 +193,7 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
   return (
     <Dynamic
       component={props.as ?? 'label'}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'children',
       ])}
@@ -272,7 +272,7 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
   return (
     <Dynamic
       component={Button}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'children',
         'ref',
       ])}
@@ -420,7 +420,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
     >
       <Dynamic
         component={props.as ?? 'ul'}
-        {...excludeProps(props, [
+        {...omitProps(props, [
           'as',
           'children',
           'ref',
@@ -579,7 +579,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
     <Dynamic
       component={Button}
       as={props.as ?? 'li'}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'children',
         'value',

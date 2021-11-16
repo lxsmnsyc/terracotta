@@ -12,6 +12,9 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   HeadlessDisclosureChild,
   HeadlessDisclosureChildProps,
   HeadlessDisclosureRoot,
@@ -25,9 +28,6 @@ import {
   ValidConstructor,
   WithRef,
 } from '../utils/dynamic-prop';
-import {
-  excludeProps,
-} from '../utils/exclude-props';
 import {
   Button,
   ButtonProps,
@@ -93,7 +93,7 @@ export function Popover<T extends ValidConstructor = 'div'>(
     >
       <Dynamic
         component={props.as ?? 'div'}
-        {...excludeProps(props, [
+        {...omitProps(props, [
           'isOpen',
           'as',
           'children',
@@ -177,7 +177,7 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
   return (
     <Dynamic
       component={Button}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'children',
         'ref',
       ])}
@@ -293,7 +293,7 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
       fallback={(
         <Dynamic
           component={props.as ?? 'div'}
-          {...excludeProps(props, [
+          {...omitProps(props, [
             'as',
             'unmount',
             'children',
@@ -314,7 +314,7 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
       <Show when={properties.isOpen()}>
         <Dynamic
           component={props.as ?? 'div'}
-          {...excludeProps(props, [
+          {...omitProps(props, [
             'as',
             'unmount',
             'children',
@@ -367,7 +367,7 @@ export function PopoverOverlay<T extends ValidConstructor = 'p'>(
   return (
     <Dynamic
       component={(props.as ?? 'div') as T}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
         'children',
         'ref',

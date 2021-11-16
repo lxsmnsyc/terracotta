@@ -12,6 +12,9 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   HeadlessDisclosureChild,
   HeadlessDisclosureChildProps,
   HeadlessDisclosureRoot,
@@ -25,9 +28,6 @@ import {
   ValidConstructor,
   WithRef,
 } from '../utils/dynamic-prop';
-import {
-  excludeProps,
-} from '../utils/exclude-props';
 import Fragment from '../utils/Fragment';
 import {
   Button,
@@ -73,7 +73,7 @@ export function Disclosure<T extends ValidConstructor = typeof Fragment>(
     >
       <Dynamic
         component={props.as ?? Fragment}
-        {...excludeProps(props, [
+        {...omitProps(props, [
           'isOpen',
           'as',
           'children',
@@ -135,7 +135,7 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
   return (
     <Dynamic
       component={Button}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'children',
         'ref',
       ])}
@@ -175,7 +175,7 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
       fallback={(
         <Dynamic
           component={props.as ?? 'div'}
-          {...excludeProps(props, [
+          {...omitProps(props, [
             'as',
             'unmount',
             'children',
@@ -192,7 +192,7 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
       <Show when={properties.isOpen()}>
         <Dynamic
           component={props.as ?? 'div'}
-          {...excludeProps(props, [
+          {...omitProps(props, [
             'as',
             'unmount',
             'children',

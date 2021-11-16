@@ -11,6 +11,9 @@ import {
   Dynamic,
 } from 'solid-js/web';
 import {
+  omitProps,
+} from 'solid-use';
+import {
   HeadlessSelectOption,
   HeadlessSelectOptionProps,
   HeadlessSelectRoot,
@@ -24,9 +27,6 @@ import {
   ValidConstructor,
   WithRef,
 } from '../utils/dynamic-prop';
-import {
-  excludeProps,
-} from '../utils/exclude-props';
 import { queryRadios } from '../utils/query-nodes';
 
 interface RadioGroupContext {
@@ -131,7 +131,7 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
       >
         <Dynamic
           component={props.as ?? 'div'}
-          {...excludeProps(props, [
+          {...omitProps(props, [
             'as',
             'children',
             'value',
@@ -248,7 +248,7 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
     >
       <Dynamic
         component={props.as ?? 'div'}
-        {...excludeProps(props, [
+        {...omitProps(props, [
           'as',
           'children',
           'value',
@@ -291,7 +291,7 @@ export function RadioGroupLabel<T extends ValidConstructor = 'label'>(
   return (
     <Dynamic
       component={props.as ?? 'label'}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
       ])}
       id={context.labelID}
@@ -312,7 +312,7 @@ export function RadioGroupDescription<T extends ValidConstructor = 'div'>(
   return (
     <Dynamic
       component={props.as ?? 'div'}
-      {...excludeProps(props, [
+      {...omitProps(props, [
         'as',
       ])}
       id={context.descriptionID}
