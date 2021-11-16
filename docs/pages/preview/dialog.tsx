@@ -1,3 +1,4 @@
+import { JSX } from 'solid-js';
 import {
   Dialog,
   DialogPanel,
@@ -6,34 +7,52 @@ import {
   TransitionChild,
   DialogOverlay,
 } from 'solid-headless';
-import { createSignal, JSX } from 'solid-js';
+import classNames from '../../utils/classnames';
+import PreviewShell from '../../components/PreviewShell';
 
-export default function App(): JSX.Element {
-  const [isOpen, setIsOpen] = createSignal(false);
+const BUTTON = classNames(
+  'rounded-md px-4 py-2 text-sm font-medium transition duration-150',
+  'focus:outline-none focus-visible:ring focus-visible:ring-opacity-75',
+  'focus-visible:ring-gray-900',
+  'dark:focus-visible:ring-gray-50',
+  // Background
+  'bg-gray-900 hover:bg-gray-700 active:bg-gray-800',
+  'dark:bg-gray-50 dark:hover:bg-gray-200 dark:active:bg-gray-100',
+  // Foreground
+  'text-gray-50 hover:text-gray-200 active:text-gray-100',
+  'dark:text-gray-900 dark:hover:text-gray-700 dark:active:text-gray-800',
+);
+
+export default function DialogPreview(): JSX.Element {
+  let isOpen = $signal(false);
 
   function closeModal() {
-    setIsOpen(false);
+    isOpen = false;
   }
 
   function openModal() {
-    setIsOpen(true);
+    isOpen = true;
+  }
+
+  effect: {
+    setTimeout(() => {
+      openModal();
+    }, 1000);
   }
 
   return (
-    <>
-      <div class="fixed inset-0 flex items-center justify-center">
-        <button
-          type="button"
-          onClick={openModal}
-          class="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-        >
-          Open dialog
-        </button>
-      </div>
+    <PreviewShell>
+      <button
+        type="button"
+        onClick={openModal}
+        class={BUTTON}
+      >
+        Open dialog
+      </button>
 
       <Transition
         appear
-        show={isOpen()}
+        show={isOpen}
       >
         <Dialog
           isOpen
@@ -49,12 +68,12 @@ export default function App(): JSX.Element {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <DialogOverlay className="fixed inset-0 bg-gray-900 bg-opacity-50" />
+              <DialogOverlay class="fixed inset-0 bg-gray-900 bg-opacity-50" />
             </TransitionChild>
 
             {/* This element is to trick the browser into centering the modal contents. */}
             <span
-              className="inline-block h-screen align-middle"
+              class="inline-block h-screen align-middle"
               aria-hidden="true"
             >
               &#8203;
@@ -67,15 +86,15 @@ export default function App(): JSX.Element {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <DialogPanel class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+              <DialogPanel class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-gray-50 dark:bg-gray-900 shadow-xl rounded-2xl dark:border dark:border-gray-50">
                 <DialogTitle
                   as="h3"
-                  class="text-lg font-medium leading-6 text-gray-900"
+                  class="text-lg font-medium leading-6 text-gray-900 dark:text-gray-50"
                 >
                   Payment successful
                 </DialogTitle>
                 <div class="mt-2">
-                  <p class="text-sm text-gray-500">
+                  <p class="text-sm text-gray-900 dark:text-gray-50">
                     Your payment has been successfully submitted. We’ve sent
                     your an email with all of the details of your order.
                   </p>
@@ -84,7 +103,7 @@ export default function App(): JSX.Element {
                 <div class="mt-4">
                   <button
                     type="button"
-                    class="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    class={BUTTON}
                     onClick={closeModal}
                   >
                     Got it, thanks!
@@ -95,6 +114,6 @@ export default function App(): JSX.Element {
           </div>
         </Dialog>
       </Transition>
-    </>
+    </PreviewShell>
   );
 }

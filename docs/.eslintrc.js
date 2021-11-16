@@ -1,15 +1,23 @@
 module.exports = {
-  "root": true,
   "extends": [
-    "lxsmnsyc/typescript/react"
+    'lxsmnsyc/typescript/react',
   ],
   "parserOptions": {
     "project": "./tsconfig.eslint.json",
     "tsconfigRootDir": __dirname,
   },
   "rules": {
-    "react/destructuring-assignment": "off",
+    "import/no-extraneous-dependencies": [
+      "error", {
+        "devDependencies": ["**/*.test.tsx"]
+      }
+    ],
     "react/jsx-props-no-spreading": "off",
-    "react/no-unknown-property": "off"
-  }
+    "react/destructuring-assignment": "off",
+    "react/no-unknown-property": "off",
+    "no-labels": "off",
+    "no-restricted-syntax": "off",
+    "no-unused-labels": "off",
+    "react/jsx-no-bind": "off"
+  },
 };

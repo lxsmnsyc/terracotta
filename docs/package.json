@@ -1,31 +1,19 @@
 {
   "name": "docs",
   "version": "0.10.7",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
+  "private": true,
+  "dependencies": {
+    "rigidity": "^0.0.8",
+    "solid-js": "^1.2.3",
+    "solid-use": "^0.3.1",
+    "solid-headless": "0.10.7"
   },
   "devDependencies": {
-    "autoprefixer": "^10.3.7",
-    "babel-preset-solid": "^1.2.1",
-    "eslint": "^7.32.0",
-    "eslint-config-lxsmnsyc": "^0.3.0",
-    "postcss": "^8.3.11",
-    "typescript": "^4.4.4",
-    "vite": "^2.6.13",
-    "vite-plugin-solid": "^2.1.1"
+    "autoprefixer": "^10.4.0",
+    "tailwindcss": "^2.2.19"
   },
-  "dependencies": {
-    "esbuild-wasm": "^0.13.4",
-    "solid-app-router": "^0.1.7",
-    "solid-headless": "0.10.7",
-    "solid-js": "^1.2.1",
-    "solid-use": "^0.1.0",
-    "tailwindcss": "^2.2.17"
-  },
-  "private": true,
-  "publishConfig": {
-    "access": "restricted"
+  "scripts": {
+    "build": "node build-src",
+    "start": "node serve"
   }
 }

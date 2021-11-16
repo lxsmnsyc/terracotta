@@ -1,19 +1,23 @@
 {
+  "exclude": ["node_modules"],
+  "include": ["pages", "types", "components", "utils"],
   "compilerOptions": {
-    "target": "ESNext",
     "module": "ESNext",
-    "lib": ["ESNext", "DOM"],
-    "moduleResolution": "Node",
-    "strict": true,
+    "lib": ["DOM", "ESNext"],
+    "importHelpers": true,
+    "declaration": true,
     "sourceMap": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "noEmit": true,
+    "rootDir": "./",
+    "strict": true,
+    "isolatedModules": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-  },
-  "include": ["./src"]
+    "esModuleInterop": true,
+    "target": "ES2017"
+  }
 }

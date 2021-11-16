@@ -1,15 +1,16 @@
 import {
   JSX,
 } from 'solid-js';
+import { CircularLink } from './CircularButton';
 
-function GithubLogo(): JSX.Element {
+function GithubLogo(props: JSX.IntrinsicElements['svg']): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      class="w-full h-full"
       viewBox="0 0 24 24"
       stroke="none"
       fill="currentColor"
+      {...props}
     >
       <title>GitHub</title>
       <path
@@ -21,15 +22,12 @@ function GithubLogo(): JSX.Element {
 
 export default function Github(): JSX.Element {
   return (
-    <div class="py-4 px-2">
-      <a
-        href="https://github.com/lxsmnsyc/solid-headless"
-        class=""
-      >
-        <div class="w-6 h-6 transition-transform transform-gpu hover:scale-110">
-          <GithubLogo />
-        </div>
-      </a>
-    </div>
+    <CircularLink
+      href="https://github.com/lxsmnsyc/solid-headless"
+      class=""
+    >
+      <span class="sr-only">Github</span>
+      <GithubLogo class="p-2 w-10 h-10" />
+    </CircularLink>
   );
 }
