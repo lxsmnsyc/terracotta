@@ -1,4 +1,4 @@
-import { JSX } from 'solid-js';
+import { createEffect, createSignal, JSX } from 'solid-js';
 import {
   Dialog,
   DialogPanel,
@@ -7,8 +7,10 @@ import {
   TransitionChild,
   DialogOverlay,
 } from 'solid-headless';
-import classNames from '../../utils/classnames';
-import PreviewShell from '../../components/PreviewShell';
+
+function classNames(...classes: (string | boolean | undefined)[]): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 const BUTTON = classNames(
   'rounded-md px-4 py-2 text-sm font-medium transition duration-150',
@@ -24,24 +26,24 @@ const BUTTON = classNames(
 );
 
 export default function DialogPreview(): JSX.Element {
-  let isOpen = $signal(false);
+  const [isOpen, setIsOpen] = createSignal(false);
 
   function closeModal() {
-    isOpen = false;
+    setIsOpen(false);
   }
 
   function openModal() {
-    isOpen = true;
+    setIsOpen(true);
   }
 
-  effect: {
+  createEffect(() => {
     setTimeout(() => {
       openModal();
     }, 1000);
-  }
+  });
 
   return (
-    <PreviewShell>
+    <>
       <button
         type="button"
         onClick={openModal}
@@ -52,7 +54,7 @@ export default function DialogPreview(): JSX.Element {
 
       <Transition
         appear
-        show={isOpen}
+        show={isOpen()}
       >
         <Dialog
           isOpen
@@ -114,6 +116,6 @@ export default function DialogPreview(): JSX.Element {
           </div>
         </Dialog>
       </Transition>
-    </PreviewShell>
+    </>
   );
 }

@@ -25,7 +25,7 @@ export default function MainShell(props: MainShellProps): JSX.Element {
             </div>
           </div>
         </div>
-        <main class="text-gray-900 dark:text-gray-50">
+        <main class="text-gray-900 dark:text-gray-50 flex flex-col p-4 md:p-8 space-y-8">
           {props.children}
         </main>
       </div>
