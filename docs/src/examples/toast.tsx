@@ -95,11 +95,11 @@ export default function ToasterPreview(): JSX.Element {
   }
 
   const [isOpen, setIsOpen] = createSignal(false);
-  const [persist, setPersist] = createSignal(true);
+  let persist = true;
 
   function closeNotifs() {
+    persist = false;
     setIsOpen(false);
-    setPersist(false);
   }
 
   function clearNotifs() {
@@ -111,9 +111,10 @@ export default function ToasterPreview(): JSX.Element {
       setIsOpen(true);
     }
 
-    if (persist()) {
+    if (persist) {
       return;
     }
+
     const timeout = setTimeout(() => {
       closeNotifs();
     }, 5000);
