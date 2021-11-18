@@ -12,6 +12,7 @@ export default function Preview(props: PreviewProps): JSX.Element {
       class="w-full h-full"
       src={props.src}
       onLoad={props.onLoad}
+      tabindex="-1"
       // https://github.com/sveltejs/svelte-repl/blob/master/src/Output/Viewer.svelte
       sandbox="allow-popups-to-escape-sandbox allow-scripts allow-popups allow-forms allow-pointer-lock allow-top-navigation allow-modals allow-same-origin"
     />
