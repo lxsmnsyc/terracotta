@@ -2,6 +2,8 @@ import {
   JSX,
 } from 'solid-js';
 import * as shiki from 'shiki';
+import Split from 'split.js';
+import { useMediaQuery } from 'solid-use';
 import Preview from './Preview';
 import CodeSnippet from './CodeSnippet';
 
@@ -23,12 +25,30 @@ export default function DemoPreview(props: DemoPreviewProps): JSX.Element {
     snippetLoading = false;
   }
 
+  const isMD = useMediaQuery('(min-width: 768px)');
+  const panelA = $signal<HTMLElement>();
+  const panelB = $signal<HTMLElement>();
+
+  effect: {
+    const md = isMD();
+    if (panelA && panelB) {
+      const instance = Split([panelA, panelB], {
+        direction: md ? 'horizontal' : 'vertical',
+        minSize: 200,
+      });
+
+      cleanup: {
+        instance.destroy();
+      }
+    }
+  }
+
   return (
-    <div class="flex flex-col border bg-gray-900 dark:bg-gray-50 border-gray-900 dark:border-gray-50 md:flex-row rounded-lg overflow-hidden h-full">
-      <div class={`flex-1 overflow-scroll transition duration-300 ${snippetLoading ? 'opacity-0' : 'opacity-100'}`}>
+    <div class="flex flex-col border bg-gray-900 dark:bg-gray-50 border-gray-900 dark:border-gray-50 divide-x divide-gray-900 dark:divide-gray-50 md:flex-row rounded-lg overflow-hidden h-full">
+      <div ref={$set(panelA)} class={`overflow-scroll transition duration-300 ${snippetLoading ? 'opacity-0' : 'opacity-100'}`}>
         <CodeSnippet code={props.code} onLoad={onSnippetLoad} />
       </div>
-      <div class={`flex-1 transition duration-300 ${previewLoading ? 'opacity-0' : 'opacity-100'}`}>
+      <div ref={$set(panelB)} class={`transition duration-300 ${previewLoading ? 'opacity-0' : 'opacity-100'}`}>
         <Preview src={props.src} onLoad={onPreviewLoad} />
       </div>
     </div>

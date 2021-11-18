@@ -13,7 +13,7 @@ export interface ComponentCardProps {
 }
 
 const CARD = classNames(
-  'rounded-lg overflow-hidden m-2',
+  'rounded-lg overflow-hidden m-2 flex flex-col',
   'transition duration-200',
   'bg-gray-900 dark:bg-gray-50',
   'text-gray-50 dark:text-gray-900',
@@ -27,19 +27,17 @@ const CARD = classNames(
 export default function ComponentCard(props: ComponentCardProps): JSX.Element {
   let loading = $signal(true);
   return (
-    <Link href={`/component/${props.target}`} class="w-full md:w-1/2 lg:w-1/3">
-      <div class={CARD}>
+    <div class="w-full md:w-1/2 lg:w-1/3">
+      <Link href={`/component/${props.target}`} class={CARD}>
         <div class="w-full h-auto transition-colors duration-200 relative overflow-hidden">
           <div class="aspect-w-16 aspect-h-9 relative overflow-hidden">
             <div class="absolute w-[200%] h-[200%] top-0 left-0 transform-gpu scale-50 origin-top-left">
-              <$suspense>
-                <Preview
-                  src={`/preview/${props.target}`}
-                  onLoad={() => {
-                    loading = false;
-                  }}
-                />
-              </$suspense>
+              <Preview
+                src={`/preview/${props.target}`}
+                onLoad={() => {
+                  loading = false;
+                }}
+              />
             </div>
           </div>
           {loading && <div class="absolute top-0 w-full h-full animate-pulse bg-gray-100 dark:bg-gray-900" />}
@@ -48,7 +46,7 @@ export default function ComponentCard(props: ComponentCardProps): JSX.Element {
         <div class="p-4">
           <span>{props.name}</span>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 }

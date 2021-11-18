@@ -7,7 +7,8 @@
     "solid-headless": "0.10.9",
     "solid-js": "^1.2.3",
     "solid-tiny-router": "^0.2.2",
-    "solid-use": "^0.3.1"
+    "solid-use": "^0.3.1",
+    "split.js": "^1.6.4"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.3.0",
