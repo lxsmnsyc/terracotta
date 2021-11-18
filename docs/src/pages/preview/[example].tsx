@@ -9,15 +9,16 @@ interface PreviewParams extends RouterParams {
 }
 
 const PREVIEWS: Record<string, () => JSX.Element> = {
+  accordion: $lazy(import('../../examples/accordion')),
   dialog: $lazy(import('../../examples/dialog')),
-  toaster: $lazy(import('../../examples/toaster')),
+  toast: $lazy(import('../../examples/toast')),
 };
 
 export default function ToasterPreview(): JSX.Element {
   const router = useRouter<PreviewParams>();
   return (
     <PreviewShell>
-      {PREVIEWS[router.params.example]}
+      <$dynamic component={PREVIEWS[router.params.example]} />
     </PreviewShell>
   );
 }

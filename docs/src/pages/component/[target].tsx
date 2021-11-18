@@ -96,6 +96,25 @@ function MetaPageAPIComponents() {
   );
 }
 
+function MetaPageAPIExtras() {
+  const ctx = $useContext(MetaPageContext);
+
+  return (
+    <$show when={ctx?.info.api?.extras}>
+      {(result) => (
+        <$for each={result}>
+          {(item) => (
+            <div class="flex flex-col space-y-2">
+              <CodeSnippet code={item.code} />
+              <p>{item.description}</p>
+            </div>
+          )}
+        </$for>
+      )}
+    </$show>
+  );
+}
+
 function MetaPageAPIs() {
   const ctx = $useContext(MetaPageContext);
 
@@ -106,6 +125,7 @@ function MetaPageAPIs() {
           API
         </h2>
         <MetaPageAPIComponents />
+        <MetaPageAPIExtras />
       </div>
     </$show>
   );
@@ -143,7 +163,7 @@ export default function DocumentPage(): JSX.Element {
         <HighlighterProvider>
           <MetaPage
             name={router.params.target}
-            data={META[router.params.target]}
+            data={META[router.params.target].render}
           />
         </HighlighterProvider>
       </$show>

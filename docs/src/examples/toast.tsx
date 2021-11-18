@@ -95,9 +95,11 @@ export default function ToasterPreview(): JSX.Element {
   }
 
   const [isOpen, setIsOpen] = createSignal(false);
+  const [persist, setPersist] = createSignal(true);
 
   function closeNotifs() {
     setIsOpen(false);
+    setPersist(false);
   }
 
   function clearNotifs() {
@@ -109,6 +111,9 @@ export default function ToasterPreview(): JSX.Element {
       setIsOpen(true);
     }
 
+    if (persist()) {
+      return;
+    }
     const timeout = setTimeout(() => {
       closeNotifs();
     }, 5000);
@@ -116,6 +121,12 @@ export default function ToasterPreview(): JSX.Element {
     onCleanup(() => {
       clearTimeout(timeout);
     });
+  });
+
+  createEffect(() => {
+    setTimeout(() => {
+      createToast();
+    }, 1000);
   });
 
   return (
@@ -136,7 +147,7 @@ export default function ToasterPreview(): JSX.Element {
           Clear toasts
         </button>
       </div>
-      <Toaster class="absolute fixed-0 left-0 bottom-0 m-4">
+      <Toaster class="absolute fixed-0 left-0 bottom-0">
         <Transition
           show={isOpen()}
           class="relative transition"
@@ -148,7 +159,7 @@ export default function ToasterPreview(): JSX.Element {
           leaveTo="opacity-0 scale-50  translate-y-full"
           afterLeave={clearNotifs}
         >
-          <div class="flex flex-col w-80 max-h-96 overflow-hidden rounded-xl shadow-xl bg-gray-50 dark:bg-gray-900 border border-gray-900 dark:border-gray-50 p-4 space-y-2">
+          <div class="flex flex-col m-4 max-w-full max-h-[50vh] overflow-hidden rounded-xl shadow-xl bg-gray-50 dark:bg-gray-900 border border-gray-900 dark:border-gray-50 p-4 space-y-2">
             <div class="flex-none flex items-center justify-between">
               <span class="text-xl font-bold text-gray-900 dark:text-gray-50">Notifications</span>
               <button type="button" onClick={closeNotifs} class="w-6 h-6 p-1 text-gray-900 dark:text-gray-50 bg-gray-50 dark:bg-gray-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">

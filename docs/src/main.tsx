@@ -1,6 +1,5 @@
 import { render } from 'solid-js/web';
 import { createRouterTree, Router } from 'solid-tiny-router';
-
 import './main.css';
 
 const routes = createRouterTree([
