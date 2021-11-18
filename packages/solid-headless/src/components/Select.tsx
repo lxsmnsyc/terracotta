@@ -220,21 +220,25 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
           switch (e.key) {
             case 'ArrowUp':
               if (!context.horizontal) {
+                e.preventDefault();
                 context.setPrevChecked(ref);
               }
               break;
             case 'ArrowLeft':
               if (context.horizontal) {
+                e.preventDefault();
                 context.setPrevChecked(ref);
               }
               break;
             case 'ArrowDown':
               if (!context.horizontal) {
+              e.preventDefault();
                 context.setNextChecked(ref);
               }
               break;
             case 'ArrowRight':
               if (context.horizontal) {
+                e.preventDefault();
                 context.setNextChecked(ref);
               }
               break;
@@ -246,9 +250,11 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
               properties.select(props.value);
               break;
             case 'Home':
+              e.preventDefault();
               context.setFirstChecked();
               break;
             case 'End':
+              e.preventDefault();
               context.setLastChecked();
               break;
             default:

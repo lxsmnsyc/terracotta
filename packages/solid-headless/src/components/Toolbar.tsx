@@ -82,27 +82,32 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
         switch (e.key) {
           case 'ArrowLeft':
             if (props.horizontal) {
+              e.preventDefault();
               getPrevFocusable();
             }
             break;
           case 'ArrowUp':
             if (!props.horizontal) {
+              e.preventDefault();
               getPrevFocusable();
             }
             break;
           case 'ArrowRight':
             if (props.horizontal) {
+              e.preventDefault();
               getNextFocusable();
             }
             break;
           case 'ArrowDown':
             if (!props.horizontal) {
+              e.preventDefault();
               getNextFocusable();
             }
             break;
           case 'Home': {
             const nodes = getFocusableElements(ref);
             if (nodes.length) {
+              e.preventDefault();
               nodes[0].focus();
             }
           }
@@ -110,6 +115,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
           case 'End': {
             const nodes = getFocusableElements(ref);
             if (nodes.length) {
+              e.preventDefault();
               nodes[nodes.length - 1].focus();
             }
           }

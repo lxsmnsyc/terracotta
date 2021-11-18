@@ -209,10 +209,12 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
           switch (e.key) {
             case 'ArrowUp':
             case 'ArrowLeft':
+              e.preventDefault();
               context.setPrevChecked(ref);
               break;
             case 'ArrowDown':
             case 'ArrowRight':
+              e.preventDefault();
               context.setNextChecked(ref);
               break;
             case ' ':
@@ -223,9 +225,11 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
               ref.click();
               break;
             case 'Home':
+              e.preventDefault();
               context.setFirstChecked();
               break;
             case 'End':
+              e.preventDefault();
               context.setLastChecked();
               break;
             default:

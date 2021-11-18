@@ -272,15 +272,19 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
         if (!(properties.disabled() || props.disabled)) {
           switch (e.key) {
             case 'ArrowUp':
+              e.preventDefault();
               rootContext.setPrevChecked(ref);
               break;
             case 'ArrowDown':
+              e.preventDefault();
               rootContext.setNextChecked(ref);
               break;
             case 'Home':
+              e.preventDefault();
               rootContext.setFirstChecked();
               break;
             case 'End':
+              e.preventDefault();
               rootContext.setLastChecked();
               break;
             default:

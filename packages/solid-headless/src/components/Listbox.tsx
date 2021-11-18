@@ -237,6 +237,7 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
           switch (e.key) {
             case 'ArrowUp':
             case 'ArrowDown':
+              e.preventDefault();
               toggle();
               break;
             default:
@@ -482,21 +483,25 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
           switch (e.key) {
             case 'ArrowLeft':
               if (rootContext.horizontal) {
+                e.preventDefault();
                 context.setPrevChecked(ref);
               }
               break;
             case 'ArrowUp':
               if (!rootContext.horizontal) {
+                e.preventDefault();
                 context.setPrevChecked(ref);
               }
               break;
             case 'ArrowRight':
               if (rootContext.horizontal) {
+                e.preventDefault();
                 context.setNextChecked(ref);
               }
               break;
             case 'ArrowDown':
               if (!rootContext.horizontal) {
+                e.preventDefault();
                 context.setNextChecked(ref);
               }
               break;
@@ -511,9 +516,11 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
               }
               break;
             case 'Home':
+              e.preventDefault();
               context.setFirstChecked();
               break;
             case 'End':
+              e.preventDefault();
               context.setLastChecked();
               break;
             default:

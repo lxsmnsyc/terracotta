@@ -191,10 +191,12 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
           switch (e.key) {
             case 'ArrowLeft':
             case 'ArrowUp':
+              e.preventDefault();
               context.setPrevChecked(ref);
               break;
             case 'ArrowRight':
             case 'ArrowDown':
+              e.preventDefault();
               context.setNextChecked(ref);
               break;
             case ' ':
