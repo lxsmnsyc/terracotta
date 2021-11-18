@@ -2,11 +2,10 @@ import { JSX } from 'solid-js';
 import BashSnippet from '../components/BashSnippet';
 import MainShell from '../components/MainShell';
 import WindowPreview, { WindowPreviewBaseProps } from '../components/WindowPreview';
+import META from '../page-data';
 
-const PREVIEWS: WindowPreviewBaseProps[] = [
-  { src: '/preview/dialog', canonical: '/component/dialog' },
-  { src: '/preview/toaster', canonical: '/component/toaster' },
-];
+const PREVIEWS: WindowPreviewBaseProps[] = Object.keys(META)
+  .map((item) => ({ src: `/preview/${item}`, canonical: `/component/${item}`}));
 
 export default function Index(): JSX.Element {
   let selected = $signal(Math.floor(Math.random() * PREVIEWS.length));

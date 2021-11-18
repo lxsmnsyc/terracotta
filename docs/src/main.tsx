@@ -13,12 +13,8 @@ const routes = createRouterTree([
     component: $lazy(import('./pages/preview/[example]')),
   },
   {
-    path: '/component/dialog',
-    component: $lazy(import('./pages/component/dialog')),
-  },
-  {
-    path: '/component/toaster',
-    component: $lazy(import('./pages/component/toaster')),
+    path: '/component/[target]',
+    component: $lazy(import('./pages/component/[target]')),
   },
 ]);
 

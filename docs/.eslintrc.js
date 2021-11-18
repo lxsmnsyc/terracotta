@@ -13,6 +13,8 @@ module.exports = {
       }
     ],
     "react/jsx-props-no-spreading": "off",
+    "react/jsx-pascal-case": "off",
+    "react/jsx-no-undef": "off",
     "react/destructuring-assignment": "off",
     "react/no-unknown-property": "off",
     "no-labels": "off",
