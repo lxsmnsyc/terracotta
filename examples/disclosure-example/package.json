@@ -1,6 +1,6 @@
 {
   "name": "disclosure-example",
-  "version": "0.10.9",
+  "version": "0.10.10",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,7 +17,7 @@
     "vite-plugin-solid": "^2.1.1"
   },
   "dependencies": {
-    "solid-headless": "0.10.9",
+    "solid-headless": "0.10.10",
     "solid-js": "^1.2.1",
     "tailwindcss": "^2.2.17"
   },
