@@ -3,7 +3,7 @@
   "version": "0.10.10",
   "private": true,
   "dependencies": {
-    "shiki": "^0.9.12",
+    "shiki": "^0.9.15",
     "solid-headless": "0.10.10",
     "solid-js": "^1.2.3",
     "solid-tiny-router": "^0.2.2",
