@@ -39,5 +39,5 @@
 }
 
 .shiki {
-  @apply p-4 overflow-scroll text-sm;
+  @apply p-4 overflow-x-auto float-left min-w-full text-sm;
 }

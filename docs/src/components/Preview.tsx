@@ -9,7 +9,7 @@ export default function Preview(props: PreviewProps): JSX.Element {
   return (
     <iframe
       title="Preview"
-      class="w-full h-full"
+      class="w-full h-full overflow-hidden"
       src={props.src}
       onLoad={props.onLoad}
       tabindex="-1"

@@ -24,7 +24,10 @@ export default function CodeSnippet(props: CodeSnippetProps): JSX.Element {
     const dark = isDarkMode();
     const instance = highlighter();
     if (el && instance) {
-      el.innerHTML = instance.codeToHtml(value, 'tsx', dark ? 'github-dark' : 'github-light');
+      el.innerHTML = instance.codeToHtml(value, {
+        lang: 'tsx',
+        theme: dark ? 'github-dark' : 'github-light',
+      });
     }
   }
 
