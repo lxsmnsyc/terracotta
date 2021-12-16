@@ -5,7 +5,7 @@
   "dependencies": {
     "shiki": "^0.9.15",
     "solid-headless": "0.10.10",
-    "solid-js": "^1.2.3",
+    "solid-js": "^1.2.6",
     "solid-tiny-router": "^0.2.2",
     "solid-use": "^0.3.1",
     "split.js": "^1.6.4"
@@ -18,7 +18,7 @@
     "eslint": "^7.32.0",
     "eslint-config-lxsmnsyc": "^0.3.0",
     "tailwindcss": "^2.2.19",
-    "typescript": "^4.4.4",
+    "typescript": "^4.5.4",
     "vite": "^2.6.14",
     "vite-plugin-solid": "^2.1.2"
   },
