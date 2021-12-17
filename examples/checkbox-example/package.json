@@ -1,6 +1,6 @@
 {
   "name": "checkbox-example",
-  "version": "0.10.11",
+  "version": "0.10.12",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,7 +17,7 @@
     "vite-plugin-solid": "^2.1.4"
   },
   "dependencies": {
-    "solid-headless": "0.10.11",
+    "solid-headless": "0.10.12",
     "solid-js": "^1.2.6",
     "tailwindcss": "^3.0.5"
   },

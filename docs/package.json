@@ -1,10 +1,10 @@
 {
   "name": "docs",
-  "version": "0.10.11",
+  "version": "0.10.12",
   "private": true,
   "dependencies": {
     "shiki": "^0.9.15",
-    "solid-headless": "0.10.11",
+    "solid-headless": "0.10.12",
     "solid-js": "^1.2.6",
     "solid-tiny-router": "^0.2.2",
     "solid-use": "^0.3.1",
