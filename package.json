@@ -1,39 +1,14 @@
 {
-  "name": "solid-headless-workspace",
+  "name": "root",
   "private": true,
   "workspaces": [
     "packages/*",
-    "examples/*",
-    "docs"
+    "examples/*"
   ],
-  "scripts": {
-    "lint": "lerna run lint",
-    "bootstrap": "lerna bootstrap",
-    "clean": "lerna run clean",
-    "build": "lerna run build",
-    "type-check": "lerna run type-check",
-    "test": "lerna run test",
-    "test:coverage": "lerna run test -- --coverage",
-    "lerna": "lerna",
-    "changed": "lerna changed",
-    "publish-all": "lerna publish"
-  },
   "devDependencies": {
-    "@typescript-eslint/parser": "^4.27.0",
-    "eslint": "^7.28.0",
-    "eslint-config-lxsmnsyc": "^0.2.1",
-    "lerna": "^4.0.0"
-  },
-  "version": "0.1.0",
-  "main": "index.js",
-  "author": "Alexis Munsayac <alexis.munsayac@gmail.com>",
-  "license": "MIT",
-  "repository": {
-    "url": "https://github.com/lxsmnsyc/solid-headless.git",
-    "type": "git"
-  },
-  "homepage": "https://github.com/lxsmnsyc/solid-headless",
-  "bugs": {
-    "url": "https://github.com/lxsmnsyc/solid-headless/issues"
+    "eslint": "^8.6.0",
+    "eslint-config-lxsmnsyc": "^0.4.0",
+    "lerna": "^4.0.0",
+    "typescript": "^4.5.4"
   }
 }
