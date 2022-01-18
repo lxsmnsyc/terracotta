@@ -18,7 +18,7 @@ importers:
     specifiers:
       '@tailwindcss/aspect-ratio': ^0.3.0
       autoprefixer: ^10.4.0
-      babel-plugin-solid-labels: ^0.10.0
+      babel-plugin-solid-labels: ^0.10.1
       babel-preset-solid: ^1.3.2
       eslint: ^8.6.0
       eslint-config-lxsmnsyc: ^0.4.0
@@ -42,7 +42,7 @@ importers:
     devDependencies:
       '@tailwindcss/aspect-ratio': 0.3.0_tailwindcss@3.0.13
       autoprefixer: 10.4.2
-      babel-plugin-solid-labels: 0.10.0_solid-js@1.3.3
+      babel-plugin-solid-labels: 0.10.1_solid-js@1.3.3
       babel-preset-solid: 1.3.2
       eslint: 8.6.0
       eslint-config-lxsmnsyc: 0.4.0_eslint@8.6.0+typescript@4.5.4
@@ -2726,8 +2726,8 @@ packages:
       - '@babel/core'
     dev: true
 
-  /babel-plugin-solid-labels/0.10.0_solid-js@1.3.3:
-    resolution: {integrity: sha512-O8GYkZzwJjrL1EneVhtwO1uv3sT6xRuTpJosZ+d0p586XxEWzVDqNXJH8bLAH1rA9sMiZP2B+dt1Ze6CHe1+YA==}
+  /babel-plugin-solid-labels/0.10.1_solid-js@1.3.3:
+    resolution: {integrity: sha512-cPbr11OriaC+qoiO/3B71hARP07rtUnvtwz67ayvClG20q2/36Mf7+3TxwQAey+zNS+DGCH+lhvMjOoTy5B/Ig==}
     engines: {node: '>=10'}
     peerDependencies:
       '@babel/core': ^7.16
