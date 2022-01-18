@@ -138,7 +138,7 @@ export default function App(): JSX.Element {
                 <CloseIcon />
               </button>
             </div>
-            <div class="flex-1 flex flex-col-reverse space-y-reverse space-y-1 overflow-y-scroll rounded-lg">
+            
               <For
                 each={notifs().slice(0).reverse()}
                 fallback={(
@@ -151,7 +151,6 @@ export default function App(): JSX.Element {
                   <CustomToast id={item.id} message={item.data} />
                 )}
               </For>
-            </div>
           </div>
         </Transition>
       </Toaster>
