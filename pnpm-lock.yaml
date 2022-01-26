@@ -31,7 +31,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       shiki: 0.9.15
       solid-headless: link:../packages/solid-headless
@@ -49,7 +49,7 @@ importers:
       tailwindcss: 3.0.13_autoprefixer@10.4.2
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/accordion-example:
     specifiers:
@@ -63,7 +63,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -76,7 +76,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/checkbox-example:
     specifiers:
@@ -90,7 +90,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -103,7 +103,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/commandbar-example:
     specifiers:
@@ -117,7 +117,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -130,7 +130,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/context-menu-example:
     specifiers:
@@ -144,7 +144,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -157,7 +157,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/dialog-example:
     specifiers:
@@ -171,7 +171,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -184,7 +184,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/disclosure-example:
     specifiers:
@@ -198,7 +198,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -211,7 +211,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/dropdown-menu-example:
     specifiers:
@@ -225,7 +225,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -238,7 +238,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/feed-example:
     specifiers:
@@ -252,7 +252,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -265,7 +265,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/listbox-example:
     specifiers:
@@ -279,7 +279,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -292,7 +292,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/popover-example:
     specifiers:
@@ -306,7 +306,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -319,7 +319,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/radiogroup-example:
     specifiers:
@@ -333,7 +333,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -346,7 +346,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/toaster-example:
     specifiers:
@@ -360,7 +360,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -373,7 +373,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/toolbar-example:
     specifiers:
@@ -387,7 +387,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -400,7 +400,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   examples/transitions-example:
     specifiers:
@@ -414,7 +414,7 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.4
       vite: ^2.7.12
-      vite-plugin-solid: ^2.2.2
+      vite-plugin-solid: ^2.2.4
     dependencies:
       solid-headless: link:../../packages/solid-headless
       solid-js: 1.3.3
@@ -427,7 +427,7 @@ importers:
       postcss: 8.4.5
       typescript: 4.5.4
       vite: 2.7.12
-      vite-plugin-solid: 2.2.2
+      vite-plugin-solid: 2.2.4
 
   packages/solid-headless:
     specifiers:
@@ -8547,8 +8547,8 @@ packages:
       extsprintf: 1.3.0
     dev: true
 
-  /vite-plugin-solid/2.2.2:
-    resolution: {integrity: sha512-9Um49U4L7FwZuB1dNRjY+5fhzIBGeYTJuF8eQxx1PZ8R0dnU1vGAswwDexn1OrfoyFDeS9PCBjLtE9VTkbPqYA==}
+  /vite-plugin-solid/2.2.4:
+    resolution: {integrity: sha512-JMYc8SOZFnAU30x7UzFnMpNG+x92WOaKHwnKYg0LZPrLJGvE2k1Xh01GtvAG5cdqZTjpczCCpKtsEjz1t4JtgQ==}
     dependencies:
       '@babel/core': 7.16.7
       '@babel/preset-typescript': 7.16.7_@babel+core@7.16.7
@@ -8556,7 +8556,7 @@ packages:
       merge-anything: 4.0.2
       solid-js: 1.3.3
       solid-refresh: 0.4.0_solid-js@1.3.3
-      vite: 2.7.12
+      vite: 2.7.13
     transitivePeerDependencies:
       - less
       - sass
@@ -8566,6 +8566,30 @@ packages:
 
   /vite/2.7.12:
     resolution: {integrity: sha512-KvPYToRQWhRfBeVkyhkZ5hASuHQkqZUUdUcE3xyYtq5oYEPIJ0h9LWiWTO6v990glmSac2cEPeYeXzpX5Z6qKQ==}
+    engines: {node: '>=12.2.0'}
+    hasBin: true
+    peerDependencies:
+      less: '*'
+      sass: '*'
+      stylus: '*'
+    peerDependenciesMeta:
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+    dependencies:
+      esbuild: 0.13.15
+      postcss: 8.4.5
+      resolve: 1.21.0
+      rollup: 2.63.0
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
+
+  /vite/2.7.13:
+    resolution: {integrity: sha512-Mq8et7f3aK0SgSxjDNfOAimZGW9XryfHRa/uV0jseQSilg+KhYDSoNb9h1rknOy6SuMkvNDLKCYAYYUMCE+IgQ==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
