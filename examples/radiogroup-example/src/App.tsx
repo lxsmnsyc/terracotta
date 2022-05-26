@@ -55,18 +55,18 @@ export default function App() {
   const [selected, setSelected] = createSignal(plans[0]);
 
   return (
-    <div className="w-full px-4 py-16">
-      <div className="w-full max-w-md mx-auto">
+    <div class="w-full px-4 py-16">
+      <div class="w-full max-w-md mx-auto">
         <RadioGroup
           value={selected()}
           onChange={setSelected}
         >
           {({ isSelected, isActive }) => (
             <>
-              <RadioGroupLabel className="sr-only">
+              <RadioGroupLabel class="sr-only">
                 Server size
               </RadioGroupLabel>
-              <div className="space-y-2">
+              <div class="space-y-2">
                 <For each={plans}>
                   {(plan) => (
                     <RadioGroupOption
@@ -78,18 +78,18 @@ export default function App() {
                       )}
                     >
                       {({ isSelected: checked }) => (
-                        <div className="flex items-center justify-between w-full">
-                          <div className="flex items-center">
-                            <div className="text-sm">
+                        <div class="flex items-center justify-between w-full">
+                          <div class="flex items-center">
+                            <div class="text-sm">
                               <RadioGroupLabel
                                 as="p"
-                                className={`font-medium ${checked() ? 'text-white' : 'text-gray-900'}`}
+                                class={`font-medium ${checked() ? 'text-white' : 'text-gray-900'}`}
                               >
                                 {plan.name}
                               </RadioGroupLabel>
                               <RadioGroupDescription
                                 as="span"
-                                className={`inline ${checked() ? 'text-sky-100' : 'text-gray-500'}`}
+                                class={`inline ${checked() ? 'text-sky-100' : 'text-gray-500'}`}
                               >
                                 <span>
                                   {plan.ram}/{plan.cpus}
@@ -100,8 +100,8 @@ export default function App() {
                             </div>
                           </div>
                           {checked() && (
-                            <div className="flex-shrink-0 text-white">
-                              <CheckIcon className="w-6 h-6" />
+                            <div class="flex-shrink-0 text-white">
+                              <CheckIcon class="w-6 h-6" />
                             </div>
                           )}
                         </div>

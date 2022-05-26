@@ -77,7 +77,7 @@ export default function App(): JSX.Element {
                     )}
                   </AccordionButton>
                 </AccordionHeader>
-                <AccordionPanel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                <AccordionPanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
                   {faq.answer}
                 </AccordionPanel>
               </AccordionItem>

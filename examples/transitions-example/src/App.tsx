@@ -7,11 +7,11 @@ export default function App(): JSX.Element {
   const [isShowing, setIsShowing] = createSignal(true);
 
   return (
-    <div className="flex flex-col items-center py-16">
-      <div className="w-32 h-32">
+    <div class="flex flex-col items-center py-16">
+      <div class="w-32 h-32">
         <Transition
           show={isShowing()}
-          className="w-full h-full bg-white rounded-md shadow-lg"
+          class="w-full h-full bg-white rounded-md shadow-lg"
           enter="transform transition duration-[400ms]"
           enterFrom="opacity-0 rotate-[-120deg] scale-50"
           enterTo="opacity-100 rotate-0 scale-100"

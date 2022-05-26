@@ -1,8 +1,8 @@
+import { ColorSchemeProvider } from 'solid-headless';
 import { JSX } from 'solid-js';
 import DarkModeToggle from './DarkModeToggle';
 import Github from './Github';
 import Home from './Home';
-import { ThemeAdapter } from './ThemeAdapter';
 
 export interface MainShellProps {
   children: JSX.Element;
@@ -10,10 +10,10 @@ export interface MainShellProps {
 
 export default function MainShell(props: MainShellProps): JSX.Element {
   return (
-    <ThemeAdapter>
+    <ColorSchemeProvider>
       <div class="min-h-screen flex flex-col font-mono p-4 space-y-4 bg-gray-50 dark:bg-gray-900">
         <div class="sticky top-4 z-50">
-          <div class="bg-gray-900 dark:bg-gray-50 dynamic-shadow rounded-lg flex items-center">
+          <div class="bg-gray-900 border-2 dark:border-gray-50 dynamic-shadow rounded-lg flex items-center">
             <div class="flex-1 flex items-center justify-between m-2">
               <div class="flex">
                 <Home />
@@ -29,6 +29,6 @@ export default function MainShell(props: MainShellProps): JSX.Element {
           {props.children}
         </main>
       </div>
-    </ThemeAdapter>
+    </ColorSchemeProvider>
   );
 }

@@ -22,12 +22,11 @@ const BUTTON = classNames(
   'focus:outline-none focus-visible:ring focus-visible:ring-opacity-75',
   'focus-visible:ring-gray-900',
   'dark:focus-visible:ring-gray-50',
+  'border-2 border-gray-900 dark:border-gray-50',
   // Background
   'bg-gray-900 hover:bg-gray-700 active:bg-gray-800',
-  'dark:bg-gray-50 dark:hover:bg-gray-200 dark:active:bg-gray-100',
   // Foreground
   'text-gray-50 hover:text-gray-200 active:text-gray-100',
-  'dark:text-gray-900 dark:hover:text-gray-700 dark:active:text-gray-800',
 );
 
 const notifications = new ToasterStore<string>();
@@ -66,7 +65,7 @@ function CustomToast(props: ToastProps): JSX.Element {
   return (
     <Transition
       show={isOpen()}
-      class="relative transition rounded-lg p-4 bg-gray-900 dark:bg-gray-50 border border-gray-900 dark:border-gray-50"
+      class="relative transition rounded-lg p-4 bg-gray-900 border-2 border-gray-900 dark:border-gray-50"
       enter="ease-out duration-300"
       enterFrom="opacity-0 scale-50"
       enterTo="opacity-100 scale-100"
@@ -78,8 +77,8 @@ function CustomToast(props: ToastProps): JSX.Element {
       }}
     >
       <Toast class="flex justify-between items-center">
-        <span class="flex-1 text-sm font-semibold text-gray-50 dark:text-gray-900">{props.message}</span>
-        <button type="button" class="flex-none w-6 h-6 p-1 text-gray-50 dark:text-gray-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75" onClick={dismiss}>
+        <span class="flex-1 text-sm font-semibold text-gray-50">{props.message}</span>
+        <button type="button" class="flex-none w-6 h-6 p-1 text-gray-50 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75" onClick={dismiss}>
           <CloseIcon />
         </button>
       </Toast>

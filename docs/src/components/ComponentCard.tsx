@@ -15,16 +15,16 @@ export interface ComponentCardProps {
 const CARD = classNames(
   'rounded-lg overflow-hidden m-2 flex flex-col',
   'transition duration-200',
-  'bg-gray-900 dark:bg-gray-50',
-  'text-gray-50 dark:text-gray-900',
+  'bg-gray-900',
+  'text-gray-50 ',
   'focus:outline-none focus-visible:ring focus-visible:ring-opacity-75',
   'focus-visible:ring-gray-900',
   'dark:focus-visible:ring-gray-50',
-  'border border-gray-900 dark:border-gray-50 divide-y divide-gray-900 dark:divide-gray-50',
+  'border-2 border-gray-900 dark:border-gray-50 divide-y divide-gray-900 dark:divide-gray-50',
   'hover:bg-gray-700 hover:border-gray-700 hover:divide-gray-700',
-  'dark:hover:bg-gray-200 dark:hover:border-gray-200 dark:hover:divide-gray-200',
+  // 'dark:hover:bg-gray-200 dark:hover:border-gray-200 dark:hover:divide-gray-200',
   'active:bg-gray-800 active:border-gray-800 active:divide-gray-800',
-  'dark:active:bg-gray-100 dark:active:border-gray-100 dark:active:divide-gray-100',
+  // 'dark:active:bg-gray-100 dark:active:border-gray-100 dark:active:divide-gray-100',
 );
 
 export default function ComponentCard(props: ComponentCardProps): JSX.Element {

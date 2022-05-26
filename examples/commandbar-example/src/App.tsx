@@ -46,12 +46,12 @@ export default function App(): JSX.Element {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <CommandBarOverlay className="fixed inset-0 bg-gray-900 bg-opacity-50" />
+            <CommandBarOverlay class="fixed inset-0 bg-gray-900 bg-opacity-50" />
           </TransitionChild>
 
           {/* This element is to trick the browser into centering the modal contents. */}
           <span
-            className="inline-block h-screen align-middle"
+            class="inline-block h-screen align-middle"
             aria-hidden="true"
           >
             &#8203;

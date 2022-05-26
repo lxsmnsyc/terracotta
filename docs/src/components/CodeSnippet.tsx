@@ -1,5 +1,5 @@
 import { JSX } from 'solid-js';
-import { useDarkPreference } from './ThemeAdapter';
+import { usePreferredColorScheme } from 'solid-headless';
 import { useHighlighter } from './HighlighterProvider';
 
 export interface CodeSnippetProps {
@@ -9,7 +9,7 @@ export interface CodeSnippetProps {
 
 export default function CodeSnippet(props: CodeSnippetProps): JSX.Element {
   const code = $signal<HTMLElement>();
-  const isDarkMode = useDarkPreference();
+  const colorScheme = usePreferredColorScheme();
   const highlighter = useHighlighter();
 
   effect: {
@@ -21,7 +21,7 @@ export default function CodeSnippet(props: CodeSnippetProps): JSX.Element {
   effect: {
     const el = code;
     const value = props.code;
-    const dark = isDarkMode();
+    const dark = colorScheme() === 'dark';
     const instance = highlighter();
     if (el && instance) {
       el.innerHTML = instance.codeToHtml(value, {
