@@ -1,6 +1,6 @@
 {
   "name": "radiogroup-example",
-  "version": "0.10.12",
+  "version": "0.11.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,7 +17,7 @@
     "vite-plugin-solid": "^2.2.6"
   },
   "dependencies": {
-    "solid-headless": "0.10.12",
+    "solid-headless": "0.11.0",
     "solid-js": "^1.4.3",
     "tailwindcss": "^3.0.24"
   },
