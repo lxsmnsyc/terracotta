@@ -213,3 +213,11 @@ export {
   CommandBarProps,
   CommandBarTitleProps,
 } from './components/CommandBar';
+export {
+  ColorScheme,
+  ColorSchemeProvider,
+  ColorSchemeProviderProps,
+  useColorScheme,
+  useNativeColorScheme,
+  usePreferredColorScheme,
+} from './components/ColorScheme';

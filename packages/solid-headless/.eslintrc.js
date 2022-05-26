@@ -14,6 +14,7 @@ module.exports = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "react/jsx-props-no-spreading": "off",
     "no-restricted-syntax": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "react/jsx-no-constructed-context-values": "off"
   }
 };
