@@ -1,14 +1,13 @@
 {
   "name": "docs",
-  "version": "0.10.12",
+  "version": "0.11.0",
   "private": true,
   "dependencies": {
-    "@formkit/auto-animate": "^1.0.0-beta.1",
     "shiki": "^0.9.15",
     "solid-headless": "0.11.0",
     "solid-js": "^1.4.3",
     "solid-tiny-router": "^0.2.3",
-    "solid-use": "^0.3.3",
+    "solid-use": "^0.3.4",
     "split.js": "^1.6.4"
   },
   "devDependencies": {

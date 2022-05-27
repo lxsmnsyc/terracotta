@@ -16,7 +16,6 @@ importers:
 
   docs:
     specifiers:
-      '@formkit/auto-animate': ^1.0.0-beta.1
       '@tailwindcss/aspect-ratio': ^0.4.0
       autoprefixer: ^10.4.7
       babel-plugin-solid-labels: ^0.12.0
@@ -28,19 +27,18 @@ importers:
       solid-headless: 0.11.0
       solid-js: ^1.4.3
       solid-tiny-router: ^0.2.3
-      solid-use: ^0.3.3
+      solid-use: ^0.3.4
       split.js: ^1.6.4
       tailwindcss: ^3.0.24
       typescript: ^4.6.4
       vite: ^2.9.9
       vite-plugin-solid: ^2.2.6
     dependencies:
-      '@formkit/auto-animate': 1.0.0-beta.1
       shiki: 0.9.15
       solid-headless: link:../packages/solid-headless
       solid-js: 1.4.3
       solid-tiny-router: 0.2.3_solid-js@1.4.3
-      solid-use: 0.3.3_solid-js@1.4.3
+      solid-use: 0.3.4_solid-js@1.4.3
       split.js: 1.6.5
     devDependencies:
       '@tailwindcss/aspect-ratio': 0.4.0_tailwindcss@3.0.24
@@ -996,18 +994,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /@formkit/auto-animate/1.0.0-beta.1:
-    resolution: {integrity: sha512-I3OWOBaPZKSJL4bsooXI8kC3q7bcgibD2oML0P/Lir6MnbvUe/0/7EH8br024juvM/Ulm9C9xGx9CJUQYrOWSA==}
-    peerDependencies:
-      react: ^16.8.0
-      vue: ^3.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
-      vue:
-        optional: true
-    dev: false
 
   /@gar/promisify/1.1.2:
     resolution: {integrity: sha512-82cpyJyKRoQoRi+14ibCeGPu0CwypgtBAdBhq1WfvagpCZNKqwXbKwXllYSMG91DhmG4jt9gN8eP6lGOtozuaw==}
@@ -6543,6 +6529,15 @@ packages:
 
   /solid-use/0.3.3_solid-js@1.4.3:
     resolution: {integrity: sha512-94XOf4ouYrDzLLvRFw5oDEZPIaOKXCkdHFFDsCrFNUKxCtnbWJyiBP2iN90L79U6zvpzzanrjw09IKlShRdZMA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      solid-js: ^1.2
+    dependencies:
+      solid-js: 1.4.3
+    dev: false
+
+  /solid-use/0.3.4_solid-js@1.4.3:
+    resolution: {integrity: sha512-6i/OgufY6NAhYkB/1d5gU2lROTM9nIMo08qVyaTDp4RjDONf2HgceaEYhvRrQc31IAOBU6xnZ9d6S4rRsLdj9w==}
     engines: {node: '>=10'}
     peerDependencies:
       solid-js: ^1.2
