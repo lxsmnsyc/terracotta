@@ -2,7 +2,8 @@
   "useWorkspaces": true,
   "packages": [
     "packages/*",
-    "examples/*"
+    "examples/*",
+    "docs"
   ],
   "command": {
     "version": {

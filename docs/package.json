@@ -5,7 +5,7 @@
   "dependencies": {
     "@formkit/auto-animate": "^1.0.0-beta.1",
     "shiki": "^0.9.15",
-    "solid-headless": "0.10.12",
+    "solid-headless": "0.11.0",
     "solid-js": "^1.4.3",
     "solid-tiny-router": "^0.2.3",
     "solid-use": "^0.3.3",

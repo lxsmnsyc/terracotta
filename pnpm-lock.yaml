@@ -25,7 +25,7 @@ importers:
       eslint-config-lxsmnsyc: ^0.4.0
       postcss: ^8.4.13
       shiki: ^0.9.15
-      solid-headless: 0.10.12
+      solid-headless: 0.11.0
       solid-js: ^1.4.3
       solid-tiny-router: ^0.2.3
       solid-use: ^0.3.3
@@ -37,7 +37,7 @@ importers:
     dependencies:
       '@formkit/auto-animate': 1.0.0-beta.1
       shiki: 0.9.15
-      solid-headless: 0.10.12_solid-js@1.4.3
+      solid-headless: link:../packages/solid-headless
       solid-js: 1.4.3
       solid-tiny-router: 0.2.3_solid-js@1.4.3
       solid-use: 0.3.3_solid-js@1.4.3
@@ -6517,16 +6517,6 @@ packages:
       ip: 1.1.5
       smart-buffer: 4.2.0
     dev: true
-
-  /solid-headless/0.10.12_solid-js@1.4.3:
-    resolution: {integrity: sha512-O9fUKM0TrAh2SpWnInXCzY8BXHgkShmXxawdBeiWuebPgb60/8ZYL22C/dqyLUAacBDD5xpiZNSz+H3ufOAHPw==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      solid-js: ^1.2
-    dependencies:
-      solid-js: 1.4.3
-      solid-use: 0.3.3_solid-js@1.4.3
-    dev: false
 
   /solid-js/1.4.3:
     resolution: {integrity: sha512-3uh2cbT4ICronIasLAxycF6SVgvqcfwFCDCzlEA9CEahn1qQg8Rw8aRGiI4O51PrHcN5aPRO9knYYRCs0PgzcQ==}
