@@ -1,7 +1,7 @@
 module.exports = {
   "root": true,
   "extends": [
-    "lxsmnsyc/typescript/react"
+    "lxsmnsyc/typescript/solid"
   ],
   "parserOptions": {
     "project": "./tsconfig.eslint.json",
@@ -9,12 +9,8 @@ module.exports = {
   },
   "rules": {
     "@typescript-eslint/no-unsafe-return": "off",
-    "react-hooks/rules-of-hooks": "off",
-    "react/destructuring-assignment": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
-    "react/jsx-props-no-spreading": "off",
     "no-restricted-syntax": "off",
     "no-param-reassign": "off",
-    "react/jsx-no-constructed-context-values": "off"
   }
 };
