@@ -1,17 +1,27 @@
 import {
+  Accessor,
   createContext,
+  createMemo,
+  createSignal,
   JSX,
   useContext,
 } from 'solid-js';
-import useControlledSignal from '../utils/use-controlled-signal';
 
-export interface HeadlessToggleOptions {
-  checked?: boolean;
-  defaultChecked?: boolean;
+export interface HeadlessToggleControlledOptions {
+  checked: boolean;
   disabled?: boolean;
   onChange?: (state?: boolean) => void;
-  CONTROLLED?: boolean;
 }
+
+export interface HeadlessToggleUncontrolledOptions {
+  defaultChecked: boolean;
+  disabled?: boolean;
+  onChange?: (state?: boolean) => void;
+}
+
+export type HeadlessToggleOptions =
+  | HeadlessToggleControlledOptions
+  | HeadlessToggleUncontrolledOptions;
 
 export interface HeadlessToggleProperties {
   checked(): boolean | undefined;
@@ -20,15 +30,22 @@ export interface HeadlessToggleProperties {
 }
 
 export function useHeadlessToggle(
-  options: HeadlessToggleOptions = {},
+  options: HeadlessToggleOptions,
 ): HeadlessToggleProperties {
-  const isControlled = 'CONTROLLED' in options ? options.CONTROLLED : 'checked' in options;
+  let signal: Accessor<boolean | undefined>;
+  let setSignal: (value: boolean | undefined) => void;
 
-  const [signal, setSignal] = useControlledSignal(
-    options.defaultChecked,
-    isControlled ? () => options.checked : undefined,
-    (value) => options.onChange?.(value),
-  );
+  if ('defaultChecked' in options) {
+    const [isOpen, setIsOpen] = createSignal<boolean | undefined>(options.defaultChecked);
+    signal = isOpen;
+    setSignal = (value) => {
+      setIsOpen(value);
+      options.onChange?.(value);
+    };
+  } else {
+    signal = () => options.checked;
+    setSignal = (value) => options.onChange?.(value);
+  }
 
   return {
     checked() {
@@ -58,7 +75,7 @@ function isHeadlessToggleRootRenderProp(
   return typeof children === 'function' && children.length > 0;
 }
 
-export interface HeadlessToggleRootProps extends HeadlessToggleOptions {
+export type HeadlessToggleRootProps = HeadlessToggleOptions & {
   children?: HeadlessToggleRootRenderProp | JSX.Element;
 }
 
@@ -101,9 +118,11 @@ export interface HeadlessToggleChildProps {
 
 export function HeadlessToggleChild(props: HeadlessToggleChildProps): JSX.Element {
   const properties = useHeadlessToggleChild();
-  const body = props.children;
-  if (isHeadlessToggleChildRenderProp(body)) {
-    return body(properties);
-  }
-  return body;
+  return createMemo(() => {
+    const body = props.children;
+    if (isHeadlessToggleChildRenderProp(body)) {
+      return body(properties);
+    }
+    return body;
+  });
 }
