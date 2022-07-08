@@ -7,6 +7,7 @@ import {
 } from 'solid-use';
 import {
   HeadlessSelectRoot,
+  HeadlessSelectRootChildren,
 } from '../../headless/select/HeadlessSelectRoot';
 import {
   HeadlessSelectSingleControlledOptions,
@@ -27,7 +28,7 @@ export type AccordionSingleControlledProps<V, T extends ValidConstructor = 'div'
 } & HeadlessSelectSingleControlledOptions<V>
   & WithRef<T>
   & Omit<DynamicProps<T>, keyof HeadlessSelectSingleControlledOptions<V>>
-  & { children?: JSX.Element };
+  & HeadlessSelectRootChildren<V>;
 
 export function AccordionSingleControlled<V, T extends ValidConstructor = 'div'>(
   props: AccordionSingleControlledProps<V, T>,
