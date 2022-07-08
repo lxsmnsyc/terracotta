@@ -1,32 +1,53 @@
 import {
+  Accessor,
   createContext,
+  createMemo,
   createSignal,
   JSX,
   untrack,
   useContext,
 } from 'solid-js';
 import { Ref } from '../utils/types';
-import useControlledSignal from '../utils/use-controlled-signal';
 
-export interface HeadlessSelectMultipleOptions<T> {
+export interface HeadlessSelectMultipleControlledOptions<T> {
   multiple: true;
   toggleable?: boolean;
-  defaultValue?: T[];
-  value?: T[];
+  value: T[];
   onChange?: (value: T[]) => void;
   disabled?: boolean;
-  CONTROLLED?: boolean;
 }
 
-export interface HeadlessSelectSingleOptions<T> {
+export interface HeadlessSelectMultipleUncontrolledOptions<T> {
+  multiple: true;
+  toggleable?: boolean;
+  defaultValue: T[];
+  onChange?: (value: T[]) => void;
+  disabled?: boolean;
+}
+
+export type HeadlessSelectMultipleOptions<T> =
+  | HeadlessSelectMultipleControlledOptions<T>
+  | HeadlessSelectMultipleUncontrolledOptions<T>;
+
+export interface HeadlessSelectSingleControlledOptions<T> {
   multiple?: false;
   toggleable?: boolean;
-  defaultValue?: T;
-  value?: T;
+  value: T;
   onChange?: (value?: T) => void;
   disabled?: boolean;
-  CONTROLLED?: boolean;
 }
+
+export interface HeadlessSelectSingleUncontrolledOptions<T> {
+  multiple?: false;
+  toggleable?: boolean;
+  defaultValue: T;
+  onChange?: (value?: T) => void;
+  disabled?: boolean;
+}
+
+export type HeadlessSelectSingleOptions<T> =
+  | HeadlessSelectSingleControlledOptions<T>
+  | HeadlessSelectSingleUncontrolledOptions<T>;
 
 export type HeadlessSelectOptions<T> =
   | HeadlessSelectSingleOptions<T>
@@ -43,69 +64,25 @@ export interface HeadlessSelectProperties<T> {
   disabled(): boolean;
 }
 
-export function useHeadlessSelect<T>(
-  options: HeadlessSelectOptions<T>,
+function useHeadlessSelectSingle<T>(
+  options: HeadlessSelectSingleOptions<T>,
 ): HeadlessSelectProperties<T> {
   const [active, setActive] = createSignal<Ref<T>>();
 
-  if (options.multiple) {
-    const isControlled = 'CONTROLLED' in options ? options.CONTROLLED : 'value' in options;
+  let selectedValue: Accessor<T | undefined>;
+  let setSelectedValue: (value: T | undefined) => void;
 
-    const [selectedValues, setSelectedValues] = useControlledSignal(
-      options.defaultValue ?? [],
-      isControlled ? () => options.value ?? [] : undefined,
-      (value) => options.onChange?.(value ?? []),
-    );
-
-    return {
-      isSelected(value) {
-        return new Set(selectedValues()).has(value);
-      },
-      select(value) {
-        const set = new Set(untrack(selectedValues));
-        if (options.toggleable && set.has(value)) {
-          set.delete(value);
-        } else {
-          set.add(value);
-        }
-        setSelectedValues([
-          ...set,
-        ]);
-      },
-      hasSelected() {
-        return selectedValues().length > 0;
-      },
-      disabled() {
-        return !!options.disabled;
-      },
-      hasActive() {
-        return !!active();
-      },
-      isActive(value) {
-        const ref = active();
-        if (ref) {
-          return Object.is(value, ref.value);
-        }
-        return false;
-      },
-      focus(value) {
-        return setActive({
-          value,
-        });
-      },
-      blur() {
-        return setActive(undefined);
-      },
+  if ('defaultValue' in options) {
+    const [selected, setSelected] = createSignal<T | undefined>(options.defaultValue);
+    selectedValue = selected;
+    setSelectedValue = (value) => {
+      setSelected(() => value);
+      options.onChange?.(value);
     };
+  } else {
+    selectedValue = () => options.value;
+    setSelectedValue = (value) => options.onChange?.(value);
   }
-
-  const isControlled = 'CONTROLLED' in options ? options.CONTROLLED : 'value' in options;
-
-  const [selectedValue, setSelectedValue] = useControlledSignal(
-    options.defaultValue ?? undefined,
-    isControlled ? (() => options.value) : undefined,
-    (value) => options.onChange?.(value),
-  );
 
   return {
     isSelected(value) {
@@ -143,6 +120,78 @@ export function useHeadlessSelect<T>(
       return setActive(undefined);
     },
   };
+}
+
+function useHeadlessSelectMultiple<T>(
+  options: HeadlessSelectMultipleOptions<T>,
+): HeadlessSelectProperties<T> {
+  const [active, setActive] = createSignal<Ref<T>>();
+
+  let selectedValues: Accessor<T[]>;
+  let setSelectedValues: (value: T[]) => void;
+
+  if ('defaultValue' in options) {
+    const [selected, setSelected] = createSignal<T[]>(options.defaultValue);
+    selectedValues = selected;
+    setSelectedValues = (value) => {
+      setSelected(() => value);
+      options.onChange?.(value);
+    };
+  } else {
+    selectedValues = () => options.value;
+    setSelectedValues = (value) => options.onChange?.(value);
+  }
+
+  return {
+    isSelected(value) {
+      return new Set(selectedValues()).has(value);
+    },
+    select(value) {
+      const set = new Set(untrack(selectedValues));
+      if (options.toggleable && set.has(value)) {
+        set.delete(value);
+      } else {
+        set.add(value);
+      }
+      setSelectedValues([
+        ...set,
+      ]);
+    },
+    hasSelected() {
+      return selectedValues().length > 0;
+    },
+    disabled() {
+      return !!options.disabled;
+    },
+    hasActive() {
+      return !!active();
+    },
+    isActive(value) {
+      const ref = active();
+      if (ref) {
+        return Object.is(value, ref.value);
+      }
+      return false;
+    },
+    focus(value) {
+      return setActive({
+        value,
+      });
+    },
+    blur() {
+      return setActive(undefined);
+    },
+  };
+}
+
+export function useHeadlessSelect<T>(
+  options: HeadlessSelectOptions<T>,
+): HeadlessSelectProperties<T> {
+  if (options.multiple) {
+    return useHeadlessSelectMultiple(options);
+  }
+
+  return useHeadlessSelectSingle(options);
 }
 
 const HeadlessSelectContext = createContext<HeadlessSelectProperties<any>>();
@@ -200,11 +249,13 @@ export interface HeadlessSelectChildProps<T> {
 
 export function HeadlessSelectChild<T>(props: HeadlessSelectChildProps<T>): JSX.Element {
   const properties = useHeadlessSelectChild<T>();
-  const body = props.children;
-  if (isHeadlessSelectChildRenderProp(body)) {
-    return body(properties);
-  }
-  return body;
+  return createMemo(() => {
+    const body = props.children;
+    if (isHeadlessSelectChildRenderProp(body)) {
+      return body(properties);
+    }
+    return body;
+  });
 }
 
 export interface HeadlessSelectOptionProperties {
@@ -302,9 +353,11 @@ export function HeadlessSelectOptionChild(
   props: HeadlessSelectOptionChildProps,
 ): JSX.Element {
   const properties = useHeadlessSelectOptionChild();
-  const body = props.children;
-  if (isHeadlessSelectOptionRenderProp(body)) {
-    return body(properties);
-  }
-  return body;
+  return createMemo(() => {
+    const body = props.children;
+    if (isHeadlessSelectOptionRenderProp(body)) {
+      return body(properties);
+    }
+    return body;
+  });
 }
