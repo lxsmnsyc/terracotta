@@ -14,19 +14,18 @@ import {
 } from '../../headless/select/useHeadlessSelectMultiple';
 import {
   createRef,
+  DynamicComponentWithRef,
   DynamicProps,
   ValidConstructor,
-  WithRef,
 } from '../../utils/dynamic-prop';
 import {
   AccordionContext,
 } from './AccordionContext';
 import AccordionController from './AccordionController';
 
-export type AccordionMultipleUncontrolledProps<V, T extends ValidConstructor = 'div'> = {
-  as?: T;
-} & HeadlessSelectMultipleUncontrolledOptions<V>
-  & WithRef<T>
+export type AccordionMultipleUncontrolledProps<V, T extends ValidConstructor = 'div'> =
+  & DynamicComponentWithRef<T>
+  & HeadlessSelectMultipleUncontrolledOptions<V>
   & Omit<DynamicProps<T>, keyof HeadlessSelectMultipleUncontrolledOptions<V>>
   & HeadlessSelectRootChildren<V>;
 
