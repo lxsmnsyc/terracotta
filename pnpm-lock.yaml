@@ -5,12 +5,12 @@ importers:
   .:
     specifiers:
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       lerna: ^5.1.4
       typescript: ^4.7.4
     devDependencies:
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       lerna: 5.1.4
       typescript: 4.7.4
 
@@ -21,7 +21,7 @@ importers:
       babel-plugin-solid-labels: ^0.12.0
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       shiki: ^0.9.15
       solid-headless: 0.11.1
@@ -46,7 +46,7 @@ importers:
       babel-plugin-solid-labels: 0.12.0_solid-js@1.4.6
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       tailwindcss: 3.1.4
       typescript: 4.7.4
@@ -58,7 +58,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -74,7 +74,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -85,7 +85,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -101,7 +101,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -112,7 +112,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -128,7 +128,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -139,7 +139,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -155,7 +155,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -166,7 +166,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -182,7 +182,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -193,7 +193,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -209,7 +209,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -220,7 +220,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -236,7 +236,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -247,7 +247,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -263,7 +263,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -274,7 +274,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -290,7 +290,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -301,7 +301,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -317,7 +317,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -328,7 +328,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -344,7 +344,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -355,7 +355,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -371,7 +371,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -382,7 +382,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -398,7 +398,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -409,7 +409,7 @@ importers:
       autoprefixer: ^10.4.7
       babel-preset-solid: ^1.4.0
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       postcss: ^8.4.13
       solid-headless: 0.11.1
       solid-js: ^1.4.6
@@ -425,7 +425,7 @@ importers:
       autoprefixer: 10.4.7_postcss@8.4.13
       babel-preset-solid: 1.4.0
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       postcss: 8.4.13
       typescript: 4.7.4
       vite: 2.9.12
@@ -435,7 +435,7 @@ importers:
     specifiers:
       '@types/node': ^17.0.41
       eslint: ^8.18.0
-      eslint-config-lxsmnsyc: ^0.4.3
+      eslint-config-lxsmnsyc: ^0.4.4
       pridepack: ^2.0.0
       solid-js: ^1.4.6
       solid-use: ^0.5.0
@@ -446,7 +446,7 @@ importers:
     devDependencies:
       '@types/node': 17.0.41
       eslint: 8.18.0
-      eslint-config-lxsmnsyc: 0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint-config-lxsmnsyc: 0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e
       pridepack: 2.0.1_6vfphby5wnkvrvktlfjcqba2ye
       solid-js: 1.4.6
       tslib: 2.4.0
@@ -3749,8 +3749,8 @@ packages:
       object.entries: 1.1.5
     dev: true
 
-  /eslint-config-lxsmnsyc/0.4.3_b5e7v2qnwxfo6hmiq56u52mz3e:
-    resolution: {integrity: sha512-n5Y2FQ7ZEAdTdglpi2frrwze0oqtjPsW/+M+vw9gsZdngOA4SqZZAi3rELHKi8W1wM6uPuoxJUqAJAV+fM6WJg==}
+  /eslint-config-lxsmnsyc/0.4.4_b5e7v2qnwxfo6hmiq56u52mz3e:
+    resolution: {integrity: sha512-uJt5w/KnAYWF1jCazjEhZZ8RXTEaB6Bw9BBLWfBr9uPgUV67cYvfmuhGQh+dMnnEH81qZUjs6B0NkmPRPsNX9A==}
     peerDependencies:
       eslint: ^8.0
       typescript: ^4.0
