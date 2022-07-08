@@ -5,7 +5,7 @@
   "dependencies": {
     "shiki": "^0.9.15",
     "solid-headless": "0.11.1",
-    "solid-js": "^1.4.5",
+    "solid-js": "^1.4.6",
     "solid-tiny-router": "^0.2.3",
     "solid-use": "^0.3.4",
     "split.js": "^1.6.4"
@@ -16,7 +16,7 @@
     "babel-plugin-solid-labels": "^0.12.0",
     "babel-preset-solid": "^1.4.0",
     "eslint": "^8.18.0",
-    "eslint-config-lxsmnsyc": "^0.4.1",
+    "eslint-config-lxsmnsyc": "^0.4.3",
     "postcss": "^8.4.13",
     "tailwindcss": "^3.1.4",
     "typescript": "^4.7.4",
