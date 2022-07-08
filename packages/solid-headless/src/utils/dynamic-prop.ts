@@ -56,12 +56,8 @@ export function createRef<U extends ValidConstructor>(
   callback: RefCallback<DynamicNode<U>>,
 ): RefCallback<DynamicNode<U>> {
   return (e) => {
-    if ('ref' in props) {
-      if (isRefFunction(props.ref)) {
-        props.ref(e);
-      } else {
-        props.ref = e;
-      }
+    if ('ref' in props && isRefFunction(props.ref)) {
+      props.ref(e);
     }
     callback(e);
   };
