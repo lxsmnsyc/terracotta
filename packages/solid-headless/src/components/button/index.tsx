@@ -3,10 +3,8 @@ import {
   createSignal,
   createUniqueId,
   onCleanup,
-} from 'solid-js';
-import {
   JSX,
-} from 'solid-js/jsx-runtime';
+} from 'solid-js';
 import {
   Dynamic,
 } from 'solid-js/web';
@@ -15,16 +13,16 @@ import {
 } from 'solid-use';
 import {
   createRef,
+  DynamicComponentWithRef,
   DynamicNode,
   DynamicProps,
   ValidConstructor,
-  WithRef,
-} from '../utils/dynamic-prop';
+} from '../../utils/dynamic-prop';
 
 export type ButtonProps<T extends ValidConstructor = 'button'> = {
-  as?: T,
   disabled?: boolean;
-} & WithRef<T> & Omit<DynamicProps<T>, 'as' | 'disabled' | 'ref'>;
+} & DynamicComponentWithRef<T>
+  & Omit<DynamicProps<T>, 'as' | 'disabled' | 'ref'>;
 
 export function Button<T extends ValidConstructor = 'button'>(
   props: ButtonProps<T>,
