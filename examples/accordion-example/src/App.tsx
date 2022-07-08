@@ -58,7 +58,7 @@ export default function App(): JSX.Element {
   return (
     <div class="w-full">
       <div class="w-full max-w-md p-2 mx-auto bg-white rounded-2xl">
-        <Accordion<FAQ | undefined> toggleable>
+        <Accordion defaultValue={FAQS[0]} toggleable>
           <For each={FAQS}>
             {(faq) => (
               <AccordionItem value={faq} class="mt-2">
