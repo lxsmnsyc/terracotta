@@ -2,15 +2,28 @@ import {
   createUniqueId,
   JSX,
 } from 'solid-js';
-import { Dynamic } from 'solid-js/web';
-import { omitProps } from 'solid-use';
-import { HeadlessSelectOption, HeadlessSelectOptionProps } from '../../headless/select/HeadlessSelectOption';
-import { ValidConstructor, DynamicProps } from '../../utils/dynamic-prop';
-import { AccordionItemContext } from './AccordionItemContext';
+import {
+  Dynamic,
+} from 'solid-js/web';
+import {
+  omitProps,
+} from 'solid-use';
+import {
+  HeadlessSelectOption,
+  HeadlessSelectOptionProps,
+} from '../../headless/select/HeadlessSelectOption';
+import {
+  ValidConstructor,
+  DynamicProps,
+  DynamicComponent,
+} from '../../utils/dynamic-prop';
+import {
+  AccordionItemContext,
+} from './AccordionItemContext';
 
-export type AccordionItemProps<V, T extends ValidConstructor = 'div'> = {
-  as?: T;
-} & HeadlessSelectOptionProps<V>
+export type AccordionItemProps<V, T extends ValidConstructor = 'div'> =
+  & DynamicComponent<T>
+  & HeadlessSelectOptionProps<V>
   & Omit<DynamicProps<T>, keyof HeadlessSelectOptionProps<V>>;
 
 export function AccordionItem<V, T extends ValidConstructor = 'div'>(

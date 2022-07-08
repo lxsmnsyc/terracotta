@@ -11,11 +11,15 @@ import {
   HeadlessSelectOptionChildProps,
   HeadlessSelectOptionChild,
 } from '../../headless/select/HeadlessSelectOption';
-import { ValidConstructor, DynamicProps } from '../../utils/dynamic-prop';
+import {
+  ValidConstructor,
+  DynamicProps,
+  DynamicComponent,
+} from '../../utils/dynamic-prop';
 
-export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> = {
-  as?: T;
-} & HeadlessSelectOptionChildProps
+export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> =
+  & DynamicComponent<T>
+  & HeadlessSelectOptionChildProps
   & Omit<DynamicProps<T>, keyof HeadlessSelectOptionChildProps>;
 
 export function AccordionHeader<T extends ValidConstructor = 'h3'>(

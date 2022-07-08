@@ -16,9 +16,9 @@ import {
 } from '../../headless/select/useHeadlessSelectOption';
 import {
   ValidConstructor,
-  WithRef,
   DynamicNode,
   createRef,
+  DynamicComponentWithRef,
 } from '../../utils/dynamic-prop';
 import {
   ButtonProps,
@@ -31,10 +31,9 @@ import {
   useAccordionItemContext,
 } from './AccordionItemContext';
 
-export type AccordionButtonProps<T extends ValidConstructor = 'button'> = {
-  as?: T;
-} & HeadlessSelectOptionChildProps
-  & WithRef<T>
+export type AccordionButtonProps<T extends ValidConstructor = 'button'> =
+  & DynamicComponentWithRef<T>
+  & HeadlessSelectOptionChildProps
   & Omit<ButtonProps<T>, keyof HeadlessSelectOptionChildProps>;
 
 export function AccordionButton<T extends ValidConstructor = 'button'>(

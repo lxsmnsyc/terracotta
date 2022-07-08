@@ -18,15 +18,17 @@ import {
 import {
   ValidConstructor,
   DynamicProps,
+  DynamicComponent,
 } from '../../utils/dynamic-prop';
 import {
   useAccordionItemContext,
 } from './AccordionItemContext';
 
 export type AccordionPanelProps<T extends ValidConstructor = 'div'> = {
-  as?: T;
   unmount?: boolean;
-} & HeadlessSelectOptionChildProps
+}
+  & DynamicComponent<T>
+  & HeadlessSelectOptionChildProps
   & Omit<DynamicProps<T>, keyof HeadlessSelectOptionChildProps>;
 
 export function AccordionPanel<T extends ValidConstructor = 'div'>(
