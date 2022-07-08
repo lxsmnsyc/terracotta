@@ -20,9 +20,12 @@ function isHeadlessDisclosureRootRenderProp(
   return typeof children === 'function' && children.length > 0;
 }
 
-export type HeadlessDisclosureRootProps = HeadlessDisclosureOptions & {
+export interface HeadlessDisclosureRootChildren {
   children?: HeadlessDisclosureRootRenderProp | JSX.Element;
-};
+}
+
+export type HeadlessDisclosureRootProps =
+  HeadlessDisclosureOptions & HeadlessDisclosureRootChildren;
 
 export function HeadlessDisclosureRoot(props: HeadlessDisclosureRootProps): JSX.Element {
   const properties = useHeadlessDisclosure(props);

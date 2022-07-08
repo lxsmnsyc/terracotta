@@ -20,9 +20,11 @@ function isHeadlessSelectRootRenderProp<T>(
   return typeof children === 'function' && children.length > 0;
 }
 
-export type HeadlessSelectRootProps<T> = {
+export interface HeadlessSelectRootChildren<T> {
   children?: HeadlessSelectRootRenderProp<T> | JSX.Element;
-} & HeadlessSelectOptions<T>;
+}
+
+export type HeadlessSelectRootProps<T> = HeadlessSelectRootChildren<T> & HeadlessSelectOptions<T>;
 
 export function HeadlessSelectRoot<T>(props: HeadlessSelectRootProps<T>): JSX.Element {
   const properties = useHeadlessSelect(props);
