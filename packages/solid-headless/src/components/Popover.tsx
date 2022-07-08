@@ -33,6 +33,7 @@ import {
   ButtonProps,
 } from './Button';
 import getFocusableElements from '../utils/get-focusable-elements';
+import useFocusStartPoint from '../utils/use-focus-start-point';
 
 interface PopoverContext {
   ownerID: string;
@@ -68,14 +69,7 @@ export function Popover<T extends ValidConstructor = 'div'>(
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
 
-  let returnElement: HTMLElement | null = null;
-  if (typeof document !== 'undefined') {
-    returnElement = document.activeElement as HTMLElement | null;
-  }
-
-  onCleanup(() => {
-    returnElement?.focus();
-  });
+  const fsp = useFocusStartPoint();
 
   return (
     <PopoverContext.Provider
@@ -112,10 +106,10 @@ export function Popover<T extends ValidConstructor = 'div'>(
           onChange={(value) => {
             props.onChange?.(value);
             if (!value) {
-              returnElement?.focus();
+              fsp.load();
               props.onClose?.();
             } else {
-              returnElement = document.activeElement as HTMLElement | null;
+              fsp.save();
               props.onOpen?.();
             }
           }}

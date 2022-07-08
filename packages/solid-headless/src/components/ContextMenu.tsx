@@ -29,6 +29,7 @@ import {
   WithRef,
 } from '../utils/dynamic-prop';
 import getFocusableElements from '../utils/get-focusable-elements';
+import useFocusStartPoint from '../utils/use-focus-start-point';
 
 interface ContextMenuContext {
   ownerID: string;
@@ -62,14 +63,7 @@ export function ContextMenu<T extends ValidConstructor = 'div'>(
   const boundaryID = createUniqueId();
   const panelID = createUniqueId();
 
-  let returnElement: HTMLElement | null = null;
-  if (typeof document !== 'undefined') {
-    returnElement = document.activeElement as HTMLElement | null;
-  }
-
-  onCleanup(() => {
-    returnElement?.focus();
-  });
+  const fsp = useFocusStartPoint();
 
   return (
     <ContextMenuContext.Provider
@@ -100,10 +94,10 @@ export function ContextMenu<T extends ValidConstructor = 'div'>(
           onChange={(value) => {
             props.onChange?.(value);
             if (!value) {
-              returnElement?.focus();
+              fsp.load();
               props.onClose?.();
             } else {
-              returnElement = document.activeElement as HTMLElement | null;
+              fsp.save();
               props.onOpen?.();
             }
           }}

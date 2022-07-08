@@ -232,7 +232,7 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
               break;
             case 'ArrowDown':
               if (!context.horizontal) {
-              e.preventDefault();
+                e.preventDefault();
                 context.setNextChecked(ref);
               }
               break;

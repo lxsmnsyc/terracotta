@@ -31,6 +31,7 @@ import {
   WithRef,
 } from '../utils/dynamic-prop';
 import getFocusableElements from '../utils/get-focusable-elements';
+import useFocusStartPoint from '../utils/use-focus-start-point';
 
 interface AlertDialogContext {
   ownerID: string;
@@ -66,14 +67,7 @@ export function AlertDialog<T extends ValidConstructor = 'div'>(
   const titleID = createUniqueId();
   const descriptionID = createUniqueId();
 
-  let returnElement: HTMLElement | null = null;
-  if (typeof document !== 'undefined') {
-    returnElement = document.activeElement as HTMLElement | null;
-  }
-
-  onCleanup(() => {
-    returnElement?.focus();
-  });
+  const fsp = useFocusStartPoint();
 
   return (
     <AlertDialogContext.Provider
@@ -91,9 +85,9 @@ export function AlertDialog<T extends ValidConstructor = 'div'>(
           props.onChange?.(value);
           if (!value) {
             props.onClose?.();
-            returnElement?.focus();
+            fsp.load();
           } else {
-            returnElement = document.activeElement as HTMLElement | null;
+            fsp.save();
             props.onOpen?.();
           }
         }}

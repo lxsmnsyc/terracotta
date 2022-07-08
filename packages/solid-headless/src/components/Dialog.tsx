@@ -28,6 +28,7 @@ import {
   ValidConstructor,
   WithRef,
 } from '../utils/dynamic-prop';
+import { getFocusStartPoint, setFocusStartPoint } from '../utils/focus-start-point';
 import getFocusableElements from '../utils/get-focusable-elements';
 
 interface DialogContext {
@@ -64,13 +65,13 @@ export function Dialog<T extends ValidConstructor = 'div'>(
   const titleID = createUniqueId();
   const descriptionID = createUniqueId();
 
-  let returnElement: HTMLElement | null = null;
+  let returnElement: HTMLElement | null | undefined;
   if (typeof document !== 'undefined') {
-    returnElement = document.activeElement as HTMLElement | null;
+    returnElement = getFocusStartPoint();
   }
 
   onCleanup(() => {
-    returnElement?.focus();
+    setFocusStartPoint(returnElement);
   });
 
   return (
@@ -89,9 +90,9 @@ export function Dialog<T extends ValidConstructor = 'div'>(
           props.onChange?.(value);
           if (!value) {
             props.onClose?.();
-            returnElement?.focus();
+            setFocusStartPoint(returnElement);
           } else {
-            returnElement = document.activeElement as HTMLElement | null;
+            returnElement = getFocusStartPoint();
             props.onOpen?.();
           }
         }}
