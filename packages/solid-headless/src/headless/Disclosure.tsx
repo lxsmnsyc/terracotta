@@ -1,18 +1,26 @@
 import {
+  Accessor,
   createContext,
   createMemo,
+  createSignal,
   JSX,
   useContext,
 } from 'solid-js';
-import useControlledSignal from '../utils/use-controlled-signal';
 
-export interface HeadlessDisclosureOptions {
-  isOpen?: boolean;
-  defaultOpen?: boolean;
+export interface HeadlessDisclosureControlledOptions {
+  isOpen: boolean;
   disabled?: boolean;
   onChange?: (state: boolean) => void;
-  CONTROLLED?: boolean;
 }
+export interface HeadlessDisclosureUncontrolledOptions {
+  defaultOpen: boolean;
+  disabled?: boolean;
+  onChange?: (state: boolean) => void;
+}
+
+export type HeadlessDisclosureOptions =
+  | HeadlessDisclosureControlledOptions
+  | HeadlessDisclosureUncontrolledOptions;
 
 export interface HeadlessDisclosureProperties {
   isOpen(): boolean;
@@ -21,15 +29,22 @@ export interface HeadlessDisclosureProperties {
 }
 
 export function useHeadlessDisclosure(
-  options: HeadlessDisclosureOptions = {},
+  options: HeadlessDisclosureOptions,
 ): HeadlessDisclosureProperties {
-  const isControlled = 'CONTROLLED' in options ? options.CONTROLLED : 'isOpen' in options;
+  let signal: Accessor<boolean>;
+  let setSignal: (value: boolean) => void;
 
-  const [signal, setSignal] = useControlledSignal(
-    !!options.defaultOpen,
-    isControlled ? () => !!options.isOpen : undefined,
-    (value) => options.onChange?.(value),
-  );
+  if ('defaultOpen' in options) {
+    const [isOpen, setIsOpen] = createSignal(options.defaultOpen);
+    signal = isOpen;
+    setSignal = (value) => {
+      setIsOpen(value);
+      options.onChange?.(value);
+    };
+  } else {
+    signal = () => options.isOpen;
+    setSignal = (value) => options.onChange?.(value);
+  }
 
   return {
     isOpen() {
@@ -58,9 +73,9 @@ function isHeadlessDisclosureRootRenderProp(
   return typeof children === 'function' && children.length > 0;
 }
 
-export interface HeadlessDisclosureRootProps extends HeadlessDisclosureOptions {
+export type HeadlessDisclosureRootProps = HeadlessDisclosureOptions & {
   children?: HeadlessDisclosureRootRenderProp | JSX.Element;
-}
+};
 
 export function HeadlessDisclosureRoot(props: HeadlessDisclosureRootProps): JSX.Element {
   const properties = useHeadlessDisclosure(props);
