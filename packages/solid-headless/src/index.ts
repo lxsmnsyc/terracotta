@@ -3,3 +3,4 @@ export * from './components/alert';
 export * from './components/alert-dialog';
 export * from './components/button';
 export * from './components/checkbox';
+export * from './components/color-scheme';

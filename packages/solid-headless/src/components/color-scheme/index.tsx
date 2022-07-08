@@ -4,25 +4,32 @@ import {
   createMemo,
   onCleanup,
   useContext,
-} from 'solid-js';
-import {
   JSX,
-} from 'solid-js/jsx-runtime';
+  Accessor,
+  createSignal,
+} from 'solid-js';
 import {
   usePageVisibility,
   usePrefersDark,
 } from 'solid-use';
-import useControlledSignal from '../utils/use-controlled-signal';
 
 export type NativeColorScheme = 'light' | 'dark';
 export type ColorScheme = NativeColorScheme | 'system';
 
-export interface ColorSchemeProviderProps {
-  initialValue?: ColorScheme;
-  value?: ColorScheme;
+export interface ColorSchemeProviderControlledProps {
+  value: ColorScheme;
   onChange?: (scheme: ColorScheme) => void;
   children?: JSX.Element;
 }
+export interface ColorSchemeProviderUncontrolledProps {
+  initialValue: ColorScheme;
+  onChange?: (scheme: ColorScheme) => void;
+  children?: JSX.Element;
+}
+
+export type ColorSchemeProviderProps =
+  | ColorSchemeProviderControlledProps
+  | ColorSchemeProviderUncontrolledProps;
 
 interface ColorSchemeContext {
   value: ColorScheme;
@@ -36,11 +43,20 @@ const ColorSchemeContext = createContext<ColorSchemeContext>();
 const STORAGE_KEY = 'theme-preference';
 
 export function ColorSchemeProvider(props: ColorSchemeProviderProps) {
-  const [get, set] = useControlledSignal<ColorScheme>(
-    props.initialValue ?? 'system',
-    'value' in props ? (() => props.value ?? 'system') : undefined,
-    (value) => props.onChange?.(value),
-  );
+  let get: Accessor<ColorScheme>;
+  let set: (scheme: ColorScheme) => void;
+
+  if ('initialValue' in props) {
+    const [scheme, setScheme] = createSignal<ColorScheme>(props.initialValue);
+    get = scheme;
+    set = (value) => {
+      setScheme(value);
+      props.onChange?.(value);
+    };
+  } else {
+    get = () => props.value;
+    set = (value) => props.onChange?.(value);
+  }
 
   const prefersDark = usePrefersDark();
   const isVisible = usePageVisibility();

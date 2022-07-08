@@ -12,27 +12,6 @@
       "require": "./dist/cjs/production/index.jsx",
       "import": "./dist/esm/production/index.jsx",
       "types": "./dist/types/index.d.ts"
-    },
-    "./dev": {
-      "production": {
-        "require": "./dist/cjs/production/index.jsx",
-        "import": "./dist/esm/production/index.jsx"
-      },
-      "require": "./dist/cjs/development/index.jsx",
-      "import": "./dist/esm/development/index.jsx",
-      "types": "./dist/types/index.d.ts"
-    },
-    "./esm": {
-      "development": "./dist/esm/development/index.jsx",
-      "production": "./dist/esm/production/index.jsx",
-      "default": "./dist/esm/production/index.jsx",
-      "types": "./dist/types/index.d.ts"
-    },
-    "./cjs": {
-      "development": "./dist/cjs/development/index.jsx",
-      "production": "./dist/cjs/production/index.jsx",
-      "default": "./dist/cjs/production/index.jsx",
-      "types": "./dist/types/index.d.ts"
     }
   },
   "files": [
@@ -84,5 +63,12 @@
     "access": "public"
   },
   "author": "Alexis Munsayac",
-  "private": false
+  "private": false,
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/types/index.d.ts"
+      ]
+    }
+  }
 }
