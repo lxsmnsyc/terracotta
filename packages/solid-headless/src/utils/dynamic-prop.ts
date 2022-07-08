@@ -1,4 +1,4 @@
-import { JSX } from 'solid-js/jsx-runtime';
+import { JSX } from 'solid-js';
 
 export type ValidElements = keyof JSX.IntrinsicElements;
 export type ValidComponent<P> = (props: P) => JSX.Element;
