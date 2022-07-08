@@ -1,9 +1,7 @@
 import {
   createUniqueId,
-} from 'solid-js';
-import {
   JSX,
-} from 'solid-js/jsx-runtime';
+} from 'solid-js';
 import {
   Dynamic,
 } from 'solid-js/web';
@@ -13,7 +11,7 @@ import {
 import {
   DynamicProps,
   ValidConstructor,
-} from '../utils/dynamic-prop';
+} from '../../utils/dynamic-prop';
 
 export type AlertProps<T extends ValidConstructor = 'div'> = {
   as?: T,
