@@ -20,7 +20,7 @@ export type AlertDialogProps<T extends ValidConstructor = 'div'> =
 function isAlertDialogUncontrolled<T extends ValidConstructor = 'div'>(
   props: AlertDialogProps<T>,
 ): props is AlertDialogUncontrolledProps<T> {
-  return 'defaultValue' in props;
+  return 'defaultOpen' in props;
 }
 
 export function AlertDialog<T extends ValidConstructor = 'div'>(
