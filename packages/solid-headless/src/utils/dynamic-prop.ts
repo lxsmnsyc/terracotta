@@ -37,6 +37,14 @@ export interface WithRef<T extends ValidConstructor> {
   ref?: RefField<DynamicNode<T>>;
 }
 
+export interface DynamicComponent<T extends ValidConstructor> {
+  as?: T;
+}
+
+export interface DynamicComponentWithRef<T extends ValidConstructor> extends WithRef<T> {
+  as?: T;
+}
+
 function isRefFunction<U extends ValidConstructor>(
   callback?: RefField<DynamicNode<U>>,
 ): callback is RefCallback<DynamicNode<U>> {
