@@ -70,9 +70,11 @@ export default function App(): JSX.Element {
                     {({ isSelected }) => (
                       <>
                         <span>{faq.question}</span>
-                        <ChevronUpIcon
-                          class={`${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
-                        />
+                        <div>
+                          <ChevronUpIcon
+                            class={`flex-0 ${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                          />
+                        </div>
                       </>
                     )}
                   </AccordionButton>
