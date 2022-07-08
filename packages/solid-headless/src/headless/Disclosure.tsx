@@ -1,5 +1,6 @@
 import {
   createContext,
+  createMemo,
   JSX,
   useContext,
 } from 'solid-js';
@@ -100,9 +101,11 @@ export interface HeadlessDisclosureChildProps {
 
 export function HeadlessDisclosureChild(props: HeadlessDisclosureChildProps): JSX.Element {
   const properties = useHeadlessDisclosureChild();
-  const body = props.children;
-  if (isHeadlessDisclosureChildRenderProp(body)) {
-    return body(properties);
-  }
-  return body;
+  return createMemo(() => {
+    const body = props.children;
+    if (isHeadlessDisclosureChildRenderProp(body)) {
+      return body(properties);
+    }
+    return body;
+  });
 }
