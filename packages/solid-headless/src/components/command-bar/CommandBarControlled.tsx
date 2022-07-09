@@ -83,6 +83,7 @@ export function CommandBarControlled<T extends ValidConstructor = 'div'>(
                     'unmount',
                     'isOpen',
                     'disabled',
+                    'onOpen',
                     'onClose',
                     'onChange',
                   ])}
@@ -108,6 +109,7 @@ export function CommandBarControlled<T extends ValidConstructor = 'div'>(
                     'unmount',
                     'isOpen',
                     'disabled',
+                    'onOpen',
                     'onClose',
                     'onChange',
                   ])}

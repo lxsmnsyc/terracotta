@@ -58,6 +58,8 @@ export function ContextMenuUncontrolled<T extends ValidConstructor = 'div'>(
           'children',
           'disabled',
           'onChange',
+          'onOpen',
+          'onClose',
         ])}
         disabled={props.disabled}
         aria-disabled={props.disabled}

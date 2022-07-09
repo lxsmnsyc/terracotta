@@ -82,6 +82,7 @@ export function AlertDialogControlled<T extends ValidConstructor = 'div'>(
                   'unmount',
                   'isOpen',
                   'disabled',
+                  'onOpen',
                   'onClose',
                   'onChange',
                 ])}
@@ -107,6 +108,7 @@ export function AlertDialogControlled<T extends ValidConstructor = 'div'>(
                   'unmount',
                   'isOpen',
                   'disabled',
+                  'onOpen',
                   'onClose',
                   'onChange',
                 ])}
