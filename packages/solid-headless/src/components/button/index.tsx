@@ -18,11 +18,16 @@ import {
   DynamicProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import {
+  OmitAndMerge,
+} from '../../utils/types';
 
-export type ButtonProps<T extends ValidConstructor = 'button'> = {
+interface ButtonBaseProps {
   disabled?: boolean;
-} & DynamicComponentWithRef<T>
-  & Omit<DynamicProps<T>, 'as' | 'disabled' | 'ref'>;
+}
+
+export type ButtonProps<T extends ValidConstructor = 'button'> =
+  OmitAndMerge<ButtonBaseProps & DynamicComponentWithRef<T>, DynamicProps<T>>;
 
 export function Button<T extends ValidConstructor = 'button'>(
   props: ButtonProps<T>,
