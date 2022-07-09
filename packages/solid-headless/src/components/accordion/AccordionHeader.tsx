@@ -16,11 +16,12 @@ import {
   DynamicProps,
   DynamicComponent,
 } from '../../utils/dynamic-prop';
+import {
+  OmitAndMerge,
+} from '../../utils/types';
 
 export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> =
-  & DynamicComponent<T>
-  & HeadlessSelectOptionChildProps
-  & Omit<DynamicProps<T>, keyof HeadlessSelectOptionChildProps>;
+  OmitAndMerge<DynamicComponent<T> & HeadlessSelectOptionChildProps, DynamicProps<T>>;
 
 export function AccordionHeader<T extends ValidConstructor = 'h3'>(
   props: AccordionHeaderProps<T>,

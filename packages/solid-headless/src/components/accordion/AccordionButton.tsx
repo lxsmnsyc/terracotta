@@ -23,7 +23,7 @@ import {
 import {
   ButtonProps,
   Button,
-} from '../Button';
+} from '../button';
 import {
   useAccordionContext,
 } from './AccordionContext';
@@ -34,7 +34,7 @@ import {
 export type AccordionButtonProps<T extends ValidConstructor = 'button'> =
   & DynamicComponentWithRef<T>
   & HeadlessSelectOptionChildProps
-  & Omit<ButtonProps<T>, keyof HeadlessSelectOptionChildProps>;
+  & ButtonProps<T>
 
 export function AccordionButton<T extends ValidConstructor = 'button'>(
   props: AccordionButtonProps<T>,

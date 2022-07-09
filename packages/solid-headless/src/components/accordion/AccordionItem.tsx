@@ -18,13 +18,14 @@ import {
   DynamicComponent,
 } from '../../utils/dynamic-prop';
 import {
+  OmitAndMerge,
+} from '../../utils/types';
+import {
   AccordionItemContext,
 } from './AccordionItemContext';
 
 export type AccordionItemProps<V, T extends ValidConstructor = 'div'> =
-  & DynamicComponent<T>
-  & HeadlessSelectOptionProps<V>
-  & Omit<DynamicProps<T>, keyof HeadlessSelectOptionProps<V>>;
+  OmitAndMerge<DynamicComponent<T> & HeadlessSelectOptionProps<V>, DynamicProps<T>>;
 
 export function AccordionItem<V, T extends ValidConstructor = 'div'>(
   props: AccordionItemProps<V, T>,

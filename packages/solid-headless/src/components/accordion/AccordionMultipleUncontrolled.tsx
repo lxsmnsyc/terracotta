@@ -18,16 +18,19 @@ import {
   DynamicProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import { OmitAndMerge } from '../../utils/types';
 import {
   AccordionContext,
 } from './AccordionContext';
 import AccordionController from './AccordionController';
 
-export type AccordionMultipleUncontrolledProps<V, T extends ValidConstructor = 'div'> =
+export type AccordionMultipleUncontrolledBaseProps<V, T extends ValidConstructor = 'div'> =
   & DynamicComponentWithRef<T>
   & HeadlessSelectMultipleUncontrolledOptions<V>
-  & Omit<DynamicProps<T>, keyof HeadlessSelectMultipleUncontrolledOptions<V>>
   & HeadlessSelectRootChildren<V>;
+
+export type AccordionMultipleUncontrolledProps<V, T extends ValidConstructor = 'div'> =
+  OmitAndMerge<AccordionMultipleUncontrolledBaseProps<V, T>, DynamicProps<T>>;
 
 export function AccordionMultipleUncontrolled<V, T extends ValidConstructor = 'div'>(
   props: AccordionMultipleUncontrolledProps<V, T>,

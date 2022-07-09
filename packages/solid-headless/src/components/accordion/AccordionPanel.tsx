@@ -21,15 +21,20 @@ import {
   DynamicComponent,
 } from '../../utils/dynamic-prop';
 import {
+  OmitAndMerge,
+} from '../../utils/types';
+import {
   useAccordionItemContext,
 } from './AccordionItemContext';
 
-export type AccordionPanelProps<T extends ValidConstructor = 'div'> = {
+type AccordionPanelBaseProps<T extends ValidConstructor = 'div'> = {
   unmount?: boolean;
 }
   & DynamicComponent<T>
-  & HeadlessSelectOptionChildProps
-  & Omit<DynamicProps<T>, keyof HeadlessSelectOptionChildProps>;
+  & HeadlessSelectOptionChildProps;
+
+export type AccordionPanelProps<T extends ValidConstructor = 'div'> =
+  OmitAndMerge<AccordionPanelBaseProps<T>, DynamicProps<T>>;
 
 export function AccordionPanel<T extends ValidConstructor = 'div'>(
   props: AccordionPanelProps<T>,
