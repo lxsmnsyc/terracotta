@@ -20,7 +20,6 @@ import {
   HeadlessDisclosureUncontrolledOptions,
 } from '../../headless/disclosure/useHeadlessDisclosure';
 import {
-  DynamicComponent,
   DynamicProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
@@ -29,12 +28,12 @@ import {
   CommandBarContext,
 } from './CommandBarContext';
 import CommandBarEvents from './CommandBarEvents';
+import {
+  CommandBarBaseProps,
+} from './types';
 
-export type CommandBarUncontrolledProps<T extends ValidConstructor = 'div'> = {
-  unmount?: boolean;
-  onClose?: () => void;
-  onOpen?: () => void;
-} & DynamicComponent<T>
+export type CommandBarUncontrolledProps<T extends ValidConstructor = 'div'> =
+  & CommandBarBaseProps<T>
   & HeadlessDisclosureUncontrolledOptions
   & Omit<DynamicProps<T>, keyof HeadlessDisclosureUncontrolledOptions | 'unmount'>
   & HeadlessDisclosureRootChildren;
