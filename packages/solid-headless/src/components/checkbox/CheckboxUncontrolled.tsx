@@ -22,14 +22,19 @@ import {
 } from '../../utils/dynamic-prop';
 import Fragment from '../../utils/Fragment';
 import {
+  OmitAndMerge,
+} from '../../utils/types';
+import {
   CheckboxContext,
 } from './CheckboxContext';
 
-export type CheckboxUncontrolledProps<T extends ValidConstructor = typeof Fragment> =
+export type CheckboxUncontrolledBaseProps<T extends ValidConstructor = typeof Fragment> =
   & DynamicComponent<T>
   & HeadlessToggleUncontrolledOptions
-  & Omit<DynamicProps<T>, keyof HeadlessToggleUncontrolledOptions>
   & HeadlessToggleRootChildren;
+
+export type CheckboxUncontrolledProps<T extends ValidConstructor = typeof Fragment> =
+  OmitAndMerge<CheckboxUncontrolledBaseProps<T>, DynamicProps<T>>;
 
 export function CheckboxUncontrolled<T extends ValidConstructor = typeof Fragment>(
   props: CheckboxUncontrolledProps<T>,

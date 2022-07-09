@@ -16,13 +16,14 @@ import {
   DynamicComponent,
 } from '../../utils/dynamic-prop';
 import {
+  OmitAndMerge,
+} from '../../utils/types';
+import {
   useCheckboxContext,
 } from './CheckboxContext';
 
 export type CheckboxLabelProps<T extends ValidConstructor = 'label'> =
-  & DynamicComponent<T>
-  & HeadlessToggleChildProps
-  & Omit<DynamicProps<T>, keyof HeadlessToggleChildProps>;
+  OmitAndMerge<DynamicComponent<T> & HeadlessToggleChildProps, DynamicProps<T>>;
 
 export function CheckboxLabel<T extends ValidConstructor = 'label'>(
   props: CheckboxLabelProps<T>,
