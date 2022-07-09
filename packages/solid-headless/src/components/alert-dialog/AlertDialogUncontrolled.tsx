@@ -23,6 +23,9 @@ import {
   DynamicProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import {
+  OmitAndMerge,
+} from '../../utils/types';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   AlertDialogContext,
@@ -31,11 +34,13 @@ import {
   AlertDialogBaseProps,
 } from './types';
 
-export type AlertDialogUncontrolledProps<T extends ValidConstructor = 'div'> =
+export type AlertDialogUncontrolledBaseProps<T extends ValidConstructor = 'div'> =
   & AlertDialogBaseProps<T>
   & HeadlessDisclosureUncontrolledOptions
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureUncontrolledOptions | 'unmount'>
   & HeadlessDisclosureRootChildren;
+
+export type AlertDialogUncontrolledProps<T extends ValidConstructor = 'div'> =
+  OmitAndMerge<AlertDialogUncontrolledBaseProps<T>, DynamicProps<T>>;
 
 export function AlertDialogUncontrolled<T extends ValidConstructor = 'div'>(
   props: AlertDialogUncontrolledProps<T>,

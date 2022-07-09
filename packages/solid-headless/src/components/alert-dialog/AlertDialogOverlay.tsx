@@ -14,7 +14,9 @@ import {
   HeadlessDisclosureChildProps,
   HeadlessDisclosureChild,
 } from '../../headless/disclosure/HeadlessDisclosureChild';
-import { useHeadlessDisclosureProperties } from '../../headless/disclosure/HeadlessDisclosureContext';
+import {
+  useHeadlessDisclosureProperties,
+} from '../../headless/disclosure/HeadlessDisclosureContext';
 import {
   createRef,
   DynamicComponentWithRef,
@@ -23,13 +25,14 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  OmitAndMerge,
+} from '../../utils/types';
+import {
   useAlertDialogContext,
 } from './AlertDialogContext';
 
 export type AlertDialogOverlayProps<T extends ValidConstructor = 'div'> =
-  & DynamicComponentWithRef<T>
-  & HeadlessDisclosureChildProps
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
+  OmitAndMerge<DynamicComponentWithRef<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
 
 export function AlertDialogOverlay<T extends ValidConstructor = 'div'>(
   props: AlertDialogOverlayProps<T>,

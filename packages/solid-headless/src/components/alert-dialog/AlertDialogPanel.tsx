@@ -24,13 +24,14 @@ import {
 } from '../../utils/dynamic-prop';
 import getFocusableElements from '../../utils/get-focusable-elements';
 import {
+  OmitAndMerge,
+} from '../../utils/types';
+import {
   useAlertDialogContext,
 } from './AlertDialogContext';
 
 export type AlertDialogPanelProps<T extends ValidConstructor = 'div'> =
-  & DynamicComponentWithRef<T>
-  & HeadlessDisclosureChildProps
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
+  OmitAndMerge<DynamicComponentWithRef<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
 
 export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
   props: AlertDialogPanelProps<T>,
