@@ -9,13 +9,16 @@ import {
   omitProps,
 } from 'solid-use';
 import {
+  DynamicComponent,
   DynamicProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import {
+  OmitAndMerge,
+} from '../../utils/types';
 
-export type AlertProps<T extends ValidConstructor = 'div'> = {
-  as?: T,
-} & Omit<DynamicProps<T>, 'as'>
+export type AlertProps<T extends ValidConstructor = 'div'> =
+  OmitAndMerge<DynamicComponent<T>, DynamicProps<T>>;
 
 export function Alert<T extends ValidConstructor = 'div'>(
   props: AlertProps<T>,
