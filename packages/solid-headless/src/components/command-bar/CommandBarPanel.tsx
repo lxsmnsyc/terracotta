@@ -26,13 +26,14 @@ import {
 } from '../../utils/dynamic-prop';
 import getFocusableElements from '../../utils/get-focusable-elements';
 import {
+  OmitAndMerge,
+} from '../../utils/types';
+import {
   useCommandBarContext,
 } from './CommandBarContext';
 
 export type CommandBarPanelProps<T extends ValidConstructor = 'div'> =
-  & DynamicComponentWithRef<T>
-  & HeadlessDisclosureChildProps
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
+  OmitAndMerge<DynamicComponentWithRef<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
 
 export function CommandBarPanel<T extends ValidConstructor = 'div'>(
   props: CommandBarPanelProps<T>,

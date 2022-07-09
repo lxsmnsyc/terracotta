@@ -25,13 +25,14 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  OmitAndMerge,
+} from '../../utils/types';
+import {
   useCommandBarContext,
 } from './CommandBarContext';
 
 export type CommandBarOverlayProps<T extends ValidConstructor = 'div'> =
-  & DynamicComponentWithRef<T>
-  & HeadlessDisclosureChildProps
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
+  OmitAndMerge<DynamicComponentWithRef<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
 
 export function CommandBarOverlay<T extends ValidConstructor = 'p'>(
   props: CommandBarOverlayProps<T>,

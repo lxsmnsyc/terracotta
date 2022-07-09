@@ -23,6 +23,9 @@ import {
   DynamicProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import {
+  OmitAndMerge,
+} from '../../utils/types';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   CommandBarContext,
@@ -32,11 +35,13 @@ import {
   CommandBarBaseProps,
 } from './types';
 
-export type CommandBarControlledProps<T extends ValidConstructor = 'div'> =
+export type CommandBarControlledBaseProps<T extends ValidConstructor = 'div'> =
   & CommandBarBaseProps<T>
   & HeadlessDisclosureControlledOptions
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureControlledOptions | 'unmount'>
   & HeadlessDisclosureRootChildren;
+
+export type CommandBarControlledProps<T extends ValidConstructor = 'div'> =
+  OmitAndMerge<CommandBarControlledBaseProps<T>, DynamicProps<T>>
 
 export function CommandBarControlled<T extends ValidConstructor = 'div'>(
   props: CommandBarControlledProps<T>,

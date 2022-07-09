@@ -17,13 +17,14 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  OmitAndMerge,
+} from '../../utils/types';
+import {
   useCommandBarContext,
 } from './CommandBarContext';
 
 export type CommandBarTitleProps<T extends ValidConstructor = 'h2'> =
-  & DynamicComponent<T>
-  & HeadlessDisclosureChildProps
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
+  OmitAndMerge<DynamicComponent<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
 
 export function CommandBarTitle<T extends ValidConstructor = 'h2'>(
   props: CommandBarTitleProps<T>,
