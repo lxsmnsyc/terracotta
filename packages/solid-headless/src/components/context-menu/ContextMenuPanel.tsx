@@ -27,14 +27,15 @@ import {
 } from '../../utils/dynamic-prop';
 import getFocusableElements from '../../utils/get-focusable-elements';
 import {
+  OmitAndMerge,
+} from '../../utils/types';
+import {
   useContextMenuContext,
 } from './ContextMenuContext';
 
 export type ContextMenuPanelProps<T extends ValidConstructor = 'div'> = {
   unmount?: boolean;
-} & HeadlessDisclosureChildProps
-  & DynamicComponentWithRef<T>
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
+} & OmitAndMerge<DynamicComponentWithRef<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
 
 export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
   props: ContextMenuPanelProps<T>,

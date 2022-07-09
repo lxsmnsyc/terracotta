@@ -25,13 +25,14 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  OmitAndMerge,
+} from '../../utils/types';
+import {
   useContextMenuContext,
 } from './ContextMenuContext';
 
 export type ContextMenuBoundaryProps<T extends ValidConstructor = 'div'> =
-  & DynamicComponentWithRef<T>
-  & HeadlessDisclosureChildProps
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureChildProps>;
+  OmitAndMerge<DynamicComponentWithRef<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
 
 export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
   props: ContextMenuBoundaryProps<T>,

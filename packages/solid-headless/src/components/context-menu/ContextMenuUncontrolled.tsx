@@ -19,6 +19,9 @@ import {
   DynamicProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import {
+  OmitAndMerge,
+} from '../../utils/types';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   ContextMenuContext,
@@ -27,11 +30,13 @@ import {
   ContextMenuBaseProps,
 } from './types';
 
-export type ContextMenuUncontrolledProps<T extends ValidConstructor = 'div'> =
+export type ContextMenuUncontrolledBaseProps<T extends ValidConstructor = 'div'> =
   & ContextMenuBaseProps<T>
   & HeadlessDisclosureUncontrolledOptions
-  & Omit<DynamicProps<T>, keyof HeadlessDisclosureUncontrolledOptions>
   & HeadlessDisclosureRootChildren;
+
+export type ContextMenuUncontrolledProps<T extends ValidConstructor = 'div'> =
+  OmitAndMerge<ContextMenuUncontrolledBaseProps<T>, DynamicProps<T>>
 
 export function ContextMenuUncontrolled<T extends ValidConstructor = 'div'>(
   props: ContextMenuUncontrolledProps<T>,
