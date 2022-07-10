@@ -1,4 +1,5 @@
 import {
+  createComponent,
   JSX,
 } from 'solid-js';
 import {
@@ -27,7 +28,7 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
   props: CommandBarProps<T>,
 ): JSX.Element {
   if (isCommandBarUncontrolled(props)) {
-    return <CommandBarUncontrolled {...props} />;
+    return createComponent(CommandBarUncontrolled, props);
   }
-  return <CommandBarControlled {...props} />;
+  return createComponent(CommandBarControlled, props);
 }

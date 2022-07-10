@@ -3,10 +3,9 @@ import {
   createEffect,
   onCleanup,
   JSX,
+  mergeProps,
+  createComponent,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
@@ -17,9 +16,11 @@ import {
 import {
   useHeadlessDisclosureProperties,
 } from '../../headless/disclosure/HeadlessDisclosureContext';
+import createDynamic from '../../utils/create-dynamic';
 import {
   createRef,
   DynamicNode,
+  DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
@@ -54,22 +55,27 @@ export function CommandBarOverlay<T extends ValidConstructor = 'p'>(
     }
   });
 
-  return (
-    <Dynamic
-      component={(props.as ?? 'div') as T}
-      {...omitProps(props, [
+  return createDynamic(
+    () => props.as ?? ('div' as T),
+    mergeProps(
+      omitProps(props, [
         'as',
         'children',
         'ref',
-      ])}
-      data-sh-command-bar-overlay={context.ownerID}
-      ref={createRef(props, (e) => {
-        setInternalRef(() => e);
-      })}
-    >
-      <HeadlessDisclosureChild>
-        {props.children}
-      </HeadlessDisclosureChild>
-    </Dynamic>
+      ]),
+      {
+        'data-sh-command-bar-overlay': context.ownerID,
+        ref: createRef(props, (e) => {
+          setInternalRef(() => e);
+        }),
+        get children() {
+          return createComponent(HeadlessDisclosureChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
+      },
+    ) as DynamicProps<T>,
   );
 }

@@ -1,9 +1,8 @@
 import {
+  createComponent,
   JSX,
+  mergeProps,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
@@ -11,7 +10,9 @@ import {
   HeadlessDisclosureChildProps,
   HeadlessDisclosureChild,
 } from '../../headless/disclosure/HeadlessDisclosureChild';
+import createDynamic from '../../utils/create-dynamic';
 import {
+  DynamicProps,
   HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
@@ -26,19 +27,24 @@ export function CommandBarTitle<T extends ValidConstructor = 'h2'>(
   props: CommandBarTitleProps<T>,
 ): JSX.Element {
   const context = useCommandBarContext('CommandBarTitle');
-  return (
-    <Dynamic
-      component={(props.as ?? 'h2') as T}
-      {...omitProps(props, [
+  return createDynamic(
+    () => props.as ?? ('h2' as T),
+    mergeProps(
+      omitProps(props, [
         'as',
         'children',
-      ])}
-      id={context.titleID}
-      data-sh-command-bar-title={context.ownerID}
-    >
-      <HeadlessDisclosureChild>
-        {props.children}
-      </HeadlessDisclosureChild>
-    </Dynamic>
+      ]),
+      {
+        id: context.titleID,
+        'data-sh-command-bar-title': context.ownerID,
+        get children() {
+          return createComponent(HeadlessDisclosureChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
+      },
+    ) as DynamicProps<T>,
   );
 }
