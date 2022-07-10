@@ -18,7 +18,7 @@ import {
   ValidConstructor,
   DynamicNode,
   createRef,
-  DynamicComponentWithRef,
+  HeadlessPropsWithRef,
 } from '../../utils/dynamic-prop';
 import {
   ButtonProps,
@@ -31,12 +31,10 @@ import {
   useAccordionItemContext,
 } from './AccordionItemContext';
 
-export type AccordionButtonProps<T extends ValidConstructor = 'button'> =
-  & DynamicComponentWithRef<T>
-  & HeadlessSelectOptionChildProps
-  & ButtonProps<T>
+export type AccordionButtonProps<T extends ValidConstructor = typeof Button> =
+  HeadlessPropsWithRef<T, HeadlessSelectOptionChildProps & ButtonProps<T>>;
 
-export function AccordionButton<T extends ValidConstructor = 'button'>(
+export function AccordionButton<T extends ValidConstructor = typeof Button>(
   props: AccordionButtonProps<T>,
 ): JSX.Element {
   const rootContext = useAccordionContext('AccordionButton');
