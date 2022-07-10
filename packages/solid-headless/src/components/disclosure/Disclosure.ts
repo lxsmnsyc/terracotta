@@ -1,4 +1,5 @@
 import {
+  createComponent,
   JSX,
 } from 'solid-js';
 import {
@@ -27,7 +28,7 @@ export function Disclosure<T extends ValidConstructor = 'div'>(
   props: DisclosureProps<T>,
 ): JSX.Element {
   if (isDisclosureUncontrolled(props)) {
-    return <DisclosureUncontrolled {...props} />;
+    return createComponent(DisclosureUncontrolled, props);
   }
-  return <DisclosureControlled {...props} />;
+  return createComponent(DisclosureControlled, props);
 }

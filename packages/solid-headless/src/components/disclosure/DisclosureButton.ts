@@ -3,9 +3,10 @@ import {
   createEffect,
   onCleanup,
   JSX,
+  mergeProps,
 } from 'solid-js';
 import {
-  Dynamic,
+  createComponent,
 } from 'solid-js/web';
 import {
   omitProps,
@@ -60,28 +61,42 @@ export function DisclosureButton<T extends ValidConstructor = typeof Button>(
     }
   });
 
-  return (
-    <Dynamic
-      component={Button}
-      {...omitProps(props, [
-        'children',
-        'ref',
-      ])}
-      id={context.buttonID}
-      aria-disabled={properties.disabled() || props.disabled}
-      aria-expanded={properties.isOpen()}
-      aria-controls={properties.isOpen() && context.panelID}
-      data-sh-expanded={properties.isOpen()}
-      data-sh-disabled={properties.disabled() || props.disabled}
-      disabled={properties.disabled() || props.disabled}
-      ref={createRef(props, (e) => {
+  return createComponent(Button, mergeProps(
+    omitProps(props, [
+      'children',
+      'ref',
+    ]),
+    {
+      id: context.buttonID,
+      'data-sh-disclosure-button': context.ownerID,
+      ref: createRef(props, (e) => {
         setInternalRef(() => e);
-      })}
-      data-sh-disclosure-button={context.ownerID}
-    >
-      <HeadlessDisclosureChild>
-        {props.children}
-      </HeadlessDisclosureChild>
-    </Dynamic>
-  );
+      }),
+      get disabled() {
+        return properties.disabled() || props.disabled;
+      },
+      get 'aria-disabled'() {
+        return properties.disabled() || props.disabled;
+      },
+      get 'data-sh-disabled'() {
+        return properties.disabled() || props.disabled;
+      },
+      get 'aria-expanded'() {
+        return properties.isOpen();
+      },
+      get 'data-sh-expanded'() {
+        return properties.isOpen();
+      },
+      get 'aria-controls'() {
+        return properties.isOpen() && context.panelID;
+      },
+      get children() {
+        return createComponent(HeadlessDisclosureChild, {
+          get children() {
+            return props.children;
+          },
+        });
+      },
+    },
+  ) as ButtonProps<T>);
 }
