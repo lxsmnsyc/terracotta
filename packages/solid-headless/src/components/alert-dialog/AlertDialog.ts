@@ -1,4 +1,5 @@
 import {
+  createComponent,
   JSX,
 } from 'solid-js';
 import {
@@ -27,7 +28,7 @@ export function AlertDialog<T extends ValidConstructor = 'div'>(
   props: AlertDialogProps<T>,
 ): JSX.Element {
   if (isAlertDialogUncontrolled(props)) {
-    return <AlertDialogUncontrolled {...props} />;
+    return createComponent(AlertDialogUncontrolled, props);
   }
-  return <AlertDialogControlled {...props} />;
+  return createComponent(AlertDialogControlled, props);
 }

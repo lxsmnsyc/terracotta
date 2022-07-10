@@ -3,10 +3,9 @@ import {
   createEffect,
   onCleanup,
   JSX,
+  createComponent,
+  mergeProps,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
@@ -15,11 +14,13 @@ import {
   HeadlessDisclosureChild,
 } from '../../headless/disclosure/HeadlessDisclosureChild';
 import { useHeadlessDisclosureProperties } from '../../headless/disclosure/HeadlessDisclosureContext';
+import createDynamic from '../../utils/create-dynamic';
 import {
   createRef,
   DynamicNode,
   ValidConstructor,
   HeadlessPropsWithRef,
+  DynamicProps,
 } from '../../utils/dynamic-prop';
 import getFocusableElements from '../../utils/get-focusable-elements';
 import {
@@ -95,23 +96,28 @@ export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
     }
   });
 
-  return (
-    <Dynamic
-      component={(props.as ?? 'div') as T}
-      {...omitProps(props, [
+  return createDynamic(
+    () => props.as ?? ('div' as T),
+    mergeProps(
+      omitProps(props, [
         'as',
         'children',
         'ref',
-      ])}
-      id={context.panelID}
-      data-sh-alert-dialog-panel={context.ownerID}
-      ref={createRef(props, (e) => {
-        setInternalRef(() => e);
-      })}
-    >
-      <HeadlessDisclosureChild>
-        {props.children}
-      </HeadlessDisclosureChild>
-    </Dynamic>
+      ]),
+      {
+        id: context.panelID,
+        'data-sh-alert-dialog-panel': context.ownerID,
+        ref: createRef(props, (e) => {
+          setInternalRef(() => e);
+        }),
+        get children() {
+          return createComponent(HeadlessDisclosureChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
+      },
+    ) as DynamicProps<T>,
   );
 }
