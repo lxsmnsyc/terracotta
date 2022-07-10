@@ -1,9 +1,7 @@
 import {
-  JSX,
+  createComponent,
+  JSX, mergeProps,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
@@ -11,6 +9,7 @@ import {
   HeadlessDisclosureChildProps,
   HeadlessDisclosureChild,
 } from '../../headless/disclosure/HeadlessDisclosureChild';
+import createDynamic from '../../utils/create-dynamic';
 import {
   DynamicComponent,
   DynamicProps,
@@ -30,19 +29,24 @@ export function DialogTitle<T extends ValidConstructor = 'h2'>(
   props: DialogTitleProps<T>,
 ): JSX.Element {
   const context = useDialogContext('DialogTitle');
-  return (
-    <Dynamic
-      component={(props.as ?? 'h2') as T}
-      {...omitProps(props, [
+  return createDynamic(
+    () => props.as ?? ('h2' as T),
+    mergeProps(
+      omitProps(props, [
         'as',
         'children',
-      ])}
-      id={context.titleID}
-      data-sh-dialog-title={context.ownerID}
-    >
-      <HeadlessDisclosureChild>
-        {props.children}
-      </HeadlessDisclosureChild>
-    </Dynamic>
+      ]),
+      {
+        id: context.titleID,
+        'data-sh-dialog-title': context.ownerID,
+        get children() {
+          return createComponent(HeadlessDisclosureChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
+      },
+    ) as DynamicProps<T>,
   );
 }

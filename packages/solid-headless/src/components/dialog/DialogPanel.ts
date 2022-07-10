@@ -3,10 +3,9 @@ import {
   createEffect,
   onCleanup,
   JSX,
+  mergeProps,
+  createComponent,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
@@ -17,9 +16,11 @@ import {
 import {
   useHeadlessDisclosureProperties,
 } from '../../headless/disclosure/HeadlessDisclosureContext';
+import createDynamic from '../../utils/create-dynamic';
 import {
   createRef,
   DynamicNode,
+  DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
@@ -97,23 +98,28 @@ export function DialogPanel<T extends ValidConstructor = 'div'>(
     }
   });
 
-  return (
-    <Dynamic
-      component={(props.as ?? 'div') as T}
-      {...omitProps(props, [
+  return createDynamic(
+    () => props.as ?? ('div' as T),
+    mergeProps(
+      omitProps(props, [
         'as',
         'children',
         'ref',
-      ])}
-      id={context.panelID}
-      data-sh-dialog-panel={context.ownerID}
-      ref={createRef(props, (e) => {
-        setInternalRef(() => e);
-      })}
-    >
-      <HeadlessDisclosureChild>
-        {props.children}
-      </HeadlessDisclosureChild>
-    </Dynamic>
+      ]),
+      {
+        id: context.panelID,
+        'data-sh-dialog-panel': context.ownerID,
+        ref: createRef(props, (e) => {
+          setInternalRef(() => e);
+        }),
+        get children() {
+          return createComponent(HeadlessDisclosureChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
+      },
+    ) as DynamicProps<T>,
   );
 }

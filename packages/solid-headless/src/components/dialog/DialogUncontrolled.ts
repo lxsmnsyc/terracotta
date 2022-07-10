@@ -1,9 +1,9 @@
 import {
-  createComponent,
   createUniqueId,
+  Show,
   JSX,
   mergeProps,
-  Show,
+  createComponent,
 } from 'solid-js';
 import {
   omitProps,
@@ -19,33 +19,33 @@ import {
 } from '../../headless/disclosure/useHeadlessDisclosure';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  DynamicProps,
-  HeadlessProps,
   ValidConstructor,
+  HeadlessProps,
+  DynamicProps,
 } from '../../utils/dynamic-prop';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
-  CommandBarContext,
-} from './CommandBarContext';
-import CommandBarEvents from './CommandBarEvents';
+  DialogContext,
+} from './DialogContext';
 import {
-  CommandBarBaseProps,
+  DialogBaseProps,
 } from './types';
 
-export type CommandBarUncontrolledBaseProps =
-  & CommandBarBaseProps
+type DialogUncontrolledBaseProps =
+  & DialogBaseProps
   & HeadlessDisclosureUncontrolledOptions;
 
-export type CommandBarUncontrolledProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, CommandBarUncontrolledBaseProps>;
+export type DialogUncontrolledProps<T extends ValidConstructor = 'div'> =
+  HeadlessProps<T, DialogUncontrolledBaseProps>;
 
-export function CommandBarUncontrolled<T extends ValidConstructor = 'div'>(
-  props: CommandBarUncontrolledProps<T>,
+export function DialogUncontrolled<T extends ValidConstructor = 'div'>(
+  props: DialogUncontrolledProps<T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
   const panelID = createUniqueId();
   const titleID = createUniqueId();
   const descriptionID = createUniqueId();
+
   const fsp = useFocusStartPoint();
 
   function renderChildren() {
@@ -64,11 +64,11 @@ export function CommandBarUncontrolled<T extends ValidConstructor = 'div'>(
         ]),
         {
           id: ownerID,
-          role: 'dialog',
+          role: 'alertdialog',
           'aria-modal': true,
           'aria-labelledby': titleID,
           'aria-describedby': descriptionID,
-          'data-sh-command-bar': ownerID,
+          'data-sh-dialog': ownerID,
           get children() {
             return createComponent(HeadlessDisclosureChild, {
               get children() {
@@ -81,7 +81,7 @@ export function CommandBarUncontrolled<T extends ValidConstructor = 'div'>(
     );
   }
 
-  return createComponent(CommandBarContext.Provider, {
+  return createComponent(DialogContext.Provider, {
     value: {
       ownerID,
       panelID,
@@ -106,24 +106,20 @@ export function CommandBarUncontrolled<T extends ValidConstructor = 'div'>(
             props.onOpen?.();
           }
         },
-        children: ({ isOpen }) => createComponent(CommandBarEvents, {
+        children: ({ isOpen }) => createComponent(Show, {
+          get when() {
+            return props.unmount ?? true;
+          },
+          get fallback() {
+            return renderChildren();
+          },
           get children() {
             return createComponent(Show, {
               get when() {
-                return props.unmount ?? true;
-              },
-              get fallback() {
-                return renderChildren();
+                return isOpen();
               },
               get children() {
-                return createComponent(Show, {
-                  get when() {
-                    return isOpen();
-                  },
-                  get children() {
-                    return renderChildren();
-                  },
-                });
+                return renderChildren();
               },
             });
           },
