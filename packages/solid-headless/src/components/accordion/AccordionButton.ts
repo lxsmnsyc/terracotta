@@ -3,14 +3,16 @@ import {
   createEffect,
   onCleanup,
   JSX,
+  createComponent,
+  mergeProps,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
-import { HeadlessSelectOptionChild, HeadlessSelectOptionChildProps } from '../../headless/select/HeadlessSelectOption';
+import {
+  HeadlessSelectOptionChild,
+  HeadlessSelectOptionChildProps,
+} from '../../headless/select/HeadlessSelectOption';
 import {
   useHeadlessSelectOptionProperties,
 } from '../../headless/select/useHeadlessSelectOption';
@@ -100,31 +102,39 @@ export function AccordionButton<T extends ValidConstructor = typeof Button>(
     }
   });
 
-  return (
-    <Dynamic
-      component={Button}
-      {...omitProps(props, [
-        'children',
-        'ref',
-        'disabled',
-        'as',
-      ])}
-      id={itemContext.buttonID}
-      aria-expanded={properties.isSelected()}
-      aria-controls={properties.isSelected() && itemContext.panelID}
-      aria-disabled={properties.disabled() || props.disabled}
-      data-sh-disabled={properties.disabled() || props.disabled}
-      data-sh-expanded={properties.isSelected()}
-      data-sh-active={properties.isActive()}
-      disabled={properties.disabled() || props.disabled}
-      ref={createRef(props, (e) => {
+  return createComponent(Button, mergeProps(
+    omitProps(props, ['children', 'ref', 'disabled']),
+    {
+      id: itemContext.buttonID,
+      ref: createRef(props, (e) => {
         setInternalRef(() => e);
-      })}
-      data-sh-accordion-button={rootContext.getId()}
-    >
-      <HeadlessSelectOptionChild>
-        {props.children}
-      </HeadlessSelectOptionChild>
-    </Dynamic>
-  );
+      }),
+      'data-sh-accordion-button': rootContext.getId(),
+      get 'aria-expanded'() {
+        return properties.isSelected();
+      },
+      get 'data-sh-expanded'() {
+        return properties.isSelected();
+      },
+      get disabled() {
+        return properties.disabled() || props.disabled;
+      },
+      get 'aria-disabled'() {
+        return properties.disabled() || props.disabled;
+      },
+      get 'data-sh-disabled'() {
+        return properties.disabled() || props.disabled;
+      },
+      get 'aria-controls'() {
+        return properties.isSelected() && itemContext.panelID;
+      },
+      get children() {
+        return createComponent(HeadlessSelectOptionChild, {
+          get children() {
+            return props.children;
+          },
+        });
+      },
+    },
+  ) as ButtonProps<T>);
 }

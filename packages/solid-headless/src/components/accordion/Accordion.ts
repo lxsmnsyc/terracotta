@@ -1,4 +1,7 @@
-import { JSX } from 'solid-js';
+import {
+  createComponent,
+  JSX,
+} from 'solid-js';
 import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
@@ -42,12 +45,12 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
 ): JSX.Element {
   if (isAccordionUncontrolled(props)) {
     if (isAccordionMultiple(props)) {
-      return <AccordionMultipleUncontrolled {...props} />;
+      return createComponent(AccordionMultipleUncontrolled, props);
     }
-    return <AccordionSingleUncontrolled {...props} />;
+    return createComponent(AccordionSingleUncontrolled, props);
   }
   if (isAccordionMultiple(props)) {
-    return <AccordionMultipleControlled {...props} />;
+    return createComponent(AccordionMultipleControlled, props);
   }
-  return <AccordionSingleControlled {...props} />;
+  return createComponent(AccordionSingleControlled, props);
 }

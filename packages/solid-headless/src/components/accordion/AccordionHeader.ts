@@ -1,9 +1,8 @@
 import {
+  createComponent,
   JSX,
+  mergeProps,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
@@ -11,9 +10,11 @@ import {
   HeadlessSelectOptionChildProps,
   HeadlessSelectOptionChild,
 } from '../../headless/select/HeadlessSelectOption';
+import createDynamic from '../../utils/create-dynamic';
 import {
   ValidConstructor,
   HeadlessProps,
+  DynamicProps,
 } from '../../utils/dynamic-prop';
 
 export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> =
@@ -22,17 +23,22 @@ export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> =
 export function AccordionHeader<T extends ValidConstructor = 'h3'>(
   props: AccordionHeaderProps<T>,
 ): JSX.Element {
-  return (
-    <Dynamic
-      component={props.as ?? 'h3'}
-      {...omitProps(props, [
+  return createDynamic<T>(
+    () => props.as ?? ('h3' as T),
+    mergeProps(
+      omitProps(props, [
         'as',
         'children',
-      ])}
-    >
-      <HeadlessSelectOptionChild>
-        {props.children}
-      </HeadlessSelectOptionChild>
-    </Dynamic>
+      ]),
+      {
+        get children() {
+          return createComponent(HeadlessSelectOptionChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
+      },
+    ) as DynamicProps<T>,
   );
 }
