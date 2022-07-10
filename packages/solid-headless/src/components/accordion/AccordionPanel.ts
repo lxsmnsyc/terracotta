@@ -37,32 +37,36 @@ export function AccordionPanel<T extends ValidConstructor = 'div'>(
   const context = useAccordionItemContext('AccordionPanel');
   const properties = useHeadlessSelectOptionProperties();
 
+  function renderChildren() {
+    return createDynamic(
+      () => props.as ?? ('div' as T),
+      mergeProps(
+        omitProps(props, [
+          'as',
+          'children',
+          'unmount',
+        ]),
+        {
+          id: context.panelID,
+          'aria-labelledby': context.buttonID,
+          get children() {
+            return createComponent(HeadlessSelectOptionChild, {
+              get children() {
+                return props.children;
+              },
+            });
+          },
+        },
+      ) as DynamicProps<T>,
+    );
+  }
+
   return createComponent(Show, {
     get when() {
       return props.unmount ?? true;
     },
     get fallback() {
-      return createDynamic(
-        () => props.as ?? ('div' as T),
-        mergeProps(
-          omitProps(props, [
-            'as',
-            'children',
-            'unmount',
-          ]),
-          {
-            id: context.panelID,
-            'aria-labelledby': context.buttonID,
-            get children() {
-              return createComponent(HeadlessSelectOptionChild, {
-                get children() {
-                  return props.children;
-                },
-              });
-            },
-          },
-        ) as DynamicProps<T>,
-      );
+      return renderChildren();
     },
     get children() {
       return createComponent(Show, {
@@ -70,27 +74,7 @@ export function AccordionPanel<T extends ValidConstructor = 'div'>(
           return properties.isSelected();
         },
         get children() {
-          return createDynamic(
-            () => props.as ?? ('div' as T),
-            mergeProps(
-              omitProps(props, [
-                'as',
-                'children',
-                'unmount',
-              ]),
-              {
-                id: context.panelID,
-                'aria-labelledby': context.buttonID,
-                get children() {
-                  return createComponent(HeadlessSelectOptionChild, {
-                    get children() {
-                      return props.children;
-                    },
-                  });
-                },
-              },
-            ) as DynamicProps<T>,
-          );
+          return renderChildren();
         },
       });
     },
