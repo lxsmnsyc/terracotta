@@ -7,6 +7,7 @@ import {
   JSX,
   Accessor,
   createSignal,
+  createComponent,
 } from 'solid-js';
 import {
   usePageVisibility,
@@ -101,26 +102,25 @@ export function ColorSchemeProvider(props: ColorSchemeProviderProps) {
     );
   });
 
-  return (
-    <ColorSchemeContext.Provider
-      value={{
-        get value() {
-          return get();
-        },
-        setValue(val) {
-          set(val);
-        },
-        get preferred() {
-          return shouldToggle() ? 'dark' : 'light';
-        },
-        get native() {
-          return prefersDark() ? 'dark' : 'light';
-        },
-      }}
-    >
-      {props.children}
-    </ColorSchemeContext.Provider>
-  );
+  return createComponent(ColorSchemeContext.Provider, {
+    value: {
+      get value() {
+        return get();
+      },
+      setValue(val) {
+        set(val);
+      },
+      get preferred() {
+        return shouldToggle() ? 'dark' : 'light';
+      },
+      get native() {
+        return prefersDark() ? 'dark' : 'light';
+      },
+    },
+    get children() {
+      return props.children;
+    },
+  });
 }
 
 function useColorSchemeContext(): ColorSchemeContext {
