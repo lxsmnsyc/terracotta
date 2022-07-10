@@ -4,16 +4,16 @@ import {
   createUniqueId,
   onCleanup,
   JSX,
+  mergeProps,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
+import createDynamic from '../../utils/create-dynamic';
 import {
   createRef,
   DynamicNode,
+  DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
@@ -51,24 +51,34 @@ export function Button<T extends ValidConstructor = 'button'>(
     }
   });
 
-  return (
-    <Dynamic
-      component={props.as ?? 'button'}
-      id={buttonID}
-      tabindex={0}
-      role="button"
-      disabled={props.disabled}
-      {...omitProps(props, [
+  return createDynamic(
+    () => props.as ?? ('button' as T),
+    mergeProps(
+      {
+        id: buttonID,
+        tabindex: 0,
+        role: 'button',
+        get disabled() {
+          return props.disabled;
+        },
+      },
+      omitProps(props, [
         'as',
         'disabled',
         'ref',
-      ])}
-      aria-disabled={props.disabled}
-      data-sh-disabled={props.disabled}
-      data-sh-button={buttonID}
-      ref={createRef(props, (e) => {
-        setInternalRef(() => e);
-      })}
-    />
+      ]),
+      {
+        'data-sh-button': buttonID,
+        get 'aria-disabled'() {
+          return props.disabled;
+        },
+        get 'data-sh-disabled'() {
+          return props.disabled;
+        },
+        ref: createRef(props, (e) => {
+          setInternalRef(() => e);
+        }),
+      },
+    ) as DynamicProps<T>,
   );
 }
