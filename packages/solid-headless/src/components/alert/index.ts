@@ -1,16 +1,16 @@
 import {
   createUniqueId,
   JSX,
+  mergeProps,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
+import createDynamic from '../../utils/create-dynamic';
 import {
   ValidConstructor,
   HeadlessProps,
+  DynamicProps,
 } from '../../utils/dynamic-prop';
 
 export type AlertProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
@@ -20,15 +20,14 @@ export function Alert<T extends ValidConstructor = 'div'>(
 ): JSX.Element {
   const alertID = createUniqueId();
 
-  return (
-    <Dynamic
-      component={props.as ?? 'div'}
-      id={alertID}
-      {...omitProps(props, [
-        'as',
-      ])}
-      role="alert"
-      data-sh-alert={alertID}
-    />
+  return createDynamic(
+    () => props.as ?? ('div' as T),
+    mergeProps(
+      omitProps(props, ['as']),
+      {
+        role: 'alert',
+        'data-sh-alert': alertID,
+      },
+    ) as DynamicProps<T>,
   );
 }
