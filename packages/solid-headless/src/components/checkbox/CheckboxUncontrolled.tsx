@@ -16,25 +16,20 @@ import {
   HeadlessToggleUncontrolledOptions,
 } from '../../headless/toggle/useHeadlessToggle';
 import {
-  DynamicComponent,
-  DynamicProps,
+  HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import Fragment from '../../utils/Fragment';
 import {
-  OmitAndMerge,
-} from '../../utils/types';
-import {
   CheckboxContext,
 } from './CheckboxContext';
 
-export type CheckboxUncontrolledBaseProps<T extends ValidConstructor = typeof Fragment> =
-  & DynamicComponent<T>
+export type CheckboxUncontrolledBaseProps =
   & HeadlessToggleUncontrolledOptions
   & HeadlessToggleRootChildren;
 
 export type CheckboxUncontrolledProps<T extends ValidConstructor = typeof Fragment> =
-  OmitAndMerge<CheckboxUncontrolledBaseProps<T>, DynamicProps<T>>;
+  HeadlessProps<T, CheckboxUncontrolledBaseProps>;
 
 export function CheckboxUncontrolled<T extends ValidConstructor = typeof Fragment>(
   props: CheckboxUncontrolledProps<T>,

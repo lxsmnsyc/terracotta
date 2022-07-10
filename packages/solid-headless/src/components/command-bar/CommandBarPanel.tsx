@@ -19,21 +19,17 @@ import {
 } from '../../headless/disclosure/HeadlessDisclosureContext';
 import {
   createRef,
-  DynamicComponentWithRef,
   DynamicNode,
-  DynamicProps,
+  HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import getFocusableElements from '../../utils/get-focusable-elements';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 import {
   useCommandBarContext,
 } from './CommandBarContext';
 
 export type CommandBarPanelProps<T extends ValidConstructor = 'div'> =
-  OmitAndMerge<DynamicComponentWithRef<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
+  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
 
 export function CommandBarPanel<T extends ValidConstructor = 'div'>(
   props: CommandBarPanelProps<T>,

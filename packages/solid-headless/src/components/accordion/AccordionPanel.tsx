@@ -17,24 +17,18 @@ import {
 } from '../../headless/select/useHeadlessSelectOption';
 import {
   ValidConstructor,
-  DynamicProps,
-  DynamicComponent,
+  HeadlessProps,
 } from '../../utils/dynamic-prop';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 import {
   useAccordionItemContext,
 } from './AccordionItemContext';
 
-type AccordionPanelBaseProps<T extends ValidConstructor = 'div'> = {
+interface AccordionPanelBaseProps extends HeadlessSelectOptionChildProps {
   unmount?: boolean;
 }
-  & DynamicComponent<T>
-  & HeadlessSelectOptionChildProps;
 
 export type AccordionPanelProps<T extends ValidConstructor = 'div'> =
-  OmitAndMerge<AccordionPanelBaseProps<T>, DynamicProps<T>>;
+  HeadlessProps<T, AccordionPanelBaseProps>;
 
 export function AccordionPanel<T extends ValidConstructor = 'div'>(
   props: AccordionPanelProps<T>,

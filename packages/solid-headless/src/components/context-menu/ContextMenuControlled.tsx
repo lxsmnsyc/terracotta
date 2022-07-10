@@ -10,18 +10,14 @@ import {
 } from 'solid-use';
 import {
   HeadlessDisclosureRoot,
-  HeadlessDisclosureRootChildren,
 } from '../../headless/disclosure/HeadlessDisclosureRoot';
 import {
   HeadlessDisclosureControlledOptions,
 } from '../../headless/disclosure/useHeadlessDisclosure';
 import {
-  DynamicProps,
+  HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   ContextMenuContext,
@@ -30,13 +26,12 @@ import {
   ContextMenuBaseProps,
 } from './types';
 
-export type ContextMenuControlledBaseProps<T extends ValidConstructor = 'div'> =
-  & ContextMenuBaseProps<T>
-  & HeadlessDisclosureControlledOptions
-  & HeadlessDisclosureRootChildren;
+export type ContextMenuControlledBaseProps =
+  & ContextMenuBaseProps
+  & HeadlessDisclosureControlledOptions;
 
 export type ContextMenuControlledProps<T extends ValidConstructor = 'div'> =
-  OmitAndMerge<ContextMenuControlledBaseProps<T>, DynamicProps<T>>
+  HeadlessProps<T, ContextMenuControlledBaseProps>;
 
 export function ContextMenuControlled<T extends ValidConstructor = 'div'>(
   props: ContextMenuControlledProps<T>,

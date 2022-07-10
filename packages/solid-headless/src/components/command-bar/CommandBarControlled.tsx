@@ -14,18 +14,14 @@ import {
 } from '../../headless/disclosure/HeadlessDisclosureChild';
 import {
   HeadlessDisclosureRoot,
-  HeadlessDisclosureRootChildren,
 } from '../../headless/disclosure/HeadlessDisclosureRoot';
 import {
   HeadlessDisclosureControlledOptions,
 } from '../../headless/disclosure/useHeadlessDisclosure';
 import {
-  DynamicProps,
+  HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   CommandBarContext,
@@ -35,13 +31,12 @@ import {
   CommandBarBaseProps,
 } from './types';
 
-export type CommandBarControlledBaseProps<T extends ValidConstructor = 'div'> =
-  & CommandBarBaseProps<T>
-  & HeadlessDisclosureControlledOptions
-  & HeadlessDisclosureRootChildren;
+export type CommandBarControlledBaseProps =
+  & CommandBarBaseProps
+  & HeadlessDisclosureControlledOptions;
 
 export type CommandBarControlledProps<T extends ValidConstructor = 'div'> =
-  OmitAndMerge<CommandBarControlledBaseProps<T>, DynamicProps<T>>
+  HeadlessProps<T, CommandBarControlledBaseProps>;
 
 export function CommandBarControlled<T extends ValidConstructor = 'div'>(
   props: CommandBarControlledProps<T>,

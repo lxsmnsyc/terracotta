@@ -20,22 +20,17 @@ import {
 } from '../../headless/disclosure/HeadlessDisclosureContext';
 import {
   createRef,
-  DynamicComponentWithRef,
   DynamicNode,
-  DynamicProps,
+  HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import getFocusableElements from '../../utils/get-focusable-elements';
 import {
-  OmitAndMerge,
-} from '../../utils/types';
-import {
   useContextMenuContext,
 } from './ContextMenuContext';
 
-export type ContextMenuPanelProps<T extends ValidConstructor = 'div'> = {
-  unmount?: boolean;
-} & OmitAndMerge<DynamicComponentWithRef<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
+export type ContextMenuPanelProps<T extends ValidConstructor = 'div'> =
+  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps & { unmount?: boolean }>;
 
 export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
   props: ContextMenuPanelProps<T>,

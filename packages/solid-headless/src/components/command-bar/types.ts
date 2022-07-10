@@ -1,10 +1,8 @@
 import {
-  DynamicComponent,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+  HeadlessDisclosureRootChildren,
+} from '../../headless/disclosure/HeadlessDisclosureRoot';
 
-export interface CommandBarBaseProps<T extends ValidConstructor>
-  extends DynamicComponent<T> {
+export interface CommandBarBaseProps extends HeadlessDisclosureRootChildren {
   unmount?: boolean;
   onClose?: () => void;
   onOpen?: () => void;

@@ -19,20 +19,16 @@ import {
 } from '../../headless/toggle/HeadlessToggleContext';
 import {
   createRef,
-  DynamicComponentWithRef,
   DynamicNode,
-  DynamicProps,
+  HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 import {
   useCheckboxContext,
 } from './CheckboxContext';
 
 export type CheckboxIndicatorProps<T extends ValidConstructor = 'button'> =
-  OmitAndMerge<DynamicComponentWithRef<T> & HeadlessToggleChildProps, DynamicProps<T>>;
+  HeadlessPropsWithRef<T, HeadlessToggleChildProps>;
 
 export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
   props: CheckboxIndicatorProps<T>,

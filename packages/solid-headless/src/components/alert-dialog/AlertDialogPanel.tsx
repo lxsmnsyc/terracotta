@@ -17,21 +17,17 @@ import {
 import { useHeadlessDisclosureProperties } from '../../headless/disclosure/HeadlessDisclosureContext';
 import {
   createRef,
-  DynamicComponentWithRef,
   DynamicNode,
-  DynamicProps,
   ValidConstructor,
+  HeadlessPropsWithRef,
 } from '../../utils/dynamic-prop';
 import getFocusableElements from '../../utils/get-focusable-elements';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 import {
   useAlertDialogContext,
 } from './AlertDialogContext';
 
 export type AlertDialogPanelProps<T extends ValidConstructor = 'div'> =
-  OmitAndMerge<DynamicComponentWithRef<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
+  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
 
 export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
   props: AlertDialogPanelProps<T>,

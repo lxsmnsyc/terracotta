@@ -14,18 +14,14 @@ import {
 } from '../../headless/select/HeadlessSelectOption';
 import {
   ValidConstructor,
-  DynamicProps,
-  DynamicComponent,
+  HeadlessProps,
 } from '../../utils/dynamic-prop';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 import {
   AccordionItemContext,
 } from './AccordionItemContext';
 
 export type AccordionItemProps<V, T extends ValidConstructor = 'div'> =
-  OmitAndMerge<DynamicComponent<T> & HeadlessSelectOptionProps<V>, DynamicProps<T>>;
+  HeadlessProps<T, HeadlessSelectOptionProps<V>>;
 
 export function AccordionItem<V, T extends ValidConstructor = 'div'>(
   props: AccordionItemProps<V, T>,

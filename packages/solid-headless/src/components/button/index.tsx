@@ -13,21 +13,17 @@ import {
 } from 'solid-use';
 import {
   createRef,
-  DynamicComponentWithRef,
   DynamicNode,
-  DynamicProps,
+  HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 
 interface ButtonBaseProps {
   disabled?: boolean;
 }
 
 export type ButtonProps<T extends ValidConstructor = 'button'> =
-  OmitAndMerge<ButtonBaseProps & DynamicComponentWithRef<T>, DynamicProps<T>>;
+  HeadlessPropsWithRef<T, ButtonBaseProps>;
 
 export function Button<T extends ValidConstructor = 'button'>(
   props: ButtonProps<T>,

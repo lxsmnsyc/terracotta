@@ -13,18 +13,14 @@ import {
 } from '../../headless/disclosure/HeadlessDisclosureChild';
 import {
   ValidConstructor,
-  DynamicComponent,
-  DynamicProps,
+  HeadlessProps,
 } from '../../utils/dynamic-prop';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 import {
   useAlertDialogContext,
 } from './AlertDialogContext';
 
 export type AlertDialogTitleProps<T extends ValidConstructor = 'h2'> =
-  OmitAndMerge<DynamicComponent<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
+  HeadlessProps<T, HeadlessDisclosureChildProps>;
 
 export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
   props: AlertDialogTitleProps<T>,

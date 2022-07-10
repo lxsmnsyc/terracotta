@@ -12,19 +12,15 @@ import {
   HeadlessDisclosureChild,
 } from '../../headless/disclosure/HeadlessDisclosureChild';
 import {
-  DynamicComponent,
-  DynamicProps,
+  HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 import {
   useCommandBarContext,
 } from './CommandBarContext';
 
 export type CommandBarTitleProps<T extends ValidConstructor = 'h2'> =
-  OmitAndMerge<DynamicComponent<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
+  HeadlessProps<T, HeadlessDisclosureChildProps>;
 
 export function CommandBarTitle<T extends ValidConstructor = 'h2'>(
   props: CommandBarTitleProps<T>,

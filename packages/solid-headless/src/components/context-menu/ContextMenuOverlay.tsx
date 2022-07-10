@@ -19,20 +19,16 @@ import {
 } from '../../headless/disclosure/HeadlessDisclosureContext';
 import {
   createRef,
-  DynamicComponentWithRef,
   DynamicNode,
-  DynamicProps,
+  HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 import {
   useContextMenuContext,
 } from './ContextMenuContext';
 
 export type ContextMenuOverlayProps<T extends ValidConstructor = 'div'> =
-  OmitAndMerge<DynamicComponentWithRef<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
+  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
 
 export function ContextMenuOverlay<T extends ValidConstructor = 'div'>(
   props: ContextMenuOverlayProps<T>,

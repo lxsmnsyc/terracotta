@@ -1,9 +1,8 @@
 import {
-  DynamicComponent,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+  HeadlessDisclosureRootChildren,
+} from '../../headless/disclosure/HeadlessDisclosureRoot';
 
-export interface ContextMenuBaseProps<T extends ValidConstructor> extends DynamicComponent<T> {
+export interface ContextMenuBaseProps extends HeadlessDisclosureRootChildren {
   onOpen?: () => void;
   onClose?: () => void;
 }

@@ -14,18 +14,14 @@ import {
 } from '../../headless/disclosure/HeadlessDisclosureChild';
 import {
   HeadlessDisclosureRoot,
-  HeadlessDisclosureRootChildren,
 } from '../../headless/disclosure/HeadlessDisclosureRoot';
 import {
   HeadlessDisclosureControlledOptions,
 } from '../../headless/disclosure/useHeadlessDisclosure';
 import {
-  DynamicProps,
   ValidConstructor,
+  HeadlessProps,
 } from '../../utils/dynamic-prop';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   AlertDialogContext,
@@ -34,13 +30,12 @@ import {
   AlertDialogBaseProps,
 } from './types';
 
-export type AlertDialogControlledBaseProps<T extends ValidConstructor = 'div'> =
-  & AlertDialogBaseProps<T>
-  & HeadlessDisclosureControlledOptions
-  & HeadlessDisclosureRootChildren;
+export type AlertDialogControlledBaseProps =
+  & AlertDialogBaseProps
+  & HeadlessDisclosureControlledOptions;
 
 export type AlertDialogControlledProps<T extends ValidConstructor = 'div'> =
-  OmitAndMerge<AlertDialogControlledBaseProps<T>, DynamicProps<T>>;
+  HeadlessProps<T, AlertDialogControlledBaseProps>;
 
 export function AlertDialogControlled<T extends ValidConstructor = 'div'>(
   props: AlertDialogControlledProps<T>,

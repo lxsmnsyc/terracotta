@@ -1,11 +1,8 @@
 import {
-  DynamicComponentWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+  HeadlessDisclosureRootChildren,
+} from '../../headless/disclosure/HeadlessDisclosureRoot';
 
-export interface AlertDialogBaseProps<T extends ValidConstructor>
-  extends DynamicComponentWithRef<T> {
-  as?: T;
+export interface AlertDialogBaseProps extends HeadlessDisclosureRootChildren {
   unmount?: boolean;
   onOpen?: () => void;
   onClose?: () => void;

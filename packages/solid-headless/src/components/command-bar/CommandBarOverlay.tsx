@@ -19,20 +19,16 @@ import {
 } from '../../headless/disclosure/HeadlessDisclosureContext';
 import {
   createRef,
-  DynamicComponentWithRef,
   DynamicNode,
-  DynamicProps,
+  HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 import {
   useCommandBarContext,
 } from './CommandBarContext';
 
 export type CommandBarOverlayProps<T extends ValidConstructor = 'div'> =
-  OmitAndMerge<DynamicComponentWithRef<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
+  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
 
 export function CommandBarOverlay<T extends ValidConstructor = 'p'>(
   props: CommandBarOverlayProps<T>,
