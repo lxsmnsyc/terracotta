@@ -23,6 +23,9 @@ export function Alert<T extends ValidConstructor = 'div'>(
   return createDynamic(
     () => props.as ?? ('div' as T),
     mergeProps(
+      {
+        id: alertID,
+      },
       omitProps(props, ['as']),
       {
         role: 'alert',
