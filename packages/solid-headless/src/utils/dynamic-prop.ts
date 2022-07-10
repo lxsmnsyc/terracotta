@@ -1,4 +1,5 @@
 import { JSX } from 'solid-js';
+import { OmitAndMerge } from './types';
 
 export type ValidElements = keyof JSX.IntrinsicElements;
 export type ValidComponent<P> = (props: P) => JSX.Element;
@@ -44,6 +45,8 @@ export interface DynamicComponent<T extends ValidConstructor> {
 export interface DynamicComponentWithRef<T extends ValidConstructor> extends WithRef<T> {
   as?: T;
 }
+
+export type WithDynamic<T extends ValidConstructor, V> = OmitAndMerge<V, DynamicProps<T>>;
 
 function isRefFunction<U extends ValidConstructor>(
   callback?: RefField<DynamicNode<U>>,
