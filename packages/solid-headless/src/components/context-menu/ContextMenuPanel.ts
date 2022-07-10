@@ -4,10 +4,9 @@ import {
   onCleanup,
   Show,
   JSX,
+  mergeProps,
+  createComponent,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
@@ -18,9 +17,11 @@ import {
 import {
   useHeadlessDisclosureProperties,
 } from '../../headless/disclosure/HeadlessDisclosureContext';
+import createDynamic from '../../utils/create-dynamic';
 import {
   createRef,
   DynamicNode,
+  DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
@@ -101,50 +102,50 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
     }
   });
 
-  return (
-    <Show
-      when={props.unmount ?? true}
-      fallback={(
-        <Dynamic
-          component={props.as ?? 'div'}
-          {...omitProps(props, [
-            'as',
-            'unmount',
-            'children',
-            'ref',
-          ])}
-          id={context.panelID}
-          data-sh-context-menu-panel={context.ownerID}
-          ref={createRef(props, (e) => {
+  function renderChildren() {
+    return createDynamic(
+      () => props.as ?? ('div' as T),
+      mergeProps(
+        omitProps(props, [
+          'as',
+          'unmount',
+          'children',
+          'ref',
+        ]),
+        {
+          id: context.panelID,
+          'data-sh-context-menu-panel': context.ownerID,
+          ref: createRef(props, (e) => {
             setInternalRef(() => e);
-          })}
-        >
-          <HeadlessDisclosureChild>
-            {props.children}
-          </HeadlessDisclosureChild>
-        </Dynamic>
-      )}
-    >
-      <Show when={properties.isOpen()}>
-        <Dynamic
-          component={props.as ?? 'div'}
-          {...omitProps(props, [
-            'as',
-            'unmount',
-            'children',
-            'ref',
-          ])}
-          id={context.panelID}
-          data-sh-context-menu-panel={context.ownerID}
-          ref={createRef(props, (e) => {
-            setInternalRef(() => e);
-          })}
-        >
-          <HeadlessDisclosureChild>
-            {props.children}
-          </HeadlessDisclosureChild>
-        </Dynamic>
-      </Show>
-    </Show>
-  );
+          }),
+          get children() {
+            return createComponent(HeadlessDisclosureChild, {
+              get children() {
+                return props.children;
+              },
+            });
+          },
+        },
+      ) as DynamicProps<T>,
+    );
+  }
+
+  return createComponent(Show, {
+    get when() {
+      return props.unmount ?? true;
+    },
+    get fallback() {
+      return renderChildren();
+    },
+    get children() {
+      return createComponent(Show, {
+        get when() {
+          return properties.isOpen();
+        },
+        get children() {
+          return renderChildren();
+        },
+      });
+    },
+  });
 }

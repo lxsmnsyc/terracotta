@@ -3,10 +3,9 @@ import {
   createEffect,
   onCleanup,
   JSX,
+  mergeProps,
+  createComponent,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
@@ -17,9 +16,11 @@ import {
 import {
   useHeadlessDisclosureProperties,
 } from '../../headless/disclosure/HeadlessDisclosureContext';
+import createDynamic from '../../utils/create-dynamic';
 import {
   createRef,
   DynamicNode,
+  DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
@@ -56,32 +57,49 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
     }
   });
 
-  return (
-    <Dynamic
-      component={props.as ?? 'div'}
-      {...omitProps(props, [
+  return createDynamic(
+    () => props.as ?? ('div' as T),
+    mergeProps(
+      omitProps(props, [
         'as',
         'children',
         'ref',
-      ])}
-      id={context.boundaryID}
-      aria-disabled={properties.disabled()}
-      aria-expanded={properties.isOpen()}
-      aria-controls={properties.isOpen() && context.panelID}
-      data-sh-disabled={properties.disabled()}
-      data-sh-expanded={properties.isOpen()}
-      disabled={properties.disabled()}
-      ref={createRef(props, (e) => {
-        setInternalRef(() => e);
-        if (e instanceof HTMLElement) {
-          context.anchor = e;
-        }
-      })}
-      data-sh-context-menu-boundary={context.ownerID}
-    >
-      <HeadlessDisclosureChild>
-        {props.children}
-      </HeadlessDisclosureChild>
-    </Dynamic>
+      ]),
+      {
+        id: context.boundaryID,
+        'data-sh-context-menu-boundary': context.ownerID,
+        ref: createRef(props, (e) => {
+          setInternalRef(() => e);
+          if (e instanceof HTMLElement) {
+            context.anchor = e;
+          }
+        }),
+        get disabled() {
+          return properties.disabled();
+        },
+        get 'aria-disabled'() {
+          return properties.disabled();
+        },
+        get 'data-sh-disabled'() {
+          return properties.disabled();
+        },
+        get 'aria-expanded'() {
+          return properties.isOpen();
+        },
+        get 'data-sh-expanded'() {
+          return properties.isOpen();
+        },
+        get 'aria-controls'() {
+          return properties.isOpen() && context.panelID;
+        },
+        get children() {
+          return createComponent(HeadlessDisclosureChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
+      },
+    ) as DynamicProps<T>,
   );
 }

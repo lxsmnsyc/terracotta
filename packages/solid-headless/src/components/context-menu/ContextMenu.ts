@@ -1,4 +1,5 @@
 import {
+  createComponent,
   JSX,
 } from 'solid-js';
 import {
@@ -27,7 +28,7 @@ export function ContextMenu<T extends ValidConstructor = 'div'>(
   props: ContextMenuProps<T>,
 ): JSX.Element {
   if (isContextMenuUncontrolled(props)) {
-    return <ContextMenuUncontrolled {...props} />;
+    return createComponent(ContextMenuUncontrolled, props);
   }
-  return <ContextMenuControlled {...props} />;
+  return createComponent(ContextMenuControlled, props);
 }
