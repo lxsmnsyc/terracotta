@@ -46,7 +46,11 @@ export interface DynamicComponentWithRef<T extends ValidConstructor> extends Wit
   as?: T;
 }
 
-export type WithDynamic<T extends ValidConstructor, V> = OmitAndMerge<V, DynamicProps<T>>;
+export type WithDynamic<T extends ValidConstructor, V> =
+  OmitAndMerge<V & DynamicComponent<T>, DynamicProps<T>>;
+
+export type WithDynamicRef<T extends ValidConstructor, V> =
+  OmitAndMerge<V & DynamicComponentWithRef<T>, DynamicProps<T>>;
 
 function isRefFunction<U extends ValidConstructor>(
   callback?: RefField<DynamicNode<U>>,
