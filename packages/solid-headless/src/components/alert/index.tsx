@@ -13,8 +13,7 @@ import {
   HeadlessProps,
 } from '../../utils/dynamic-prop';
 
-export type AlertProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, Record<string, unknown>>;
+export type AlertProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
 
 export function Alert<T extends ValidConstructor = 'div'>(
   props: AlertProps<T>,

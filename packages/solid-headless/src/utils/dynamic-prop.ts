@@ -46,10 +46,12 @@ export interface DynamicComponentWithRef<T extends ValidConstructor> extends Wit
   as?: T;
 }
 
-export type HeadlessProps<T extends ValidConstructor, V> =
+type DefaultProps = Record<string, never>;
+
+export type HeadlessProps<T extends ValidConstructor, V = DefaultProps> =
   OmitAndMerge<V & DynamicComponent<T>, DynamicProps<T>>;
 
-export type HeadlessPropsWithRef<T extends ValidConstructor, V> =
+export type HeadlessPropsWithRef<T extends ValidConstructor, V = DefaultProps> =
   OmitAndMerge<V & DynamicComponentWithRef<T>, DynamicProps<T>>;
 
 function isRefFunction<U extends ValidConstructor>(
