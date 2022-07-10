@@ -25,6 +25,7 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import { focusNext, focusPrev } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/get-focusable-elements';
 import {
   useContextMenuContext,
@@ -55,30 +56,12 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
                 if (!document.activeElement || !ref.contains(document.activeElement)) {
                   nodes[nodes.length - 1].focus();
                 } else {
-                  for (let i = 0, len = nodes.length; i < len; i += 1) {
-                    if (document.activeElement === nodes[i]) {
-                      if (i === 0) {
-                        nodes[len - 1].focus();
-                      } else {
-                        nodes[i - 1].focus();
-                      }
-                      break;
-                    }
-                  }
+                  focusPrev(nodes, document.activeElement);
                 }
               } else if (!document.activeElement || !ref.contains(document.activeElement)) {
                 nodes[0].focus();
               } else {
-                for (let i = 0, len = nodes.length; i < len; i += 1) {
-                  if (document.activeElement === nodes[i]) {
-                    if (i === len - 1) {
-                      nodes[0].focus();
-                    } else {
-                      nodes[i + 1].focus();
-                    }
-                    break;
-                  }
-                }
+                focusNext(nodes, document.activeElement);
               }
             } else if (e.key === 'Escape') {
               properties.setState(false);
