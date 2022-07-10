@@ -1,18 +1,18 @@
 import {
   JSX,
+  mergeProps,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
 import {
   HeadlessToggleChildProps,
 } from '../../headless/toggle/HeadlessToggleChild';
+import createDynamic from '../../utils/create-dynamic';
 import {
   ValidConstructor,
   HeadlessProps,
+  DynamicProps,
 } from '../../utils/dynamic-prop';
 import {
   useCheckboxContext,
@@ -25,17 +25,21 @@ export function CheckboxLabel<T extends ValidConstructor = 'label'>(
   props: CheckboxLabelProps<T>,
 ): JSX.Element {
   const context = useCheckboxContext('CheckboxLabel');
-  return (
-    <Dynamic
-      component={props.as ?? 'label'}
-      {...omitProps(props, [
+  return createDynamic(
+    () => props.as ?? ('label' as T),
+    mergeProps(
+      omitProps(props, [
         'as',
-      ])}
-      id={context.labelID}
-      for={context.indicatorID}
-      data-sh-checkbox-label={context.ownerID}
-    >
-      {props.children}
-    </Dynamic>
+        'children',
+      ]),
+      {
+        id: context.labelID,
+        for: context.indicatorID,
+        'data-sh-checkbox-label': context.ownerID,
+        get children() {
+          return props.children;
+        },
+      },
+    ) as DynamicProps<T>,
   );
 }

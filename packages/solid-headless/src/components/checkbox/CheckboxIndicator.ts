@@ -3,10 +3,9 @@ import {
   createEffect,
   onCleanup,
   JSX,
+  createComponent,
+  mergeProps,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
@@ -24,13 +23,16 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  Button, ButtonProps,
+} from '../button';
+import {
   useCheckboxContext,
 } from './CheckboxContext';
 
-export type CheckboxIndicatorProps<T extends ValidConstructor = 'button'> =
+export type CheckboxIndicatorProps<T extends ValidConstructor = typeof Button> =
   HeadlessPropsWithRef<T, HeadlessToggleChildProps>;
 
-export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
+export function CheckboxIndicator<T extends ValidConstructor = typeof Button>(
   props: CheckboxIndicatorProps<T>,
 ): JSX.Element {
   const context = useCheckboxContext('CheckboxIndicator');
@@ -61,32 +63,43 @@ export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
     }
   });
 
-  return (
-    <Dynamic
-      component={props.as ?? 'button'}
-      {...omitProps(props, [
-        'as',
-        'children',
-        'ref',
-      ])}
-      id={context.indicatorID}
-      role="checkbox"
-      data-sh-checkbox-indicator={context.ownerID}
-      aria-labelledby={context.labelID}
-      aria-describedby={context.descriptionID}
-      aria-disabled={state.disabled()}
-      aria-checked={state.checked() == null ? 'mixed' : state.checked()}
-      data-sh-disabled={state.disabled()}
-      data-sh-checked={state.checked()}
-      disabled={state.disabled()}
-      tabindex={0}
-      ref={createRef(props, (e) => {
+  return createComponent(Button, mergeProps(
+    omitProps(props, [
+      'children',
+      'ref',
+    ]),
+    {
+      id: context.indicatorID,
+      role: 'checkbox',
+      'data-sh-checkbox-indicator': context.ownerID,
+      'aria-labelledby': context.labelID,
+      'aria-describedby': context.descriptionID,
+      get disabled() {
+        return state.disabled();
+      },
+      get 'aria-disabled'() {
+        return state.disabled();
+      },
+      get 'data-sh-disabled'() {
+        return state.disabled();
+      },
+      get 'aria-checked'() {
+        return state.checked() == null ? 'mixed' : state.checked();
+      },
+      get 'data-sh-checked'() {
+        return state.checked();
+      },
+      ref: createRef(props, (e) => {
         setInternalRef(() => e);
-      })}
-    >
-      <HeadlessToggleChild>
-        {props.children}
-      </HeadlessToggleChild>
-    </Dynamic>
-  );
+      }),
+
+      get children() {
+        return createComponent(HeadlessToggleChild, {
+          get children() {
+            return props.children;
+          },
+        });
+      },
+    },
+  ) as ButtonProps<T>);
 }

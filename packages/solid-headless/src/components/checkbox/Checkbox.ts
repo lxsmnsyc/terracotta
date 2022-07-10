@@ -1,4 +1,5 @@
 import {
+  createComponent,
   JSX,
 } from 'solid-js';
 import {
@@ -27,7 +28,7 @@ export function Checkbox<T extends ValidConstructor = 'div'>(
   props: CheckboxProps<T>,
 ): JSX.Element {
   if (isCheckboxUncontrolled(props)) {
-    return <CheckboxUncontrolled {...props} />;
+    return createComponent(CheckboxUncontrolled, props);
   }
-  return <CheckboxControlled {...props} />;
+  return createComponent(CheckboxControlled, props);
 }
