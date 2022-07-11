@@ -1,6 +1,6 @@
 import {
   HeadlessDisclosureRootChildren,
-} from '../../headless/disclosure/HeadlessDisclosureRoot';
+} from '../../headless/disclosure';
 
 export interface DialogBaseProps extends HeadlessDisclosureRootChildren {
   unmount?: boolean;

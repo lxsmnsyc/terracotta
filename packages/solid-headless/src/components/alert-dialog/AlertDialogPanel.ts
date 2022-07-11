@@ -12,8 +12,8 @@ import {
 import {
   HeadlessDisclosureChildProps,
   HeadlessDisclosureChild,
-} from '../../headless/disclosure/HeadlessDisclosureChild';
-import { useHeadlessDisclosureProperties } from '../../headless/disclosure/HeadlessDisclosureContext';
+  useHeadlessDisclosureProperties,
+} from '../../headless/disclosure';
 import createDynamic from '../../utils/create-dynamic';
 import {
   createRef,

@@ -10,10 +10,8 @@ import {
 } from 'solid-use';
 import {
   HeadlessDisclosureRoot,
-} from '../../headless/disclosure/HeadlessDisclosureRoot';
-import {
   HeadlessDisclosureControlledOptions,
-} from '../../headless/disclosure/useHeadlessDisclosure';
+} from '../../headless/disclosure';
 import {
   HeadlessSelectRoot,
   HeadlessSelectRootProps,

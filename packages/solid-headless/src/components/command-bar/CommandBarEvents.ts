@@ -6,7 +6,7 @@ import {
 } from 'solid-js';
 import {
   useHeadlessDisclosureProperties,
-} from '../../headless/disclosure/HeadlessDisclosureContext';
+} from '../../headless/disclosure';
 
 export default function CommandBarEvents(props: { children: JSX.Element }): JSX.Element {
   const properties = useHeadlessDisclosureProperties();

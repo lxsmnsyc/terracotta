@@ -10,13 +10,9 @@ import {
 } from 'solid-use';
 import {
   HeadlessDisclosureChild,
-} from '../../headless/disclosure/HeadlessDisclosureChild';
-import {
   HeadlessDisclosureRoot,
-} from '../../headless/disclosure/HeadlessDisclosureRoot';
-import {
   HeadlessDisclosureUncontrolledOptions,
-} from '../../headless/disclosure/useHeadlessDisclosure';
+} from '../../headless/disclosure';
 import createDynamic from '../../utils/create-dynamic';
 import {
   ValidConstructor,

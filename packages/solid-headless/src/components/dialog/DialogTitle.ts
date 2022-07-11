@@ -8,7 +8,7 @@ import {
 import {
   HeadlessDisclosureChildProps,
   HeadlessDisclosureChild,
-} from '../../headless/disclosure/HeadlessDisclosureChild';
+} from '../../headless/disclosure';
 import createDynamic from '../../utils/create-dynamic';
 import {
   DynamicComponent,

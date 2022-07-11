@@ -2,7 +2,9 @@ import {
   createContext,
   useContext,
 } from 'solid-js';
-import { HeadlessDisclosureProperties } from './useHeadlessDisclosure';
+import {
+  HeadlessDisclosureProperties,
+} from './useHeadlessDisclosure';
 
 export const HeadlessDisclosureContext = createContext<HeadlessDisclosureProperties>();
 

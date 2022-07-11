@@ -11,10 +11,8 @@ import {
   HeadlessDisclosureRoot,
   HeadlessDisclosureRootChildren,
   HeadlessDisclosureRootProps,
-} from '../../headless/disclosure/HeadlessDisclosureRoot';
-import {
   HeadlessDisclosureUncontrolledOptions,
-} from '../../headless/disclosure/useHeadlessDisclosure';
+} from '../../headless/disclosure';
 import createDynamic from '../../utils/create-dynamic';
 import {
   DynamicProps,

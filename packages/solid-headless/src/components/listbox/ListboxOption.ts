@@ -12,7 +12,7 @@ import {
 } from 'solid-use';
 import {
   useHeadlessDisclosureProperties,
-} from '../../headless/disclosure/HeadlessDisclosureContext';
+} from '../../headless/disclosure';
 import {
   HeadlessSelectOptionProps,
   HeadlessSelectOption,
