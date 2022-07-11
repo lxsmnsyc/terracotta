@@ -9,13 +9,13 @@ export interface UnmountableProps {
 }
 
 export function createUnmountable(
-  isUnmountable: () => boolean | undefined,
+  props: UnmountableProps,
   shouldMount: () => boolean,
   render: () => JSX.Element,
 ): JSX.Element {
   return createComponent(Show, {
     get when() {
-      return isUnmountable() ?? true;
+      return props.unmount ?? true;
     },
     get fallback() {
       return render();

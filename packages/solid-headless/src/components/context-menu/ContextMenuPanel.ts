@@ -2,7 +2,6 @@ import {
   createSignal,
   createEffect,
   onCleanup,
-  Show,
   JSX,
   mergeProps,
   createComponent,
@@ -23,14 +22,21 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { focusNext, focusPrev } from '../../utils/focus-navigation';
+import {
+  focusNext,
+  focusPrev,
+} from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/get-focusable-elements';
+import {
+  createUnmountable,
+  UnmountableProps,
+} from '../../utils/Unmountable';
 import {
   useContextMenuContext,
 } from './ContextMenuContext';
 
 export type ContextMenuPanelProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps & { unmount?: boolean }>;
+  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps & UnmountableProps>;
 
 export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
   props: ContextMenuPanelProps<T>,
@@ -83,8 +89,10 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
     }
   });
 
-  function renderChildren() {
-    return createDynamic(
+  return createUnmountable(
+    props,
+    () => properties.isOpen(),
+    () => createDynamic(
       () => props.as ?? ('div' as T),
       mergeProps(
         omitProps(props, [
@@ -108,25 +116,6 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
           },
         },
       ) as DynamicProps<T>,
-    );
-  }
-
-  return createComponent(Show, {
-    get when() {
-      return props.unmount ?? true;
-    },
-    get fallback() {
-      return renderChildren();
-    },
-    get children() {
-      return createComponent(Show, {
-        get when() {
-          return properties.isOpen();
-        },
-        get children() {
-          return renderChildren();
-        },
-      });
-    },
-  });
+    ),
+  );
 }

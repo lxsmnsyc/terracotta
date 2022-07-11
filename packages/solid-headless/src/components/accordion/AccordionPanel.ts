@@ -1,5 +1,4 @@
 import {
-  Show,
   JSX,
   createComponent,
   mergeProps,
@@ -19,15 +18,15 @@ import {
   DynamicProps,
 } from '../../utils/dynamic-prop';
 import {
+  createUnmountable,
+  UnmountableProps,
+} from '../../utils/Unmountable';
+import {
   useAccordionItemContext,
 } from './AccordionItemContext';
 
-interface AccordionPanelBaseProps extends HeadlessSelectOptionChildProps {
-  unmount?: boolean;
-}
-
 export type AccordionPanelProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, AccordionPanelBaseProps>;
+  HeadlessProps<T, HeadlessSelectOptionChildProps & UnmountableProps>;
 
 export function AccordionPanel<T extends ValidConstructor = 'div'>(
   props: AccordionPanelProps<T>,
@@ -35,8 +34,10 @@ export function AccordionPanel<T extends ValidConstructor = 'div'>(
   const context = useAccordionItemContext('AccordionPanel');
   const properties = useHeadlessSelectOptionProperties();
 
-  function renderChildren() {
-    return createDynamic(
+  return createUnmountable(
+    props,
+    () => properties.isSelected(),
+    () => createDynamic(
       () => props.as ?? ('div' as T),
       mergeProps(
         omitProps(props, [
@@ -56,25 +57,6 @@ export function AccordionPanel<T extends ValidConstructor = 'div'>(
           },
         },
       ) as DynamicProps<T>,
-    );
-  }
-
-  return createComponent(Show, {
-    get when() {
-      return props.unmount ?? true;
-    },
-    get fallback() {
-      return renderChildren();
-    },
-    get children() {
-      return createComponent(Show, {
-        get when() {
-          return properties.isSelected();
-        },
-        get children() {
-          return renderChildren();
-        },
-      });
-    },
-  });
+    ),
+  );
 }

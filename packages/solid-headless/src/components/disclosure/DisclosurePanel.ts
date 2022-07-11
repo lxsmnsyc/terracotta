@@ -1,5 +1,4 @@
 import {
-  Show,
   JSX,
   mergeProps,
   createComponent,
@@ -19,11 +18,15 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  createUnmountable,
+  UnmountableProps,
+} from '../../utils/Unmountable';
+import {
   useDisclosureContext,
 } from './DisclosureContext';
 
 export type DisclosurePanelProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, HeadlessDisclosureChildProps & { unmount?: boolean }>;
+  HeadlessProps<T, HeadlessDisclosureChildProps & UnmountableProps>;
 
 export function DisclosurePanel<T extends ValidConstructor = 'div'>(
   props: DisclosurePanelProps<T>,
@@ -31,8 +34,10 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
   const context = useDisclosureContext('DisclosurePanel');
   const properties = useHeadlessDisclosureProperties();
 
-  function renderChildren() {
-    return createDynamic(
+  return createUnmountable(
+    props,
+    () => properties.isOpen(),
+    () => createDynamic(
       () => props.as ?? ('div' as T),
       mergeProps(
         omitProps(props, [
@@ -52,25 +57,6 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
           },
         },
       ) as DynamicProps<T>,
-    );
-  }
-
-  return createComponent(Show, {
-    get when() {
-      return props.unmount ?? true;
-    },
-    get fallback() {
-      return renderChildren();
-    },
-    get children() {
-      return createComponent(Show, {
-        get when() {
-          return properties.isOpen();
-        },
-        get children() {
-          return renderChildren();
-        },
-      });
-    },
-  });
+    ),
+  );
 }

@@ -3,7 +3,6 @@ import {
   createUniqueId,
   JSX,
   mergeProps,
-  Show,
 } from 'solid-js';
 import {
   omitProps,
@@ -19,6 +18,9 @@ import {
   HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import {
+  createUnmountable,
+} from '../../utils/Unmountable';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   CommandBarContext,
@@ -43,39 +45,6 @@ export function CommandBarUncontrolled<T extends ValidConstructor = 'div'>(
   const titleID = createUniqueId();
   const descriptionID = createUniqueId();
   const fsp = useFocusStartPoint();
-
-  function renderChildren() {
-    return createDynamic(
-      () => props.as ?? ('div' as T),
-      mergeProps(
-        omitProps(props, [
-          'as',
-          'children',
-          'unmount',
-          'defaultOpen',
-          'disabled',
-          'onOpen',
-          'onClose',
-          'onChange',
-        ]),
-        {
-          id: ownerID,
-          role: 'dialog',
-          'aria-modal': true,
-          'aria-labelledby': titleID,
-          'aria-describedby': descriptionID,
-          'data-sh-command-bar': ownerID,
-          get children() {
-            return createComponent(HeadlessDisclosureChild, {
-              get children() {
-                return props.children;
-              },
-            });
-          },
-        },
-      ) as DynamicProps<T>,
-    );
-  }
 
   return createComponent(CommandBarContext.Provider, {
     value: {
@@ -104,24 +73,40 @@ export function CommandBarUncontrolled<T extends ValidConstructor = 'div'>(
         },
         children: ({ isOpen }) => createComponent(CommandBarEvents, {
           get children() {
-            return createComponent(Show, {
-              get when() {
-                return props.unmount ?? true;
-              },
-              get fallback() {
-                return renderChildren();
-              },
-              get children() {
-                return createComponent(Show, {
-                  get when() {
-                    return isOpen();
+            return createUnmountable(
+              props,
+              isOpen,
+              () => createDynamic(
+                () => props.as ?? ('div' as T),
+                mergeProps(
+                  omitProps(props, [
+                    'as',
+                    'children',
+                    'unmount',
+                    'defaultOpen',
+                    'disabled',
+                    'onOpen',
+                    'onClose',
+                    'onChange',
+                  ]),
+                  {
+                    id: ownerID,
+                    role: 'dialog',
+                    'aria-modal': true,
+                    'aria-labelledby': titleID,
+                    'aria-describedby': descriptionID,
+                    'data-sh-command-bar': ownerID,
+                    get children() {
+                      return createComponent(HeadlessDisclosureChild, {
+                        get children() {
+                          return props.children;
+                        },
+                      });
+                    },
                   },
-                  get children() {
-                    return renderChildren();
-                  },
-                });
-              },
-            });
+                ) as DynamicProps<T>,
+              ),
+            );
           },
         }),
       });
