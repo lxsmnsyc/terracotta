@@ -1,4 +1,5 @@
 import {
+  createComponent,
   JSX,
 } from 'solid-js';
 import {
@@ -28,15 +29,14 @@ export type HeadlessToggleRootProps = HeadlessToggleOptions & HeadlessToggleRoot
 
 export function HeadlessToggleRoot(props: HeadlessToggleRootProps): JSX.Element {
   const properties = useHeadlessToggle(props);
-  return (
-    <HeadlessToggleContext.Provider value={properties}>
-      {() => {
-        const body = props.children;
-        if (isHeadlessToggleRootRenderProp(body)) {
-          return body(properties);
-        }
-        return body;
-      }}
-    </HeadlessToggleContext.Provider>
-  );
+  return createComponent(HeadlessToggleContext.Provider, {
+    value: properties,
+    children: () => {
+      const body = props.children;
+      if (isHeadlessToggleRootRenderProp(body)) {
+        return body(properties);
+      }
+      return body;
+    },
+  });
 }

@@ -10,10 +10,8 @@ import {
 import {
   HeadlessToggleRoot,
   HeadlessToggleRootChildren,
-} from '../../headless/toggle/HeadlessToggleRoot';
-import {
   HeadlessToggleControlledOptions,
-} from '../../headless/toggle/useHeadlessToggle';
+} from '../../headless/toggle';
 import createDynamic from '../../utils/create-dynamic';
 import {
   DynamicProps,

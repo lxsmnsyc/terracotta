@@ -12,10 +12,8 @@ import {
 import {
   HeadlessToggleChildProps,
   HeadlessToggleChild,
-} from '../../headless/toggle/HeadlessToggleChild';
-import {
   useHeadlessToggleProperties,
-} from '../../headless/toggle/HeadlessToggleContext';
+} from '../../headless/toggle';
 import {
   createRef,
   DynamicNode,

@@ -7,7 +7,7 @@ import {
 } from 'solid-use';
 import {
   HeadlessToggleChildProps,
-} from '../../headless/toggle/HeadlessToggleChild';
+} from '../../headless/toggle';
 import createDynamic from '../../utils/create-dynamic';
 import {
   ValidConstructor,
