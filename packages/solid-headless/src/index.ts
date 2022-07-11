@@ -12,3 +12,6 @@ export * from './components/command-bar';
 export * from './components/context-menu';
 export * from './components/dialog';
 export * from './components/feed';
+export * from './components/listbox';
+export * from './components/menu';
+export * from './components/popover';
