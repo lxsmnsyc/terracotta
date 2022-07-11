@@ -12,10 +12,16 @@ export type HeadlessSelectOptions<T> =
   | HeadlessSelectSingleOptions<T>
   | HeadlessSelectMultipleOptions<T>;
 
+function isHeadlessSelectMultiple<T>(
+  options: HeadlessSelectOptions<T>,
+): options is HeadlessSelectMultipleOptions<T> {
+  return 'multiple' in options && options.multiple;
+}
+
 export default function useHeadlessSelect<T>(
   options: HeadlessSelectOptions<T>,
 ): HeadlessSelectProperties<T> {
-  if ('multiple' in options) {
+  if (isHeadlessSelectMultiple(options)) {
     return useHeadlessSelectMultiple(options);
   }
 

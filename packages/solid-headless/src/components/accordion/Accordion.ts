@@ -37,7 +37,7 @@ function isAccordionUncontrolled<V, T extends ValidConstructor = 'div'>(
 function isAccordionMultiple<V, T extends ValidConstructor = 'div'>(
   props: AccordionProps<V, T>,
 ): props is AccordionMultipleUncontrolledProps<V, T> | AccordionMultipleControlledProps<V, T> {
-  return 'multiple' in props;
+  return 'multiple' in props && props.multiple;
 }
 
 export function Accordion<V, T extends ValidConstructor = 'div'>(
