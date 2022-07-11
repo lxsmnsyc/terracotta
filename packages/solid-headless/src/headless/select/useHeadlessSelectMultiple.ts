@@ -30,7 +30,7 @@ export type HeadlessSelectMultipleOptions<T> =
   | HeadlessSelectMultipleControlledOptions<T>
   | HeadlessSelectMultipleUncontrolledOptions<T>;
 
-export default function useHeadlessSelectMultiple<T>(
+export function useHeadlessSelectMultiple<T>(
   options: HeadlessSelectMultipleOptions<T>,
 ): HeadlessSelectProperties<T> {
   const [active, setActive] = createSignal<Ref<T>>();

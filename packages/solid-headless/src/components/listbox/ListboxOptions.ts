@@ -15,10 +15,8 @@ import {
 import {
   HeadlessSelectChildProps,
   HeadlessSelectChild,
-} from '../../headless/select/HeadlessSelectChild';
-import {
   useHeadlessSelectProperties,
-} from '../../headless/select/useHeadlessSelectProperties';
+} from '../../headless/select';
 import createDynamic from '../../utils/create-dynamic';
 import {
   createRef,

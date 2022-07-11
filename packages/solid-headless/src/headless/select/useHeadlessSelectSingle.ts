@@ -28,7 +28,7 @@ export type HeadlessSelectSingleOptions<T> =
   | HeadlessSelectSingleControlledOptions<T>
   | HeadlessSelectSingleUncontrolledOptions<T>;
 
-export default function useHeadlessSelectSingle<T>(
+export function useHeadlessSelectSingle<T>(
   options: HeadlessSelectSingleOptions<T>,
 ): HeadlessSelectProperties<T> {
   const [active, setActive] = createSignal<Ref<T>>();

@@ -15,10 +15,8 @@ import {
 import {
   HeadlessSelectRoot,
   HeadlessSelectRootProps,
-} from '../../headless/select/HeadlessSelectRoot';
-import {
   HeadlessSelectSingleControlledOptions,
-} from '../../headless/select/useHeadlessSelectSingle';
+} from '../../headless/select';
 import createDynamic from '../../utils/create-dynamic';
 import {
   DynamicProps,

@@ -10,10 +10,8 @@ import {
 import {
   HeadlessSelectOptionChild,
   HeadlessSelectOptionChildProps,
-} from '../../headless/select/HeadlessSelectOption';
-import {
   useHeadlessSelectOptionProperties,
-} from '../../headless/select/useHeadlessSelectOption';
+} from '../../headless/select';
 import createDynamic from '../../utils/create-dynamic';
 import {
   ValidConstructor,

@@ -10,10 +10,8 @@ import {
   HeadlessSelectRoot,
   HeadlessSelectRootChildren,
   HeadlessSelectRootProps,
-} from '../../headless/select/HeadlessSelectRoot';
-import {
   HeadlessSelectMultipleUncontrolledOptions,
-} from '../../headless/select/useHeadlessSelectMultiple';
+} from '../../headless/select';
 import createDynamic from '../../utils/create-dynamic';
 import {
   createRef,

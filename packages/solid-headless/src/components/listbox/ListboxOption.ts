@@ -16,10 +16,8 @@ import {
 import {
   HeadlessSelectOptionProps,
   HeadlessSelectOption,
-} from '../../headless/select/HeadlessSelectOption';
-import {
   useHeadlessSelectProperties,
-} from '../../headless/select/useHeadlessSelectProperties';
+} from '../../headless/select';
 import {
   createRef,
   DynamicNode,

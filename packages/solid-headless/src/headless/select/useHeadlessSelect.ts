@@ -18,7 +18,7 @@ function isHeadlessSelectMultiple<T>(
   return 'multiple' in options && options.multiple;
 }
 
-export default function useHeadlessSelect<T>(
+export function useHeadlessSelect<T>(
   options: HeadlessSelectOptions<T>,
 ): HeadlessSelectProperties<T> {
   if (isHeadlessSelectMultiple(options)) {
