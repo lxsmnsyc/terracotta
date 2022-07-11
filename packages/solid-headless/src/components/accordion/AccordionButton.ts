@@ -33,10 +33,10 @@ import {
   useAccordionItemContext,
 } from './AccordionItemContext';
 
-export type AccordionButtonProps<T extends ValidConstructor = typeof Button> =
+export type AccordionButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, HeadlessSelectOptionChildProps & ButtonProps<T>>;
 
-export function AccordionButton<T extends ValidConstructor = typeof Button>(
+export function AccordionButton<T extends ValidConstructor = 'button'>(
   props: AccordionButtonProps<T>,
 ): JSX.Element {
   const rootContext = useAccordionContext('AccordionButton');

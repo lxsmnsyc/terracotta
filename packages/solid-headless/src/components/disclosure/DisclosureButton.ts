@@ -32,10 +32,10 @@ import {
   useDisclosureContext,
 } from './DisclosureContext';
 
-export type DisclosureButtonProps<T extends ValidConstructor = typeof Button> =
+export type DisclosureButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps & ButtonProps<T>>;
 
-export function DisclosureButton<T extends ValidConstructor = typeof Button>(
+export function DisclosureButton<T extends ValidConstructor = 'button'>(
   props: DisclosureButtonProps<T>,
 ): JSX.Element {
   const context = useDisclosureContext('DisclosureButton');

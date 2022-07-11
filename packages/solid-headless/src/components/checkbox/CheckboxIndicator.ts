@@ -29,10 +29,10 @@ import {
   useCheckboxContext,
 } from './CheckboxContext';
 
-export type CheckboxIndicatorProps<T extends ValidConstructor = typeof Button> =
+export type CheckboxIndicatorProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, HeadlessToggleChildProps>;
 
-export function CheckboxIndicator<T extends ValidConstructor = typeof Button>(
+export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
   props: CheckboxIndicatorProps<T>,
 ): JSX.Element {
   const context = useCheckboxContext('CheckboxIndicator');
