@@ -25,6 +25,9 @@ import {
 } from '../../utils/dynamic-prop';
 import Fragment from '../../utils/Fragment';
 import {
+  createDisabled,
+} from '../../utils/state-props';
+import {
   ListboxContext,
 } from './ListboxContext';
 import {
@@ -89,15 +92,9 @@ export function ListboxMCSUD<V, T extends ValidConstructor = typeof Fragment>(
           {
             'aria-labelledby': labelID,
             'data-sh-listbox': ownerID,
-            get disabled() {
-              return props.disabled;
-            },
-            get 'aria-disabled'() {
-              return props.disabled;
-            },
-            get 'data-sh-disabled'() {
-              return props.disabled;
-            },
+          },
+          createDisabled(() => props.disabled),
+          {
             get children() {
               return createComponent(HeadlessSelectRoot, {
                 multiple: true,

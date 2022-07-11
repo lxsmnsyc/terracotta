@@ -17,6 +17,9 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import {
+  createDisabled,
+} from '../../utils/state-props';
 
 interface ButtonBaseProps {
   disabled?: boolean;
@@ -58,23 +61,14 @@ export function Button<T extends ValidConstructor = 'button'>(
         id: buttonID,
         tabindex: 0,
         role: 'button',
-        get disabled() {
-          return props.disabled;
-        },
       },
+      createDisabled(() => props.disabled),
       omitProps(props, [
         'as',
-        'disabled',
         'ref',
       ]),
       {
         'data-sh-button': buttonID,
-        get 'aria-disabled'() {
-          return props.disabled;
-        },
-        get 'data-sh-disabled'() {
-          return props.disabled;
-        },
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),

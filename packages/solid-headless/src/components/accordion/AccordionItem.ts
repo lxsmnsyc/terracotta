@@ -18,6 +18,9 @@ import {
   DynamicProps,
 } from '../../utils/dynamic-prop';
 import {
+  createDisabled,
+} from '../../utils/state-props';
+import {
   AccordionItemContext,
 } from './AccordionItemContext';
 
@@ -42,16 +45,8 @@ export function AccordionItem<V, T extends ValidConstructor = 'div'>(
             'value',
             'disabled',
           ]),
+          createDisabled(() => props.disabled),
           {
-            get disabled() {
-              return props.disabled;
-            },
-            get 'aria-disabled'() {
-              return props.disabled;
-            },
-            get 'data-sh-disabled'() {
-              return props.disabled;
-            },
             get children() {
               return createComponent(HeadlessSelectOption, {
                 get value() {

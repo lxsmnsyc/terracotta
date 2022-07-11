@@ -20,6 +20,9 @@ import {
   DynamicProps,
 } from '../../utils/dynamic-prop';
 import {
+  createDisabled,
+} from '../../utils/state-props';
+import {
   AccordionContext,
 } from './AccordionContext';
 import AccordionController from './AccordionController';
@@ -57,15 +60,6 @@ export function AccordionMultipleControlled<V, T extends ValidConstructor = 'div
             ref: createRef(props, (e) => {
               controller.setRef(e);
             }),
-            get disabled() {
-              return props.disabled;
-            },
-            get 'aria-disabled'() {
-              return props.disabled;
-            },
-            get 'data-sh-disabled'() {
-              return props.disabled;
-            },
             get children() {
               return createComponent(HeadlessSelectRoot, {
                 multiple: true,
@@ -82,6 +76,7 @@ export function AccordionMultipleControlled<V, T extends ValidConstructor = 'div
               } as HeadlessSelectRootProps<V>);
             },
           },
+          createDisabled(() => props.disabled),
         ) as DynamicProps<T>,
       );
     },

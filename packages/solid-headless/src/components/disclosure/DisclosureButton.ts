@@ -23,6 +23,10 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  createDisabled,
+  createExpanded,
+} from '../../utils/state-props';
+import {
   ButtonProps,
   Button,
 } from '../button';
@@ -70,24 +74,13 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
       ref: createRef(props, (e) => {
         setInternalRef(() => e);
       }),
-      get disabled() {
-        return properties.disabled() || props.disabled;
-      },
-      get 'aria-disabled'() {
-        return properties.disabled() || props.disabled;
-      },
-      get 'data-sh-disabled'() {
-        return properties.disabled() || props.disabled;
-      },
-      get 'aria-expanded'() {
-        return properties.isOpen();
-      },
-      get 'data-sh-expanded'() {
-        return properties.isOpen();
-      },
       get 'aria-controls'() {
         return properties.isOpen() && context.panelID;
       },
+    },
+    createDisabled(() => properties.disabled() || props.disabled),
+    createExpanded(() => properties.isOpen()),
+    {
       get children() {
         return createComponent(HeadlessDisclosureChild, {
           get children() {

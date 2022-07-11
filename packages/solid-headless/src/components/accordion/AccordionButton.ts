@@ -21,6 +21,10 @@ import {
   HeadlessPropsWithRef,
 } from '../../utils/dynamic-prop';
 import {
+  createDisabled,
+  createExpanded,
+} from '../../utils/state-props';
+import {
   ButtonProps,
   Button,
 } from '../button';
@@ -108,24 +112,13 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
         setInternalRef(() => e);
       }),
       'data-sh-accordion-button': rootContext.getId(),
-      get 'aria-expanded'() {
-        return properties.isSelected();
-      },
-      get 'data-sh-expanded'() {
-        return properties.isSelected();
-      },
-      get disabled() {
-        return properties.disabled() || props.disabled;
-      },
-      get 'aria-disabled'() {
-        return properties.disabled() || props.disabled;
-      },
-      get 'data-sh-disabled'() {
-        return properties.disabled() || props.disabled;
-      },
       get 'aria-controls'() {
         return properties.isSelected() && itemContext.panelID;
       },
+    },
+    createDisabled(() => properties.disabled() || props.disabled),
+    createExpanded(() => properties.isSelected()),
+    {
       get children() {
         return createComponent(HeadlessSelectOptionChild, {
           get children() {

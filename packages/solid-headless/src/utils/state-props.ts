@@ -37,3 +37,39 @@ export function createExpanded(
     },
   };
 }
+
+interface CheckedProps {
+  'aria-checked': boolean | 'mixed';
+  'data-sh-checked': boolean | 'mixed';
+}
+
+export function createChecked(
+  checked: () => boolean | undefined,
+): CheckedProps {
+  return {
+    get 'aria-checked'() {
+      return checked() ?? 'mixed';
+    },
+    get 'data-sh-checked'() {
+      return checked() ?? 'mixed';
+    },
+  };
+}
+
+interface SelectedProps {
+  'aria-selected': boolean;
+  'data-sh-selected': boolean;
+}
+
+export function createSelected(
+  checked: () => boolean,
+): SelectedProps {
+  return {
+    get 'aria-selected'() {
+      return checked();
+    },
+    get 'data-sh-selected'() {
+      return checked();
+    },
+  };
+}

@@ -17,6 +17,9 @@ import {
   HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import {
+  createDisabled,
+} from '../../utils/state-props';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   ContextMenuContext,
@@ -62,15 +65,9 @@ export function ContextMenuUncontrolled<T extends ValidConstructor = 'div'>(
           ]),
           {
             'data-sh-context-menu': ownerID,
-            get disabled() {
-              return props.disabled;
-            },
-            get 'aria-disabled'() {
-              return props.disabled;
-            },
-            get 'data-sh-disabled'() {
-              return props.disabled;
-            },
+          },
+          createDisabled(() => props.disabled),
+          {
             get children() {
               return createComponent(HeadlessDisclosureRoot, {
                 get defaultOpen() {

@@ -20,6 +20,9 @@ import {
 } from '../../utils/dynamic-prop';
 import Fragment from '../../utils/Fragment';
 import {
+  createDisabled,
+} from '../../utils/state-props';
+import {
   CheckboxContext,
 } from './CheckboxContext';
 
@@ -58,15 +61,9 @@ export function CheckboxUncontrolled<T extends ValidConstructor = typeof Fragmen
           ]),
           {
             'data-sh-checkbox': ownerID,
-            get disabled() {
-              return props.disabled;
-            },
-            get 'aria-disabled'() {
-              return props.disabled;
-            },
-            get 'data-sh-disabled'() {
-              return props.disabled;
-            },
+          },
+          createDisabled(() => props.disabled),
+          {
             get children() {
               return createComponent(HeadlessToggleRoot, {
                 onChange: props.onChange,

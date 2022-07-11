@@ -25,6 +25,10 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  createDisabled,
+  createSelected,
+} from '../../utils/state-props';
+import {
   Button,
   ButtonProps,
 } from '../button';
@@ -182,21 +186,10 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
       get as() {
         return props.as ?? ('li' as T);
       },
-      get disabled() {
-        return props.disabled;
-      },
-      get 'aria-disabled'() {
-        return props.disabled;
-      },
-      get 'data-sh-disabled'() {
-        return props.disabled;
-      },
-      get 'aria-selected'() {
-        return properties.isSelected(props.value);
-      },
-      get 'data-sh-selected'() {
-        return properties.isSelected(props.value);
-      },
+    },
+    createDisabled(() => props.disabled),
+    createSelected(() => properties.isSelected(props.value)),
+    {
       get children() {
         return createComponent(HeadlessSelectOption, {
           get value() {

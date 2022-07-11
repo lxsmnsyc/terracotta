@@ -23,6 +23,10 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  createDisabled,
+  createExpanded,
+} from '../../utils/state-props';
+import {
   useContextMenuContext,
 } from './ContextMenuContext';
 
@@ -72,24 +76,13 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
             context.anchor = e;
           }
         }),
-        get disabled() {
-          return properties.disabled();
-        },
-        get 'aria-disabled'() {
-          return properties.disabled();
-        },
-        get 'data-sh-disabled'() {
-          return properties.disabled();
-        },
-        get 'aria-expanded'() {
-          return properties.isOpen();
-        },
-        get 'data-sh-expanded'() {
-          return properties.isOpen();
-        },
         get 'aria-controls'() {
           return properties.isOpen() && context.panelID;
         },
+      },
+      createDisabled(() => properties.disabled()),
+      createExpanded(() => properties.isOpen()),
+      {
         get children() {
           return createComponent(HeadlessDisclosureChild, {
             get children() {

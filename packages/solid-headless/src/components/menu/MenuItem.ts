@@ -18,6 +18,9 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  createDisabled,
+} from '../../utils/state-props';
+import {
   MenuChildProps,
   MenuChild,
 } from './MenuChild';
@@ -114,15 +117,9 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),
-        get disabled() {
-          return props.disabled;
-        },
-        get 'aria-disabled'() {
-          return props.disabled;
-        },
-        get 'data-sh-disabled'() {
-          return props.disabled;
-        },
+      },
+      createDisabled(() => props.disabled),
+      {
         get children() {
           return createComponent(MenuChild, {
             get disabled() {

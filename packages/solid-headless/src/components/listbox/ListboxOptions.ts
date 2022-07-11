@@ -35,6 +35,7 @@ import {
 import {
   queryListboxOptions,
 } from '../../utils/query-nodes';
+import { createDisabled } from '../../utils/state-props';
 import {
   useListboxContext,
 } from './ListboxContext';
@@ -62,7 +63,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       focusNext(
-        queryListboxOptions(ref, context.ownerID) ,
+        queryListboxOptions(ref, context.ownerID),
         node,
       );
     }
@@ -72,7 +73,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       focusPrev(
-        queryListboxOptions(ref, context.ownerID) ,
+        queryListboxOptions(ref, context.ownerID),
         node,
       );
     }
@@ -81,14 +82,14 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
   function setFirstChecked() {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      focusFirst(queryListboxOptions(ref, context.ownerID) );
+      focusFirst(queryListboxOptions(ref, context.ownerID));
     }
   }
 
   function setLastChecked() {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      focusLast(queryListboxOptions(ref, context.ownerID) );
+      focusLast(queryListboxOptions(ref, context.ownerID));
     }
   }
 
@@ -96,7 +97,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       focusMatch(
-        queryListboxOptions(ref, context.ownerID) ,
+        queryListboxOptions(ref, context.ownerID),
         character,
       );
     }
@@ -154,18 +155,12 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
             ref: createRef(props, (e) => {
               setInternalRef(() => e);
             }),
-            get disabled() {
-              return properties.disabled() || props.disabled;
-            },
-            get 'aria-disabled'() {
-              return properties.disabled() || props.disabled;
-            },
-            get 'data-sh-disabled'() {
-              return properties.disabled() || props.disabled;
-            },
             get 'aria-orientation'() {
               return context.horizontal ? 'horizontal' : 'vertical';
             },
+          },
+          createDisabled(() => properties.disabled() || props.disabled),
+          {
             get children() {
               return createComponent(HeadlessSelectChild, {
                 get children() {
