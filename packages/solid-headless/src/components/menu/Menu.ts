@@ -45,7 +45,7 @@ export function Menu<T extends ValidConstructor = 'ul'>(
   function setNextChecked(node: Element) {
     if (internalRef instanceof HTMLElement) {
       focusNext(
-        queryMenuItems(internalRef, ownerID) as NodeListOf<HTMLElement>,
+        queryMenuItems(internalRef, ownerID) ,
         node,
       );
     }
@@ -54,7 +54,7 @@ export function Menu<T extends ValidConstructor = 'ul'>(
   function setPrevChecked(node: Element) {
     if (internalRef instanceof HTMLElement) {
       focusPrev(
-        queryMenuItems(internalRef, ownerID) as NodeListOf<HTMLElement>,
+        queryMenuItems(internalRef, ownerID) ,
         node,
       );
     }
@@ -62,20 +62,20 @@ export function Menu<T extends ValidConstructor = 'ul'>(
 
   function setFirstChecked() {
     if (internalRef instanceof HTMLElement) {
-      focusFirst(queryMenuItems(internalRef, ownerID) as NodeListOf<HTMLElement>);
+      focusFirst(queryMenuItems(internalRef, ownerID) );
     }
   }
 
   function setLastChecked() {
     if (internalRef instanceof HTMLElement) {
-      focusLast(queryMenuItems(internalRef, ownerID) as NodeListOf<HTMLElement>);
+      focusLast(queryMenuItems(internalRef, ownerID) );
     }
   }
 
   function setFirstMatch(character: string) {
     if (internalRef instanceof HTMLElement) {
       focusMatch(
-        queryMenuItems(internalRef, ownerID) as NodeListOf<HTMLElement>,
+        queryMenuItems(internalRef, ownerID) ,
         character,
       );
     }

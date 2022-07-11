@@ -31,7 +31,7 @@ export default class AccordionController<T extends ValidConstructor = 'div'> {
   setNextChecked(node: Element) {
     if (this.internalRef instanceof HTMLElement) {
       focusNext(
-        queryAccordionButtons(this.internalRef, this.ownerID) as NodeListOf<HTMLElement>,
+        queryAccordionButtons(this.internalRef, this.ownerID) ,
         node,
       );
     }
@@ -40,7 +40,7 @@ export default class AccordionController<T extends ValidConstructor = 'div'> {
   setPrevChecked(node: Element) {
     if (this.internalRef instanceof HTMLElement) {
       focusPrev(
-        queryAccordionButtons(this.internalRef, this.ownerID) as NodeListOf<HTMLElement>,
+        queryAccordionButtons(this.internalRef, this.ownerID) ,
         node,
       );
     }
@@ -48,13 +48,13 @@ export default class AccordionController<T extends ValidConstructor = 'div'> {
 
   setFirstChecked() {
     if (this.internalRef instanceof HTMLElement) {
-      focusFirst(queryAccordionButtons(this.internalRef, this.ownerID) as NodeListOf<HTMLElement>);
+      focusFirst(queryAccordionButtons(this.internalRef, this.ownerID) );
     }
   }
 
   setLastChecked() {
     if (this.internalRef instanceof HTMLElement) {
-      focusLast(queryAccordionButtons(this.internalRef, this.ownerID) as NodeListOf<HTMLElement>);
+      focusLast(queryAccordionButtons(this.internalRef, this.ownerID) );
     }
   }
 

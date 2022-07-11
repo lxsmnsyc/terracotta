@@ -62,7 +62,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       focusNext(
-        queryListboxOptions(ref, context.ownerID) as NodeListOf<HTMLElement>,
+        queryListboxOptions(ref, context.ownerID) ,
         node,
       );
     }
@@ -72,7 +72,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       focusPrev(
-        queryListboxOptions(ref, context.ownerID) as NodeListOf<HTMLElement>,
+        queryListboxOptions(ref, context.ownerID) ,
         node,
       );
     }
@@ -81,14 +81,14 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
   function setFirstChecked() {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      focusFirst(queryListboxOptions(ref, context.ownerID) as NodeListOf<HTMLElement>);
+      focusFirst(queryListboxOptions(ref, context.ownerID) );
     }
   }
 
   function setLastChecked() {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      focusLast(queryListboxOptions(ref, context.ownerID) as NodeListOf<HTMLElement>);
+      focusLast(queryListboxOptions(ref, context.ownerID) );
     }
   }
 
@@ -96,7 +96,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       focusMatch(
-        queryListboxOptions(ref, context.ownerID) as NodeListOf<HTMLElement>,
+        queryListboxOptions(ref, context.ownerID) ,
         character,
       );
     }
