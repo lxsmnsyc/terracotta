@@ -26,6 +26,13 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  focusFirst,
+  focusLast,
+  focusMatch,
+  focusNext,
+  focusPrev,
+} from '../../utils/focus-navigation';
+import {
   queryListboxOptions,
 } from '../../utils/query-nodes';
 import {
@@ -54,64 +61,44 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
   function setNextChecked(node: Element) {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      const options = queryListboxOptions(ref, context.ownerID);
-      for (let i = 0, len = options.length; i < len; i += 1) {
-        if (node === options[i]) {
-          if (i === len - 1) {
-            setChecked(options[0]);
-          } else {
-            setChecked(options[i + 1]);
-          }
-          break;
-        }
-      }
+      focusNext(
+        queryListboxOptions(ref, context.ownerID) as NodeListOf<HTMLElement>,
+        node,
+      );
     }
   }
 
   function setPrevChecked(node: Element) {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      const options = queryListboxOptions(ref, context.ownerID);
-      for (let i = 0, len = options.length; i < len; i += 1) {
-        if (node === options[i]) {
-          if (i === 0) {
-            setChecked(options[len - 1]);
-          } else {
-            setChecked(options[i - 1]);
-          }
-          break;
-        }
-      }
+      focusPrev(
+        queryListboxOptions(ref, context.ownerID) as NodeListOf<HTMLElement>,
+        node,
+      );
     }
   }
 
   function setFirstChecked() {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      const options = queryListboxOptions(ref, context.ownerID);
-      setChecked(options[0]);
+      focusFirst(queryListboxOptions(ref, context.ownerID) as NodeListOf<HTMLElement>);
     }
   }
 
   function setLastChecked() {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      const options = queryListboxOptions(ref, context.ownerID);
-      setChecked(options[options.length - 1]);
+      focusLast(queryListboxOptions(ref, context.ownerID) as NodeListOf<HTMLElement>);
     }
   }
 
   function setFirstMatch(character: string) {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      const options = queryListboxOptions(ref, context.ownerID);
-      const lower = character.toLowerCase();
-      for (let i = 0, l = options.length; i < l; i += 1) {
-        if (options[i].textContent?.toLowerCase().startsWith(lower)) {
-          setChecked(options[i]);
-          return;
-        }
-      }
+      focusMatch(
+        queryListboxOptions(ref, context.ownerID) as NodeListOf<HTMLElement>,
+        character,
+      );
     }
   }
 

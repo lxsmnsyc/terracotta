@@ -112,6 +112,6 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
           },
         ) as DynamicProps<T>,
       );
-    }
+    },
   });
 }

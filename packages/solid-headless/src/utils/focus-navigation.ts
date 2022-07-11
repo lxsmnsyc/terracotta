@@ -1,7 +1,10 @@
-import { DynamicNode, ValidConstructor } from "./dynamic-prop";
+import {
+  DynamicNode,
+  ValidConstructor,
+} from './dynamic-prop';
 
 export function focusNext<T extends ValidConstructor>(
-  nodes: HTMLElement[],
+  nodes: HTMLElement[] | NodeListOf<HTMLElement>,
   targetNode: DynamicNode<T>,
 ): void {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
@@ -17,7 +20,7 @@ export function focusNext<T extends ValidConstructor>(
 }
 
 export function focusPrev<T extends ValidConstructor>(
-  nodes: HTMLElement[],
+  nodes: HTMLElement[] | NodeListOf<HTMLElement>,
   targetNode: DynamicNode<T>,
 ): void {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
@@ -28,6 +31,31 @@ export function focusPrev<T extends ValidConstructor>(
         nodes[i - 1].focus();
       }
       break;
+    }
+  }
+}
+
+export function focusFirst(
+  nodes: HTMLElement[] | NodeListOf<HTMLElement>,
+): void {
+  nodes[0].focus();
+}
+
+export function focusLast(
+  nodes: HTMLElement[] | NodeListOf<HTMLElement>,
+): void {
+  nodes[nodes.length - 1].focus();
+}
+
+export function focusMatch(
+  nodes: HTMLElement[] | NodeListOf<HTMLElement>,
+  character: string,
+): void {
+  const lower = character.toLowerCase();
+  for (let i = 0, l = nodes.length; i < l; i += 1) {
+    if (nodes[i].textContent?.toLowerCase().startsWith(lower)) {
+      nodes[i].focus();
+      return;
     }
   }
 }

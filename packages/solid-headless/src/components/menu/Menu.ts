@@ -16,6 +16,13 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  focusFirst,
+  focusLast,
+  focusMatch,
+  focusNext,
+  focusPrev,
+} from '../../utils/focus-navigation';
+import {
   queryMenuItems,
 } from '../../utils/query-nodes';
 import {
@@ -37,60 +44,40 @@ export function Menu<T extends ValidConstructor = 'ul'>(
 
   function setNextChecked(node: Element) {
     if (internalRef instanceof HTMLElement) {
-      const items = queryMenuItems(internalRef, ownerID);
-      for (let i = 0, len = items.length; i < len; i += 1) {
-        if (node === items[i]) {
-          if (i === len - 1) {
-            setChecked(items[0]);
-          } else {
-            setChecked(items[i + 1]);
-          }
-          break;
-        }
-      }
+      focusNext(
+        queryMenuItems(internalRef, ownerID) as NodeListOf<HTMLElement>,
+        node,
+      );
     }
   }
 
   function setPrevChecked(node: Element) {
     if (internalRef instanceof HTMLElement) {
-      const items = queryMenuItems(internalRef, ownerID);
-      for (let i = 0, len = items.length; i < len; i += 1) {
-        if (node === items[i]) {
-          if (i === 0) {
-            setChecked(items[len - 1]);
-          } else {
-            setChecked(items[i - 1]);
-          }
-          break;
-        }
-      }
+      focusPrev(
+        queryMenuItems(internalRef, ownerID) as NodeListOf<HTMLElement>,
+        node,
+      );
     }
   }
 
   function setFirstChecked() {
     if (internalRef instanceof HTMLElement) {
-      const items = queryMenuItems(internalRef, ownerID);
-      setChecked(items[0]);
+      focusFirst(queryMenuItems(internalRef, ownerID) as NodeListOf<HTMLElement>);
     }
   }
 
   function setLastChecked() {
     if (internalRef instanceof HTMLElement) {
-      const items = queryMenuItems(internalRef, ownerID);
-      setChecked(items[items.length - 1]);
+      focusLast(queryMenuItems(internalRef, ownerID) as NodeListOf<HTMLElement>);
     }
   }
 
   function setFirstMatch(character: string) {
     if (internalRef instanceof HTMLElement) {
-      const items = queryMenuItems(internalRef, ownerID);
-      const lower = character.toLowerCase();
-      for (let i = 0, l = items.length; i < l; i += 1) {
-        if (items[i].textContent?.toLowerCase().startsWith(lower)) {
-          setChecked(items[i]);
-          return;
-        }
-      }
+      focusMatch(
+        queryMenuItems(internalRef, ownerID) as NodeListOf<HTMLElement>,
+        character,
+      );
     }
   }
 
