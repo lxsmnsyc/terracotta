@@ -3,7 +3,6 @@ import {
   createEffect,
   onCleanup,
   JSX,
-  createComponent,
   mergeProps,
 } from 'solid-js';
 import {
@@ -11,7 +10,6 @@ import {
 } from 'solid-use';
 import {
   HeadlessDisclosureChildProps,
-  HeadlessDisclosureChild,
   useHeadlessDisclosureProperties,
   createHeadlessDisclosureChildProps,
 } from '../../headless/disclosure';
