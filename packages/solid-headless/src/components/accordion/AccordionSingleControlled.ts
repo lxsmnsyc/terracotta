@@ -7,10 +7,9 @@ import {
   omitProps,
 } from 'solid-use';
 import {
-  HeadlessSelectRoot,
   HeadlessSelectRootChildren,
-  HeadlessSelectRootProps,
   HeadlessSelectSingleControlledOptions,
+  createHeadlessSelectRootSingleControlledProps,
 } from '../../headless/select';
 import createDynamic from '../../utils/create-dynamic';
 import {
@@ -61,22 +60,7 @@ export function AccordionSingleControlled<V, T extends ValidConstructor = 'div'>
             }),
           },
           createDisabled(() => props.disabled),
-          {
-            get children() {
-              return createComponent(HeadlessSelectRoot, {
-                get value() {
-                  return props.value;
-                },
-                get toggleable() {
-                  return props.toggleable;
-                },
-                get disabled() {
-                  return props.disabled;
-                },
-                onChange: props.onChange,
-              } as HeadlessSelectRootProps<V>);
-            },
-          },
+          createHeadlessSelectRootSingleControlledProps(props),
         ) as DynamicProps<T>,
       );
     },

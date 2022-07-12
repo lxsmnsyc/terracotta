@@ -15,6 +15,10 @@ export {
   HeadlessSelectRootChildren,
   HeadlessSelectRootProps,
   HeadlessSelectRootRenderProp,
+  createHeadlessSelectRootMultipleControlledProps,
+  createHeadlessSelectRootMultipleUncontrolledProps,
+  createHeadlessSelectRootSingleControlledProps,
+  createHeadlessSelectRootSingleUncontrolledProps,
 } from './HeadlessSelectRoot';
 export {
   HeadlessSelectOptions,

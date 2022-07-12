@@ -7,10 +7,9 @@ import {
   omitProps,
 } from 'solid-use';
 import {
-  HeadlessSelectRoot,
   HeadlessSelectRootChildren,
-  HeadlessSelectRootProps,
   HeadlessSelectMultipleUncontrolledOptions,
+  createHeadlessSelectRootMultipleUncontrolledProps,
 } from '../../headless/select';
 import createDynamic from '../../utils/create-dynamic';
 import {
@@ -62,23 +61,7 @@ export function AccordionMultipleUncontrolled<V, T extends ValidConstructor = 'd
             }),
           },
           createDisabled(() => props.disabled),
-          {
-            get children() {
-              return createComponent(HeadlessSelectRoot, {
-                multiple: true,
-                get defaultValue() {
-                  return props.defaultValue;
-                },
-                get toggleable() {
-                  return props.toggleable;
-                },
-                get disabled() {
-                  return props.disabled;
-                },
-                onChange: props.onChange,
-              } as HeadlessSelectRootProps<V>);
-            },
-          },
+          createHeadlessSelectRootMultipleUncontrolledProps(props),
         ) as DynamicProps<T>,
       );
     },
