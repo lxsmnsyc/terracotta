@@ -10,7 +10,7 @@ import {
   omitProps,
 } from 'solid-use';
 import {
-  HeadlessDisclosureChild,
+  createHeadlessDisclosureChildProps,
   HeadlessDisclosureChildProps,
   useHeadlessDisclosureProperties,
 } from '../../headless/disclosure';
@@ -94,14 +94,6 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
     },
     createDisabled(() => properties.disabled() || props.disabled),
     createExpanded(() => properties.isOpen()),
-    {
-      get children() {
-        return createComponent(HeadlessDisclosureChild, {
-          get children() {
-            return props.children;
-          },
-        });
-      },
-    },
+    createHeadlessDisclosureChildProps(props),
   ) as ButtonProps<T>);
 }

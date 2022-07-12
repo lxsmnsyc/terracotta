@@ -2,6 +2,7 @@ export {
   HeadlessDisclosureChild,
   HeadlessDisclosureChildProps,
   HeadlessDisclosureChildRenderProp,
+  createHeadlessDisclosureChildProps,
 } from './HeadlessDisclosureChild';
 export {
   useHeadlessDisclosureProperties,

@@ -1,15 +1,14 @@
 import {
   JSX,
   mergeProps,
-  createComponent,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use';
 import {
   HeadlessDisclosureChildProps,
-  HeadlessDisclosureChild,
   useHeadlessDisclosureProperties,
+  createHeadlessDisclosureChildProps,
 } from '../../headless/disclosure';
 import createDynamic from '../../utils/create-dynamic';
 import {
@@ -48,14 +47,8 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
         {
           id: context.panelID,
           'data-sh-disclosure-panel': context.ownerID,
-          get children() {
-            return createComponent(HeadlessDisclosureChild, {
-              get children() {
-                return props.children;
-              },
-            });
-          },
         },
+        createHeadlessDisclosureChildProps(props),
       ) as DynamicProps<T>,
     ),
   );

@@ -1,4 +1,5 @@
 import {
+  createComponent,
   createMemo,
   JSX,
 } from 'solid-js';
@@ -32,4 +33,18 @@ export function HeadlessDisclosureChild(props: HeadlessDisclosureChildProps): JS
     }
     return body;
   });
+}
+
+export function createHeadlessDisclosureChildProps(
+  props: HeadlessDisclosureChildProps,
+): HeadlessDisclosureChildProps {
+  return {
+    get children() {
+      return createComponent(HeadlessDisclosureChild, {
+        get children() {
+          return props.children;
+        },
+      });
+    },
+  };
 }

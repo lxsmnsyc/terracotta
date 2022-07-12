@@ -3,7 +3,6 @@ import {
   createEffect,
   onCleanup,
   JSX,
-  createComponent,
   mergeProps,
 } from 'solid-js';
 import {
@@ -13,6 +12,7 @@ import {
   HeadlessDisclosureChildProps,
   HeadlessDisclosureChild,
   useHeadlessDisclosureProperties,
+  createHeadlessDisclosureChildProps,
 } from '../../headless/disclosure';
 import createDynamic from '../../utils/create-dynamic';
 import {
@@ -66,14 +66,8 @@ export function AlertDialogOverlay<T extends ValidConstructor = 'div'>(
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),
-        get children() {
-          return createComponent(HeadlessDisclosureChild, {
-            get children() {
-              return props.children;
-            },
-          });
-        },
       },
+      createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,
   );
 }

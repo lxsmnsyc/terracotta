@@ -4,13 +4,12 @@ import {
   onCleanup,
   JSX,
   mergeProps,
-  createComponent,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use';
 import {
-  HeadlessDisclosureChild,
+  createHeadlessDisclosureChildProps,
   HeadlessDisclosureChildProps,
   useHeadlessDisclosureProperties,
 } from '../../headless/disclosure';
@@ -129,14 +128,8 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
           ref: createRef(props, (e) => {
             setInternalRef(() => e);
           }),
-          get children() {
-            return createComponent(HeadlessDisclosureChild, {
-              get children() {
-                return props.children;
-              },
-            });
-          },
         },
+        createHeadlessDisclosureChildProps(props),
       ) as DynamicProps<T>,
     ),
   );

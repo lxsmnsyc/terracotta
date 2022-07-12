@@ -1,5 +1,4 @@
 import {
-  createComponent,
   JSX,
   mergeProps,
 } from 'solid-js';
@@ -8,7 +7,7 @@ import {
 } from 'solid-use';
 import {
   HeadlessDisclosureChildProps,
-  HeadlessDisclosureChild,
+  createHeadlessDisclosureChildProps,
 } from '../../headless/disclosure';
 import createDynamic from '../../utils/create-dynamic';
 import {
@@ -37,14 +36,8 @@ export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
       {
         id: context.titleID,
         'data-sh-alert-dialog-title': context.ownerID,
-        get children() {
-          return createComponent(HeadlessDisclosureChild, {
-            get children() {
-              return props.children;
-            },
-          });
-        },
       },
+      createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,
   );
 }

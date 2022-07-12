@@ -8,9 +8,9 @@ import {
   omitProps,
 } from 'solid-use';
 import {
-  HeadlessDisclosureChild,
   HeadlessDisclosureRoot,
   HeadlessDisclosureControlledOptions,
+  createHeadlessDisclosureChildProps,
 } from '../../headless/disclosure';
 import createDynamic from '../../utils/create-dynamic';
 import {
@@ -96,14 +96,8 @@ export function CommandBarControlled<T extends ValidConstructor = 'div'>(
                     'aria-labelledby': titleID,
                     'aria-describedby': descriptionID,
                     'data-sh-command-bar': ownerID,
-                    get children() {
-                      return createComponent(HeadlessDisclosureChild, {
-                        get children() {
-                          return props.children;
-                        },
-                      });
-                    },
                   },
+                  createHeadlessDisclosureChildProps(props),
                 ) as DynamicProps<T>,
               ),
             );

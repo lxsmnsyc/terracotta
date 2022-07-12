@@ -13,8 +13,8 @@ import {
 } from 'solid-use';
 import {
   HeadlessDisclosureChildProps,
-  HeadlessDisclosureChild,
   useHeadlessDisclosureProperties,
+  createHeadlessDisclosureChildProps,
 } from '../../headless/disclosure';
 import {
   createRef,
@@ -80,14 +80,6 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
     },
     createDisabled(() => properties.disabled() || props.disabled),
     createExpanded(() => properties.isOpen()),
-    {
-      get children() {
-        return createComponent(HeadlessDisclosureChild, {
-          get children() {
-            return props.children;
-          },
-        });
-      },
-    },
+    createHeadlessDisclosureChildProps(props),
   ) as ButtonProps<T>);
 }

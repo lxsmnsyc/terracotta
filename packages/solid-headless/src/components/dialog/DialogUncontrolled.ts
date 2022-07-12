@@ -8,7 +8,7 @@ import {
   omitProps,
 } from 'solid-use';
 import {
-  HeadlessDisclosureChild,
+  createHeadlessDisclosureChildProps,
   HeadlessDisclosureRoot,
   HeadlessDisclosureUncontrolledOptions,
 } from '../../headless/disclosure';
@@ -94,14 +94,8 @@ export function DialogUncontrolled<T extends ValidConstructor = 'div'>(
                 'aria-labelledby': titleID,
                 'aria-describedby': descriptionID,
                 'data-sh-dialog': ownerID,
-                get children() {
-                  return createComponent(HeadlessDisclosureChild, {
-                    get children() {
-                      return props.children;
-                    },
-                  });
-                },
               },
+              createHeadlessDisclosureChildProps(props),
             ) as DynamicProps<T>,
           ),
         ),
