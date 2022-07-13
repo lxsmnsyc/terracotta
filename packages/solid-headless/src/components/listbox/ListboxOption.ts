@@ -15,8 +15,8 @@ import {
 } from '../../headless/disclosure';
 import {
   HeadlessSelectOptionProps,
-  HeadlessSelectOption,
   useHeadlessSelectProperties,
+  createHeadlessSelectOptionProps,
 } from '../../headless/select';
 import {
   createRef,
@@ -189,20 +189,6 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
     },
     createDisabled(() => props.disabled),
     createSelected(() => properties.isSelected(props.value)),
-    {
-      get children() {
-        return createComponent(HeadlessSelectOption, {
-          get value() {
-            return props.value;
-          },
-          get disabled() {
-            return props.disabled;
-          },
-          get children() {
-            return props.children;
-          },
-        });
-      },
-    },
+    createHeadlessSelectOptionProps(props),
   ) as ButtonProps<T>);
 }

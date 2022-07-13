@@ -1,5 +1,4 @@
 import {
-  createComponent,
   JSX,
   mergeProps,
 } from 'solid-js';
@@ -8,7 +7,7 @@ import {
 } from 'solid-use';
 import {
   HeadlessSelectOptionChildProps,
-  HeadlessSelectOptionChild,
+  createHeadlessSelectOptionChildProps,
 } from '../../headless/select';
 import createDynamic from '../../utils/create-dynamic';
 import {
@@ -30,15 +29,7 @@ export function AccordionHeader<T extends ValidConstructor = 'h3'>(
         'as',
         'children',
       ]),
-      {
-        get children() {
-          return createComponent(HeadlessSelectOptionChild, {
-            get children() {
-              return props.children;
-            },
-          });
-        },
-      },
+      createHeadlessSelectOptionChildProps(props),
     ) as DynamicProps<T>,
   );
 }

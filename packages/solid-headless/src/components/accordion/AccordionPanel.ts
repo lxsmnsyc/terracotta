@@ -1,13 +1,12 @@
 import {
   JSX,
-  createComponent,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use';
 import {
-  HeadlessSelectOptionChild,
+  createHeadlessSelectOptionChildProps,
   HeadlessSelectOptionChildProps,
   useHeadlessSelectOptionProperties,
 } from '../../headless/select';
@@ -48,14 +47,8 @@ export function AccordionPanel<T extends ValidConstructor = 'div'>(
         {
           id: context.panelID,
           'aria-labelledby': context.buttonID,
-          get children() {
-            return createComponent(HeadlessSelectOptionChild, {
-              get children() {
-                return props.children;
-              },
-            });
-          },
         },
+        createHeadlessSelectOptionChildProps(props),
       ) as DynamicProps<T>,
     ),
   );

@@ -10,9 +10,9 @@ import {
   omitProps,
 } from 'solid-use';
 import {
-  HeadlessSelectOptionChild,
   HeadlessSelectOptionChildProps,
   useHeadlessSelectOptionProperties,
+  createHeadlessSelectOptionChildProps,
 } from '../../headless/select';
 import {
   ValidConstructor,
@@ -118,14 +118,6 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
     },
     createDisabled(() => properties.disabled() || props.disabled),
     createExpanded(() => properties.isSelected()),
-    {
-      get children() {
-        return createComponent(HeadlessSelectOptionChild, {
-          get children() {
-            return props.children;
-          },
-        });
-      },
-    },
+    createHeadlessSelectOptionChildProps(props),
   ) as ButtonProps<T>);
 }

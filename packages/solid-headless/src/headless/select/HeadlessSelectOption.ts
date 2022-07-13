@@ -47,6 +47,26 @@ export function HeadlessSelectOption<T>(
   );
 }
 
+export function createHeadlessSelectOptionProps<T>(
+  props: HeadlessSelectOptionProps<T>,
+): { children?: HeadlessSelectOptionRenderProp | JSX.Element } {
+  return {
+    get children() {
+      return createComponent(HeadlessSelectOption, {
+        get value() {
+          return props.value;
+        },
+        get disabled() {
+          return props.disabled;
+        },
+        get children() {
+          return props.children;
+        },
+      });
+    },
+  };
+}
+
 export interface HeadlessSelectOptionChildProps {
   children?: HeadlessSelectOptionRenderProp | JSX.Element;
 }
@@ -62,4 +82,18 @@ export function HeadlessSelectOptionChild(
     }
     return body;
   });
+}
+
+export function createHeadlessSelectOptionChildProps(
+  props: HeadlessSelectOptionChildProps,
+): HeadlessSelectOptionChildProps {
+  return {
+    get children() {
+      return createComponent(HeadlessSelectOptionChild, {
+        get children() {
+          return props.children;
+        },
+      });
+    },
+  };
 }

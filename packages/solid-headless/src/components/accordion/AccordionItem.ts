@@ -8,7 +8,7 @@ import {
   omitProps,
 } from 'solid-use';
 import {
-  HeadlessSelectOption,
+  createHeadlessSelectOptionProps,
   HeadlessSelectOptionProps,
 } from '../../headless/select';
 import createDynamic from '../../utils/create-dynamic';
@@ -46,21 +46,7 @@ export function AccordionItem<V, T extends ValidConstructor = 'div'>(
             'disabled',
           ]),
           createDisabled(() => props.disabled),
-          {
-            get children() {
-              return createComponent(HeadlessSelectOption, {
-                get value() {
-                  return props.value;
-                },
-                get disabled() {
-                  return props.disabled;
-                },
-                get children() {
-                  return props.children;
-                },
-              });
-            },
-          },
+          createHeadlessSelectOptionProps(props),
         ) as DynamicProps<T>,
       );
     },

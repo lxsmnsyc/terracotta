@@ -9,6 +9,8 @@ export {
   HeadlessSelectOptionChildProps,
   HeadlessSelectOptionProps,
   HeadlessSelectOptionRenderProp,
+  createHeadlessSelectOptionProps,
+  createHeadlessSelectOptionChildProps,
 } from './HeadlessSelectOption';
 export {
   HeadlessSelectRoot,
