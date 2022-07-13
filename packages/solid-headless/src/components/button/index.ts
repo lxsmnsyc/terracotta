@@ -1,7 +1,6 @@
 import {
   createEffect,
   createSignal,
-  createUniqueId,
   onCleanup,
   JSX,
   mergeProps,
@@ -17,9 +16,12 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import { createTag } from '../../utils/namespace';
 import {
   createDisabled,
 } from '../../utils/state-props';
+
+const BUTTON_TAG = createTag('button');
 
 interface ButtonBaseProps {
   disabled?: boolean;
@@ -31,8 +33,6 @@ export type ButtonProps<T extends ValidConstructor = 'button'> =
 export function Button<T extends ValidConstructor = 'button'>(
   props: ButtonProps<T>,
 ): JSX.Element {
-  const buttonID = createUniqueId();
-
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   createEffect(() => {
@@ -58,7 +58,6 @@ export function Button<T extends ValidConstructor = 'button'>(
     () => props.as ?? ('button' as T),
     mergeProps(
       {
-        id: buttonID,
         tabindex: 0,
         role: 'button',
       },
@@ -68,11 +67,11 @@ export function Button<T extends ValidConstructor = 'button'>(
         'ref',
       ]),
       {
-        'data-sh-button': buttonID,
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),
       },
+      BUTTON_TAG,
     ) as DynamicProps<T>,
   );
 }
