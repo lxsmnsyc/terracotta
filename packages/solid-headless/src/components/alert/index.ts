@@ -12,6 +12,9 @@ import {
   HeadlessProps,
   DynamicProps,
 } from '../../utils/dynamic-prop';
+import { createTag } from '../../utils/namespace';
+
+const ALERT_TAG = createTag('alert');
 
 export type AlertProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
 
@@ -29,8 +32,8 @@ export function Alert<T extends ValidConstructor = 'div'>(
       omitProps(props, ['as']),
       {
         role: 'alert',
-        'data-sh-alert': alertID,
       },
+      ALERT_TAG,
     ) as DynamicProps<T>,
   );
 }
