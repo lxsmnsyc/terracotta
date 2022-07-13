@@ -25,6 +25,7 @@ import {
   AccordionContext,
   createAccordionFocusNavigator,
 } from './AccordionContext';
+import { ACCORDION_TAG } from './tags';
 
 type AccordionMultipleControlledBaseProps<V> =
   & HeadlessSelectMultipleControlledOptions<V>
@@ -55,11 +56,11 @@ export function AccordionMultipleControlled<V, T extends ValidConstructor = 'div
             'ref',
           ]),
           {
-            'data-sh-accordion': controller.getId(),
             ref: createRef(props, (e) => {
               controller.setRef(e);
             }),
           },
+          ACCORDION_TAG,
           createDisabled(() => props.disabled),
           createHeadlessSelectRootMultipleControlledProps(props),
         ) as DynamicProps<T>,

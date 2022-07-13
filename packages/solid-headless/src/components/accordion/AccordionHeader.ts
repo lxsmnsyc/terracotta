@@ -15,6 +15,7 @@ import {
   HeadlessProps,
   DynamicProps,
 } from '../../utils/dynamic-prop';
+import { ACCORDION_HEADER_TAG } from './tags';
 
 export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> =
   HeadlessProps<T, HeadlessSelectOptionChildProps>;
@@ -29,6 +30,7 @@ export function AccordionHeader<T extends ValidConstructor = 'h3'>(
         'as',
         'children',
       ]),
+      ACCORDION_HEADER_TAG,
       createHeadlessSelectOptionChildProps(props),
     ) as DynamicProps<T>,
   );

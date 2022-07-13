@@ -20,6 +20,7 @@ import {
   createRef,
   HeadlessPropsWithRef,
 } from '../../utils/dynamic-prop';
+import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
   createDisabled,
   createExpanded,
@@ -34,6 +35,7 @@ import {
 import {
   useAccordionItemContext,
 } from './AccordionItemContext';
+import { ACCORDION_BUTTON_TAG } from './tags';
 
 export type AccordionButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, HeadlessSelectOptionChildProps & ButtonProps<T>>;
@@ -111,11 +113,12 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
       ref: createRef(props, (e) => {
         setInternalRef(() => e);
       }),
-      'data-sh-accordion-button': rootContext.getId(),
       get 'aria-controls'() {
         return properties.isSelected() && itemContext.panelID;
       },
     },
+    ACCORDION_BUTTON_TAG,
+    createOwnerAttribute(rootContext.getId()),
     createDisabled(() => properties.disabled() || props.disabled),
     createExpanded(() => properties.isSelected()),
     createHeadlessSelectOptionChildProps(props),

@@ -20,9 +20,11 @@ import {
 import {
   createDisabled,
 } from '../../utils/state-props';
+import { useAccordionContext } from './AccordionContext';
 import {
   AccordionItemContext,
 } from './AccordionItemContext';
+import { ACCORDION_ITEM_TAG } from './tags';
 
 export type AccordionItemProps<V, T extends ValidConstructor = 'div'> =
   HeadlessProps<T, HeadlessSelectOptionProps<V>>;
@@ -30,6 +32,7 @@ export type AccordionItemProps<V, T extends ValidConstructor = 'div'> =
 export function AccordionItem<V, T extends ValidConstructor = 'div'>(
   props: AccordionItemProps<V, T>,
 ): JSX.Element {
+  useAccordionContext('AccordionItem');
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
 
@@ -45,6 +48,7 @@ export function AccordionItem<V, T extends ValidConstructor = 'div'>(
             'value',
             'disabled',
           ]),
+          ACCORDION_ITEM_TAG,
           createDisabled(() => props.disabled),
           createHeadlessSelectOptionProps(props),
         ) as DynamicProps<T>,

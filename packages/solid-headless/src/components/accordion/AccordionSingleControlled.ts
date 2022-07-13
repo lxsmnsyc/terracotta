@@ -25,6 +25,7 @@ import {
   AccordionContext,
   createAccordionFocusNavigator,
 } from './AccordionContext';
+import { ACCORDION_TAG } from './tags';
 
 export type AccordionSingleControlledBaseProps<V> =
   & HeadlessSelectSingleControlledOptions<V>
@@ -54,11 +55,11 @@ export function AccordionSingleControlled<V, T extends ValidConstructor = 'div'>
             'ref',
           ]),
           {
-            'data-sh-accordion': controller.getId(),
             ref: createRef(props, (e) => {
               controller.setRef(e);
             }),
           },
+          ACCORDION_TAG,
           createDisabled(() => props.disabled),
           createHeadlessSelectRootSingleControlledProps(props),
         ) as DynamicProps<T>,

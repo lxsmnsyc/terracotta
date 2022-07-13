@@ -23,6 +23,7 @@ import {
 import {
   useAccordionItemContext,
 } from './AccordionItemContext';
+import { ACCORDION_PANEL_TAG } from './tags';
 
 export type AccordionPanelProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, HeadlessSelectOptionChildProps & UnmountableProps>;
@@ -48,6 +49,7 @@ export function AccordionPanel<T extends ValidConstructor = 'div'>(
           id: context.panelID,
           'aria-labelledby': context.buttonID,
         },
+        ACCORDION_PANEL_TAG,
         createHeadlessSelectOptionChildProps(props),
       ) as DynamicProps<T>,
     ),
