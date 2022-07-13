@@ -17,6 +17,7 @@ import {
 import {
   useCheckboxContext,
 } from './CheckboxContext';
+import { CHECKBOX_DESCRIPTION } from './tags';
 
 export type CheckboxDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, HeadlessToggleChildProps>;
@@ -32,9 +33,9 @@ export function CheckboxDescription<T extends ValidConstructor = 'p'>(
         'as',
         'children',
       ]),
+      CHECKBOX_DESCRIPTION,
       {
         id: context.descriptionID,
-        'data-sh-checkbox-description': context.ownerID,
       },
     ) as DynamicProps<T>,
   );

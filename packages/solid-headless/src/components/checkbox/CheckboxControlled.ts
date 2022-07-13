@@ -25,6 +25,7 @@ import {
 import {
   CheckboxContext,
 } from './CheckboxContext';
+import { CHECKBOX_TAG } from './tags';
 
 export type CheckboxControlledBaseProps =
   & HeadlessToggleControlledOptions
@@ -59,9 +60,7 @@ export function CheckboxControlled<T extends ValidConstructor = typeof Fragment>
             'disabled',
             'onChange',
           ]),
-          {
-            'data-sh-checkbox': ownerID,
-          },
+          CHECKBOX_TAG,
           createDisabled(() => props.disabled),
           {
             get children() {

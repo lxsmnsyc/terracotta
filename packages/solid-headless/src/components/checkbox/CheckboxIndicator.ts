@@ -31,6 +31,7 @@ import {
 import {
   useCheckboxContext,
 } from './CheckboxContext';
+import { CHECKBOX_INDICATOR } from './tags';
 
 export type CheckboxIndicatorProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, HeadlessToggleChildProps>;
@@ -74,13 +75,13 @@ export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
     {
       id: context.indicatorID,
       role: 'checkbox',
-      'data-sh-checkbox-indicator': context.ownerID,
       'aria-labelledby': context.labelID,
       'aria-describedby': context.descriptionID,
       ref: createRef(props, (e) => {
         setInternalRef(() => e);
       }),
     },
+    CHECKBOX_INDICATOR,
     createDisabled(() => state.disabled()),
     createChecked(() => state.checked()),
     {

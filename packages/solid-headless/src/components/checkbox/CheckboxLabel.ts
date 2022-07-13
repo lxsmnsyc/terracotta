@@ -17,6 +17,7 @@ import {
 import {
   useCheckboxContext,
 } from './CheckboxContext';
+import { CHECKBOX_LABEL } from './tags';
 
 export type CheckboxLabelProps<T extends ValidConstructor = 'label'> =
   HeadlessProps<T, HeadlessToggleChildProps>;
@@ -32,10 +33,10 @@ export function CheckboxLabel<T extends ValidConstructor = 'label'>(
         'as',
         'children',
       ]),
+      CHECKBOX_LABEL,
       {
         id: context.labelID,
         for: context.indicatorID,
-        'data-sh-checkbox-label': context.ownerID,
         get children() {
           return props.children;
         },
