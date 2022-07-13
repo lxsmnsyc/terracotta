@@ -26,6 +26,7 @@ import getFocusableElements from '../../utils/get-focusable-elements';
 import {
   useAlertDialogContext,
 } from './AlertDialogContext';
+import { ALERT_DIALOG_PANEL } from './tags';
 
 export type AlertDialogPanelProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
@@ -88,11 +89,11 @@ export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
       ]),
       {
         id: context.panelID,
-        'data-sh-alert-dialog-panel': context.ownerID,
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),
       },
+      ALERT_DIALOG_PANEL,
       createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,
   );

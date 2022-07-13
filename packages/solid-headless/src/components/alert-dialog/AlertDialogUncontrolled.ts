@@ -25,6 +25,7 @@ import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   AlertDialogContext,
 } from './AlertDialogContext';
+import { ALERT_DIALOG_TAG } from './tags';
 import {
   AlertDialogBaseProps,
 } from './types';
@@ -93,8 +94,8 @@ export function AlertDialogUncontrolled<T extends ValidConstructor = 'div'>(
                 'aria-modal': true,
                 'aria-labelledby': titleID,
                 'aria-describedby': descriptionID,
-                'data-sh-alert-dialog': ownerID,
               },
+              ALERT_DIALOG_TAG,
               createHeadlessDisclosureChildProps(props),
             ) as DynamicProps<T>,
           ),

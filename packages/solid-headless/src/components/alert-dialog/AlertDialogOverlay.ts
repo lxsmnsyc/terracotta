@@ -24,6 +24,7 @@ import {
 import {
   useAlertDialogContext,
 } from './AlertDialogContext';
+import { ALERT_DIALOG_OVERLAY } from './tags';
 
 export type AlertDialogOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
@@ -31,7 +32,7 @@ export type AlertDialogOverlayProps<T extends ValidConstructor = 'div'> =
 export function AlertDialogOverlay<T extends ValidConstructor = 'div'>(
   props: AlertDialogOverlayProps<T>,
 ): JSX.Element {
-  const context = useAlertDialogContext('AlertDialogOverlay');
+  useAlertDialogContext('AlertDialogOverlay');
   const properties = useHeadlessDisclosureProperties();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -61,11 +62,11 @@ export function AlertDialogOverlay<T extends ValidConstructor = 'div'>(
         'ref',
       ]),
       {
-        'data-sh-alert-dialog-overlay': context.ownerID,
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),
       },
+      ALERT_DIALOG_OVERLAY,
       createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,
   );

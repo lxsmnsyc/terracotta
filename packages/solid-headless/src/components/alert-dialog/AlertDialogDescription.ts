@@ -18,6 +18,7 @@ import {
 import {
   useAlertDialogContext,
 } from './AlertDialogContext';
+import { ALERT_DIALOG_DESCRIPTION } from './tags';
 
 export type AlertDialogDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, HeadlessDisclosureChildProps>;
@@ -35,8 +36,8 @@ export function AlertDialogDescription<T extends ValidConstructor = 'p'>(
       ]),
       {
         id: context.descriptionID,
-        'data-sh-alert-dialog-description': context.ownerID,
       },
+      ALERT_DIALOG_DESCRIPTION,
       createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,
   );
