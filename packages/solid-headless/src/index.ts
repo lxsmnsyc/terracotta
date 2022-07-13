@@ -17,3 +17,4 @@ export * from './components/menu';
 export * from './components/popover';
 export * from './components/radio-group';
 export * from './components/select';
+export * from './components/toast';
