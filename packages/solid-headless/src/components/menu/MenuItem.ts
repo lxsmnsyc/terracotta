@@ -113,7 +113,7 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
       {
         role: 'menuitem',
         tabindex: -1,
-        'data-sh-menu-item': context.ownerID,
+        'data-sh-menu-item': context.getId(),
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),

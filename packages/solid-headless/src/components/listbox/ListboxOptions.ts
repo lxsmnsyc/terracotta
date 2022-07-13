@@ -26,20 +26,13 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
-  focusFirst,
-  focusLast,
-  focusMatch,
-  focusNext,
-  focusPrev,
-} from '../../utils/focus-navigation';
-import {
-  queryListboxOptions,
-} from '../../utils/query-nodes';
-import { createDisabled } from '../../utils/state-props';
+  createDisabled,
+} from '../../utils/state-props';
 import {
   useListboxContext,
 } from './ListboxContext';
 import {
+  createListboxOptionsFocusNavigator,
   ListboxOptionsContext,
 } from './ListboxOptionsContext';
 
@@ -55,57 +48,11 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
-  function setChecked(node: Element) {
-    (node as HTMLElement).focus();
-  }
-
-  function setNextChecked(node: Element) {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      focusNext(
-        queryListboxOptions(ref, context.ownerID),
-        node,
-      );
-    }
-  }
-
-  function setPrevChecked(node: Element) {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      focusPrev(
-        queryListboxOptions(ref, context.ownerID),
-        node,
-      );
-    }
-  }
-
-  function setFirstChecked() {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      focusFirst(queryListboxOptions(ref, context.ownerID));
-    }
-  }
-
-  function setLastChecked() {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      focusLast(queryListboxOptions(ref, context.ownerID));
-    }
-  }
-
-  function setFirstMatch(character: string) {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      focusMatch(
-        queryListboxOptions(ref, context.ownerID),
-        character,
-      );
-    }
-  }
+  const controller = createListboxOptionsFocusNavigator(context.ownerID);
 
   createEffect(() => {
     if (!selectProperties.hasSelected()) {
-      setFirstChecked();
+      controller.setFirstChecked();
     }
   });
 
@@ -128,14 +75,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
   });
 
   return createComponent(ListboxOptionsContext.Provider, {
-    value: {
-      setChecked,
-      setFirstChecked,
-      setLastChecked,
-      setNextChecked,
-      setPrevChecked,
-      setFirstMatch,
-    },
+    value: controller,
     get children() {
       return createDynamic(
         () => props.as ?? ('ul' as T),
@@ -154,6 +94,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
             tabindex: 0,
             ref: createRef(props, (e) => {
               setInternalRef(() => e);
+              controller.setRef(e);
             }),
             get 'aria-orientation'() {
               return context.horizontal ? 'horizontal' : 'vertical';

@@ -123,7 +123,7 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
             role: 'radio',
             'aria-labelledby': labelID,
             'aria-describedby': descriptionID,
-            'data-sh-radio-option': context.ownerID,
+            'data-sh-radio-group-option': context.getId(),
             ref: createRef(props, (e) => {
               setInternalRef(() => e);
             }),

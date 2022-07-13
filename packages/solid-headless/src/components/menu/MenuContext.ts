@@ -1,25 +1,26 @@
 import {
   createContext,
+  createUniqueId,
   useContext,
 } from 'solid-js';
+import { ValidConstructor } from '../../utils/dynamic-prop';
+import FocusNavigator from '../../utils/focus-navigator';
 
-interface MenuContext {
-  ownerID: string;
-  setChecked: (node: Element) => void;
-  setPrevChecked: (node: Element) => void;
-  setNextChecked: (node: Element) => void;
-  setFirstChecked: () => void;
-  setLastChecked: () => void;
-  setFirstMatch: (character: string) => void;
-}
+export const MENU_ITEM_TAG = 'menu-item';
 
-export const MenuContext = createContext<MenuContext>();
+export const MenuContext = createContext<FocusNavigator<any>>();
 
-export function useMenuContext(componentName: string): MenuContext {
+export function useMenuContext<T extends ValidConstructor>(
+  componentName: string,
+): FocusNavigator<T> {
   const context = useContext(MenuContext);
 
   if (context) {
     return context;
   }
   throw new Error(`<${componentName}> must be used inside a <Menu>`);
+}
+
+export function createMenuItemFocusNavigator<T extends ValidConstructor>(): FocusNavigator<T> {
+  return new FocusNavigator(MENU_ITEM_TAG, createUniqueId());
 }

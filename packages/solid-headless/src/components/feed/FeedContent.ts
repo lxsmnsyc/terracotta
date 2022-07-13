@@ -18,9 +18,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
-  queryFeedArticles,
-} from '../../utils/query-nodes';
-import {
+  createFeedArticleFocusNavigator,
   FeedContentContext,
 } from './FeedContentContext';
 import {
@@ -29,42 +27,13 @@ import {
 
 export type FeedContentProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<T>;
 
-function setChecked(node: Element) {
-  (node as HTMLElement).focus();
-}
-
 export function FeedContent<T extends ValidConstructor = 'div'>(
   props: FeedContentProps<T>,
 ): JSX.Element {
   const context = useFeedContext('FeedContent');
+  const controller = createFeedArticleFocusNavigator(context.ownerID);
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
-
-  function focusNext(node: Element) {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      const articles = queryFeedArticles(ref, context.ownerID);
-      for (let i = 0, len = articles.length; i < len; i += 1) {
-        if (node === articles[i] && i + 1 < len) {
-          setChecked(articles[i + 1]);
-          break;
-        }
-      }
-    }
-  }
-
-  function focusPrev(node: Element) {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      const articles = queryFeedArticles(ref, context.ownerID);
-      for (let i = 0, len = articles.length; i < len; i += 1) {
-        if (node === articles[i] && i - 1 >= 0) {
-          setChecked(articles[i - 1]);
-          break;
-        }
-      }
-    }
-  }
 
   createEffect(() => {
     const ref = internalRef();
@@ -92,7 +61,7 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
   });
 
   return createComponent(FeedContentContext.Provider, {
-    value: { focusNext, focusPrev },
+    value: controller,
     get children() {
       return createDynamic(
         () => props.as ?? ('div' as T),
@@ -108,6 +77,7 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
             },
             ref: createRef<T>(props, (e) => {
               setInternalRef(() => e);
+              controller.setRef(e);
             }),
           },
         ) as DynamicProps<T>,

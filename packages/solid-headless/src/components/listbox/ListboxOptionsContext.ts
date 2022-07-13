@@ -2,23 +2,26 @@ import {
   createContext,
   useContext,
 } from 'solid-js';
+import { ValidConstructor } from '../../utils/dynamic-prop';
+import FocusNavigator from '../../utils/focus-navigator';
 
-interface ListboxOptionsContext {
-  setChecked: (node: Element) => void;
-  setPrevChecked: (node: Element) => void;
-  setNextChecked: (node: Element) => void;
-  setFirstChecked: () => void;
-  setLastChecked: () => void;
-  setFirstMatch: (character: string) => void;
-}
+export const LISTBOX_OPTION_TAG = 'listbox-option';
 
-export const ListboxOptionsContext = createContext<ListboxOptionsContext>();
+export const ListboxOptionsContext = createContext<FocusNavigator<any>>();
 
-export function useListboxOptionsContext(componentName: string): ListboxOptionsContext {
+export function useListboxOptionsContext<T extends ValidConstructor>(
+  componentName: string,
+): FocusNavigator<T> {
   const context = useContext(ListboxOptionsContext);
 
   if (context) {
     return context;
   }
   throw new Error(`<${componentName}> must be used inside a <ListboxOptions>`);
+}
+
+export function createListboxOptionsFocusNavigator<T extends ValidConstructor>(
+  owner: string,
+) {
+  return new FocusNavigator<T>(LISTBOX_OPTION_TAG, owner);
 }

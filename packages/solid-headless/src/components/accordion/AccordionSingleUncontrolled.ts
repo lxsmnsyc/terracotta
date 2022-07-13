@@ -23,8 +23,8 @@ import {
 } from '../../utils/state-props';
 import {
   AccordionContext,
+  createAccordionFocusNavigator,
 } from './AccordionContext';
-import AccordionController from './AccordionController';
 
 export type AccordionSingleUncontrolledBaseProps<V> =
   & HeadlessSelectSingleUncontrolledOptions<V>
@@ -36,7 +36,7 @@ export type AccordionSingleUncontrolledProps<V, T extends ValidConstructor = 'di
 export function AccordionSingleUncontrolled<V, T extends ValidConstructor = 'div'>(
   props: AccordionSingleUncontrolledProps<V, T>,
 ): JSX.Element {
-  const controller = new AccordionController<T>();
+  const controller = createAccordionFocusNavigator();
 
   return createComponent(AccordionContext.Provider, {
     value: controller,

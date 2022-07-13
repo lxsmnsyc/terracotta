@@ -1,22 +1,27 @@
 import {
   createContext,
+  createUniqueId,
   useContext,
 } from 'solid-js';
+import { ValidConstructor } from '../../utils/dynamic-prop';
+import FocusNavigator from '../../utils/focus-navigator';
 
-interface RadioGroupRootContext {
-  ownerID: string;
-  setChecked: (node: Element) => void;
-  setPrevChecked: (node: Element) => void;
-  setNextChecked: (node: Element) => void;
-}
+export const RADIO_GROUP_OPTION_TAG = 'radio-group-option';
 
-export const RadioGroupRootContext = createContext<RadioGroupRootContext>();
+export const RadioGroupRootContext = createContext<FocusNavigator<any>>();
 
-export function useRadioGroupRootContext(componentName: string): RadioGroupRootContext {
+export function useRadioGroupRootContext<T extends ValidConstructor>(
+  componentName: string,
+): FocusNavigator<T> {
   const context = useContext(RadioGroupRootContext);
 
   if (context) {
     return context;
   }
   throw new Error(`<${componentName}> must be used inside a <RadioGroup>`);
+}
+
+export function createRadioGroupOptionFocusNavigator
+  <T extends ValidConstructor>(): FocusNavigator<T> {
+  return new FocusNavigator(RADIO_GROUP_OPTION_TAG, createUniqueId());
 }

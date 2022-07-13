@@ -3,6 +3,30 @@ import {
   ValidConstructor,
 } from './dynamic-prop';
 
+export function focusNextContinuous<T extends ValidConstructor>(
+  nodes: HTMLElement[] | NodeListOf<HTMLElement>,
+  targetNode: DynamicNode<T>,
+): void {
+  for (let i = 0, len = nodes.length; i < len; i += 1) {
+    if (targetNode === nodes[i] && i + 1 < len) {
+      nodes[i + 1].focus();
+      break;
+    }
+  }
+}
+
+export function focusPrevContinuous<T extends ValidConstructor>(
+  nodes: HTMLElement[] | NodeListOf<HTMLElement>,
+  targetNode: DynamicNode<T>,
+): void {
+  for (let i = 0, len = nodes.length; i < len; i += 1) {
+    if (targetNode === nodes[i] && i - 1 >= 0) {
+      nodes[i - 1].focus();
+      break;
+    }
+  }
+}
+
 export function focusNext<T extends ValidConstructor>(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
   targetNode: DynamicNode<T>,
