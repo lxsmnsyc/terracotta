@@ -44,7 +44,7 @@ type SelectMultipleUncontrolledBaseProps<V> =
   & HeadlessSelectMultipleUncontrolledOptions<V>
   & HeadlessSelectRootChildren<V>;
 
-export type SelectMultipleUncontrolledProps<V, T extends ValidConstructor = 'div'> =
+export type SelectMultipleUncontrolledProps<V, T extends ValidConstructor = 'ul'> =
   HeadlessPropsWithRef<T, SelectMultipleUncontrolledBaseProps<V>>;
 
 export function SelectMultipleUncontrolled<V, T extends ValidConstructor = 'ul'>(

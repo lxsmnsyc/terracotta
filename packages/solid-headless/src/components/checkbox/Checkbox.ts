@@ -5,6 +5,7 @@ import {
 import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import Fragment from '../../utils/Fragment';
 import {
   CheckboxControlled,
   CheckboxControlledProps,
@@ -14,17 +15,17 @@ import {
   CheckboxUncontrolledProps,
 } from './CheckboxUncontrolled';
 
-export type CheckboxProps<T extends ValidConstructor = 'div'> =
+export type CheckboxProps<T extends ValidConstructor = typeof Fragment> =
   | CheckboxControlledProps<T>
   | CheckboxUncontrolledProps<T>;
 
-function isCheckboxUncontrolled<T extends ValidConstructor = 'div'>(
+function isCheckboxUncontrolled<T extends ValidConstructor = typeof Fragment>(
   props: CheckboxProps<T>,
 ): props is CheckboxUncontrolledProps<T> {
   return 'defaultChecked' in props;
 }
 
-export function Checkbox<T extends ValidConstructor = 'div'>(
+export function Checkbox<T extends ValidConstructor = typeof Fragment>(
   props: CheckboxProps<T>,
 ): JSX.Element {
   if (isCheckboxUncontrolled(props)) {

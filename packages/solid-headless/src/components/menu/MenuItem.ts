@@ -28,7 +28,7 @@ import {
   useMenuContext,
 } from './MenuContext';
 
-export type MenuItemProps<T extends ValidConstructor = 'div'> =
+export type MenuItemProps<T extends ValidConstructor = 'li'> =
   HeadlessPropsWithRef<T, MenuChildProps>;
 
 export function MenuItem<T extends ValidConstructor = 'li'>(

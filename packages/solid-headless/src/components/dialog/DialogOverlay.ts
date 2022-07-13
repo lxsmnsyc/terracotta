@@ -28,7 +28,7 @@ import {
 export type DialogOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
 
-export function DialogOverlay<T extends ValidConstructor = 'p'>(
+export function DialogOverlay<T extends ValidConstructor = 'div'>(
   props: DialogOverlayProps<T>,
 ): JSX.Element {
   const context = useDialogContext('DialogOverlay');

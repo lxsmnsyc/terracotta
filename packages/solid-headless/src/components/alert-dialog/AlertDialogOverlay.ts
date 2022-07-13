@@ -10,7 +10,6 @@ import {
 } from 'solid-use';
 import {
   HeadlessDisclosureChildProps,
-  HeadlessDisclosureChild,
   useHeadlessDisclosureProperties,
   createHeadlessDisclosureChildProps,
 } from '../../headless/disclosure';

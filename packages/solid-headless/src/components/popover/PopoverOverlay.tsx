@@ -28,7 +28,7 @@ import {
 export type PopoverOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
 
-export function PopoverOverlay<T extends ValidConstructor = 'p'>(
+export function PopoverOverlay<T extends ValidConstructor = 'div'>(
   props: PopoverOverlayProps<T>,
 ): JSX.Element {
   const context = usePopoverContext('PopoverOverlay');
