@@ -1,0 +1,34 @@
+import {
+  JSX, mergeProps,
+} from 'solid-js';
+import {
+  omitProps,
+} from 'solid-use';
+import createDynamic from '../../utils/create-dynamic';
+import {
+  DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  useRadioGroupContext,
+} from './RadioGroupContext';
+
+export type RadioGroupDescriptionProps<T extends ValidConstructor = 'div'> =
+  HeadlessProps<T>;
+
+export function RadioGroupDescription<T extends ValidConstructor = 'div'>(
+  props: RadioGroupDescriptionProps<T>,
+): JSX.Element {
+  const context = useRadioGroupContext('RadioGroupDescription');
+
+  return createDynamic(
+    () => props.as ?? ('div' as T),
+    mergeProps(
+      omitProps(props, ['as']),
+      {
+        id: context.descriptionID,
+      },
+    ) as DynamicProps<T>,
+  );
+}
