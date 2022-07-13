@@ -11,25 +11,30 @@ import {
   focusNextContinuous,
   focusPrevContinuous,
 } from './focus-navigation';
+import { DATA_SET_NAMESPACE } from './namespace';
+
+const OWNER = `${DATA_SET_NAMESPACE}-owner`;
 
 function queryNodes<T extends Element>(
   el: T,
-  tag: string,
   ownerID: string,
 ): NodeListOf<HTMLElement> {
-  return el.querySelectorAll(`[data-sh-${tag}="${ownerID}"]`);
+  return el.querySelectorAll(`[${OWNER}="${ownerID}"]`);
+}
+
+export function createOwnerAttribute(ownerID: string) {
+  return {
+    [OWNER]: ownerID,
+  };
 }
 
 export default class FocusNavigator<T extends ValidConstructor> {
   private ownerID: string;
 
-  private tag: string;
-
   private internalRef?: DynamicNode<T>;
 
-  constructor(tag: string, ownerID: string) {
+  constructor(ownerID: string) {
     this.ownerID = ownerID;
-    this.tag = tag;
   }
 
   setRef(ref: DynamicNode<T>) {
@@ -37,7 +42,7 @@ export default class FocusNavigator<T extends ValidConstructor> {
   }
 
   private query(ref: HTMLElement) {
-    return queryNodes(ref, this.tag, this.ownerID);
+    return queryNodes(ref, this.ownerID);
   }
 
   // eslint-disable-next-line class-methods-use-this
