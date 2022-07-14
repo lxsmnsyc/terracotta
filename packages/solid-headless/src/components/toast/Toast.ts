@@ -11,6 +11,7 @@ import {
   HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import { TOAST_TAG } from './tags';
 import {
   useToastContext,
 } from './ToastContext';
@@ -21,7 +22,7 @@ export type ToastProps<T extends ValidConstructor = 'div'> =
 export function Toast<T extends ValidConstructor = 'div'>(
   props: ToastProps<T>,
 ): JSX.Element {
-  const ctx = useToastContext('Toast');
+  useToastContext('Toast');
 
   return createDynamic(
     () => props.as ?? ('div' as T),
@@ -29,10 +30,10 @@ export function Toast<T extends ValidConstructor = 'div'>(
       omitProps(props, [
         'as',
       ]),
+      TOAST_TAG,
       {
         role: 'status',
         'aria-live': 'polite',
-        'data-sh-toast': ctx.ownerID,
       },
     ) as DynamicProps<T>,
   );

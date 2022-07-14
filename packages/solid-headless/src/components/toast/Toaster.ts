@@ -13,6 +13,7 @@ import {
   HeadlessProps,
   DynamicProps,
 } from '../../utils/dynamic-prop';
+import { TOASTER_TAG } from './tags';
 import {
   ToastContext,
 } from './ToastContext';
@@ -36,9 +37,7 @@ export function Toaster<T extends ValidConstructor = 'div'>(
           omitProps(props, [
             'as',
           ]),
-          {
-            'data-sh-toaster': ownerID,
-          },
+          TOASTER_TAG,
         ) as DynamicProps<T>,
       );
     },
