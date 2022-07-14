@@ -25,6 +25,7 @@ import {
   createDisabled,
   createExpanded,
 } from '../../utils/state-props';
+import { OmitAndMerge } from '../../utils/types';
 import {
   ButtonProps,
   Button,
@@ -38,7 +39,7 @@ import {
 import { ACCORDION_BUTTON_TAG } from './tags';
 
 export type AccordionButtonProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<T, HeadlessSelectOptionChildProps & ButtonProps<T>>;
+  HeadlessPropsWithRef<T, OmitAndMerge<HeadlessSelectOptionChildProps, ButtonProps<T>>>;
 
 export function AccordionButton<T extends ValidConstructor = 'button'>(
   props: AccordionButtonProps<T>,

@@ -29,6 +29,7 @@ import {
   createDisabled,
   createSelected,
 } from '../../utils/state-props';
+import { OmitAndMerge } from '../../utils/types';
 import {
   Button,
   ButtonProps,
@@ -42,7 +43,7 @@ import {
 import { LISTBOX_OPTION_TAG } from './tags';
 
 export type ListboxOptionProps<V, T extends ValidConstructor = 'li'> =
-  HeadlessPropsWithRef<T, ButtonProps<T> & HeadlessSelectOptionProps<V>>;
+  HeadlessPropsWithRef<T, OmitAndMerge<HeadlessSelectOptionProps<V>, ButtonProps<T>>>;
 
 export function ListboxOption<V, T extends ValidConstructor = 'li'>(
   props: ListboxOptionProps<V, T>,

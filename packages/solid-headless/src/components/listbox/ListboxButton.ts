@@ -24,6 +24,7 @@ import {
   createDisabled,
   createExpanded,
 } from '../../utils/state-props';
+import { OmitAndMerge } from '../../utils/types';
 import {
   Button, ButtonProps,
 } from '../button';
@@ -33,7 +34,7 @@ import {
 import { LISTBOX_BUTTON_TAG } from './tags';
 
 export type ListboxButtonProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps & ButtonProps<T>>;
+  HeadlessPropsWithRef<T, OmitAndMerge<HeadlessDisclosureChildProps, ButtonProps<T>>>;
 
 export function ListboxButton<T extends ValidConstructor = 'button'>(
   props: ListboxButtonProps<T>,

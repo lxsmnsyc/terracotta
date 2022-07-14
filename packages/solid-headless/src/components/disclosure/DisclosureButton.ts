@@ -26,6 +26,7 @@ import {
   createDisabled,
   createExpanded,
 } from '../../utils/state-props';
+import { OmitAndMerge } from '../../utils/types';
 import {
   ButtonProps,
   Button,
@@ -36,7 +37,7 @@ import {
 import { DISCLOSURE_BUTTON_TAG } from './tags';
 
 export type DisclosureButtonProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps & ButtonProps<T>>;
+  HeadlessPropsWithRef<T, OmitAndMerge<HeadlessDisclosureChildProps, ButtonProps<T>>>;
 
 export function DisclosureButton<T extends ValidConstructor = 'button'>(
   props: DisclosureButtonProps<T>,

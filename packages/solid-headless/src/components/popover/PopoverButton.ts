@@ -24,6 +24,7 @@ import {
   createDisabled,
   createExpanded,
 } from '../../utils/state-props';
+import { OmitAndMerge } from '../../utils/types';
 import {
   Button,
   ButtonProps,
@@ -34,7 +35,7 @@ import {
 import { POPOVER_BUTTON_TAG } from './tags';
 
 export type PopoverButtonProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<T, ButtonProps<T> & HeadlessDisclosureChildProps>;
+  HeadlessPropsWithRef<T, OmitAndMerge<HeadlessDisclosureChildProps, ButtonProps<T>>>;
 
 export function PopoverButton<T extends ValidConstructor = 'button'>(
   props: PopoverButtonProps<T>,

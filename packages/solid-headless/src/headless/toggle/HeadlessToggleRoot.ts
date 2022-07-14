@@ -3,7 +3,6 @@ import {
   createMemo,
   JSX,
 } from 'solid-js';
-import { NonLazyElement } from '../../utils/types';
 import {
   HeadlessToggleContext,
 } from './HeadlessToggleContext';
@@ -18,13 +17,13 @@ export type HeadlessToggleRootRenderProp = (
 );
 
 function isHeadlessToggleRootRenderProp(
-  children: HeadlessToggleRootRenderProp | NonLazyElement,
+  children: JSX.Element | HeadlessToggleRootRenderProp,
 ): children is HeadlessToggleRootRenderProp {
   return typeof children === 'function' && children.length > 0;
 }
 
 export interface HeadlessToggleRootChildren {
-  children?: HeadlessToggleRootRenderProp | NonLazyElement;
+  children?: JSX.Element | HeadlessToggleRootRenderProp;
 }
 
 export type HeadlessToggleRootProps = HeadlessToggleOptions & HeadlessToggleRootChildren;

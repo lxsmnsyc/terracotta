@@ -17,6 +17,7 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import { OmitAndMerge } from '../../utils/types';
 import {
   Button,
   ButtonProps,
@@ -29,7 +30,7 @@ interface ToggleUncontrolledBaseProps {
 }
 
 export type ToggleUncontrolledProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<T, ButtonProps<T> & ToggleUncontrolledBaseProps>;
+  HeadlessPropsWithRef<T, OmitAndMerge<ToggleUncontrolledBaseProps, ButtonProps<T>>>;
 
 export function ToggleUncontrolled<T extends ValidConstructor = 'button'>(
   props: ToggleUncontrolledProps<T>,

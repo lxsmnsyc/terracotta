@@ -22,6 +22,7 @@ import {
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import { createDisabled, createSelected } from '../../utils/state-props';
+import { OmitAndMerge } from '../../utils/types';
 import {
   Button,
   ButtonProps,
@@ -32,7 +33,7 @@ import {
 import { SELECT_OPTION_TAG } from './tags';
 
 export type SelectOptionProps<V, T extends ValidConstructor = 'li'> =
-  HeadlessPropsWithRef<T, HeadlessSelectOptionProps<V> & ButtonProps<T>>;
+  HeadlessPropsWithRef<T, OmitAndMerge<HeadlessSelectOptionProps<V>, ButtonProps<T>>>;
 
 export function SelectOption<V, T extends ValidConstructor = 'li'>(
   props: SelectOptionProps<V, T>,
