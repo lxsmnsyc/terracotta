@@ -6,8 +6,6 @@ import {
 import { ValidConstructor } from '../../utils/dynamic-prop';
 import FocusNavigator from '../../utils/focus-navigator';
 
-export const RADIO_GROUP_OPTION_TAG = 'radio-group-option';
-
 export const RadioGroupRootContext = createContext<FocusNavigator<any>>();
 
 export function useRadioGroupRootContext<T extends ValidConstructor>(
@@ -23,5 +21,5 @@ export function useRadioGroupRootContext<T extends ValidConstructor>(
 
 export function createRadioGroupOptionFocusNavigator
   <T extends ValidConstructor>(): FocusNavigator<T> {
-  return new FocusNavigator(RADIO_GROUP_OPTION_TAG, createUniqueId());
+  return new FocusNavigator(createUniqueId());
 }

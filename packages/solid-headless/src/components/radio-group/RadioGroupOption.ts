@@ -23,6 +23,7 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
   createChecked,
   createDisabled,
@@ -33,6 +34,7 @@ import {
 import {
   useRadioGroupRootContext,
 } from './RadioGroupRootContext';
+import { RADIO_GROUP_OPTION_TAG } from './tags';
 
 export type RadioGroupOptionProps<V, T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessSelectOptionProps<V>>;
@@ -119,11 +121,12 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
             'disabled',
             'ref',
           ]),
+          RADIO_GROUP_OPTION_TAG,
+          createOwnerAttribute(context.getId()),
           {
             role: 'radio',
             'aria-labelledby': labelID,
             'aria-describedby': descriptionID,
-            'data-sh-radio-group-option': context.getId(),
             ref: createRef(props, (e) => {
               setInternalRef(() => e);
             }),

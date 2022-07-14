@@ -13,6 +13,7 @@ import {
 import {
   useRadioGroupContext,
 } from './RadioGroupContext';
+import { RADIO_GROUP_LABEL_TAG } from './tags';
 
 export type RadioGroupLabelProps<T extends ValidConstructor = 'label'> =
   HeadlessProps<T>;
@@ -26,6 +27,7 @@ export function RadioGroupLabel<T extends ValidConstructor = 'label'>(
     () => props.as ?? ('label' as T),
     mergeProps(
       omitProps(props, ['as']),
+      RADIO_GROUP_LABEL_TAG,
       {
         id: context.labelID,
       },

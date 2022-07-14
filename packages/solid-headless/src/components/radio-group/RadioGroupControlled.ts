@@ -31,6 +31,7 @@ import {
   createRadioGroupOptionFocusNavigator,
   RadioGroupRootContext,
 } from './RadioGroupRootContext';
+import { RADIO_GROUP_TAG } from './tags';
 
 export type RadioGroupControlledProps<V, T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<
@@ -65,9 +66,9 @@ export function RadioGroupControlled<V, T extends ValidConstructor = 'div'>(
                 'onChange',
                 'ref',
               ]),
+              RADIO_GROUP_TAG,
               {
                 role: 'radiogroup',
-                'data-sh-radio-group': controller.getId(),
                 'aria-labelledby': labelID,
                 'aria-describedby': descriptionID,
                 ref: createRef(props, (e) => {

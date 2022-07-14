@@ -13,6 +13,7 @@ import {
 import {
   useRadioGroupContext,
 } from './RadioGroupContext';
+import { RADIO_GROUP_DESCRIPTION_TAG } from './tags';
 
 export type RadioGroupDescriptionProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T>;
@@ -26,6 +27,7 @@ export function RadioGroupDescription<T extends ValidConstructor = 'div'>(
     () => props.as ?? ('div' as T),
     mergeProps(
       omitProps(props, ['as']),
+      RADIO_GROUP_DESCRIPTION_TAG,
       {
         id: context.descriptionID,
       },
