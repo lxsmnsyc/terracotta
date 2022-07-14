@@ -1,6 +1,5 @@
 import {
   createSignal,
-  createUniqueId,
   createEffect,
   onCleanup,
   createComponent,
@@ -21,6 +20,7 @@ import {
   Button,
   ButtonProps,
 } from '../button';
+import { TOGGLE_TAG } from './tags';
 
 interface ToggleControlledBaseProps {
   pressed: boolean;
@@ -33,8 +33,6 @@ export type ToggleControlledProps<T extends ValidConstructor = 'button'> =
 export function ToggleControlled<T extends ValidConstructor = 'button'>(
   props: ToggleControlledProps<T>,
 ): JSX.Element {
-  const toggleID = createUniqueId();
-
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
   createEffect(() => {
@@ -57,8 +55,8 @@ export function ToggleControlled<T extends ValidConstructor = 'button'>(
       'pressed',
       'ref',
     ]),
+    TOGGLE_TAG,
     {
-      'data-sh-toggle': toggleID,
       get 'aria-pressed'() {
         return props.pressed;
       },
