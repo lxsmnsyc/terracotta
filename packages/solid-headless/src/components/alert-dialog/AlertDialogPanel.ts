@@ -87,13 +87,13 @@ export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
         'children',
         'ref',
       ]),
+      ALERT_DIALOG_PANEL,
       {
         id: context.panelID,
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),
       },
-      ALERT_DIALOG_PANEL,
       createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,
   );

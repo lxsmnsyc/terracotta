@@ -72,6 +72,7 @@ export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
       'children',
       'ref',
     ]),
+    CHECKBOX_INDICATOR,
     {
       id: context.indicatorID,
       role: 'checkbox',
@@ -81,7 +82,6 @@ export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
         setInternalRef(() => e);
       }),
     },
-    CHECKBOX_INDICATOR,
     createDisabled(() => state.disabled()),
     createChecked(() => state.checked()),
     {

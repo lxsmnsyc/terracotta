@@ -88,6 +88,7 @@ export function AlertDialogControlled<T extends ValidConstructor = 'div'>(
                 'onClose',
                 'onChange',
               ]),
+              ALERT_DIALOG_TAG,
               {
                 id: ownerID,
                 role: 'alertdialog',
@@ -95,7 +96,6 @@ export function AlertDialogControlled<T extends ValidConstructor = 'div'>(
                 'aria-labelledby': titleID,
                 'aria-describedby': descriptionID,
               },
-              ALERT_DIALOG_TAG,
               createHeadlessDisclosureChildProps(props),
             ) as DynamicProps<T>,
           ),

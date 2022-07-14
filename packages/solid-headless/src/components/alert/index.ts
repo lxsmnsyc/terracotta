@@ -30,10 +30,10 @@ export function Alert<T extends ValidConstructor = 'div'>(
         id: alertID,
       },
       omitProps(props, ['as']),
+      ALERT_TAG,
       {
         role: 'alert',
       },
-      ALERT_TAG,
     ) as DynamicProps<T>,
   );
 }

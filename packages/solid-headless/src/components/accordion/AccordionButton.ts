@@ -108,6 +108,7 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
 
   return createComponent(Button, mergeProps(
     omitProps(props, ['children', 'ref', 'disabled']),
+    ACCORDION_BUTTON_TAG,
     {
       id: itemContext.buttonID,
       ref: createRef(props, (e) => {
@@ -117,7 +118,6 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
         return properties.isSelected() && itemContext.panelID;
       },
     },
-    ACCORDION_BUTTON_TAG,
     createOwnerAttribute(rootContext.getId()),
     createDisabled(() => properties.disabled() || props.disabled),
     createExpanded(() => properties.isSelected()),

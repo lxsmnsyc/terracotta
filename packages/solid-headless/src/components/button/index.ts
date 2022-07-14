@@ -66,12 +66,12 @@ export function Button<T extends ValidConstructor = 'button'>(
         'as',
         'ref',
       ]),
+      BUTTON_TAG,
       {
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),
       },
-      BUTTON_TAG,
     ) as DynamicProps<T>,
   );
 }

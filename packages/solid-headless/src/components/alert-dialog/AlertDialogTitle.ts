@@ -34,10 +34,10 @@ export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
         'as',
         'children',
       ]),
+      ALERT_DIALOG_TITLE,
       {
         id: context.titleID,
       },
-      ALERT_DIALOG_TITLE,
       createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,
   );

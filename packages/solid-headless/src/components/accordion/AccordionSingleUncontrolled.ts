@@ -54,12 +54,12 @@ export function AccordionSingleUncontrolled<V, T extends ValidConstructor = 'div
             'defaultValue',
             'ref',
           ]),
+          ACCORDION_TAG,
           {
             ref: createRef(props, (e) => {
               controller.setRef(e);
             }),
           },
-          ACCORDION_TAG,
           createDisabled(() => props.disabled),
           createHeadlessSelectRootSingleUncontrolledProps(props),
         ) as DynamicProps<T>,

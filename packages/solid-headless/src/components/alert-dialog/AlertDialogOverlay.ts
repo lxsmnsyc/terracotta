@@ -61,12 +61,12 @@ export function AlertDialogOverlay<T extends ValidConstructor = 'div'>(
         'children',
         'ref',
       ]),
+      ALERT_DIALOG_OVERLAY,
       {
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),
       },
-      ALERT_DIALOG_OVERLAY,
       createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,
   );

@@ -55,12 +55,12 @@ export function AccordionMultipleControlled<V, T extends ValidConstructor = 'div
             'multiple',
             'ref',
           ]),
+          ACCORDION_TAG,
           {
             ref: createRef(props, (e) => {
               controller.setRef(e);
             }),
           },
-          ACCORDION_TAG,
           createDisabled(() => props.disabled),
           createHeadlessSelectRootMultipleControlledProps(props),
         ) as DynamicProps<T>,
