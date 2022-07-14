@@ -71,8 +71,8 @@ export function PopoverUncontrolled<T extends ValidConstructor = 'div'>(
           {
             get children() {
               return createComponent(HeadlessDisclosureRoot, {
-                get isOpen() {
-                  return props.isOpen;
+                get defaultOpen() {
+                  return props.defaultOpen;
                 },
                 get disabled() {
                   return props.disabled;
