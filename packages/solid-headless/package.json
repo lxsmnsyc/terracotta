@@ -6,11 +6,11 @@
   "exports": {
     ".": {
       "development": {
-        "require": "./dist/cjs/development/index.jsx",
-        "import": "./dist/esm/development/index.jsx"
+        "require": "./dist/cjs/development/index.js",
+        "import": "./dist/esm/development/index.js"
       },
-      "require": "./dist/cjs/production/index.jsx",
-      "import": "./dist/esm/production/index.jsx",
+      "require": "./dist/cjs/production/index.js",
+      "import": "./dist/esm/production/index.js",
       "types": "./dist/types/index.d.ts"
     }
   },
