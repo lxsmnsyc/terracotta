@@ -4,13 +4,13 @@ import {
 } from 'solid-js';
 
 export interface HeadlessToggleControlledOptions {
-  checked: boolean;
+  checked: boolean | undefined;
   disabled?: boolean;
   onChange?: (state?: boolean) => void;
 }
 
 export interface HeadlessToggleUncontrolledOptions {
-  defaultChecked: boolean;
+  defaultChecked: boolean | undefined;
   disabled?: boolean;
   onChange?: (state?: boolean) => void;
 }

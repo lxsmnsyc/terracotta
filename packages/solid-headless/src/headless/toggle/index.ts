@@ -1,7 +1,7 @@
 export {
   HeadlessToggleChild,
   HeadlessToggleChildProps,
-  HeadlessToggleChildRenderProp,  
+  HeadlessToggleChildRenderProp,
 } from './HeadlessToggleChild';
 export {
   useHeadlessToggleProperties,
