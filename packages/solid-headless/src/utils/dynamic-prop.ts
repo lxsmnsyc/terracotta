@@ -3,7 +3,7 @@ import { OmitAndMerge } from './types';
 
 export type ValidElements = keyof JSX.IntrinsicElements;
 export type ValidComponent<P> = (props: P) => JSX.Element;
-export type ValidConstructor = ValidElements | ValidComponent<any>;
+export type ValidConstructor = ValidElements | ValidComponent<any> | string;
 
 export type DynamicProps<T extends ValidConstructor> =
   T extends ValidElements
