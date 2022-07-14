@@ -29,6 +29,7 @@ import {
 import {
   usePopoverContext,
 } from './PopoverContext';
+import { POPOVER_PANEL_TAG } from './tags';
 
 export type PopoverPanelProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps & UnmountableProps>;
@@ -122,9 +123,9 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
           'children',
           'ref',
         ]),
+        POPOVER_PANEL_TAG,
         {
           id: context.panelID,
-          'data-sh-popover-panel': context.ownerID,
           ref: createRef(props, (e) => {
             setInternalRef(() => e);
           }),

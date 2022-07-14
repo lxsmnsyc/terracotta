@@ -25,6 +25,7 @@ import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   PopoverContext,
 } from './PopoverContext';
+import { POPOVER_TAG } from './tags';
 import {
   PopoverBaseProps,
 } from './types';
@@ -65,9 +66,7 @@ export function PopoverUncontrolled<T extends ValidConstructor = 'div'>(
             'disabled',
             'onChange',
           ]),
-          {
-            'data-sh-popover': ownerID,
-          },
+          POPOVER_TAG,
           createDisabled(() => props.disabled),
           {
             get children() {

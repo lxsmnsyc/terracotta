@@ -31,6 +31,7 @@ import {
 import {
   usePopoverContext,
 } from './PopoverContext';
+import { POPOVER_BUTTON_TAG } from './tags';
 
 export type PopoverButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, ButtonProps<T> & HeadlessDisclosureChildProps>;
@@ -79,9 +80,9 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
       'children',
       'ref',
     ]),
+    POPOVER_BUTTON_TAG,
     {
       id: context.buttonID,
-      'data-sh-popover-button': context.ownerID,
       ref: createRef(props, (e) => {
         setInternalRef(() => e);
         if (e instanceof HTMLElement) {

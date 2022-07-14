@@ -24,6 +24,7 @@ import {
 import {
   usePopoverContext,
 } from './PopoverContext';
+import { POPOVER_OVERLAY_TAG } from './tags';
 
 export type PopoverOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
@@ -31,7 +32,7 @@ export type PopoverOverlayProps<T extends ValidConstructor = 'div'> =
 export function PopoverOverlay<T extends ValidConstructor = 'div'>(
   props: PopoverOverlayProps<T>,
 ): JSX.Element {
-  const context = usePopoverContext('PopoverOverlay');
+  usePopoverContext('PopoverOverlay');
   const properties = useHeadlessDisclosureProperties();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -59,8 +60,8 @@ export function PopoverOverlay<T extends ValidConstructor = 'div'>(
         'children',
         'ref',
       ]),
+      POPOVER_OVERLAY_TAG,
       {
-        'data-sh-popover-overlay': context.ownerID,
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),
