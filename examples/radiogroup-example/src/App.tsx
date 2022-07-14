@@ -5,7 +5,6 @@ import {
   RadioGroupOption,
 } from 'solid-headless';
 import {
-  createEffect,
   createSignal,
   JSX,
   For,
@@ -92,9 +91,11 @@ export default function App() {
                                 class={`inline ${checked() ? 'text-sky-100' : 'text-gray-500'}`}
                               >
                                 <span>
-                                  {plan.ram}/{plan.cpus}
-                                </span>{' '}
-                                <span aria-hidden="true">&middot;</span>{' '}
+                                  {`${plan.ram}/${plan.cpus}`}
+                                </span>
+                                {' '}
+                                <span aria-hidden="true">&middot;</span>
+                                {' '}
                                 <span>{plan.disk}</span>
                               </RadioGroupDescription>
                             </div>
