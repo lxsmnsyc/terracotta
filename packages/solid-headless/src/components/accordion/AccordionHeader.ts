@@ -15,6 +15,7 @@ import {
   HeadlessProps,
   DynamicProps,
 } from '../../utils/dynamic-prop';
+import { useAccordionItemContext } from './AccordionItemContext';
 import { ACCORDION_HEADER_TAG } from './tags';
 
 export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> =
@@ -23,6 +24,7 @@ export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> =
 export function AccordionHeader<T extends ValidConstructor = 'h3'>(
   props: AccordionHeaderProps<T>,
 ): JSX.Element {
+  useAccordionItemContext('AccordionHeader');
   return createDynamic<T>(
     () => props.as ?? ('h3' as T),
     mergeProps(
