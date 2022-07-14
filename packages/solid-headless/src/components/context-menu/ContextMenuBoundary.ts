@@ -28,6 +28,7 @@ import {
 import {
   useContextMenuContext,
 } from './ContextMenuContext';
+import { CONTEXT_MENU_BOUNDARY_TAG } from './tags';
 
 export type ContextMenuBoundaryProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
@@ -66,9 +67,9 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
         'children',
         'ref',
       ]),
+      CONTEXT_MENU_BOUNDARY_TAG,
       {
         id: context.boundaryID,
-        'data-sh-context-menu-boundary': context.ownerID,
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
           if (e instanceof HTMLElement) {

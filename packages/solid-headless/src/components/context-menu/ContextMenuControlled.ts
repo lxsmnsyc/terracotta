@@ -24,6 +24,7 @@ import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   ContextMenuContext,
 } from './ContextMenuContext';
+import { CONTEXT_MENU_TAG } from './tags';
 import {
   ContextMenuBaseProps,
 } from './types';
@@ -63,9 +64,7 @@ export function ContextMenuControlled<T extends ValidConstructor = 'div'>(
             'onOpen',
             'onClose',
           ]),
-          {
-            'data-sh-context-menu': ownerID,
-          },
+          CONTEXT_MENU_TAG,
           createDisabled(() => props.disabled),
           {
             get children() {

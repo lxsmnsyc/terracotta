@@ -33,6 +33,7 @@ import {
 import {
   useContextMenuContext,
 } from './ContextMenuContext';
+import { CONTEXT_MENU_PANEL_TAG } from './tags';
 
 export type ContextMenuPanelProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps & UnmountableProps>;
@@ -100,9 +101,9 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
           'children',
           'ref',
         ]),
+        CONTEXT_MENU_PANEL_TAG,
         {
           id: context.panelID,
-          'data-sh-context-menu-panel': context.ownerID,
           ref: createRef(props, (e) => {
             setInternalRef(() => e);
           }),

@@ -24,6 +24,7 @@ import {
 import {
   useContextMenuContext,
 } from './ContextMenuContext';
+import { CONTEXT_MENU_OVERLAY_TAG } from './tags';
 
 export type ContextMenuOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
@@ -31,7 +32,7 @@ export type ContextMenuOverlayProps<T extends ValidConstructor = 'div'> =
 export function ContextMenuOverlay<T extends ValidConstructor = 'div'>(
   props: ContextMenuOverlayProps<T>,
 ): JSX.Element {
-  const context = useContextMenuContext('ContextMenuOverlay');
+  useContextMenuContext('ContextMenuOverlay');
   const properties = useHeadlessDisclosureProperties();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -59,8 +60,8 @@ export function ContextMenuOverlay<T extends ValidConstructor = 'div'>(
         'children',
         'ref',
       ]),
+      CONTEXT_MENU_OVERLAY_TAG,
       {
-        'data-sh-context-menu-overlay': context.ownerID,
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),
