@@ -3,7 +3,11 @@ import { OmitAndMerge } from './types';
 
 export type ValidElements = keyof JSX.IntrinsicElements;
 export type ValidComponent<P> = (props: P) => JSX.Element;
-export type ValidConstructor = ValidElements | ValidComponent<any> | string;
+export type ValidConstructor =
+  | ValidElements
+  | ValidComponent<any>
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  | (string & {});
 
 export type DynamicProps<T extends ValidConstructor> =
   T extends ValidElements
@@ -11,7 +15,7 @@ export type DynamicProps<T extends ValidConstructor> =
     :
   T extends ValidComponent<infer U>
     ? U
-    : never;
+    : Record<string, unknown>;
 
 type UnboxIntrinsicElements<T> =
   T extends JSX.HTMLAttributes<infer U>
