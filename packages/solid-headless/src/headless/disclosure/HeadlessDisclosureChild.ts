@@ -3,6 +3,7 @@ import {
   createMemo,
   JSX,
 } from 'solid-js';
+import { NonLazyElement } from '../../utils/types';
 import {
   useHeadlessDisclosureProperties,
 } from './HeadlessDisclosureContext';
@@ -15,13 +16,13 @@ export type HeadlessDisclosureChildRenderProp = (
 );
 
 function isHeadlessDisclosureChildRenderProp(
-  children: HeadlessDisclosureChildRenderProp | JSX.Element,
+  children: HeadlessDisclosureChildRenderProp | NonLazyElement,
 ): children is HeadlessDisclosureChildRenderProp {
   return typeof children === 'function' && children.length > 0;
 }
 
 export interface HeadlessDisclosureChildProps {
-  children?: HeadlessDisclosureChildRenderProp | JSX.Element;
+  children?: HeadlessDisclosureChildRenderProp | NonLazyElement;
 }
 
 export function HeadlessDisclosureChild(props: HeadlessDisclosureChildProps): JSX.Element {

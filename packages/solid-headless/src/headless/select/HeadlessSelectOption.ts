@@ -3,6 +3,7 @@ import {
   createMemo,
   JSX,
 } from 'solid-js';
+import { NonLazyElement } from '../../utils/types';
 import {
   HeadlessSelectOptionContext,
   HeadlessSelectOptionProperties,
@@ -15,7 +16,7 @@ export type HeadlessSelectOptionRenderProp = (
 );
 
 function isHeadlessSelectOptionRenderProp(
-  children: HeadlessSelectOptionRenderProp | JSX.Element,
+  children: HeadlessSelectOptionRenderProp | NonLazyElement,
 ): children is HeadlessSelectOptionRenderProp {
   return typeof children === 'function' && children.length > 0;
 }
@@ -23,7 +24,7 @@ function isHeadlessSelectOptionRenderProp(
 export interface HeadlessSelectOptionProps<T> {
   value: T;
   disabled?: boolean,
-  children?: HeadlessSelectOptionRenderProp | JSX.Element;
+  children?: HeadlessSelectOptionRenderProp | NonLazyElement;
 }
 
 export function HeadlessSelectOption<T>(
@@ -49,7 +50,7 @@ export function HeadlessSelectOption<T>(
 
 export function createHeadlessSelectOptionProps<T>(
   props: HeadlessSelectOptionProps<T>,
-): { children?: HeadlessSelectOptionRenderProp | JSX.Element } {
+): { children?: HeadlessSelectOptionRenderProp | NonLazyElement } {
   return {
     get children() {
       return createComponent(HeadlessSelectOption, {
@@ -68,7 +69,7 @@ export function createHeadlessSelectOptionProps<T>(
 }
 
 export interface HeadlessSelectOptionChildProps {
-  children?: HeadlessSelectOptionRenderProp | JSX.Element;
+  children?: HeadlessSelectOptionRenderProp | NonLazyElement;
 }
 
 export function HeadlessSelectOptionChild(

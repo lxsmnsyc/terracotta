@@ -18,19 +18,20 @@ import {
   HeadlessSelectSingleControlledOptions,
   HeadlessSelectSingleUncontrolledOptions,
 } from './useHeadlessSelectSingle';
+import { NonLazyElement } from '../../utils/types';
 
 export type HeadlessSelectRootRenderProp<T> = (
   (properties: HeadlessSelectProperties<T>) => JSX.Element
 );
 
 function isHeadlessSelectRootRenderProp<T>(
-  children: HeadlessSelectRootRenderProp<T> | JSX.Element,
+  children: HeadlessSelectRootRenderProp<T> | NonLazyElement,
 ): children is HeadlessSelectRootRenderProp<T> {
   return typeof children === 'function' && children.length > 0;
 }
 
 export interface HeadlessSelectRootChildren<T> {
-  children?: HeadlessSelectRootRenderProp<T> | JSX.Element;
+  children?: HeadlessSelectRootRenderProp<T> | NonLazyElement;
 }
 
 export type HeadlessSelectRootProps<T> = HeadlessSelectRootChildren<T> & HeadlessSelectOptions<T>;

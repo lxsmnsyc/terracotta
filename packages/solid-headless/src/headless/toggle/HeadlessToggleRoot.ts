@@ -2,6 +2,7 @@ import {
   createComponent,
   JSX,
 } from 'solid-js';
+import { NonLazyElement } from '../../utils/types';
 import {
   HeadlessToggleContext,
 } from './HeadlessToggleContext';
@@ -16,13 +17,13 @@ export type HeadlessToggleRootRenderProp = (
 );
 
 function isHeadlessToggleRootRenderProp(
-  children: HeadlessToggleRootRenderProp | JSX.Element,
+  children: HeadlessToggleRootRenderProp | NonLazyElement,
 ): children is HeadlessToggleRootRenderProp {
   return typeof children === 'function' && children.length > 0;
 }
 
 export interface HeadlessToggleRootChildren {
-  children?: HeadlessToggleRootRenderProp | JSX.Element;
+  children?: HeadlessToggleRootRenderProp | NonLazyElement;
 }
 
 export type HeadlessToggleRootProps = HeadlessToggleOptions & HeadlessToggleRootChildren;

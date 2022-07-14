@@ -1,6 +1,7 @@
 import {
   JSX,
 } from 'solid-js';
+import { NonLazyElement } from '../../utils/types';
 import {
   HeadlessDisclosureContext,
 } from './HeadlessDisclosureContext';
@@ -15,13 +16,13 @@ export type HeadlessDisclosureRootRenderProp = (
 );
 
 function isHeadlessDisclosureRootRenderProp(
-  children: HeadlessDisclosureRootRenderProp | JSX.Element,
+  children: HeadlessDisclosureRootRenderProp | NonLazyElement,
 ): children is HeadlessDisclosureRootRenderProp {
   return typeof children === 'function' && children.length > 0;
 }
 
 export interface HeadlessDisclosureRootChildren {
-  children?: HeadlessDisclosureRootRenderProp | JSX.Element;
+  children?: HeadlessDisclosureRootRenderProp | NonLazyElement;
 }
 
 export type HeadlessDisclosureRootProps =
