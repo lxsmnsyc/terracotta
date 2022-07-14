@@ -18,6 +18,7 @@ import {
 import {
   useCommandBarContext,
 } from './CommandBarContext';
+import { COMMAND_BAR_TITLE_TAG } from './tags';
 
 export type CommandBarTitleProps<T extends ValidConstructor = 'h2'> =
   HeadlessProps<T, HeadlessDisclosureChildProps>;
@@ -33,9 +34,9 @@ export function CommandBarTitle<T extends ValidConstructor = 'h2'>(
         'as',
         'children',
       ]),
+      COMMAND_BAR_TITLE_TAG,
       {
         id: context.titleID,
-        'data-sh-command-bar-title': context.ownerID,
       },
       createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,

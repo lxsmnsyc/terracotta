@@ -26,6 +26,7 @@ import getFocusableElements from '../../utils/get-focusable-elements';
 import {
   useCommandBarContext,
 } from './CommandBarContext';
+import { COMMAND_BAR_PANEL_TAG } from './tags';
 
 export type CommandBarPanelProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
@@ -86,9 +87,9 @@ export function CommandBarPanel<T extends ValidConstructor = 'div'>(
         'children',
         'ref',
       ]),
+      COMMAND_BAR_PANEL_TAG,
       {
         id: context.panelID,
-        'data-sh-command-bar-panel': context.ownerID,
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),

@@ -24,6 +24,7 @@ import {
 import {
   useCommandBarContext,
 } from './CommandBarContext';
+import { COMMAND_BAR_OVERLAY_TAG } from './tags';
 
 export type CommandBarOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
@@ -31,7 +32,7 @@ export type CommandBarOverlayProps<T extends ValidConstructor = 'div'> =
 export function CommandBarOverlay<T extends ValidConstructor = 'p'>(
   props: CommandBarOverlayProps<T>,
 ): JSX.Element {
-  const context = useCommandBarContext('CommandBarOverlay');
+  useCommandBarContext('CommandBarOverlay');
   const properties = useHeadlessDisclosureProperties();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -60,8 +61,8 @@ export function CommandBarOverlay<T extends ValidConstructor = 'p'>(
         'children',
         'ref',
       ]),
+      COMMAND_BAR_OVERLAY_TAG,
       {
-        'data-sh-command-bar-overlay': context.ownerID,
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),

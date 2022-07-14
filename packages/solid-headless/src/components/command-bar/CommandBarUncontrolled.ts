@@ -26,6 +26,7 @@ import {
   CommandBarContext,
 } from './CommandBarContext';
 import CommandBarEvents from './CommandBarEvents';
+import { COMMAND_BAR_TAG } from './tags';
 import {
   CommandBarBaseProps,
 } from './types';
@@ -89,13 +90,13 @@ export function CommandBarUncontrolled<T extends ValidConstructor = 'div'>(
                     'onClose',
                     'onChange',
                   ]),
+                  COMMAND_BAR_TAG,
                   {
                     id: ownerID,
                     role: 'dialog',
                     'aria-modal': true,
                     'aria-labelledby': titleID,
                     'aria-describedby': descriptionID,
-                    'data-sh-command-bar': ownerID,
                   },
                   createHeadlessDisclosureChildProps(props),
                 ) as DynamicProps<T>,
