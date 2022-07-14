@@ -1,24 +1,25 @@
 import {
+  createComponent,
   createContext,
   createEffect,
   createSignal,
-  Show,
-  useContext,
   JSX,
+  mergeProps,
+  splitProps,
+  useContext,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
 import {
   omitProps,
 } from 'solid-use';
+import createDynamic from '../../utils/create-dynamic';
 import {
   createRef,
   DynamicNode,
   DynamicProps,
+  HeadlessPropsWithRef,
   ValidConstructor,
-  WithRef,
-} from '../utils/dynamic-prop';
+} from '../../utils/dynamic-prop';
+import { createUnmountable } from '../../utils/Unmountable';
 
 interface TransitionRootContext {
   show: boolean;
@@ -35,8 +36,7 @@ function useTransitionRootContext(componentName: string): TransitionRootContext 
   throw new Error(`<${componentName}> must be used inside a <Transition>`);
 }
 
-export type TransitionBaseChildProps<T extends ValidConstructor = 'div'> = {
-  as?: T;
+interface TransitionBaseChildProps {
   unmount?: boolean;
   appear?: boolean;
   enter?: string;
@@ -50,7 +50,11 @@ export type TransitionBaseChildProps<T extends ValidConstructor = 'div'> = {
   afterEnter?: () => void;
   beforeLeave?: () => void;
   afterLeave?: () => void;
-};
+}
+
+function getClassList(classes?: string): string[] {
+  return classes ? classes.split(' ') : [];
+}
 
 function addClassList(ref: HTMLElement, classes: string[]) {
   const filtered = classes.filter((value) => value);
@@ -66,9 +70,7 @@ function removeClassList(ref: HTMLElement, classes: string[]) {
 }
 
 export type TransitionChildProps<T extends ValidConstructor = 'div'> =
-  TransitionBaseChildProps<T>
-    & WithRef<T>
-    & Omit<DynamicProps<T>, keyof TransitionBaseChildProps<T>>;
+  HeadlessPropsWithRef<T, TransitionBaseChildProps>;
 
 export function TransitionChild<T extends ValidConstructor = 'div'>(
   props: TransitionChildProps<T>,
@@ -83,10 +85,10 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
   function transition(element: HTMLElement, shouldEnter: boolean): void {
     if (shouldEnter) {
       if (initial) {
-        const enter = props.enter?.split(' ') ?? [];
-        const enterFrom = props.enterFrom?.split(' ') ?? [];
-        const enterTo = props.enterTo?.split(' ') ?? [];
-        const entered = props.entered?.split(' ') ?? [];
+        const enter = getClassList(props.enter);
+        const enterFrom = getClassList(props.enterFrom);
+        const enterTo = getClassList(props.enterTo);
+        const entered = getClassList(props.entered);
 
         const endTransition = () => {
           removeClassList(element, enter);
@@ -107,10 +109,10 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
         });
       }
     } else {
-      const leave = props.leave?.split(' ') ?? [];
-      const leaveFrom = props.leaveFrom?.split(' ') ?? [];
-      const leaveTo = props.leaveTo?.split(' ') ?? [];
-      const entered = props.entered?.split(' ') ?? [];
+      const leave = getClassList(props.leave);
+      const leaveFrom = getClassList(props.leaveFrom);
+      const leaveTo = getClassList(props.leaveTo);
+      const entered = getClassList(props.entered);
       props.beforeLeave?.();
       removeClassList(element, entered);
       addClassList(element, leave);
@@ -146,90 +148,52 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
     }
   });
 
-  return (
-    <Show
-      when={props.unmount ?? true}
-      fallback={(
-        <Dynamic
-          component={props.as ?? 'div'}
-          {...omitProps(props, [
-            'as',
-            'enter',
-            'enterFrom',
-            'enterTo',
-            'leave',
-            'leaveFrom',
-            'leaveTo',
-            'unmount',
-            'afterEnter',
-            'afterLeave',
-            'appear',
-            'beforeEnter',
-            'beforeLeave',
-            'entered',
-            'ref',
-          ])}
-          ref={createRef(props, (e) => {
+  return createUnmountable(
+    props,
+    visible,
+    () => createDynamic(
+      () => props.as ?? ('div' as T),
+      mergeProps(
+        omitProps(props, [
+          'as',
+          'enter',
+          'enterFrom',
+          'enterTo',
+          'leave',
+          'leaveFrom',
+          'leaveTo',
+          'unmount',
+          'afterEnter',
+          'afterLeave',
+          'appear',
+          'beforeEnter',
+          'beforeLeave',
+          'entered',
+          'ref',
+        ]),
+        {
+          ref: createRef(props, (e) => {
             setRef(() => e);
-          })}
-        >
-          {props.children}
-        </Dynamic>
-      )}
-    >
-      <Show when={visible()}>
-        <Dynamic
-          component={props.as ?? 'div'}
-          {...omitProps(props, [
-            'as',
-            'enter',
-            'enterFrom',
-            'enterTo',
-            'leave',
-            'leaveFrom',
-            'leaveTo',
-            'unmount',
-            'afterEnter',
-            'afterLeave',
-            'appear',
-            'beforeEnter',
-            'beforeLeave',
-            'entered',
-            'ref',
-          ])}
-          ref={createRef(props, (e) => {
-            setRef(() => e);
-          })}
-        >
-          {props.children}
-        </Dynamic>
-      </Show>
-    </Show>
+          }),
+        },
+      ) as DynamicProps<T>,
+    ),
   );
 }
 
-export type TransitionProps<T extends ValidConstructor = 'div'> = {
-  show: boolean;
-  appear?: boolean;
-} & TransitionChildProps<T>;
+export type TransitionProps<T extends ValidConstructor = 'div'> =
+  TransitionRootContext & TransitionChildProps<T>;
 
 export function Transition<T extends ValidConstructor = 'div'>(
   props: TransitionProps<T>,
 ): JSX.Element {
-  const excludedProps = omitProps(props, [
+  const [local, others] = splitProps(props, [
     'show',
   ]);
-  return (
-    <TransitionRootContext.Provider
-      value={{
-        get show() {
-          return props.show;
-        },
-      }}
-    >
-      <TransitionChild
-        {...excludedProps}
-      />
-    </TransitionRootContext.Provider>
-  );
+  return createComponent(TransitionRootContext.Provider, {
+    value: local,
+    get children() {
+      return createComponent(TransitionChild, others);
+    },
+  });
 }
