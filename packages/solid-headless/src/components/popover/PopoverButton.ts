@@ -93,7 +93,11 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
         return properties.isOpen() && context.panelID;
       },
     },
-    createDisabled(() => properties.disabled() || props.disabled),
+    createDisabled(() => {
+      const internalDisabled = properties.disabled();
+      const granularDisabled = props.disabled;
+      return internalDisabled || granularDisabled;
+    }),
     createExpanded(() => properties.isOpen()),
     createHeadlessDisclosureChildProps(props),
   ) as ButtonProps<T>);

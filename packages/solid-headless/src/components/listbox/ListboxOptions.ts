@@ -101,7 +101,11 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
               return context.horizontal ? 'horizontal' : 'vertical';
             },
           },
-          createDisabled(() => properties.disabled() || props.disabled),
+          createDisabled(() => {
+            const internalDisabled = properties.disabled();
+            const granularDisabled = props.disabled;
+            return internalDisabled || granularDisabled;
+          }),
           {
             get children() {
               return createComponent(HeadlessSelectChild, {

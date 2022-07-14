@@ -108,7 +108,11 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
         }
       }),
     },
-    createDisabled(() => properties.disabled() || props.disabled),
+    createDisabled(() => {
+      const internalDisabled = properties.disabled();
+      const granularDisabled = props.disabled;
+      return internalDisabled || granularDisabled;
+    }),
     createExpanded(() => properties.isOpen()),
     createHeadlessDisclosureChildProps(props),
   ) as ButtonProps<T>);

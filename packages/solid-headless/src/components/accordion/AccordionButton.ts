@@ -119,7 +119,11 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
       },
     },
     createOwnerAttribute(rootContext.getId()),
-    createDisabled(() => properties.disabled() || props.disabled),
+    createDisabled(() => {
+      const internalDisabled = properties.disabled();
+      const granularDisabled = props.disabled;
+      return internalDisabled || granularDisabled;
+    }),
     createExpanded(() => properties.isSelected()),
     createHeadlessSelectOptionChildProps(props),
   ) as ButtonProps<T>);
