@@ -18,6 +18,7 @@ import {
 import {
   useDialogContext,
 } from './DialogContext';
+import { DIALOG_DESCRIPTION_TAG } from './tags';
 
 export type DialogDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, HeadlessDisclosureChildProps>;
@@ -33,9 +34,9 @@ export function DialogDescription<T extends ValidConstructor = 'p'>(
         'as',
         'children',
       ]),
+      DIALOG_DESCRIPTION_TAG,
       {
         id: context.descriptionID,
-        'data-sh-dialog-description': context.ownerID,
       },
       createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,

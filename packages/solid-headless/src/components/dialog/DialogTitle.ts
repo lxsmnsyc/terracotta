@@ -21,6 +21,7 @@ import {
 import {
   useDialogContext,
 } from './DialogContext';
+import { DIALOG_TITLE_TAG } from './tags';
 
 export type DialogTitleProps<T extends ValidConstructor = 'h2'> =
   OmitAndMerge<DynamicComponent<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
@@ -36,9 +37,9 @@ export function DialogTitle<T extends ValidConstructor = 'h2'>(
         'as',
         'children',
       ]),
+      DIALOG_TITLE_TAG,
       {
         id: context.titleID,
-        'data-sh-dialog-title': context.ownerID,
       },
       createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,

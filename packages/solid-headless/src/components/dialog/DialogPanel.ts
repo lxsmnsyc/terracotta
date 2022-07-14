@@ -26,6 +26,7 @@ import getFocusableElements from '../../utils/get-focusable-elements';
 import {
   useDialogContext,
 } from './DialogContext';
+import { DIALOG_PANEL_TAG } from './tags';
 
 export type DialogPanelProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
@@ -86,9 +87,9 @@ export function DialogPanel<T extends ValidConstructor = 'div'>(
         'children',
         'ref',
       ]),
+      DIALOG_PANEL_TAG,
       {
         id: context.panelID,
-        'data-sh-dialog-panel': context.ownerID,
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),

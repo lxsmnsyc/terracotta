@@ -25,6 +25,7 @@ import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   DialogContext,
 } from './DialogContext';
+import { DIALOG_TAG } from './tags';
 import {
   DialogBaseProps,
 } from './types';
@@ -87,13 +88,13 @@ export function DialogControlled<T extends ValidConstructor = 'div'>(
                 'onClose',
                 'onChange',
               ]),
+              DIALOG_TAG,
               {
                 id: ownerID,
                 role: 'alertdialog',
                 'aria-modal': true,
                 'aria-labelledby': titleID,
                 'aria-describedby': descriptionID,
-                'data-sh-dialog': ownerID,
               },
               createHeadlessDisclosureChildProps(props),
             ) as DynamicProps<T>,

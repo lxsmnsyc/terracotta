@@ -24,6 +24,7 @@ import {
 import {
   useDialogContext,
 } from './DialogContext';
+import { DIALOG_OVERLAY_TAG } from './tags';
 
 export type DialogOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
@@ -31,7 +32,7 @@ export type DialogOverlayProps<T extends ValidConstructor = 'div'> =
 export function DialogOverlay<T extends ValidConstructor = 'div'>(
   props: DialogOverlayProps<T>,
 ): JSX.Element {
-  const context = useDialogContext('DialogOverlay');
+  useDialogContext('DialogOverlay');
   const properties = useHeadlessDisclosureProperties();
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
@@ -60,8 +61,8 @@ export function DialogOverlay<T extends ValidConstructor = 'div'>(
         'children',
         'ref',
       ]),
+      DIALOG_OVERLAY_TAG,
       {
-        'data-sh-dialog-overlay': context.ownerID,
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),
