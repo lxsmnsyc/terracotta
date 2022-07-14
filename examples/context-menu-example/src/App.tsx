@@ -25,13 +25,13 @@ export default function App(): JSX.Element {
   const [y, setY] = createSignal(0);
   return (
     <div class="w-full flex items-center justify-center">
-      <ContextMenu class="relative">
+      <ContextMenu defaultOpen={false} class="relative">
         {({ isOpen }) => (
           <>
             <ContextMenuBoundary
               class={classNames(
                 isOpen() && 'text-opacity-90',
-                'text-white group border border-dashed border-white p-32 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
+                'text-white group border border-dashed border-white p-32 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75',
               )}
               onContextMenu={(e: MouseEvent) => {
                 if (e.currentTarget) {

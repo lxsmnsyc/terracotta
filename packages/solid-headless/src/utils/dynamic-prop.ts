@@ -50,12 +50,12 @@ export interface DynamicComponentWithRef<T extends ValidConstructor> extends Wit
   as?: T;
 }
 
-type DefaultProps = Record<string, never>;
-
-export type HeadlessProps<T extends ValidConstructor, V = DefaultProps> =
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type HeadlessProps<T extends ValidConstructor, V = {}> =
   OmitAndMerge<V & DynamicComponent<T>, DynamicProps<T>>;
 
-export type HeadlessPropsWithRef<T extends ValidConstructor, V = DefaultProps> =
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type HeadlessPropsWithRef<T extends ValidConstructor, V = {}> =
   OmitAndMerge<V & DynamicComponentWithRef<T>, DynamicProps<T>>;
 
 function isRefFunction<U extends ValidConstructor>(
