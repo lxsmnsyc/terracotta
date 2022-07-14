@@ -30,6 +30,7 @@ import {
 import {
   ListboxContext,
 } from './ListboxContext';
+import { LISTBOX_TAG } from './tags';
 import {
   ListboxBaseProps,
   ListboxSingleBaseProps,
@@ -88,9 +89,9 @@ export function ListboxSUSUD<V, T extends ValidConstructor = typeof Fragment>(
             'toggleable',
             'defaultValue',
           ]),
+          LISTBOX_TAG,
           {
             'aria-labelledby': labelID,
-            'data-sh-listbox': ownerID,
           },
           createDisabled(() => props.disabled),
           {

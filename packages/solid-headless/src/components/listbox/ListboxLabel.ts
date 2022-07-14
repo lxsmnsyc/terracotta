@@ -18,6 +18,7 @@ import {
 import {
   useListboxContext,
 } from './ListboxContext';
+import { LISTBOX_LABEL_TAG } from './tags';
 
 export type ListboxLabelProps<T extends ValidConstructor = 'label'> =
   HeadlessProps<T, HeadlessDisclosureChildProps>;
@@ -34,9 +35,9 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
         'as',
         'children',
       ]),
+      LISTBOX_LABEL_TAG,
       {
         id: context.labelID,
-        'data-sh-listbox-label': context.ownerID,
       },
       createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,

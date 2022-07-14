@@ -35,6 +35,7 @@ import {
   createListboxOptionsFocusNavigator,
   ListboxOptionsContext,
 } from './ListboxOptionsContext';
+import { LISTBOX_OPTIONS_TAG } from './tags';
 
 export type ListboxOptionsProps<V, T extends ValidConstructor = 'ul'> =
   HeadlessPropsWithRef<T, HeadlessSelectChildProps<V>>;
@@ -48,7 +49,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
-  const controller = createListboxOptionsFocusNavigator(context.ownerID);
+  const controller = createListboxOptionsFocusNavigator(context.optionsID);
 
   createEffect(() => {
     if (!selectProperties.hasSelected()) {
@@ -85,12 +86,12 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
             'children',
             'ref',
           ]),
+          LISTBOX_OPTIONS_TAG,
           {
             id: context.optionsID,
             role: 'listbox',
             'aria-multiselectable': context.multiple,
             'aria-labelledby': context.buttonID,
-            'data-sh-listbox-options': context.ownerID,
             tabindex: 0,
             ref: createRef(props, (e) => {
               setInternalRef(() => e);

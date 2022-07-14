@@ -24,6 +24,7 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
   createDisabled,
   createSelected,
@@ -38,6 +39,7 @@ import {
 import {
   useListboxOptionsContext,
 } from './ListboxOptionsContext';
+import { LISTBOX_OPTION_TAG } from './tags';
 
 export type ListboxOptionProps<V, T extends ValidConstructor = 'li'> =
   HeadlessPropsWithRef<T, ButtonProps<T> & HeadlessSelectOptionProps<V>>;
@@ -176,10 +178,11 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
       'value',
       'ref',
     ]),
+    LISTBOX_OPTION_TAG,
+    createOwnerAttribute(context.getId()),
     {
       role: 'option',
       tabindex: -1,
-      'data-sh-listbox-option': rootContext.ownerID,
       ref: createRef(props, (e) => {
         setInternalRef(() => e);
       }),

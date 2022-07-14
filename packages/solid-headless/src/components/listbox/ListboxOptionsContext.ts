@@ -5,8 +5,6 @@ import {
 import { ValidConstructor } from '../../utils/dynamic-prop';
 import FocusNavigator from '../../utils/focus-navigator';
 
-export const LISTBOX_OPTION_TAG = 'listbox-option';
-
 export const ListboxOptionsContext = createContext<FocusNavigator<any>>();
 
 export function useListboxOptionsContext<T extends ValidConstructor>(
@@ -23,5 +21,5 @@ export function useListboxOptionsContext<T extends ValidConstructor>(
 export function createListboxOptionsFocusNavigator<T extends ValidConstructor>(
   owner: string,
 ) {
-  return new FocusNavigator<T>(LISTBOX_OPTION_TAG, owner);
+  return new FocusNavigator<T>(owner);
 }

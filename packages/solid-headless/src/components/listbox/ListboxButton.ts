@@ -30,6 +30,7 @@ import {
 import {
   useListboxContext,
 } from './ListboxContext';
+import { LISTBOX_BUTTON_TAG } from './tags';
 
 export type ListboxButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps & ButtonProps<T>>;
@@ -95,9 +96,9 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
       'children',
       'ref',
     ]),
+    LISTBOX_BUTTON_TAG,
     {
       id: context.buttonID,
-      'data-sh-listbox-button': context.ownerID,
       'aria-haspopup': 'listbox',
       'aria-controls': context.optionsID,
       ref: createRef(props, (e) => {
