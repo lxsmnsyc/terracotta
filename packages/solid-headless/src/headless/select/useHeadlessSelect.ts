@@ -1,10 +1,12 @@
 import {
   HeadlessSelectProperties,
 } from './useHeadlessSelectProperties';
-import useHeadlessSelectMultiple, {
+import {
+  useHeadlessSelectMultiple,
   HeadlessSelectMultipleOptions,
 } from './useHeadlessSelectMultiple';
-import useHeadlessSelectSingle, {
+import {
+  useHeadlessSelectSingle,
   HeadlessSelectSingleOptions,
 } from './useHeadlessSelectSingle';
 
