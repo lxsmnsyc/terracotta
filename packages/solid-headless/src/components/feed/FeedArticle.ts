@@ -18,6 +18,7 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
   FeedArticleContext,
 } from './FeedArticleContext';
@@ -27,6 +28,7 @@ import {
 import {
   useFeedContext,
 } from './FeedContext';
+import { FEED_ARTICLE_TAG } from './tags';
 
 export type FeedArticleProps<T extends ValidConstructor = 'article'> =
   HeadlessPropsWithRef<T, { index: number }>;
@@ -77,11 +79,12 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
         () => props.as ?? ('article' as T),
         mergeProps(
           omitProps(props, ['as']),
+          FEED_ARTICLE_TAG,
+          createOwnerAttribute(rootContext.ownerID),
           {
             id: ownerID,
             'aria-labelledby': labelID,
             'aria-describedby': descriptionID,
-            'data-sh-feed-article': rootContext.ownerID,
             tabindex: 0,
             get 'aria-posinset'() {
               return props.index + 1;

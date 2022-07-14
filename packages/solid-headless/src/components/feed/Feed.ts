@@ -20,6 +20,7 @@ import getFocusableElements from '../../utils/get-focusable-elements';
 import {
   FeedContext,
 } from './FeedContext';
+import { FEED_TAG } from './tags';
 
 interface FeedBaseProps {
   size: number;
@@ -71,9 +72,9 @@ export function Feed<T extends ValidConstructor = 'div'>(
             'busy',
             'size',
           ]),
+          FEED_TAG,
           {
             id: ownerID,
-            'data-sh-feed': ownerID,
             ref: createRef(props, (e) => {
               internalRef = e;
             }),

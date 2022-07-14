@@ -14,6 +14,7 @@ import {
 import {
   useFeedContext,
 } from './FeedContext';
+import { FEED_LABEL_TAG } from './tags';
 
 export type FeedLabelProps<T extends ValidConstructor = 'span'> = HeadlessProps<T>;
 
@@ -25,9 +26,9 @@ export function FeedLabel<T extends ValidConstructor = 'span'>(
     () => props.as ?? ('span' as T),
     mergeProps(
       omitProps(props, ['as']),
+      FEED_LABEL_TAG,
       {
         id: context.labelID,
-        'data-sh-feed-label': context.ownerID,
       },
     ) as DynamicProps<T>,
   );

@@ -24,6 +24,7 @@ import {
 import {
   useFeedContext,
 } from './FeedContext';
+import { FEED_CONTENT_TAG } from './tags';
 
 export type FeedContentProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<T>;
 
@@ -67,9 +68,9 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
         () => props.as ?? ('div' as T),
         mergeProps(
           omitProps(props, ['as']),
+          FEED_CONTENT_TAG,
           {
             id: context.contentID,
-            'data-sh-feed-content': context.ownerID,
             role: 'feed',
             'aria-labelledby': context.labelID,
             get 'aria-busy'() {

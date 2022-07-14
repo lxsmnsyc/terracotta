@@ -14,6 +14,7 @@ import {
 import {
   useFeedArticleContext,
 } from './FeedArticleContext';
+import { FEED_ARTICLE_DESCRIPTION_TAG } from './tags';
 
 export type FeedArticleDescriptionProps<T extends ValidConstructor = 'p'> = HeadlessProps<T>;
 
@@ -25,9 +26,9 @@ export function FeedArticleDescription<T extends ValidConstructor = 'p'>(
     () => props.as ?? ('p' as T),
     mergeProps(
       omitProps(props, ['as']),
+      FEED_ARTICLE_DESCRIPTION_TAG,
       {
         id: context.descriptionID,
-        'data-sh-feed-article-description': context.ownerID,
       },
     ) as DynamicProps<T>,
   );

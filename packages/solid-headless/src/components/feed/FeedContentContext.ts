@@ -5,8 +5,6 @@ import {
 import { ValidConstructor } from '../../utils/dynamic-prop';
 import FocusNavigator from '../../utils/focus-navigator';
 
-export const FEED_ARTICLE_TAG = 'feed-article';
-
 export const FeedContentContext = createContext<FocusNavigator<any>>();
 
 export function useFeedContentContext<T extends ValidConstructor>(
@@ -23,5 +21,5 @@ export function useFeedContentContext<T extends ValidConstructor>(
 export function createFeedArticleFocusNavigator<T extends ValidConstructor>(
   owner: string,
 ): FocusNavigator<T> {
-  return new FocusNavigator(FEED_ARTICLE_TAG, owner);
+  return new FocusNavigator(owner);
 }
