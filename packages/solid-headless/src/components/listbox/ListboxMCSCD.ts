@@ -27,6 +27,7 @@ import Fragment from '../../utils/Fragment';
 import {
   createDisabled,
 } from '../../utils/state-props';
+import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   ListboxContext,
 } from './ListboxContext';
@@ -56,6 +57,8 @@ export function ListboxMCSCD<V, T extends ValidConstructor = typeof Fragment>(
   const labelID = createUniqueId();
   const buttonID = createUniqueId();
   const optionsID = createUniqueId();
+
+  const fsp = useFocusStartPoint();
 
   return createComponent(ListboxContext.Provider, {
     value: {
@@ -111,7 +114,15 @@ export function ListboxMCSCD<V, T extends ValidConstructor = typeof Fragment>(
                 },
                 get children() {
                   return createComponent(HeadlessDisclosureRoot, {
-                    onChange: props.onDisclosureChange,
+                    onChange(value) {
+                      if (value) {
+                        fsp.save();
+                      }
+                      props.onDisclosureChange?.(value);
+                      if (!value) {
+                        fsp.load();
+                      }
+                    },
                     get isOpen() {
                       return props.isOpen;
                     },

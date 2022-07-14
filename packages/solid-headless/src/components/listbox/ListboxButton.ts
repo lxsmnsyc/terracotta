@@ -48,7 +48,8 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
-      const toggle = () => {
+      const toggle = (e: MouseEvent) => {
+        console.log('Toggled', e.currentTarget);
         if (!(properties.disabled() || props.disabled)) {
           properties.setState(!properties.isOpen());
         }
@@ -60,7 +61,7 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
             case 'ArrowUp':
             case 'ArrowDown':
               e.preventDefault();
-              toggle();
+              properties.setState(!properties.isOpen());
               break;
             default:
               break;

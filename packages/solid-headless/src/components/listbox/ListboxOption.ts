@@ -6,6 +6,7 @@ import {
   JSX,
   createComponent,
   mergeProps,
+  batch,
 } from 'solid-js';
 import {
   omitProps,
@@ -64,12 +65,14 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
     }
   });
 
+  const isDisabled = () => (properties.disabled() || props.disabled);
+
   createEffect(() => {
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
       const onKeyDown = (e: KeyboardEvent) => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           switch (e.key) {
             case 'ArrowLeft':
               if (rootContext.horizontal) {
@@ -100,10 +103,13 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
               if (ref.tagName === 'BUTTON') {
                 e.preventDefault();
               }
-              properties.select(props.value);
-              if (!rootContext.multiple) {
-                disclosure.setState(false);
-              }
+              batch(() => {
+                properties.select(props.value);
+                if (!rootContext.multiple) {
+                  e.preventDefault();
+                  disclosure.setState(false);
+                }
+              });
               break;
             case 'Home':
               e.preventDefault();
@@ -129,20 +135,22 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
         }
       };
       const onClick = () => {
-        if (!(properties.disabled() || props.disabled)) {
-          properties.select(props.value);
-          if (!rootContext.multiple) {
-            disclosure.setState(false);
-          }
+        if (!isDisabled()) {
+          batch(() => {
+            properties.select(props.value);
+            if (!rootContext.multiple) {
+              disclosure.setState(false);
+            }
+          });
         }
       };
       const onFocus = () => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           properties.focus(props.value);
         }
       };
       const onBlur = () => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           properties.blur();
         }
       };
@@ -165,7 +173,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
     if (ref instanceof HTMLElement) {
       if (disclosure.isOpen()
         && untrack(() => properties.isSelected(props.value))
-        && !(properties.disabled() || props.disabled)
+        && !isDisabled()
       ) {
         ref.focus();
       }
@@ -191,7 +199,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
         return props.as ?? ('li' as T);
       },
     },
-    createDisabled(() => props.disabled),
+    createDisabled(isDisabled),
     createSelected(() => properties.isSelected(props.value)),
     createHeadlessSelectOptionProps(props),
   ) as ButtonProps<T>);
