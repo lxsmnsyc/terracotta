@@ -62,13 +62,17 @@ export function focusPrev<T extends ValidConstructor>(
 export function focusFirst(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
 ): void {
-  nodes[0].focus();
+  if (nodes.length) {
+    nodes[0].focus();
+  }
 }
 
 export function focusLast(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
 ): void {
-  nodes[nodes.length - 1].focus();
+  if (nodes.length) {
+    nodes[nodes.length - 1].focus();
+  }
 }
 
 export function focusMatch(

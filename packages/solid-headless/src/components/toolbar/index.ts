@@ -1,77 +1,59 @@
 import {
   createEffect,
   createSignal,
-  createUniqueId,
   JSX,
+  mergeProps,
   onCleanup,
 } from 'solid-js';
-import {
-  Dynamic,
-} from 'solid-js/web';
-import {
-  omitProps,
-} from 'solid-use';
+import { omitProps } from 'solid-use';
+import createDynamic from '../../utils/create-dynamic';
 import {
   createRef,
   DynamicNode,
   DynamicProps,
+  HeadlessPropsWithRef,
   ValidConstructor,
-  WithRef,
-} from '../utils/dynamic-prop';
-import getFocusableElements from '../utils/get-focusable-elements';
+} from '../../utils/dynamic-prop';
+import {
+  focusFirst,
+  focusNext,
+  focusPrev,
+} from '../../utils/focus-navigation';
+import getFocusableElements from '../../utils/get-focusable-elements';
+import { createTag } from '../../utils/namespace';
 
-export type ToolbarProps<T extends ValidConstructor = 'div'> = {
-  as?: T,
-  horizontal?: boolean;
-} & Omit<DynamicProps<T>, 'as'> & WithRef<T>;
+const TOOLBAR_TAG = createTag('toolbar');
+
+export type ToolbarProps<T extends ValidConstructor = 'div'> =
+  HeadlessPropsWithRef<T, { horizontal?: boolean; }>;
 
 export function Toolbar<T extends ValidConstructor = 'div'>(
   props: ToolbarProps<T>,
 ): JSX.Element {
-  const toolbarID = createUniqueId();
+  const isHorizontal = () => (props.horizontal ?? true);
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
   let focusedElement: HTMLElement | undefined;
 
   function getNextFocusable(): void {
     const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      const nodes = getFocusableElements(ref);
-      if (document.activeElement
-        && ref.contains(document.activeElement)
-      ) {
-        for (let i = 0, len = nodes.length; i < len; i += 1) {
-          if (document.activeElement === nodes[i]) {
-            if (i === len - 1) {
-              nodes[0].focus();
-            } else {
-              nodes[i + 1].focus();
-            }
-            break;
-          }
-        }
-      }
+    if (
+      ref instanceof HTMLElement
+      && document.activeElement
+      && ref.contains(document.activeElement)
+    ) {
+      focusNext(getFocusableElements(ref), document.activeElement);
     }
   }
 
   function getPrevFocusable(): void {
     const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      const nodes = getFocusableElements(ref);
-      if (document.activeElement
-        && ref.contains(document.activeElement)
-      ) {
-        for (let i = 0, len = nodes.length; i < len; i += 1) {
-          if (document.activeElement === nodes[i]) {
-            if (i === 0) {
-              nodes[len - 1].focus();
-            } else {
-              nodes[i - 1].focus();
-            }
-            break;
-          }
-        }
-      }
+    if (
+      ref instanceof HTMLElement
+      && document.activeElement
+      && ref.contains(document.activeElement)
+    ) {
+      focusPrev(getFocusableElements(ref), document.activeElement);
     }
   }
 
@@ -81,25 +63,25 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
       const onKeyDown = (e: KeyboardEvent) => {
         switch (e.key) {
           case 'ArrowLeft':
-            if (props.horizontal) {
+            if (isHorizontal()) {
               e.preventDefault();
               getPrevFocusable();
             }
             break;
           case 'ArrowUp':
-            if (!props.horizontal) {
+            if (!isHorizontal()) {
               e.preventDefault();
               getPrevFocusable();
             }
             break;
           case 'ArrowRight':
-            if (props.horizontal) {
+            if (isHorizontal()) {
               e.preventDefault();
               getNextFocusable();
             }
             break;
           case 'ArrowDown':
-            if (!props.horizontal) {
+            if (!isHorizontal()) {
               e.preventDefault();
               getNextFocusable();
             }
@@ -129,10 +111,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
         if (focusedElement) {
           focusedElement.focus();
         } else {
-          const nodes = getFocusableElements(ref);
-          if (nodes.length) {
-            nodes[0].focus();
-          }
+          focusFirst(getFocusableElements(ref));
         }
       };
 
@@ -153,22 +132,25 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
     }
   });
 
-  return (
-    <Dynamic
-      component={props.as ?? 'div'}
-      {...omitProps(props, [
+  return createDynamic(
+    () => props.as ?? ('div' as T),
+    mergeProps(
+      omitProps(props, [
         'as',
         'horizontal',
         'ref',
-      ])}
-      role="toolbar"
-      id={toolbarID}
-      aria-orientation={(props.horizontal ?? true) ? 'horizontal' : 'vertical'}
-      tabindex={0}
-      ref={createRef(props, (e) => {
-        setInternalRef(() => e);
-      })}
-      data-sh-toolbar={toolbarID}
-    />
+      ]),
+      TOOLBAR_TAG,
+      {
+        role: 'toolbar',
+        tabindex: 0,
+        ref: createRef(props, (e) => {
+          setInternalRef(() => e);
+        }),
+        get 'aria-orientation'() {
+          return isHorizontal() ? 'horizontal' : 'vertical';
+        },
+      },
+    ) as DynamicProps<T>,
   );
 }
