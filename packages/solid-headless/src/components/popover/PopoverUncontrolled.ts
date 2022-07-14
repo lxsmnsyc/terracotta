@@ -78,13 +78,14 @@ export function PopoverUncontrolled<T extends ValidConstructor = 'div'>(
                   return props.disabled;
                 },
                 onChange(value) {
-                  props.onChange?.(value);
-                  if (!value) {
-                    fsp.load();
-                    props.onClose?.();
-                  } else {
+                  if (value) {
                     fsp.save();
                     props.onOpen?.();
+                  }
+                  props.onChange?.(value);
+                  if (!value) {
+                    props.onClose?.();
+                    fsp.load();
                   }
                 },
                 get children() {

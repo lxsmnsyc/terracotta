@@ -6,6 +6,7 @@ import {
   mergeProps,
   JSX,
   untrack,
+  batch,
 } from 'solid-js';
 import {
   omitProps,
@@ -43,8 +44,10 @@ export function ToggleUncontrolled<T extends ValidConstructor = 'button'>(
     if (ref instanceof HTMLElement) {
       const onClick = () => {
         const current = !untrack(state);
-        setState(current);
-        props.onChange?.(current);
+        batch(() => {
+          setState(current);
+          props.onChange?.(current);
+        });
       };
 
       ref.addEventListener('click', onClick);

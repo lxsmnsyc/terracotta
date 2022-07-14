@@ -1,5 +1,6 @@
 import {
   Accessor,
+  batch,
   createSignal,
 } from 'solid-js';
 
@@ -35,8 +36,10 @@ export function useHeadlessToggle(
     const [isOpen, setIsOpen] = createSignal<boolean | undefined>(options.defaultChecked);
     signal = isOpen;
     setSignal = (value) => {
-      setIsOpen(value);
-      options.onChange?.(value);
+      batch(() => {
+        setIsOpen(value);
+        options.onChange?.(value);
+      });
     };
   } else {
     signal = () => options.checked;

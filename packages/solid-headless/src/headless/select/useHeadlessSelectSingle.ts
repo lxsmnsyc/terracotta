@@ -2,6 +2,7 @@ import {
   createSignal,
   Accessor,
   untrack,
+  batch,
 } from 'solid-js';
 import {
   Ref,
@@ -40,8 +41,10 @@ export function useHeadlessSelectSingle<T>(
     const [selected, setSelected] = createSignal<T | undefined>(options.defaultValue);
     selectedValue = selected;
     setSelectedValue = (value) => {
-      setSelected(() => value);
-      options.onChange?.(value);
+      batch(() => {
+        setSelected(() => value);
+        options.onChange?.(value);
+      });
     };
   } else {
     selectedValue = () => options.value;

@@ -1,5 +1,6 @@
 import {
   Accessor,
+  batch,
   createSignal,
 } from 'solid-js';
 
@@ -34,8 +35,10 @@ export function useHeadlessDisclosure(
     const [isOpen, setIsOpen] = createSignal(options.defaultOpen);
     signal = isOpen;
     setSignal = (value) => {
-      setIsOpen(value);
-      options.onChange?.(value);
+      batch(() => {
+        setIsOpen(value);
+        options.onChange?.(value);
+      });
     };
   } else {
     signal = () => options.isOpen;

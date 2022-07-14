@@ -63,13 +63,14 @@ export function CommandBarControlled<T extends ValidConstructor = 'div'>(
           return props.disabled;
         },
         onChange(value) {
+          if (value) {
+            fsp.save();
+            props.onOpen?.();
+          }
           props.onChange?.(value);
           if (!value) {
             props.onClose?.();
             fsp.load();
-          } else {
-            fsp.save();
-            props.onOpen?.();
           }
         },
         children: ({ isOpen }) => createComponent(CommandBarEvents, {

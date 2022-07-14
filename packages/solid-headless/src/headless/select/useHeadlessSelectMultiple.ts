@@ -1,5 +1,6 @@
 import {
   Accessor,
+  batch,
   createSignal,
   untrack,
 } from 'solid-js';
@@ -42,8 +43,10 @@ export function useHeadlessSelectMultiple<T>(
     const [selected, setSelected] = createSignal<T[]>(options.defaultValue);
     selectedValues = selected;
     setSelectedValues = (value) => {
-      setSelected(() => value);
-      options.onChange?.(value);
+      batch(() => {
+        setSelected(() => value);
+        options.onChange?.(value);
+      });
     };
   } else {
     selectedValues = () => options.value;
