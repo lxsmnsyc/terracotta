@@ -20,6 +20,7 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import { createOwnerAttribute } from '../../utils/focus-navigator';
 import { createDisabled, createSelected } from '../../utils/state-props';
 import {
   Button,
@@ -28,6 +29,7 @@ import {
 import {
   useSelectContext,
 } from './SelectContext';
+import { SELECT_OPTION_TAG } from './tags';
 
 export type SelectOptionProps<V, T extends ValidConstructor = 'li'> =
   HeadlessPropsWithRef<T, HeadlessSelectOptionProps<V> & ButtonProps<T>>;
@@ -58,25 +60,25 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
             case 'ArrowUp':
               if (!context.horizontal) {
                 e.preventDefault();
-                context.setPrevChecked(ref);
+                context.controller.setPrevChecked(ref);
               }
               break;
             case 'ArrowLeft':
               if (context.horizontal) {
                 e.preventDefault();
-                context.setPrevChecked(ref);
+                context.controller.setPrevChecked(ref);
               }
               break;
             case 'ArrowDown':
               if (!context.horizontal) {
                 e.preventDefault();
-                context.setNextChecked(ref);
+                context.controller.setNextChecked(ref);
               }
               break;
             case 'ArrowRight':
               if (context.horizontal) {
                 e.preventDefault();
-                context.setNextChecked(ref);
+                context.controller.setNextChecked(ref);
               }
               break;
             case ' ':
@@ -88,11 +90,11 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
               break;
             case 'Home':
               e.preventDefault();
-              context.setFirstChecked();
+              context.controller.setFirstChecked();
               break;
             case 'End':
               e.preventDefault();
-              context.setLastChecked();
+              context.controller.setLastChecked();
               break;
             default:
               if (e.key.length === 1) {
@@ -101,7 +103,7 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
                   clearTimeout(timeout);
                 }
                 timeout = setTimeout(() => {
-                  context.setFirstMatch(characters);
+                  context.controller.setFirstMatch(characters);
                   characters = '';
                 }, 100);
               }
@@ -164,10 +166,11 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
       'value',
       'ref',
     ]),
+    SELECT_OPTION_TAG,
+    createOwnerAttribute(context.controller.getId()),
     {
       role: 'option',
       tabindex: -1,
-      'data-sh-select-option': context.ownerID,
       ref: createRef(props, (e) => {
         setInternalRef(() => e);
       }),

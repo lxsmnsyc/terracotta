@@ -1,6 +1,5 @@
 import {
   createComponent,
-  createUniqueId,
   JSX,
   mergeProps,
 } from 'solid-js';
@@ -18,26 +17,17 @@ import {
 } from '../../headless/select';
 import {
   createRef,
-  DynamicNode,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
-  focusFirst,
-  focusLast,
-  focusMatch,
-  focusNext,
-  focusPrev,
-} from '../../utils/focus-navigation';
-import {
-  querySelectOptions,
-} from '../../utils/query-nodes';
-import {
+  createSelectOptionFocusNavigator,
   SelectContext,
 } from './SelectContext';
 import createDynamic from '../../utils/create-dynamic';
 import { createDisabled } from '../../utils/state-props';
+import { SELECT_TAG } from './tags';
 
 type SelectSingleControlledBaseProps<V> =
   & SelectBaseProps
@@ -50,54 +40,11 @@ export type SelectSingleControlledProps<V, T extends ValidConstructor = 'ul'> =
 export function SelectSingleControlled<V, T extends ValidConstructor = 'ul'>(
   props: SelectSingleControlledProps<V, T>,
 ): JSX.Element {
-  const ownerID = createUniqueId();
-
-  let internalRef: DynamicNode<T>;
-
-  function setNextChecked(node: Element) {
-    if (internalRef instanceof HTMLElement) {
-      focusNext(
-        querySelectOptions(internalRef, ownerID),
-        node,
-      );
-    }
-  }
-
-  function setPrevChecked(node: Element) {
-    if (internalRef instanceof HTMLElement) {
-      focusPrev(
-        querySelectOptions(internalRef, ownerID),
-        node,
-      );
-    }
-  }
-
-  function setFirstChecked() {
-    if (internalRef instanceof HTMLElement) {
-      focusFirst(querySelectOptions(internalRef, ownerID));
-    }
-  }
-
-  function setLastChecked() {
-    if (internalRef instanceof HTMLElement) {
-      focusLast(querySelectOptions(internalRef, ownerID));
-    }
-  }
-
-  function setFirstMatch(character: string) {
-    if (internalRef instanceof HTMLElement) {
-      focusMatch(querySelectOptions(internalRef, ownerID), character);
-    }
-  }
+  const controller = createSelectOptionFocusNavigator();
 
   return createComponent(SelectContext.Provider, {
     value: {
-      ownerID,
-      setFirstChecked,
-      setLastChecked,
-      setNextChecked,
-      setPrevChecked,
-      setFirstMatch,
+      controller,
       get horizontal() {
         return !!props.horizontal;
       },
@@ -116,13 +63,13 @@ export function SelectSingleControlled<V, T extends ValidConstructor = 'ul'>(
             'disabled',
             'ref',
           ]),
+          SELECT_TAG,
           {
-            id: ownerID,
+            id: controller.getId(),
             role: 'listbox',
-            'data-sh-select': ownerID,
-            'aria-multiselectable': true,
+            'aria-multiselectable': false,
             ref: createRef(props, (e) => {
-              internalRef = e;
+              controller.setRef(e);
             }),
             get 'aria-orientation'() {
               return props.horizontal ? 'horizontal' : 'vertical';
