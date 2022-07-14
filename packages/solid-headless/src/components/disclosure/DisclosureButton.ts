@@ -33,6 +33,7 @@ import {
 import {
   useDisclosureContext,
 } from './DisclosureContext';
+import { DISCLOSURE_BUTTON_TAG } from './tags';
 
 export type DisclosureButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, HeadlessDisclosureChildProps & ButtonProps<T>>;
@@ -68,9 +69,9 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
       'children',
       'ref',
     ]),
+    DISCLOSURE_BUTTON_TAG,
     {
       id: context.buttonID,
-      'data-sh-disclosure-button': context.ownerID,
       ref: createRef(props, (e) => {
         setInternalRef(() => e);
       }),

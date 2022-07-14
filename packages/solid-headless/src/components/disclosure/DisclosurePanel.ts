@@ -23,6 +23,7 @@ import {
 import {
   useDisclosureContext,
 } from './DisclosureContext';
+import { DISCLOSURE_PANEL_TAG } from './tags';
 
 export type DisclosurePanelProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, HeadlessDisclosureChildProps & UnmountableProps>;
@@ -44,9 +45,9 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
           'unmount',
           'children',
         ]),
+        DISCLOSURE_PANEL_TAG,
         {
           id: context.panelID,
-          'data-sh-disclosure-panel': context.ownerID,
         },
         createHeadlessDisclosureChildProps(props),
       ) as DynamicProps<T>,

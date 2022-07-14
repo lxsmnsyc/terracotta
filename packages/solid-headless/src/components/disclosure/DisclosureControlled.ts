@@ -26,6 +26,7 @@ import {
 import {
   DisclosureContext,
 } from './DisclosureContext';
+import { DISCLOSURE_TAG } from './tags';
 
 type DisclosureControlledBaseProps =
   & HeadlessDisclosureControlledOptions
@@ -58,9 +59,7 @@ export function DisclosureControlled<T extends ValidConstructor = typeof Fragmen
             'disabled',
             'onChange',
           ]),
-          {
-            'data-sh-disclosure': ownerID,
-          },
+          DISCLOSURE_TAG,
           createDisabled(() => props.disabled),
           {
             get children() {
