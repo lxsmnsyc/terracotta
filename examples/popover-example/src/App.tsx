@@ -36,7 +36,7 @@ function IconOne() {
         stroke-width="2"
       />
     </svg>
-  )
+  );
 }
 
 function IconTwo() {
@@ -62,7 +62,7 @@ function IconTwo() {
         stroke-width="2"
       />
     </svg>
-  )
+  );
 }
 
 function IconThree() {
@@ -82,7 +82,7 @@ function IconThree() {
       <rect x="29" y="16" width="2" height="20" fill="#FB923C" />
       <rect x="33" y="12" width="2" height="24" fill="#FB923C" />
     </svg>
-  )
+  );
 }
 
 const solutions = [
@@ -104,7 +104,7 @@ const solutions = [
     href: '##',
     icon: IconThree,
   },
-]
+];
 
 function ChevronDownIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
   return (
@@ -131,21 +131,21 @@ function classNames(...classes: (string | boolean | undefined)[]): string {
 
 export default function App(): JSX.Element {
   return (
-    <div class="w-full flex items-center justify-center">
-      <Popover class="relative">
+    <div class="w-full flex mb-64 justify-center">
+      <Popover defaultOpen class="relative">
         {({ isOpen }) => (
           <>
             <PopoverButton
               class={classNames(
                 isOpen() && 'text-opacity-90',
-                'text-white group bg-orange-700 px-3 py-2 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
+                'text-white group bg-orange-700 px-3 py-2 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75',
               )}
             >
               <span>Solutions</span>
               <ChevronDownIcon
                 class={classNames(
                   isOpen() && 'text-opacity-70',
-                  'ml-2 h-5 w-5 text-orange-300 group-hover:text-opacity-80 transition ease-in-out duration-150'
+                  'ml-2 h-5 w-5 text-orange-300 group-hover:text-opacity-80 transition ease-in-out duration-150',
                 )}
                 aria-hidden="true"
               />
