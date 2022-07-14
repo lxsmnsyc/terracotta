@@ -29,7 +29,7 @@ export default function DemoPreview(props: DemoPreviewProps): JSX.Element {
   const panelA = $signal<HTMLElement>();
   const panelB = $signal<HTMLElement>();
 
-  effect: {
+  $effect(() => {
     const md = isMD();
     if (panelA && panelB) {
       const instance = Split([panelA, panelB], {
@@ -37,11 +37,9 @@ export default function DemoPreview(props: DemoPreviewProps): JSX.Element {
         minSize: 200,
       });
 
-      cleanup: {
-        instance.destroy();
-      }
+      $cleanup(() => instance.destroy());
     }
-  }
+  });
 
   return (
     <div class="flex flex-col border bg-gray-900 dark:bg-gray-50 border-gray-900 dark:border-gray-50 divide-x divide-gray-900 dark:divide-gray-50 md:flex-row rounded-lg overflow-hidden h-full">

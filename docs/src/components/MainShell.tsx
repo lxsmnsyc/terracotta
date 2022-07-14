@@ -10,7 +10,7 @@ export interface MainShellProps {
 
 export default function MainShell(props: MainShellProps): JSX.Element {
   return (
-    <ColorSchemeProvider>
+    <ColorSchemeProvider initialValue="system">
       <div class="min-h-screen flex flex-col font-mono p-4 space-y-4 bg-gray-50 dark:bg-gray-900">
         <div class="sticky top-4 z-50">
           <div class="bg-gray-900 border-2 dark:border-gray-50 dynamic-shadow rounded-lg flex items-center">

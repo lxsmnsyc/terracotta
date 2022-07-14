@@ -1,4 +1,4 @@
-import { JSX } from 'solid-js';
+import { createMemo, For, JSX, Show } from 'solid-js';
 import { RouterParams, useRouter } from 'solid-tiny-router';
 import CodeSnippet from '../../components/CodeSnippet';
 import DemoPreview from '../../components/DemoPreview';
@@ -6,7 +6,7 @@ import HighlighterProvider from '../../components/HighlighterProvider';
 import MainShell from '../../components/MainShell';
 import PropsTable from '../../components/PropsTable';
 import META from '../../page-data';
-import { DocumentInfo } from '../../page-data/meta';
+import { DocumentInfo, HeaderInfo } from '../../page-data/meta';
 
 interface DocumentParams extends RouterParams {
   target: string;
@@ -17,8 +17,8 @@ const MetaPageContext = $createContext<{ info: DocumentInfo, name: string }>();
 function MetaPageHeader() {
   const ctx = $useContext(MetaPageContext);
   return (
-    <$show when={ctx?.info.header}>
-      {(result) => (
+    <Show when={ctx?.info.header}>
+      {(result: HeaderInfo) => (
         <div class="flex flex-col space-y-4">
           <h1 class="text-4xl font-bold">
             {result.title}
@@ -28,13 +28,13 @@ function MetaPageHeader() {
           </p>
         </div>
       )}
-    </$show>
+    </Show>
   );
 }
 
 function MetaPageDemo() {
   const ctx = $useContext(MetaPageContext);
-  return () => {
+  return createMemo(() => {
     if (ctx?.name && ctx.info.demo) {
       return (
         <div class="w-full h-[75vh]">
@@ -43,7 +43,7 @@ function MetaPageDemo() {
       );
     }
     return null;
-  };
+  });
 }
 
 function MetaPageStructure() {
@@ -56,7 +56,7 @@ function MetaPageStructure() {
   }
 
   return (
-    <$show when={ctx?.info.structure}>
+    <Show when={ctx?.info.structure}>
       {(result) => (
         <div class="flex flex-col space-y-4">
           <h2 class="text-3xl font-bold">
@@ -70,7 +70,7 @@ function MetaPageStructure() {
           </div>
         </div>
       )}
-    </$show>
+    </Show>
   );
 }
 
@@ -78,9 +78,9 @@ function MetaPageAPIComponents() {
   const ctx = $useContext(MetaPageContext);
 
   return (
-    <$show when={ctx?.info.api?.components}>
+    <Show when={ctx?.info.api?.components}>
       {(result) => (
-        <$for each={result}>
+        <For each={result}>
           {(item) => (
             <div class="flex flex-col space-y-2">
               <h3 class="text-2xl font-bold">
@@ -90,9 +90,9 @@ function MetaPageAPIComponents() {
               <PropsTable props={item.props} />
             </div>
           )}
-        </$for>
+        </For>
       )}
-    </$show>
+    </Show>
   );
 }
 
@@ -100,18 +100,18 @@ function MetaPageAPIExtras() {
   const ctx = $useContext(MetaPageContext);
 
   return (
-    <$show when={ctx?.info.api?.extras}>
+    <Show when={ctx?.info.api?.extras}>
       {(result) => (
-        <$for each={result}>
+        <For each={result}>
           {(item) => (
             <div class="flex flex-col space-y-2">
               <CodeSnippet code={item.code} />
               <p>{item.description}</p>
             </div>
           )}
-        </$for>
+        </For>
       )}
-    </$show>
+    </Show>
   );
 }
 
@@ -119,7 +119,7 @@ function MetaPageAPIs() {
   const ctx = $useContext(MetaPageContext);
 
   return (
-    <$show when={ctx?.info.api}>
+    <Show when={ctx?.info.api}>
       <div class="flex flex-col space-y-4">
         <h2 class="text-3xl font-bold">
           API
@@ -127,7 +127,7 @@ function MetaPageAPIs() {
         <MetaPageAPIComponents />
         <MetaPageAPIExtras />
       </div>
-    </$show>
+    </Show>
   );
 }
 
@@ -139,8 +139,8 @@ interface MetaPageProps {
 function MetaPage(props: MetaPageProps): JSX.Element {
   const [data] = $resource(props.data);
   return (
-    <$suspense>
-      <$show when={data()}>
+    <solid:suspense>
+      <Show when={data()}>
         {(result) => (
           <MetaPageContext.Provider value={{ info: result.default, name: props.name }}>
             <MetaPageHeader />
@@ -149,8 +149,8 @@ function MetaPage(props: MetaPageProps): JSX.Element {
             <MetaPageAPIs />
           </MetaPageContext.Provider>
         )}
-      </$show>
-    </$suspense>
+      </Show>
+    </solid:suspense>
   );
 }
 
@@ -159,14 +159,14 @@ export default function DocumentPage(): JSX.Element {
 
   return (
     <MainShell>
-      <$show when={router.params.target in META}>
+      <Show when={router.params.target in META}>
         <HighlighterProvider>
           <MetaPage
             name={router.params.target}
             data={META[router.params.target].render}
           />
         </HighlighterProvider>
-      </$show>
+      </Show>
     </MainShell>
   );
 }

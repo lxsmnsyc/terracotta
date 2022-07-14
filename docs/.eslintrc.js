@@ -1,6 +1,6 @@
 module.exports = {
   "extends": [
-    'lxsmnsyc/typescript/react',
+    'lxsmnsyc/typescript/solid',
   ],
   "parserOptions": {
     "project": "./tsconfig.eslint.json",
@@ -12,13 +12,6 @@ module.exports = {
         "devDependencies": ["**/*.test.tsx"]
       }
     ],
-    "react/jsx-props-no-spreading": "off",
-    "react/jsx-pascal-case": "off",
-    "react/destructuring-assignment": "off",
-    "react/no-unknown-property": "off",
-    "no-labels": "off",
-    "no-restricted-syntax": "off",
-    "no-unused-labels": "off",
-    "react/jsx-no-bind": "off"
+    "react/no-namespace": "off"
   },
 };

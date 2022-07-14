@@ -8,7 +8,7 @@ export default function ResizeTracker(): JSX.Element {
   let width = $signal(typeof window === 'undefined' ? 0 : window.innerWidth);
   let height = $signal(typeof window === 'undefined' ? 0 : window.innerHeight);
 
-  effect: {
+  $effect(() => {
     let timeout: ReturnType<typeof setTimeout> | undefined;
 
     const renderResize = () => {
@@ -29,13 +29,13 @@ export default function ResizeTracker(): JSX.Element {
 
     window.addEventListener('resize', renderResize);
 
-    cleanup: {
+    $cleanup(() => {
       if (timeout) {
         clearTimeout(timeout);
       }
       window.removeEventListener('resize', renderResize);
-    }
-  }
+    });
+  });
 
   return (
     <Transition

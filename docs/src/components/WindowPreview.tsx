@@ -17,9 +17,9 @@ export interface WindowPreviewProps extends WindowPreviewBaseProps {
 export default function WindowPreview(props: WindowPreviewProps): JSX.Element {
   let loading = $signal(true);
 
-  effect: {
+  $effect(() => {
     loading = !props.src;
-  }
+  });
 
   function onLoad() {
     loading = false;

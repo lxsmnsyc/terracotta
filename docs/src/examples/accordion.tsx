@@ -73,7 +73,7 @@ const FAQS: FAQ[] = [
 export default function App(): JSX.Element {
   return (
     <div class="w-full m-4 md:w-1/2">
-      <Accordion<FAQ | undefined> toggleable>
+      <Accordion defaultValue={FAQS[0]} toggleable>
         <For each={FAQS}>
           {(faq) => (
             <AccordionItem value={faq} class="mt-2">

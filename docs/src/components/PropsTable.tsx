@@ -1,4 +1,5 @@
 import {
+  For,
   JSX,
 } from 'solid-js';
 import { PropInfo } from '../page-data/meta';
@@ -21,7 +22,7 @@ export default function PropsTable(props: PropsTableProps): JSX.Element {
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-900 dark:divide-gray-50">
-          <$for each={props.props}>
+          <For each={props.props}>
             {(item) => (
               <tr>
                 <td class="p-2">{item.name}</td>
@@ -30,7 +31,7 @@ export default function PropsTable(props: PropsTableProps): JSX.Element {
                 <td class="p-2">{item.description}</td>
               </tr>
             )}
-          </$for>
+          </For>
         </tbody>
       </table>
     </div>

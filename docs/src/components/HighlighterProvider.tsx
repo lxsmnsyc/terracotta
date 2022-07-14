@@ -10,7 +10,7 @@ const HighlighterContext = $createContext<() => shiki.Highlighter | undefined>()
 export default function HighlighterProvider(props: HighlighterProviderProps): JSX.Element {
   let highlighter = $signal<shiki.Highlighter>();
 
-  effect: {
+  $effect(() => {
     shiki.getHighlighter({
       langs: ['tsx', 'jsx'],
       themes: ['github-dark', 'github-light'],
@@ -19,7 +19,7 @@ export default function HighlighterProvider(props: HighlighterProviderProps): JS
     }).catch(() => {
       //
     });
-  }
+  });
 
   return (
     <HighlighterContext.Provider value={$get(highlighter)}>

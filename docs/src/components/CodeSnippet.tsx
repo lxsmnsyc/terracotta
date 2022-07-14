@@ -12,13 +12,13 @@ export default function CodeSnippet(props: CodeSnippetProps): JSX.Element {
   const colorScheme = usePreferredColorScheme();
   const highlighter = useHighlighter();
 
-  effect: {
+  $effect(() => {
     if (highlighter()) {
       props.onLoad?.();
     }
-  }
+  });
 
-  effect: {
+  $effect(() => {
     const el = code;
     const value = props.code;
     const dark = colorScheme() === 'dark';
@@ -29,7 +29,7 @@ export default function CodeSnippet(props: CodeSnippetProps): JSX.Element {
         theme: dark ? 'github-dark' : 'github-light',
       });
     }
-  }
+  });
 
   return (
     <div ref={$set(code)} />

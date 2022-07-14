@@ -1,4 +1,5 @@
 import { render } from 'solid-js/web';
+import { StyleRegistry } from 'solid-styled';
 import { createRouterTree, Router } from 'solid-tiny-router';
 import './main.css';
 
@@ -22,9 +23,11 @@ const root = document.getElementById('app');
 if (root) {
   render(
     () => (
-      <Router
-        routes={routes}
-      />
+      <StyleRegistry>
+        <Router
+          routes={routes}
+        />
+      </StyleRegistry>
     ),
     root,
   );

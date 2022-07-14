@@ -8,7 +8,7 @@ export interface PreviewShellProps {
 
 export default function PreviewShell(props: PreviewShellProps): JSX.Element {
   return (
-    <ColorSchemeProvider>
+    <ColorSchemeProvider initialValue="system">
       <div class="w-screen h-screen flex items-center justify-center overflow-hidden bg-gray-50 dark:bg-gray-900">
         {props.children}
       </div>

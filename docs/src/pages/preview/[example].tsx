@@ -1,6 +1,7 @@
 import {
   JSX,
 } from 'solid-js';
+import { css } from 'solid-styled';
 import { RouterParams, useRouter } from 'solid-tiny-router';
 import PreviewShell from '../../components/PreviewShell';
 
@@ -16,9 +17,17 @@ const PREVIEWS: Record<string, () => JSX.Element> = {
 
 export default function ToasterPreview(): JSX.Element {
   const router = useRouter<PreviewParams>();
+
+  // eslint-disable-next-line no-unused-expressions
+  css`
+    :global(body) {
+      overflow: hidden;
+    }
+  `;
+
   return (
     <PreviewShell>
-      <$dynamic component={PREVIEWS[router.params.example]} />
+      <solid:dynamic component={PREVIEWS[router.params.example]} />
     </PreviewShell>
   );
 }
