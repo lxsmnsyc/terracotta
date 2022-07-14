@@ -1,5 +1,6 @@
 import {
   createComponent,
+  createMemo,
   JSX,
 } from 'solid-js';
 import { NonLazyElement } from '../../utils/types';
@@ -32,12 +33,14 @@ export function HeadlessToggleRoot(props: HeadlessToggleRootProps): JSX.Element 
   const properties = useHeadlessToggle(props);
   return createComponent(HeadlessToggleContext.Provider, {
     value: properties,
-    children: () => {
-      const body = props.children;
-      if (isHeadlessToggleRootRenderProp(body)) {
-        return body(properties);
-      }
-      return body;
+    get children() {
+      return createMemo(() => {
+        const body = props.children;
+        if (isHeadlessToggleRootRenderProp(body)) {
+          return body(properties);
+        }
+        return body;
+      });
     },
   });
 }

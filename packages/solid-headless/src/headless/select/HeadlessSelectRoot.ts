@@ -1,5 +1,6 @@
 import {
   createComponent,
+  createMemo,
   JSX,
 } from 'solid-js';
 import {
@@ -41,12 +42,14 @@ export function HeadlessSelectRoot<T>(props: HeadlessSelectRootProps<T>): JSX.El
   return (
     createComponent(HeadlessSelectContext.Provider, {
       value: properties,
-      children: () => {
-        const body = props.children;
-        if (isHeadlessSelectRootRenderProp(body)) {
-          return body(properties);
-        }
-        return body;
+      get children() {
+        return createMemo(() => {
+          const body = props.children;
+          if (isHeadlessSelectRootRenderProp(body)) {
+            return body(properties);
+          }
+          return body;
+        });
       },
     })
   );

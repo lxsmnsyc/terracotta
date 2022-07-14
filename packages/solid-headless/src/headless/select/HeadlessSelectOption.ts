@@ -37,12 +37,14 @@ export function HeadlessSelectOption<T>(
   return (
     createComponent(HeadlessSelectOptionContext.Provider, {
       value: properties,
-      children: () => {
-        const body = props.children;
-        if (isHeadlessSelectOptionRenderProp(body)) {
-          return body(properties);
-        }
-        return body;
+      get children() {
+        return createMemo(() => {
+          const body = props.children;
+          if (isHeadlessSelectOptionRenderProp(body)) {
+            return body(properties);
+          }
+          return body;
+        });
       },
     })
   );
