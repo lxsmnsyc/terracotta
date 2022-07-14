@@ -1,4 +1,6 @@
 import {
+  createComponent,
+  createMemo,
   JSX,
 } from 'solid-js';
 import {
@@ -29,15 +31,16 @@ export type HeadlessDisclosureRootProps =
 
 export function HeadlessDisclosureRoot(props: HeadlessDisclosureRootProps): JSX.Element {
   const properties = useHeadlessDisclosure(props);
-  return (
-    <HeadlessDisclosureContext.Provider value={properties}>
-      {(() => {
+  return createComponent(HeadlessDisclosureContext.Provider, {
+    value: properties,
+    get children() {
+      return createMemo(() => {
         const body = props.children;
         if (isHeadlessDisclosureRootRenderProp(body)) {
           return body(properties);
         }
         return body;
-      })()}
-    </HeadlessDisclosureContext.Provider>
-  );
+      });
+    },
+  });
 }

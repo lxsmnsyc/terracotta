@@ -10,7 +10,7 @@
     "autoprefixer": "^10.4.7",
     "babel-preset-solid": "^1.4.0",
     "eslint": "^8.18.0",
-    "eslint-config-lxsmnsyc": "^0.4.5",
+    "eslint-config-lxsmnsyc": "^0.4.7",
     "postcss": "^8.4.13",
     "typescript": "^4.7.4",
     "vite": "^2.9.12",
