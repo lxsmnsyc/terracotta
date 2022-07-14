@@ -6,8 +6,6 @@ import {
 import { ValidConstructor } from '../../utils/dynamic-prop';
 import FocusNavigator from '../../utils/focus-navigator';
 
-export const MENU_ITEM_TAG = 'menu-item';
-
 export const MenuContext = createContext<FocusNavigator<any>>();
 
 export function useMenuContext<T extends ValidConstructor>(
@@ -22,5 +20,5 @@ export function useMenuContext<T extends ValidConstructor>(
 }
 
 export function createMenuItemFocusNavigator<T extends ValidConstructor>(): FocusNavigator<T> {
-  return new FocusNavigator(MENU_ITEM_TAG, createUniqueId());
+  return new FocusNavigator(createUniqueId());
 }

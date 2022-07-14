@@ -17,6 +17,7 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
   createDisabled,
 } from '../../utils/state-props';
@@ -27,6 +28,7 @@ import {
 import {
   useMenuContext,
 } from './MenuContext';
+import { MENU_ITEM_TAG } from './tags';
 
 export type MenuItemProps<T extends ValidConstructor = 'li'> =
   HeadlessPropsWithRef<T, MenuChildProps>;
@@ -110,10 +112,11 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
         'ref',
         'children',
       ]),
+      MENU_ITEM_TAG,
+      createOwnerAttribute(context.getId()),
       {
         role: 'menuitem',
         tabindex: -1,
-        'data-sh-menu-item': context.getId(),
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),

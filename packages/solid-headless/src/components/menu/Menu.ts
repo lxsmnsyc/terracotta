@@ -17,6 +17,7 @@ import {
   createMenuItemFocusNavigator,
   MenuContext,
 } from './MenuContext';
+import { MENU_TAG } from './tags';
 
 export type MenuProps<T extends ValidConstructor = 'ul'> = HeadlessPropsWithRef<T>;
 
@@ -32,9 +33,9 @@ export function Menu<T extends ValidConstructor = 'ul'>(
         () => props.as ?? ('div' as T),
         mergeProps(
           omitProps(props, ['as', 'ref']),
+          MENU_TAG,
           {
             id: controller.getId(),
-            'data-sh-menu': controller.getId(),
             role: 'menu',
             ref: createRef(props, (e) => {
               controller.setRef(e);
