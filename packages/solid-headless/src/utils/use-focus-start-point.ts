@@ -7,11 +7,14 @@ import {
 } from './focus-start-point';
 
 class FocusStartPoint {
-  private returnElement: HTMLElement | null | undefined;
+  private returnElement: Element | null | undefined;
+
+  private fsp: HTMLElement | null | undefined;
 
   constructor() {
     if (typeof document !== 'undefined') {
-      this.returnElement = getFocusStartPoint();
+      this.returnElement = document.activeElement;
+      this.fsp = getFocusStartPoint();
     }
 
     onCleanup(() => {
@@ -20,11 +23,16 @@ class FocusStartPoint {
   }
 
   load() {
-    setFocusStartPoint(this.returnElement);
+    if (this.returnElement instanceof HTMLElement) {
+      this.returnElement.focus();
+    } else {
+      setFocusStartPoint(this.fsp);
+    }
   }
 
   save() {
-    this.returnElement = getFocusStartPoint();
+    this.returnElement = document.activeElement;
+    this.fsp = getFocusStartPoint();
   }
 }
 
