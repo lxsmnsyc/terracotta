@@ -50,11 +50,17 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
 
   const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
 
+  const isDisabled = () => {
+    const parent = properties.disabled();
+    const local = props.disabled;
+    return parent || local;
+  };
+
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onKeyDown = (e: KeyboardEvent) => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           switch (e.key) {
             case 'ArrowLeft':
             case 'ArrowUp':
@@ -79,18 +85,18 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
         }
       };
       const onClick = () => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           properties.select(props.value);
         }
       };
       const onFocus = () => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           properties.focus(props.value);
           properties.select(props.value);
         }
       };
       const onBlur = () => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           properties.blur();
         }
       };
@@ -134,7 +140,7 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
               return properties.isSelected(props.value) ? 0 : -1;
             },
           },
-          createDisabled(() => props.disabled),
+          createDisabled(isDisabled),
           createChecked(() => properties.isSelected(props.value)),
           createHeadlessSelectOptionProps(props),
         ) as DynamicProps<T>,

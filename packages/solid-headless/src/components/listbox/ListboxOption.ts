@@ -65,7 +65,11 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
     }
   });
 
-  const isDisabled = () => (properties.disabled() || props.disabled);
+  const isDisabled = () => {
+    const parent = properties.disabled();
+    const local = props.disabled;
+    return parent || local;
+  };
 
   createEffect(() => {
     const ref = internalRef();
