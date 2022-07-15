@@ -14,8 +14,8 @@ import {
 } from '../../headless/disclosure';
 import {
   HeadlessSelectChildProps,
-  HeadlessSelectChild,
   useHeadlessSelectProperties,
+  createHeadlessSelectChild,
 } from '../../headless/select';
 import createDynamic from '../../utils/create-dynamic';
 import {
@@ -106,15 +106,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
             const granularDisabled = props.disabled;
             return internalDisabled || granularDisabled;
           }),
-          {
-            get children() {
-              return createComponent(HeadlessSelectChild, {
-                get children() {
-                  return props.children;
-                },
-              });
-            },
-          },
+          createHeadlessSelectChild(props),
         ) as DynamicProps<T>,
       );
     },

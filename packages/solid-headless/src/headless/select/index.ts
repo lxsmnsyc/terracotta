@@ -2,6 +2,7 @@ export {
   HeadlessSelectChild,
   HeadlessSelectChildProps,
   HeadlessSelectChildRenderProp,
+  createHeadlessSelectChild,
 } from './HeadlessSelectChild';
 export {
   HeadlessSelectOption,

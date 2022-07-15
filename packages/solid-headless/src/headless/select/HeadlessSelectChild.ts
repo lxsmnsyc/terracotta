@@ -1,4 +1,5 @@
 import {
+  createComponent,
   createMemo,
   JSX,
 } from 'solid-js';
@@ -30,4 +31,18 @@ export function HeadlessSelectChild<T>(props: HeadlessSelectChildProps<T>): JSX.
     }
     return body;
   });
+}
+
+export function createHeadlessSelectChild<T>(
+  props: HeadlessSelectChildProps<T>,
+): { children: JSX.Element } {
+  return {
+    get children() {
+      return createComponent(HeadlessSelectChild, {
+        get children() {
+          return props.children;
+        },
+      });
+    },
+  };
 }

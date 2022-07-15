@@ -86,6 +86,10 @@ __export(src_exports, {
   RadioGroupOption: () => RadioGroupOption,
   Select: () => Select,
   SelectOption: () => SelectOption,
+  Tab: () => Tab,
+  TabGroup: () => TabGroup,
+  TabList: () => TabList,
+  TabPanel: () => TabPanel,
   Toast: () => Toast,
   Toaster: () => Toaster,
   ToasterStore: () => ToasterStore,
@@ -94,6 +98,7 @@ __export(src_exports, {
   Transition: () => Transition,
   TransitionChild: () => TransitionChild,
   createHeadlessDisclosureChildProps: () => createHeadlessDisclosureChildProps,
+  createHeadlessSelectChild: () => createHeadlessSelectChild,
   createHeadlessSelectOptionChildProps: () => createHeadlessSelectOptionChildProps,
   createHeadlessSelectOptionProps: () => createHeadlessSelectOptionProps,
   createHeadlessSelectRootMultipleControlledProps: () => createHeadlessSelectRootMultipleControlledProps,
@@ -245,6 +250,17 @@ function HeadlessSelectChild(props) {
     }
     return body;
   });
+}
+function createHeadlessSelectChild(props) {
+  return {
+    get children() {
+      return (0, import_solid_js6.createComponent)(HeadlessSelectChild, {
+        get children() {
+          return props.children;
+        }
+      });
+    }
+  };
 }
 
 // src/headless/select/HeadlessSelectOption.ts
@@ -4086,7 +4102,11 @@ function ListboxOption(props) {
       clearTimeout(timeout);
     }
   });
-  const isDisabled = () => properties.disabled() || props.disabled;
+  const isDisabled = () => {
+    const parent = properties.disabled();
+    const local = props.disabled;
+    return parent || local;
+  };
   (0, import_solid_js101.createEffect)(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
@@ -4269,15 +4289,7 @@ function ListboxOptions(props) {
         const internalDisabled = properties.disabled();
         const granularDisabled = props.disabled;
         return internalDisabled || granularDisabled;
-      }), {
-        get children() {
-          return (0, import_solid_js102.createComponent)(HeadlessSelectChild, {
-            get children() {
-              return props.children;
-            }
-          });
-        }
-      }));
+      }), createHeadlessSelectChild(props)));
     }
   });
 }
@@ -4931,11 +4943,16 @@ function RadioGroupOption(props) {
   const descriptionID = (0, import_solid_js121.createUniqueId)();
   const labelID = (0, import_solid_js121.createUniqueId)();
   const [internalRef, setInternalRef] = (0, import_solid_js121.createSignal)();
+  const isDisabled = () => {
+    const parent = properties.disabled();
+    const local = props.disabled;
+    return parent || local;
+  };
   (0, import_solid_js121.createEffect)(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onKeyDown = (e) => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           switch (e.key) {
             case "ArrowLeft":
             case "ArrowUp":
@@ -4960,18 +4977,18 @@ function RadioGroupOption(props) {
         }
       };
       const onClick = () => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           properties.select(props.value);
         }
       };
       const onFocus = () => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           properties.focus(props.value);
           properties.select(props.value);
         }
       };
       const onBlur = () => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           properties.blur();
         }
       };
@@ -5009,7 +5026,7 @@ function RadioGroupOption(props) {
         get tabindex() {
           return properties.isSelected(props.value) ? 0 : -1;
         }
-      }, createDisabled(() => props.disabled), createChecked(() => properties.isSelected(props.value)), createHeadlessSelectOptionProps(props)));
+      }, createDisabled(isDisabled), createChecked(() => properties.isSelected(props.value)), createHeadlessSelectOptionProps(props)));
     }
   });
 }
@@ -5427,19 +5444,309 @@ function SelectOption(props) {
   }, createDisabled(() => props.disabled), createSelected(() => properties.isSelected(props.value)), createHeadlessSelectOptionProps(props)));
 }
 
-// src/components/toast/Toast.ts
-var import_solid_js130 = require("solid-js");
+// src/components/tabs/Tab.ts
+var import_solid_js131 = require("solid-js");
 var import_solid_use79 = require("solid-use");
+
+// src/components/tabs/TabGroupContext.ts
+var import_solid_js129 = require("solid-js");
+var TabGroupContext = (0, import_solid_js129.createContext)();
+function useTabGroupContext(componentName) {
+  const context = (0, import_solid_js129.useContext)(TabGroupContext);
+  if (context) {
+    return context;
+  }
+  throw new Error(`<${componentName}> must be used inside a <TabGroup>`);
+}
+
+// src/components/tabs/TabListContext.ts
+var import_solid_js130 = require("solid-js");
+var TabListContext = (0, import_solid_js130.createContext)();
+function useTabListContext(componentName) {
+  const context = (0, import_solid_js130.useContext)(TabListContext);
+  if (context) {
+    return context;
+  }
+  throw new Error(`<${componentName}> must be used inside a <TabList>`);
+}
+function createTabFocusNavigator() {
+  return new FocusNavigator((0, import_solid_js130.createUniqueId)());
+}
+
+// src/components/tabs/tags.ts
+var TAB_GROUP_TAG = createTag("tab-group");
+var TAB_LIST_TAG = createTag("tab-list");
+var TAB_TAG = createTag("tab");
+var TAB_PANEL_TAG = createTag("tab-panel");
+
+// src/components/tabs/Tab.ts
+function Tab(props) {
+  const rootContext = useTabGroupContext("Tab");
+  const listContext = useTabListContext("Tab");
+  const properties = useHeadlessSelectProperties();
+  const [internalRef, setInternalRef] = (0, import_solid_js131.createSignal)();
+  const isDisabled = () => {
+    const parent = properties.disabled();
+    const local = props.disabled;
+    return parent || local;
+  };
+  (0, import_solid_js131.createEffect)(() => {
+    const ref = internalRef();
+    if (ref instanceof HTMLElement) {
+      const onKeyDown = (e) => {
+        if (!isDisabled()) {
+          switch (e.key) {
+            case "ArrowUp":
+              if (!rootContext.horizontal) {
+                e.preventDefault();
+                listContext.setPrevChecked(ref);
+              }
+              break;
+            case "ArrowLeft":
+              if (rootContext.horizontal) {
+                e.preventDefault();
+                listContext.setPrevChecked(ref);
+              }
+              break;
+            case "ArrowDown":
+              if (!rootContext.horizontal) {
+                e.preventDefault();
+                listContext.setNextChecked(ref);
+              }
+              break;
+            case "ArrowRight":
+              if (rootContext.horizontal) {
+                e.preventDefault();
+                listContext.setNextChecked(ref);
+              }
+              break;
+            case " ":
+            case "Enter":
+              if (ref.tagName === "BUTTON") {
+                e.preventDefault();
+              }
+              listContext.setChecked(ref);
+              break;
+            case "Home":
+              e.preventDefault();
+              listContext.setFirstChecked();
+              break;
+            case "End":
+              e.preventDefault();
+              listContext.setLastChecked();
+              break;
+            default:
+              break;
+          }
+        }
+      };
+      const onClick = () => {
+        if (!isDisabled()) {
+          properties.select(props.value);
+        }
+      };
+      const onFocus = () => {
+        if (!isDisabled()) {
+          properties.focus(props.value);
+          properties.select(props.value);
+        }
+      };
+      const onBlur = () => {
+        if (!isDisabled()) {
+          properties.blur();
+        }
+      };
+      ref.addEventListener("keydown", onKeyDown);
+      ref.addEventListener("click", onClick);
+      ref.addEventListener("focus", onFocus);
+      ref.addEventListener("blur", onBlur);
+      (0, import_solid_js131.onCleanup)(() => {
+        ref.removeEventListener("keydown", onKeyDown);
+        ref.removeEventListener("click", onClick);
+        ref.removeEventListener("focus", onFocus);
+        ref.removeEventListener("blur", onBlur);
+      });
+    }
+  });
+  return createDynamic(() => {
+    var _a;
+    return (_a = props.as) != null ? _a : "div";
+  }, (0, import_solid_js131.mergeProps)((0, import_solid_use79.omitProps)(props, [
+    "as",
+    "children",
+    "value",
+    "disabled",
+    "ref"
+  ]), TAB_TAG, createOwnerAttribute(listContext.getId()), {
+    role: "tab",
+    ref: createRef(props, (e) => {
+      setInternalRef(() => e);
+    }),
+    get tabindex() {
+      return properties.isSelected(props.value) ? 0 : -1;
+    },
+    get id() {
+      return rootContext.getId("tab", props.value);
+    },
+    get "aria-controls"() {
+      return rootContext.getId("tab-panel", props.value);
+    }
+  }, createDisabled(isDisabled), createSelected(() => properties.isSelected(props.value)), createHeadlessSelectOptionProps(props)));
+}
+
+// src/components/tabs/TabGroup.ts
+var import_solid_js134 = require("solid-js");
+
+// src/components/tabs/TabGroupControlled.ts
+var import_solid_js132 = require("solid-js");
+var import_solid_use80 = require("solid-use");
+function TabGroupControlled(props) {
+  const ownerID = (0, import_solid_js132.createUniqueId)();
+  let id = 0;
+  const ids = /* @__PURE__ */ new Map();
+  return (0, import_solid_js132.createComponent)(TabGroupContext.Provider, {
+    value: {
+      get horizontal() {
+        var _a;
+        return (_a = props.horizontal) != null ? _a : true;
+      },
+      getId(kind, value) {
+        let currentID = ids.get(value);
+        if (!currentID) {
+          currentID = id;
+          ids.set(value, currentID);
+          id += 1;
+        }
+        return `${ownerID}__${kind}-${currentID}`;
+      }
+    },
+    get children() {
+      return createDynamic(() => {
+        var _a;
+        return (_a = props.as) != null ? _a : "div";
+      }, (0, import_solid_js132.mergeProps)((0, import_solid_use80.omitProps)(props, [
+        "as",
+        "children",
+        "value",
+        "disabled",
+        "onChange",
+        "ref"
+      ]), TAB_GROUP_TAG, createDisabled(() => props.disabled), createHeadlessSelectRootSingleControlledProps(props)));
+    }
+  });
+}
+
+// src/components/tabs/TabGroupUncontrolled.ts
+var import_solid_js133 = require("solid-js");
+var import_solid_use81 = require("solid-use");
+function TabGroupUncontrolled(props) {
+  const ownerID = (0, import_solid_js133.createUniqueId)();
+  let id = 0;
+  const ids = /* @__PURE__ */ new Map();
+  return (0, import_solid_js133.createComponent)(TabGroupContext.Provider, {
+    value: {
+      get horizontal() {
+        var _a;
+        return (_a = props.horizontal) != null ? _a : true;
+      },
+      getId(kind, value) {
+        let currentID = ids.get(value);
+        if (!currentID) {
+          currentID = id;
+          ids.set(value, currentID);
+          id += 1;
+        }
+        return `${ownerID}__${kind}-${currentID}`;
+      }
+    },
+    get children() {
+      return createDynamic(() => {
+        var _a;
+        return (_a = props.as) != null ? _a : "div";
+      }, (0, import_solid_js133.mergeProps)((0, import_solid_use81.omitProps)(props, [
+        "as",
+        "children",
+        "defaultValue",
+        "disabled",
+        "onChange",
+        "ref"
+      ]), TAB_GROUP_TAG, createDisabled(() => props.disabled), createHeadlessSelectRootSingleUncontrolledProps(props)));
+    }
+  });
+}
+
+// src/components/tabs/TabGroup.ts
+function isTabGroupUncontrolled(props) {
+  return "defaultValue" in props;
+}
+function TabGroup(props) {
+  if (isTabGroupUncontrolled(props)) {
+    return (0, import_solid_js134.createComponent)(TabGroupUncontrolled, props);
+  }
+  return (0, import_solid_js134.createComponent)(TabGroupControlled, props);
+}
+
+// src/components/tabs/TabList.ts
+var import_solid_js135 = require("solid-js");
+var import_solid_use82 = require("solid-use");
+function TabList(props) {
+  const rootContext = useTabGroupContext("TabList");
+  const controller = createTabFocusNavigator();
+  return (0, import_solid_js135.createComponent)(TabListContext.Provider, {
+    value: controller,
+    get children() {
+      return createDynamic(() => {
+        var _a;
+        return (_a = props.as) != null ? _a : "div";
+      }, (0, import_solid_js135.mergeProps)((0, import_solid_use82.omitProps)(props, ["as", "ref", "children"]), TAB_LIST_TAG, {
+        role: "tablist",
+        get "aria-orientation"() {
+          return rootContext.horizontal ? "horizontal" : "vertical";
+        },
+        ref: createRef(props, (e) => {
+          controller.setRef(e);
+        })
+      }, createHeadlessSelectChild(props)));
+    }
+  });
+}
+
+// src/components/tabs/TabPanel.ts
+var import_solid_js136 = require("solid-js");
+var import_solid_use83 = require("solid-use");
+function TabPanel(props) {
+  const rootContext = useTabGroupContext("TabPanel");
+  const properties = useHeadlessSelectProperties();
+  return createUnmountable(props, () => properties.isSelected(props.value), () => createDynamic(() => {
+    var _a;
+    return (_a = props.as) != null ? _a : "div";
+  }, (0, import_solid_js136.mergeProps)((0, import_solid_use83.omitProps)(props, ["as", "children", "disabled", "unmount", "value"]), TAB_PANEL_TAG, {
+    role: "tabpanel",
+    get tabindex() {
+      return properties.isSelected(props.value) ? 0 : -1;
+    },
+    get id() {
+      return rootContext.getId("tab-panel", props.value);
+    },
+    get "aria-labelledby"() {
+      return rootContext.getId("tab", props.value);
+    }
+  }, createHeadlessSelectOptionProps(props))));
+}
+
+// src/components/toast/Toast.ts
+var import_solid_js138 = require("solid-js");
+var import_solid_use84 = require("solid-use");
 
 // src/components/toast/tags.ts
 var TOAST_TAG = createTag("toast");
 var TOASTER_TAG = createTag("toaster");
 
 // src/components/toast/ToastContext.ts
-var import_solid_js129 = require("solid-js");
-var ToastContext = (0, import_solid_js129.createContext)();
+var import_solid_js137 = require("solid-js");
+var ToastContext = (0, import_solid_js137.createContext)();
 function useToastContext(componentName) {
-  const context = (0, import_solid_js129.useContext)(ToastContext);
+  const context = (0, import_solid_js137.useContext)(ToastContext);
   if (context) {
     return context;
   }
@@ -5452,7 +5759,7 @@ function Toast(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, (0, import_solid_js130.mergeProps)((0, import_solid_use79.omitProps)(props, [
+  }, (0, import_solid_js138.mergeProps)((0, import_solid_use84.omitProps)(props, [
     "as"
   ]), TOAST_TAG, {
     role: "status",
@@ -5461,11 +5768,11 @@ function Toast(props) {
 }
 
 // src/components/toast/Toaster.ts
-var import_solid_js131 = require("solid-js");
-var import_solid_use80 = require("solid-use");
+var import_solid_js139 = require("solid-js");
+var import_solid_use85 = require("solid-use");
 function Toaster(props) {
-  const ownerID = (0, import_solid_js131.createUniqueId)();
-  return (0, import_solid_js131.createComponent)(ToastContext.Provider, {
+  const ownerID = (0, import_solid_js139.createUniqueId)();
+  return (0, import_solid_js139.createComponent)(ToastContext.Provider, {
     value: {
       ownerID
     },
@@ -5473,7 +5780,7 @@ function Toaster(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, (0, import_solid_js131.mergeProps)((0, import_solid_use80.omitProps)(props, [
+      }, (0, import_solid_js139.mergeProps)((0, import_solid_use85.omitProps)(props, [
         "as"
       ]), TOASTER_TAG));
     }
@@ -5527,29 +5834,29 @@ var ToasterStore = _ToasterStore;
 ToasterStore.toasterID = 0;
 
 // src/components/toast/useToaster.ts
-var import_solid_js132 = require("solid-js");
+var import_solid_js140 = require("solid-js");
 function useToaster(toaster) {
-  const [signal, setSignal] = (0, import_solid_js132.createSignal)(toaster.getQueue());
-  (0, import_solid_js132.createEffect)(() => {
-    (0, import_solid_js132.onCleanup)(toaster.subscribe(setSignal));
+  const [signal, setSignal] = (0, import_solid_js140.createSignal)(toaster.getQueue());
+  (0, import_solid_js140.createEffect)(() => {
+    (0, import_solid_js140.onCleanup)(toaster.subscribe(setSignal));
   });
   return signal;
 }
 
 // src/components/toggle/index.ts
-var import_solid_js135 = require("solid-js");
+var import_solid_js143 = require("solid-js");
 
 // src/components/toggle/ToggleControlled.ts
-var import_solid_js133 = require("solid-js");
-var import_solid_use81 = require("solid-use");
+var import_solid_js141 = require("solid-js");
+var import_solid_use86 = require("solid-use");
 
 // src/components/toggle/tags.ts
 var TOGGLE_TAG = createTag("toggle");
 
 // src/components/toggle/ToggleControlled.ts
 function ToggleControlled(props) {
-  const [internalRef, setInternalRef] = (0, import_solid_js133.createSignal)();
-  (0, import_solid_js133.createEffect)(() => {
+  const [internalRef, setInternalRef] = (0, import_solid_js141.createSignal)();
+  (0, import_solid_js141.createEffect)(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onClick = () => {
@@ -5557,12 +5864,12 @@ function ToggleControlled(props) {
         (_a = props.onChange) == null ? void 0 : _a.call(props, !props.pressed);
       };
       ref.addEventListener("click", onClick);
-      (0, import_solid_js133.onCleanup)(() => {
+      (0, import_solid_js141.onCleanup)(() => {
         ref.removeEventListener("click", onClick);
       });
     }
   });
-  return (0, import_solid_js133.createComponent)(Button, (0, import_solid_js133.mergeProps)((0, import_solid_use81.omitProps)(props, [
+  return (0, import_solid_js141.createComponent)(Button, (0, import_solid_js141.mergeProps)((0, import_solid_use86.omitProps)(props, [
     "onChange",
     "pressed",
     "ref"
@@ -5580,29 +5887,29 @@ function ToggleControlled(props) {
 }
 
 // src/components/toggle/ToggleUncontrolled.ts
-var import_solid_js134 = require("solid-js");
-var import_solid_use82 = require("solid-use");
+var import_solid_js142 = require("solid-js");
+var import_solid_use87 = require("solid-use");
 function ToggleUncontrolled(props) {
-  const [state, setState] = (0, import_solid_js134.createSignal)(!!props.defaultPressed);
-  const [internalRef, setInternalRef] = (0, import_solid_js134.createSignal)();
-  (0, import_solid_js134.createEffect)(() => {
+  const [state, setState] = (0, import_solid_js142.createSignal)(!!props.defaultPressed);
+  const [internalRef, setInternalRef] = (0, import_solid_js142.createSignal)();
+  (0, import_solid_js142.createEffect)(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onClick = () => {
-        const current = !(0, import_solid_js134.untrack)(state);
-        (0, import_solid_js134.batch)(() => {
+        const current = !(0, import_solid_js142.untrack)(state);
+        (0, import_solid_js142.batch)(() => {
           var _a;
           setState(current);
           (_a = props.onChange) == null ? void 0 : _a.call(props, current);
         });
       };
       ref.addEventListener("click", onClick);
-      (0, import_solid_js134.onCleanup)(() => {
+      (0, import_solid_js142.onCleanup)(() => {
         ref.removeEventListener("click", onClick);
       });
     }
   });
-  return (0, import_solid_js134.createComponent)(Button, (0, import_solid_js134.mergeProps)((0, import_solid_use82.omitProps)(props, [
+  return (0, import_solid_js142.createComponent)(Button, (0, import_solid_js142.mergeProps)((0, import_solid_use87.omitProps)(props, [
     "onChange",
     "defaultPressed",
     "ref"
@@ -5625,21 +5932,21 @@ function isToggleUncontrolled(props) {
 }
 function Toggle(props) {
   if (isToggleUncontrolled(props)) {
-    return (0, import_solid_js135.createComponent)(ToggleUncontrolled, props);
+    return (0, import_solid_js143.createComponent)(ToggleUncontrolled, props);
   }
-  return (0, import_solid_js135.createComponent)(ToggleControlled, props);
+  return (0, import_solid_js143.createComponent)(ToggleControlled, props);
 }
 
 // src/components/toolbar/index.ts
-var import_solid_js136 = require("solid-js");
-var import_solid_use83 = require("solid-use");
+var import_solid_js144 = require("solid-js");
+var import_solid_use88 = require("solid-use");
 var TOOLBAR_TAG = createTag("toolbar");
 function Toolbar(props) {
   const isHorizontal = () => {
     var _a;
     return (_a = props.horizontal) != null ? _a : true;
   };
-  const [internalRef, setInternalRef] = (0, import_solid_js136.createSignal)();
+  const [internalRef, setInternalRef] = (0, import_solid_js144.createSignal)();
   let focusedElement;
   function getNextFocusable() {
     const ref = internalRef();
@@ -5653,7 +5960,7 @@ function Toolbar(props) {
       focusPrev(getFocusableElements(ref), document.activeElement);
     }
   }
-  (0, import_solid_js136.createEffect)(() => {
+  (0, import_solid_js144.createEffect)(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onKeyDown = (e) => {
@@ -5719,7 +6026,7 @@ function Toolbar(props) {
       ref.addEventListener("keydown", onKeyDown);
       ref.addEventListener("focus", onFocus);
       ref.addEventListener("focusin", onFocusIn);
-      (0, import_solid_js136.onCleanup)(() => {
+      (0, import_solid_js144.onCleanup)(() => {
         ref.removeEventListener("keydown", onKeyDown);
         ref.removeEventListener("focus", onFocus);
         ref.removeEventListener("focusin", onFocusIn);
@@ -5729,7 +6036,7 @@ function Toolbar(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, (0, import_solid_js136.mergeProps)((0, import_solid_use83.omitProps)(props, [
+  }, (0, import_solid_js144.mergeProps)((0, import_solid_use88.omitProps)(props, [
     "as",
     "horizontal",
     "ref"
@@ -5746,11 +6053,11 @@ function Toolbar(props) {
 }
 
 // src/components/transition/index.ts
-var import_solid_js137 = require("solid-js");
-var import_solid_use84 = require("solid-use");
-var TransitionRootContext = (0, import_solid_js137.createContext)();
+var import_solid_js145 = require("solid-js");
+var import_solid_use89 = require("solid-use");
+var TransitionRootContext = (0, import_solid_js145.createContext)();
 function useTransitionRootContext(componentName) {
-  const context = (0, import_solid_js137.useContext)(TransitionRootContext);
+  const context = (0, import_solid_js145.useContext)(TransitionRootContext);
   if (context) {
     return context;
   }
@@ -5773,8 +6080,8 @@ function removeClassList(ref, classes) {
 }
 function TransitionChild(props) {
   const values = useTransitionRootContext("TransitionChild");
-  const [visible, setVisible] = (0, import_solid_js137.createSignal)(values.show);
-  const [ref, setRef] = (0, import_solid_js137.createSignal)();
+  const [visible, setVisible] = (0, import_solid_js145.createSignal)(values.show);
+  const [ref, setRef] = (0, import_solid_js145.createSignal)();
   let initial = true;
   function transition(element, shouldEnter) {
     var _a, _b;
@@ -5825,7 +6132,7 @@ function TransitionChild(props) {
       element.addEventListener("animationend", endTransition, { once: true });
     }
   }
-  (0, import_solid_js137.createEffect)(() => {
+  (0, import_solid_js145.createEffect)(() => {
     const shouldShow = values.show;
     if (shouldShow) {
       setVisible(true);
@@ -5840,7 +6147,7 @@ function TransitionChild(props) {
   return createUnmountable(props, visible, () => createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, (0, import_solid_js137.mergeProps)((0, import_solid_use84.omitProps)(props, [
+  }, (0, import_solid_js145.mergeProps)((0, import_solid_use89.omitProps)(props, [
     "as",
     "enter",
     "enterFrom",
@@ -5863,13 +6170,13 @@ function TransitionChild(props) {
   })));
 }
 function Transition(props) {
-  const [local, others] = (0, import_solid_js137.splitProps)(props, [
+  const [local, others] = (0, import_solid_js145.splitProps)(props, [
     "show"
   ]);
-  return (0, import_solid_js137.createComponent)(TransitionRootContext.Provider, {
+  return (0, import_solid_js145.createComponent)(TransitionRootContext.Provider, {
     value: local,
     get children() {
-      return (0, import_solid_js137.createComponent)(TransitionChild, others);
+      return (0, import_solid_js145.createComponent)(TransitionChild, others);
     }
   });
 }

@@ -1,4 +1,4 @@
-export { HeadlessSelectChild, HeadlessSelectChildProps, HeadlessSelectChildRenderProp, } from './HeadlessSelectChild';
+export { HeadlessSelectChild, HeadlessSelectChildProps, HeadlessSelectChildRenderProp, createHeadlessSelectChild, } from './HeadlessSelectChild';
 export { HeadlessSelectOption, HeadlessSelectOptionChild, HeadlessSelectOptionChildProps, HeadlessSelectOptionProps, HeadlessSelectOptionRenderProp, createHeadlessSelectOptionProps, createHeadlessSelectOptionChildProps, } from './HeadlessSelectOption';
 export { HeadlessSelectRoot, HeadlessSelectRootChildren, HeadlessSelectRootProps, HeadlessSelectRootRenderProp, createHeadlessSelectRootMultipleControlledProps, createHeadlessSelectRootMultipleUncontrolledProps, createHeadlessSelectRootSingleControlledProps, createHeadlessSelectRootSingleUncontrolledProps, } from './HeadlessSelectRoot';
 export { HeadlessSelectOptions, useHeadlessSelect, } from './useHeadlessSelect';
