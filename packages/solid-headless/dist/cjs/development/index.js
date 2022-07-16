@@ -710,22 +710,12 @@ var import_solid_use = require("solid-use");
 // src/utils/create-dynamic.ts
 var import_solid_js16 = require("solid-js");
 var import_web = require("solid-js/web");
-var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
-function createElement(tagName, isSVG = false) {
-  return isSVG ? document.createElementNS(SVG_NAMESPACE, tagName) : document.createElement(tagName);
-}
 function createDynamic(source, props) {
-  const cached = (0, import_solid_js16.createMemo)(source);
-  return (0, import_solid_js16.createMemo)(() => {
-    const component = cached();
-    if (typeof component === "function") {
-      return (0, import_solid_js16.untrack)(() => component(props));
+  return (0, import_solid_js16.createComponent)(import_web.Dynamic, (0, import_solid_js16.mergeProps)({
+    get component() {
+      return source();
     }
-    const isSvg = import_web.SVGElements.has(component);
-    const el = import_solid_js16.sharedConfig.context ? (0, import_web.getNextElement)() : createElement(component, isSvg);
-    (0, import_web.spread)(el, props, isSvg);
-    return el;
-  });
+  }, props));
 }
 
 // src/utils/dynamic-prop.ts

@@ -623,13 +623,13 @@ function HeadlessToggleRoot(props) {
 
 // src/components/accordion/Accordion.ts
 import {
-  createComponent as createComponent11
+  createComponent as createComponent12
 } from "solid-js";
 
 // src/components/accordion/AccordionMultipleControlled.ts
 import {
-  createComponent as createComponent7,
-  mergeProps
+  createComponent as createComponent8,
+  mergeProps as mergeProps2
 } from "solid-js";
 import {
   omitProps
@@ -637,31 +637,16 @@ import {
 
 // src/utils/create-dynamic.ts
 import {
-  createMemo as createMemo8,
-  sharedConfig,
-  untrack as untrack3
+  createComponent as createComponent7,
+  mergeProps
 } from "solid-js";
-import {
-  getNextElement,
-  SVGElements,
-  spread
-} from "solid-js/web";
-var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
-function createElement(tagName, isSVG = false) {
-  return isSVG ? document.createElementNS(SVG_NAMESPACE, tagName) : document.createElement(tagName);
-}
+import { Dynamic } from "solid-js/web";
 function createDynamic(source, props) {
-  const cached = createMemo8(source);
-  return createMemo8(() => {
-    const component = cached();
-    if (typeof component === "function") {
-      return untrack3(() => component(props));
+  return createComponent7(Dynamic, mergeProps({
+    get component() {
+      return source();
     }
-    const isSvg = SVGElements.has(component);
-    const el = sharedConfig.context ? getNextElement() : createElement(component, isSvg);
-    spread(el, props, isSvg);
-    return el;
-  });
+  }, props));
 }
 
 // src/utils/dynamic-prop.ts
@@ -885,13 +870,13 @@ var ACCORDION_PANEL_TAG = createTag("accordion-panel");
 // src/components/accordion/AccordionMultipleControlled.ts
 function AccordionMultipleControlled(props) {
   const controller = createAccordionFocusNavigator();
-  return createComponent7(AccordionContext.Provider, {
+  return createComponent8(AccordionContext.Provider, {
     value: controller,
     get children() {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps(omitProps(props, [
+      }, mergeProps2(omitProps(props, [
         "as",
         "children",
         "disabled",
@@ -911,21 +896,21 @@ function AccordionMultipleControlled(props) {
 
 // src/components/accordion/AccordionMultipleUncontrolled.ts
 import {
-  createComponent as createComponent8,
-  mergeProps as mergeProps2
+  createComponent as createComponent9,
+  mergeProps as mergeProps3
 } from "solid-js";
 import {
   omitProps as omitProps2
 } from "solid-use";
 function AccordionMultipleUncontrolled(props) {
   const controller = createAccordionFocusNavigator();
-  return createComponent8(AccordionContext.Provider, {
+  return createComponent9(AccordionContext.Provider, {
     value: controller,
     get children() {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps2(omitProps2(props, [
+      }, mergeProps3(omitProps2(props, [
         "as",
         "children",
         "disabled",
@@ -945,21 +930,21 @@ function AccordionMultipleUncontrolled(props) {
 
 // src/components/accordion/AccordionSingleControlled.ts
 import {
-  createComponent as createComponent9,
-  mergeProps as mergeProps3
+  createComponent as createComponent10,
+  mergeProps as mergeProps4
 } from "solid-js";
 import {
   omitProps as omitProps3
 } from "solid-use";
 function AccordionSingleControlled(props) {
   const controller = createAccordionFocusNavigator();
-  return createComponent9(AccordionContext.Provider, {
+  return createComponent10(AccordionContext.Provider, {
     value: controller,
     get children() {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps3(omitProps3(props, [
+      }, mergeProps4(omitProps3(props, [
         "as",
         "children",
         "disabled",
@@ -978,21 +963,21 @@ function AccordionSingleControlled(props) {
 
 // src/components/accordion/AccordionSingleUncontrolled.ts
 import {
-  createComponent as createComponent10,
-  mergeProps as mergeProps4
+  createComponent as createComponent11,
+  mergeProps as mergeProps5
 } from "solid-js";
 import {
   omitProps as omitProps4
 } from "solid-use";
 function AccordionSingleUncontrolled(props) {
   const controller = createAccordionFocusNavigator();
-  return createComponent10(AccordionContext.Provider, {
+  return createComponent11(AccordionContext.Provider, {
     value: controller,
     get children() {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps4(omitProps4(props, [
+      }, mergeProps5(omitProps4(props, [
         "as",
         "children",
         "disabled",
@@ -1019,21 +1004,21 @@ function isAccordionMultiple(props) {
 function Accordion(props) {
   if (isAccordionUncontrolled(props)) {
     if (isAccordionMultiple(props)) {
-      return createComponent11(AccordionMultipleUncontrolled, props);
+      return createComponent12(AccordionMultipleUncontrolled, props);
     }
-    return createComponent11(AccordionSingleUncontrolled, props);
+    return createComponent12(AccordionSingleUncontrolled, props);
   }
   if (isAccordionMultiple(props)) {
-    return createComponent11(AccordionMultipleControlled, props);
+    return createComponent12(AccordionMultipleControlled, props);
   }
-  return createComponent11(AccordionSingleControlled, props);
+  return createComponent12(AccordionSingleControlled, props);
 }
 
 // src/components/accordion/AccordionItem.ts
 import {
-  createComponent as createComponent12,
+  createComponent as createComponent13,
   createUniqueId as createUniqueId2,
-  mergeProps as mergeProps5
+  mergeProps as mergeProps6
 } from "solid-js";
 import {
   omitProps as omitProps5
@@ -1058,13 +1043,13 @@ function AccordionItem(props) {
   useAccordionContext("AccordionItem");
   const buttonID = createUniqueId2();
   const panelID = createUniqueId2();
-  return createComponent12(AccordionItemContext.Provider, {
+  return createComponent13(AccordionItemContext.Provider, {
     value: { buttonID, panelID },
     get children() {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps5(omitProps5(props, [
+      }, mergeProps6(omitProps5(props, [
         "as",
         "children",
         "value",
@@ -1076,7 +1061,7 @@ function AccordionItem(props) {
 
 // src/components/accordion/AccordionHeader.ts
 import {
-  mergeProps as mergeProps6
+  mergeProps as mergeProps7
 } from "solid-js";
 import {
   omitProps as omitProps6
@@ -1086,7 +1071,7 @@ function AccordionHeader(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "h3";
-  }, mergeProps6(omitProps6(props, [
+  }, mergeProps7(omitProps6(props, [
     "as",
     "children"
   ]), ACCORDION_HEADER_TAG, createHeadlessSelectOptionChildProps(props)));
@@ -1097,8 +1082,8 @@ import {
   createSignal as createSignal6,
   createEffect as createEffect2,
   onCleanup as onCleanup2,
-  createComponent as createComponent13,
-  mergeProps as mergeProps8
+  createComponent as createComponent14,
+  mergeProps as mergeProps9
 } from "solid-js";
 import {
   omitProps as omitProps8
@@ -1109,7 +1094,7 @@ import {
   createEffect,
   createSignal as createSignal5,
   onCleanup,
-  mergeProps as mergeProps7
+  mergeProps as mergeProps8
 } from "solid-js";
 import {
   omitProps as omitProps7
@@ -1136,7 +1121,7 @@ function Button(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "button";
-  }, mergeProps7({
+  }, mergeProps8({
     tabindex: 0,
     role: "button"
   }, createDisabled(() => props.disabled), omitProps7(props, [
@@ -1209,7 +1194,7 @@ function AccordionButton(props) {
       });
     }
   });
-  return createComponent13(Button, mergeProps8(omitProps8(props, ["children", "ref", "disabled"]), ACCORDION_BUTTON_TAG, {
+  return createComponent14(Button, mergeProps9(omitProps8(props, ["children", "ref", "disabled"]), ACCORDION_BUTTON_TAG, {
     id: itemContext.buttonID,
     ref: createRef(props, (e) => {
       setInternalRef(() => e);
@@ -1226,7 +1211,7 @@ function AccordionButton(props) {
 
 // src/components/accordion/AccordionPanel.ts
 import {
-  mergeProps as mergeProps9
+  mergeProps as mergeProps10
 } from "solid-js";
 import {
   omitProps as omitProps9
@@ -1234,11 +1219,11 @@ import {
 
 // src/utils/Unmountable.ts
 import {
-  createComponent as createComponent14,
+  createComponent as createComponent15,
   Show
 } from "solid-js";
 function createUnmountable(props, shouldMount, render) {
-  return createComponent14(Show, {
+  return createComponent15(Show, {
     get when() {
       var _a;
       return (_a = props.unmount) != null ? _a : true;
@@ -1247,7 +1232,7 @@ function createUnmountable(props, shouldMount, render) {
       return render();
     },
     get children() {
-      return createComponent14(Show, {
+      return createComponent15(Show, {
         get when() {
           return shouldMount();
         },
@@ -1266,7 +1251,7 @@ function AccordionPanel(props) {
   return createUnmountable(props, () => properties.isSelected(), () => createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps9(omitProps9(props, [
+  }, mergeProps10(omitProps9(props, [
     "as",
     "children",
     "unmount"
@@ -1279,7 +1264,7 @@ function AccordionPanel(props) {
 // src/components/alert/index.ts
 import {
   createUniqueId as createUniqueId3,
-  mergeProps as mergeProps10
+  mergeProps as mergeProps11
 } from "solid-js";
 import {
   omitProps as omitProps10
@@ -1290,7 +1275,7 @@ function Alert(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps10({
+  }, mergeProps11({
     id: alertID
   }, omitProps10(props, ["as"]), ALERT_TAG, {
     role: "alert"
@@ -1299,14 +1284,14 @@ function Alert(props) {
 
 // src/components/alert-dialog/AlertDialog.ts
 import {
-  createComponent as createComponent17
+  createComponent as createComponent18
 } from "solid-js";
 
 // src/components/alert-dialog/AlertDialogControlled.ts
 import {
-  createComponent as createComponent15,
+  createComponent as createComponent16,
   createUniqueId as createUniqueId4,
-  mergeProps as mergeProps11
+  mergeProps as mergeProps12
 } from "solid-js";
 import {
   omitProps as omitProps11
@@ -1391,7 +1376,7 @@ function AlertDialogControlled(props) {
   const titleID = createUniqueId4();
   const descriptionID = createUniqueId4();
   const fsp = useFocusStartPoint();
-  return createComponent15(AlertDialogContext.Provider, {
+  return createComponent16(AlertDialogContext.Provider, {
     value: {
       ownerID,
       panelID,
@@ -1399,7 +1384,7 @@ function AlertDialogControlled(props) {
       descriptionID
     },
     get children() {
-      return createComponent15(HeadlessDisclosureRoot, {
+      return createComponent16(HeadlessDisclosureRoot, {
         get isOpen() {
           return props.isOpen;
         },
@@ -1421,7 +1406,7 @@ function AlertDialogControlled(props) {
         children: ({ isOpen }) => createUnmountable(props, isOpen, () => createDynamic(() => {
           var _a;
           return (_a = props.as) != null ? _a : "div";
-        }, mergeProps11(omitProps11(props, [
+        }, mergeProps12(omitProps11(props, [
           "as",
           "children",
           "unmount",
@@ -1444,9 +1429,9 @@ function AlertDialogControlled(props) {
 
 // src/components/alert-dialog/AlertDialogUncontrolled.ts
 import {
-  createComponent as createComponent16,
+  createComponent as createComponent17,
   createUniqueId as createUniqueId5,
-  mergeProps as mergeProps12
+  mergeProps as mergeProps13
 } from "solid-js";
 import {
   omitProps as omitProps12
@@ -1457,7 +1442,7 @@ function AlertDialogUncontrolled(props) {
   const titleID = createUniqueId5();
   const descriptionID = createUniqueId5();
   const fsp = useFocusStartPoint();
-  return createComponent16(AlertDialogContext.Provider, {
+  return createComponent17(AlertDialogContext.Provider, {
     value: {
       ownerID,
       panelID,
@@ -1465,7 +1450,7 @@ function AlertDialogUncontrolled(props) {
       descriptionID
     },
     get children() {
-      return createComponent16(HeadlessDisclosureRoot, {
+      return createComponent17(HeadlessDisclosureRoot, {
         get defaultOpen() {
           return props.defaultOpen;
         },
@@ -1487,7 +1472,7 @@ function AlertDialogUncontrolled(props) {
         children: ({ isOpen }) => createUnmountable(props, isOpen, () => createDynamic(() => {
           var _a;
           return (_a = props.as) != null ? _a : "div";
-        }, mergeProps12(omitProps12(props, [
+        }, mergeProps13(omitProps12(props, [
           "as",
           "children",
           "unmount",
@@ -1514,14 +1499,14 @@ function isAlertDialogUncontrolled(props) {
 }
 function AlertDialog(props) {
   if (isAlertDialogUncontrolled(props)) {
-    return createComponent17(AlertDialogUncontrolled, props);
+    return createComponent18(AlertDialogUncontrolled, props);
   }
-  return createComponent17(AlertDialogControlled, props);
+  return createComponent18(AlertDialogControlled, props);
 }
 
 // src/components/alert-dialog/AlertDialogDescription.ts
 import {
-  mergeProps as mergeProps13
+  mergeProps as mergeProps14
 } from "solid-js";
 import {
   omitProps as omitProps13
@@ -1531,7 +1516,7 @@ function AlertDialogDescription(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "p";
-  }, mergeProps13(omitProps13(props, [
+  }, mergeProps14(omitProps13(props, [
     "as",
     "children"
   ]), ALERT_DIALOG_DESCRIPTION, {
@@ -1544,7 +1529,7 @@ import {
   createSignal as createSignal7,
   createEffect as createEffect3,
   onCleanup as onCleanup4,
-  mergeProps as mergeProps14
+  mergeProps as mergeProps15
 } from "solid-js";
 import {
   omitProps as omitProps14
@@ -1568,7 +1553,7 @@ function AlertDialogOverlay(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps14(omitProps14(props, [
+  }, mergeProps15(omitProps14(props, [
     "as",
     "children",
     "ref"
@@ -1584,7 +1569,7 @@ import {
   createSignal as createSignal8,
   createEffect as createEffect4,
   onCleanup as onCleanup5,
-  mergeProps as mergeProps15
+  mergeProps as mergeProps16
 } from "solid-js";
 import {
   omitProps as omitProps15
@@ -1646,7 +1631,7 @@ function AlertDialogPanel(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps15(omitProps15(props, [
+  }, mergeProps16(omitProps15(props, [
     "as",
     "children",
     "ref"
@@ -1660,7 +1645,7 @@ function AlertDialogPanel(props) {
 
 // src/components/alert-dialog/AlertDialogTitle.ts
 import {
-  mergeProps as mergeProps16
+  mergeProps as mergeProps17
 } from "solid-js";
 import {
   omitProps as omitProps16
@@ -1670,7 +1655,7 @@ function AlertDialogTitle(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "h2";
-  }, mergeProps16(omitProps16(props, [
+  }, mergeProps17(omitProps16(props, [
     "as",
     "children"
   ]), ALERT_DIALOG_TITLE, {
@@ -1680,23 +1665,23 @@ function AlertDialogTitle(props) {
 
 // src/components/checkbox/Checkbox.ts
 import {
-  createComponent as createComponent20
+  createComponent as createComponent21
 } from "solid-js";
 
 // src/components/checkbox/CheckboxControlled.ts
 import {
-  createComponent as createComponent18,
+  createComponent as createComponent19,
   createUniqueId as createUniqueId6,
-  mergeProps as mergeProps17
+  mergeProps as mergeProps18
 } from "solid-js";
 import {
   omitProps as omitProps17
 } from "solid-use";
 
 // src/utils/Fragment.ts
-import { createMemo as createMemo9 } from "solid-js";
+import { createMemo as createMemo8 } from "solid-js";
 function Fragment(props) {
-  return createMemo9(() => props.children);
+  return createMemo8(() => props.children);
 }
 
 // src/components/checkbox/CheckboxContext.ts
@@ -1725,57 +1710,6 @@ function CheckboxControlled(props) {
   const labelID = createUniqueId6();
   const indicatorID = createUniqueId6();
   const descriptionID = createUniqueId6();
-  return createComponent18(CheckboxContext.Provider, {
-    value: {
-      ownerID,
-      labelID,
-      indicatorID,
-      descriptionID
-    },
-    get children() {
-      return createDynamic(() => {
-        var _a;
-        return (_a = props.as) != null ? _a : Fragment;
-      }, mergeProps17(omitProps17(props, [
-        "checked",
-        "as",
-        "children",
-        "disabled",
-        "onChange"
-      ]), CHECKBOX_TAG, createDisabled(() => props.disabled), {
-        get children() {
-          return createComponent18(HeadlessToggleRoot, {
-            onChange: props.onChange,
-            get checked() {
-              return props.checked;
-            },
-            get disabled() {
-              return props.disabled;
-            },
-            get children() {
-              return props.children;
-            }
-          });
-        }
-      }));
-    }
-  });
-}
-
-// src/components/checkbox/CheckboxUncontrolled.ts
-import {
-  createComponent as createComponent19,
-  createUniqueId as createUniqueId7,
-  mergeProps as mergeProps18
-} from "solid-js";
-import {
-  omitProps as omitProps18
-} from "solid-use";
-function CheckboxUncontrolled(props) {
-  const ownerID = createUniqueId7();
-  const labelID = createUniqueId7();
-  const indicatorID = createUniqueId7();
-  const descriptionID = createUniqueId7();
   return createComponent19(CheckboxContext.Provider, {
     value: {
       ownerID,
@@ -1787,8 +1721,8 @@ function CheckboxUncontrolled(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : Fragment;
-      }, mergeProps18(omitProps18(props, [
-        "defaultChecked",
+      }, mergeProps18(omitProps17(props, [
+        "checked",
         "as",
         "children",
         "disabled",
@@ -1813,20 +1747,71 @@ function CheckboxUncontrolled(props) {
   });
 }
 
+// src/components/checkbox/CheckboxUncontrolled.ts
+import {
+  createComponent as createComponent20,
+  createUniqueId as createUniqueId7,
+  mergeProps as mergeProps19
+} from "solid-js";
+import {
+  omitProps as omitProps18
+} from "solid-use";
+function CheckboxUncontrolled(props) {
+  const ownerID = createUniqueId7();
+  const labelID = createUniqueId7();
+  const indicatorID = createUniqueId7();
+  const descriptionID = createUniqueId7();
+  return createComponent20(CheckboxContext.Provider, {
+    value: {
+      ownerID,
+      labelID,
+      indicatorID,
+      descriptionID
+    },
+    get children() {
+      return createDynamic(() => {
+        var _a;
+        return (_a = props.as) != null ? _a : Fragment;
+      }, mergeProps19(omitProps18(props, [
+        "defaultChecked",
+        "as",
+        "children",
+        "disabled",
+        "onChange"
+      ]), CHECKBOX_TAG, createDisabled(() => props.disabled), {
+        get children() {
+          return createComponent20(HeadlessToggleRoot, {
+            onChange: props.onChange,
+            get checked() {
+              return props.checked;
+            },
+            get disabled() {
+              return props.disabled;
+            },
+            get children() {
+              return props.children;
+            }
+          });
+        }
+      }));
+    }
+  });
+}
+
 // src/components/checkbox/Checkbox.ts
 function isCheckboxUncontrolled(props) {
   return "defaultChecked" in props;
 }
 function Checkbox(props) {
   if (isCheckboxUncontrolled(props)) {
-    return createComponent20(CheckboxUncontrolled, props);
+    return createComponent21(CheckboxUncontrolled, props);
   }
-  return createComponent20(CheckboxControlled, props);
+  return createComponent21(CheckboxControlled, props);
 }
 
 // src/components/checkbox/CheckboxDescription.ts
 import {
-  mergeProps as mergeProps19
+  mergeProps as mergeProps20
 } from "solid-js";
 import {
   omitProps as omitProps19
@@ -1836,7 +1821,7 @@ function CheckboxDescription(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "p";
-  }, mergeProps19(omitProps19(props, [
+  }, mergeProps20(omitProps19(props, [
     "as",
     "children"
   ]), CHECKBOX_DESCRIPTION, {
@@ -1849,8 +1834,8 @@ import {
   createSignal as createSignal9,
   createEffect as createEffect5,
   onCleanup as onCleanup6,
-  createComponent as createComponent21,
-  mergeProps as mergeProps20
+  createComponent as createComponent22,
+  mergeProps as mergeProps21
 } from "solid-js";
 import {
   omitProps as omitProps20
@@ -1878,7 +1863,7 @@ function CheckboxIndicator(props) {
       });
     }
   });
-  return createComponent21(Button, mergeProps20(omitProps20(props, [
+  return createComponent22(Button, mergeProps21(omitProps20(props, [
     "children",
     "ref"
   ]), CHECKBOX_INDICATOR, {
@@ -1891,7 +1876,7 @@ function CheckboxIndicator(props) {
     })
   }, createDisabled(() => state.disabled()), createChecked(() => state.checked()), {
     get children() {
-      return createComponent21(HeadlessToggleChild, {
+      return createComponent22(HeadlessToggleChild, {
         get children() {
           return props.children;
         }
@@ -1902,7 +1887,7 @@ function CheckboxIndicator(props) {
 
 // src/components/checkbox/CheckboxLabel.ts
 import {
-  mergeProps as mergeProps21
+  mergeProps as mergeProps22
 } from "solid-js";
 import {
   omitProps as omitProps21
@@ -1912,7 +1897,7 @@ function CheckboxLabel(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "label";
-  }, mergeProps21(omitProps21(props, [
+  }, mergeProps22(omitProps21(props, [
     "as",
     "children"
   ]), CHECKBOX_LABEL, {
@@ -1928,11 +1913,11 @@ function CheckboxLabel(props) {
 import {
   createContext as createContext9,
   createEffect as createEffect6,
-  createMemo as createMemo10,
+  createMemo as createMemo9,
   onCleanup as onCleanup7,
   useContext as useContext9,
   createSignal as createSignal10,
-  createComponent as createComponent22
+  createComponent as createComponent23
 } from "solid-js";
 import {
   usePageVisibility,
@@ -1960,7 +1945,7 @@ function ColorSchemeProvider(props) {
   }
   const prefersDark = usePrefersDark();
   const isVisible = usePageVisibility();
-  const shouldToggle = createMemo10(() => get() === "system" && prefersDark() || get() === "dark");
+  const shouldToggle = createMemo9(() => get() === "system" && prefersDark() || get() === "dark");
   createEffect6(() => {
     isVisible();
     const onChange = () => {
@@ -1983,7 +1968,7 @@ function ColorSchemeProvider(props) {
   createEffect6(() => {
     document.documentElement.classList.toggle("dark", shouldToggle());
   });
-  return createComponent22(ColorSchemeContext.Provider, {
+  return createComponent23(ColorSchemeContext.Provider, {
     value: {
       get value() {
         return get();
@@ -2028,14 +2013,14 @@ function usePreferredColorScheme() {
 
 // src/components/command-bar/CommandBar.ts
 import {
-  createComponent as createComponent25
+  createComponent as createComponent26
 } from "solid-js";
 
 // src/components/command-bar/CommandBarControlled.ts
 import {
-  createComponent as createComponent23,
+  createComponent as createComponent24,
   createUniqueId as createUniqueId8,
-  mergeProps as mergeProps22
+  mergeProps as mergeProps23
 } from "solid-js";
 import {
   omitProps as omitProps22
@@ -2059,7 +2044,7 @@ function useCommandBarContext(componentName) {
 import {
   createEffect as createEffect7,
   onCleanup as onCleanup8,
-  createMemo as createMemo11
+  createMemo as createMemo10
 } from "solid-js";
 function CommandBarEvents(props) {
   const properties = useHeadlessDisclosureProperties();
@@ -2075,7 +2060,7 @@ function CommandBarEvents(props) {
       window.removeEventListener("keydown", onKeyDown);
     });
   });
-  return createMemo11(() => props.children);
+  return createMemo10(() => props.children);
 }
 
 // src/components/command-bar/tags.ts
@@ -2092,7 +2077,7 @@ function CommandBarControlled(props) {
   const titleID = createUniqueId8();
   const descriptionID = createUniqueId8();
   const fsp = useFocusStartPoint();
-  return createComponent23(CommandBarContext.Provider, {
+  return createComponent24(CommandBarContext.Provider, {
     value: {
       ownerID,
       panelID,
@@ -2100,7 +2085,7 @@ function CommandBarControlled(props) {
       descriptionID
     },
     get children() {
-      return createComponent23(HeadlessDisclosureRoot, {
+      return createComponent24(HeadlessDisclosureRoot, {
         get isOpen() {
           return props.isOpen;
         },
@@ -2119,12 +2104,12 @@ function CommandBarControlled(props) {
             fsp.load();
           }
         },
-        children: ({ isOpen }) => createComponent23(CommandBarEvents, {
+        children: ({ isOpen }) => createComponent24(CommandBarEvents, {
           get children() {
             return createUnmountable(props, isOpen, () => createDynamic(() => {
               var _a;
               return (_a = props.as) != null ? _a : "div";
-            }, mergeProps22(omitProps22(props, [
+            }, mergeProps23(omitProps22(props, [
               "as",
               "children",
               "unmount",
@@ -2149,9 +2134,9 @@ function CommandBarControlled(props) {
 
 // src/components/command-bar/CommandBarUncontrolled.ts
 import {
-  createComponent as createComponent24,
+  createComponent as createComponent25,
   createUniqueId as createUniqueId9,
-  mergeProps as mergeProps23
+  mergeProps as mergeProps24
 } from "solid-js";
 import {
   omitProps as omitProps23
@@ -2162,7 +2147,7 @@ function CommandBarUncontrolled(props) {
   const titleID = createUniqueId9();
   const descriptionID = createUniqueId9();
   const fsp = useFocusStartPoint();
-  return createComponent24(CommandBarContext.Provider, {
+  return createComponent25(CommandBarContext.Provider, {
     value: {
       ownerID,
       panelID,
@@ -2170,7 +2155,7 @@ function CommandBarUncontrolled(props) {
       descriptionID
     },
     get children() {
-      return createComponent24(HeadlessDisclosureRoot, {
+      return createComponent25(HeadlessDisclosureRoot, {
         get defaultOpen() {
           return props.defaultOpen;
         },
@@ -2189,12 +2174,12 @@ function CommandBarUncontrolled(props) {
             fsp.load();
           }
         },
-        children: ({ isOpen }) => createComponent24(CommandBarEvents, {
+        children: ({ isOpen }) => createComponent25(CommandBarEvents, {
           get children() {
             return createUnmountable(props, isOpen, () => createDynamic(() => {
               var _a;
               return (_a = props.as) != null ? _a : "div";
-            }, mergeProps23(omitProps23(props, [
+            }, mergeProps24(omitProps23(props, [
               "as",
               "children",
               "unmount",
@@ -2223,14 +2208,14 @@ function isCommandBarUncontrolled(props) {
 }
 function CommandBar(props) {
   if (isCommandBarUncontrolled(props)) {
-    return createComponent25(CommandBarUncontrolled, props);
+    return createComponent26(CommandBarUncontrolled, props);
   }
-  return createComponent25(CommandBarControlled, props);
+  return createComponent26(CommandBarControlled, props);
 }
 
 // src/components/command-bar/CommandBarDescription.ts
 import {
-  mergeProps as mergeProps24
+  mergeProps as mergeProps25
 } from "solid-js";
 import {
   omitProps as omitProps24
@@ -2240,7 +2225,7 @@ function CommandBarDescription(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "p";
-  }, mergeProps24(omitProps24(props, [
+  }, mergeProps25(omitProps24(props, [
     "as",
     "children"
   ]), COMMAND_BAR_DESCRIPTION_TAG, {
@@ -2253,7 +2238,7 @@ import {
   createSignal as createSignal11,
   createEffect as createEffect8,
   onCleanup as onCleanup9,
-  mergeProps as mergeProps25
+  mergeProps as mergeProps26
 } from "solid-js";
 import {
   omitProps as omitProps25
@@ -2277,7 +2262,7 @@ function CommandBarOverlay(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps25(omitProps25(props, [
+  }, mergeProps26(omitProps25(props, [
     "as",
     "children",
     "ref"
@@ -2293,7 +2278,7 @@ import {
   createSignal as createSignal12,
   createEffect as createEffect9,
   onCleanup as onCleanup10,
-  mergeProps as mergeProps26
+  mergeProps as mergeProps27
 } from "solid-js";
 import {
   omitProps as omitProps26
@@ -2341,7 +2326,7 @@ function CommandBarPanel(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps26(omitProps26(props, [
+  }, mergeProps27(omitProps26(props, [
     "as",
     "children",
     "ref"
@@ -2355,7 +2340,7 @@ function CommandBarPanel(props) {
 
 // src/components/command-bar/CommandBarTitle.ts
 import {
-  mergeProps as mergeProps27
+  mergeProps as mergeProps28
 } from "solid-js";
 import {
   omitProps as omitProps27
@@ -2365,7 +2350,7 @@ function CommandBarTitle(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "h2";
-  }, mergeProps27(omitProps27(props, [
+  }, mergeProps28(omitProps27(props, [
     "as",
     "children"
   ]), COMMAND_BAR_TITLE_TAG, {
@@ -2375,14 +2360,14 @@ function CommandBarTitle(props) {
 
 // src/components/context-menu/ContextMenu.ts
 import {
-  createComponent as createComponent28
+  createComponent as createComponent29
 } from "solid-js";
 
 // src/components/context-menu/ContextMenuControlled.ts
 import {
-  createComponent as createComponent26,
+  createComponent as createComponent27,
   createUniqueId as createUniqueId10,
-  mergeProps as mergeProps28
+  mergeProps as mergeProps29
 } from "solid-js";
 import {
   omitProps as omitProps28
@@ -2414,7 +2399,7 @@ function ContextMenuControlled(props) {
   const boundaryID = createUniqueId10();
   const panelID = createUniqueId10();
   const fsp = useFocusStartPoint();
-  return createComponent26(ContextMenuContext.Provider, {
+  return createComponent27(ContextMenuContext.Provider, {
     value: {
       ownerID,
       boundaryID,
@@ -2424,7 +2409,7 @@ function ContextMenuControlled(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps28(omitProps28(props, [
+      }, mergeProps29(omitProps28(props, [
         "isOpen",
         "as",
         "children",
@@ -2434,7 +2419,7 @@ function ContextMenuControlled(props) {
         "onClose"
       ]), CONTEXT_MENU_TAG, createDisabled(() => props.disabled), {
         get children() {
-          return createComponent26(HeadlessDisclosureRoot, {
+          return createComponent27(HeadlessDisclosureRoot, {
             get isOpen() {
               return props.isOpen;
             },
@@ -2465,9 +2450,9 @@ function ContextMenuControlled(props) {
 
 // src/components/context-menu/ContextMenuUncontrolled.ts
 import {
-  createComponent as createComponent27,
+  createComponent as createComponent28,
   createUniqueId as createUniqueId11,
-  mergeProps as mergeProps29
+  mergeProps as mergeProps30
 } from "solid-js";
 import {
   omitProps as omitProps29
@@ -2477,7 +2462,7 @@ function ContextMenuUncontrolled(props) {
   const boundaryID = createUniqueId11();
   const panelID = createUniqueId11();
   const fsp = useFocusStartPoint();
-  return createComponent27(ContextMenuContext.Provider, {
+  return createComponent28(ContextMenuContext.Provider, {
     value: {
       ownerID,
       boundaryID,
@@ -2487,7 +2472,7 @@ function ContextMenuUncontrolled(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps29(omitProps29(props, [
+      }, mergeProps30(omitProps29(props, [
         "defaultOpen",
         "as",
         "children",
@@ -2497,7 +2482,7 @@ function ContextMenuUncontrolled(props) {
         "onClose"
       ]), CONTEXT_MENU_TAG, createDisabled(() => props.disabled), {
         get children() {
-          return createComponent27(HeadlessDisclosureRoot, {
+          return createComponent28(HeadlessDisclosureRoot, {
             get defaultOpen() {
               return props.defaultOpen;
             },
@@ -2532,9 +2517,9 @@ function isContextMenuUncontrolled(props) {
 }
 function ContextMenu(props) {
   if (isContextMenuUncontrolled(props)) {
-    return createComponent28(ContextMenuUncontrolled, props);
+    return createComponent29(ContextMenuUncontrolled, props);
   }
-  return createComponent28(ContextMenuControlled, props);
+  return createComponent29(ContextMenuControlled, props);
 }
 
 // src/components/context-menu/ContextMenuBoundary.ts
@@ -2542,7 +2527,7 @@ import {
   createSignal as createSignal13,
   createEffect as createEffect10,
   onCleanup as onCleanup11,
-  mergeProps as mergeProps30
+  mergeProps as mergeProps31
 } from "solid-js";
 import {
   omitProps as omitProps30
@@ -2569,7 +2554,7 @@ function ContextMenuBoundary(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps30(omitProps30(props, [
+  }, mergeProps31(omitProps30(props, [
     "as",
     "children",
     "ref"
@@ -2592,7 +2577,7 @@ import {
   createSignal as createSignal14,
   createEffect as createEffect11,
   onCleanup as onCleanup12,
-  mergeProps as mergeProps31
+  mergeProps as mergeProps32
 } from "solid-js";
 import {
   omitProps as omitProps31
@@ -2616,7 +2601,7 @@ function ContextMenuOverlay(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps31(omitProps31(props, [
+  }, mergeProps32(omitProps31(props, [
     "as",
     "children",
     "ref"
@@ -2632,7 +2617,7 @@ import {
   createSignal as createSignal15,
   createEffect as createEffect12,
   onCleanup as onCleanup13,
-  mergeProps as mergeProps32
+  mergeProps as mergeProps33
 } from "solid-js";
 import {
   omitProps as omitProps32
@@ -2683,7 +2668,7 @@ function ContextMenuPanel(props) {
   return createUnmountable(props, () => properties.isOpen(), () => createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps32(omitProps32(props, [
+  }, mergeProps33(omitProps32(props, [
     "as",
     "unmount",
     "children",
@@ -2698,14 +2683,14 @@ function ContextMenuPanel(props) {
 
 // src/components/dialog/Dialog.ts
 import {
-  createComponent as createComponent31
+  createComponent as createComponent32
 } from "solid-js";
 
 // src/components/dialog/DialogControlled.ts
 import {
   createUniqueId as createUniqueId12,
-  mergeProps as mergeProps33,
-  createComponent as createComponent29
+  mergeProps as mergeProps34,
+  createComponent as createComponent30
 } from "solid-js";
 import {
   omitProps as omitProps33
@@ -2739,7 +2724,7 @@ function DialogControlled(props) {
   const titleID = createUniqueId12();
   const descriptionID = createUniqueId12();
   const fsp = useFocusStartPoint();
-  return createComponent29(DialogContext.Provider, {
+  return createComponent30(DialogContext.Provider, {
     value: {
       ownerID,
       panelID,
@@ -2747,7 +2732,7 @@ function DialogControlled(props) {
       descriptionID
     },
     get children() {
-      return createComponent29(HeadlessDisclosureRoot, {
+      return createComponent30(HeadlessDisclosureRoot, {
         get isOpen() {
           return props.isOpen;
         },
@@ -2769,7 +2754,7 @@ function DialogControlled(props) {
         children: ({ isOpen }) => createUnmountable(props, isOpen, () => createDynamic(() => {
           var _a;
           return (_a = props.as) != null ? _a : "div";
-        }, mergeProps33(omitProps33(props, [
+        }, mergeProps34(omitProps33(props, [
           "as",
           "children",
           "unmount",
@@ -2793,8 +2778,8 @@ function DialogControlled(props) {
 // src/components/dialog/DialogUncontrolled.ts
 import {
   createUniqueId as createUniqueId13,
-  mergeProps as mergeProps34,
-  createComponent as createComponent30
+  mergeProps as mergeProps35,
+  createComponent as createComponent31
 } from "solid-js";
 import {
   omitProps as omitProps34
@@ -2805,7 +2790,7 @@ function DialogUncontrolled(props) {
   const titleID = createUniqueId13();
   const descriptionID = createUniqueId13();
   const fsp = useFocusStartPoint();
-  return createComponent30(DialogContext.Provider, {
+  return createComponent31(DialogContext.Provider, {
     value: {
       ownerID,
       panelID,
@@ -2813,7 +2798,7 @@ function DialogUncontrolled(props) {
       descriptionID
     },
     get children() {
-      return createComponent30(HeadlessDisclosureRoot, {
+      return createComponent31(HeadlessDisclosureRoot, {
         get defaultOpen() {
           return props.defaultOpen;
         },
@@ -2835,7 +2820,7 @@ function DialogUncontrolled(props) {
         children: ({ isOpen }) => createUnmountable(props, isOpen, () => createDynamic(() => {
           var _a;
           return (_a = props.as) != null ? _a : "div";
-        }, mergeProps34(omitProps34(props, [
+        }, mergeProps35(omitProps34(props, [
           "as",
           "children",
           "unmount",
@@ -2862,14 +2847,14 @@ function isDialogUncontrolled(props) {
 }
 function Dialog(props) {
   if (isDialogUncontrolled(props)) {
-    return createComponent31(DialogUncontrolled, props);
+    return createComponent32(DialogUncontrolled, props);
   }
-  return createComponent31(DialogControlled, props);
+  return createComponent32(DialogControlled, props);
 }
 
 // src/components/dialog/DialogDescription.ts
 import {
-  mergeProps as mergeProps35
+  mergeProps as mergeProps36
 } from "solid-js";
 import {
   omitProps as omitProps35
@@ -2879,7 +2864,7 @@ function DialogDescription(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "p";
-  }, mergeProps35(omitProps35(props, [
+  }, mergeProps36(omitProps35(props, [
     "as",
     "children"
   ]), DIALOG_DESCRIPTION_TAG, {
@@ -2892,7 +2877,7 @@ import {
   createSignal as createSignal16,
   createEffect as createEffect13,
   onCleanup as onCleanup14,
-  mergeProps as mergeProps36
+  mergeProps as mergeProps37
 } from "solid-js";
 import {
   omitProps as omitProps36
@@ -2916,7 +2901,7 @@ function DialogOverlay(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps36(omitProps36(props, [
+  }, mergeProps37(omitProps36(props, [
     "as",
     "children",
     "ref"
@@ -2932,7 +2917,7 @@ import {
   createSignal as createSignal17,
   createEffect as createEffect14,
   onCleanup as onCleanup15,
-  mergeProps as mergeProps37
+  mergeProps as mergeProps38
 } from "solid-js";
 import {
   omitProps as omitProps37
@@ -2980,7 +2965,7 @@ function DialogPanel(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps37(omitProps37(props, [
+  }, mergeProps38(omitProps37(props, [
     "as",
     "children",
     "ref"
@@ -2994,7 +2979,7 @@ function DialogPanel(props) {
 
 // src/components/dialog/DialogTitle.ts
 import {
-  mergeProps as mergeProps38
+  mergeProps as mergeProps39
 } from "solid-js";
 import {
   omitProps as omitProps38
@@ -3004,7 +2989,7 @@ function DialogTitle(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "h2";
-  }, mergeProps38(omitProps38(props, [
+  }, mergeProps39(omitProps38(props, [
     "as",
     "children"
   ]), DIALOG_TITLE_TAG, {
@@ -3014,14 +2999,14 @@ function DialogTitle(props) {
 
 // src/components/disclosure/Disclosure.ts
 import {
-  createComponent as createComponent34
+  createComponent as createComponent35
 } from "solid-js";
 
 // src/components/disclosure/DisclosureControlled.ts
 import {
-  createComponent as createComponent32,
+  createComponent as createComponent33,
   createUniqueId as createUniqueId14,
-  mergeProps as mergeProps39
+  mergeProps as mergeProps40
 } from "solid-js";
 import {
   omitProps as omitProps39
@@ -3051,7 +3036,7 @@ function DisclosureControlled(props) {
   const ownerID = createUniqueId14();
   const buttonID = createUniqueId14();
   const panelID = createUniqueId14();
-  return createComponent32(DisclosureContext.Provider, {
+  return createComponent33(DisclosureContext.Provider, {
     value: {
       ownerID,
       buttonID,
@@ -3061,7 +3046,7 @@ function DisclosureControlled(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : Fragment;
-      }, mergeProps39(omitProps39(props, [
+      }, mergeProps40(omitProps39(props, [
         "isOpen",
         "as",
         "children",
@@ -3069,7 +3054,7 @@ function DisclosureControlled(props) {
         "onChange"
       ]), DISCLOSURE_TAG, createDisabled(() => props.disabled), {
         get children() {
-          return createComponent32(HeadlessDisclosureRoot, {
+          return createComponent33(HeadlessDisclosureRoot, {
             get isOpen() {
               return props.isOpen;
             },
@@ -3089,9 +3074,9 @@ function DisclosureControlled(props) {
 
 // src/components/disclosure/DisclosureUncontrolled.ts
 import {
-  createComponent as createComponent33,
+  createComponent as createComponent34,
   createUniqueId as createUniqueId15,
-  mergeProps as mergeProps40
+  mergeProps as mergeProps41
 } from "solid-js";
 import {
   omitProps as omitProps40
@@ -3100,7 +3085,7 @@ function DisclosureUncontrolled(props) {
   const ownerID = createUniqueId15();
   const buttonID = createUniqueId15();
   const panelID = createUniqueId15();
-  return createComponent33(DisclosureContext.Provider, {
+  return createComponent34(DisclosureContext.Provider, {
     value: {
       ownerID,
       buttonID,
@@ -3110,7 +3095,7 @@ function DisclosureUncontrolled(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : Fragment;
-      }, mergeProps40(omitProps40(props, [
+      }, mergeProps41(omitProps40(props, [
         "defaultOpen",
         "as",
         "children",
@@ -3118,7 +3103,7 @@ function DisclosureUncontrolled(props) {
         "onChange"
       ]), DISCLOSURE_TAG, createDisabled(() => props.disabled), {
         get children() {
-          return createComponent33(HeadlessDisclosureRoot, {
+          return createComponent34(HeadlessDisclosureRoot, {
             get defaultOpen() {
               return props.defaultOpen;
             },
@@ -3142,9 +3127,9 @@ function isDisclosureUncontrolled(props) {
 }
 function Disclosure(props) {
   if (isDisclosureUncontrolled(props)) {
-    return createComponent34(DisclosureUncontrolled, props);
+    return createComponent35(DisclosureUncontrolled, props);
   }
-  return createComponent34(DisclosureControlled, props);
+  return createComponent35(DisclosureControlled, props);
 }
 
 // src/components/disclosure/DisclosureButton.ts
@@ -3152,10 +3137,10 @@ import {
   createSignal as createSignal18,
   createEffect as createEffect15,
   onCleanup as onCleanup16,
-  mergeProps as mergeProps41
+  mergeProps as mergeProps42
 } from "solid-js";
 import {
-  createComponent as createComponent35
+  createComponent as createComponent36
 } from "solid-js/web";
 import {
   omitProps as omitProps41
@@ -3178,7 +3163,7 @@ function DisclosureButton(props) {
       });
     }
   });
-  return createComponent35(Button, mergeProps41(omitProps41(props, [
+  return createComponent36(Button, mergeProps42(omitProps41(props, [
     "children",
     "ref"
   ]), DISCLOSURE_BUTTON_TAG, {
@@ -3198,7 +3183,7 @@ function DisclosureButton(props) {
 
 // src/components/disclosure/DisclosurePanel.ts
 import {
-  mergeProps as mergeProps42
+  mergeProps as mergeProps43
 } from "solid-js";
 import {
   omitProps as omitProps42
@@ -3209,7 +3194,7 @@ function DisclosurePanel(props) {
   return createUnmountable(props, () => properties.isOpen(), () => createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps42(omitProps42(props, [
+  }, mergeProps43(omitProps42(props, [
     "as",
     "unmount",
     "children"
@@ -3220,9 +3205,9 @@ function DisclosurePanel(props) {
 
 // src/components/feed/Feed.ts
 import {
-  createComponent as createComponent36,
+  createComponent as createComponent37,
   createUniqueId as createUniqueId16,
-  mergeProps as mergeProps43
+  mergeProps as mergeProps44
 } from "solid-js";
 import {
   omitProps as omitProps43
@@ -3256,7 +3241,7 @@ function Feed(props) {
   const labelID = createUniqueId16();
   const contentID = createUniqueId16();
   let internalRef;
-  return createComponent36(FeedContext.Provider, {
+  return createComponent37(FeedContext.Provider, {
     value: {
       ownerID,
       labelID,
@@ -3278,7 +3263,7 @@ function Feed(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps43(omitProps43(props, [
+      }, mergeProps44(omitProps43(props, [
         "as",
         "busy",
         "size"
@@ -3294,11 +3279,11 @@ function Feed(props) {
 
 // src/components/feed/FeedArticle.ts
 import {
-  createComponent as createComponent37,
+  createComponent as createComponent38,
   createEffect as createEffect16,
   createSignal as createSignal19,
   createUniqueId as createUniqueId17,
-  mergeProps as mergeProps44,
+  mergeProps as mergeProps45,
   onCleanup as onCleanup17
 } from "solid-js";
 import {
@@ -3365,7 +3350,7 @@ function FeedArticle(props) {
   const ownerID = createUniqueId17();
   const labelID = createUniqueId17();
   const descriptionID = createUniqueId17();
-  return createComponent37(FeedArticleContext.Provider, {
+  return createComponent38(FeedArticleContext.Provider, {
     value: {
       ownerID,
       labelID,
@@ -3375,7 +3360,7 @@ function FeedArticle(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "article";
-      }, mergeProps44(omitProps44(props, ["as"]), FEED_ARTICLE_TAG, createOwnerAttribute(rootContext.ownerID), {
+      }, mergeProps45(omitProps44(props, ["as"]), FEED_ARTICLE_TAG, createOwnerAttribute(rootContext.ownerID), {
         id: ownerID,
         "aria-labelledby": labelID,
         "aria-describedby": descriptionID,
@@ -3396,7 +3381,7 @@ function FeedArticle(props) {
 
 // src/components/feed/FeedArticleDescription.ts
 import {
-  mergeProps as mergeProps45
+  mergeProps as mergeProps46
 } from "solid-js";
 import {
   omitProps as omitProps45
@@ -3406,14 +3391,14 @@ function FeedArticleDescription(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "p";
-  }, mergeProps45(omitProps45(props, ["as"]), FEED_ARTICLE_DESCRIPTION_TAG, {
+  }, mergeProps46(omitProps45(props, ["as"]), FEED_ARTICLE_DESCRIPTION_TAG, {
     id: context.descriptionID
   }));
 }
 
 // src/components/feed/FeedArticleLabel.ts
 import {
-  mergeProps as mergeProps46
+  mergeProps as mergeProps47
 } from "solid-js";
 import {
   omitProps as omitProps46
@@ -3423,7 +3408,7 @@ function FeedArticleLabel(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "span";
-  }, mergeProps46(omitProps46(props, ["as"]), FEED_ARTICLE_LABEL_TAG, {
+  }, mergeProps47(omitProps46(props, ["as"]), FEED_ARTICLE_LABEL_TAG, {
     id: context.labelID
   }));
 }
@@ -3433,8 +3418,8 @@ import {
   createSignal as createSignal20,
   createEffect as createEffect17,
   onCleanup as onCleanup18,
-  createComponent as createComponent38,
-  mergeProps as mergeProps47
+  createComponent as createComponent39,
+  mergeProps as mergeProps48
 } from "solid-js";
 import {
   omitProps as omitProps47
@@ -3466,13 +3451,13 @@ function FeedContent(props) {
       });
     }
   });
-  return createComponent38(FeedContentContext.Provider, {
+  return createComponent39(FeedContentContext.Provider, {
     value: controller,
     get children() {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps47(omitProps47(props, ["as"]), FEED_CONTENT_TAG, {
+      }, mergeProps48(omitProps47(props, ["as"]), FEED_CONTENT_TAG, {
         id: context.contentID,
         role: "feed",
         "aria-labelledby": context.labelID,
@@ -3490,7 +3475,7 @@ function FeedContent(props) {
 
 // src/components/feed/FeedLabel.ts
 import {
-  mergeProps as mergeProps48
+  mergeProps as mergeProps49
 } from "solid-js";
 import {
   omitProps as omitProps48
@@ -3500,22 +3485,22 @@ function FeedLabel(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "span";
-  }, mergeProps48(omitProps48(props, ["as"]), FEED_LABEL_TAG, {
+  }, mergeProps49(omitProps48(props, ["as"]), FEED_LABEL_TAG, {
     id: context.labelID
   }));
 }
 
 // src/components/listbox/Listbox.ts
 import {
-  createComponent as createComponent47
+  createComponent as createComponent48
 } from "solid-js";
 
 // src/components/listbox/ListboxMCSCD.ts
 import {
-  createComponent as createComponent39,
+  createComponent as createComponent40,
   createSignal as createSignal21,
   createUniqueId as createUniqueId18,
-  mergeProps as mergeProps49
+  mergeProps as mergeProps50
 } from "solid-js";
 import {
   omitProps as omitProps49
@@ -3550,101 +3535,6 @@ function ListboxMCSCD(props) {
   const buttonID = createUniqueId18();
   const optionsID = createUniqueId18();
   const fsp = useFocusStartPoint();
-  return createComponent39(ListboxContext.Provider, {
-    value: {
-      multiple: true,
-      ownerID,
-      labelID,
-      buttonID,
-      optionsID,
-      get horizontal() {
-        return props.horizontal;
-      },
-      get hovering() {
-        return hovering();
-      },
-      set hovering(value) {
-        setHovering(value);
-      }
-    },
-    get children() {
-      return createDynamic(() => {
-        var _a;
-        return (_a = props.as) != null ? _a : Fragment;
-      }, mergeProps49(omitProps49(props, [
-        "as",
-        "children",
-        "disabled",
-        "horizontal",
-        "isOpen",
-        "multiple",
-        "onDisclosureChange",
-        "onSelectChange",
-        "toggleable",
-        "value"
-      ]), LISTBOX_TAG, {
-        "aria-labelledby": labelID
-      }, createDisabled(() => props.disabled), {
-        get children() {
-          return createComponent39(HeadlessSelectRoot, {
-            multiple: true,
-            onChange: props.onSelectChange,
-            get toggleable() {
-              return props.toggleable;
-            },
-            get value() {
-              return props.value;
-            },
-            get disabled() {
-              return props.disabled;
-            },
-            get children() {
-              return createComponent39(HeadlessDisclosureRoot, {
-                onChange(value) {
-                  var _a;
-                  if (value) {
-                    fsp.save();
-                  }
-                  (_a = props.onDisclosureChange) == null ? void 0 : _a.call(props, value);
-                  if (!value) {
-                    fsp.load();
-                  }
-                },
-                get isOpen() {
-                  return props.isOpen;
-                },
-                get disabled() {
-                  return props.disabled;
-                },
-                get children() {
-                  return props.children;
-                }
-              });
-            }
-          });
-        }
-      }));
-    }
-  });
-}
-
-// src/components/listbox/ListboxMCSUD.ts
-import {
-  createComponent as createComponent40,
-  createSignal as createSignal22,
-  createUniqueId as createUniqueId19,
-  mergeProps as mergeProps50
-} from "solid-js";
-import {
-  omitProps as omitProps50
-} from "solid-use";
-function ListboxMCSUD(props) {
-  const [hovering, setHovering] = createSignal22(false);
-  const ownerID = createUniqueId19();
-  const labelID = createUniqueId19();
-  const buttonID = createUniqueId19();
-  const optionsID = createUniqueId19();
-  const fsp = useFocusStartPoint();
   return createComponent40(ListboxContext.Provider, {
     value: {
       multiple: true,
@@ -3666,12 +3556,12 @@ function ListboxMCSUD(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : Fragment;
-      }, mergeProps50(omitProps50(props, [
+      }, mergeProps50(omitProps49(props, [
         "as",
         "children",
         "disabled",
         "horizontal",
-        "defaultOpen",
+        "isOpen",
         "multiple",
         "onDisclosureChange",
         "onSelectChange",
@@ -3705,8 +3595,8 @@ function ListboxMCSUD(props) {
                     fsp.load();
                   }
                 },
-                get defaultOpen() {
-                  return props.defaultOpen;
+                get isOpen() {
+                  return props.isOpen;
                 },
                 get disabled() {
                   return props.disabled;
@@ -3723,22 +3613,22 @@ function ListboxMCSUD(props) {
   });
 }
 
-// src/components/listbox/ListboxMUSCD.ts
+// src/components/listbox/ListboxMCSUD.ts
 import {
   createComponent as createComponent41,
-  createSignal as createSignal23,
-  createUniqueId as createUniqueId20,
+  createSignal as createSignal22,
+  createUniqueId as createUniqueId19,
   mergeProps as mergeProps51
 } from "solid-js";
 import {
-  omitProps as omitProps51
+  omitProps as omitProps50
 } from "solid-use";
-function ListboxMUSCD(props) {
-  const [hovering, setHovering] = createSignal23(false);
-  const ownerID = createUniqueId20();
-  const labelID = createUniqueId20();
-  const buttonID = createUniqueId20();
-  const optionsID = createUniqueId20();
+function ListboxMCSUD(props) {
+  const [hovering, setHovering] = createSignal22(false);
+  const ownerID = createUniqueId19();
+  const labelID = createUniqueId19();
+  const buttonID = createUniqueId19();
+  const optionsID = createUniqueId19();
   const fsp = useFocusStartPoint();
   return createComponent41(ListboxContext.Provider, {
     value: {
@@ -3761,17 +3651,17 @@ function ListboxMUSCD(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : Fragment;
-      }, mergeProps51(omitProps51(props, [
+      }, mergeProps51(omitProps50(props, [
         "as",
         "children",
         "disabled",
         "horizontal",
-        "isOpen",
+        "defaultOpen",
         "multiple",
         "onDisclosureChange",
         "onSelectChange",
         "toggleable",
-        "defaultValue"
+        "value"
       ]), LISTBOX_TAG, {
         "aria-labelledby": labelID
       }, createDisabled(() => props.disabled), {
@@ -3782,8 +3672,8 @@ function ListboxMUSCD(props) {
             get toggleable() {
               return props.toggleable;
             },
-            get defaultValue() {
-              return props.defaultValue;
+            get value() {
+              return props.value;
             },
             get disabled() {
               return props.disabled;
@@ -3800,8 +3690,8 @@ function ListboxMUSCD(props) {
                     fsp.load();
                   }
                 },
-                get isOpen() {
-                  return props.isOpen;
+                get defaultOpen() {
+                  return props.defaultOpen;
                 },
                 get disabled() {
                   return props.disabled;
@@ -3818,22 +3708,22 @@ function ListboxMUSCD(props) {
   });
 }
 
-// src/components/listbox/ListboxMUSUD.ts
+// src/components/listbox/ListboxMUSCD.ts
 import {
   createComponent as createComponent42,
-  createSignal as createSignal24,
-  createUniqueId as createUniqueId21,
+  createSignal as createSignal23,
+  createUniqueId as createUniqueId20,
   mergeProps as mergeProps52
 } from "solid-js";
 import {
-  omitProps as omitProps52
+  omitProps as omitProps51
 } from "solid-use";
-function ListboxMUSUD(props) {
-  const [hovering, setHovering] = createSignal24(false);
-  const ownerID = createUniqueId21();
-  const labelID = createUniqueId21();
-  const buttonID = createUniqueId21();
-  const optionsID = createUniqueId21();
+function ListboxMUSCD(props) {
+  const [hovering, setHovering] = createSignal23(false);
+  const ownerID = createUniqueId20();
+  const labelID = createUniqueId20();
+  const buttonID = createUniqueId20();
+  const optionsID = createUniqueId20();
   const fsp = useFocusStartPoint();
   return createComponent42(ListboxContext.Provider, {
     value: {
@@ -3856,12 +3746,12 @@ function ListboxMUSUD(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : Fragment;
-      }, mergeProps52(omitProps52(props, [
+      }, mergeProps52(omitProps51(props, [
         "as",
         "children",
         "disabled",
         "horizontal",
-        "defaultOpen",
+        "isOpen",
         "multiple",
         "onDisclosureChange",
         "onSelectChange",
@@ -3895,6 +3785,101 @@ function ListboxMUSUD(props) {
                     fsp.load();
                   }
                 },
+                get isOpen() {
+                  return props.isOpen;
+                },
+                get disabled() {
+                  return props.disabled;
+                },
+                get children() {
+                  return props.children;
+                }
+              });
+            }
+          });
+        }
+      }));
+    }
+  });
+}
+
+// src/components/listbox/ListboxMUSUD.ts
+import {
+  createComponent as createComponent43,
+  createSignal as createSignal24,
+  createUniqueId as createUniqueId21,
+  mergeProps as mergeProps53
+} from "solid-js";
+import {
+  omitProps as omitProps52
+} from "solid-use";
+function ListboxMUSUD(props) {
+  const [hovering, setHovering] = createSignal24(false);
+  const ownerID = createUniqueId21();
+  const labelID = createUniqueId21();
+  const buttonID = createUniqueId21();
+  const optionsID = createUniqueId21();
+  const fsp = useFocusStartPoint();
+  return createComponent43(ListboxContext.Provider, {
+    value: {
+      multiple: true,
+      ownerID,
+      labelID,
+      buttonID,
+      optionsID,
+      get horizontal() {
+        return props.horizontal;
+      },
+      get hovering() {
+        return hovering();
+      },
+      set hovering(value) {
+        setHovering(value);
+      }
+    },
+    get children() {
+      return createDynamic(() => {
+        var _a;
+        return (_a = props.as) != null ? _a : Fragment;
+      }, mergeProps53(omitProps52(props, [
+        "as",
+        "children",
+        "disabled",
+        "horizontal",
+        "defaultOpen",
+        "multiple",
+        "onDisclosureChange",
+        "onSelectChange",
+        "toggleable",
+        "defaultValue"
+      ]), LISTBOX_TAG, {
+        "aria-labelledby": labelID
+      }, createDisabled(() => props.disabled), {
+        get children() {
+          return createComponent43(HeadlessSelectRoot, {
+            multiple: true,
+            onChange: props.onSelectChange,
+            get toggleable() {
+              return props.toggleable;
+            },
+            get defaultValue() {
+              return props.defaultValue;
+            },
+            get disabled() {
+              return props.disabled;
+            },
+            get children() {
+              return createComponent43(HeadlessDisclosureRoot, {
+                onChange(value) {
+                  var _a;
+                  if (value) {
+                    fsp.save();
+                  }
+                  (_a = props.onDisclosureChange) == null ? void 0 : _a.call(props, value);
+                  if (!value) {
+                    fsp.load();
+                  }
+                },
                 get defaultOpen() {
                   return props.defaultOpen;
                 },
@@ -3915,10 +3900,10 @@ function ListboxMUSUD(props) {
 
 // src/components/listbox/ListboxSCSCD.ts
 import {
-  createComponent as createComponent43,
+  createComponent as createComponent44,
   createSignal as createSignal25,
   createUniqueId as createUniqueId22,
-  mergeProps as mergeProps53
+  mergeProps as mergeProps54
 } from "solid-js";
 import {
   omitProps as omitProps53
@@ -3929,99 +3914,6 @@ function ListboxSCSCD(props) {
   const labelID = createUniqueId22();
   const buttonID = createUniqueId22();
   const optionsID = createUniqueId22();
-  const fsp = useFocusStartPoint();
-  return createComponent43(ListboxContext.Provider, {
-    value: {
-      multiple: false,
-      ownerID,
-      labelID,
-      buttonID,
-      optionsID,
-      get horizontal() {
-        return props.horizontal;
-      },
-      get hovering() {
-        return hovering();
-      },
-      set hovering(value) {
-        setHovering(value);
-      }
-    },
-    get children() {
-      return createDynamic(() => {
-        var _a;
-        return (_a = props.as) != null ? _a : Fragment;
-      }, mergeProps53(omitProps53(props, [
-        "as",
-        "children",
-        "disabled",
-        "horizontal",
-        "isOpen",
-        "onDisclosureChange",
-        "onSelectChange",
-        "toggleable",
-        "value"
-      ]), LISTBOX_TAG, {
-        "aria-labelledby": labelID
-      }, createDisabled(() => props.disabled), {
-        get children() {
-          return createComponent43(HeadlessSelectRoot, {
-            onChange: props.onSelectChange,
-            get toggleable() {
-              return props.toggleable;
-            },
-            get value() {
-              return props.value;
-            },
-            get disabled() {
-              return props.disabled;
-            },
-            get children() {
-              return createComponent43(HeadlessDisclosureRoot, {
-                onChange(value) {
-                  var _a;
-                  if (value) {
-                    fsp.save();
-                  }
-                  (_a = props.onDisclosureChange) == null ? void 0 : _a.call(props, value);
-                  if (!value) {
-                    fsp.load();
-                  }
-                },
-                get isOpen() {
-                  return props.isOpen;
-                },
-                get disabled() {
-                  return props.disabled;
-                },
-                get children() {
-                  return props.children;
-                }
-              });
-            }
-          });
-        }
-      }));
-    }
-  });
-}
-
-// src/components/listbox/ListboxSCSUD.ts
-import {
-  createComponent as createComponent44,
-  createSignal as createSignal26,
-  createUniqueId as createUniqueId23,
-  mergeProps as mergeProps54
-} from "solid-js";
-import {
-  omitProps as omitProps54
-} from "solid-use";
-function ListboxSCSUD(props) {
-  const [hovering, setHovering] = createSignal26(false);
-  const ownerID = createUniqueId23();
-  const labelID = createUniqueId23();
-  const buttonID = createUniqueId23();
-  const optionsID = createUniqueId23();
   const fsp = useFocusStartPoint();
   return createComponent44(ListboxContext.Provider, {
     value: {
@@ -4044,12 +3936,12 @@ function ListboxSCSUD(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : Fragment;
-      }, mergeProps54(omitProps54(props, [
+      }, mergeProps54(omitProps53(props, [
         "as",
         "children",
         "disabled",
         "horizontal",
-        "defaultOpen",
+        "isOpen",
         "onDisclosureChange",
         "onSelectChange",
         "toggleable",
@@ -4081,8 +3973,8 @@ function ListboxSCSUD(props) {
                     fsp.load();
                   }
                 },
-                get defaultOpen() {
-                  return props.defaultOpen;
+                get isOpen() {
+                  return props.isOpen;
                 },
                 get disabled() {
                   return props.disabled;
@@ -4099,22 +3991,22 @@ function ListboxSCSUD(props) {
   });
 }
 
-// src/components/listbox/ListboxSUSCD.ts
+// src/components/listbox/ListboxSCSUD.ts
 import {
   createComponent as createComponent45,
-  createSignal as createSignal27,
-  createUniqueId as createUniqueId24,
+  createSignal as createSignal26,
+  createUniqueId as createUniqueId23,
   mergeProps as mergeProps55
 } from "solid-js";
 import {
-  omitProps as omitProps55
+  omitProps as omitProps54
 } from "solid-use";
-function ListboxSUSCD(props) {
-  const [hovering, setHovering] = createSignal27(false);
-  const ownerID = createUniqueId24();
-  const labelID = createUniqueId24();
-  const buttonID = createUniqueId24();
-  const optionsID = createUniqueId24();
+function ListboxSCSUD(props) {
+  const [hovering, setHovering] = createSignal26(false);
+  const ownerID = createUniqueId23();
+  const labelID = createUniqueId23();
+  const buttonID = createUniqueId23();
+  const optionsID = createUniqueId23();
   const fsp = useFocusStartPoint();
   return createComponent45(ListboxContext.Provider, {
     value: {
@@ -4137,7 +4029,100 @@ function ListboxSUSCD(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : Fragment;
-      }, mergeProps55(omitProps55(props, [
+      }, mergeProps55(omitProps54(props, [
+        "as",
+        "children",
+        "disabled",
+        "horizontal",
+        "defaultOpen",
+        "onDisclosureChange",
+        "onSelectChange",
+        "toggleable",
+        "value"
+      ]), LISTBOX_TAG, {
+        "aria-labelledby": labelID
+      }, createDisabled(() => props.disabled), {
+        get children() {
+          return createComponent45(HeadlessSelectRoot, {
+            onChange: props.onSelectChange,
+            get toggleable() {
+              return props.toggleable;
+            },
+            get value() {
+              return props.value;
+            },
+            get disabled() {
+              return props.disabled;
+            },
+            get children() {
+              return createComponent45(HeadlessDisclosureRoot, {
+                onChange(value) {
+                  var _a;
+                  if (value) {
+                    fsp.save();
+                  }
+                  (_a = props.onDisclosureChange) == null ? void 0 : _a.call(props, value);
+                  if (!value) {
+                    fsp.load();
+                  }
+                },
+                get defaultOpen() {
+                  return props.defaultOpen;
+                },
+                get disabled() {
+                  return props.disabled;
+                },
+                get children() {
+                  return props.children;
+                }
+              });
+            }
+          });
+        }
+      }));
+    }
+  });
+}
+
+// src/components/listbox/ListboxSUSCD.ts
+import {
+  createComponent as createComponent46,
+  createSignal as createSignal27,
+  createUniqueId as createUniqueId24,
+  mergeProps as mergeProps56
+} from "solid-js";
+import {
+  omitProps as omitProps55
+} from "solid-use";
+function ListboxSUSCD(props) {
+  const [hovering, setHovering] = createSignal27(false);
+  const ownerID = createUniqueId24();
+  const labelID = createUniqueId24();
+  const buttonID = createUniqueId24();
+  const optionsID = createUniqueId24();
+  const fsp = useFocusStartPoint();
+  return createComponent46(ListboxContext.Provider, {
+    value: {
+      multiple: false,
+      ownerID,
+      labelID,
+      buttonID,
+      optionsID,
+      get horizontal() {
+        return props.horizontal;
+      },
+      get hovering() {
+        return hovering();
+      },
+      set hovering(value) {
+        setHovering(value);
+      }
+    },
+    get children() {
+      return createDynamic(() => {
+        var _a;
+        return (_a = props.as) != null ? _a : Fragment;
+      }, mergeProps56(omitProps55(props, [
         "as",
         "children",
         "disabled",
@@ -4151,7 +4136,7 @@ function ListboxSUSCD(props) {
         "aria-labelledby": labelID
       }, createDisabled(() => props.disabled), {
         get children() {
-          return createComponent45(HeadlessSelectRoot, {
+          return createComponent46(HeadlessSelectRoot, {
             onChange: props.onSelectChange,
             get toggleable() {
               return props.toggleable;
@@ -4163,7 +4148,7 @@ function ListboxSUSCD(props) {
               return props.disabled;
             },
             get children() {
-              return createComponent45(HeadlessDisclosureRoot, {
+              return createComponent46(HeadlessDisclosureRoot, {
                 onChange(value) {
                   var _a;
                   if (value) {
@@ -4194,10 +4179,10 @@ function ListboxSUSCD(props) {
 
 // src/components/listbox/ListboxSUSUD.ts
 import {
-  createComponent as createComponent46,
+  createComponent as createComponent47,
   createSignal as createSignal28,
   createUniqueId as createUniqueId25,
-  mergeProps as mergeProps56
+  mergeProps as mergeProps57
 } from "solid-js";
 import {
   omitProps as omitProps56
@@ -4209,7 +4194,7 @@ function ListboxSUSUD(props) {
   const buttonID = createUniqueId25();
   const optionsID = createUniqueId25();
   const fsp = useFocusStartPoint();
-  return createComponent46(ListboxContext.Provider, {
+  return createComponent47(ListboxContext.Provider, {
     value: {
       multiple: false,
       ownerID,
@@ -4230,7 +4215,7 @@ function ListboxSUSUD(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : Fragment;
-      }, mergeProps56(omitProps56(props, [
+      }, mergeProps57(omitProps56(props, [
         "as",
         "children",
         "disabled",
@@ -4244,7 +4229,7 @@ function ListboxSUSUD(props) {
         "aria-labelledby": labelID
       }, createDisabled(() => props.disabled), {
         get children() {
-          return createComponent46(HeadlessSelectRoot, {
+          return createComponent47(HeadlessSelectRoot, {
             onChange: props.onSelectChange,
             get toggleable() {
               return props.toggleable;
@@ -4256,7 +4241,7 @@ function ListboxSUSUD(props) {
               return props.disabled;
             },
             get children() {
-              return createComponent46(HeadlessDisclosureRoot, {
+              return createComponent47(HeadlessDisclosureRoot, {
                 onChange(value) {
                   var _a;
                   if (value) {
@@ -4299,25 +4284,25 @@ function Listbox(props) {
   if (isListboxMultiple(props)) {
     if (isListboxSelectUncontrolled(props)) {
       if (isListboxDisclosureUncontrolled(props)) {
-        return createComponent47(ListboxMUSUD, props);
+        return createComponent48(ListboxMUSUD, props);
       }
-      return createComponent47(ListboxMUSCD, props);
+      return createComponent48(ListboxMUSCD, props);
     }
     if (isListboxDisclosureUncontrolled(props)) {
-      return createComponent47(ListboxMCSUD, props);
+      return createComponent48(ListboxMCSUD, props);
     }
-    return createComponent47(ListboxMCSCD, props);
+    return createComponent48(ListboxMCSCD, props);
   }
   if (isListboxSelectUncontrolled(props)) {
     if (isListboxDisclosureUncontrolled(props)) {
-      return createComponent47(ListboxSUSUD, props);
+      return createComponent48(ListboxSUSUD, props);
     }
-    return createComponent47(ListboxSUSCD, props);
+    return createComponent48(ListboxSUSCD, props);
   }
   if (isListboxDisclosureUncontrolled(props)) {
-    return createComponent47(ListboxSCSUD, props);
+    return createComponent48(ListboxSCSUD, props);
   }
-  return createComponent47(ListboxSCSCD, props);
+  return createComponent48(ListboxSCSCD, props);
 }
 
 // src/components/listbox/ListboxButton.ts
@@ -4325,8 +4310,8 @@ import {
   createSignal as createSignal29,
   createEffect as createEffect18,
   onCleanup as onCleanup19,
-  createComponent as createComponent48,
-  mergeProps as mergeProps57
+  createComponent as createComponent49,
+  mergeProps as mergeProps58
 } from "solid-js";
 import {
   omitProps as omitProps57
@@ -4377,7 +4362,7 @@ function ListboxButton(props) {
       });
     }
   });
-  return createComponent48(Button, mergeProps57(omitProps57(props, [
+  return createComponent49(Button, mergeProps58(omitProps57(props, [
     "children",
     "ref"
   ]), LISTBOX_BUTTON_TAG, {
@@ -4399,7 +4384,7 @@ function ListboxButton(props) {
 
 // src/components/listbox/ListboxLabel.ts
 import {
-  mergeProps as mergeProps58
+  mergeProps as mergeProps59
 } from "solid-js";
 import {
   omitProps as omitProps58
@@ -4409,7 +4394,7 @@ function ListboxLabel(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "label";
-  }, mergeProps58(omitProps58(props, [
+  }, mergeProps59(omitProps58(props, [
     "as",
     "children"
   ]), LISTBOX_LABEL_TAG, {
@@ -4422,9 +4407,9 @@ import {
   createSignal as createSignal30,
   onCleanup as onCleanup20,
   createEffect as createEffect19,
-  untrack as untrack4,
-  createComponent as createComponent49,
-  mergeProps as mergeProps59,
+  untrack as untrack3,
+  createComponent as createComponent50,
+  mergeProps as mergeProps60,
   batch as batch5
 } from "solid-js";
 import {
@@ -4568,12 +4553,12 @@ function ListboxOption(props) {
   createEffect19(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      if (disclosure.isOpen() && untrack4(() => properties.isSelected(props.value)) && !isDisabled()) {
+      if (disclosure.isOpen() && untrack3(() => properties.isSelected(props.value)) && !isDisabled()) {
         ref.focus();
       }
     }
   });
-  return createComponent49(Button, mergeProps59(omitProps59(props, [
+  return createComponent50(Button, mergeProps60(omitProps59(props, [
     "as",
     "children",
     "value",
@@ -4596,8 +4581,8 @@ import {
   createSignal as createSignal31,
   createEffect as createEffect20,
   onCleanup as onCleanup21,
-  createComponent as createComponent50,
-  mergeProps as mergeProps60
+  createComponent as createComponent51,
+  mergeProps as mergeProps61
 } from "solid-js";
 import {
   omitProps as omitProps60
@@ -4630,13 +4615,13 @@ function ListboxOptions(props) {
       });
     }
   });
-  return createComponent50(ListboxOptionsContext.Provider, {
+  return createComponent51(ListboxOptionsContext.Provider, {
     value: controller,
     get children() {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "ul";
-      }, mergeProps60(omitProps60(props, [
+      }, mergeProps61(omitProps60(props, [
         "as",
         "children",
         "ref"
@@ -4664,8 +4649,8 @@ function ListboxOptions(props) {
 
 // src/components/menu/Menu.ts
 import {
-  createComponent as createComponent51,
-  mergeProps as mergeProps61
+  createComponent as createComponent52,
+  mergeProps as mergeProps62
 } from "solid-js";
 import {
   omitProps as omitProps61
@@ -4696,13 +4681,13 @@ var MENU_ITEM_TAG = createTag("menu-item");
 // src/components/menu/Menu.ts
 function Menu(props) {
   const controller = createMenuItemFocusNavigator();
-  return createComponent51(MenuContext.Provider, {
+  return createComponent52(MenuContext.Provider, {
     value: controller,
     get children() {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps61(omitProps61(props, ["as", "ref"]), MENU_TAG, {
+      }, mergeProps62(omitProps61(props, ["as", "ref"]), MENU_TAG, {
         id: controller.getId(),
         role: "menu",
         ref: createRef(props, (e) => {
@@ -4718,8 +4703,8 @@ import {
   createSignal as createSignal32,
   onCleanup as onCleanup22,
   createEffect as createEffect21,
-  mergeProps as mergeProps62,
-  createComponent as createComponent52
+  mergeProps as mergeProps63,
+  createComponent as createComponent53
 } from "solid-js";
 import {
   omitProps as omitProps62
@@ -4727,13 +4712,13 @@ import {
 
 // src/components/menu/MenuChild.ts
 import {
-  createMemo as createMemo12
+  createMemo as createMemo11
 } from "solid-js";
 function isMenuChildRenderProp(children) {
   return typeof children === "function" && children.length > 0;
 }
 function MenuChild(props) {
-  return createMemo12(() => {
+  return createMemo11(() => {
     const body = props.children;
     if (isMenuChildRenderProp(body)) {
       return body({
@@ -4810,7 +4795,7 @@ function MenuItem(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps62(omitProps62(props, [
+  }, mergeProps63(omitProps62(props, [
     "as",
     "disabled",
     "ref",
@@ -4823,7 +4808,7 @@ function MenuItem(props) {
     })
   }, createDisabled(() => props.disabled), {
     get children() {
-      return createComponent52(MenuChild, {
+      return createComponent53(MenuChild, {
         get disabled() {
           return props.disabled;
         },
@@ -4837,15 +4822,15 @@ function MenuItem(props) {
 
 // src/components/popover/Popover.ts
 import {
-  createComponent as createComponent55
+  createComponent as createComponent56
 } from "solid-js";
 
 // src/components/popover/PopoverControlled.ts
 import {
-  createComponent as createComponent53,
+  createComponent as createComponent54,
   createSignal as createSignal33,
   createUniqueId as createUniqueId27,
-  mergeProps as mergeProps63
+  mergeProps as mergeProps64
 } from "solid-js";
 import {
   omitProps as omitProps63
@@ -4878,7 +4863,7 @@ function PopoverControlled(props) {
   const buttonID = createUniqueId27();
   const panelID = createUniqueId27();
   const fsp = useFocusStartPoint();
-  return createComponent53(PopoverContext.Provider, {
+  return createComponent54(PopoverContext.Provider, {
     value: {
       ownerID,
       buttonID,
@@ -4894,7 +4879,7 @@ function PopoverControlled(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps63(omitProps63(props, [
+      }, mergeProps64(omitProps63(props, [
         "isOpen",
         "as",
         "children",
@@ -4902,7 +4887,7 @@ function PopoverControlled(props) {
         "onChange"
       ]), POPOVER_TAG, createDisabled(() => props.disabled), {
         get children() {
-          return createComponent53(HeadlessDisclosureRoot, {
+          return createComponent54(HeadlessDisclosureRoot, {
             get isOpen() {
               return props.isOpen;
             },
@@ -4933,10 +4918,10 @@ function PopoverControlled(props) {
 
 // src/components/popover/PopoverUncontrolled.ts
 import {
-  createComponent as createComponent54,
+  createComponent as createComponent55,
   createSignal as createSignal34,
   createUniqueId as createUniqueId28,
-  mergeProps as mergeProps64
+  mergeProps as mergeProps65
 } from "solid-js";
 import {
   omitProps as omitProps64
@@ -4947,7 +4932,7 @@ function PopoverUncontrolled(props) {
   const buttonID = createUniqueId28();
   const panelID = createUniqueId28();
   const fsp = useFocusStartPoint();
-  return createComponent54(PopoverContext.Provider, {
+  return createComponent55(PopoverContext.Provider, {
     value: {
       ownerID,
       buttonID,
@@ -4963,7 +4948,7 @@ function PopoverUncontrolled(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps64(omitProps64(props, [
+      }, mergeProps65(omitProps64(props, [
         "defaultOpen",
         "as",
         "children",
@@ -4971,7 +4956,7 @@ function PopoverUncontrolled(props) {
         "onChange"
       ]), POPOVER_TAG, createDisabled(() => props.disabled), {
         get children() {
-          return createComponent54(HeadlessDisclosureRoot, {
+          return createComponent55(HeadlessDisclosureRoot, {
             get defaultOpen() {
               return props.defaultOpen;
             },
@@ -5006,9 +4991,9 @@ function isPopoverUncontrolled(props) {
 }
 function Popover(props) {
   if (isPopoverUncontrolled(props)) {
-    return createComponent55(PopoverUncontrolled, props);
+    return createComponent56(PopoverUncontrolled, props);
   }
-  return createComponent55(PopoverControlled, props);
+  return createComponent56(PopoverControlled, props);
 }
 
 // src/components/popover/PopoverButton.ts
@@ -5016,8 +5001,8 @@ import {
   createSignal as createSignal35,
   createEffect as createEffect22,
   onCleanup as onCleanup23,
-  createComponent as createComponent56,
-  mergeProps as mergeProps65
+  createComponent as createComponent57,
+  mergeProps as mergeProps66
 } from "solid-js";
 import {
   omitProps as omitProps65
@@ -5052,7 +5037,7 @@ function PopoverButton(props) {
       });
     }
   });
-  return createComponent56(Button, mergeProps65(omitProps65(props, [
+  return createComponent57(Button, mergeProps66(omitProps65(props, [
     "children",
     "ref"
   ]), POPOVER_BUTTON_TAG, {
@@ -5078,7 +5063,7 @@ import {
   createSignal as createSignal36,
   createEffect as createEffect23,
   onCleanup as onCleanup24,
-  mergeProps as mergeProps66
+  mergeProps as mergeProps67
 } from "solid-js";
 import {
   omitProps as omitProps66
@@ -5102,7 +5087,7 @@ function PopoverOverlay(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps66(omitProps66(props, [
+  }, mergeProps67(omitProps66(props, [
     "as",
     "children",
     "ref"
@@ -5118,7 +5103,7 @@ import {
   createSignal as createSignal37,
   createEffect as createEffect24,
   onCleanup as onCleanup25,
-  mergeProps as mergeProps67
+  mergeProps as mergeProps68
 } from "solid-js";
 import {
   omitProps as omitProps67
@@ -5194,7 +5179,7 @@ function PopoverPanel(props) {
   return createUnmountable(props, () => properties.isOpen(), () => createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps67(omitProps67(props, [
+  }, mergeProps68(omitProps67(props, [
     "as",
     "unmount",
     "children",
@@ -5209,16 +5194,16 @@ function PopoverPanel(props) {
 
 // src/components/radio-group/RadioGroup.ts
 import {
-  createComponent as createComponent59
+  createComponent as createComponent60
 } from "solid-js";
 
 // src/components/radio-group/RadioGroupControlled.ts
 import {
   createUniqueId as createUniqueId30,
-  mergeProps as mergeProps68
+  mergeProps as mergeProps69
 } from "solid-js";
 import {
-  createComponent as createComponent57
+  createComponent as createComponent58
 } from "solid-js/web";
 import {
   omitProps as omitProps68
@@ -5267,10 +5252,10 @@ function RadioGroupControlled(props) {
   const controller = createRadioGroupOptionFocusNavigator();
   const descriptionID = createUniqueId30();
   const labelID = createUniqueId30();
-  return createComponent57(RadioGroupRootContext.Provider, {
+  return createComponent58(RadioGroupRootContext.Provider, {
     value: controller,
     get children() {
-      return createComponent57(RadioGroupContext.Provider, {
+      return createComponent58(RadioGroupContext.Provider, {
         value: {
           descriptionID,
           labelID
@@ -5279,7 +5264,7 @@ function RadioGroupControlled(props) {
           return createDynamic(() => {
             var _a;
             return (_a = props.as) != null ? _a : "div";
-          }, mergeProps68(omitProps68(props, [
+          }, mergeProps69(omitProps68(props, [
             "as",
             "children",
             "value",
@@ -5303,10 +5288,10 @@ function RadioGroupControlled(props) {
 // src/components/radio-group/RadioGroupUncontrolled.ts
 import {
   createUniqueId as createUniqueId31,
-  mergeProps as mergeProps69
+  mergeProps as mergeProps70
 } from "solid-js";
 import {
-  createComponent as createComponent58
+  createComponent as createComponent59
 } from "solid-js/web";
 import {
   omitProps as omitProps69
@@ -5315,10 +5300,10 @@ function RadioGroupUncontrolled(props) {
   const controller = createRadioGroupOptionFocusNavigator();
   const descriptionID = createUniqueId31();
   const labelID = createUniqueId31();
-  return createComponent58(RadioGroupRootContext.Provider, {
+  return createComponent59(RadioGroupRootContext.Provider, {
     value: controller,
     get children() {
-      return createComponent58(RadioGroupContext.Provider, {
+      return createComponent59(RadioGroupContext.Provider, {
         value: {
           descriptionID,
           labelID
@@ -5327,7 +5312,7 @@ function RadioGroupUncontrolled(props) {
           return createDynamic(() => {
             var _a;
             return (_a = props.as) != null ? _a : "div";
-          }, mergeProps69(omitProps69(props, [
+          }, mergeProps70(omitProps69(props, [
             "as",
             "children",
             "defaultValue",
@@ -5354,14 +5339,14 @@ function isRadioGroupUncontrolled(props) {
 }
 function RadioGroup(props) {
   if (isRadioGroupUncontrolled(props)) {
-    return createComponent59(RadioGroupUncontrolled, props);
+    return createComponent60(RadioGroupUncontrolled, props);
   }
-  return createComponent59(RadioGroupControlled, props);
+  return createComponent60(RadioGroupControlled, props);
 }
 
 // src/components/radio-group/RadioGroupDescription.ts
 import {
-  mergeProps as mergeProps70
+  mergeProps as mergeProps71
 } from "solid-js";
 import {
   omitProps as omitProps70
@@ -5371,14 +5356,14 @@ function RadioGroupDescription(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps70(omitProps70(props, ["as"]), RADIO_GROUP_DESCRIPTION_TAG, {
+  }, mergeProps71(omitProps70(props, ["as"]), RADIO_GROUP_DESCRIPTION_TAG, {
     id: context.descriptionID
   }));
 }
 
 // src/components/radio-group/RadioGroupLabel.ts
 import {
-  mergeProps as mergeProps71
+  mergeProps as mergeProps72
 } from "solid-js";
 import {
   omitProps as omitProps71
@@ -5388,18 +5373,18 @@ function RadioGroupLabel(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "label";
-  }, mergeProps71(omitProps71(props, ["as"]), RADIO_GROUP_LABEL_TAG, {
+  }, mergeProps72(omitProps71(props, ["as"]), RADIO_GROUP_LABEL_TAG, {
     id: context.labelID
   }));
 }
 
 // src/components/radio-group/RadioGroupOption.ts
 import {
-  createComponent as createComponent60,
+  createComponent as createComponent61,
   createEffect as createEffect25,
   createSignal as createSignal38,
   createUniqueId as createUniqueId32,
-  mergeProps as mergeProps72,
+  mergeProps as mergeProps73,
   onCleanup as onCleanup26
 } from "solid-js";
 import {
@@ -5472,13 +5457,13 @@ function RadioGroupOption(props) {
       });
     }
   });
-  return createComponent60(RadioGroupContext.Provider, {
+  return createComponent61(RadioGroupContext.Provider, {
     value: { descriptionID, labelID },
     get children() {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps72(omitProps72(props, [
+      }, mergeProps73(omitProps72(props, [
         "as",
         "children",
         "value",
@@ -5501,13 +5486,13 @@ function RadioGroupOption(props) {
 
 // src/components/select/Select.ts
 import {
-  createComponent as createComponent65
+  createComponent as createComponent66
 } from "solid-js";
 
 // src/components/select/SelectMultipleControlled.ts
 import {
-  createComponent as createComponent61,
-  mergeProps as mergeProps73
+  createComponent as createComponent62,
+  mergeProps as mergeProps74
 } from "solid-js";
 import {
   omitProps as omitProps73
@@ -5538,7 +5523,7 @@ var SELECT_OPTION_TAG = createTag("select-option");
 // src/components/select/SelectMultipleControlled.ts
 function SelectMultipleControlled(props) {
   const controller = createSelectOptionFocusNavigator();
-  return createComponent61(SelectContext.Provider, {
+  return createComponent62(SelectContext.Provider, {
     value: {
       controller,
       get horizontal() {
@@ -5549,7 +5534,7 @@ function SelectMultipleControlled(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "ul";
-      }, mergeProps73(omitProps73(props, [
+      }, mergeProps74(omitProps73(props, [
         "as",
         "children",
         "toggleable",
@@ -5571,7 +5556,7 @@ function SelectMultipleControlled(props) {
         }
       }, createDisabled(() => props.disabled), {
         get children() {
-          return createComponent61(HeadlessSelectRoot, {
+          return createComponent62(HeadlessSelectRoot, {
             multiple: true,
             onChange: props.onChange,
             get value() {
@@ -5595,15 +5580,15 @@ function SelectMultipleControlled(props) {
 
 // src/components/select/SelectMultipleUncontrolled.ts
 import {
-  createComponent as createComponent62,
-  mergeProps as mergeProps74
+  createComponent as createComponent63,
+  mergeProps as mergeProps75
 } from "solid-js";
 import {
   omitProps as omitProps74
 } from "solid-use";
 function SelectMultipleUncontrolled(props) {
   const controller = createSelectOptionFocusNavigator();
-  return createComponent62(SelectContext.Provider, {
+  return createComponent63(SelectContext.Provider, {
     value: {
       controller,
       get horizontal() {
@@ -5614,7 +5599,7 @@ function SelectMultipleUncontrolled(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "ul";
-      }, mergeProps74(omitProps74(props, [
+      }, mergeProps75(omitProps74(props, [
         "as",
         "children",
         "toggleable",
@@ -5636,7 +5621,7 @@ function SelectMultipleUncontrolled(props) {
         }
       }, createDisabled(() => props.disabled), {
         get children() {
-          return createComponent62(HeadlessSelectRoot, {
+          return createComponent63(HeadlessSelectRoot, {
             multiple: true,
             onChange: props.onChange,
             get defaultValue() {
@@ -5660,15 +5645,15 @@ function SelectMultipleUncontrolled(props) {
 
 // src/components/select/SelectSingleControlled.ts
 import {
-  createComponent as createComponent63,
-  mergeProps as mergeProps75
+  createComponent as createComponent64,
+  mergeProps as mergeProps76
 } from "solid-js";
 import {
   omitProps as omitProps75
 } from "solid-use";
 function SelectSingleControlled(props) {
   const controller = createSelectOptionFocusNavigator();
-  return createComponent63(SelectContext.Provider, {
+  return createComponent64(SelectContext.Provider, {
     value: {
       controller,
       get horizontal() {
@@ -5679,7 +5664,7 @@ function SelectSingleControlled(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "ul";
-      }, mergeProps75(omitProps75(props, [
+      }, mergeProps76(omitProps75(props, [
         "as",
         "children",
         "toggleable",
@@ -5700,7 +5685,7 @@ function SelectSingleControlled(props) {
         }
       }, createDisabled(() => props.disabled), {
         get children() {
-          return createComponent63(HeadlessSelectRoot, {
+          return createComponent64(HeadlessSelectRoot, {
             onChange: props.onChange,
             get value() {
               return props.value;
@@ -5723,15 +5708,15 @@ function SelectSingleControlled(props) {
 
 // src/components/select/SelectSingleUncontrolled.ts
 import {
-  createComponent as createComponent64,
-  mergeProps as mergeProps76
+  createComponent as createComponent65,
+  mergeProps as mergeProps77
 } from "solid-js";
 import {
   omitProps as omitProps76
 } from "solid-use";
 function SelectSingleUncontrolled(props) {
   const controller = createSelectOptionFocusNavigator();
-  return createComponent64(SelectContext.Provider, {
+  return createComponent65(SelectContext.Provider, {
     value: {
       controller,
       get horizontal() {
@@ -5742,7 +5727,7 @@ function SelectSingleUncontrolled(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "ul";
-      }, mergeProps76(omitProps76(props, [
+      }, mergeProps77(omitProps76(props, [
         "as",
         "children",
         "toggleable",
@@ -5763,7 +5748,7 @@ function SelectSingleUncontrolled(props) {
         }
       }, createDisabled(() => props.disabled), {
         get children() {
-          return createComponent64(HeadlessSelectRoot, {
+          return createComponent65(HeadlessSelectRoot, {
             onChange: props.onChange,
             get defaultValue() {
               return props.defaultValue;
@@ -5794,22 +5779,22 @@ function isSelectMultiple(props) {
 function Select(props) {
   if (isSelectUncontrolled(props)) {
     if (isSelectMultiple(props)) {
-      return createComponent65(SelectMultipleUncontrolled, props);
+      return createComponent66(SelectMultipleUncontrolled, props);
     }
-    return createComponent65(SelectSingleUncontrolled, props);
+    return createComponent66(SelectSingleUncontrolled, props);
   }
   if (isSelectMultiple(props)) {
-    return createComponent65(SelectMultipleControlled, props);
+    return createComponent66(SelectMultipleControlled, props);
   }
-  return createComponent65(SelectSingleControlled, props);
+  return createComponent66(SelectSingleControlled, props);
 }
 
 // src/components/select/SelectOption.ts
 import {
-  createComponent as createComponent66,
+  createComponent as createComponent67,
   createEffect as createEffect26,
   createSignal as createSignal39,
-  mergeProps as mergeProps77,
+  mergeProps as mergeProps78,
   onCleanup as onCleanup27
 } from "solid-js";
 import {
@@ -5927,7 +5912,7 @@ function SelectOption(props) {
       });
     }
   });
-  return createComponent66(Button, mergeProps77({
+  return createComponent67(Button, mergeProps78({
     get as() {
       var _a;
       return (_a = props.as) != null ? _a : "li";
@@ -5950,7 +5935,7 @@ function SelectOption(props) {
 import {
   createEffect as createEffect27,
   createSignal as createSignal40,
-  mergeProps as mergeProps78,
+  mergeProps as mergeProps79,
   onCleanup as onCleanup28
 } from "solid-js";
 import {
@@ -6087,7 +6072,7 @@ function Tab(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps78(omitProps78(props, [
+  }, mergeProps79(omitProps78(props, [
     "as",
     "children",
     "value",
@@ -6112,13 +6097,13 @@ function Tab(props) {
 
 // src/components/tabs/TabGroup.ts
 import {
-  createComponent as createComponent69
+  createComponent as createComponent70
 } from "solid-js";
 
 // src/components/tabs/TabGroupControlled.ts
 import {
-  mergeProps as mergeProps79,
-  createComponent as createComponent67,
+  mergeProps as mergeProps80,
+  createComponent as createComponent68,
   createUniqueId as createUniqueId35
 } from "solid-js";
 import {
@@ -6126,51 +6111,6 @@ import {
 } from "solid-use";
 function TabGroupControlled(props) {
   const ownerID = createUniqueId35();
-  let id = 0;
-  const ids = /* @__PURE__ */ new Map();
-  return createComponent67(TabGroupContext.Provider, {
-    value: {
-      get horizontal() {
-        var _a;
-        return (_a = props.horizontal) != null ? _a : true;
-      },
-      getId(kind, value) {
-        let currentID = ids.get(value);
-        if (!currentID) {
-          currentID = id;
-          ids.set(value, currentID);
-          id += 1;
-        }
-        return `${ownerID}__${kind}-${currentID}`;
-      }
-    },
-    get children() {
-      return createDynamic(() => {
-        var _a;
-        return (_a = props.as) != null ? _a : "div";
-      }, mergeProps79(omitProps79(props, [
-        "as",
-        "children",
-        "value",
-        "disabled",
-        "onChange",
-        "ref"
-      ]), TAB_GROUP_TAG, createDisabled(() => props.disabled), createHeadlessSelectRootSingleControlledProps(props)));
-    }
-  });
-}
-
-// src/components/tabs/TabGroupUncontrolled.ts
-import {
-  mergeProps as mergeProps80,
-  createComponent as createComponent68,
-  createUniqueId as createUniqueId36
-} from "solid-js";
-import {
-  omitProps as omitProps80
-} from "solid-use";
-function TabGroupUncontrolled(props) {
-  const ownerID = createUniqueId36();
   let id = 0;
   const ids = /* @__PURE__ */ new Map();
   return createComponent68(TabGroupContext.Provider, {
@@ -6193,7 +6133,52 @@ function TabGroupUncontrolled(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps80(omitProps80(props, [
+      }, mergeProps80(omitProps79(props, [
+        "as",
+        "children",
+        "value",
+        "disabled",
+        "onChange",
+        "ref"
+      ]), TAB_GROUP_TAG, createDisabled(() => props.disabled), createHeadlessSelectRootSingleControlledProps(props)));
+    }
+  });
+}
+
+// src/components/tabs/TabGroupUncontrolled.ts
+import {
+  mergeProps as mergeProps81,
+  createComponent as createComponent69,
+  createUniqueId as createUniqueId36
+} from "solid-js";
+import {
+  omitProps as omitProps80
+} from "solid-use";
+function TabGroupUncontrolled(props) {
+  const ownerID = createUniqueId36();
+  let id = 0;
+  const ids = /* @__PURE__ */ new Map();
+  return createComponent69(TabGroupContext.Provider, {
+    value: {
+      get horizontal() {
+        var _a;
+        return (_a = props.horizontal) != null ? _a : true;
+      },
+      getId(kind, value) {
+        let currentID = ids.get(value);
+        if (!currentID) {
+          currentID = id;
+          ids.set(value, currentID);
+          id += 1;
+        }
+        return `${ownerID}__${kind}-${currentID}`;
+      }
+    },
+    get children() {
+      return createDynamic(() => {
+        var _a;
+        return (_a = props.as) != null ? _a : "div";
+      }, mergeProps81(omitProps80(props, [
         "as",
         "children",
         "defaultValue",
@@ -6211,15 +6196,15 @@ function isTabGroupUncontrolled(props) {
 }
 function TabGroup(props) {
   if (isTabGroupUncontrolled(props)) {
-    return createComponent69(TabGroupUncontrolled, props);
+    return createComponent70(TabGroupUncontrolled, props);
   }
-  return createComponent69(TabGroupControlled, props);
+  return createComponent70(TabGroupControlled, props);
 }
 
 // src/components/tabs/TabList.ts
 import {
-  createComponent as createComponent70,
-  mergeProps as mergeProps81
+  createComponent as createComponent71,
+  mergeProps as mergeProps82
 } from "solid-js";
 import {
   omitProps as omitProps81
@@ -6227,13 +6212,13 @@ import {
 function TabList(props) {
   const rootContext = useTabGroupContext("TabList");
   const controller = createTabFocusNavigator();
-  return createComponent70(TabListContext.Provider, {
+  return createComponent71(TabListContext.Provider, {
     value: controller,
     get children() {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps81(omitProps81(props, ["as", "ref", "children"]), TAB_LIST_TAG, {
+      }, mergeProps82(omitProps81(props, ["as", "ref", "children"]), TAB_LIST_TAG, {
         role: "tablist",
         get "aria-orientation"() {
           return rootContext.horizontal ? "horizontal" : "vertical";
@@ -6248,7 +6233,7 @@ function TabList(props) {
 
 // src/components/tabs/TabPanel.ts
 import {
-  mergeProps as mergeProps82
+  mergeProps as mergeProps83
 } from "solid-js";
 import { omitProps as omitProps82 } from "solid-use";
 function TabPanel(props) {
@@ -6257,7 +6242,7 @@ function TabPanel(props) {
   return createUnmountable(props, () => properties.isSelected(props.value), () => createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps82(omitProps82(props, ["as", "children", "disabled", "unmount", "value"]), TAB_PANEL_TAG, {
+  }, mergeProps83(omitProps82(props, ["as", "children", "disabled", "unmount", "value"]), TAB_PANEL_TAG, {
     role: "tabpanel",
     get tabindex() {
       return properties.isSelected(props.value) ? 0 : -1;
@@ -6273,7 +6258,7 @@ function TabPanel(props) {
 
 // src/components/toast/Toast.ts
 import {
-  mergeProps as mergeProps83
+  mergeProps as mergeProps84
 } from "solid-js";
 import {
   omitProps as omitProps83
@@ -6303,7 +6288,7 @@ function Toast(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps83(omitProps83(props, [
+  }, mergeProps84(omitProps83(props, [
     "as"
   ]), TOAST_TAG, {
     role: "status",
@@ -6313,16 +6298,16 @@ function Toast(props) {
 
 // src/components/toast/Toaster.ts
 import {
-  createComponent as createComponent71,
+  createComponent as createComponent72,
   createUniqueId as createUniqueId37,
-  mergeProps as mergeProps84
+  mergeProps as mergeProps85
 } from "solid-js";
 import {
   omitProps as omitProps84
 } from "solid-use";
 function Toaster(props) {
   const ownerID = createUniqueId37();
-  return createComponent71(ToastContext.Provider, {
+  return createComponent72(ToastContext.Provider, {
     value: {
       ownerID
     },
@@ -6330,7 +6315,7 @@ function Toaster(props) {
       return createDynamic(() => {
         var _a;
         return (_a = props.as) != null ? _a : "div";
-      }, mergeProps84(omitProps84(props, [
+      }, mergeProps85(omitProps84(props, [
         "as"
       ]), TOASTER_TAG));
     }
@@ -6399,7 +6384,7 @@ function useToaster(toaster) {
 
 // src/components/toggle/index.ts
 import {
-  createComponent as createComponent74
+  createComponent as createComponent75
 } from "solid-js";
 
 // src/components/toggle/ToggleControlled.ts
@@ -6407,8 +6392,8 @@ import {
   createSignal as createSignal42,
   createEffect as createEffect29,
   onCleanup as onCleanup30,
-  createComponent as createComponent72,
-  mergeProps as mergeProps85
+  createComponent as createComponent73,
+  mergeProps as mergeProps86
 } from "solid-js";
 import {
   omitProps as omitProps85
@@ -6433,7 +6418,7 @@ function ToggleControlled(props) {
       });
     }
   });
-  return createComponent72(Button, mergeProps85(omitProps85(props, [
+  return createComponent73(Button, mergeProps86(omitProps85(props, [
     "onChange",
     "pressed",
     "ref"
@@ -6455,9 +6440,9 @@ import {
   createSignal as createSignal43,
   createEffect as createEffect30,
   onCleanup as onCleanup31,
-  createComponent as createComponent73,
-  mergeProps as mergeProps86,
-  untrack as untrack5,
+  createComponent as createComponent74,
+  mergeProps as mergeProps87,
+  untrack as untrack4,
   batch as batch6
 } from "solid-js";
 import {
@@ -6470,7 +6455,7 @@ function ToggleUncontrolled(props) {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onClick = () => {
-        const current = !untrack5(state);
+        const current = !untrack4(state);
         batch6(() => {
           var _a;
           setState(current);
@@ -6483,7 +6468,7 @@ function ToggleUncontrolled(props) {
       });
     }
   });
-  return createComponent73(Button, mergeProps86(omitProps86(props, [
+  return createComponent74(Button, mergeProps87(omitProps86(props, [
     "onChange",
     "defaultPressed",
     "ref"
@@ -6506,16 +6491,16 @@ function isToggleUncontrolled(props) {
 }
 function Toggle(props) {
   if (isToggleUncontrolled(props)) {
-    return createComponent74(ToggleUncontrolled, props);
+    return createComponent75(ToggleUncontrolled, props);
   }
-  return createComponent74(ToggleControlled, props);
+  return createComponent75(ToggleControlled, props);
 }
 
 // src/components/toolbar/index.ts
 import {
   createEffect as createEffect31,
   createSignal as createSignal44,
-  mergeProps as mergeProps87,
+  mergeProps as mergeProps88,
   onCleanup as onCleanup32
 } from "solid-js";
 import { omitProps as omitProps87 } from "solid-use";
@@ -6615,7 +6600,7 @@ function Toolbar(props) {
   return createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps87(omitProps87(props, [
+  }, mergeProps88(omitProps87(props, [
     "as",
     "horizontal",
     "ref"
@@ -6633,11 +6618,11 @@ function Toolbar(props) {
 
 // src/components/transition/index.ts
 import {
-  createComponent as createComponent75,
+  createComponent as createComponent76,
   createContext as createContext27,
   createEffect as createEffect32,
   createSignal as createSignal45,
-  mergeProps as mergeProps88,
+  mergeProps as mergeProps89,
   splitProps,
   useContext as useContext27
 } from "solid-js";
@@ -6736,7 +6721,7 @@ function TransitionChild(props) {
   return createUnmountable(props, visible, () => createDynamic(() => {
     var _a;
     return (_a = props.as) != null ? _a : "div";
-  }, mergeProps88(omitProps88(props, [
+  }, mergeProps89(omitProps88(props, [
     "as",
     "enter",
     "enterFrom",
@@ -6762,10 +6747,10 @@ function Transition(props) {
   const [local, others] = splitProps(props, [
     "show"
   ]);
-  return createComponent75(TransitionRootContext.Provider, {
+  return createComponent76(TransitionRootContext.Provider, {
     value: local,
     get children() {
-      return createComponent75(TransitionChild, others);
+      return createComponent76(TransitionChild, others);
     }
   });
 }
