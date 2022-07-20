@@ -58,7 +58,9 @@ export function Button<T extends ValidConstructor = 'button'>(
     () => props.as ?? ('button' as T),
     mergeProps(
       {
-        tabindex: 0,
+        get tabindex() {
+          return props.disabled ? -1 : 0;
+        },
         role: 'button',
       },
       createDisabled(() => props.disabled),

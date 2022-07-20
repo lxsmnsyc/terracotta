@@ -16,10 +16,11 @@ import {
 } from '../../utils/dynamic-prop';
 import {
   focusFirst,
+  focusLast,
   focusNext,
   focusPrev,
 } from '../../utils/focus-navigation';
-import getFocusableElements from '../../utils/get-focusable-elements';
+import getFocusableElements from '../../utils/focus-query';
 import { createTag } from '../../utils/namespace';
 
 const TOOLBAR_TAG = createTag('toolbar');
@@ -86,21 +87,15 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
               getNextFocusable();
             }
             break;
-          case 'Home': {
-            const nodes = getFocusableElements(ref);
-            if (nodes.length) {
+          case 'Home':
+            if (focusFirst(getFocusableElements(ref))) {
               e.preventDefault();
-              nodes[0].focus();
             }
-          }
             break;
-          case 'End': {
-            const nodes = getFocusableElements(ref);
-            if (nodes.length) {
+          case 'End':
+            if (focusLast(getFocusableElements(ref))) {
               e.preventDefault();
-              nodes[nodes.length - 1].focus();
             }
-          }
             break;
           default:
             break;

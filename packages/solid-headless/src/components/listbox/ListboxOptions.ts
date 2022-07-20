@@ -92,13 +92,17 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
             role: 'listbox',
             'aria-multiselectable': context.multiple,
             'aria-labelledby': context.buttonID,
-            tabindex: 0,
             ref: createRef(props, (e) => {
               setInternalRef(() => e);
               controller.setRef(e);
             }),
             get 'aria-orientation'() {
               return context.horizontal ? 'horizontal' : 'vertical';
+            },
+            get tabindex() {
+              const internalDisabled = properties.disabled();
+              const granularDisabled = props.disabled;
+              return (internalDisabled || granularDisabled) ? -1 : 0;
             },
           },
           createDisabled(() => {

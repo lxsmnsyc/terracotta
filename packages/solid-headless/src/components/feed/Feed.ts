@@ -16,7 +16,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { focusNext, focusPrev } from '../../utils/focus-navigation';
-import getFocusableElements from '../../utils/get-focusable-elements';
+import getFocusableElements from '../../utils/focus-query';
 import {
   FeedContext,
 } from './FeedContext';

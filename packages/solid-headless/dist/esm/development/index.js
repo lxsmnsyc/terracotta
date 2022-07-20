@@ -716,56 +716,106 @@ import {
   useContext as useContext5
 } from "solid-js";
 
+// src/utils/focus-query.ts
+var QUERY = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex]:not([tabindex="-1"]), [contenteditable]';
+function getFocusableElements(node, filter) {
+  const nodes = node.querySelectorAll(QUERY);
+  const replicated = [];
+  for (let i = 0, len = nodes.length; i < len; i += 1) {
+    if (!filter || !filter.contains(nodes[i])) {
+      replicated.push(nodes[i]);
+    }
+  }
+  return replicated;
+}
+
 // src/utils/focus-navigation.ts
+function isFocusable(el) {
+  return !el.matches('[data-sh-disabled="true"]');
+}
+function getNextFocusable(nodes, anchor, direction) {
+  let current = anchor + direction;
+  while (current >= 0 && current < nodes.length) {
+    if (isFocusable(nodes[anchor])) {
+      return nodes[anchor];
+    }
+    current += direction;
+  }
+  return void 0;
+}
+function getNextLockedFocusable(nodes, anchor, direction) {
+  let current = anchor + direction;
+  if (direction === 1 && current === nodes.length) {
+    current = 0;
+  }
+  if (direction === -1 && current === -1) {
+    current = nodes.length - 1;
+  }
+  while (anchor !== current) {
+    if (isFocusable(nodes[current])) {
+      return nodes[current];
+    }
+    current += direction;
+    if (direction === 1 && current >= nodes.length) {
+      current = 0;
+    }
+    if (direction === -1 && current < 0) {
+      current = nodes.length - 1;
+    }
+  }
+  return void 0;
+}
 function focusNextContinuous(nodes, targetNode) {
+  var _a;
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i] && i + 1 < len) {
-      nodes[i + 1].focus();
+      (_a = getNextFocusable(nodes, i, 1)) == null ? void 0 : _a.focus();
       break;
     }
   }
 }
 function focusPrevContinuous(nodes, targetNode) {
+  var _a;
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i] && i - 1 >= 0) {
-      nodes[i - 1].focus();
+      (_a = getNextFocusable(nodes, i, -1)) == null ? void 0 : _a.focus();
       break;
     }
   }
 }
 function focusNext(nodes, targetNode) {
+  var _a;
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i]) {
-      if (i === len - 1) {
-        nodes[0].focus();
-      } else {
-        nodes[i + 1].focus();
-      }
+      (_a = getNextLockedFocusable(nodes, i, 1)) == null ? void 0 : _a.focus();
       break;
     }
   }
 }
 function focusPrev(nodes, targetNode) {
+  var _a;
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i]) {
-      if (i === 0) {
-        nodes[len - 1].focus();
-      } else {
-        nodes[i - 1].focus();
-      }
+      (_a = getNextLockedFocusable(nodes, i, -1)) == null ? void 0 : _a.focus();
       break;
     }
   }
 }
 function focusFirst(nodes) {
+  var _a;
   if (nodes.length) {
-    nodes[0].focus();
+    (_a = getNextFocusable(nodes, -1, 1)) == null ? void 0 : _a.focus();
+    return true;
   }
+  return false;
 }
 function focusLast(nodes) {
+  var _a;
   if (nodes.length) {
-    nodes[nodes.length - 1].focus();
+    (_a = getNextFocusable(nodes, nodes.length, -1)) == null ? void 0 : _a.focus();
+    return true;
   }
+  return false;
 }
 function focusMatch(nodes, character) {
   var _a;
@@ -775,6 +825,20 @@ function focusMatch(nodes, character) {
       nodes[i].focus();
       return;
     }
+  }
+}
+function lockFocus(ref, reverse) {
+  const nodes = getFocusableElements(ref);
+  if (reverse) {
+    if (!document.activeElement || !ref.contains(document.activeElement)) {
+      focusLast(nodes);
+    } else {
+      focusPrev(nodes, document.activeElement);
+    }
+  } else if (!document.activeElement || !ref.contains(document.activeElement)) {
+    focusFirst(nodes);
+  } else {
+    focusNext(nodes, document.activeElement);
   }
 }
 
@@ -1122,7 +1186,9 @@ function Button(props) {
     var _a;
     return (_a = props.as) != null ? _a : "button";
   }, mergeProps8({
-    tabindex: 0,
+    get tabindex() {
+      return props.disabled ? -1 : 0;
+    },
     role: "button"
   }, createDisabled(() => props.disabled), omitProps7(props, [
     "as",
@@ -1574,20 +1640,6 @@ import {
 import {
   omitProps as omitProps15
 } from "solid-use";
-
-// src/utils/get-focusable-elements.ts
-function getFocusableElements(node, filter) {
-  const nodes = node.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-  const replicated = [];
-  for (let i = 0, len = nodes.length; i < len; i += 1) {
-    if (!filter || !filter.contains(nodes[i])) {
-      replicated.push(nodes[i]);
-    }
-  }
-  return replicated;
-}
-
-// src/components/alert-dialog/AlertDialogPanel.ts
 function AlertDialogPanel(props) {
   const context = useAlertDialogContext("AlertDialogPanel");
   const properties = useHeadlessDisclosureProperties();
@@ -1596,26 +1648,12 @@ function AlertDialogPanel(props) {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       if (properties.isOpen()) {
-        const initialNodes = getFocusableElements(ref);
-        if (initialNodes.length) {
-          initialNodes[0].focus();
-        }
+        focusFirst(getFocusableElements(ref));
         const onKeyDown = (e) => {
           if (!props.disabled) {
             if (e.key === "Tab") {
               e.preventDefault();
-              const nodes = getFocusableElements(ref);
-              if (e.shiftKey) {
-                if (!document.activeElement || !ref.contains(document.activeElement)) {
-                  nodes[nodes.length - 1].focus();
-                } else {
-                  focusPrev(nodes, document.activeElement);
-                }
-              } else if (!document.activeElement || !ref.contains(document.activeElement)) {
-                nodes[0].focus();
-              } else {
-                focusNext(nodes, document.activeElement);
-              }
+              lockFocus(ref, e.shiftKey);
             } else if (e.key === "Escape") {
               properties.setState(false);
             }
@@ -2291,26 +2329,12 @@ function CommandBarPanel(props) {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       if (properties.isOpen()) {
-        const initialNodes = getFocusableElements(ref);
-        if (initialNodes.length) {
-          initialNodes[0].focus();
-        }
+        focusFirst(getFocusableElements(ref));
         const onKeyDown = (e) => {
           if (!props.disabled) {
             if (e.key === "Tab") {
               e.preventDefault();
-              const nodes = getFocusableElements(ref);
-              if (e.shiftKey) {
-                if (!document.activeElement || !ref.contains(document.activeElement)) {
-                  nodes[nodes.length - 1].focus();
-                } else {
-                  focusPrev(nodes, document.activeElement);
-                }
-              } else if (!document.activeElement || !ref.contains(document.activeElement)) {
-                nodes[0].focus();
-              } else {
-                focusNext(nodes, document.activeElement);
-              }
+              lockFocus(ref, e.shiftKey);
             } else if (e.key === "Escape") {
               properties.setState(false);
             }
@@ -2630,22 +2654,12 @@ function ContextMenuPanel(props) {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       if (properties.isOpen()) {
+        focusFirst(getFocusableElements(ref));
         const onKeyDown = (e) => {
           if (!props.disabled) {
             if (e.key === "Tab") {
               e.preventDefault();
-              const nodes = getFocusableElements(ref);
-              if (e.shiftKey) {
-                if (!document.activeElement || !ref.contains(document.activeElement)) {
-                  nodes[nodes.length - 1].focus();
-                } else {
-                  focusPrev(nodes, document.activeElement);
-                }
-              } else if (!document.activeElement || !ref.contains(document.activeElement)) {
-                nodes[0].focus();
-              } else {
-                focusNext(nodes, document.activeElement);
-              }
+              lockFocus(ref, e.shiftKey);
             } else if (e.key === "Escape") {
               properties.setState(false);
             }
@@ -2930,26 +2944,12 @@ function DialogPanel(props) {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       if (properties.isOpen()) {
-        const initialNodes = getFocusableElements(ref);
-        if (initialNodes.length) {
-          initialNodes[0].focus();
-        }
+        focusFirst(getFocusableElements(ref));
         const onKeyDown = (e) => {
           if (!props.disabled) {
             if (e.key === "Tab") {
               e.preventDefault();
-              const nodes = getFocusableElements(ref);
-              if (e.shiftKey) {
-                if (!document.activeElement || !ref.contains(document.activeElement)) {
-                  nodes[nodes.length - 1].focus();
-                } else {
-                  focusPrev(nodes, document.activeElement);
-                }
-              } else if (!document.activeElement || !ref.contains(document.activeElement)) {
-                nodes[0].focus();
-              } else {
-                focusNext(nodes, document.activeElement);
-              }
+              lockFocus(ref, e.shiftKey);
             } else if (e.key === "Escape") {
               properties.setState(false);
             }
@@ -4630,13 +4630,17 @@ function ListboxOptions(props) {
         role: "listbox",
         "aria-multiselectable": context.multiple,
         "aria-labelledby": context.buttonID,
-        tabindex: 0,
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
           controller.setRef(e);
         }),
         get "aria-orientation"() {
           return context.horizontal ? "horizontal" : "vertical";
+        },
+        get tabindex() {
+          const internalDisabled = properties.disabled();
+          const granularDisabled = props.disabled;
+          return internalDisabled || granularDisabled ? -1 : 0;
         }
       }, createDisabled(() => {
         const internalDisabled = properties.disabled();
@@ -5116,44 +5120,12 @@ function PopoverPanel(props) {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       if (properties.isOpen()) {
-        const initialNodes = getFocusableElements(ref);
-        if (initialNodes.length) {
-          initialNodes[0].focus();
-        }
+        focusFirst(getFocusableElements(ref));
         const onKeyDown = (e) => {
           if (!props.disabled) {
             if (e.key === "Tab") {
               e.preventDefault();
-              const nodes = getFocusableElements(ref);
-              if (e.shiftKey) {
-                if (!document.activeElement || !ref.contains(document.activeElement)) {
-                  nodes[nodes.length - 1].focus();
-                } else {
-                  for (let i = 0, len = nodes.length; i < len; i += 1) {
-                    if (document.activeElement === nodes[i]) {
-                      if (i === 0) {
-                        nodes[len - 1].focus();
-                      } else {
-                        nodes[i - 1].focus();
-                      }
-                      break;
-                    }
-                  }
-                }
-              } else if (!document.activeElement || !ref.contains(document.activeElement)) {
-                nodes[0].focus();
-              } else {
-                for (let i = 0, len = nodes.length; i < len; i += 1) {
-                  if (document.activeElement === nodes[i]) {
-                    if (i === len - 1) {
-                      nodes[0].focus();
-                    } else {
-                      nodes[i + 1].focus();
-                    }
-                    break;
-                  }
-                }
-              }
+              lockFocus(ref, e.shiftKey);
             } else if (e.key === "Escape") {
               properties.setState(false);
             }
@@ -5477,7 +5449,8 @@ function RadioGroupOption(props) {
           setInternalRef(() => e);
         }),
         get tabindex() {
-          return properties.isSelected(props.value) ? 0 : -1;
+          const selected = properties.isSelected(props.value);
+          return !isDisabled() || selected ? 0 : -1;
         }
       }, createDisabled(isDisabled), createChecked(() => properties.isSelected(props.value)), createHeadlessSelectOptionProps(props)));
     }
@@ -6083,14 +6056,15 @@ function Tab(props) {
     ref: createRef(props, (e) => {
       setInternalRef(() => e);
     }),
-    get tabindex() {
-      return properties.isSelected(props.value) ? 0 : -1;
-    },
     get id() {
       return rootContext.getId("tab", props.value);
     },
     get "aria-controls"() {
       return rootContext.getId("tab-panel", props.value);
+    },
+    get tabindex() {
+      const selected = properties.isSelected(props.value);
+      return !isDisabled() || selected ? 0 : -1;
     }
   }, createDisabled(isDisabled), createSelected(() => properties.isSelected(props.value)), createHeadlessSelectOptionProps(props)));
 }
@@ -6512,7 +6486,7 @@ function Toolbar(props) {
   };
   const [internalRef, setInternalRef] = createSignal44();
   let focusedElement;
-  function getNextFocusable() {
+  function getNextFocusable2() {
     const ref = internalRef();
     if (ref instanceof HTMLElement && document.activeElement && ref.contains(document.activeElement)) {
       focusNext(getFocusableElements(ref), document.activeElement);
@@ -6544,31 +6518,23 @@ function Toolbar(props) {
           case "ArrowRight":
             if (isHorizontal()) {
               e.preventDefault();
-              getNextFocusable();
+              getNextFocusable2();
             }
             break;
           case "ArrowDown":
             if (!isHorizontal()) {
               e.preventDefault();
-              getNextFocusable();
+              getNextFocusable2();
             }
             break;
           case "Home":
-            {
-              const nodes = getFocusableElements(ref);
-              if (nodes.length) {
-                e.preventDefault();
-                nodes[0].focus();
-              }
+            if (focusFirst(getFocusableElements(ref))) {
+              e.preventDefault();
             }
             break;
           case "End":
-            {
-              const nodes = getFocusableElements(ref);
-              if (nodes.length) {
-                e.preventDefault();
-                nodes[nodes.length - 1].focus();
-              }
+            if (focusLast(getFocusableElements(ref))) {
+              e.preventDefault();
             }
             break;
           default:

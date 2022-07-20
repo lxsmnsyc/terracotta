@@ -137,7 +137,8 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
               setInternalRef(() => e);
             }),
             get tabindex() {
-              return properties.isSelected(props.value) ? 0 : -1;
+              const selected = properties.isSelected(props.value);
+              return (!isDisabled() || selected) ? 0 : -1;
             },
           },
           createDisabled(isDisabled),

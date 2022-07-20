@@ -2,6 +2,53 @@ import {
   DynamicNode,
   ValidConstructor,
 } from './dynamic-prop';
+import getFocusableElements from './focus-query';
+
+function isFocusable(el: HTMLElement) {
+  return !el.matches('[data-sh-disabled="true"]');
+}
+
+function getNextFocusable(
+  nodes: HTMLElement[] | NodeListOf<HTMLElement>,
+  anchor: number,
+  direction: number,
+) {
+  let current = anchor + direction;
+  while (current >= 0 && current < nodes.length) {
+    if (isFocusable(nodes[anchor])) {
+      return nodes[anchor];
+    }
+    current += direction;
+  }
+  return undefined;
+}
+
+function getNextLockedFocusable(
+  nodes: HTMLElement[] | NodeListOf<HTMLElement>,
+  anchor: number,
+  direction: number,
+) {
+  let current = anchor + direction;
+  if (direction === 1 && current === nodes.length) {
+    current = 0;
+  }
+  if (direction === -1 && current === -1) {
+    current = nodes.length - 1;
+  }
+  while (anchor !== current) {
+    if (isFocusable(nodes[current])) {
+      return nodes[current];
+    }
+    current += direction;
+    if (direction === 1 && current >= nodes.length) {
+      current = 0;
+    }
+    if (direction === -1 && current < 0) {
+      current = nodes.length - 1;
+    }
+  }
+  return undefined;
+}
 
 export function focusNextContinuous<T extends ValidConstructor>(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
@@ -9,7 +56,7 @@ export function focusNextContinuous<T extends ValidConstructor>(
 ): void {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i] && i + 1 < len) {
-      nodes[i + 1].focus();
+      getNextFocusable(nodes, i, 1)?.focus();
       break;
     }
   }
@@ -21,7 +68,7 @@ export function focusPrevContinuous<T extends ValidConstructor>(
 ): void {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i] && i - 1 >= 0) {
-      nodes[i - 1].focus();
+      getNextFocusable(nodes, i, -1)?.focus();
       break;
     }
   }
@@ -33,11 +80,7 @@ export function focusNext<T extends ValidConstructor>(
 ): void {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i]) {
-      if (i === len - 1) {
-        nodes[0].focus();
-      } else {
-        nodes[i + 1].focus();
-      }
+      getNextLockedFocusable(nodes, i, 1)?.focus();
       break;
     }
   }
@@ -49,11 +92,7 @@ export function focusPrev<T extends ValidConstructor>(
 ): void {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i]) {
-      if (i === 0) {
-        nodes[len - 1].focus();
-      } else {
-        nodes[i - 1].focus();
-      }
+      getNextLockedFocusable(nodes, i, -1)?.focus();
       break;
     }
   }
@@ -61,18 +100,22 @@ export function focusPrev<T extends ValidConstructor>(
 
 export function focusFirst(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
-): void {
+): boolean {
   if (nodes.length) {
-    nodes[0].focus();
+    getNextFocusable(nodes, -1, 1)?.focus();
+    return true;
   }
+  return false;
 }
 
 export function focusLast(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
-): void {
+): boolean {
   if (nodes.length) {
-    nodes[nodes.length - 1].focus();
+    getNextFocusable(nodes, nodes.length, -1)?.focus();
+    return true;
   }
+  return false;
 }
 
 export function focusMatch(
@@ -85,5 +128,23 @@ export function focusMatch(
       nodes[i].focus();
       return;
     }
+  }
+}
+
+export function lockFocus(
+  ref: HTMLElement,
+  reverse: boolean,
+): void {
+  const nodes = getFocusableElements(ref);
+  if (reverse) {
+    if (!document.activeElement || !ref.contains(document.activeElement)) {
+      focusLast(nodes);
+    } else {
+      focusPrev(nodes, document.activeElement);
+    }
+  } else if (!document.activeElement || !ref.contains(document.activeElement)) {
+    focusFirst(nodes);
+  } else {
+    focusNext(nodes, document.activeElement);
   }
 }

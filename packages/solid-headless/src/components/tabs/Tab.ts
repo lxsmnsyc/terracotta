@@ -147,14 +147,15 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
         ref: createRef(props, (e) => {
           setInternalRef(() => e);
         }),
-        get tabindex() {
-          return properties.isSelected(props.value) ? 0 : -1;
-        },
         get id() {
           return rootContext.getId('tab', props.value);
         },
         get 'aria-controls'() {
           return rootContext.getId('tab-panel', props.value);
+        },
+        get tabindex() {
+          const selected = properties.isSelected(props.value);
+          return (!isDisabled() || selected) ? 0 : -1;
         },
       },
       createDisabled(isDisabled),
