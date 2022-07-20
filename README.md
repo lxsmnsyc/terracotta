@@ -25,6 +25,7 @@ Here's the current components:
 - `Toaster`/`Toast`
 - `ContextMenu (Dialog)`
 - `CommandBar (Dialog)`
+- `Tabs`
 
 ## FAQ
 
