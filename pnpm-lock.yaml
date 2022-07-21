@@ -25,7 +25,7 @@ importers:
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
       shiki: ^0.9.15
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       solid-styled: ^0.4.1
       solid-tiny-router: ^0.2.3
@@ -64,7 +64,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -91,7 +91,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -118,7 +118,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -145,7 +145,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -172,7 +172,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -199,7 +199,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -226,7 +226,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -253,7 +253,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -280,7 +280,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -307,7 +307,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -334,7 +334,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -361,7 +361,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -388,7 +388,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -415,7 +415,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
@@ -442,7 +442,7 @@ importers:
       eslint: ^8.18.0
       eslint-config-lxsmnsyc: ^0.4.7
       postcss: ^8.4.13
-      solid-headless: 0.11.1
+      solid-headless: 0.12.2
       solid-js: ^1.4.6
       tailwindcss: ^3.1.4
       typescript: ^4.7.4
