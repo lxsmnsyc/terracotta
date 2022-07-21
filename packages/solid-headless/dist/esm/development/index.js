@@ -736,8 +736,8 @@ function isFocusable(el) {
 function getNextFocusable(nodes, anchor, direction) {
   let current = anchor + direction;
   while (current >= 0 && current < nodes.length) {
-    if (isFocusable(nodes[anchor])) {
-      return nodes[anchor];
+    if (isFocusable(nodes[current])) {
+      return nodes[current];
     }
     current += direction;
   }
