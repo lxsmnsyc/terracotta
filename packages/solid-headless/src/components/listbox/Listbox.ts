@@ -39,13 +39,13 @@ import {
   ListboxSUSUDProps,
 } from './ListboxSUSUD';
 
-type ListboxMultipleProps<V, T extends ValidConstructor = typeof Fragment> =
+export type ListboxMultipleProps<V, T extends ValidConstructor = typeof Fragment> =
   | ListboxMCSCDProps<V, T>
   | ListboxMCSUDProps<V, T>
   | ListboxMUSCDProps<V, T>
   | ListboxMUSUDProps<V, T>;
 
-type ListboxSingleProps<V, T extends ValidConstructor = typeof Fragment> =
+export type ListboxSingleProps<V, T extends ValidConstructor = typeof Fragment> =
   | ListboxSCSCDProps<V, T>
   | ListboxSCSUDProps<V, T>
   | ListboxSUSCDProps<V, T>
