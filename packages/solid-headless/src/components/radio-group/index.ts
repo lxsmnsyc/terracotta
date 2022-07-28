@@ -3,6 +3,12 @@ export {
   RadioGroupProps,
 } from './RadioGroup';
 export {
+  RadioGroupControlledProps,
+} from './RadioGroupControlled';
+export {
+  RadioGroupUncontrolledProps,
+} from './RadioGroupUncontrolled';
+export {
   RadioGroupDescription,
   RadioGroupDescriptionProps,
 } from './RadioGroupDescription';

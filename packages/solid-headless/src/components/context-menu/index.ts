@@ -3,6 +3,12 @@ export {
   ContextMenuProps,
 } from './ContextMenu';
 export {
+  ContextMenuControlledProps,
+} from './ContextMenuControlled';
+export {
+  ContextMenuUncontrolledProps,
+} from './ContextMenuUncontrolled';
+export {
   ContextMenuBoundary,
   ContextMenuBoundaryProps,
 } from './ContextMenuBoundary';

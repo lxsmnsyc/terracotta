@@ -3,6 +3,12 @@ export {
   PopoverProps,
 } from './Popover';
 export {
+  PopoverControlledProps,
+} from './PopoverControlled';
+export {
+  PopoverUncontrolledProps,
+} from './PopoverUncontrolled';
+export {
   PopoverButton,
   PopoverButtonProps,
 } from './PopoverButton';

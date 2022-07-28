@@ -14,3 +14,9 @@ export {
   TabPanel,
   TabPanelProps,
 } from './TabPanel';
+export {
+  TabGroupControlledProps,
+} from './TabGroupControlled';
+export {
+  TabGroupUncontrolledProps,
+} from './TabGroupUncontrolled';

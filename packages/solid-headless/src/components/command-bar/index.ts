@@ -3,6 +3,12 @@ export {
   CommandBarProps,
 } from './CommandBar';
 export {
+  CommandBarControlledProps,
+} from './CommandBarControlled';
+export {
+  CommandBarUncontrolledProps,
+} from './CommandBarUncontrolled';
+export {
   CommandBarDescription,
   CommandBarDescriptionProps,
 } from './CommandBarDescription';

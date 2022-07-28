@@ -3,6 +3,12 @@ export {
   DialogProps,
 } from './Dialog';
 export {
+  DialogControlledProps,
+} from './DialogControlled';
+export {
+  DialogUncontrolledProps,
+} from './DialogUncontrolled';
+export {
   DialogDescription,
   DialogDescriptionProps,
 } from './DialogDescription';

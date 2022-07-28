@@ -3,6 +3,12 @@ export {
   CheckboxProps,
 } from './Checkbox';
 export {
+  CheckboxControlledProps,
+} from './CheckboxControlled';
+export {
+  CheckboxUncontrolledProps,
+} from './CheckboxUncontrolled';
+export {
   CheckboxDescription,
   CheckboxDescriptionProps,
 } from './CheckboxDescription';

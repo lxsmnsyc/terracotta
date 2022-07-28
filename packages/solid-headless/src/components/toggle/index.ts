@@ -14,6 +14,11 @@ import {
   ToggleUncontrolledProps,
 } from './ToggleUncontrolled';
 
+export {
+  ToggleUncontrolledProps,
+  ToggleControlledProps,
+};
+
 export type ToggleProps<T extends ValidConstructor = 'button'> =
   | ToggleControlledProps<T>
   | ToggleUncontrolledProps<T>;

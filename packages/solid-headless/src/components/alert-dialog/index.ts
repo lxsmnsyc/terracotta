@@ -3,6 +3,12 @@ export {
   AlertDialogProps,
 } from './AlertDialog';
 export {
+  AlertDialogControlledProps,
+} from './AlertDialogControlled';
+export {
+  AlertDialogUncontrolledProps,
+} from './AlertDialogUncontrolled';
+export {
   AlertDialogDescription,
   AlertDialogDescriptionProps,
 } from './AlertDialogDescription';

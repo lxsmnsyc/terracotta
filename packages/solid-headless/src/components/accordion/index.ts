@@ -3,6 +3,18 @@ export {
   AccordionProps,
 } from './Accordion';
 export {
+  AccordionMultipleControlledProps,
+} from './AccordionMultipleControlled';
+export {
+  AccordionMultipleUncontrolledProps,
+} from './AccordionMultipleUncontrolled';
+export {
+  AccordionSingleControlledProps,
+} from './AccordionSingleControlled';
+export {
+  AccordionSingleUncontrolledProps,
+} from './AccordionSingleUncontrolled';
+export {
   AccordionItem,
   AccordionItemProps,
 } from './AccordionItem';
