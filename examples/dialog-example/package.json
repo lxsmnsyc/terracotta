@@ -1,6 +1,6 @@
 {
   "name": "dialog-example",
-  "version": "0.12.2",
+  "version": "0.12.3",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,7 +17,7 @@
     "vite-plugin-solid": "^2.2.6"
   },
   "dependencies": {
-    "solid-headless": "0.12.2",
+    "solid-headless": "0.12.3",
     "solid-js": "^1.4.6",
     "tailwindcss": "^3.1.4"
   },
