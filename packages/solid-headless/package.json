@@ -28,9 +28,9 @@
   "name": "solid-headless",
   "devDependencies": {
     "@types/node": "^17.0.41",
-    "eslint": "^8.18.0",
-    "eslint-config-lxsmnsyc": "^0.4.7",
-    "pridepack": "^2.0.0",
+    "eslint": "^8.21.0",
+    "eslint-config-lxsmnsyc": "^0.4.8",
+    "pridepack": "^2.2.1",
     "solid-js": "^1.4.6",
     "tslib": "^2.4.0",
     "typescript": "^4.7.4"
