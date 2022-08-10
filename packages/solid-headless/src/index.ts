@@ -1,6 +1,7 @@
 export * from './headless/disclosure';
 export * from './headless/select';
 export * from './headless/toggle';
+export * from './headless/input';
 
 export * from './components/accordion';
 export * from './components/alert';
