@@ -30,7 +30,11 @@ export function useHeadlessSelectOption<T>(
   disabled?: () => boolean,
 ): HeadlessSelectOptionProperties {
   const properties = useHeadlessSelectProperties<T>();
-  const isDisabled = () => disabled?.() || properties.disabled();
+  const isDisabled = () => {
+    const local = disabled?.();
+    const parent = properties.disabled();
+    return local || parent;
+  };
   return {
     isSelected() {
       return properties.isSelected(value());
