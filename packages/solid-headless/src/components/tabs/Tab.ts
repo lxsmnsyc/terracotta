@@ -155,7 +155,7 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
         },
         get tabindex() {
           const selected = properties.isSelected(props.value);
-          return (!isDisabled() || selected) ? 0 : -1;
+          return (isDisabled() || !selected) ? -1 : 0;
         },
       },
       createDisabled(isDisabled),

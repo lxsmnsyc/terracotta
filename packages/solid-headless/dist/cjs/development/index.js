@@ -4987,7 +4987,7 @@ function RadioGroupOption(props) {
         }),
         get tabindex() {
           const selected = properties.isSelected(props.value);
-          return !isDisabled() || selected ? 0 : -1;
+          return isDisabled() || !selected ? -1 : 0;
         }
       }, createDisabled(isDisabled), createChecked(() => properties.isSelected(props.value)), createHeadlessSelectOptionProps(props)));
     }
@@ -5553,7 +5553,7 @@ function Tab(props) {
     },
     get tabindex() {
       const selected = properties.isSelected(props.value);
-      return !isDisabled() || selected ? 0 : -1;
+      return isDisabled() || !selected ? -1 : 0;
     }
   }, createDisabled(isDisabled), createSelected(() => properties.isSelected(props.value)), createHeadlessSelectOptionProps(props)));
 }

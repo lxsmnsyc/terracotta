@@ -1,6 +1,6 @@
 {
   "version": "0.12.5",
-  "types": "dist/types/index.d.ts",
+  "types": "./dist/types/index.d.ts",
   "main": "dist/cjs/production/index.jsx",
   "module": "dist/esm/production/index.jsx",
   "exports": {
@@ -65,10 +65,6 @@
   "author": "Alexis Munsayac",
   "private": false,
   "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/types/index.d.ts"
-      ]
-    }
+    "*": {}
   }
 }
