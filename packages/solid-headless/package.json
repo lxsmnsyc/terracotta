@@ -1,5 +1,5 @@
 {
-  "version": "0.12.5",
+  "version": "0.12.6",
   "types": "./dist/types/index.d.ts",
   "main": "dist/cjs/production/index.jsx",
   "module": "dist/esm/production/index.jsx",
