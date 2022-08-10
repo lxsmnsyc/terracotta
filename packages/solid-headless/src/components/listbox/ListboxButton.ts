@@ -48,8 +48,7 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
-      const toggle = (e: MouseEvent) => {
-        console.log('Toggled', e.currentTarget);
+      const toggle = () => {
         if (!(properties.disabled() || props.disabled)) {
           properties.setState(!properties.isOpen());
         }
