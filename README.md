@@ -6,26 +6,26 @@ In case you're interested, please Star this repo. The project is still in develo
 
 Here's the current components:
 
-- `Accordion`
+- `Accordion` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/accordion-example)
 - `Alert`
 - `Alert Dialog`
 - `Button`
 - `Button (Toggle)`
-- `Checkbox`
-- `Dialog (Modal)`
-- `Dialog (Popover)`
-- `Disclosure (Show/Hide)`
-- `Feed`
-- `Listbox (Select)`
-- `Listbox (Dropdown)`
+- `Checkbox` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/checkbox-example)
+- `Dialog (Modal)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/dialog-example)
+- `Dialog (Popover)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/popover-example)
+- `Disclosure (Show/Hide)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/disclosure-example)
+- `Feed` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/feed-example)
+- `Listbox (Select)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/listbox-example)
+- `Listbox (Dropdown)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/dropdown-menu-example)
 - `Menu`
-- `Radio Group`
-- `Toolbar`
-- `Transition`
-- `Toaster`/`Toast`
-- `ContextMenu (Dialog)`
-- `CommandBar (Dialog)`
-- `Tabs`
+- `Radio Group` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/radiogroup-example)
+- `Toolbar` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/toolbar-example)
+- `Transition` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/transitions-example)
+- `Toaster`/`Toast` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/toaster-example)
+- `ContextMenu (Dialog)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/context-menu-example)
+- `CommandBar (Dialog)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/commandbar-example)
+- `Tabs` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/solid-headless/tree/main/examples/tabs-example)
 
 ## FAQ
 
