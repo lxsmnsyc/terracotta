@@ -92,7 +92,7 @@ export function DialogUncontrolled<T extends ValidConstructor = 'div'>(
               DIALOG_TAG,
               {
                 id: ownerID,
-                role: 'alertdialog',
+                role: 'dialog',
                 'aria-modal': true,
                 'aria-labelledby': titleID,
                 'aria-describedby': descriptionID,
