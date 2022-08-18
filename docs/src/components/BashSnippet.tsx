@@ -1,5 +1,6 @@
 import { JSX } from 'solid-js';
 import { CircularButton } from './CircularButton';
+import { CopyToClipboard } from './CopyToClipboard';
 import { ClipboardIcon } from './Icons';
 
 export interface BashSnippetProps {
@@ -14,7 +15,12 @@ export default function BashSnippet(props: BashSnippetProps): JSX.Element {
       </div>
       <CircularButton>
         <span class="sr-only">Copy to clipboard</span>
-        <ClipboardIcon class="w-10 h-10 p-2" />
+        <CopyToClipboard
+          text={props.code}
+          eventTrigger="onClick"
+        >
+          <ClipboardIcon class="w-10 h-10 p-2" />
+        </CopyToClipboard>
       </CircularButton>
     </div>
   );

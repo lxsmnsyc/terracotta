@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "babel-plugin-solid-styled": "^0.4.1",
+    "copy-to-clipboard": "^3.3.2",
     "shiki": "^0.9.15",
     "solid-headless": "0.12.6",
     "solid-js": "^1.4.6",
