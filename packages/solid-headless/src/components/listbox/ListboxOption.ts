@@ -27,6 +27,7 @@ import {
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
+  createActive,
   createDisabled,
   createSelected,
 } from '../../utils/state-props';
@@ -205,6 +206,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
     },
     createDisabled(isDisabled),
     createSelected(() => properties.isSelected(props.value)),
+    createActive(() => properties.isActive(props.value)),
     createHeadlessSelectOptionProps(props),
   ) as ButtonProps<T>);
 }

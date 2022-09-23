@@ -73,3 +73,17 @@ export function createSelected(
     },
   };
 }
+
+interface ActiveProps {
+  'data-sh-active': boolean;
+}
+
+export function createActive(
+  checked: () => boolean,
+): ActiveProps {
+  return {
+    get 'data-sh-active'() {
+      return checked();
+    },
+  };
+}

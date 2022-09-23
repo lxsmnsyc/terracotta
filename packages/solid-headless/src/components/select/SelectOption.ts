@@ -21,7 +21,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
-import { createDisabled, createSelected } from '../../utils/state-props';
+import { createActive, createDisabled, createSelected } from '../../utils/state-props';
 import { OmitAndMerge } from '../../utils/types';
 import {
   Button,
@@ -178,6 +178,7 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
     },
     createDisabled(() => props.disabled),
     createSelected(() => properties.isSelected(props.value)),
+    createActive(() => properties.isActive(props.value)),
     createHeadlessSelectOptionProps(props),
   ) as ButtonProps<T>);
 }

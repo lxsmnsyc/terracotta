@@ -23,6 +23,7 @@ import {
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
+  createActive,
   createDisabled,
   createSelected,
 } from '../../utils/state-props';
@@ -160,6 +161,7 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
       },
       createDisabled(isDisabled),
       createSelected(() => properties.isSelected(props.value)),
+      createActive(() => properties.isActive(props.value)),
       createHeadlessSelectOptionProps(props),
     ) as DynamicProps<T>,
   );
