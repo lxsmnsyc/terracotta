@@ -1,16 +1,17 @@
 {
   "version": "0.12.6",
+  "type": "module",
   "types": "./dist/types/index.d.ts",
-  "main": "dist/cjs/production/index.jsx",
-  "module": "dist/esm/production/index.jsx",
+  "main": "./dist/cjs/production/index.cjs",
+  "module": "./dist/esm/production/index.mjs",
   "exports": {
     ".": {
       "development": {
-        "require": "./dist/cjs/development/index.js",
-        "import": "./dist/esm/development/index.js"
+        "require": "./dist/cjs/development/index.cjs",
+        "import": "./dist/esm/development/index.mjs"
       },
-      "require": "./dist/cjs/production/index.js",
-      "import": "./dist/esm/production/index.js",
+      "require": "./dist/cjs/production/index.cjs",
+      "import": "./dist/esm/production/index.mjs",
       "types": "./dist/types/index.d.ts"
     }
   },
@@ -28,12 +29,12 @@
   "name": "solid-headless",
   "devDependencies": {
     "@types/node": "^17.0.41",
-    "eslint": "^8.21.0",
+    "eslint": "^8.23.1",
     "eslint-config-lxsmnsyc": "^0.4.8",
-    "pridepack": "^2.2.1",
-    "solid-js": "^1.4.6",
+    "pridepack": "^2.3.0",
+    "solid-js": "^1.5.6",
     "tslib": "^2.4.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.8.3"
   },
   "peerDependencies": {
     "solid-js": "^1.2"

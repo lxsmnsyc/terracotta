@@ -7,19 +7,19 @@
     "serve": "vite preview"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.7",
+    "autoprefixer": "^10.4.12",
     "babel-preset-solid": "^1.4.0",
-    "eslint": "^8.21.0",
+    "eslint": "^8.23.1",
     "eslint-config-lxsmnsyc": "^0.4.8",
     "postcss": "^8.4.13",
-    "typescript": "^4.7.4",
-    "vite": "^2.9.12",
-    "vite-plugin-solid": "^2.2.6"
+    "typescript": "^4.8.3",
+    "vite": "^3.1.3",
+    "vite-plugin-solid": "^2.3.6"
   },
   "dependencies": {
     "solid-headless": "0.12.6",
-    "solid-js": "^1.4.6",
-    "tailwindcss": "^3.1.4"
+    "solid-js": "^1.5.6",
+    "tailwindcss": "^3.1.8"
   },
   "private": true,
   "publishConfig": {

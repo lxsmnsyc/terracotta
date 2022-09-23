@@ -19,4 +19,8 @@ interface SelectedProps {
     'data-sh-selected': boolean;
 }
 export declare function createSelected(checked: () => boolean): SelectedProps;
+interface ActiveProps {
+    'data-sh-active': boolean;
+}
+export declare function createActive(checked: () => boolean): ActiveProps;
 export {};
