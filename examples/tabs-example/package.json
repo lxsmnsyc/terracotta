@@ -1,6 +1,6 @@
 {
   "name": "tabs-example",
-  "version": "0.12.6",
+  "version": "0.13.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,7 +17,7 @@
     "vite-plugin-solid": "^2.3.6"
   },
   "dependencies": {
-    "solid-headless": "0.12.6",
+    "solid-headless": "0.13.0",
     "solid-js": "^1.5.6",
     "tailwindcss": "^3.1.8"
   },
