@@ -15,11 +15,11 @@ class FocusStartPoint {
     if (typeof document !== 'undefined') {
       this.returnElement = document.activeElement;
       this.fsp = getFocusStartPoint();
+      onCleanup(() => {
+        this.load();
+      });
     }
 
-    onCleanup(() => {
-      this.load();
-    });
   }
 
   load() {
