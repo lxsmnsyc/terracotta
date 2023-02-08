@@ -1,6 +1,6 @@
 import { JSX } from 'solid-js';
 import { HeadlessAutocompleteOptionProperties } from './useHeadlessAutocompleteOption';
-export declare type HeadlessAutocompleteOptionRenderProp = ((properties: HeadlessAutocompleteOptionProperties) => JSX.Element);
+export type HeadlessAutocompleteOptionRenderProp = ((properties: HeadlessAutocompleteOptionProperties) => JSX.Element);
 export interface HeadlessAutocompleteOptionProps {
     value: string;
     disabled?: boolean;

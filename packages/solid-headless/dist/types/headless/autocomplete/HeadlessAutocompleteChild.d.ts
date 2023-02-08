@@ -1,6 +1,6 @@
 import { JSX } from 'solid-js';
 import { HeadlessAutocompleteProperties } from './useHeadlessAutocompleteProperties';
-export declare type HeadlessAutocompleteChildRenderProp = ((properties: HeadlessAutocompleteProperties) => JSX.Element);
+export type HeadlessAutocompleteChildRenderProp = ((properties: HeadlessAutocompleteProperties) => JSX.Element);
 export interface HeadlessAutocompleteChildProps {
     children?: JSX.Element | HeadlessAutocompleteChildRenderProp;
 }

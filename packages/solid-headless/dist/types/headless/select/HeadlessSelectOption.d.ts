@@ -1,6 +1,6 @@
 import { JSX } from 'solid-js';
 import { HeadlessSelectOptionProperties } from './useHeadlessSelectOption';
-export declare type HeadlessSelectOptionRenderProp = ((properties: HeadlessSelectOptionProperties) => JSX.Element);
+export type HeadlessSelectOptionRenderProp = ((properties: HeadlessSelectOptionProperties) => JSX.Element);
 export interface HeadlessSelectOptionProps<T> {
     value: T;
     disabled?: boolean;

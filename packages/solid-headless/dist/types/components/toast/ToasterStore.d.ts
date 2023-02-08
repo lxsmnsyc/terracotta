@@ -2,7 +2,7 @@ export interface ToastData<T> {
     id: string;
     data: T;
 }
-export declare type ToasterListener<T> = (queue: ToastData<T>[]) => void;
+export type ToasterListener<T> = (queue: ToastData<T>[]) => void;
 export declare class ToasterStore<T> {
     private static toasterID;
     private id;

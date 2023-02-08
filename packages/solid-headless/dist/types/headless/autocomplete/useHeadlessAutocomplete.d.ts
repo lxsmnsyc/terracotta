@@ -13,5 +13,5 @@ export interface HeadlessAutocompleteUncontrolledOptions {
     disabled?: boolean;
     matches?: (base: string, search: string) => boolean;
 }
-export declare type HeadlessAutocompleteOptions = HeadlessAutocompleteControlledOptions | HeadlessAutocompleteUncontrolledOptions;
+export type HeadlessAutocompleteOptions = HeadlessAutocompleteControlledOptions | HeadlessAutocompleteUncontrolledOptions;
 export declare function useHeadlessAutocomplete(options: HeadlessAutocompleteOptions): HeadlessAutocompleteProperties;

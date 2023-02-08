@@ -8,7 +8,7 @@ export interface HeadlessDisclosureUncontrolledOptions {
     disabled?: boolean;
     onChange?: (state: boolean) => void;
 }
-export declare type HeadlessDisclosureOptions = HeadlessDisclosureControlledOptions | HeadlessDisclosureUncontrolledOptions;
+export type HeadlessDisclosureOptions = HeadlessDisclosureControlledOptions | HeadlessDisclosureUncontrolledOptions;
 export interface HeadlessDisclosureProperties {
     isOpen(): boolean;
     setState(newState: boolean): void;

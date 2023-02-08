@@ -13,5 +13,5 @@ export interface HeadlessSelectMultipleUncontrolledOptions<T> {
     onChange?: (value: T[]) => void;
     disabled?: boolean;
 }
-export declare type HeadlessSelectMultipleOptions<T> = HeadlessSelectMultipleControlledOptions<T> | HeadlessSelectMultipleUncontrolledOptions<T>;
+export type HeadlessSelectMultipleOptions<T> = HeadlessSelectMultipleControlledOptions<T> | HeadlessSelectMultipleUncontrolledOptions<T>;
 export declare function useHeadlessSelectMultiple<T>(options: HeadlessSelectMultipleOptions<T>): HeadlessSelectProperties<T>;

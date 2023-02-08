@@ -1340,6 +1340,7 @@ var FocusNavigator = class {
   query(ref) {
     return queryNodes(ref, this.ownerID);
   }
+  // eslint-disable-next-line class-methods-use-this
   setChecked(node) {
     node.focus();
   }

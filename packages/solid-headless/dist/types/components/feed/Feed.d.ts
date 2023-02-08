@@ -4,6 +4,6 @@ interface FeedBaseProps {
     size: number;
     busy?: boolean;
 }
-export declare type FeedProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<T, FeedBaseProps>;
+export type FeedProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<T, FeedBaseProps>;
 export declare function Feed<T extends ValidConstructor = 'div'>(props: FeedProps<T>): JSX.Element;
 export {};

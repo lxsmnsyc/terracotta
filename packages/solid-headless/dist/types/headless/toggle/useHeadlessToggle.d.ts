@@ -8,7 +8,7 @@ export interface HeadlessToggleUncontrolledOptions {
     disabled?: boolean;
     onChange?: (state?: boolean) => void;
 }
-export declare type HeadlessToggleOptions = HeadlessToggleControlledOptions | HeadlessToggleUncontrolledOptions;
+export type HeadlessToggleOptions = HeadlessToggleControlledOptions | HeadlessToggleUncontrolledOptions;
 export interface HeadlessToggleProperties {
     checked(): boolean | undefined;
     setState(newState?: boolean): void;

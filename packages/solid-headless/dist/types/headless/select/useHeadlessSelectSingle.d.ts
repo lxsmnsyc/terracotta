@@ -11,5 +11,5 @@ export interface HeadlessSelectSingleUncontrolledOptions<T> {
     onChange?: (value?: T) => void;
     disabled?: boolean;
 }
-export declare type HeadlessSelectSingleOptions<T> = HeadlessSelectSingleControlledOptions<T> | HeadlessSelectSingleUncontrolledOptions<T>;
+export type HeadlessSelectSingleOptions<T> = HeadlessSelectSingleControlledOptions<T> | HeadlessSelectSingleUncontrolledOptions<T>;
 export declare function useHeadlessSelectSingle<T>(options: HeadlessSelectSingleOptions<T>): HeadlessSelectProperties<T>;

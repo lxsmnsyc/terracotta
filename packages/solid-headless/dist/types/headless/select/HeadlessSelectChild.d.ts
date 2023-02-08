@@ -1,6 +1,6 @@
 import { JSX } from 'solid-js';
 import { HeadlessSelectProperties } from './useHeadlessSelectProperties';
-export declare type HeadlessSelectChildRenderProp<T> = ((properties: HeadlessSelectProperties<T>) => JSX.Element);
+export type HeadlessSelectChildRenderProp<T> = ((properties: HeadlessSelectProperties<T>) => JSX.Element);
 export interface HeadlessSelectChildProps<T> {
     children?: JSX.Element | HeadlessSelectChildRenderProp<T>;
 }

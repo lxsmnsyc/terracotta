@@ -3,11 +3,11 @@ import { HeadlessSelectProperties } from './useHeadlessSelectProperties';
 import { HeadlessSelectOptions } from './useHeadlessSelect';
 import { HeadlessSelectMultipleControlledOptions, HeadlessSelectMultipleUncontrolledOptions } from './useHeadlessSelectMultiple';
 import { HeadlessSelectSingleControlledOptions, HeadlessSelectSingleUncontrolledOptions } from './useHeadlessSelectSingle';
-export declare type HeadlessSelectRootRenderProp<T> = ((properties: HeadlessSelectProperties<T>) => JSX.Element);
+export type HeadlessSelectRootRenderProp<T> = ((properties: HeadlessSelectProperties<T>) => JSX.Element);
 export interface HeadlessSelectRootChildren<T> {
     children?: JSX.Element | HeadlessSelectRootRenderProp<T>;
 }
-export declare type HeadlessSelectRootProps<T> = HeadlessSelectRootChildren<T> & HeadlessSelectOptions<T>;
+export type HeadlessSelectRootProps<T> = HeadlessSelectRootChildren<T> & HeadlessSelectOptions<T>;
 export declare function HeadlessSelectRoot<T>(props: HeadlessSelectRootProps<T>): JSX.Element;
 export declare function createHeadlessSelectRootMultipleControlledProps<T>(props: HeadlessSelectMultipleControlledOptions<T> & HeadlessSelectRootChildren<T>): HeadlessSelectRootChildren<T>;
 export declare function createHeadlessSelectRootMultipleUncontrolledProps<T>(props: HeadlessSelectMultipleUncontrolledOptions<T> & HeadlessSelectRootChildren<T>): HeadlessSelectRootChildren<T>;

@@ -1,6 +1,6 @@
 import { JSX } from 'solid-js';
 import { HeadlessDisclosureProperties } from './useHeadlessDisclosure';
-export declare type HeadlessDisclosureChildRenderProp = ((properties: HeadlessDisclosureProperties) => JSX.Element);
+export type HeadlessDisclosureChildRenderProp = ((properties: HeadlessDisclosureProperties) => JSX.Element);
 export interface HeadlessDisclosureChildProps {
     children?: JSX.Element | HeadlessDisclosureChildRenderProp;
 }

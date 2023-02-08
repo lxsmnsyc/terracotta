@@ -19,8 +19,8 @@ interface TransitionBaseChildProps {
     beforeLeave?: () => void;
     afterLeave?: () => void;
 }
-export declare type TransitionChildProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<T, TransitionBaseChildProps>;
+export type TransitionChildProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<T, TransitionBaseChildProps>;
 export declare function TransitionChild<T extends ValidConstructor = 'div'>(props: TransitionChildProps<T>): JSX.Element;
-export declare type TransitionProps<T extends ValidConstructor = 'div'> = TransitionRootContext & TransitionChildProps<T>;
+export type TransitionProps<T extends ValidConstructor = 'div'> = TransitionRootContext & TransitionChildProps<T>;
 export declare function Transition<T extends ValidConstructor = 'div'>(props: TransitionProps<T>): JSX.Element;
 export {};

@@ -2,7 +2,7 @@ import { JSX } from 'solid-js';
 export interface MenuProperties {
     disabled: () => boolean;
 }
-export declare type MenuChildRenderProp = ((properties: MenuProperties) => JSX.Element);
+export type MenuChildRenderProp = ((properties: MenuProperties) => JSX.Element);
 export interface MenuChildProps {
     disabled?: boolean;
     children?: JSX.Element | MenuChildRenderProp;

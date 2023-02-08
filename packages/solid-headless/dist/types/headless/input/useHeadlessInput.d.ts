@@ -8,7 +8,7 @@ export interface HeadlessInputUncontrolledOptions {
     disabled?: boolean;
     onChange?: (state?: string) => void;
 }
-export declare type HeadlessInputOptions = HeadlessInputControlledOptions | HeadlessInputUncontrolledOptions;
+export type HeadlessInputOptions = HeadlessInputControlledOptions | HeadlessInputUncontrolledOptions;
 export interface HeadlessInputProperties {
     value(): string | undefined;
     setState(newState?: string): void;
