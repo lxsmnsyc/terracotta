@@ -1,11 +1,11 @@
 {
   "name": "docs",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "private": true,
   "dependencies": {
     "babel-plugin-solid-styled": "^0.4.1",
     "shiki": "^0.9.15",
-    "solid-headless": "0.13.0",
+    "solid-headless": "0.13.1",
     "solid-js": "^1.6.10",
     "solid-styled": "^0.4.1",
     "solid-tiny-router": "^0.2.3",
