@@ -27,8 +27,11 @@ interface TransitionRootContext {
 }
 
 interface ChildTransitionContext {
-  set: Set<HTMLElement>;
-  dirty: VoidFunction;
+  // set: Set<HTMLElement>;
+  set: {
+    add: (el: HTMLElement) => void;
+    delete: (el: HTMLElement) => void;
+  }
   done: Accessor<boolean>;
 }
 
@@ -45,14 +48,24 @@ function useTransitionRootContext(componentName: string): TransitionRootContext 
 }
 
 function initChildContextValue(): ChildTransitionContext {
+  // Set of currently transitioning TransitionChilds nested within a TransitionChild
   const transitionSet = new Set<HTMLElement>();
   const [done, setDone] = createSignal(true);
 
   const dirty = () => setDone(transitionSet.size === 0);
 
   return {
-    set: transitionSet,
-    dirty,
+    // Reactive set
+    set: {
+      add(el) {
+        transitionSet.add(el);
+        dirty();
+      },
+      delete(el) {
+        transitionSet.delete(el);
+        dirty();
+      },
+    },
     done,
   };
 }
@@ -61,7 +74,6 @@ function makeChildWithScope(
   ctx: ChildTransitionContext,
   child: () => JSX.Element,
 ): JSX.Element {
-
   return createComponent(ChildTransitionContext.Provider, {
     value: ctx,
     children: child,
@@ -74,9 +86,12 @@ function useChildContext(): ChildTransitionContext {
   if (context) {
     return context;
   } else {
+    // return empty context value
     return {
-      set: new Set(),
-      dirty: () => {},
+      set: {
+        add: () => {},
+        delete: () => {},
+      },
       done: () => true,
     }
   }
@@ -122,8 +137,10 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
   props: TransitionChildProps<T>,
 ): JSX.Element {
   const values = useTransitionRootContext('TransitionChild');
-  const pending = useChildContext();
-  const childCtx = initChildContextValue();
+  // Transitions pending on parent
+  const pendingParent = useChildContext();
+  // Transitions pending underneath element
+  const pendingChilds = initChildContextValue();
   let isTransitioning = false;
 
   const [visible, setVisible] = createSignal(values.show);
@@ -149,8 +166,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
         props.afterEnter?.();
         isTransitioning = false;
 
-        pending.set.delete(element);
-        pending.dirty();
+        pendingParent.set.delete(element);
         element.removeEventListener('transitionend', endTransition);
         element.removeEventListener('animationend', endTransition);
       };
@@ -159,8 +175,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
       addClassList(element, enter);
       addClassList(element, enterFrom);
 
-      pending.set.add(element);
-      pending.dirty();
+      pendingParent.set.add(element);
 
       if (enterTo.length > 0) {
         requestAnimationFrame(() => {
@@ -190,14 +205,12 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
         removeClassList(element, leaveTo);
         setShouldHide(true);
 
-        pending.set.delete(element);
-        pending.dirty();
+        pendingParent.set.delete(element);
         element.removeEventListener("transitionend", endTransition);
         element.removeEventListener("animationend", endTransition);
       };
 
-      pending.set.add(element);
-      pending.dirty();
+      pendingParent.set.add(element);
 
       if (leaveTo.length > 0) {
         requestAnimationFrame(() => {
@@ -227,7 +240,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
   });
 
   createEffect(() => {
-    if (shouldHide() && childCtx.done()) {
+    if (shouldHide() && pendingChilds.done()) {
       setShouldHide(false);
 
       const internalRef = ref();
@@ -242,7 +255,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
   });
 
   return makeChildWithScope(
-    childCtx,
+    pendingChilds,
     () => createUnmountable(props, visible, () =>
       createDynamic(
         () => props.as ?? ('div' as T),
