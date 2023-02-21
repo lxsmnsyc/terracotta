@@ -1,5 +1,5 @@
-import { DocumentInfo } from './meta';
-import DEMO_CODE from '../examples/dialog?raw';
+import { DocumentInfo } from '../meta';
+import DEMO_CODE from '../../examples/dialog?raw';
 
 const structure = `<Dialog>
   <DialogOverlay />

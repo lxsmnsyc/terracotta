@@ -9,15 +9,15 @@ interface MetaInfo {
 const META: Record<string, MetaInfo> = {
   accordion: {
     name: 'Accordion',
-    render: () => import('./accordion'),
+    render: () => import('./components/accordion'),
   },
   dialog: {
     name: 'Dialog',
-    render: () => import('./dialog'),
+    render: () => import('./components/dialog'),
   },
   toast: {
     name: 'Toast',
-    render: () => import('./toast'),
+    render: () => import('./components/toast'),
   },
 };
 

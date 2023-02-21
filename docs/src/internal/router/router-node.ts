@@ -172,6 +172,11 @@ export type LoadResult<T> =
   | NotFoundResult
   | RedirectResult;
 
+export type Loader<T, P extends RouterParams> = (
+  request: Request,
+  params: P,
+) => (Promise<LoadResult<T>>);
+
 export type Load = <T, P extends RouterParams>(
   request: Request,
   params: P,
@@ -186,4 +191,10 @@ export interface SSRPage {
 
 export function createPage<P>(page: Page<P>): Page<P> {
   return page;
+}
+
+export function createLoader<T, P extends RouterParams>(
+  loader: Loader<T, P>,
+): Loader<T, P> {
+  return loader;
 }

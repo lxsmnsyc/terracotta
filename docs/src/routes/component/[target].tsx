@@ -4,7 +4,12 @@ import CodeSnippet from '../../components/CodeSnippet';
 import DemoPreview from '../../components/DemoPreview';
 import HighlighterProvider from '../../components/HighlighterProvider';
 import PropsTable from '../../components/PropsTable';
-import { LoadResult, RouterParams, useRouter } from '../../internal/router';
+import {
+  createLoader,
+  PageProps,
+  RouterParams,
+  useRouter,
+} from '../../internal/router';
 import META from '../../page-data';
 import { DocumentInfo, HeaderInfo } from '../../page-data/meta';
 
@@ -137,46 +142,44 @@ function MetaPageAPIs() {
 
 interface MetaPageProps {
   name: string;
-  data: () => Promise<{ default: DocumentInfo }>;
+  data: DocumentInfo;
 }
 
 function MetaPage(props: MetaPageProps): JSX.Element {
-  const [data] = $resource(props.data);
   return (
-    <Suspense>
-      <Show when={data()} keyed>
-        {(result) => (
-          <MetaPageContext.Provider value={{ info: result.default, name: props.name }}>
-            <MetaPageHeader />
-            <MetaPageDemo />
-            <MetaPageStructure />
-            <MetaPageAPIs />
-          </MetaPageContext.Provider>
-        )}
-      </Show>
-    </Suspense>
+    <MetaPageContext.Provider value={{ info: props.data, name: props.name }}>
+      <MetaPageHeader />
+      <MetaPageDemo />
+      <MetaPageStructure />
+      <MetaPageAPIs />
+    </MetaPageContext.Provider>
   );
 }
 
-export const load = (_: Request, params: DocumentParams): LoadResult<null> => ({
-  props: null,
-  meta: {
-    title: `${params.target} | solid-headless`,
-    description: `${params.target}`,
-  },
+export const load = createLoader<DocumentInfo, DocumentParams>(async (_, params) => {
+  if (!(params.target in META)) {
+    return {
+      notFound: true,
+    };
+  }
+  const result = await META[params.target].render();
+  return {
+    props: result.default,
+    meta: {
+      title: `${params.target} | solid-headless`,
+      description: `${params.target}`,
+    },
+  };
 });
 
-export default function DocumentPage(): JSX.Element {
+export default function DocumentPage(props: PageProps<DocumentInfo>): JSX.Element {
   const router = useRouter<DocumentParams>();
-
   return (
-    <Show when={router.params.target in META}>
-      <HighlighterProvider>
-        <MetaPage
-          name={router.params.target}
-          data={META[router.params.target].render}
-        />
-      </HighlighterProvider>
-    </Show>
+    <HighlighterProvider>
+      <MetaPage
+        name={router.params.target}
+        data={props.data}
+      />
+    </HighlighterProvider>
   );
 }

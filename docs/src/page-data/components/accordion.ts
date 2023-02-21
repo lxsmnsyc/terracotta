@@ -1,5 +1,5 @@
-import { DocumentInfo } from './meta';
-import DEMO_CODE from '../examples/accordion?raw';
+import { DocumentInfo } from '../meta';
+import DEMO_CODE from '../../examples/accordion?raw';
 
 const structure = `<Accordion>
   <AccordionItem>

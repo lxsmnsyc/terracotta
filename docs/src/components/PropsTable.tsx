@@ -13,8 +13,8 @@ export interface PropsTableProps {
 export default function PropsTable(props: PropsTableProps): JSX.Element {
   return (
     <div class="overflow-auto">
-      <table class="min-w-full table-auto text-sm dark:border-gray-50">
-        <thead class="bg-gray-900 text-gray-50 dark:bg-gray-50 dark:text-gray-900">
+      <table class="min-w-full table-auto text-sm">
+        <thead class="bg-gray-800 text-gray-50">
           <tr>
             <th class="p-2 rounded-tl-lg rounded-bl-lg">Name</th>
             <th class="p-2">Type</th>
@@ -22,7 +22,7 @@ export default function PropsTable(props: PropsTableProps): JSX.Element {
             <th class="p-2 rounded-tr-lg rounded-br-lg">Description</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-900 dark:divide-gray-50">
+        <tbody class="divide-y divide-gray-800 dark:divide-gray-50">
           <For each={props.props}>
             {(item) => (
               <tr>

@@ -27,7 +27,7 @@ export default function WindowPreview(props: WindowPreviewProps): JSX.Element {
   }
 
   return (
-    <div class="w-full h-[75vh] md:h-full border-2 divide-y-2 divide-gray-900 dark:divide-gray-50 border-gray-900 dark:border-gray-50 bg-gray-900 rounded-lg overflow-hidden flex flex-col">
+    <div class="w-full h-[75vh] md:h-full border-2 divide-y-2 divide-gray-800 dark:divide-gray-50 border-gray-800 dark:border-gray-50 bg-gray-800 rounded-lg overflow-hidden flex flex-col">
       <div class="flex-0 flex items-center justify-between">
         <div class="flex-0 p-2 hidden md:flex items-center justify-center">
           <div class="bg-red-500 m-1 w-3 h-3 rounded-full" />
@@ -37,7 +37,7 @@ export default function WindowPreview(props: WindowPreviewProps): JSX.Element {
         <div class="flex-1 flex items-center justify-center px-1">
           <Link
             href={props.canonical}
-            class="text-xs w-full bg-gray-200 dark:bg-gray-800 rounded-lg py-1 flex justify-between items-center transition duration-150 focus:outline-none focus-visible:ring focus-visible:ring-opacity-75' focus-visible:ring-gray-50 dark:focus-visible:ring-gray-900"
+            class="text-xs w-full bg-gray-200 dark:bg-gray-700 rounded-lg py-1 flex justify-between items-center transition duration-150 focus:outline-none focus-visible:ring focus-visible:ring-opacity-75' focus-visible:ring-gray-50 dark:focus-visible:ring-gray-900"
           >
             <span class="px-2">{props.canonical}</span>
           </Link>

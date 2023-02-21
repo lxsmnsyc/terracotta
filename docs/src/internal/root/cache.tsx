@@ -1,64 +1,15 @@
 import {
   createContext,
-  createEffect,
-  createResource,
-  createSignal,
   JSX,
-  onCleanup,
   Resource,
   useContext,
 } from 'solid-js';
-import { SWRStore, createSWRStore, MutationResult } from 'swr-store';
-import { UseSWRStoreOptions } from 'solid-swr-store';
+import { SWRStore, createSWRStore } from 'swr-store';
+import { useSWRStore, UseSWRStoreOptions } from 'solid-swr-store';
 import {
   LoadResult,
   useRouter,
 } from '../router';
-import assert from '../assert';
-
-function useSWRStoreSuspenseless<T, P extends any[] = []>(
-  store: SWRStore<T, P>,
-  args: () => P,
-  options: UseSWRStoreOptions<T>,
-): () => MutationResult<T> {
-  const [result, setResult] = createSignal(store.get(args(), {
-    shouldRevalidate: options.shouldRevalidate,
-    initialData: options.initialData,
-    hydrate: options.hydrate,
-  }));
-
-  createEffect(() => {
-    const currentArgs = args();
-    onCleanup(store.subscribe(currentArgs, () => {
-      setResult(() => store.get(currentArgs, {
-        shouldRevalidate: false,
-      }));
-    }));
-  });
-
-  return result;
-}
-
-function useSWRStore<T, P extends any[] = []>(
-  store: SWRStore<T, P>,
-  args: () => P,
-  options: UseSWRStoreOptions<T>,
-): Resource<T | undefined> {
-  const suspenseless = useSWRStoreSuspenseless(store, args, options);
-  const [resource] = createResource(
-    suspenseless,
-    async (result): Promise<T> => {
-      assert(result.status !== 'failure', result.data);
-      const dat = await result.data;
-      return dat;
-    },
-    options ? {
-      initialValue: options.initialData,
-      ssrLoadFrom: 'initial',
-    } : {},
-  );
-  return resource as Resource<T | undefined>;
-}
 
 const CacheContext = createContext<SWRStore<any, string[]>>();
 
@@ -95,7 +46,7 @@ export function useCache<T>(
   const router = useRouter();
   const result = useSWRStore(
     ctx,
-    () => [path(), new URLSearchParams(router.search).toString()],
+    () => [path(), router.search],
     options,
   );
   return result as Resource<LoadResult<T>>;

@@ -24,7 +24,7 @@ const BUTTON = classNames(
   'dark:focus-visible:ring-gray-50',
   'border-2 border-gray-900 dark:border-gray-50',
   // Background
-  'bg-gray-900 hover:bg-gray-700 active:bg-gray-800',
+  'bg-gray-800 hover:bg-gray-600 active:bg-gray-700',
   // Foreground
   'text-gray-50 hover:text-gray-200 active:text-gray-100',
 );
@@ -65,7 +65,7 @@ function CustomToast(props: ToastProps): JSX.Element {
   return (
     <Transition
       show={isOpen()}
-      class="relative transition rounded-lg p-4 bg-gray-900 border-2 border-gray-900 dark:border-gray-50"
+      class="relative transition rounded-lg p-4 bg-gray-800 border-2 border-gray-800 dark:border-gray-50"
       enter="ease-out duration-300"
       enterFrom="opacity-0 scale-50"
       enterTo="opacity-100 scale-100"

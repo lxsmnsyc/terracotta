@@ -28,7 +28,7 @@ importers:
       shiki: ^0.14.1
       solid-headless: 0.13.1
       solid-js: ^1.6.9
-      solid-swr-store: ^0.10.6
+      solid-swr-store: ^0.10.7
       solid-use: ^0.6.2
       split.js: ^1.6.5
       swr-store: ^0.10.6
@@ -43,7 +43,7 @@ importers:
       shiki: 0.14.1
       solid-headless: link:../packages/solid-headless
       solid-js: 1.6.10
-      solid-swr-store: 0.10.6_52oageygszxiq6ripj2zwauswm
+      solid-swr-store: 0.10.7_52oageygszxiq6ripj2zwauswm
       solid-use: 0.6.2_solid-js@1.6.10
       split.js: 1.6.5
       swr-store: 0.10.6
@@ -7654,8 +7654,8 @@ packages:
       solid-js: 1.6.10
     dev: true
 
-  /solid-swr-store/0.10.6_52oageygszxiq6ripj2zwauswm:
-    resolution: {integrity: sha512-obSyaboDj/KRNxjHPRhsXexctI4oYjp47zEq26hBZ0slfTWHSzGtMtYF8w4cSiNkDJTjvl8a0NfyDO8rEcFBcw==}
+  /solid-swr-store/0.10.7_52oageygszxiq6ripj2zwauswm:
+    resolution: {integrity: sha512-A6d68aJmRP471aWqKKPE2tpgOiR5fH4qXQNfKIec+Vap+MGQm3tvXlT8n0I8UgJSlNAsSAUuw2VTviH2h3Vv5g==}
     engines: {node: '>=10'}
     peerDependencies:
       solid-js: ^1.2

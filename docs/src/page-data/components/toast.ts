@@ -1,5 +1,5 @@
-import { DocumentInfo } from './meta';
-import DEMO_CODE from '../examples/toast?raw';
+import { DocumentInfo } from '../meta';
+import DEMO_CODE from '../../examples/toast?raw';
 
 const structure = `<Toaster>
   <Toast />

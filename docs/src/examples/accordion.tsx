@@ -18,7 +18,7 @@ const ACCORDION_ITEM = classNames(
   'dark:focus-visible:ring-gray-50',
   'border-2 border-gray-900 dark:border-gray-50',
   // Background
-  'bg-gray-900 hover:bg-gray-700 active:bg-gray-800',
+  'bg-gray-800 hover:bg-gray-600 active:bg-gray-700',
   // Foreground
   'text-gray-50 hover:text-gray-200 active:text-gray-100',
 );

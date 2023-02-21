@@ -13,7 +13,7 @@ const CLASSES = classNames(
   'focus-visible:ring-gray-50',
   // Background
   'bg-opacity-25 dark:bg-opacity-25 active:bg-opacity-25 dark:active:bg-opacity-25 hover:bg-opacity-25 dark:hover:bg-opacity-25',
-  'bg-gray-900 hover:bg-gray-700 active:bg-gray-800',
+  'bg-gray-800 hover:bg-gray-600 active:bg-gray-700',
   // 'dark:bg-gray-50 dark:hover:bg-gray-200 dark:active:bg-gray-100',
   // Foreground
   'text-gray-50 hover:text-gray-200 active:text-gray-100',

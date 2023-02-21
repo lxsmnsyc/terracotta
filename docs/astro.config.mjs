@@ -19,6 +19,9 @@ export default defineConfig({
         include: 'src/**/*.tsx',
         exclude: 'node_modules/**/*.{ts,js}'
       }
-    })]
+    })],
+    ssr: {
+      noExternal: ['solid-swr-store'],
+    }
   }
 });

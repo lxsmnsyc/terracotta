@@ -40,7 +40,7 @@ export default function ResizeTracker(): JSX.Element {
   return (
     <Transition
       show={visible}
-      class="fixed right-0 top-0 shadow-lg rounded-lg m-2 transition transform-gpu duration-200 bg-gray-900 pointer-events-none"
+      class="fixed right-0 top-0 shadow-lg rounded-lg m-2 transition transform-gpu duration-200 bg-gray-800 pointer-events-none"
       enterFrom="opacity-0 scale-50"
       enterTo="opacity-100 scale-100"
       leaveFrom="opacity-100 scale-100"
