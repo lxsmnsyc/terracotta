@@ -1,6 +1,7 @@
 import {
   onCleanup,
 } from 'solid-js';
+import { isServer } from 'solid-js/web';
 import {
   getFocusStartPoint,
   setFocusStartPoint,
@@ -17,9 +18,11 @@ class FocusStartPoint {
       this.fsp = getFocusStartPoint();
     }
 
-    onCleanup(() => {
-      this.load();
-    });
+    if (!isServer) {
+      onCleanup(() => {
+        this.load();
+      });
+    }
   }
 
   load() {
