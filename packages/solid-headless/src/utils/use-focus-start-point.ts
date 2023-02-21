@@ -13,12 +13,9 @@ class FocusStartPoint {
   private fsp: HTMLElement | null | undefined;
 
   constructor() {
-    if (typeof document !== 'undefined') {
+    if (!isServer) {
       this.returnElement = document.activeElement;
       this.fsp = getFocusStartPoint();
-    }
-
-    if (!isServer) {
       onCleanup(() => {
         this.load();
       });
