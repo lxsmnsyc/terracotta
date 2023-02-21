@@ -146,6 +146,9 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
       if (props.beforeLeave) {
         props.beforeLeave();
       }
+      if (transitionParent) {
+        transitionParent.register();
+      }
       removeClassList(element, entered);
       addClassList(element, leave);
       addClassList(element, leaveFrom);
@@ -157,6 +160,9 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
         removeClassList(element, leave);
         removeClassList(element, leaveTo);
         setVisible(false);
+        if (transitionParent) {
+          transitionParent.unregister();
+        }
         if (props.afterLeave) {
           props.afterLeave();
         }
@@ -173,7 +179,11 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
     }
     const internalRef = ref();
     if (internalRef instanceof HTMLElement) {
-      transition(internalRef, shouldShow);
+      if (shouldShow) {
+        transition(internalRef, true);
+      } else if (transitionChildren.done()) {
+        transition(internalRef, false);
+      }
     } else {
       // Ref is missing, reset initial
       initial = true;
