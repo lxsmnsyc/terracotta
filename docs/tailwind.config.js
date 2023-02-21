@@ -1,12 +1,11 @@
 module.exports = {
   mode: 'jit',
   content: [
-    './src/**/*.tsx',
-    './src/**/*.css',
+    './src/**/*.{tsx,astro}',
   ],
   darkMode: 'class', // or 'media' or 'class'
   variants: {},
   plugins: [
-    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/aspect-ratio')
   ],
 };

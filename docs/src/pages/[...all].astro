@@ -1,0 +1,44 @@
+---
+import { LoadResult } from '../internal/router';
+import getLoader from '../load-router';
+import Root from '../root.astro';
+
+const loader = getLoader(Astro.url);
+if (Astro.url.searchParams.has('.get')) {
+  if (loader.length) {
+    const last = loader[loader.length - 1];
+    if (last.value) {
+      const data = await last.value(Astro.request, last.params);
+      return new Response(JSON.stringify(data), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+    } 
+  }
+  return new Response(JSON.stringify({ props: undefined }), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+}
+let data: LoadResult<any>[] = [];
+
+if (loader.length) {
+  data = await Promise.all(
+    loader.map(async (result) => {
+      if (result.value) {
+        return result.value(Astro.request, result.params);
+      }
+      return { props: undefined };
+    }),
+  );
+}
+
+if ('redirect' in data) {
+  return Astro.redirect(data.redirect);
+}
+---
+<Root data={data} />

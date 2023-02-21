@@ -1,10 +1,10 @@
-import { Link, LinkProps } from 'solid-tiny-router';
 import {
   JSX,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use';
+import { Link, LinkProps } from '../internal/router';
 import classNames from '../utils/classnames';
 
 const CLASSES = classNames(

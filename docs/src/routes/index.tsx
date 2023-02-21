@@ -1,9 +1,11 @@
 import { JSX } from 'solid-js';
+import { ColorSchemeProvider } from 'solid-headless';
 import BashSnippet from '../components/BashSnippet';
 import MainShell from '../components/MainShell';
 import ComponentCard from '../components/ComponentCard';
 import WindowPreview, { WindowPreviewBaseProps } from '../components/WindowPreview';
 import META from '../page-data';
+import { LoadResult, PageProps, useRouter } from '../internal/router';
 
 const PREVIEWS: WindowPreviewBaseProps[] = Object.keys(META)
   .map((item) => ({ src: `/preview/${item}`, canonical: `/component/${item}` }));
@@ -42,24 +44,42 @@ function ComponentsSection() {
     <div class="flex flex-col space-y-4">
       <h2 class="text-3xl font-bold">Components</h2>
       <div class="flex flex-wrap">
-        <$for each={Object.keys(META)}>
+        <For each={Object.keys(META)}>
           {(key) => (
             <ComponentCard
               target={key}
               name={META[key].name}
             />
           )}
-        </$for>
+        </For>
       </div>
     </div>
   );
 }
 
-export default function Index(): JSX.Element {
+export const load = (): LoadResult<null> => ({
+  props: null,
+  meta: {
+    title: 'solid-headless',
+    description: 'Headless UI library for SolidJS',
+  },
+});
+
+export default function Index(props: PageProps<null>): JSX.Element {
+  const router = useRouter();
   return (
-    <MainShell>
-      <HeroSection />
-      <ComponentsSection />
-    </MainShell>
+    <ColorSchemeProvider initialValue="system">
+      <Show
+        when={!router.pathname.startsWith('/preview')}
+        fallback={<Suspense>{props.children}</Suspense>}
+      >
+        <MainShell>
+          <Show when={!props.isLayout} fallback={<Suspense>{props.children}</Suspense>}>
+            <HeroSection />
+            <ComponentsSection />
+          </Show>
+        </MainShell>
+      </Show>
+    </ColorSchemeProvider>
   );
 }

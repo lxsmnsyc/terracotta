@@ -1,4 +1,3 @@
-import { JSX } from 'solid-js';
 import { DocumentInfo } from './meta';
 
 interface MetaInfo {

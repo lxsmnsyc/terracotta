@@ -1,10 +1,9 @@
 import {
   JSX,
 } from 'solid-js';
-import {
-  Link,
-} from 'solid-tiny-router';
+import { Link } from '../internal/router';
 import classNames from '../utils/classnames';
+import ClientOnly from './ClientOnly';
 import Preview from './Preview';
 
 export interface ComponentCardProps {
@@ -35,12 +34,14 @@ export default function ComponentCard(props: ComponentCardProps): JSX.Element {
         <div class="w-full h-auto transition-colors duration-200 relative overflow-hidden">
           <div class="aspect-w-16 aspect-h-9 relative overflow-hidden">
             <div class="absolute w-[200%] h-[200%] top-0 left-0 transform-gpu scale-50 origin-top-left">
-              <Preview
-                src={`/preview/${props.target}`}
-                onLoad={() => {
-                  loading = false;
-                }}
-              />
+              <ClientOnly>
+                <Preview
+                  src={`/preview/${props.target}`}
+                  onLoad={() => {
+                    loading = false;
+                  }}
+                />
+              </ClientOnly>
             </div>
           </div>
           {loading && <div class="absolute top-0 w-full h-full animate-pulse bg-gray-100 dark:bg-gray-900" />}

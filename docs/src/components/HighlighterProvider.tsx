@@ -16,7 +16,8 @@ export default function HighlighterProvider(props: HighlighterProviderProps): JS
       themes: ['github-dark', 'github-light'],
     }).then((result) => {
       highlighter = result;
-    }).catch(() => {
+    }).catch((err) => {
+      console.log(err);
       //
     });
   });

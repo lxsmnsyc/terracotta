@@ -1,8 +1,9 @@
-import { Link } from 'solid-tiny-router';
 import { JSX } from 'solid-js';
 import Preview from './Preview';
 import { CircularButton } from './CircularButton';
 import { NextIcon, PrevIcon } from './Icons';
+import { Link } from '../internal/router';
+import ClientOnly from './ClientOnly';
 
 export interface WindowPreviewBaseProps {
   src: string;
@@ -53,7 +54,9 @@ export default function WindowPreview(props: WindowPreviewProps): JSX.Element {
         </div>
       </div>
       <div class={`flex-1 transition duration-300 ${loading ? 'opacity-0' : 'opacity-100'}`}>
-        <Preview src={props.src} onLoad={onLoad} />
+        <ClientOnly>
+          <Preview src={props.src} onLoad={onLoad} />
+        </ClientOnly>
       </div>
     </div>
   );

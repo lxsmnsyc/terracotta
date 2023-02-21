@@ -3,6 +3,7 @@ import {
   JSX,
 } from 'solid-js';
 import { PropInfo } from '../page-data/meta';
+import ClientOnly from './ClientOnly';
 import CodeSnippet from './CodeSnippet';
 
 export interface PropsTableProps {
@@ -11,7 +12,7 @@ export interface PropsTableProps {
 
 export default function PropsTable(props: PropsTableProps): JSX.Element {
   return (
-    <div class="overflow-scroll">
+    <div class="overflow-auto">
       <table class="min-w-full table-auto text-sm dark:border-gray-50">
         <thead class="bg-gray-900 text-gray-50 dark:bg-gray-50 dark:text-gray-900">
           <tr>
@@ -26,8 +27,16 @@ export default function PropsTable(props: PropsTableProps): JSX.Element {
             {(item) => (
               <tr>
                 <td class="p-2">{item.name}</td>
-                <td><CodeSnippet code={item.type} /></td>
-                <td><CodeSnippet code={item.default} /></td>
+                <td>
+                  <ClientOnly>
+                    <CodeSnippet code={item.type} />
+                  </ClientOnly>
+                </td>
+                <td>
+                  <ClientOnly>
+                    <CodeSnippet code={item.default} />
+                  </ClientOnly>
+                </td>
                 <td class="p-2">{item.description}</td>
               </tr>
             )}
