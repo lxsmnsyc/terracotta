@@ -12,6 +12,7 @@ import {
 import {
   omitProps,
 } from 'solid-use';
+import assert from '../../utils/assert';
 import createDynamic from '../../utils/create-dynamic';
 import {
   createRef,
@@ -40,11 +41,8 @@ const ChildTransitionContext = createContext<ChildTransitionContext>();
 
 function useTransitionRootContext(componentName: string): TransitionRootContext {
   const context = useContext(TransitionRootContext);
-
-  if (context) {
-    return context;
-  }
-  throw new Error(`<${componentName}> must be used inside a <Transition>`);
+  assert(context, new Error(`<${componentName}> must be used inside a <Transition>`));
+  return context;
 }
 
 function initChildContextValue(): ChildTransitionContext {

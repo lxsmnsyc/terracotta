@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
 } from 'solid-js';
+import assert from '../../utils/assert';
 import {
   useHeadlessAutocompleteProperties,
 } from './useHeadlessAutocompleteProperties';
@@ -20,10 +21,8 @@ export const HeadlessAutocompleteOptionContext = (
 
 export function useHeadlessAutocompleteOptionProperties(): HeadlessAutocompleteOptionProperties {
   const properties = useContext(HeadlessAutocompleteOptionContext);
-  if (properties) {
-    return properties;
-  }
-  throw new Error('`useHeadlessAutocompleteOptionProperties` must be used within HeadlessAutocompleteOption');
+  assert(properties, new Error('`useHeadlessAutocompleteOptionProperties` must be used within HeadlessAutocompleteOption'));
+  return properties;
 }
 
 export function useHeadlessAutocompleteOption(

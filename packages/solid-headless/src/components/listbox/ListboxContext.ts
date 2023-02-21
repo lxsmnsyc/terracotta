@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
 } from 'solid-js';
+import assert from '../../utils/assert';
 
 interface ListboxContext {
   horizontal?: boolean;
@@ -18,9 +19,6 @@ export const ListboxContext = createContext<ListboxContext>();
 
 export function useListboxContext(componentName: string): ListboxContext {
   const context = useContext(ListboxContext);
-
-  if (context) {
-    return context;
-  }
-  throw new Error(`<${componentName}> must be used inside a <Listbox>`);
+  assert(context, new Error(`<${componentName}> must be used inside a <Listbox>`));
+  return context;
 }

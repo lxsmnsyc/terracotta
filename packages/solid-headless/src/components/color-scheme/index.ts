@@ -13,6 +13,7 @@ import {
   usePageVisibility,
   usePrefersDark,
 } from 'solid-use';
+import assert from '../../utils/assert';
 
 export type NativeColorScheme = 'light' | 'dark';
 export type ColorScheme = NativeColorScheme | 'system';
@@ -125,10 +126,8 @@ export function ColorSchemeProvider(props: ColorSchemeProviderProps) {
 
 function useColorSchemeContext(): ColorSchemeContext {
   const ctx = useContext(ColorSchemeContext);
-  if (ctx) {
-    return ctx;
-  }
-  throw new Error('Missing <ColorSchemeProvider>');
+  assert(ctx, new Error('Missing <ColorSchemeProvider>'));
+  return ctx;
 }
 
 export function useColorScheme(): [() => ColorScheme, (newScheme: ColorScheme) => void] {

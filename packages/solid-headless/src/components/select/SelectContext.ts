@@ -3,6 +3,7 @@ import {
   createUniqueId,
   useContext,
 } from 'solid-js';
+import assert from '../../utils/assert';
 import { ValidConstructor } from '../../utils/dynamic-prop';
 import FocusNavigator from '../../utils/focus-navigator';
 
@@ -17,11 +18,8 @@ export function useSelectContext<T extends ValidConstructor>(
   componentName: string,
 ): SelectContext<T> {
   const context = useContext(SelectContext);
-
-  if (context) {
-    return context;
-  }
-  throw new Error(`<${componentName}> must be used inside a <Select>`);
+  assert(context, new Error(`<${componentName}> must be used inside a <Select>`));
+  return context;
 }
 
 export function createSelectOptionFocusNavigator

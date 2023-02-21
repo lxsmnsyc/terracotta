@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
 } from 'solid-js';
+import assert from '../../utils/assert';
 
 interface PopoverContext {
   ownerID: string;
@@ -15,9 +16,6 @@ export const PopoverContext = createContext<PopoverContext>();
 
 export function usePopoverContext(componentName: string): PopoverContext {
   const context = useContext(PopoverContext);
-
-  if (context) {
-    return context;
-  }
-  throw new Error(`<${componentName}> must be used inside a <Popover>`);
+  assert(context, new Error(`<${componentName}> must be used inside a <Popover>`));
+  return context;
 }

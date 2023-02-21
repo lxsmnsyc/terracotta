@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
 } from 'solid-js';
+import assert from '../../utils/assert';
 
 interface ContextMenuContext {
   ownerID: string;
@@ -14,9 +15,6 @@ export const ContextMenuContext = createContext<ContextMenuContext>();
 
 export function useContextMenuContext(componentName: string): ContextMenuContext {
   const context = useContext(ContextMenuContext);
-
-  if (context) {
-    return context;
-  }
-  throw new Error(`<${componentName}> must be used inside a <ContextMenu>`);
+  assert(context, new Error(`<${componentName}> must be used inside a <ContextMenu>`));
+  return context;
 }

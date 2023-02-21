@@ -1,6 +1,7 @@
 import {
   createContext, useContext,
 } from 'solid-js';
+import assert from '../../utils/assert';
 
 export interface HeadlessAutocompleteProperties {
   value(): string | undefined;
@@ -17,8 +18,6 @@ export const HeadlessAutocompleteContext = createContext<HeadlessAutocompletePro
 
 export function useHeadlessAutocompleteProperties(): HeadlessAutocompleteProperties {
   const properties = useContext(HeadlessAutocompleteContext);
-  if (properties) {
-    return properties;
-  }
-  throw new Error('`useHeadlessAutocompleteProperties` must be used within HeadlessAutocompleteRoot.');
+  assert(properties, new Error('`useHeadlessAutocompleteProperties` must be used within HeadlessAutocompleteRoot.'));
+  return properties;
 }

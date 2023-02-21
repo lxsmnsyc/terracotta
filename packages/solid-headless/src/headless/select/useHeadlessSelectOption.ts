@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
 } from 'solid-js';
+import assert from '../../utils/assert';
 import {
   useHeadlessSelectProperties,
 } from './useHeadlessSelectProperties';
@@ -19,10 +20,8 @@ export const HeadlessSelectOptionContext = createContext<HeadlessSelectOptionPro
 
 export function useHeadlessSelectOptionProperties(): HeadlessSelectOptionProperties {
   const properties = useContext(HeadlessSelectOptionContext);
-  if (properties) {
-    return properties;
-  }
-  throw new Error('`useHeadlessSelectOptionProperties` must be used within HeadlessSelectOption');
+  assert(properties, new Error('`useHeadlessSelectOptionProperties` must be used within HeadlessSelectOption'));
+  return properties;
 }
 
 export function useHeadlessSelectOption<T>(

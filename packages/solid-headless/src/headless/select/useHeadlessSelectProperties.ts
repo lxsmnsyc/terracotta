@@ -1,6 +1,7 @@
 import {
   createContext, useContext,
 } from 'solid-js';
+import assert from '../../utils/assert';
 
 export interface HeadlessSelectProperties<T> {
   isSelected(value: T): boolean;
@@ -17,8 +18,6 @@ export const HeadlessSelectContext = createContext<HeadlessSelectProperties<any>
 
 export function useHeadlessSelectProperties<T>(): HeadlessSelectProperties<T> {
   const properties = useContext(HeadlessSelectContext);
-  if (properties) {
-    return properties;
-  }
-  throw new Error('`useHeadlessSelectProperties` must be used within HeadlessSelectRoot.');
+  assert(properties, new Error('`useHeadlessSelectProperties` must be used within HeadlessSelectRoot.'));
+  return properties;
 }

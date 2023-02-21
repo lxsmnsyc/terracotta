@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
 } from 'solid-js';
+import assert from '../../utils/assert';
 
 interface TabGroupContext<V> {
   horizontal: boolean;
@@ -14,9 +15,6 @@ export function useTabGroupContext<V>(
   componentName: string,
 ): TabGroupContext<V> {
   const context = useContext(TabGroupContext);
-
-  if (context) {
-    return context;
-  }
-  throw new Error(`<${componentName}> must be used inside a <TabGroup>`);
+  assert(context, new Error(`<${componentName}> must be used inside a <TabGroup>`));
+  return context;
 }
