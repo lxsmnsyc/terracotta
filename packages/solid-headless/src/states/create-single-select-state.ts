@@ -11,6 +11,7 @@ export interface SingleSelectStateControlledOptions<T> {
   value: T;
   onChange?: (value?: T) => void;
   disabled?: boolean;
+  by?: (a: T, b: T) => boolean;
 }
 
 export interface SingleSelectStateUncontrolledOptions<T> {
@@ -18,6 +19,7 @@ export interface SingleSelectStateUncontrolledOptions<T> {
   defaultValue: T;
   onChange?: (value?: T) => void;
   disabled?: boolean;
+  by?: (a: T, b: T) => boolean;
 }
 
 export type SingleSelectStateOptions<T> =
@@ -43,6 +45,8 @@ export function createSingleSelectState<T>(
   let selectedValue: Accessor<T | undefined>;
   let setSelectedValue: (value: T | undefined) => void;
 
+  const equals = options.by || isEqual;
+
   if ('defaultValue' in options) {
     const [selected, setSelected] = createSignal<T | undefined>(options.defaultValue);
     selectedValue = selected;
@@ -66,7 +70,7 @@ export function createSingleSelectState<T>(
       return isEqual(value, selectedValue());
     },
     select(value) {
-      if (options.toggleable && isEqual(untrack(selectedValue), value)) {
+      if (options.toggleable && equals(untrack(selectedValue) as T, value)) {
         setSelectedValue(undefined);
       } else {
         setSelectedValue(value);
@@ -83,7 +87,7 @@ export function createSingleSelectState<T>(
     },
     isActive(value) {
       const ref = active();
-      return ref ? isEqual(value, ref.value) : false;
+      return ref ? equals(value, ref.value) : false;
     },
     focus(value) {
       return setActive({
