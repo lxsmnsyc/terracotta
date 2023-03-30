@@ -1,6 +1,5 @@
 import {
   Accessor,
-  batch,
   createSignal,
 } from 'solid-js';
 
