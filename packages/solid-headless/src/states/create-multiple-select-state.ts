@@ -12,6 +12,7 @@ export interface MultipleSelectStateControlledOptions<T> {
   value: T[];
   onChange?: (value: T[]) => void;
   disabled?: boolean;
+  by?: (a: T, b: T) => boolean;
 }
 
 export interface MultipleSelectStateUncontrolledOptions<T> {
@@ -20,6 +21,7 @@ export interface MultipleSelectStateUncontrolledOptions<T> {
   defaultValue: T[];
   onChange?: (value: T[]) => void;
   disabled?: boolean;
+  by?: (a: T, b: T) => boolean;
 }
 
 export type MultipleSelectStateOptions<T> =
@@ -45,6 +47,8 @@ export function createMultipleSelectState<T>(
   let selectedValues: Accessor<T[]>;
   let setSelectedValues: (value: T[]) => void;
 
+  const equals = options.by || isEqual;
+
   if ('defaultValue' in options) {
     const [selected, setSelected] = createSignal<T[]>(options.defaultValue);
     selectedValues = selected;
@@ -65,18 +69,24 @@ export function createMultipleSelectState<T>(
 
   return {
     isSelected(value) {
-      return new Set(selectedValues()).has(value);
+      const values = selectedValues();
+      for (let i = 0, len = values.length; i < len; i += 1) {
+        if (equals(value, values[i])) {
+          return true;
+        }
+      }
+      return false;
     },
     select(value) {
-      const set = new Set(untrack(selectedValues));
-      if (options.toggleable && set.has(value)) {
-        set.delete(value);
-      } else {
-        set.add(value);
+      const newValues: T[] = [];
+      const currentValues = untrack(selectedValues);
+      for (let i = 0, len = currentValues.length; i < len; i += 1) {
+        const item = currentValues[i];
+        if (!(options.toggleable && equals(item, value))) {
+          newValues.push(item);
+        }
       }
-      setSelectedValues([
-        ...set,
-      ]);
+      setSelectedValues(newValues);
     },
     hasSelected() {
       return selectedValues().length > 0;
@@ -90,7 +100,7 @@ export function createMultipleSelectState<T>(
     isActive(value) {
       const ref = active();
       if (ref) {
-        return isEqual(value, ref.value);
+        return equals(value, ref.value);
       }
       return false;
     },
