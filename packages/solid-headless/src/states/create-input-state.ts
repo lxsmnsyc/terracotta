@@ -1,7 +1,12 @@
 import {
   Accessor,
+  createComponent,
+  createContext,
   createSignal,
+  JSX,
+  useContext,
 } from 'solid-js';
+import assert from '../utils/assert';
 
 export interface InputStateControlledOptions {
   value: string | undefined;
@@ -25,7 +30,7 @@ export interface InputStateProperties {
   disabled(): boolean;
 }
 
-export function useInputState(
+export function createInputState(
   options: InputStateOptions,
 ): InputStateProperties {
   let signal: Accessor<string | undefined>;
@@ -62,4 +67,36 @@ export function useInputState(
       return !!options.disabled;
     },
   };
+}
+
+export interface InputStateProviderProps {
+  state: InputStateProperties;
+  children: JSX.Element | ((state: InputStateProperties) => JSX.Element);
+}
+
+const InputStateContext = (
+  createContext<InputStateProperties>()
+);
+
+export function InputStateProvider(
+  props: InputStateProviderProps,
+) {
+  return (
+    createComponent(InputStateContext.Provider, {
+      value: props.state,
+      get children() {
+        const current = props.children;
+        if (typeof current === 'function') {
+          return current(props.state);
+        }
+        return current;
+      },
+    })
+  );
+}
+
+export function useInputState(): InputStateProperties {
+  const ctx = useContext(InputStateContext);
+  assert(ctx, new Error('Missing <InputStateProvider>'));
+  return ctx;
 }

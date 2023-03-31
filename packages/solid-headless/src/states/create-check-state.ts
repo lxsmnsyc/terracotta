@@ -1,7 +1,12 @@
 import {
   Accessor,
+  createComponent,
+  createContext,
   createSignal,
+  JSX,
+  useContext,
 } from 'solid-js';
+import assert from '../utils/assert';
 
 export interface CheckStateControlledOptions {
   checked: boolean | undefined;
@@ -69,4 +74,36 @@ export function createCheckState(
       return !!options.disabled;
     },
   };
+}
+
+export interface CheckStateProviderProps {
+  state: CheckStateProperties;
+  children: JSX.Element | ((state: CheckStateProperties) => JSX.Element);
+}
+
+const CheckStateContext = (
+  createContext<CheckStateProperties>()
+);
+
+export function CheckStateProvider(
+  props: CheckStateProviderProps,
+) {
+  return (
+    createComponent(CheckStateContext.Provider, {
+      value: props.state,
+      get children() {
+        const current = props.children;
+        if (typeof current === 'function') {
+          return current(props.state);
+        }
+        return current;
+      },
+    })
+  );
+}
+
+export function useCheckState(): CheckStateProperties {
+  const ctx = useContext(CheckStateContext);
+  assert(ctx, new Error('Missing <CheckStateProvider>'));
+  return ctx;
 }

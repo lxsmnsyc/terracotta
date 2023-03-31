@@ -2,7 +2,12 @@ import {
   createSignal,
   Accessor,
   untrack,
+  JSX,
+  createContext,
+  createComponent,
+  useContext,
 } from 'solid-js';
+import assert from '../utils/assert';
 import isEqual from '../utils/is-equal';
 import { Ref } from '../utils/types';
 
@@ -98,4 +103,36 @@ export function createSingleSelectState<T>(
       return setActive(undefined);
     },
   };
+}
+
+export interface SingleSelectStateProviderProps<T> {
+  state: SingleSelectStateProperties<T>;
+  children: JSX.Element | ((state: SingleSelectStateProperties<T>) => JSX.Element);
+}
+
+const SingleSelectStateContext = (
+  createContext<SingleSelectStateProperties<any>>()
+);
+
+export function SingleSelectStateProvider<T>(
+  props: SingleSelectStateProviderProps<T>,
+) {
+  return (
+    createComponent(SingleSelectStateContext.Provider, {
+      value: props.state,
+      get children() {
+        const current = props.children;
+        if (typeof current === 'function') {
+          return current(props.state);
+        }
+        return current;
+      },
+    })
+  );
+}
+
+export function useSingleSelectState<T>(): SingleSelectStateProperties<T> {
+  const ctx = useContext(SingleSelectStateContext);
+  assert(ctx, new Error('Missing <SingleSelectStateProvider>'));
+  return ctx;
 }

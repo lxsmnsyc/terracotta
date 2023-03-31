@@ -2,7 +2,12 @@ import {
   createSignal,
   Accessor,
   untrack,
+  createComponent,
+  createContext,
+  JSX,
+  useContext,
 } from 'solid-js';
+import assert from '../utils/assert';
 import isEqual from '../utils/is-equal';
 import { Ref } from '../utils/types';
 
@@ -37,7 +42,7 @@ export interface AutocompleteStateProperties {
   disabled(): boolean;
 }
 
-export function useAutocompleteState(
+export function createAutocompleteState(
   options: AutocompleteStateOptions,
 ): AutocompleteStateProperties {
   const [active, setActive] = createSignal<Ref<string>>();
@@ -106,4 +111,36 @@ export function useAutocompleteState(
       return setActive(undefined);
     },
   };
+}
+
+export interface AutocompleteStateProviderProps {
+  state: AutocompleteStateProperties;
+  children: JSX.Element | ((state: AutocompleteStateProperties) => JSX.Element);
+}
+
+const AutocompleteStateContext = (
+  createContext<AutocompleteStateProperties>()
+);
+
+export function AutocompleteStateProvider(
+  props: AutocompleteStateProviderProps,
+) {
+  return (
+    createComponent(AutocompleteStateContext.Provider, {
+      value: props.state,
+      get children() {
+        const current = props.children;
+        if (typeof current === 'function') {
+          return current(props.state);
+        }
+        return current;
+      },
+    })
+  );
+}
+
+export function useAutocompleteState(): AutocompleteStateProperties {
+  const ctx = useContext(AutocompleteStateContext);
+  assert(ctx, new Error('Missing <AutocompleteStateProvider>'));
+  return ctx;
 }

@@ -1,7 +1,12 @@
 import {
   Accessor,
+  createComponent,
+  createContext,
   createSignal,
+  JSX,
+  useContext,
 } from 'solid-js';
+import assert from '../utils/assert';
 
 export interface ToggleStateControlledOptions {
   pressed: boolean;
@@ -69,4 +74,32 @@ export function createToggleState(
       return !!options.disabled;
     },
   };
+}
+
+export interface ToggleStateProviderProps {
+  state: ToggleStateProperties;
+  children: JSX.Element | ((state: ToggleStateProperties) => JSX.Element);
+}
+
+const ToggleStateContext = createContext<ToggleStateProperties>();
+
+export function ToggleStateProvider(props: ToggleStateProviderProps) {
+  return (
+    createComponent(ToggleStateContext.Provider, {
+      value: props.state,
+      get children() {
+        const current = props.children;
+        if (typeof current === 'function') {
+          return current(props.state);
+        }
+        return current;
+      },
+    })
+  );
+}
+
+export function useToggleState(): ToggleStateProperties {
+  const ctx = useContext(ToggleStateContext);
+  assert(ctx, new Error('Missing <ToggleStateProvider>'));
+  return ctx;
 }

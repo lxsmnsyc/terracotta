@@ -1,7 +1,12 @@
 import {
   Accessor,
+  createComponent,
+  createContext,
   createSignal,
+  JSX,
+  useContext,
 } from 'solid-js';
+import assert from '../utils/assert';
 
 export interface DisclosureStateControlledOptions {
   isOpen: boolean;
@@ -61,4 +66,36 @@ export function createDisclosureState(
       return !!options.disabled;
     },
   };
+}
+
+export interface DisclosureStateProviderProps {
+  state: DisclosureStateProperties;
+  children: JSX.Element | ((state: DisclosureStateProperties) => JSX.Element);
+}
+
+const DisclosureStateContext = (
+  createContext<DisclosureStateProperties>()
+);
+
+export function DisclosureStateProvider(
+  props: DisclosureStateProviderProps,
+) {
+  return (
+    createComponent(DisclosureStateContext.Provider, {
+      value: props.state,
+      get children() {
+        const current = props.children;
+        if (typeof current === 'function') {
+          return current(props.state);
+        }
+        return current;
+      },
+    })
+  );
+}
+
+export function useDisclosureState(): DisclosureStateProperties {
+  const ctx = useContext(DisclosureStateContext);
+  assert(ctx, new Error('Missing <DisclosureStateProvider>'));
+  return ctx;
 }

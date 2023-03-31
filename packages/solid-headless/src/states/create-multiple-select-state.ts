@@ -1,8 +1,13 @@
 import {
   Accessor,
+  createComponent,
+  createContext,
   createSignal,
+  JSX,
   untrack,
+  useContext,
 } from 'solid-js';
+import assert from '../utils/assert';
 import isEqual from '../utils/is-equal';
 import { Ref } from '../utils/types';
 
@@ -113,4 +118,36 @@ export function createMultipleSelectState<T>(
       return setActive(undefined);
     },
   };
+}
+
+export interface MultipleSelectStateProviderProps<T> {
+  state: MultipleSelectStateProperties<T>;
+  children: JSX.Element | ((state: MultipleSelectStateProperties<T>) => JSX.Element);
+}
+
+const MultipleSelectStateContext = (
+  createContext<MultipleSelectStateProperties<any>>()
+);
+
+export function MultipleSelectStateProvider<T>(
+  props: MultipleSelectStateProviderProps<T>,
+) {
+  return (
+    createComponent(MultipleSelectStateContext.Provider, {
+      value: props.state,
+      get children() {
+        const current = props.children;
+        if (typeof current === 'function') {
+          return current(props.state);
+        }
+        return current;
+      },
+    })
+  );
+}
+
+export function useMultipleSelectState<T>(): MultipleSelectStateProperties<T> {
+  const ctx = useContext(MultipleSelectStateContext);
+  assert(ctx, new Error('Missing <MultipleSelectStateProvider>'));
+  return ctx;
 }
