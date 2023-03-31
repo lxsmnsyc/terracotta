@@ -81,7 +81,6 @@ export function Toggle<T extends ValidConstructor = 'button'>(
     return createComponent(Button, mergeProps(
       isToggleUncontrolled(props)
         ? omitProps(props, [
-          'as',
           'onChange',
           'defaultPressed',
           'ref',
@@ -89,7 +88,6 @@ export function Toggle<T extends ValidConstructor = 'button'>(
           'children',
         ])
         : omitProps(props, [
-          'as',
           'onChange',
           'pressed',
           'ref',
