@@ -23,7 +23,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createDisabled } from '../../utils/state-props';
-import { OmitAndMerge } from '../../utils/types';
+import { OmitAndMerge, Prettify } from '../../utils/types';
 import {
   Button,
   ButtonProps,
@@ -32,16 +32,18 @@ import { createTag } from '../../utils/namespace';
 
 const TOGGLE_TAG = createTag('toggle');
 
-export type ToggleControlledBaseProps =
+export type ToggleControlledBaseProps = Prettify<
   ToggleStateControlledOptions
-  & ToggleStateRenderProps;
+  & ToggleStateRenderProps
+>;
 
 export type ToggleControlledProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, OmitAndMerge<ToggleControlledBaseProps, ButtonProps<T>>>;
 
-export type ToggleUncontrolledBaseProps =
+export type ToggleUncontrolledBaseProps = Prettify<
   ToggleStateUncontrolledOptions
-  & ToggleStateRenderProps;
+  & ToggleStateRenderProps
+>;
 
 export type ToggleUncontrolledProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, OmitAndMerge<ToggleUncontrolledBaseProps, ButtonProps<T>>>;
