@@ -196,7 +196,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
         props,
         visible,
         () => createDynamic(
-          () => props.as ?? ('div' as T),
+          () => props.as || ('div' as T),
           mergeProps(
             omitProps(props, [
               'as',
