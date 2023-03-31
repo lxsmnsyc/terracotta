@@ -10,12 +10,11 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import assert from '../../utils/assert';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
+  createForwardRef,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -59,7 +58,7 @@ function createTransitionCounter(): TransitionCounter {
   };
 }
 
-interface TransitionBaseChildProps {
+export interface TransitionBaseChildProps {
   unmount?: boolean;
   appear?: boolean;
   enter?: string;
@@ -105,7 +104,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
   const transitionChildren = createTransitionCounter();
 
   const [visible, setVisible] = createSignal(values.show);
-  const [ref, setRef] = createSignal<DynamicNode<T>>();
+  const [ref, setRef] = createForwardRef(props);
   let initial = true;
 
   function transition(element: HTMLElement, shouldEnter: boolean): void {
@@ -217,9 +216,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
               'ref',
             ]),
             {
-              ref: createRef(props, (e) => {
-                setRef(() => e);
-              }),
+              ref: setRef,
             },
           ) as DynamicProps<T>,
         ),
