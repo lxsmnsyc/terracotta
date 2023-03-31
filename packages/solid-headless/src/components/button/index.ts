@@ -1,17 +1,15 @@
 import {
   createEffect,
-  createSignal,
   onCleanup,
   JSX,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
+  createForwardRef,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -33,7 +31,7 @@ export type ButtonProps<T extends ValidConstructor = 'button'> =
 export function Button<T extends ValidConstructor = 'button'>(
   props: ButtonProps<T>,
 ): JSX.Element {
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
@@ -70,9 +68,7 @@ export function Button<T extends ValidConstructor = 'button'>(
       ]),
       BUTTON_TAG,
       {
-        ref: createRef(props, (e) => {
-          setInternalRef(() => e);
-        }),
+        ref: setInternalRef,
       },
     ) as DynamicProps<T>,
   );
