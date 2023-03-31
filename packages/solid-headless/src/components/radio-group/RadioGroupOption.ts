@@ -1,7 +1,6 @@
 import {
   createComponent,
   createEffect,
-  createSignal,
   createUniqueId,
   JSX,
   mergeProps,
@@ -9,16 +8,16 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import {
-  createHeadlessSelectOptionProps,
-  HeadlessSelectOptionProps,
-  useHeadlessSelectProperties,
-} from '../../headless/select';
+  createSelectOptionState,
+  SelectOptionStateOptions,
+  SelectOptionStateProvider,
+  SelectOptionStateRenderProps,
+} from '../../states/create-select-option-state';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
+  createForwardRef,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -29,6 +28,7 @@ import {
   createChecked,
   createDisabled,
 } from '../../utils/state-props';
+import { Prettify } from '../../utils/types';
 import {
   RadioGroupContext,
 } from './RadioGroupContext';
@@ -37,31 +37,30 @@ import {
 } from './RadioGroupRootContext';
 import { RADIO_GROUP_OPTION_TAG } from './tags';
 
+export type RadioGroupOptionBaseProps<V> = Prettify<
+  SelectOptionStateOptions<V>
+  & SelectOptionStateRenderProps
+>;
+
 export type RadioGroupOptionProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, HeadlessSelectOptionProps<V>>;
+  HeadlessPropsWithRef<T, RadioGroupOptionBaseProps<V>>;
 
 export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
   props: RadioGroupOptionProps<V, T>,
 ): JSX.Element {
   const context = useRadioGroupRootContext('RadioGroupOption');
-  const properties = useHeadlessSelectProperties<V>();
 
   const descriptionID = createUniqueId();
   const labelID = createUniqueId();
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
-
-  const isDisabled = () => {
-    const parent = properties.disabled();
-    const local = props.disabled;
-    return parent || local;
-  };
+  const [internalRef, setInternalRef] = createForwardRef(props);
+  const state = createSelectOptionState(props);
 
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onKeyDown = (e: KeyboardEvent) => {
-        if (!isDisabled()) {
+        if (!state.disabled()) {
           switch (e.key) {
             case 'ArrowLeft':
             case 'ArrowUp':
@@ -86,20 +85,14 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
         }
       };
       const onClick = () => {
-        if (!isDisabled()) {
-          properties.select(props.value);
-        }
+        state.select();
       };
       const onFocus = () => {
-        if (!isDisabled()) {
-          properties.focus(props.value);
-          properties.select(props.value);
-        }
+        state.focus();
+        state.select();
       };
       const onBlur = () => {
-        if (!isDisabled()) {
-          properties.blur();
-        }
+        state.blur();
       };
 
       ref.addEventListener('keydown', onKeyDown);
@@ -119,7 +112,7 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
     value: { descriptionID, labelID },
     get children() {
       return createDynamic(
-        () => props.as ?? ('div' as T),
+        () => props.as || ('div' as T),
         mergeProps(
           omitProps(props, [
             'as',
@@ -134,18 +127,25 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
             role: 'radio',
             'aria-labelledby': labelID,
             'aria-describedby': descriptionID,
-            ref: createRef(props, (e) => {
-              setInternalRef(() => e);
-            }),
+            ref: setInternalRef,
             get tabindex() {
-              const selected = properties.isSelected(props.value);
-              return (isDisabled() || !selected) ? -1 : 0;
+              const selected = state.isSelected();
+              return (state.disabled() || !selected) ? -1 : 0;
             },
           },
-          createDisabled(isDisabled),
-          createChecked(() => properties.isSelected(props.value)),
-          createActive(() => properties.isActive(props.value)),
-          createHeadlessSelectOptionProps(props),
+          createDisabled(() => state.disabled()),
+          createChecked(() => state.isSelected()),
+          createActive(() => state.isActive()),
+          {
+            get children() {
+              return createComponent(SelectOptionStateProvider, {
+                state,
+                get children() {
+                  return props.children;
+                },
+              });
+            },
+          },
         ) as DynamicProps<T>,
       );
     },

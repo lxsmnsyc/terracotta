@@ -3,7 +3,7 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
   DynamicProps,
@@ -24,7 +24,7 @@ export function RadioGroupLabel<T extends ValidConstructor = 'label'>(
   const context = useRadioGroupContext('RadioGroupLabel');
 
   return createDynamic(
-    () => props.as ?? ('label' as T),
+    () => props.as || ('label' as T),
     mergeProps(
       omitProps(props, ['as']),
       RADIO_GROUP_LABEL_TAG,
