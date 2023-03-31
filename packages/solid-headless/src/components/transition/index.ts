@@ -19,7 +19,7 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { createUnmountable } from '../../utils/Unmountable';
+import { createUnmountable } from '../../utils/create-unmountable';
 
 interface TransitionRootContext {
   show: boolean;

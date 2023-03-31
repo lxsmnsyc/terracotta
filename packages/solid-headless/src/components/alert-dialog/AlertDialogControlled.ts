@@ -20,7 +20,7 @@ import {
 } from '../../utils/dynamic-prop';
 import {
   createUnmountable,
-} from '../../utils/Unmountable';
+} from '../../utils/create-unmountable';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
   AlertDialogContext,

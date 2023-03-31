@@ -19,7 +19,7 @@ import {
 import {
   createUnmountable,
   UnmountableProps,
-} from '../../utils/Unmountable';
+} from '../../utils/create-unmountable';
 import {
   useDisclosureContext,
 } from './DisclosureContext';

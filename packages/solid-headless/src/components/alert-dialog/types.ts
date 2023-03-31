@@ -3,7 +3,7 @@ import {
 } from '../../headless/disclosure';
 import {
   UnmountableProps,
-} from '../../utils/Unmountable';
+} from '../../utils/create-unmountable';
 
 export interface AlertDialogBaseProps
   extends HeadlessDisclosureRootChildren, UnmountableProps {

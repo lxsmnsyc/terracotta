@@ -26,7 +26,7 @@ import getFocusableElements from '../../utils/focus-query';
 import {
   createUnmountable,
   UnmountableProps,
-} from '../../utils/Unmountable';
+} from '../../utils/create-unmountable';
 import {
   usePopoverContext,
 } from './PopoverContext';
