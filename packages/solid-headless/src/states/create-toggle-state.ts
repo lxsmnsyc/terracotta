@@ -76,9 +76,12 @@ export function createToggleState(
   };
 }
 
-export interface ToggleStateProviderProps {
-  state: ToggleStateProperties;
+export interface ToggleStateProviderRenderProps {
   children: JSX.Element | ((state: ToggleStateProperties) => JSX.Element);
+}
+
+export interface ToggleStateProviderProps extends ToggleStateProviderRenderProps {
+  state: ToggleStateProperties;
 }
 
 const ToggleStateContext = createContext<ToggleStateProperties>();

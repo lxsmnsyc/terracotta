@@ -105,9 +105,12 @@ export function createSingleSelectState<T>(
   };
 }
 
-export interface SingleSelectStateProviderProps<T> {
-  state: SingleSelectStateProperties<T>;
+export interface SingleSelectStateProviderRenderProps<T> {
   children: JSX.Element | ((state: SingleSelectStateProperties<T>) => JSX.Element);
+}
+
+export interface SingleSelectStateProviderProps<T> extends SingleSelectStateProviderRenderProps<T> {
+  state: SingleSelectStateProperties<T>;
 }
 
 const SingleSelectStateContext = (

@@ -113,9 +113,12 @@ export function createAutocompleteState(
   };
 }
 
-export interface AutocompleteStateProviderProps {
-  state: AutocompleteStateProperties;
+export interface AutocompleteStateProviderRenderProps {
   children: JSX.Element | ((state: AutocompleteStateProperties) => JSX.Element);
+}
+
+export interface AutocompleteStateProviderProps extends AutocompleteStateProviderRenderProps {
+  state: AutocompleteStateProperties;
 }
 
 const AutocompleteStateContext = (

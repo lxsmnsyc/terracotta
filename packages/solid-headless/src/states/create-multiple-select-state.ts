@@ -120,9 +120,13 @@ export function createMultipleSelectState<T>(
   };
 }
 
-export interface MultipleSelectStateProviderProps<T> {
-  state: MultipleSelectStateProperties<T>;
+export interface MultipleSelectStateProviderRenderProps<T> {
   children: JSX.Element | ((state: MultipleSelectStateProperties<T>) => JSX.Element);
+}
+
+export interface MultipleSelectStateProviderProps<T>
+  extends MultipleSelectStateProviderRenderProps<T> {
+  state: MultipleSelectStateProperties<T>;
 }
 
 const MultipleSelectStateContext = (

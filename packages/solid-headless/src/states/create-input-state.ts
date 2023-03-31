@@ -69,9 +69,12 @@ export function createInputState(
   };
 }
 
-export interface InputStateProviderProps {
-  state: InputStateProperties;
+export interface InputStateProviderRenderProps {
   children: JSX.Element | ((state: InputStateProperties) => JSX.Element);
+}
+
+export interface InputStateProviderProps extends InputStateProviderRenderProps {
+  state: InputStateProperties;
 }
 
 const InputStateContext = (
