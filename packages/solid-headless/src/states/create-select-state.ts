@@ -24,6 +24,7 @@ export interface SelectStateProperties<T> {
 }
 
 export interface SingleSelectStateControlledOptions<T> {
+  multiple?: false;
   toggleable?: boolean;
   value: T;
   onChange?: (value?: T) => void;
@@ -32,6 +33,7 @@ export interface SingleSelectStateControlledOptions<T> {
 }
 
 export interface SingleSelectStateUncontrolledOptions<T> {
+  multiple?: false;
   toggleable?: boolean;
   defaultValue: T;
   onChange?: (value?: T) => void;

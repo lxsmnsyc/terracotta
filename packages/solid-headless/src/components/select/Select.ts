@@ -16,7 +16,7 @@ export type SelectProps<V, T extends ValidConstructor = 'ul'> =
 function isSelectMultiple<V, T extends ValidConstructor = 'ul'>(
   props: SelectProps<V, T>,
 ): props is MultipleSelectProps<V, T> {
-  return 'multiple' in props && props.multiple;
+  return !!props.multiple;
 }
 
 export function Select<V, T extends ValidConstructor = 'ul'>(

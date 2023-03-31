@@ -16,7 +16,6 @@ import {
 } from '../../states/create-select-option-state';
 import {
   createForwardRef,
-  createRef,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
@@ -169,10 +168,11 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
     createOwnerAttribute(context.controller.getId()),
     {
       role: 'option',
-      tabindex: -1,
-      ref: createRef(props, (e) => {
-        setInternalRef(() => e);
-      }),
+      get tabindex() {
+        const selected = state.isSelected();
+        return (state.disabled() || !selected) ? -1 : 0;
+      },
+      ref: setInternalRef,
     },
     createDisabled(() => state.disabled()),
     createSelected(() => state.isSelected()),
