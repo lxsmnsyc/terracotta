@@ -13,7 +13,7 @@ import {
   createToggleState,
   ToggleStateControlledOptions,
   ToggleStateProvider,
-  ToggleStateProviderRenderProps,
+  ToggleStateRenderProps,
   ToggleStateUncontrolledOptions,
 } from '../../states/create-toggle-state';
 import {
@@ -34,14 +34,14 @@ const TOGGLE_TAG = createTag('toggle');
 
 export type ToggleControlledBaseProps =
   ToggleStateControlledOptions
-  & ToggleStateProviderRenderProps;
+  & ToggleStateRenderProps;
 
 export type ToggleControlledProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, OmitAndMerge<ToggleControlledBaseProps, ButtonProps<T>>>;
 
 export type ToggleUncontrolledBaseProps =
   ToggleStateUncontrolledOptions
-  & ToggleStateProviderRenderProps;
+  & ToggleStateRenderProps;
 
 export type ToggleUncontrolledProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, OmitAndMerge<ToggleUncontrolledBaseProps, ButtonProps<T>>>;
