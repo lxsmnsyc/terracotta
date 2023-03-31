@@ -4,15 +4,15 @@ import {
 } from 'solid-js';
 
 export interface ToggleStateControlledOptions {
-  checked: boolean | undefined;
+  pressed: boolean;
   disabled?: boolean;
-  onChange?: (state?: boolean) => void;
+  onChange?: (state: boolean) => void;
 }
 
 export interface ToggleStateUncontrolledOptions {
-  defaultChecked: boolean | undefined;
+  defaultPressed: boolean;
   disabled?: boolean;
-  onChange?: (state?: boolean) => void;
+  onChange?: (state: boolean) => void;
 }
 
 export type ToggleStateOptions =
@@ -20,8 +20,8 @@ export type ToggleStateOptions =
   | ToggleStateUncontrolledOptions;
 
 export interface ToggleStateProperties {
-  checked(): boolean | undefined;
-  setState(newState?: boolean): void;
+  pressed(): boolean;
+  setState(newState: boolean): void;
   disabled(): boolean;
 }
 
@@ -29,16 +29,16 @@ export function createToggleState(
   options: ToggleStateOptions,
 ): ToggleStateProperties {
   // Reference to the signal read
-  let signal: Accessor<boolean | undefined>;
+  let signal: Accessor<boolean>;
   // Reference to the signal write
-  let setSignal: (value: boolean | undefined) => void;
+  let setSignal: (value: boolean) => void;
 
   // Type branding
-  // Check if state is uncontrolled
-  if ('defaultChecked' in options) {
+  // Toggle if state is uncontrolled
+  if ('defaultPressed' in options) {
     // Uncontrolled toggle means the toggle
     // manages its own state.
-    const [isOpen, setIsOpen] = createSignal<boolean | undefined>(options.defaultChecked);
+    const [isOpen, setIsOpen] = createSignal<boolean>(options.defaultPressed);
     signal = isOpen;
     setSignal = (value) => {
       setIsOpen(value);
@@ -48,7 +48,7 @@ export function createToggleState(
     };
   } else {
     // Controlled means relying on 3P state
-    signal = () => options.checked;
+    signal = () => options.pressed;
     setSignal = (value) => {
       if (options.onChange) {
         options.onChange(value);
@@ -57,7 +57,7 @@ export function createToggleState(
   }
 
   return {
-    checked() {
+    pressed() {
       return signal();
     },
     setState(value) {
