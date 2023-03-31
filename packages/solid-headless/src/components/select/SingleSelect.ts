@@ -1,6 +1,5 @@
 import {
   createComponent,
-  createMemo,
   createRenderEffect,
   JSX,
   mergeProps,
@@ -64,76 +63,74 @@ function isSingleSelectUncontrolled<V, T extends ValidConstructor = 'ul'>(
 export function SingleSelect<V, T extends ValidConstructor = 'ul'>(
   props: SingleSelectProps<V, T>,
 ): JSX.Element {
-  return createMemo(() => {
-    const controller = createSelectOptionFocusNavigator();
-    const [ref, setRef] = createForwardRef(props);
-    const state = createSingleSelectState(props);
+  const controller = createSelectOptionFocusNavigator();
+  const [ref, setRef] = createForwardRef(props);
+  const state = createSingleSelectState(props);
 
-    createRenderEffect(() => {
-      const current = ref();
-      if (current) {
-        controller.setRef(current);
-      }
-    });
+  createRenderEffect(() => {
+    const current = ref();
+    if (current) {
+      controller.setRef(current);
+    }
+  });
 
-    return createComponent(SelectContext.Provider, {
-      value: {
-        controller,
-        get horizontal() {
-          return !!props.horizontal;
-        },
+  return createComponent(SelectContext.Provider, {
+    value: {
+      controller,
+      get horizontal() {
+        return !!props.horizontal;
       },
-      get children() {
-        return createDynamic(
-          () => props.as || ('ul' as T),
-          mergeProps(
-            isSingleSelectUncontrolled(props)
-              ? omitProps(props, [
-                'as',
-                'by',
-                'children',
-                'defaultValue',
-                'disabled',
-                'horizontal',
-                'onChange',
-                'ref',
-                'toggleable',
-              ])
-              : omitProps(props, [
-                'as',
-                'by',
-                'children',
-                'value',
-                'disabled',
-                'horizontal',
-                'onChange',
-                'ref',
-                'toggleable',
-              ]),
-            SELECT_TAG,
-            {
-              id: controller.getId(),
-              role: 'listbox',
-              'aria-multiselectable': true,
-              ref: setRef,
-              get 'aria-orientation'() {
-                return props.horizontal ? 'horizontal' : 'vertical';
-              },
+    },
+    get children() {
+      return createDynamic(
+        () => props.as || ('ul' as T),
+        mergeProps(
+          isSingleSelectUncontrolled(props)
+            ? omitProps(props, [
+              'as',
+              'by',
+              'children',
+              'defaultValue',
+              'disabled',
+              'horizontal',
+              'onChange',
+              'ref',
+              'toggleable',
+            ])
+            : omitProps(props, [
+              'as',
+              'by',
+              'children',
+              'value',
+              'disabled',
+              'horizontal',
+              'onChange',
+              'ref',
+              'toggleable',
+            ]),
+          SELECT_TAG,
+          {
+            id: controller.getId(),
+            role: 'listbox',
+            'aria-multiselectable': true,
+            ref: setRef,
+            get 'aria-orientation'() {
+              return props.horizontal ? 'horizontal' : 'vertical';
             },
-            createDisabled(() => state.disabled()),
-            {
-              get children() {
-                return createComponent(SelectStateProvider, {
-                  state,
-                  get children() {
-                    return props.children;
-                  },
-                });
-              },
+          },
+          createDisabled(() => state.disabled()),
+          {
+            get children() {
+              return createComponent(SelectStateProvider, {
+                state,
+                get children() {
+                  return props.children;
+                },
+              });
             },
-          ) as DynamicProps<T>,
-        );
-      },
-    });
-  }) as unknown as JSX.Element;
+          },
+        ) as DynamicProps<T>,
+      );
+    },
+  });
 }
