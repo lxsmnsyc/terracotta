@@ -7,12 +7,12 @@ import {
 import assert from '../utils/assert';
 import { useSelectState } from './create-select-state';
 
-export interface SelectOptionOptions<T> {
+export interface SelectOptionStateOptions<T> {
   value: T;
   disabled?: boolean;
 }
 
-export interface SelectOptionProperties {
+export interface SelectOptionStateProperties {
   isSelected(): boolean;
   select(): void;
   isActive(): boolean;
@@ -21,9 +21,9 @@ export interface SelectOptionProperties {
   disabled(): boolean;
 }
 
-export function createSelectOption<T>(
-  options: SelectOptionOptions<T>,
-): SelectOptionProperties {
+export function createSelectOptionState<T>(
+  options: SelectOptionStateOptions<T>,
+): SelectOptionStateProperties {
   const properties = useSelectState<T>();
   const isDisabled = () => {
     const local = options.disabled || false;
@@ -56,19 +56,19 @@ export function createSelectOption<T>(
   };
 }
 
-export interface SelectOptionRenderProps {
-  children: JSX.Element | ((state: SelectOptionProperties) => JSX.Element);
+export interface SelectOptionStateRenderProps {
+  children: JSX.Element | ((state: SelectOptionStateProperties) => JSX.Element);
 }
 
-export interface SelectOptionProviderProps extends SelectOptionRenderProps {
-  state: SelectOptionProperties;
+export interface SelectOptionStateProviderProps extends SelectOptionStateRenderProps {
+  state: SelectOptionStateProperties;
 }
 
-const SelectOptionContext = createContext<SelectOptionProperties>();
+const SelectOptionStateContext = createContext<SelectOptionStateProperties>();
 
-export function SelectOptionProvider(props: SelectOptionProviderProps) {
+export function SelectOptionStateProvider(props: SelectOptionStateProviderProps) {
   return (
-    createComponent(SelectOptionContext.Provider, {
+    createComponent(SelectOptionStateContext.Provider, {
       value: props.state,
       get children() {
         const current = props.children;
@@ -81,8 +81,8 @@ export function SelectOptionProvider(props: SelectOptionProviderProps) {
   );
 }
 
-export function useSelectOption(): SelectOptionProperties {
-  const ctx = useContext(SelectOptionContext);
-  assert(ctx, new Error('Missing <SelectOptionProvider>'));
+export function useSelectOptionState(): SelectOptionStateProperties {
+  const ctx = useContext(SelectOptionStateContext);
+  assert(ctx, new Error('Missing <SelectOptionStateProvider>'));
   return ctx;
 }

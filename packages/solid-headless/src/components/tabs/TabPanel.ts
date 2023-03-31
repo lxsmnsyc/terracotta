@@ -4,9 +4,9 @@ import {
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import {
-  createSelectOption,
-  SelectOptionOptions,
-  SelectOptionProvider,
+  createSelectOptionState,
+  SelectOptionStateOptions,
+  SelectOptionStateProvider,
 } from '../../states/create-select-option-state';
 import { useSelectState } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
@@ -21,7 +21,7 @@ import {
 } from './TabGroupContext';
 import { TAB_PANEL_TAG } from './tags';
 
-export interface TabPanelBaseProps<V> extends Exclude<SelectOptionOptions<V>, 'disabled'> {
+export interface TabPanelBaseProps<V> extends Exclude<SelectOptionStateOptions<V>, 'disabled'> {
   unmount?: boolean;
 }
 
@@ -33,7 +33,7 @@ export function TabPanel<V, T extends ValidConstructor = 'div'>(
 ): JSX.Element {
   const rootContext = useTabGroupContext('TabPanel');
   const properties = useSelectState<V>();
-  const state = createSelectOption(props);
+  const state = createSelectOptionState(props);
 
   return createUnmountable(
     props,
@@ -55,7 +55,7 @@ export function TabPanel<V, T extends ValidConstructor = 'div'>(
             return rootContext.getId('tab', props.value);
           },
           get children() {
-            return createComponent(SelectOptionProvider, {
+            return createComponent(SelectOptionStateProvider, {
               state,
               get children() {
                 return props.children;

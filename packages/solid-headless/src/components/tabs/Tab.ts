@@ -9,10 +9,10 @@ import {
   omitProps,
 } from 'solid-use/props';
 import {
-  createSelectOption,
-  SelectOptionOptions,
-  SelectOptionProvider,
-  SelectOptionRenderProps,
+  createSelectOptionState,
+  SelectOptionStateOptions,
+  SelectOptionStateProvider,
+  SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
 import { useSelectState } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
@@ -37,8 +37,8 @@ import { useTabListContext } from './TabListContext';
 import { TAB_TAG } from './tags';
 
 export type TabBaseProps<V> = Prettify<
-  SelectOptionOptions<V>
-  & SelectOptionRenderProps
+  SelectOptionStateOptions<V>
+  & SelectOptionStateRenderProps
 >;
 
 export type TabProps<V, T extends ValidConstructor = 'div'> =
@@ -52,7 +52,7 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
   const properties = useSelectState<V>();
 
   const [internalRef, setInternalRef] = createForwardRef(props);
-  const state = createSelectOption(props);
+  const state = createSelectOptionState(props);
 
   createEffect(() => {
     const ref = internalRef();
@@ -162,7 +162,7 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
           return (state.disabled() || !selected) ? -1 : 0;
         },
         get children() {
-          return createComponent(SelectOptionProvider, {
+          return createComponent(SelectOptionStateProvider, {
             state,
             get children() {
               return props.children;
