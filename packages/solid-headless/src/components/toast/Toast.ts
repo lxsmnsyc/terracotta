@@ -4,7 +4,7 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
   DynamicProps,
@@ -25,7 +25,7 @@ export function Toast<T extends ValidConstructor = 'div'>(
   useToastContext('Toast');
 
   return createDynamic(
-    () => props.as ?? ('div' as T),
+    () => props.as || ('div' as T),
     mergeProps(
       omitProps(props, [
         'as',
