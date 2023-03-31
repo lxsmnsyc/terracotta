@@ -147,7 +147,7 @@ export class ToasterStore<T> {
   }
 }
 
-export default function useToaster<T>(toaster: ToasterStore<T>): () => ToastData<T>[] {
+export function useToaster<T>(toaster: ToasterStore<T>): () => ToastData<T>[] {
   const [signal, setSignal] = createSignal(toaster.getQueue());
 
   createEffect(() => {
