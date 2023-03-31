@@ -28,9 +28,9 @@ interface ToastContext {
   ownerID: string;
 }
 
-export const ToastContext = createContext<ToastContext>();
+const ToastContext = createContext<ToastContext>();
 
-export function useToastContext(componentName: string): ToastContext {
+function useToastContext(componentName: string): ToastContext {
   const context = useContext(ToastContext);
   assert(context, new Error(`<${componentName}> must be used inside a <Toaster>`));
   return context;
