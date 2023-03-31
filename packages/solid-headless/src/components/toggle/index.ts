@@ -28,7 +28,9 @@ import {
   Button,
   ButtonProps,
 } from '../button';
-import { TOGGLE_TAG } from './tags';
+import { createTag } from '../../utils/namespace';
+
+const TOGGLE_TAG = createTag('toggle');
 
 export type ToggleControlledBaseProps =
   ToggleStateControlledOptions
