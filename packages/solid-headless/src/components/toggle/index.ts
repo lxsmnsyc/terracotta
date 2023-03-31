@@ -55,17 +55,11 @@ function isToggleUncontrolled<T extends ValidConstructor = 'button'>(
 }
 
 export function Toggle<T extends ValidConstructor = 'button'>(
-  props: ToggleControlledProps<T>,
-): JSX.Element;
-export function Toggle<T extends ValidConstructor = 'button'>(
-  props: ToggleUncontrolledProps<T>,
-): JSX.Element
-export function Toggle<T extends ValidConstructor = 'button'>(
   props: ToggleProps<T>,
 ): JSX.Element {
-  const [ref, setRef] = createForwardRef(props);
-
+  // Needd to re-render if Toggle switches between controlled and uncontrolled states
   return createMemo(() => {
+    const [ref, setRef] = createForwardRef(props);
     const state = createToggleState(props);
 
     createEffect(() => {
@@ -83,7 +77,6 @@ export function Toggle<T extends ValidConstructor = 'button'>(
     });
 
     return createComponent(Button, mergeProps(
-
       isToggleUncontrolled(props)
         ? omitProps(props, [
           'as',
