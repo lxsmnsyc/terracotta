@@ -68,11 +68,11 @@ export function createDisclosureState(
   };
 }
 
-export interface DisclosureStateProviderRenderProps {
+export interface DisclosureStateRenderProps {
   children: JSX.Element | ((state: DisclosureStateProperties) => JSX.Element);
 }
 
-export interface DisclosureStateProviderProps extends DisclosureStateProviderRenderProps {
+export interface DisclosureStateProviderProps extends DisclosureStateRenderProps {
   state: DisclosureStateProperties;
 }
 

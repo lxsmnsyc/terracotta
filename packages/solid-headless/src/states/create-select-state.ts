@@ -203,11 +203,11 @@ export function createMultipleSelectState<T>(
   };
 }
 
-export interface SelectStateProviderRenderProps<T> {
+export interface SelectStateRenderProps<T> {
   children: JSX.Element | ((state: SelectStateProperties<T>) => JSX.Element);
 }
 
-export interface SelectStateProviderProps<T> extends SelectStateProviderRenderProps<T> {
+export interface SelectStateProviderProps<T> extends SelectStateRenderProps<T> {
   state: SelectStateProperties<T>;
 }
 

@@ -76,11 +76,11 @@ export function createCheckState(
   };
 }
 
-export interface CheckStateProviderRenderProps {
+export interface CheckStateRenderProps {
   children: JSX.Element | ((state: CheckStateProperties) => JSX.Element);
 }
 
-export interface CheckStateProviderProps extends CheckStateProviderRenderProps {
+export interface CheckStateProviderProps extends CheckStateRenderProps {
   state: CheckStateProperties;
 }
 
