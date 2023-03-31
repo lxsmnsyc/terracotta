@@ -1,22 +1,24 @@
 import {
+  createComponent,
   createEffect,
-  createSignal,
   JSX,
   mergeProps,
   onCleanup,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import {
-  createHeadlessSelectOptionProps,
-  HeadlessSelectOptionProps,
-  useHeadlessSelectProperties,
-} from '../../headless/select';
+  createSelectOption,
+  SelectOptionOptions,
+  SelectOptionProvider,
+  SelectOptionRenderProps,
+} from '../../states/create-select-option-state';
+import { useSelectState } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import {
+  createForwardRef,
   createRef,
-  DynamicNode,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -27,35 +29,36 @@ import {
   createDisabled,
   createSelected,
 } from '../../utils/state-props';
+import { Prettify } from '../../utils/types';
 import {
   useTabGroupContext,
 } from './TabGroupContext';
 import { useTabListContext } from './TabListContext';
 import { TAB_TAG } from './tags';
 
+export type TabBaseProps<V> = Prettify<
+  SelectOptionOptions<V>
+  & SelectOptionRenderProps
+>;
+
 export type TabProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, HeadlessSelectOptionProps<V>>;
+  HeadlessPropsWithRef<T, TabBaseProps<V>>;
 
 export function Tab<V, T extends ValidConstructor = 'div'>(
   props: TabProps<V, T>,
 ): JSX.Element {
   const rootContext = useTabGroupContext('Tab');
   const listContext = useTabListContext('Tab');
-  const properties = useHeadlessSelectProperties<V>();
+  const properties = useSelectState<V>();
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
-
-  const isDisabled = () => {
-    const parent = properties.disabled();
-    const local = props.disabled;
-    return parent || local;
-  };
+  const [internalRef, setInternalRef] = createForwardRef(props);
+  const state = createSelectOption(props);
 
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onKeyDown = (e: KeyboardEvent) => {
-        if (!isDisabled()) {
+        if (!state.disabled()) {
           switch (e.key) {
             case 'ArrowUp':
               if (!rootContext.horizontal) {
@@ -102,18 +105,18 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
         }
       };
       const onClick = () => {
-        if (!isDisabled()) {
+        if (!state.disabled()) {
           properties.select(props.value);
         }
       };
       const onFocus = () => {
-        if (!isDisabled()) {
+        if (!state.disabled()) {
           properties.focus(props.value);
           properties.select(props.value);
         }
       };
       const onBlur = () => {
-        if (!isDisabled()) {
+        if (!state.disabled()) {
           properties.blur();
         }
       };
@@ -156,13 +159,20 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
         },
         get tabindex() {
           const selected = properties.isSelected(props.value);
-          return (isDisabled() || !selected) ? -1 : 0;
+          return (state.disabled() || !selected) ? -1 : 0;
+        },
+        get children() {
+          return createComponent(SelectOptionProvider, {
+            state,
+            get children() {
+              return props.children;
+            },
+          });
         },
       },
-      createDisabled(isDisabled),
+      createDisabled(() => state.disabled()),
       createSelected(() => properties.isSelected(props.value)),
       createActive(() => properties.isActive(props.value)),
-      createHeadlessSelectOptionProps(props),
     ) as DynamicProps<T>,
   );
 }
