@@ -1,19 +1,22 @@
 {
+  "exclude": ["node_modules"],
+  "include": ["src", "types"],
   "compilerOptions": {
-    "target": "ESNext",
     "module": "ESNext",
     "lib": ["ESNext", "DOM"],
-    "moduleResolution": "Node",
-    "strict": true,
+    "importHelpers": true,
+    "declaration": true,
     "sourceMap": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "noEmit": true,
+    "rootDir": "./src",
+    "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-  },
-  "include": ["./src"]
+    "esModuleInterop": true,
+    "target": "ES2017"
+  }
 }
