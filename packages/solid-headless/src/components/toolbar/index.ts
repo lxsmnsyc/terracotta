@@ -1,15 +1,13 @@
 import {
   createEffect,
-  createSignal,
   JSX,
   mergeProps,
   onCleanup,
 } from 'solid-js';
-import { omitProps } from 'solid-use';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
+  createForwardRef,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -31,9 +29,10 @@ export type ToolbarProps<T extends ValidConstructor = 'div'> =
 export function Toolbar<T extends ValidConstructor = 'div'>(
   props: ToolbarProps<T>,
 ): JSX.Element {
-  const isHorizontal = () => (props.horizontal ?? true);
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const isHorizontal = () => (props.horizontal == null ? true : props.horizontal);
+
   let focusedElement: HTMLElement | undefined;
 
   function getNextFocusable(): void {
@@ -128,7 +127,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
   });
 
   return createDynamic(
-    () => props.as ?? ('div' as T),
+    () => props.as || ('div' as T),
     mergeProps(
       omitProps(props, [
         'as',
@@ -139,9 +138,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
       {
         role: 'toolbar',
         tabindex: 0,
-        ref: createRef(props, (e) => {
-          setInternalRef(() => e);
-        }),
+        ref: setInternalRef,
         get 'aria-orientation'() {
           return isHorizontal() ? 'horizontal' : 'vertical';
         },
