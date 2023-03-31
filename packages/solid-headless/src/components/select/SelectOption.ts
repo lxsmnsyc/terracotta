@@ -1,28 +1,28 @@
 import {
   createComponent,
   createEffect,
-  createSignal,
   JSX,
   mergeProps,
   onCleanup,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import {
-  createHeadlessSelectOptionProps,
-  HeadlessSelectOptionProps,
-  useHeadlessSelectProperties,
-} from '../../headless/select';
+  createSelectOptionState,
+  SelectOptionStateOptions,
+  SelectOptionStateProvider,
+  SelectOptionStateRenderProps,
+} from '../../states/create-select-option-state';
 import {
+  createForwardRef,
   createRef,
-  DynamicNode,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import { createActive, createDisabled, createSelected } from '../../utils/state-props';
-import { OmitAndMerge } from '../../utils/types';
+import { OmitAndMerge, Prettify } from '../../utils/types';
 import {
   Button,
   ButtonProps,
@@ -32,16 +32,20 @@ import {
 } from './SelectContext';
 import { SELECT_OPTION_TAG } from './tags';
 
+export type SelectOptionBaseProps<V> = Prettify<
+  SelectOptionStateOptions<V>
+  & SelectOptionStateRenderProps
+>;
+
 export type SelectOptionProps<V, T extends ValidConstructor = 'li'> =
-  HeadlessPropsWithRef<T, OmitAndMerge<HeadlessSelectOptionProps<V>, ButtonProps<T>>>;
+  HeadlessPropsWithRef<T, OmitAndMerge<SelectOptionBaseProps<V>, ButtonProps<T>>>;
 
 export function SelectOption<V, T extends ValidConstructor = 'li'>(
   props: SelectOptionProps<V, T>,
 ): JSX.Element {
   const context = useSelectContext('Select');
-  const properties = useHeadlessSelectProperties();
-
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
+  const state = createSelectOptionState(props);
 
   let characters = '';
   let timeout: ReturnType<typeof setTimeout> | undefined;
@@ -56,7 +60,7 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onKeyDown = (e: KeyboardEvent) => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!state.disabled()) {
           switch (e.key) {
             case 'ArrowUp':
               if (!context.horizontal) {
@@ -87,7 +91,7 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
               if (ref.tagName === 'BUTTON') {
                 e.preventDefault();
               }
-              properties.select(props.value);
+              state.select();
               break;
             case 'Home':
               e.preventDefault();
@@ -113,27 +117,21 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
         }
       };
       const onClick = () => {
-        if (!(properties.disabled() || props.disabled)) {
-          properties.select(props.value);
-        }
+        state.select();
       };
       const onFocus = () => {
-        if (!(properties.disabled() || props.disabled)) {
-          properties.focus(props.value);
-        }
+        state.focus();
       };
       const onBlur = () => {
-        if (!(properties.disabled() || props.disabled)) {
-          properties.blur();
-        }
+        state.blur();
       };
       const onMouseEnter = () => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!state.disabled()) {
           ref.focus();
         }
       };
       const onMouseLeave = () => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!state.disabled()) {
           ref.blur();
         }
       };
@@ -176,9 +174,18 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
         setInternalRef(() => e);
       }),
     },
-    createDisabled(() => props.disabled),
-    createSelected(() => properties.isSelected(props.value)),
-    createActive(() => properties.isActive(props.value)),
-    createHeadlessSelectOptionProps(props),
+    createDisabled(() => state.disabled()),
+    createSelected(() => state.isSelected()),
+    createActive(() => state.isActive()),
+    {
+      get children() {
+        return createComponent(SelectOptionStateProvider, {
+          state,
+          get children() {
+            return props.children;
+          },
+        });
+      },
+    },
   ) as ButtonProps<T>);
 }

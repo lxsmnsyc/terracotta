@@ -5,16 +5,19 @@ export {
 export {
   SelectOption,
   SelectOptionProps,
+  SelectOptionBaseProps,
 } from './SelectOption';
 export {
-  SelectMultipleControlledProps,
-} from './SelectMultipleControlled';
+  MultipleSelectProps,
+  MultipleSelectControlledProps,
+  MultipleSelectUncontrolledProps,
+  MultipleSelectControlledBaseProps,
+  MultipleSelectUncontrolledBaseProps,
+} from './MultipleSelect';
 export {
-  SelectMultipleUncontrolledProps,
-} from './SelectMultipleUncontrolled';
-export {
-  SelectSingleControlledProps,
-} from './SelectSingleControlled';
-export {
-  SelectSingleUncontrolledProps,
-} from './SelectSingleUncontrolled';
+  SingleSelectProps,
+  SingleSelectControlledProps,
+  SingleSelectUncontrolledProps,
+  SingleSelectControlledBaseProps,
+  SingleSelectUncontrolledBaseProps,
+} from './SingleSelect';
