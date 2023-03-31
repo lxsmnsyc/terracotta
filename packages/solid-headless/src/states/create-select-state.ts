@@ -6,6 +6,7 @@ import {
   createContext,
   createComponent,
   useContext,
+  createMemo,
 } from 'solid-js';
 import assert from '../utils/assert';
 import isEqual from '../utils/is-equal';
@@ -236,4 +237,17 @@ export function useSelectState<T>(): SelectStateProperties<T> {
   const ctx = useContext(SelectStateContext);
   assert(ctx, new Error('Missing <SelectStateProvider>'));
   return ctx;
+}
+
+export function SelectStateChild<T>(
+  props: SelectStateRenderProps<T>,
+): JSX.Element {
+  const state = useSelectState<T>();
+  return createMemo(() => {
+    const current = props.children;
+    if (typeof current === 'function') {
+      return current(state);
+    }
+    return current;
+  }) as unknown as JSX.Element;
 }
