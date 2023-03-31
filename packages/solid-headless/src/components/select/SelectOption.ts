@@ -155,7 +155,7 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
   return createComponent(Button, mergeProps(
     {
       get as() {
-        return props.as ?? ('li' as T);
+        return props.as || ('li' as T);
       },
     },
     omitProps(props, [

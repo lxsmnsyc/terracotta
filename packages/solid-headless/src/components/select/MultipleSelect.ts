@@ -85,7 +85,7 @@ export function MultipleSelect<V, T extends ValidConstructor = 'ul'>(
       },
       get children() {
         return createDynamic(
-          () => props.as ?? ('ul' as T),
+          () => props.as || ('ul' as T),
           mergeProps(
             isMultipleSelectUncontrolled(props)
               ? omitProps(props, [
