@@ -91,6 +91,10 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
                 'defaultValue',
                 'disabled',
                 'onChange',
+                'by',
+                'ref',
+                'toggleable',
+                'horizontal',
               ])
               : omitProps(props, [
                 'as',
@@ -98,6 +102,10 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
                 'value',
                 'disabled',
                 'onChange',
+                'by',
+                'ref',
+                'toggleable',
+                'horizontal',
               ]),
             TAB_GROUP_TAG,
             createDisabled(() => state.disabled()),
