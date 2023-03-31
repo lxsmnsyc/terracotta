@@ -14,7 +14,6 @@ import {
   SelectOptionStateProvider,
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
-import { useSelectState } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import {
   createForwardRef,
@@ -49,7 +48,6 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
 ): JSX.Element {
   const rootContext = useTabGroupContext('Tab');
   const listContext = useTabListContext('Tab');
-  const properties = useSelectState<V>();
 
   const [internalRef, setInternalRef] = createForwardRef(props);
   const state = createSelectOptionState(props);
@@ -105,20 +103,14 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
         }
       };
       const onClick = () => {
-        if (!state.disabled()) {
-          properties.select(props.value);
-        }
+        state.select();
       };
       const onFocus = () => {
-        if (!state.disabled()) {
-          properties.focus(props.value);
-          properties.select(props.value);
-        }
+        state.focus();
+        state.select();
       };
       const onBlur = () => {
-        if (!state.disabled()) {
-          properties.blur();
-        }
+        state.blur();
       };
 
       ref.addEventListener('keydown', onKeyDown);
@@ -158,7 +150,7 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
           return rootContext.getId('tab-panel', props.value);
         },
         get tabindex() {
-          const selected = properties.isSelected(props.value);
+          const selected = state.isSelected();
           return (state.disabled() || !selected) ? -1 : 0;
         },
         get children() {
@@ -171,8 +163,8 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
         },
       },
       createDisabled(() => state.disabled()),
-      createSelected(() => properties.isSelected(props.value)),
-      createActive(() => properties.isActive(props.value)),
+      createSelected(() => state.isSelected()),
+      createActive(() => state.isActive()),
     ) as DynamicProps<T>,
   );
 }

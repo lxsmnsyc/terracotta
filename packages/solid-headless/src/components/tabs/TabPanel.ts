@@ -8,7 +8,6 @@ import {
   SelectOptionStateOptions,
   SelectOptionStateProvider,
 } from '../../states/create-select-option-state';
-import { useSelectState } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import {
   ValidConstructor,
@@ -32,12 +31,11 @@ export function TabPanel<V, T extends ValidConstructor = 'div'>(
   props: TabPanelProps<V, T>,
 ): JSX.Element {
   const rootContext = useTabGroupContext('TabPanel');
-  const properties = useSelectState<V>();
   const state = createSelectOptionState(props);
 
   return createUnmountable(
     props,
-    () => properties.isSelected(props.value),
+    () => state.isSelected(),
     () => createDynamic(
       () => props.as ?? ('div' as T),
       mergeProps(
@@ -46,7 +44,7 @@ export function TabPanel<V, T extends ValidConstructor = 'div'>(
         {
           role: 'tabpanel',
           get tabindex() {
-            return properties.isSelected(props.value) ? 0 : -1;
+            return state.isSelected() ? 0 : -1;
           },
           get id() {
             return rootContext.getId('tab-panel', props.value);
