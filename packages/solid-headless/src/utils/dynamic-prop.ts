@@ -1,4 +1,4 @@
-import { JSX } from 'solid-js';
+import { createRenderEffect, createSignal, JSX, Signal } from 'solid-js';
 import { OmitAndMerge } from './types';
 
 export type ValidElements = keyof JSX.IntrinsicElements;
@@ -74,4 +74,19 @@ export function createRef<U extends ValidConstructor>(
     }
     callback(e);
   };
+}
+
+export function createForwardRef<U extends ValidConstructor>(
+  props: WithRef<U>,
+): Signal<DynamicNode<U> | undefined> {
+  const [ref, setRef] = createSignal<DynamicNode<U>>();
+
+  createRenderEffect(() => {
+    const current = ref();
+    if (current && 'ref' in props && isRefFunction(props.ref)) {
+      props.ref(current);
+    }
+  });
+
+  return [ref, setRef];
 }
