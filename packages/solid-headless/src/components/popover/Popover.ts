@@ -1,5 +1,6 @@
 import {
   createComponent,
+  createEffect,
   createSignal,
   createUniqueId,
   JSX,
@@ -61,25 +62,15 @@ export function Popover<T extends ValidConstructor = 'div'>(
 
   const fsp = useFocusStartPoint();
 
-  const state = createDisclosureState(
-    mergeProps(
-      {
-        onOpen() {
-          fsp.save();
-          if (props.onOpen) {
-            props.onOpen();
-          }
-        },
-        onClose() {
-          if (props.onClose) {
-            props.onClose();
-          }
-          fsp.load();
-        },
-      },
-      props,
-    ),
-  );
+  const state = createDisclosureState(props);
+
+  createEffect(() => {
+    if (state.isOpen()) {
+      fsp.save();
+    } else {
+      fsp.load();
+    }
+  });
 
   return createComponent(PopoverContext.Provider, {
     value: {
