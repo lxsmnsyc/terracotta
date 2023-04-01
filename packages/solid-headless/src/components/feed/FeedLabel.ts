@@ -4,7 +4,7 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
   DynamicProps,
@@ -23,7 +23,7 @@ export function FeedLabel<T extends ValidConstructor = 'span'>(
 ): JSX.Element {
   const context = useFeedContext('FeedLabel');
   return createDynamic(
-    () => props.as ?? ('span' as T),
+    () => props.as || ('span' as T),
     mergeProps(
       omitProps(props, ['as']),
       FEED_LABEL_TAG,

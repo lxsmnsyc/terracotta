@@ -4,7 +4,7 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
   DynamicProps,
@@ -23,7 +23,7 @@ export function FeedArticleDescription<T extends ValidConstructor = 'p'>(
 ): JSX.Element {
   const context = useFeedArticleContext('FeedArticleDescription');
   return createDynamic(
-    () => props.as ?? ('p' as T),
+    () => props.as || ('p' as T),
     mergeProps(
       omitProps(props, ['as']),
       FEED_ARTICLE_DESCRIPTION_TAG,

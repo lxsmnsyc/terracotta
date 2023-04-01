@@ -6,11 +6,10 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
+  createForwardRef,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -37,7 +36,7 @@ export function Feed<T extends ValidConstructor = 'div'>(
   const labelID = createUniqueId();
   const contentID = createUniqueId();
 
-  let internalRef: DynamicNode<T>;
+  const [ref, setRef] = createForwardRef(props);
 
   return createComponent(FeedContext.Provider, {
     value: {
@@ -53,13 +52,13 @@ export function Feed<T extends ValidConstructor = 'div'>(
       focusNext() {
         focusNext(
           getFocusableElements(document.documentElement),
-          internalRef,
+          ref(),
         );
       },
       focusPrev() {
         focusPrev(
           getFocusableElements(document.documentElement),
-          internalRef,
+          ref(),
         );
       },
     },
@@ -75,9 +74,7 @@ export function Feed<T extends ValidConstructor = 'div'>(
           FEED_TAG,
           {
             id: ownerID,
-            ref: createRef(props, (e) => {
-              internalRef = e;
-            }),
+            ref: setRef,
           },
         ) as DynamicProps<T>,
       );

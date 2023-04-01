@@ -1,5 +1,4 @@
 import {
-  createSignal,
   createEffect,
   onCleanup,
   JSX,
@@ -8,14 +7,13 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   createFeedArticleFocusNavigator,
@@ -34,11 +32,12 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
   const context = useFeedContext('FeedContent');
   const controller = createFeedArticleFocusNavigator(context.ownerID);
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
+      controller.setRef(ref);
       const onKeyDown = (e: KeyboardEvent) => {
         if (e.ctrlKey) {
           switch (e.key) {
@@ -65,7 +64,7 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
     value: controller,
     get children() {
       return createDynamic(
-        () => props.as ?? ('div' as T),
+        () => props.as || ('div' as T),
         mergeProps(
           omitProps(props, ['as']),
           FEED_CONTENT_TAG,
@@ -76,10 +75,7 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
             get 'aria-busy'() {
               return context.busy;
             },
-            ref: createRef<T>(props, (e) => {
-              setInternalRef(() => e);
-              controller.setRef(e);
-            }),
+            ref: setInternalRef,
           },
         ) as DynamicProps<T>,
       );

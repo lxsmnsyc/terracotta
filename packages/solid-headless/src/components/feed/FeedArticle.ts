@@ -9,7 +9,7 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
   createRef,
