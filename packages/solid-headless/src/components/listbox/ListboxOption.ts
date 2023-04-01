@@ -185,7 +185,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
       tabindex: -1,
       ref: setInternalRef,
       get as() {
-        return props.as ?? ('li' as T);
+        return props.as || ('li' as T);
       },
     },
     createDisabled(() => state.disabled()),
