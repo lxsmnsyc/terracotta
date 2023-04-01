@@ -98,7 +98,7 @@ export default function App(): JSX.Element {
           </Transition>
         </div>
         <FeedContent
-          class="flex-1 overflow-y-scroll flex flex-col rounded-lg bg-indigo-900 bg-opacity-25 p-2"
+          class="flex-1 overflow-y-auto flex flex-col rounded-lg bg-indigo-900 bg-opacity-25 p-2"
           onScroll={(e) => {
             const el = e.target as HTMLElement;
             if (!busy()) {
