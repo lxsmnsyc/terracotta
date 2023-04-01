@@ -50,7 +50,7 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
 
       const toggle = () => {
         if (!(state.disabled() || props.disabled)) {
-          state.setState(!state.isOpen());
+          state.toggle();
         }
       };
 

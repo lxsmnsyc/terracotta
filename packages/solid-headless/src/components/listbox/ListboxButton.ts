@@ -50,7 +50,7 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
 
       const toggle = () => {
         if (!(state.disabled() || props.disabled)) {
-          state.setState(!state.isOpen());
+          state.toggle();
         }
       };
 
@@ -60,7 +60,7 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
             case 'ArrowUp':
             case 'ArrowDown':
               e.preventDefault();
-              state.setState(!state.isOpen());
+              state.toggle();
               break;
             default:
               break;

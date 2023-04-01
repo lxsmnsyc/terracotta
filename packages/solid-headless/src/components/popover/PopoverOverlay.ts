@@ -40,7 +40,7 @@ export function PopoverOverlay<T extends ValidConstructor = 'div'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onClick = () => {
-        state.setState(false);
+        state.close();
       };
 
       ref.addEventListener('click', onClick);

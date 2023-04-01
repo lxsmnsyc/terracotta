@@ -5,6 +5,7 @@ import {
   createMemo,
   createSignal,
   JSX,
+  untrack,
   useContext,
 } from 'solid-js';
 import assert from '../utils/assert';
@@ -32,6 +33,9 @@ export interface DisclosureStateProperties {
   isOpen(): boolean;
   setState(newState: boolean): void;
   disabled(): boolean;
+  close(): void;
+  open(): void;
+  toggle(): void;
 }
 
 export function createDisclosureState(
@@ -81,6 +85,21 @@ export function createDisclosureState(
     },
     disabled() {
       return !!options.disabled;
+    },
+    open() {
+      if (!options.disabled) {
+        setSignal(true);
+      }
+    },
+    close() {
+      if (!options.disabled) {
+        setSignal(false);
+      }
+    },
+    toggle() {
+      if (!options.disabled) {
+        setSignal(!untrack(signal));
+      }
     },
   };
 }

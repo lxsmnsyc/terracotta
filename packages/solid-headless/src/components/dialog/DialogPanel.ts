@@ -51,7 +51,7 @@ export function DialogPanel<T extends ValidConstructor = 'div'>(
 
               lockFocus(ref, e.shiftKey);
             } else if (e.key === 'Escape') {
-              state.setState(false);
+              state.close();
             }
           }
         };

@@ -51,7 +51,7 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
     if (ref instanceof HTMLElement) {
       const toggle = () => {
         if (!(state.disabled() || props.disabled)) {
-          state.setState(!state.isOpen());
+          state.toggle();
         }
       };
 

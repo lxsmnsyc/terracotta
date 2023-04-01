@@ -55,7 +55,7 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
 
               lockFocus(ref, e.shiftKey);
             } else if (e.key === 'Escape') {
-              state.setState(false);
+              state.close();
             }
           }
         };
@@ -65,7 +65,7 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
             return;
           }
           if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
-            state.setState(false);
+            state.close();
           }
         };
 

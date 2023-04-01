@@ -47,7 +47,7 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
       const toggle = (e: MouseEvent) => {
         if (!state.disabled()) {
           e.preventDefault();
-          state.setState(true);
+          state.open();
         }
       };
 
