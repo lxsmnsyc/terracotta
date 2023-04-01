@@ -13,8 +13,8 @@ import {
 import Fragment from '../../utils/Fragment';
 import { Prettify } from '../../utils/types';
 import {
-  CheckStateChild,
   CheckStateControlledOptions,
+  CheckStateProvider,
   CheckStateRenderProps,
   CheckStateUncontrolledOptions,
   createCheckState,
@@ -90,7 +90,7 @@ export function Checkbox<T extends ValidConstructor = typeof Fragment>(
           createDisabled(() => state.disabled()),
           {
             get children() {
-              return createComponent(CheckStateChild, {
+              return createComponent(CheckStateProvider, {
                 state,
                 get children() {
                   return props.children;
