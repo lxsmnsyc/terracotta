@@ -49,8 +49,6 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
         DISCLOSURE_PANEL_TAG,
         {
           id: context.panelID,
-        },
-        {
           get children() {
             return createComponent(DisclosureStateChild, {
               get children() {
