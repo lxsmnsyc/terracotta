@@ -1,5 +1,5 @@
 import {
-  HeadlessDisclosureChild,
+  DisclosureStateChild,
   Listbox,
   ListboxButton,
   ListboxOption,
@@ -75,7 +75,7 @@ export default function Example(): JSX.Element {
               />
             </span>
           </ListboxButton>
-          <HeadlessDisclosureChild>
+          <DisclosureStateChild>
             {({ isOpen }) => (
               <Transition
                 show={isOpen()}
@@ -125,7 +125,7 @@ export default function Example(): JSX.Element {
                 </ListboxOptions>
               </Transition>
             )}
-          </HeadlessDisclosureChild>
+          </DisclosureStateChild>
         </div>
       </Listbox>
     </div>
