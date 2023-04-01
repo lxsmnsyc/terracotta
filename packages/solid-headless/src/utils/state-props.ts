@@ -1,7 +1,7 @@
 interface DisabledProps {
   disabled?: boolean;
   'aria-disabled'?: boolean;
-  'data-sh-disabled'?: boolean;
+  'data-tc-disabled'?: boolean;
 }
 
 export function createDisabled(
@@ -14,7 +14,7 @@ export function createDisabled(
     get 'aria-disabled'() {
       return disabled();
     },
-    get 'data-sh-disabled'() {
+    get 'data-tc-disabled'() {
       return disabled();
     },
   };
@@ -22,7 +22,7 @@ export function createDisabled(
 
 interface ExpandedProps {
   'aria-expanded'?: boolean;
-  'data-sh-expanded'?: boolean;
+  'data-tc-expanded'?: boolean;
 }
 
 export function createExpanded(
@@ -32,7 +32,7 @@ export function createExpanded(
     get 'aria-expanded'() {
       return expanded();
     },
-    get 'data-sh-expanded'() {
+    get 'data-tc-expanded'() {
       return expanded();
     },
   };
@@ -40,7 +40,7 @@ export function createExpanded(
 
 interface CheckedProps {
   'aria-checked': boolean | 'mixed';
-  'data-sh-checked': boolean | 'mixed';
+  'data-tc-checked': boolean | 'mixed';
 }
 
 export function createChecked(
@@ -50,7 +50,7 @@ export function createChecked(
     get 'aria-checked'() {
       return checked() ?? 'mixed';
     },
-    get 'data-sh-checked'() {
+    get 'data-tc-checked'() {
       return checked() ?? 'mixed';
     },
   };
@@ -58,7 +58,7 @@ export function createChecked(
 
 interface SelectedProps {
   'aria-selected': boolean;
-  'data-sh-selected': boolean;
+  'data-tc-selected': boolean;
 }
 
 export function createSelected(
@@ -68,21 +68,21 @@ export function createSelected(
     get 'aria-selected'() {
       return checked();
     },
-    get 'data-sh-selected'() {
+    get 'data-tc-selected'() {
       return checked();
     },
   };
 }
 
 interface ActiveProps {
-  'data-sh-active': boolean;
+  'data-tc-active': boolean;
 }
 
 export function createActive(
   checked: () => boolean,
 ): ActiveProps {
   return {
-    get 'data-sh-active'() {
+    get 'data-tc-active'() {
       return checked();
     },
   };

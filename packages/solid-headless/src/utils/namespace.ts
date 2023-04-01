@@ -1,4 +1,4 @@
-export const DATA_SET_NAMESPACE = 'data-sh';
+export const DATA_SET_NAMESPACE = 'data-tc';
 
 export function createTag(tag: string) {
   return {

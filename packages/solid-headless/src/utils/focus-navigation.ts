@@ -3,9 +3,10 @@ import {
   ValidConstructor,
 } from './dynamic-prop';
 import getFocusableElements from './focus-query';
+import { DATA_SET_NAMESPACE } from './namespace';
 
 function isFocusable(el: HTMLElement) {
-  return !el.matches('[data-sh-disabled="true"]');
+  return !el.matches(`[${DATA_SET_NAMESPACE}-disabled="true"]`);
 }
 
 function getNextFocusable(

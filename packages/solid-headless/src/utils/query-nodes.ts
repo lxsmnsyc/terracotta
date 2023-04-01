@@ -1,9 +1,11 @@
+import { DATA_SET_NAMESPACE } from './namespace';
+
 export default function queryNodes<T extends Element>(
   el: T,
   tag: string,
   ownerID: string,
 ): NodeListOf<HTMLElement> {
-  return el.querySelectorAll(`[data-sh-${tag}="${ownerID}"]`);
+  return el.querySelectorAll(`[${DATA_SET_NAMESPACE}-${tag}="${ownerID}"]`);
 }
 
 const ACCORDION_BUTTON = 'accordion-button';
