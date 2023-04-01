@@ -1,25 +1,19 @@
 import {
-  createSignal,
   createEffect,
   onCleanup,
   JSX,
   mergeProps,
+  createComponent,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
-import {
-  HeadlessDisclosureChildProps,
-  useHeadlessDisclosureProperties,
-  createHeadlessDisclosureChildProps,
-} from '../../headless/disclosure';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
@@ -27,22 +21,27 @@ import {
   useCommandBarContext,
 } from './CommandBarContext';
 import { COMMAND_BAR_PANEL_TAG } from './tags';
+import {
+  DisclosureStateChild,
+  DisclosureStateRenderProps,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
 
 export type CommandBarPanelProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
+  HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
 export function CommandBarPanel<T extends ValidConstructor = 'div'>(
   props: CommandBarPanelProps<T>,
 ): JSX.Element {
   const context = useCommandBarContext('CommandBarPanel');
-  const properties = useHeadlessDisclosureProperties();
+  const state = useDisclosureState();
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      if (properties.isOpen()) {
+      if (state.isOpen()) {
         focusFirst(getFocusableElements(ref));
 
         const onKeyDown = (e: KeyboardEvent) => {
@@ -52,7 +51,7 @@ export function CommandBarPanel<T extends ValidConstructor = 'div'>(
 
               lockFocus(ref, e.shiftKey);
             } else if (e.key === 'Escape') {
-              properties.setState(false);
+              state.close();
             }
           }
         };
@@ -66,7 +65,7 @@ export function CommandBarPanel<T extends ValidConstructor = 'div'>(
   });
 
   return createDynamic(
-    () => props.as ?? ('div' as T),
+    () => props.as || ('div' as T),
     mergeProps(
       omitProps(props, [
         'as',
@@ -76,11 +75,15 @@ export function CommandBarPanel<T extends ValidConstructor = 'div'>(
       COMMAND_BAR_PANEL_TAG,
       {
         id: context.panelID,
-        ref: createRef(props, (e) => {
-          setInternalRef(() => e);
-        }),
+        ref: setInternalRef,
+        get children() {
+          return createComponent(DisclosureStateChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
       },
-      createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,
   );
 }

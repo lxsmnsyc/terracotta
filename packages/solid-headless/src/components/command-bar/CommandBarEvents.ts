@@ -2,14 +2,15 @@ import {
   createEffect,
   onCleanup,
   JSX,
-  createMemo,
+  createComponent,
 } from 'solid-js';
 import {
-  useHeadlessDisclosureProperties,
-} from '../../headless/disclosure';
+  DisclosureStateChild,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
 
 export default function CommandBarEvents(props: { children: JSX.Element }): JSX.Element {
-  const properties = useHeadlessDisclosureProperties();
+  const properties = useDisclosureState();
 
   createEffect(() => {
     const onKeyDown = (ev: KeyboardEvent) => {
@@ -25,5 +26,9 @@ export default function CommandBarEvents(props: { children: JSX.Element }): JSX.
     });
   });
 
-  return createMemo(() => props.children);
+  return createComponent(DisclosureStateChild, {
+    get children() {
+      return props.children;
+    },
+  });
 }
