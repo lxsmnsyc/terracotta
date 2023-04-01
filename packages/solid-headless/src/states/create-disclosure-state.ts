@@ -12,11 +12,15 @@ export interface DisclosureStateControlledOptions {
   isOpen: boolean;
   disabled?: boolean;
   onChange?: (state: boolean) => void;
+  onClose?: () => void;
+  onOpen?: () => void;
 }
 export interface DisclosureStateUncontrolledOptions {
   defaultOpen: boolean;
   disabled?: boolean;
   onChange?: (state: boolean) => void;
+  onClose?: () => void;
+  onOpen?: () => void;
 }
 
 export type DisclosureStateOptions =
@@ -40,15 +44,27 @@ export function createDisclosureState(
     signal = isOpen;
     setSignal = (value) => {
       setIsOpen(value);
+      if (options.onOpen) {
+        options.onOpen();
+      }
       if (options.onChange) {
         options.onChange(value);
+      }
+      if (options.onClose) {
+        options.onClose();
       }
     };
   } else {
     signal = () => options.isOpen;
     setSignal = (value) => {
+      if (options.onOpen) {
+        options.onOpen();
+      }
       if (options.onChange) {
         options.onChange(value);
+      }
+      if (options.onClose) {
+        options.onClose();
       }
     };
   }
