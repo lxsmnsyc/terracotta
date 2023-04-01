@@ -1,4 +1,5 @@
 {
+  "name": "terracotta",
   "version": "0.13.1",
   "type": "module",
   "types": "./dist/types/index.d.ts",
@@ -24,9 +25,10 @@
   },
   "license": "MIT",
   "keywords": [
-    "pridepack"
+    "pridepack",
+    "solid-js",
+    "headless-ui"
   ],
-  "name": "solid-headless",
   "devDependencies": {
     "@types/node": "^18.13.0",
     "eslint": "^8.37.0",
@@ -53,12 +55,12 @@
   },
   "description": "Headless UI for SolidJS",
   "repository": {
-    "url": "https://github.com/lxsmnsyc/solid-headless.git",
+    "url": "https://github.com/lxsmnsyc/terracotta.git",
     "type": "git"
   },
-  "homepage": "https://github.com/lxsmnsyc/solid-headless/tree/main/packages/solid-headless",
+  "homepage": "https://github.com/lxsmnsyc/terracotta/tree/main/packages/terracotta",
   "bugs": {
-    "url": "https://github.com/lxsmnsyc/solid-headless/issues"
+    "url": "https://github.com/lxsmnsyc/terracotta/issues"
   },
   "publishConfig": {
     "access": "public"
