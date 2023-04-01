@@ -347,7 +347,7 @@ export function Listbox<V, T extends ValidConstructor = typeof Fragment>(
             {
               'aria-labelledby': labelID,
             },
-            createDisabled(() => props.disabled),
+            createDisabled(() => selectState.disabled()),
             {
               get children() {
                 return createComponent(SelectStateProvider, {

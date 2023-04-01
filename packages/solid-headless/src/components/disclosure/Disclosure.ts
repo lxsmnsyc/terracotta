@@ -94,7 +94,7 @@ export function Disclosure<T extends ValidConstructor = typeof Fragment>(
               'onOpen',
             ]),
           DISCLOSURE_TAG,
-          createDisabled(() => props.disabled),
+          createDisabled(() => state.disabled()),
           {
             get children() {
               return createComponent(DisclosureStateProvider, {
