@@ -1,8 +1,3 @@
-export {
-  Menu,
-  MenuProps,
-} from './Menu';
-export {
-  MenuItem,
-  MenuItemProps,
-} from './MenuItem';
+export * from './Menu';
+export * from './MenuChild';
+export * from './MenuItem';

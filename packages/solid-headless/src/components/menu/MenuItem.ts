@@ -1,5 +1,4 @@
 import {
-  createSignal,
   onCleanup,
   createEffect,
   JSX,
@@ -8,14 +7,13 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
@@ -38,7 +36,7 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
 ): JSX.Element {
   const context = useMenuContext('Menu');
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   let characters = '';
   let timeout: ReturnType<typeof setTimeout> | undefined;
@@ -104,7 +102,7 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
   });
 
   return createDynamic(
-    () => props.as ?? ('div' as T),
+    () => props.as || ('div' as T),
     mergeProps(
       omitProps(props, [
         'as',
@@ -117,9 +115,7 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
       {
         role: 'menuitem',
         tabindex: -1,
-        ref: createRef(props, (e) => {
-          setInternalRef(() => e);
-        }),
+        ref: setInternalRef,
       },
       createDisabled(() => props.disabled),
       {
