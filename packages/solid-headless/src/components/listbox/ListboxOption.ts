@@ -1,27 +1,16 @@
 import {
-  createSignal,
   onCleanup,
   createEffect,
   untrack,
   JSX,
   createComponent,
   mergeProps,
-  batch,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import {
-  useHeadlessDisclosureProperties,
-} from '../../headless/disclosure';
-import {
-  HeadlessSelectOptionProps,
-  useHeadlessSelectProperties,
-  createHeadlessSelectOptionProps,
-} from '../../headless/select';
-import {
-  createRef,
-  DynamicNode,
+  createForwardRef,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
@@ -31,7 +20,7 @@ import {
   createDisabled,
   createSelected,
 } from '../../utils/state-props';
-import { OmitAndMerge } from '../../utils/types';
+import { OmitAndMerge, Prettify } from '../../utils/types';
 import {
   Button,
   ButtonProps,
@@ -43,19 +32,31 @@ import {
   useListboxOptionsContext,
 } from './ListboxOptionsContext';
 import { LISTBOX_OPTION_TAG } from './tags';
+import { useDisclosureState } from '../../states/create-disclosure-state';
+import {
+  SelectOptionStateOptions,
+  SelectOptionStateProvider,
+  SelectOptionStateRenderProps,
+  createSelectOptionState,
+} from '../../states/create-select-option-state';
+
+export type ListboxOptionBaseProps<V> = Prettify<
+  SelectOptionStateOptions<V>
+  & SelectOptionStateRenderProps
+>;
 
 export type ListboxOptionProps<V, T extends ValidConstructor = 'li'> =
-  HeadlessPropsWithRef<T, OmitAndMerge<HeadlessSelectOptionProps<V>, ButtonProps<T>>>;
+  HeadlessPropsWithRef<T, OmitAndMerge<ListboxOptionBaseProps<V>, ButtonProps<T>>>;
 
 export function ListboxOption<V, T extends ValidConstructor = 'li'>(
   props: ListboxOptionProps<V, T>,
 ): JSX.Element {
   const rootContext = useListboxContext('ListboxOptions');
   const context = useListboxOptionsContext('ListboxOptions');
-  const disclosure = useHeadlessDisclosureProperties();
-  const properties = useHeadlessSelectProperties();
+  const disclosure = useDisclosureState();
+  const state = createSelectOptionState(props);
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   let characters = '';
   let timeout: ReturnType<typeof setTimeout> | undefined;
@@ -66,18 +67,12 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
     }
   });
 
-  const isDisabled = () => {
-    const parent = properties.disabled();
-    const local = props.disabled;
-    return parent || local;
-  };
-
   createEffect(() => {
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
       const onKeyDown = (e: KeyboardEvent) => {
-        if (!isDisabled()) {
+        if (!state.disabled()) {
           switch (e.key) {
             case 'ArrowLeft':
               if (rootContext.horizontal) {
@@ -108,13 +103,11 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
               if (ref.tagName === 'BUTTON') {
                 e.preventDefault();
               }
-              batch(() => {
-                properties.select(props.value);
-                if (!rootContext.multiple) {
-                  e.preventDefault();
-                  disclosure.setState(false);
-                }
-              });
+              state.select();
+              if (!rootContext.multiple) {
+                e.preventDefault();
+                disclosure.setState(false);
+              }
               break;
             case 'Home':
               e.preventDefault();
@@ -140,24 +133,16 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
         }
       };
       const onClick = () => {
-        if (!isDisabled()) {
-          batch(() => {
-            properties.select(props.value);
-            if (!rootContext.multiple) {
-              disclosure.setState(false);
-            }
-          });
+        state.select();
+        if (!rootContext.multiple) {
+          disclosure.setState(false);
         }
       };
       const onFocus = () => {
-        if (!isDisabled()) {
-          properties.focus(props.value);
-        }
+        state.focus();
       };
       const onBlur = () => {
-        if (!isDisabled()) {
-          properties.blur();
-        }
+        state.blur();
       };
 
       ref.addEventListener('keydown', onKeyDown);
@@ -177,8 +162,8 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       if (disclosure.isOpen()
-        && untrack(() => properties.isSelected(props.value))
-        && !isDisabled()
+        && untrack(() => state.isSelected())
+        && !state.disabled()
       ) {
         ref.focus();
       }
@@ -189,6 +174,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
     omitProps(props, [
       'as',
       'children',
+      'disabled',
       'value',
       'ref',
     ]),
@@ -197,16 +183,23 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
     {
       role: 'option',
       tabindex: -1,
-      ref: createRef(props, (e) => {
-        setInternalRef(() => e);
-      }),
+      ref: setInternalRef,
       get as() {
         return props.as ?? ('li' as T);
       },
     },
-    createDisabled(isDisabled),
-    createSelected(() => properties.isSelected(props.value)),
-    createActive(() => properties.isActive(props.value)),
-    createHeadlessSelectOptionProps(props),
+    createDisabled(() => state.disabled()),
+    createSelected(() => state.isSelected()),
+    createActive(() => state.isActive()),
+    {
+      get children() {
+        return createComponent(SelectOptionStateProvider, {
+          state,
+          get children() {
+            return props.children;
+          },
+        });
+      },
+    },
   ) as ButtonProps<T>);
 }

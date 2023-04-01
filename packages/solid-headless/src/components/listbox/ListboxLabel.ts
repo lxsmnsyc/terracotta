@@ -1,14 +1,11 @@
 import {
   JSX,
+  createComponent,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
-import {
-  HeadlessDisclosureChildProps,
-  createHeadlessDisclosureChildProps,
-} from '../../headless/disclosure';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
   ValidConstructor,
@@ -19,17 +16,19 @@ import {
   useListboxContext,
 } from './ListboxContext';
 import { LISTBOX_LABEL_TAG } from './tags';
+import { DisclosureStateProvider, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
 
 export type ListboxLabelProps<T extends ValidConstructor = 'label'> =
-  HeadlessProps<T, HeadlessDisclosureChildProps>;
+  HeadlessProps<T, DisclosureStateRenderProps>;
 
 export function ListboxLabel<T extends ValidConstructor = 'label'>(
   props: ListboxLabelProps<T>,
 ): JSX.Element {
   const context = useListboxContext('ListboxLabel');
+  const state = useDisclosureState();
 
   return createDynamic(
-    () => props.as ?? ('label' as T),
+    () => props.as || ('label' as T),
     mergeProps(
       omitProps(props, [
         'as',
@@ -39,7 +38,16 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
       {
         id: context.labelID,
       },
-      createHeadlessDisclosureChildProps(props),
+      {
+        get children() {
+          return createComponent(DisclosureStateProvider, {
+            state,
+            get children() {
+              return props.children;
+            },
+          });
+        },
+      },
     ) as DynamicProps<T>,
   );
 }

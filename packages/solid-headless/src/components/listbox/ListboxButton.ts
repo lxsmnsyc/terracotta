@@ -1,5 +1,4 @@
 import {
-  createSignal,
   createEffect,
   onCleanup,
   JSX,
@@ -8,15 +7,9 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import {
-  HeadlessDisclosureChildProps,
-  useHeadlessDisclosureProperties,
-  createHeadlessDisclosureChildProps,
-} from '../../headless/disclosure';
-import {
-  createRef,
-  DynamicNode,
+  createForwardRef,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
@@ -32,35 +25,38 @@ import {
   useListboxContext,
 } from './ListboxContext';
 import { LISTBOX_BUTTON_TAG } from './tags';
+import { DisclosureStateProvider, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
 
 export type ListboxButtonProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<T, OmitAndMerge<HeadlessDisclosureChildProps, ButtonProps<T>>>;
+  HeadlessPropsWithRef<T, OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>>;
 
 export function ListboxButton<T extends ValidConstructor = 'button'>(
   props: ListboxButtonProps<T>,
 ): JSX.Element {
   const context = useListboxContext('ListboxButton');
-  const properties = useHeadlessDisclosureProperties();
+  const state = useDisclosureState();
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
+      context.anchor = ref;
+
       const toggle = () => {
-        if (!(properties.disabled() || props.disabled)) {
-          properties.setState(!properties.isOpen());
+        if (!(state.disabled() || props.disabled)) {
+          state.setState(!state.isOpen());
         }
       };
 
       const onKeyDown = (e: KeyboardEvent) => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!(state.disabled() || props.disabled)) {
           switch (e.key) {
             case 'ArrowUp':
             case 'ArrowDown':
               e.preventDefault();
-              properties.setState(!properties.isOpen());
+              state.setState(!state.isOpen());
               break;
             default:
               break;
@@ -102,19 +98,23 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
       id: context.buttonID,
       'aria-haspopup': 'listbox',
       'aria-controls': context.optionsID,
-      ref: createRef(props, (e) => {
-        setInternalRef(() => e);
-        if (e instanceof HTMLElement) {
-          context.anchor = e;
-        }
-      }),
+      ref: setInternalRef,
     },
     createDisabled(() => {
-      const internalDisabled = properties.disabled();
+      const internalDisabled = state.disabled();
       const granularDisabled = props.disabled;
       return internalDisabled || granularDisabled;
     }),
-    createExpanded(() => properties.isOpen()),
-    createHeadlessDisclosureChildProps(props),
+    createExpanded(() => state.isOpen()),
+    {
+      get children() {
+        return createComponent(DisclosureStateProvider, {
+          state,
+          get children() {
+            return props.children;
+          },
+        });
+      },
+    },
   ) as ButtonProps<T>);
 }
