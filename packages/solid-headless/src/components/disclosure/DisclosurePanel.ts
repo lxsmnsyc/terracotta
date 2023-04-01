@@ -1,15 +1,11 @@
 import {
   JSX,
+  createComponent,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
-import {
-  HeadlessDisclosureChildProps,
-  useHeadlessDisclosureProperties,
-  createHeadlessDisclosureChildProps,
-} from '../../headless/disclosure';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
   DynamicProps,
@@ -24,21 +20,26 @@ import {
   useDisclosureContext,
 } from './DisclosureContext';
 import { DISCLOSURE_PANEL_TAG } from './tags';
+import {
+  DisclosureStateChild,
+  DisclosureStateRenderProps,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
 
 export type DisclosurePanelProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, HeadlessDisclosureChildProps & UnmountableProps>;
+  HeadlessProps<T, DisclosureStateRenderProps & UnmountableProps>;
 
 export function DisclosurePanel<T extends ValidConstructor = 'div'>(
   props: DisclosurePanelProps<T>,
 ): JSX.Element {
   const context = useDisclosureContext('DisclosurePanel');
-  const properties = useHeadlessDisclosureProperties();
+  const state = useDisclosureState();
 
   return createUnmountable(
     props,
-    () => properties.isOpen(),
+    () => state.isOpen(),
     () => createDynamic(
-      () => props.as ?? ('div' as T),
+      () => props.as || ('div' as T),
       mergeProps(
         omitProps(props, [
           'as',
@@ -49,7 +50,15 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
         {
           id: context.panelID,
         },
-        createHeadlessDisclosureChildProps(props),
+        {
+          get children() {
+            return createComponent(DisclosureStateChild, {
+              get children() {
+                return props.children;
+              },
+            });
+          },
+        },
       ) as DynamicProps<T>,
     ),
   );
