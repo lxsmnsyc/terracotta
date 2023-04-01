@@ -2,6 +2,7 @@ import {
   Accessor,
   createComponent,
   createContext,
+  createMemo,
   createSignal,
   JSX,
   useContext,
@@ -102,4 +103,17 @@ export function useInputState(): InputStateProperties {
   const ctx = useContext(InputStateContext);
   assert(ctx, new Error('Missing <InputStateProvider>'));
   return ctx;
+}
+
+export function InputStateChild(
+  props: InputStateRenderProps,
+): JSX.Element {
+  const state = useInputState();
+  return createMemo(() => {
+    const current = props.children;
+    if (typeof current === 'function') {
+      return current(state);
+    }
+    return current;
+  }) as unknown as JSX.Element;
 }

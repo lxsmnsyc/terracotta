@@ -1,6 +1,7 @@
 import {
   createComponent,
   createContext,
+  createMemo,
   JSX,
   useContext,
 } from 'solid-js';
@@ -85,4 +86,17 @@ export function useSelectOptionState(): SelectOptionStateProperties {
   const ctx = useContext(SelectOptionStateContext);
   assert(ctx, new Error('Missing <SelectOptionStateProvider>'));
   return ctx;
+}
+
+export function SelectOptionStateChild(
+  props: SelectOptionStateRenderProps,
+): JSX.Element {
+  const state = useSelectOptionState();
+  return createMemo(() => {
+    const current = props.children;
+    if (typeof current === 'function') {
+      return current(state);
+    }
+    return current;
+  }) as unknown as JSX.Element;
 }

@@ -2,6 +2,7 @@ import {
   Accessor,
   createComponent,
   createContext,
+  createMemo,
   createSignal,
   JSX,
   useContext,
@@ -105,4 +106,17 @@ export function useToggleState(): ToggleStateProperties {
   const ctx = useContext(ToggleStateContext);
   assert(ctx, new Error('Missing <ToggleStateProvider>'));
   return ctx;
+}
+
+export function ToggleStateChild(
+  props: ToggleStateRenderProps,
+): JSX.Element {
+  const state = useToggleState();
+  return createMemo(() => {
+    const current = props.children;
+    if (typeof current === 'function') {
+      return current(state);
+    }
+    return current;
+  }) as unknown as JSX.Element;
 }

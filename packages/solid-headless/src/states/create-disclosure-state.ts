@@ -2,6 +2,7 @@ import {
   Accessor,
   createComponent,
   createContext,
+  createMemo,
   createSignal,
   JSX,
   useContext,
@@ -117,4 +118,17 @@ export function useDisclosureState(): DisclosureStateProperties {
   const ctx = useContext(DisclosureStateContext);
   assert(ctx, new Error('Missing <DisclosureStateProvider>'));
   return ctx;
+}
+
+export function DisclosureStateChild(
+  props: DisclosureStateRenderProps,
+): JSX.Element {
+  const state = useDisclosureState();
+  return createMemo(() => {
+    const current = props.children;
+    if (typeof current === 'function') {
+      return current(state);
+    }
+    return current;
+  }) as unknown as JSX.Element;
 }

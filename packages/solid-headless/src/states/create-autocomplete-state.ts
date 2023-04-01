@@ -6,6 +6,7 @@ import {
   createContext,
   JSX,
   useContext,
+  createMemo,
 } from 'solid-js';
 import assert from '../utils/assert';
 import isEqual from '../utils/is-equal';
@@ -146,4 +147,17 @@ export function useAutocompleteState(): AutocompleteStateProperties {
   const ctx = useContext(AutocompleteStateContext);
   assert(ctx, new Error('Missing <AutocompleteStateProvider>'));
   return ctx;
+}
+
+export function AutocompleteStateChild(
+  props: AutocompleteStateRenderProps,
+): JSX.Element {
+  const state = useAutocompleteState();
+  return createMemo(() => {
+    const current = props.children;
+    if (typeof current === 'function') {
+      return current(state);
+    }
+    return current;
+  }) as unknown as JSX.Element;
 }

@@ -2,6 +2,7 @@ import {
   Accessor,
   createComponent,
   createContext,
+  createMemo,
   createSignal,
   JSX,
   useContext,
@@ -109,4 +110,17 @@ export function useCheckState(): CheckStateProperties {
   const ctx = useContext(CheckStateContext);
   assert(ctx, new Error('Missing <CheckStateProvider>'));
   return ctx;
+}
+
+export function CheckStateChild(
+  props: CheckStateRenderProps,
+): JSX.Element {
+  const state = useCheckState();
+  return createMemo(() => {
+    const current = props.children;
+    if (typeof current === 'function') {
+      return current(state);
+    }
+    return current;
+  }) as unknown as JSX.Element;
 }
