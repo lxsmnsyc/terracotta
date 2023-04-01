@@ -1,6 +1,6 @@
 import {
   createComponent,
-  createRenderEffect,
+  createEffect,
   JSX,
   mergeProps,
 } from 'solid-js';
@@ -67,7 +67,7 @@ export function MultipleSelect<V, T extends ValidConstructor = 'ul'>(
   const [ref, setRef] = createForwardRef(props);
   const state = createMultipleSelectState(props);
 
-  createRenderEffect(() => {
+  createEffect(() => {
     const current = ref();
     if (current) {
       controller.setRef(current);

@@ -1,6 +1,6 @@
 import {
   createComponent,
-  createRenderEffect,
+  createEffect,
   JSX,
   mergeProps,
 } from 'solid-js';
@@ -32,7 +32,7 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
   const controller = createTabFocusNavigator();
   const [ref, setRef] = createForwardRef(props);
 
-  createRenderEffect(() => {
+  createEffect(() => {
     const current = ref();
     if (current) {
       controller.setRef(current);

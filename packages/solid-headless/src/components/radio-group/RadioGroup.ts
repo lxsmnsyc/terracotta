@@ -1,6 +1,6 @@
 import {
   createComponent,
-  createRenderEffect,
+  createEffect,
   createUniqueId,
   JSX,
   mergeProps,
@@ -62,7 +62,7 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
 
   const [ref, setRef] = createForwardRef(props);
 
-  createRenderEffect(() => {
+  createEffect(() => {
     const current = ref();
     if (current) {
       controller.setRef(current);
