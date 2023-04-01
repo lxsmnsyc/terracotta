@@ -5,6 +5,7 @@ import {
   createMemo,
   createSignal,
   JSX,
+  untrack,
   useContext,
 } from 'solid-js';
 import assert from '../utils/assert';
@@ -29,6 +30,9 @@ export interface ToggleStateProperties {
   pressed(): boolean;
   setState(newState: boolean): void;
   disabled(): boolean;
+  check(): void;
+  uncheck(): void;
+  toggle(): void;
 }
 
 export function createToggleState(
@@ -73,6 +77,21 @@ export function createToggleState(
     },
     disabled() {
       return !!options.disabled;
+    },
+    check() {
+      if (!options.disabled) {
+        setSignal(true);
+      }
+    },
+    uncheck() {
+      if (!options.disabled) {
+        setSignal(false);
+      }
+    },
+    toggle() {
+      if (!options.disabled) {
+        setSignal(!untrack(signal));
+      }
     },
   };
 }
