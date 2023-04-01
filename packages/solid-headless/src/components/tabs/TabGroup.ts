@@ -37,10 +37,11 @@ export type TabGroupControlledBaseProps<V> = Prettify<
 export type TabGroupControlledProps<V, T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, TabGroupControlledBaseProps<V>>;
 
-export type TabGroupUncontrolledBaseProps<V> =
+export type TabGroupUncontrolledBaseProps<V> = Prettify<
   & TabGroupBaseProps
   & SingleSelectStateUncontrolledOptions<V>
-  & SelectStateRenderProps<V>;
+  & SelectStateRenderProps<V>
+>;
 
 export type TabGroupUncontrolledProps<V, T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, TabGroupUncontrolledBaseProps<V>>;
