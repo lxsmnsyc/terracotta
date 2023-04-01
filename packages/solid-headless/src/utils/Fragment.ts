@@ -5,5 +5,5 @@ export interface FragmentProps {
 }
 
 export default function Fragment(props: FragmentProps): JSX.Element {
-  return createMemo(() => props.children);
+  return createMemo(() => props.children) as unknown as JSX.Element;
 }

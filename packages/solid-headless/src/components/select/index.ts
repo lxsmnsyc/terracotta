@@ -1,6 +1,2 @@
 export * from './Select';
-export {
-  SelectOption,
-  SelectOptionProps,
-  SelectOptionBaseProps,
-} from './SelectOption';
+export * from './SelectOption';

@@ -171,11 +171,19 @@ export function createMultipleSelectState<T>(
     select(value) {
       const newValues: T[] = [];
       const currentValues = untrack(selectedValues);
+      let hasValue = false;
       for (let i = 0, len = currentValues.length; i < len; i += 1) {
         const item = currentValues[i];
-        if (!(options.toggleable && equals(item, value))) {
+        const isSame = equals(item, value);
+        if (isSame) {
+          hasValue = true;
+        }
+        if (!(options.toggleable && isSame)) {
           newValues.push(item);
         }
+      }
+      if (!hasValue) {
+        newValues.push(value);
       }
       setSelectedValues(newValues);
     },
