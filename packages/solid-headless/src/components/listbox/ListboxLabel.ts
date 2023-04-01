@@ -39,8 +39,6 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
       LISTBOX_LABEL_TAG,
       {
         id: context.labelID,
-      },
-      {
         get children() {
           return createComponent(DisclosureStateChild, {
             get children() {

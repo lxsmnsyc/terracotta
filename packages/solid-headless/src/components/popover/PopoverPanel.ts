@@ -95,8 +95,6 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
         {
           id: context.panelID,
           ref: setInternalRef,
-        },
-        {
           get children() {
             return createComponent(DisclosureStateChild, {
               get children() {

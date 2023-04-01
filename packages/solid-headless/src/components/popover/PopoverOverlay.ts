@@ -62,8 +62,6 @@ export function PopoverOverlay<T extends ValidConstructor = 'div'>(
       POPOVER_OVERLAY_TAG,
       {
         ref: setInternalRef,
-      },
-      {
         get children() {
           return createComponent(DisclosureStateChild, {
             get children() {
