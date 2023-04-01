@@ -1,8 +1,23 @@
 # terracotta
 
-## Hi!
+> Headless UI library for SolidJS
 
-In case you're interested, please Star this repo. The project is still in development, as I aim to implement the [WAI-ARIA Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.1/).
+## Install
+
+```bash
+npm i terracotta
+```
+
+```bash
+yarn add terracotta
+```
+
+```bash
+pnpm add terracotta
+```
+
+## Note
+The project is still in development, as I aim to implement the [WAI-ARIA Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.1/).
 
 Here's the current components:
 
