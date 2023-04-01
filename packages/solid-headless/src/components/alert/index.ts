@@ -5,7 +5,7 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
   ValidConstructor,
@@ -24,7 +24,7 @@ export function Alert<T extends ValidConstructor = 'div'>(
   const alertID = createUniqueId();
 
   return createDynamic(
-    () => props.as ?? ('div' as T),
+    () => props.as || ('div' as T),
     mergeProps(
       {
         id: alertID,
