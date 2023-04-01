@@ -44,26 +44,26 @@ export function createDisclosureState(
     signal = isOpen;
     setSignal = (value) => {
       setIsOpen(value);
-      if (options.onOpen) {
+      if (value && options.onOpen) {
         options.onOpen();
       }
       if (options.onChange) {
         options.onChange(value);
       }
-      if (options.onClose) {
+      if (!value && options.onClose) {
         options.onClose();
       }
     };
   } else {
     signal = () => options.isOpen;
     setSignal = (value) => {
-      if (options.onOpen) {
+      if (value && options.onOpen) {
         options.onOpen();
       }
       if (options.onChange) {
         options.onChange(value);
       }
-      if (options.onClose) {
+      if (!value && options.onClose) {
         options.onClose();
       }
     };
