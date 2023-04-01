@@ -53,7 +53,7 @@ export function Button<T extends ValidConstructor = 'button'>(
   });
 
   return createDynamic(
-    () => props.as ?? ('button' as T),
+    () => props.as || ('button' as T),
     mergeProps(
       {
         get tabindex() {
