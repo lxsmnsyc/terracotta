@@ -1,22 +1,16 @@
 import {
-  createSignal,
   createEffect,
   onCleanup,
   JSX,
   mergeProps,
+  createComponent,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
-import {
-  HeadlessDisclosureChildProps,
-  useHeadlessDisclosureProperties,
-  createHeadlessDisclosureChildProps,
-} from '../../headless/disclosure';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
+  createForwardRef,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -29,25 +23,31 @@ import {
   useContextMenuContext,
 } from './ContextMenuContext';
 import { CONTEXT_MENU_BOUNDARY_TAG } from './tags';
+import {
+  DisclosureStateChild,
+  DisclosureStateRenderProps,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
 
 export type ContextMenuBoundaryProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
+  HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
 export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
   props: ContextMenuBoundaryProps<T>,
 ): JSX.Element {
   const context = useContextMenuContext('ContextMenuBoundary');
-  const properties = useHeadlessDisclosureProperties();
+  const state = useDisclosureState();
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
+      context.anchor = ref;
       const toggle = (e: MouseEvent) => {
-        if (!properties.disabled()) {
+        if (!state.disabled()) {
           e.preventDefault();
-          properties.setState(true);
+          state.setState(true);
         }
       };
 
@@ -60,7 +60,7 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
   });
 
   return createDynamic(
-    () => props.as ?? ('div' as T),
+    () => props.as || ('div' as T),
     mergeProps(
       omitProps(props, [
         'as',
@@ -70,19 +70,22 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
       CONTEXT_MENU_BOUNDARY_TAG,
       {
         id: context.boundaryID,
-        ref: createRef(props, (e) => {
-          setInternalRef(() => e);
-          if (e instanceof HTMLElement) {
-            context.anchor = e;
-          }
-        }),
+        ref: setInternalRef,
         get 'aria-controls'() {
-          return properties.isOpen() && context.panelID;
+          return state.isOpen() && context.panelID;
         },
       },
-      createDisabled(() => properties.disabled()),
-      createExpanded(() => properties.isOpen()),
-      createHeadlessDisclosureChildProps(props),
+      createDisabled(() => state.disabled()),
+      createExpanded(() => state.isOpen()),
+      {
+        get children() {
+          return createComponent(DisclosureStateChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
+      },
     ) as DynamicProps<T>,
   );
 }

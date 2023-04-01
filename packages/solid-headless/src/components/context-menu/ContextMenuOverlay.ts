@@ -1,47 +1,46 @@
 import {
-  createSignal,
   createEffect,
   onCleanup,
   JSX,
   mergeProps,
+  createComponent,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
-import {
-  HeadlessDisclosureChildProps,
-  useHeadlessDisclosureProperties,
-  createHeadlessDisclosureChildProps,
-} from '../../headless/disclosure';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   useContextMenuContext,
 } from './ContextMenuContext';
 import { CONTEXT_MENU_OVERLAY_TAG } from './tags';
+import {
+  DisclosureStateChild,
+  DisclosureStateRenderProps,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
 
 export type ContextMenuOverlayProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
+  HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
 export function ContextMenuOverlay<T extends ValidConstructor = 'div'>(
   props: ContextMenuOverlayProps<T>,
 ): JSX.Element {
   useContextMenuContext('ContextMenuOverlay');
-  const properties = useHeadlessDisclosureProperties();
+  const state = useDisclosureState();
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onClick = () => {
-        properties.setState(false);
+        state.setState(false);
       };
 
       ref.addEventListener('click', onClick);
@@ -53,7 +52,7 @@ export function ContextMenuOverlay<T extends ValidConstructor = 'div'>(
   });
 
   return createDynamic(
-    () => props.as ?? ('div' as T),
+    () => props.as || ('div' as T),
     mergeProps(
       omitProps(props, [
         'as',
@@ -62,11 +61,15 @@ export function ContextMenuOverlay<T extends ValidConstructor = 'div'>(
       ]),
       CONTEXT_MENU_OVERLAY_TAG,
       {
-        ref: createRef(props, (e) => {
-          setInternalRef(() => e);
-        }),
+        ref: setInternalRef,
+        get children() {
+          return createComponent(DisclosureStateChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
       },
-      createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,
   );
 }
