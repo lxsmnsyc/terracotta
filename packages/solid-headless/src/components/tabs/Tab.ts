@@ -17,7 +17,6 @@ import {
 import createDynamic from '../../utils/create-dynamic';
 import {
   createForwardRef,
-  createRef,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -140,9 +139,7 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
       createOwnerAttribute(listContext.getId()),
       {
         role: 'tab',
-        ref: createRef(props, (e) => {
-          setInternalRef(() => e);
-        }),
+        ref: setInternalRef,
         get id() {
           return rootContext.getId('tab', props.value);
         },

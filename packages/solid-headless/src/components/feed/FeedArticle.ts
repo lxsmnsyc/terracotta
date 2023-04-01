@@ -1,7 +1,6 @@
 import {
   createComponent,
   createEffect,
-  createSignal,
   createUniqueId,
   JSX,
   mergeProps,
@@ -12,8 +11,7 @@ import {
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
+  createForwardRef,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -39,7 +37,7 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
   const rootContext = useFeedContext('FeedArticle');
   const contentContext = useFeedContentContext('FeedArticle');
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
@@ -76,7 +74,7 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
     },
     get children() {
       return createDynamic(
-        () => props.as ?? ('article' as T),
+        () => props.as || ('article' as T),
         mergeProps(
           omitProps(props, ['as']),
           FEED_ARTICLE_TAG,
@@ -92,9 +90,7 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
             get 'aria-setsize'() {
               return rootContext.size;
             },
-            ref: createRef<T>(props, (e) => {
-              setInternalRef(() => e);
-            }),
+            ref: setInternalRef,
           },
         ) as DynamicProps<T>,
       );
