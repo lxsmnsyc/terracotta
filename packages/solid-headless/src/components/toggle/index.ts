@@ -67,7 +67,7 @@ export function Toggle<T extends ValidConstructor = 'button'>(
     const current = ref();
     if (current instanceof HTMLElement) {
       const onClick = () => {
-        state.setState(!state.pressed);
+        state.toggle();
       };
 
       current.addEventListener('click', onClick);
