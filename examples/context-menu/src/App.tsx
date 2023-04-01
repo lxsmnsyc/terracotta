@@ -5,7 +5,7 @@ import {
   Transition,
   Menu,
   MenuItem,
-} from 'solid-headless';
+} from 'terracotta';
 import { createSignal, JSX } from 'solid-js';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {

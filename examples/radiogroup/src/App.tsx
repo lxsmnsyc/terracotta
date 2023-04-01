@@ -3,7 +3,7 @@ import {
   RadioGroupDescription,
   RadioGroupLabel,
   RadioGroupOption,
-} from 'solid-headless';
+} from 'terracotta';
 import {
   createSignal,
   JSX,

@@ -1,7 +1,7 @@
 import {
   Select,
   SelectOption,
-} from 'solid-headless';
+} from 'terracotta';
 import { createSignal, JSX, For } from 'solid-js';
 
 function CheckIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {

@@ -1,7 +1,7 @@
 import {
   Toggle,
   Toolbar,
-} from 'solid-headless';
+} from 'terracotta';
 import { JSX, For, createSignal } from 'solid-js';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {

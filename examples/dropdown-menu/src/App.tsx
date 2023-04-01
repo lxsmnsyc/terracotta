@@ -5,7 +5,7 @@ import {
   Transition,
   Menu,
   MenuItem,
-} from 'solid-headless';
+} from 'terracotta';
 import { JSX } from 'solid-js';
 
 function ChevronDownIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {

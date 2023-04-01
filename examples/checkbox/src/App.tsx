@@ -3,7 +3,7 @@ import {
   CheckboxIndicator,
   CheckboxLabel,
   CheckboxDescription,
-} from 'solid-headless';
+} from 'terracotta';
 import {
   createSignal,
   JSX,

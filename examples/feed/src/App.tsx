@@ -6,7 +6,7 @@ import {
   FeedContent,
   FeedLabel,
   Transition,
-} from 'solid-headless';
+} from 'terracotta';
 import {
   createSignal,
   For,

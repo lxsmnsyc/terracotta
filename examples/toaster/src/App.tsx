@@ -4,7 +4,7 @@ import {
   Transition,
   ToasterStore,
   useToaster,
-} from 'solid-headless';
+} from 'terracotta';
 import {
   createSignal,
   JSX,

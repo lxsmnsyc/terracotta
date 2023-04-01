@@ -4,7 +4,7 @@ import {
   AccordionHeader,
   AccordionItem,
   AccordionPanel,
-} from 'solid-headless';
+} from 'terracotta';
 import { For, JSX } from 'solid-js';
 
 function ChevronUpIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {

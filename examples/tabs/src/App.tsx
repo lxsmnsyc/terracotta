@@ -3,7 +3,7 @@ import {
   TabGroup,
   TabList,
   TabPanel,
-} from 'solid-headless';
+} from 'terracotta';
 import { For, JSX } from 'solid-js';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {

@@ -5,7 +5,7 @@ import {
   Transition,
   TransitionChild,
   DialogOverlay,
-} from 'solid-headless';
+} from 'terracotta';
 import { createSignal, JSX } from 'solid-js';
 
 export default function App(): JSX.Element {

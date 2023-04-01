@@ -3,7 +3,7 @@ import {
   PopoverButton,
   PopoverPanel,
   Transition,
-} from 'solid-headless';
+} from 'terracotta';
 import { For, JSX } from 'solid-js';
 
 function IconOne() {

@@ -2,7 +2,7 @@ import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
-} from 'solid-headless';
+} from 'terracotta';
 import { JSX } from 'solid-js';
 
 function ChevronUpIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
