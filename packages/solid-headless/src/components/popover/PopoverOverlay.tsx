@@ -1,22 +1,16 @@
 import {
-  createSignal,
   createEffect,
   onCleanup,
   JSX,
   mergeProps,
+  createComponent,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
-import {
-  HeadlessDisclosureChildProps,
-  useHeadlessDisclosureProperties,
-  createHeadlessDisclosureChildProps,
-} from '../../headless/disclosure';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
+  createForwardRef,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -25,23 +19,24 @@ import {
   usePopoverContext,
 } from './PopoverContext';
 import { POPOVER_OVERLAY_TAG } from './tags';
+import { DisclosureStateProvider, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
 
 export type PopoverOverlayProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
+  HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
 export function PopoverOverlay<T extends ValidConstructor = 'div'>(
   props: PopoverOverlayProps<T>,
 ): JSX.Element {
   usePopoverContext('PopoverOverlay');
-  const properties = useHeadlessDisclosureProperties();
+  const state = useDisclosureState();
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onClick = () => {
-        properties.setState(false);
+        state.setState(false);
       };
 
       ref.addEventListener('click', onClick);
@@ -53,7 +48,7 @@ export function PopoverOverlay<T extends ValidConstructor = 'div'>(
   });
 
   return createDynamic(
-    () => props.as ?? ('div' as T),
+    () => props.as || ('div' as T),
     mergeProps(
       omitProps(props, [
         'as',
@@ -62,11 +57,18 @@ export function PopoverOverlay<T extends ValidConstructor = 'div'>(
       ]),
       POPOVER_OVERLAY_TAG,
       {
-        ref: createRef(props, (e) => {
-          setInternalRef(() => e);
-        }),
+        ref: setInternalRef,
       },
-      createHeadlessDisclosureChildProps(props),
+      {
+        get children() {
+          return createComponent(DisclosureStateProvider, {
+            state,
+            get children() {
+              return props.children;
+            },
+          });
+        },
+      },
     ) as DynamicProps<T>,
   );
 }

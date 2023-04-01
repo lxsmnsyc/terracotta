@@ -1,5 +1,4 @@
 import {
-  createSignal,
   createEffect,
   onCleanup,
   JSX,
@@ -8,15 +7,9 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import {
-  createHeadlessDisclosureChildProps,
-  HeadlessDisclosureChildProps,
-  useHeadlessDisclosureProperties,
-} from '../../headless/disclosure';
-import {
-  createRef,
-  DynamicNode,
+  createForwardRef,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
@@ -33,24 +26,27 @@ import {
   usePopoverContext,
 } from './PopoverContext';
 import { POPOVER_BUTTON_TAG } from './tags';
+import { DisclosureStateProvider, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
 
 export type PopoverButtonProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<T, OmitAndMerge<HeadlessDisclosureChildProps, ButtonProps<T>>>;
+  HeadlessPropsWithRef<T, OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>>;
 
 export function PopoverButton<T extends ValidConstructor = 'button'>(
   props: PopoverButtonProps<T>,
 ): JSX.Element {
   const context = usePopoverContext('PopoverButton');
-  const properties = useHeadlessDisclosureProperties();
+  const state = useDisclosureState();
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
+      context.anchor = ref;
+
       const toggle = () => {
-        if (!(properties.disabled() || props.disabled)) {
-          properties.setState(!properties.isOpen());
+        if (!(state.disabled() || props.disabled)) {
+          state.setState(!state.isOpen());
         }
       };
 
@@ -84,22 +80,26 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
     POPOVER_BUTTON_TAG,
     {
       id: context.buttonID,
-      ref: createRef(props, (e) => {
-        setInternalRef(() => e);
-        if (e instanceof HTMLElement) {
-          context.anchor = e;
-        }
-      }),
+      ref: setInternalRef,
       get 'aria-controls'() {
-        return properties.isOpen() && context.panelID;
+        return state.isOpen() && context.panelID;
       },
     },
     createDisabled(() => {
-      const internalDisabled = properties.disabled();
+      const internalDisabled = state.disabled();
       const granularDisabled = props.disabled;
       return internalDisabled || granularDisabled;
     }),
-    createExpanded(() => properties.isOpen()),
-    createHeadlessDisclosureChildProps(props),
+    createExpanded(() => state.isOpen()),
+    {
+      get children() {
+        return createComponent(DisclosureStateProvider, {
+          state,
+          get children() {
+            return props.children;
+          },
+        });
+      },
+    },
   ) as ButtonProps<T>);
 }

@@ -1,22 +1,16 @@
 import {
-  createSignal,
   createEffect,
   onCleanup,
   JSX,
   mergeProps,
+  createComponent,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
-import {
-  createHeadlessDisclosureChildProps,
-  HeadlessDisclosureChildProps,
-  useHeadlessDisclosureProperties,
-} from '../../headless/disclosure';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
+  createForwardRef,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -31,32 +25,33 @@ import {
   usePopoverContext,
 } from './PopoverContext';
 import { POPOVER_PANEL_TAG } from './tags';
+import { DisclosureStateProvider, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
 
 export type PopoverPanelProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps & UnmountableProps>;
+  HeadlessPropsWithRef<T, DisclosureStateRenderProps & UnmountableProps>;
 
 export function PopoverPanel<T extends ValidConstructor = 'div'>(
   props: PopoverPanelProps<T>,
 ): JSX.Element {
   const context = usePopoverContext('PopoverPanel');
-  const properties = useHeadlessDisclosureProperties();
+  const state = useDisclosureState();
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      if (properties.isOpen()) {
+      if (state.isOpen()) {
         focusFirst(getFocusableElements(ref));
 
         const onKeyDown = (e: KeyboardEvent) => {
-          if (!props.disabled) {
+          if (!state.disabled()) {
             if (e.key === 'Tab') {
               e.preventDefault();
 
               lockFocus(ref, e.shiftKey);
             } else if (e.key === 'Escape') {
-              properties.setState(false);
+              state.setState(false);
             }
           }
         };
@@ -66,7 +61,7 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
             return;
           }
           if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
-            properties.setState(false);
+            state.setState(false);
           }
         };
 
@@ -82,9 +77,9 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
 
   return createUnmountable(
     props,
-    () => properties.isOpen(),
+    () => state.isOpen(),
     () => createDynamic(
-      () => props.as ?? ('div' as T),
+      () => props.as || ('div' as T),
       mergeProps(
         omitProps(props, [
           'as',
@@ -95,11 +90,18 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
         POPOVER_PANEL_TAG,
         {
           id: context.panelID,
-          ref: createRef(props, (e) => {
-            setInternalRef(() => e);
-          }),
+          ref: setInternalRef,
         },
-        createHeadlessDisclosureChildProps(props),
+        {
+          get children() {
+            return createComponent(DisclosureStateProvider, {
+              state,
+              get children() {
+                return props.children;
+              },
+            });
+          },
+        },
       ) as DynamicProps<T>,
     ),
   );
