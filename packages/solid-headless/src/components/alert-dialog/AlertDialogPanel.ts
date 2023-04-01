@@ -1,48 +1,47 @@
 import {
-  createSignal,
   createEffect,
   onCleanup,
   JSX,
   mergeProps,
+  createComponent,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
-import {
-  HeadlessDisclosureChildProps,
-  useHeadlessDisclosureProperties,
-  createHeadlessDisclosureChildProps,
-} from '../../headless/disclosure';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createRef,
-  DynamicNode,
-  ValidConstructor,
-  HeadlessPropsWithRef,
+  createForwardRef,
   DynamicProps,
+  HeadlessPropsWithRef,
+  ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
 import {
-  useAlertDialogContext,
+  useDialogContext,
 } from './AlertDialogContext';
-import { ALERT_DIALOG_PANEL } from './tags';
+import { DIALOG_PANEL_TAG } from './tags';
+import {
+  DisclosureStateChild,
+  DisclosureStateRenderProps,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
 
-export type AlertDialogPanelProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, HeadlessDisclosureChildProps>;
+export type DialogPanelProps<T extends ValidConstructor = 'div'> =
+  HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
-export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
-  props: AlertDialogPanelProps<T>,
+export function DialogPanel<T extends ValidConstructor = 'div'>(
+  props: DialogPanelProps<T>,
 ): JSX.Element {
-  const context = useAlertDialogContext('AlertDialogPanel');
-  const properties = useHeadlessDisclosureProperties();
+  const context = useDialogContext('DialogPanel');
+  const state = useDisclosureState();
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      if (properties.isOpen()) {
+      if (state.isOpen()) {
         focusFirst(getFocusableElements(ref));
 
         const onKeyDown = (e: KeyboardEvent) => {
@@ -52,7 +51,7 @@ export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
 
               lockFocus(ref, e.shiftKey);
             } else if (e.key === 'Escape') {
-              properties.setState(false);
+              state.close();
             }
           }
         };
@@ -66,21 +65,25 @@ export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
   });
 
   return createDynamic(
-    () => props.as ?? ('div' as T),
+    () => props.as || ('div' as T),
     mergeProps(
       omitProps(props, [
         'as',
         'children',
         'ref',
       ]),
-      ALERT_DIALOG_PANEL,
+      DIALOG_PANEL_TAG,
       {
         id: context.panelID,
-        ref: createRef(props, (e) => {
-          setInternalRef(() => e);
-        }),
+        ref: setInternalRef,
+        get children() {
+          return createComponent(DisclosureStateChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
       },
-      createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,
   );
 }
