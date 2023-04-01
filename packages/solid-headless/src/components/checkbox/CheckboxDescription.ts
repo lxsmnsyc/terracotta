@@ -1,13 +1,11 @@
 import {
   JSX,
+  createComponent,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
-import {
-  HeadlessToggleChildProps,
-} from '../../headless/toggle';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
   DynamicProps,
@@ -18,16 +16,17 @@ import {
   useCheckboxContext,
 } from './CheckboxContext';
 import { CHECKBOX_DESCRIPTION } from './tags';
+import { CheckStateChild, CheckStateRenderProps } from '../../states/create-check-state';
 
 export type CheckboxDescriptionProps<T extends ValidConstructor = 'p'> =
-  HeadlessProps<T, HeadlessToggleChildProps>;
+  HeadlessProps<T, CheckStateRenderProps>;
 
 export function CheckboxDescription<T extends ValidConstructor = 'p'>(
   props: CheckboxDescriptionProps<T>,
 ): JSX.Element {
   const context = useCheckboxContext('CheckboxDescription');
   return createDynamic(
-    () => props.as ?? ('p' as T),
+    () => props.as || ('p' as T),
     mergeProps(
       omitProps(props, [
         'as',
@@ -36,6 +35,13 @@ export function CheckboxDescription<T extends ValidConstructor = 'p'>(
       CHECKBOX_DESCRIPTION,
       {
         id: context.descriptionID,
+        get children() {
+          return createComponent(CheckStateChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
       },
     ) as DynamicProps<T>,
   );

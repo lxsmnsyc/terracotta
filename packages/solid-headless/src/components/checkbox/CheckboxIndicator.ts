@@ -1,5 +1,4 @@
 import {
-  createSignal,
   createEffect,
   onCleanup,
   JSX,
@@ -8,17 +7,11 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
+} from 'solid-use/props';
 import {
-  HeadlessToggleChildProps,
-  HeadlessToggleChild,
-  useHeadlessToggleProperties,
-} from '../../headless/toggle';
-import {
-  createRef,
-  DynamicNode,
   HeadlessPropsWithRef,
   ValidConstructor,
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   createChecked,
@@ -32,29 +25,34 @@ import {
   useCheckboxContext,
 } from './CheckboxContext';
 import { CHECKBOX_INDICATOR } from './tags';
+import {
+  CheckStateChild,
+  CheckStateRenderProps,
+  useCheckState,
+} from '../../states/create-check-state';
 
 export type CheckboxIndicatorProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<T, HeadlessToggleChildProps>;
+  HeadlessPropsWithRef<T, CheckStateRenderProps>;
 
 export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
   props: CheckboxIndicatorProps<T>,
 ): JSX.Element {
   const context = useCheckboxContext('CheckboxIndicator');
-  const state = useHeadlessToggleProperties();
+  const state = useCheckState();
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
       const toggle = () => {
-        state.setState(!state.checked());
+        state.toggle();
       };
 
       const onKeyDown = (e: KeyboardEvent) => {
         if (e.key === ' ') {
-          toggle();
+          state.toggle();
         }
       };
 
@@ -78,15 +76,13 @@ export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
       role: 'checkbox',
       'aria-labelledby': context.labelID,
       'aria-describedby': context.descriptionID,
-      ref: createRef(props, (e) => {
-        setInternalRef(() => e);
-      }),
+      ref: setInternalRef,
     },
     createDisabled(() => state.disabled()),
     createChecked(() => state.checked()),
     {
       get children() {
-        return createComponent(HeadlessToggleChild, {
+        return createComponent(CheckStateChild, {
           get children() {
             return props.children;
           },

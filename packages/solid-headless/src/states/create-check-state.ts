@@ -5,6 +5,7 @@ import {
   createMemo,
   createSignal,
   JSX,
+  untrack,
   useContext,
 } from 'solid-js';
 import assert from '../utils/assert';
@@ -29,6 +30,10 @@ export interface CheckStateProperties {
   checked(): boolean | undefined;
   setState(newState?: boolean): void;
   disabled(): boolean;
+  check(): void;
+  uncheck(): void;
+  reset(): void;
+  toggle(): void;
 }
 
 export function createCheckState(
@@ -73,6 +78,26 @@ export function createCheckState(
     },
     disabled() {
       return !!options.disabled;
+    },
+    check() {
+      if (!options.disabled) {
+        setSignal(true);
+      }
+    },
+    uncheck() {
+      if (!options.disabled) {
+        setSignal(false);
+      }
+    },
+    reset() {
+      if (!options.disabled) {
+        setSignal(undefined);
+      }
+    },
+    toggle() {
+      if (!options.disabled) {
+        setSignal(!untrack(signal));
+      }
     },
   };
 }

@@ -1,19 +1,44 @@
 import {
   createComponent,
+  createUniqueId,
   JSX,
+  mergeProps,
 } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import {
+  DynamicProps,
+  HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import Fragment from '../../utils/Fragment';
+import { Prettify } from '../../utils/types';
 import {
-  CheckboxControlled,
-  CheckboxControlledProps,
-} from './CheckboxControlled';
-import {
-  CheckboxUncontrolled,
-  CheckboxUncontrolledProps,
-} from './CheckboxUncontrolled';
+  CheckStateChild,
+  CheckStateControlledOptions,
+  CheckStateRenderProps,
+  CheckStateUncontrolledOptions,
+  createCheckState,
+} from '../../states/create-check-state';
+import { CheckboxContext } from './CheckboxContext';
+import createDynamic from '../../utils/create-dynamic';
+import { CHECKBOX_TAG } from './tags';
+import { createDisabled } from '../../utils/state-props';
+
+export type CheckboxControlledBaseProps = Prettify<
+  & CheckStateControlledOptions
+  & CheckStateRenderProps
+>;
+
+export type CheckboxControlledProps<T extends ValidConstructor = typeof Fragment> =
+  HeadlessProps<T, CheckboxControlledBaseProps>;
+
+export type CheckboxUncontrolledBaseProps = Prettify<
+  & CheckStateUncontrolledOptions
+  & CheckStateRenderProps
+>;
+
+export type CheckboxUncontrolledProps<T extends ValidConstructor = typeof Fragment> =
+  HeadlessProps<T, CheckboxUncontrolledBaseProps>;
 
 export type CheckboxProps<T extends ValidConstructor = typeof Fragment> =
   | CheckboxControlledProps<T>
@@ -28,8 +53,53 @@ function isCheckboxUncontrolled<T extends ValidConstructor = typeof Fragment>(
 export function Checkbox<T extends ValidConstructor = typeof Fragment>(
   props: CheckboxProps<T>,
 ): JSX.Element {
-  if (isCheckboxUncontrolled(props)) {
-    return createComponent(CheckboxUncontrolled, props);
-  }
-  return createComponent(CheckboxControlled, props);
+  const ownerID = createUniqueId();
+  const labelID = createUniqueId();
+  const indicatorID = createUniqueId();
+  const descriptionID = createUniqueId();
+
+  const state = createCheckState(props);
+
+  return createComponent(CheckboxContext.Provider, {
+    value: {
+      ownerID,
+      labelID,
+      indicatorID,
+      descriptionID,
+    },
+    get children() {
+      return createDynamic(
+        () => props.as || (Fragment as T),
+        mergeProps(
+          isCheckboxUncontrolled(props)
+            ? omitProps(props, [
+              'as',
+              'children',
+              'defaultChecked',
+              'disabled',
+              'onChange',
+            ])
+            : omitProps(props, [
+              'as',
+              'children',
+              'checked',
+              'disabled',
+              'onChange',
+            ]),
+          CHECKBOX_TAG,
+          createDisabled(() => state.disabled()),
+          {
+            get children() {
+              return createComponent(CheckStateChild, {
+                state,
+                get children() {
+                  return props.children;
+                },
+              });
+            },
+          },
+        ) as DynamicProps<T>,
+      );
+    },
+  });
 }
