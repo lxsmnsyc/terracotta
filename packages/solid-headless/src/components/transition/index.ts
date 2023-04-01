@@ -5,7 +5,6 @@ import {
   createSignal,
   JSX,
   mergeProps,
-  splitProps,
   useContext,
 } from 'solid-js';
 import {
@@ -19,9 +18,10 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { createUnmountable } from '../../utils/create-unmountable';
+import { createUnmountable, UnmountableProps } from '../../utils/create-unmountable';
+import { Prettify } from '../../utils/types';
 
-interface TransitionRootContext {
+export interface TransitionRootBaseProps {
   show: boolean;
 }
 
@@ -31,10 +31,10 @@ interface TransitionCounter {
   done(): boolean;
 }
 
-const TransitionRootContext = createContext<TransitionRootContext>();
+const TransitionRootContext = createContext<TransitionRootBaseProps>();
 const TransitionCounterContext = createContext<TransitionCounter>();
 
-function useTransitionRootContext(componentName: string): TransitionRootContext {
+function useTransitionRootContext(componentName: string): TransitionRootBaseProps {
   const context = useContext(TransitionRootContext);
   assert(context, new Error(`<${componentName}> must be used inside a <Transition>`));
   return context;
@@ -58,8 +58,7 @@ function createTransitionCounter(): TransitionCounter {
   };
 }
 
-export interface TransitionBaseChildProps {
-  unmount?: boolean;
+export interface TransitionBaseChildProps extends UnmountableProps {
   appear?: boolean;
   enter?: string;
   enterFrom?: string;
@@ -94,6 +93,13 @@ function removeClassList(ref: HTMLElement, classes: string[]) {
 export type TransitionChildProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, TransitionBaseChildProps>;
 
+type TransitionStates =
+  | 'enter-from'
+  | 'enter-to'
+  | 'entered'
+  | 'leave-from'
+  | 'leave-to';
+
 export function TransitionChild<T extends ValidConstructor = 'div'>(
   props: TransitionChildProps<T>,
 ): JSX.Element {
@@ -103,6 +109,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
   // Transitions pending underneath element
   const transitionChildren = createTransitionCounter();
 
+  const [state, setState] = createSignal<TransitionStates>();
   const [visible, setVisible] = createSignal(values.show);
   const [ref, setRef] = createForwardRef(props);
   let initial = true;
@@ -118,6 +125,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
         const endTransition = () => {
           removeClassList(element, enter);
           removeClassList(element, enterTo);
+          setState('entered');
           addClassList(element, entered);
           if (props.afterEnter) {
             props.afterEnter();
@@ -127,11 +135,13 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
         if (props.beforeEnter) {
           props.beforeEnter();
         }
+        setState('enter-from');
         addClassList(element, enter);
         addClassList(element, enterFrom);
 
         requestAnimationFrame(() => {
           removeClassList(element, enterFrom);
+          setState('enter-to');
           addClassList(element, enterTo);
           element.addEventListener('transitionend', endTransition, { once: true });
           element.addEventListener('animationend', endTransition, { once: true });
@@ -149,10 +159,12 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
         transitionParent.register();
       }
       removeClassList(element, entered);
+      setState('leave-from');
       addClassList(element, leave);
       addClassList(element, leaveFrom);
       requestAnimationFrame(() => {
         removeClassList(element, leaveFrom);
+        setState('leave-to');
         addClassList(element, leaveTo);
       });
       const endTransition = () => {
@@ -217,6 +229,9 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
             ]),
             {
               ref: setRef,
+              get 'data-tc-transition'() {
+                return state();
+              },
             },
           ) as DynamicProps<T>,
         ),
@@ -225,19 +240,21 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
   });
 }
 
-export type TransitionProps<T extends ValidConstructor = 'div'> =
-  TransitionRootContext & TransitionChildProps<T>;
+export type TransitionProps<T extends ValidConstructor = 'div'> = Prettify<
+  & TransitionRootBaseProps
+  & TransitionChildProps<T>
+>;
 
 export function Transition<T extends ValidConstructor = 'div'>(
   props: TransitionProps<T>,
 ): JSX.Element {
-  const [local, others] = splitProps(props, [
-    'show',
-  ]);
   return createComponent(TransitionRootContext.Provider, {
-    value: local,
+    value: props,
     get children() {
-      return createComponent(TransitionChild, others);
+      return createComponent(
+        TransitionChild,
+        omitProps(props, ['show']) as TransitionChildProps<T>,
+      );
     },
   });
 }
