@@ -69,18 +69,6 @@ function isRefFunction<U extends ValidConstructor>(
   return typeof callback === 'function';
 }
 
-export function createRef<U extends ValidConstructor>(
-  props: WithRef<U>,
-  callback: RefCallback<DynamicNode<U>>,
-): RefCallback<DynamicNode<U>> {
-  return (e) => {
-    if ('ref' in props && isRefFunction(props.ref)) {
-      props.ref(e);
-    }
-    callback(e);
-  };
-}
-
 export function createForwardRef<U extends ValidConstructor>(
   props: WithRef<U>,
 ): Signal<DynamicNode<U> | undefined> {
