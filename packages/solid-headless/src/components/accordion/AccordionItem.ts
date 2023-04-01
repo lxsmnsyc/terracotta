@@ -6,11 +6,7 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
-import {
-  createHeadlessSelectOptionProps,
-  HeadlessSelectOptionProps,
-} from '../../headless/select';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
   ValidConstructor,
@@ -25,9 +21,21 @@ import {
   AccordionItemContext,
 } from './AccordionItemContext';
 import { ACCORDION_ITEM_TAG } from './tags';
+import {
+  createSelectOptionState,
+  SelectOptionStateOptions,
+  SelectOptionStateProvider,
+  SelectOptionStateRenderProps,
+} from '../../states/create-select-option-state';
+import { Prettify } from '../../utils/types';
+
+export type AccordionItemprops<V> = Prettify<
+  & SelectOptionStateOptions<V>
+  & SelectOptionStateRenderProps
+>;
 
 export type AccordionItemProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, HeadlessSelectOptionProps<V>>;
+  HeadlessProps<T, AccordionItemprops<V>>;
 
 export function AccordionItem<V, T extends ValidConstructor = 'div'>(
   props: AccordionItemProps<V, T>,
@@ -35,12 +43,13 @@ export function AccordionItem<V, T extends ValidConstructor = 'div'>(
   useAccordionContext('AccordionItem');
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
+  const state = createSelectOptionState(props);
 
   return createComponent(AccordionItemContext.Provider, {
     value: { buttonID, panelID },
     get children() {
       return createDynamic(
-        () => props.as ?? ('div' as T),
+        () => props.as || ('div' as T),
         mergeProps(
           omitProps(props, [
             'as',
@@ -49,8 +58,17 @@ export function AccordionItem<V, T extends ValidConstructor = 'div'>(
             'disabled',
           ]),
           ACCORDION_ITEM_TAG,
-          createDisabled(() => props.disabled),
-          createHeadlessSelectOptionProps(props),
+          createDisabled(() => state.disabled()),
+          {
+            get children() {
+              return createComponent(SelectOptionStateProvider, {
+                state,
+                get children() {
+                  return props.children;
+                },
+              });
+            },
+          },
         ) as DynamicProps<T>,
       );
     },

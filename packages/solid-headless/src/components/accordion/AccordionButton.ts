@@ -1,5 +1,4 @@
 import {
-  createSignal,
   createEffect,
   onCleanup,
   JSX,
@@ -8,17 +7,11 @@ import {
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
-import {
-  HeadlessSelectOptionChildProps,
-  useHeadlessSelectOptionProperties,
-  createHeadlessSelectOptionChildProps,
-} from '../../headless/select';
+} from 'solid-use/props';
 import {
   ValidConstructor,
-  DynamicNode,
-  createRef,
   HeadlessPropsWithRef,
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
@@ -37,25 +30,30 @@ import {
   useAccordionItemContext,
 } from './AccordionItemContext';
 import { ACCORDION_BUTTON_TAG } from './tags';
+import {
+  SelectOptionStateChild,
+  SelectOptionStateRenderProps,
+  useSelectOptionState,
+} from '../../states/create-select-option-state';
 
 export type AccordionButtonProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<T, OmitAndMerge<HeadlessSelectOptionChildProps, ButtonProps<T>>>;
+  HeadlessPropsWithRef<T, OmitAndMerge<SelectOptionStateRenderProps, ButtonProps<T>>>;
 
 export function AccordionButton<T extends ValidConstructor = 'button'>(
   props: AccordionButtonProps<T>,
 ): JSX.Element {
   const rootContext = useAccordionContext('AccordionButton');
   const itemContext = useAccordionItemContext('AccordionButton');
-  const properties = useHeadlessSelectOptionProperties();
+  const state = useSelectOptionState();
 
-  const [internalRef, setInternalRef] = createSignal<DynamicNode<T>>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
       const onKeyDown = (e: KeyboardEvent) => {
-        if (!(properties.disabled() || props.disabled)) {
+        if (!(state.disabled() || props.disabled)) {
           switch (e.key) {
             case 'ArrowUp':
               e.preventDefault();
@@ -79,18 +77,18 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
         }
       };
       const onClick = () => {
-        if (!(properties.disabled() || props.disabled)) {
-          properties.select();
+        if (!(state.disabled() || props.disabled)) {
+          state.select();
         }
       };
       const onFocus = () => {
-        if (!(properties.disabled() || props.disabled)) {
-          properties.focus();
+        if (!(state.disabled() || props.disabled)) {
+          state.focus();
         }
       };
       const onBlur = () => {
-        if (!(properties.disabled() || props.disabled)) {
-          properties.blur();
+        if (!(state.disabled() || props.disabled)) {
+          state.blur();
         }
       };
 
@@ -112,20 +110,26 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
     ACCORDION_BUTTON_TAG,
     {
       id: itemContext.buttonID,
-      ref: createRef(props, (e) => {
-        setInternalRef(() => e);
-      }),
+      ref: setInternalRef,
       get 'aria-controls'() {
-        return properties.isSelected() && itemContext.panelID;
+        return state.isSelected() && itemContext.panelID;
       },
     },
     createOwnerAttribute(rootContext.getId()),
     createDisabled(() => {
-      const internalDisabled = properties.disabled();
+      const internalDisabled = state.disabled();
       const granularDisabled = props.disabled;
       return internalDisabled || granularDisabled;
     }),
-    createExpanded(() => properties.isSelected()),
-    createHeadlessSelectOptionChildProps(props),
+    createExpanded(() => state.isSelected()),
+    {
+      get children() {
+        return createComponent(SelectOptionStateChild, {
+          get children() {
+            return props.children;
+          },
+        });
+      },
+    },
   ) as ButtonProps<T>);
 }

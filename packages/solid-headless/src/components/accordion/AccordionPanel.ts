@@ -1,15 +1,11 @@
 import {
   JSX,
+  createComponent,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
-import {
-  createHeadlessSelectOptionChildProps,
-  HeadlessSelectOptionChildProps,
-  useHeadlessSelectOptionProperties,
-} from '../../headless/select';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
   ValidConstructor,
@@ -24,21 +20,28 @@ import {
   useAccordionItemContext,
 } from './AccordionItemContext';
 import { ACCORDION_PANEL_TAG } from './tags';
+import { SelectOptionStateChild, SelectOptionStateRenderProps, useSelectOptionState } from '../../states/create-select-option-state';
+import { Prettify } from '../../utils/types';
+
+export type AccordionPanelBaseProps = Prettify<
+  & SelectOptionStateRenderProps
+  & UnmountableProps
+>;
 
 export type AccordionPanelProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, HeadlessSelectOptionChildProps & UnmountableProps>;
+  HeadlessProps<T, AccordionPanelBaseProps>;
 
 export function AccordionPanel<T extends ValidConstructor = 'div'>(
   props: AccordionPanelProps<T>,
 ): JSX.Element {
   const context = useAccordionItemContext('AccordionPanel');
-  const properties = useHeadlessSelectOptionProperties();
+  const state = useSelectOptionState();
 
   return createUnmountable(
     props,
-    () => properties.isSelected(),
+    () => state.isSelected(),
     () => createDynamic(
-      () => props.as ?? ('div' as T),
+      () => props.as || ('div' as T),
       mergeProps(
         omitProps(props, [
           'as',
@@ -50,7 +53,15 @@ export function AccordionPanel<T extends ValidConstructor = 'div'>(
           'aria-labelledby': context.buttonID,
         },
         ACCORDION_PANEL_TAG,
-        createHeadlessSelectOptionChildProps(props),
+        {
+          get children() {
+            return createComponent(SelectOptionStateChild, {
+              get children() {
+                return props.children;
+              },
+            });
+          },
+        },
       ) as DynamicProps<T>,
     ),
   );
