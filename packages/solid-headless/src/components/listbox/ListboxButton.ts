@@ -25,7 +25,11 @@ import {
   useListboxContext,
 } from './ListboxContext';
 import { LISTBOX_BUTTON_TAG } from './tags';
-import { DisclosureStateProvider, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
+import {
+  DisclosureStateChild,
+  DisclosureStateRenderProps,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
 
 export type ListboxButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>>;
@@ -108,8 +112,7 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
     createExpanded(() => state.isOpen()),
     {
       get children() {
-        return createComponent(DisclosureStateProvider, {
-          state,
+        return createComponent(DisclosureStateChild, {
           get children() {
             return props.children;
           },

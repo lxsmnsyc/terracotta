@@ -26,7 +26,11 @@ import {
   usePopoverContext,
 } from './PopoverContext';
 import { POPOVER_BUTTON_TAG } from './tags';
-import { DisclosureStateProvider, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
+import {
+  DisclosureStateChild,
+  DisclosureStateRenderProps,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
 
 export type PopoverButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>>;
@@ -93,8 +97,7 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
     createExpanded(() => state.isOpen()),
     {
       get children() {
-        return createComponent(DisclosureStateProvider, {
-          state,
+        return createComponent(DisclosureStateChild, {
           get children() {
             return props.children;
           },

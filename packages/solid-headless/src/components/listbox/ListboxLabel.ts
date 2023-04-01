@@ -16,7 +16,10 @@ import {
   useListboxContext,
 } from './ListboxContext';
 import { LISTBOX_LABEL_TAG } from './tags';
-import { DisclosureStateProvider, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
+import {
+  DisclosureStateChild,
+  DisclosureStateRenderProps,
+} from '../../states/create-disclosure-state';
 
 export type ListboxLabelProps<T extends ValidConstructor = 'label'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
@@ -25,7 +28,6 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
   props: ListboxLabelProps<T>,
 ): JSX.Element {
   const context = useListboxContext('ListboxLabel');
-  const state = useDisclosureState();
 
   return createDynamic(
     () => props.as || ('label' as T),
@@ -40,8 +42,7 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
       },
       {
         get children() {
-          return createComponent(DisclosureStateProvider, {
-            state,
+          return createComponent(DisclosureStateChild, {
             get children() {
               return props.children;
             },

@@ -19,7 +19,11 @@ import {
   usePopoverContext,
 } from './PopoverContext';
 import { POPOVER_OVERLAY_TAG } from './tags';
-import { DisclosureStateProvider, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
+import {
+  DisclosureStateChild,
+  DisclosureStateRenderProps,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
 
 export type PopoverOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -61,8 +65,7 @@ export function PopoverOverlay<T extends ValidConstructor = 'div'>(
       },
       {
         get children() {
-          return createComponent(DisclosureStateProvider, {
-            state,
+          return createComponent(DisclosureStateChild, {
             get children() {
               return props.children;
             },
