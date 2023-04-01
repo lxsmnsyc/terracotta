@@ -1,37 +1,35 @@
 import {
   JSX,
+  createComponent,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
-} from 'solid-use';
-import {
-  HeadlessDisclosureChildProps,
-  createHeadlessDisclosureChildProps,
-} from '../../headless/disclosure';
+} from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  DynamicComponent,
   DynamicProps,
+  HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  OmitAndMerge,
-} from '../../utils/types';
 import {
   useDialogContext,
 } from './DialogContext';
 import { DIALOG_TITLE_TAG } from './tags';
+import {
+  DisclosureStateChild,
+  DisclosureStateRenderProps,
+} from '../../states/create-disclosure-state';
 
 export type DialogTitleProps<T extends ValidConstructor = 'h2'> =
-  OmitAndMerge<DynamicComponent<T> & HeadlessDisclosureChildProps, DynamicProps<T>>;
+  HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
 export function DialogTitle<T extends ValidConstructor = 'h2'>(
   props: DialogTitleProps<T>,
 ): JSX.Element {
   const context = useDialogContext('DialogTitle');
   return createDynamic(
-    () => props.as ?? ('h2' as T),
+    () => props.as || ('h2' as T),
     mergeProps(
       omitProps(props, [
         'as',
@@ -40,8 +38,14 @@ export function DialogTitle<T extends ValidConstructor = 'h2'>(
       DIALOG_TITLE_TAG,
       {
         id: context.titleID,
+        get children() {
+          return createComponent(DisclosureStateChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
       },
-      createHeadlessDisclosureChildProps(props),
     ) as DynamicProps<T>,
   );
 }

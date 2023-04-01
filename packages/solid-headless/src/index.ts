@@ -1,4 +1,5 @@
 export * from './components/button';
+export * from './components/dialog';
 export * from './components/disclosure';
 export * from './components/feed';
 export * from './components/listbox';
