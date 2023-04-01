@@ -9,10 +9,8 @@ import {
   createSignal,
   createComponent,
 } from 'solid-js';
-import {
-  usePageVisibility,
-  usePrefersDark,
-} from 'solid-use';
+import { usePrefersDark } from 'solid-use/media-query';
+import usePageVisibility from 'solid-use/page-visibility';
 import assert from '../../utils/assert';
 
 export type NativeColorScheme = 'light' | 'dark';
