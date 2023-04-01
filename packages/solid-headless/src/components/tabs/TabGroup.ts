@@ -29,7 +29,7 @@ export interface TabGroupBaseProps {
 }
 
 export type TabGroupControlledBaseProps<V> = Prettify<
-  TabGroupBaseProps
+  & TabGroupBaseProps
   & SingleSelectStateControlledOptions<V>
   & SelectStateRenderProps<V>
 >;
@@ -38,7 +38,7 @@ export type TabGroupControlledProps<V, T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, TabGroupControlledBaseProps<V>>;
 
 export type TabGroupUncontrolledBaseProps<V> =
-  TabGroupBaseProps
+  & TabGroupBaseProps
   & SingleSelectStateUncontrolledOptions<V>
   & SelectStateRenderProps<V>;
 

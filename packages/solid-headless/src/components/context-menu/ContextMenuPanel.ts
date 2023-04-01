@@ -30,9 +30,15 @@ import {
   DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
+import { Prettify } from '../../utils/types';
+
+export type ContextMenuPanelBaseProps = Prettify<
+  & DisclosureStateRenderProps
+  & UnmountableProps
+>;
 
 export type ContextMenuPanelProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, DisclosureStateRenderProps & UnmountableProps>;
+  HeadlessPropsWithRef<T, ContextMenuPanelBaseProps>;
 
 export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
   props: ContextMenuPanelProps<T>,

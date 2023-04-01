@@ -27,7 +27,7 @@ import { POPOVER_TAG } from './tags';
 import { createDisabled } from '../../utils/state-props';
 
 export type PopoverControlledBaseProps = Prettify<
-  DisclosureStateRenderProps
+  & DisclosureStateRenderProps
   & DisclosureStateControlledOptions
 >
 
@@ -35,7 +35,7 @@ export type PopoverControlledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, PopoverControlledBaseProps>;
 
 export type PopoverUncontrolledBaseProps = Prettify<
-  DisclosureStateRenderProps
+  & DisclosureStateRenderProps
   & DisclosureStateUncontrolledOptions
 >
 

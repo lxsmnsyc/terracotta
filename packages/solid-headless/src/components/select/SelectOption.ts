@@ -32,7 +32,7 @@ import {
 import { SELECT_OPTION_TAG } from './tags';
 
 export type SelectOptionBaseProps<V> = Prettify<
-  SelectOptionStateOptions<V>
+  & SelectOptionStateOptions<V>
   & SelectOptionStateRenderProps
 >;
 

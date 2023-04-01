@@ -41,7 +41,7 @@ import {
 } from '../../states/create-select-option-state';
 
 export type ListboxOptionBaseProps<V> = Prettify<
-  SelectOptionStateOptions<V>
+  & SelectOptionStateOptions<V>
   & SelectOptionStateRenderProps
 >;
 

@@ -25,9 +25,15 @@ import {
   DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
+import { Prettify } from '../../utils/types';
+
+export type DisclosurePanelBaseProps = Prettify<
+  & DisclosureStateRenderProps
+  & UnmountableProps
+>;
 
 export type DisclosurePanelProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, DisclosureStateRenderProps & UnmountableProps>;
+  HeadlessProps<T, DisclosurePanelBaseProps>;
 
 export function DisclosurePanel<T extends ValidConstructor = 'div'>(
   props: DisclosurePanelProps<T>,

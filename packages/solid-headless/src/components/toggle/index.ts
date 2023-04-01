@@ -32,7 +32,7 @@ import { createTag } from '../../utils/namespace';
 const TOGGLE_TAG = createTag('toggle');
 
 export type ToggleControlledBaseProps = Prettify<
-  ToggleStateControlledOptions
+  & ToggleStateControlledOptions
   & ToggleStateRenderProps
 >;
 
@@ -40,7 +40,7 @@ export type ToggleControlledProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, OmitAndMerge<ToggleControlledBaseProps, ButtonProps<T>>>;
 
 export type ToggleUncontrolledBaseProps = Prettify<
-  ToggleStateUncontrolledOptions
+  & ToggleStateUncontrolledOptions
   & ToggleStateRenderProps
 >;
 

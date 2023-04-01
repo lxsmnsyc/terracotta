@@ -27,7 +27,7 @@ import { createRadioGroupOptionFocusNavigator, RadioGroupRootContext } from './R
 import { RADIO_GROUP_TAG } from './tags';
 
 export type RadioGroupControlledBaseProps<V> = Prettify<
-  SingleSelectStateControlledOptions<V>
+  & SingleSelectStateControlledOptions<V>
   & SelectStateRenderProps<V>
 >;
 
@@ -35,7 +35,7 @@ export type RadioGroupControlledProps<V, T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, RadioGroupControlledBaseProps<V>>;
 
 export type RadioGroupUncontrolledBaseProps<V> = Prettify<
-  SingleSelectStateUncontrolledOptions<V>
+  & SingleSelectStateUncontrolledOptions<V>
   & SelectStateRenderProps<V>
 >;
 

@@ -35,7 +35,7 @@ import { useTabListContext } from './TabListContext';
 import { TAB_TAG } from './tags';
 
 export type TabBaseProps<V> = Prettify<
-  SelectOptionStateOptions<V>
+  & SelectOptionStateOptions<V>
   & SelectOptionStateRenderProps
 >;
 

@@ -30,9 +30,15 @@ import {
   DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
+import { Prettify } from '../../utils/types';
+
+export type PopoverPanelBaseProps = Prettify<
+  & DisclosureStateRenderProps
+  & UnmountableProps
+>;
 
 export type PopoverPanelProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, DisclosureStateRenderProps & UnmountableProps>;
+  HeadlessPropsWithRef<T, PopoverPanelBaseProps>;
 
 export function PopoverPanel<T extends ValidConstructor = 'div'>(
   props: PopoverPanelProps<T>,

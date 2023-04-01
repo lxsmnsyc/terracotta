@@ -38,7 +38,7 @@ import {
 import { RADIO_GROUP_OPTION_TAG } from './tags';
 
 export type RadioGroupOptionBaseProps<V> = Prettify<
-  SelectOptionStateOptions<V>
+  & SelectOptionStateOptions<V>
   & SelectOptionStateRenderProps
 >;
 
