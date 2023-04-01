@@ -32,6 +32,8 @@ export {
 } from './states/create-check-state';
 export {
   DisclosureStateChild,
+  // @deprecated
+  DisclosureStateChild as HeadlessDisclosureChild,
   DisclosureStateControlledOptions,
   DisclosureStateOptions,
   DisclosureStateProperties,
