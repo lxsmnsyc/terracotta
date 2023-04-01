@@ -1,4 +1,5 @@
 export * from './components/button';
+export * from './components/command-bar';
 export * from './components/context-menu';
 export * from './components/dialog';
 export * from './components/disclosure';
