@@ -65,7 +65,7 @@ export function createSingleSelectState<T>(
       }
     };
   } else {
-    selectedValue = () => options.value;
+    selectedValue = createMemo(() => options.value);
     setSelectedValue = (value) => {
       if (options.onChange) {
         options.onChange(value);
@@ -156,7 +156,7 @@ export function createMultipleSelectState<T>(
       }
     };
   } else {
-    selectedValues = () => options.value;
+    selectedValues = createMemo(() => options.value);
     setSelectedValues = (value) => {
       if (options.onChange) {
         options.onChange(value);

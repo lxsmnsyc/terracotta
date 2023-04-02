@@ -59,7 +59,7 @@ export function createCheckState(
     };
   } else {
     // Controlled means relying on 3P state
-    signal = () => options.checked;
+    signal = createMemo(() => options.checked);
     setSignal = (value) => {
       if (options.onChange) {
         options.onChange(value);

@@ -58,7 +58,7 @@ export function createToggleState(
     };
   } else {
     // Controlled means relying on 3P state
-    signal = () => options.pressed;
+    signal = createMemo(() => options.pressed);
     setSignal = (value) => {
       if (options.onChange) {
         options.onChange(value);

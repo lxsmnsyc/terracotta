@@ -60,7 +60,7 @@ export function createDisclosureState(
       }
     };
   } else {
-    signal = () => options.isOpen;
+    signal = createMemo(() => options.isOpen);
     setSignal = (value) => {
       if (value && options.onOpen) {
         options.onOpen();
