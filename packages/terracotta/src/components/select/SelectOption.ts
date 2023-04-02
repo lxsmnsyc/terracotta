@@ -85,13 +85,6 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
                 context.controller.setNextChecked(ref, true);
               }
               break;
-            case ' ':
-            case 'Enter':
-              if (ref.tagName === 'BUTTON') {
-                e.preventDefault();
-              }
-              state.select();
-              break;
             case 'Home':
               e.preventDefault();
               context.controller.setFirstChecked();
@@ -153,11 +146,6 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
   });
 
   return createComponent(Button, mergeProps(
-    {
-      get as() {
-        return props.as || ('li' as T);
-      },
-    },
     omitProps(props, [
       'as',
       'children',
@@ -167,6 +155,9 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
     SELECT_OPTION_TAG,
     createOwnerAttribute(context.controller.getId()),
     {
+      get as() {
+        return props.as || ('li' as T);
+      },
       role: 'option',
       get tabindex() {
         return state.isActive() ? 0 : -1;
