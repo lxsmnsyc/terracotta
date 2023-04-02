@@ -44,7 +44,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
     ) {
       focusNext(
         getFocusableElements(ref),
-        document.activeElement,
+        document.activeElement as HTMLElement,
         false,
         false,
       );
@@ -60,7 +60,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
     ) {
       focusPrev(
         getFocusableElements(ref),
-        document.activeElement,
+        document.activeElement as HTMLElement,
         false,
         false,
       );

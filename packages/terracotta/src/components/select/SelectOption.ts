@@ -46,68 +46,9 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
   const state = createSelectOptionState(props);
 
-  let characters = '';
-  let timeout: ReturnType<typeof setTimeout> | undefined;
-
-  onCleanup(() => {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-  });
-
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      const onKeyDown = (e: KeyboardEvent) => {
-        if (!state.disabled()) {
-          switch (e.key) {
-            case 'ArrowUp':
-              if (!context.horizontal) {
-                e.preventDefault();
-                context.controller.setPrevChecked(ref, true);
-              }
-              break;
-            case 'ArrowLeft':
-              if (context.horizontal) {
-                e.preventDefault();
-                context.controller.setPrevChecked(ref, true);
-              }
-              break;
-            case 'ArrowDown':
-              if (!context.horizontal) {
-                e.preventDefault();
-                context.controller.setNextChecked(ref, true);
-              }
-              break;
-            case 'ArrowRight':
-              if (context.horizontal) {
-                e.preventDefault();
-                context.controller.setNextChecked(ref, true);
-              }
-              break;
-            case 'Home':
-              e.preventDefault();
-              context.controller.setFirstChecked();
-              break;
-            case 'End':
-              e.preventDefault();
-              context.controller.setLastChecked();
-              break;
-            default:
-              if (e.key.length === 1) {
-                characters = `${characters}${e.key}`;
-                if (timeout) {
-                  clearTimeout(timeout);
-                }
-                timeout = setTimeout(() => {
-                  context.controller.setFirstMatch(characters);
-                  characters = '';
-                }, 100);
-              }
-              break;
-          }
-        }
-      };
       const onClick = () => {
         state.select();
       };
@@ -128,14 +69,12 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
         }
       };
 
-      ref.addEventListener('keydown', onKeyDown);
       ref.addEventListener('click', onClick);
       ref.addEventListener('focus', onFocus);
       ref.addEventListener('blur', onBlur);
       ref.addEventListener('mouseenter', onMouseEnter);
       ref.addEventListener('mouseleave', onMouseLeave);
       onCleanup(() => {
-        ref.removeEventListener('keydown', onKeyDown);
         ref.removeEventListener('click', onClick);
         ref.removeEventListener('focus', onFocus);
         ref.removeEventListener('blur', onBlur);

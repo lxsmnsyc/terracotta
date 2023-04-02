@@ -1,9 +1,5 @@
-import {
-  DynamicNode,
-  ValidConstructor,
-} from './dynamic-prop';
 import getFocusableElements from './focus-query';
-import { DATA_SET_NAMESPACE } from './namespace';
+import { DISABLED_NODE } from './namespace';
 import { focusVirtually } from './virtual-focus';
 
 const enum Direction {
@@ -12,7 +8,7 @@ const enum Direction {
 }
 
 function isFocusable(el: HTMLElement) {
-  return !el.matches(`[${DATA_SET_NAMESPACE}-disabled="true"]`);
+  return !el.matches(DISABLED_NODE);
 }
 
 // Gets the next focusable element
@@ -64,28 +60,28 @@ function focusNode(node: HTMLElement | undefined, virtual: boolean) {
   return node;
 }
 
-export function focusNext<T extends ValidConstructor>(
+export function focusNext(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
-  targetNode: DynamicNode<T>,
+  targetNode: HTMLElement,
   loop: boolean,
   virtual: boolean,
 ): HTMLElement | undefined {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
-    if (targetNode === nodes[i]) {
+    if (nodes[i].contains(targetNode)) {
       return focusNode(getNextFocusable(nodes, i, Direction.Next, loop), virtual);
     }
   }
   return undefined;
 }
 
-export function focusPrev<T extends ValidConstructor>(
+export function focusPrev(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
-  targetNode: DynamicNode<T>,
+  targetNode: HTMLElement,
   loop: boolean,
   virtual: boolean,
 ): HTMLElement | undefined {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
-    if (targetNode === nodes[i]) {
+    if (nodes[i].contains(targetNode)) {
       return focusNode(getNextFocusable(nodes, i, Direction.Prev, loop), virtual);
     }
   }
@@ -137,10 +133,10 @@ export function lockFocus(
     if (!document.activeElement || !ref.contains(document.activeElement)) {
       return focusLast(nodes, virtual);
     }
-    return focusPrev(nodes, document.activeElement, true, virtual);
+    return focusPrev(nodes, document.activeElement as HTMLElement, true, virtual);
   }
   if (!document.activeElement || !ref.contains(document.activeElement)) {
     return focusFirst(nodes, virtual);
   }
-  return focusNext(nodes, document.activeElement, true, virtual);
+  return focusNext(nodes, document.activeElement as HTMLElement, true, virtual);
 }

@@ -50,20 +50,26 @@ export function Feed<T extends ValidConstructor = 'div'>(
         return !!props.busy;
       },
       focusNext() {
-        focusNext(
-          getFocusableElements(document.documentElement),
-          ref(),
-          false,
-          false,
-        );
+        const current = ref();
+        if (current instanceof HTMLElement) {
+          focusNext(
+            getFocusableElements(document.documentElement),
+            current,
+            false,
+            false,
+          );
+        }
       },
       focusPrev() {
-        focusPrev(
-          getFocusableElements(document.documentElement),
-          ref(),
-          false,
-          false,
-        );
+        const current = ref();
+        if (current instanceof HTMLElement) {
+          focusPrev(
+            getFocusableElements(document.documentElement),
+            current,
+            false,
+            false,
+          );
+        }
       },
     },
     get children() {

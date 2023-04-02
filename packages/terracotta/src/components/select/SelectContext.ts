@@ -4,25 +4,23 @@ import {
   useContext,
 } from 'solid-js';
 import assert from '../../utils/assert';
-import { ValidConstructor } from '../../utils/dynamic-prop';
 import FocusNavigator from '../../utils/focus-navigator';
 
-interface SelectContext<T extends ValidConstructor> {
+interface SelectContext {
   horizontal: boolean;
-  controller: FocusNavigator<T>
+  controller: FocusNavigator
 }
 
-export const SelectContext = createContext<SelectContext<any>>();
+export const SelectContext = createContext<SelectContext>();
 
-export function useSelectContext<T extends ValidConstructor>(
+export function useSelectContext(
   componentName: string,
-): SelectContext<T> {
+): SelectContext {
   const context = useContext(SelectContext);
   assert(context, new Error(`<${componentName}> must be used inside a <Select>`));
   return context;
 }
 
-export function createSelectOptionFocusNavigator
-  <T extends ValidConstructor>() {
-  return new FocusNavigator<T>(createUniqueId());
+export function createSelectOptionFocusNavigator() {
+  return new FocusNavigator(createUniqueId());
 }

@@ -4,19 +4,18 @@ import {
   useContext,
 } from 'solid-js';
 import assert from '../../utils/assert';
-import { ValidConstructor } from '../../utils/dynamic-prop';
 import FocusNavigator from '../../utils/focus-navigator';
 
-export const MenuContext = createContext<FocusNavigator<any>>();
+export const MenuContext = createContext<FocusNavigator>();
 
-export function useMenuContext<T extends ValidConstructor>(
+export function useMenuContext(
   componentName: string,
-): FocusNavigator<T> {
+): FocusNavigator {
   const context = useContext(MenuContext);
   assert(context, new Error(`<${componentName}> must be used inside a <Menu>`));
   return context;
 }
 
-export function createMenuItemFocusNavigator<T extends ValidConstructor>(): FocusNavigator<T> {
+export function createMenuItemFocusNavigator() {
   return new FocusNavigator(createUniqueId());
 }

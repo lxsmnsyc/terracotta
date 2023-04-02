@@ -29,6 +29,7 @@ import {
 import { LISTBOX_OPTIONS_TAG } from './tags';
 import { SelectStateProvider, SelectStateRenderProps, useSelectState } from '../../states/create-select-state';
 import { useDisclosureState } from '../../states/create-disclosure-state';
+import { SELECTED_NODE } from '../../utils/namespace';
 
 export type ListboxOptionsProps<V, T extends ValidConstructor = 'ul'> =
   HeadlessPropsWithRef<T, SelectStateRenderProps<V>>;
@@ -44,6 +45,15 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
 
   const controller = createListboxOptionsFocusNavigator(context.optionsID);
 
+  let characters = '';
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+
+  onCleanup(() => {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+  });
+
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
@@ -52,6 +62,58 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
       const onKeyDown = (e: KeyboardEvent) => {
         if (!disclosureState.disabled() && e.key === 'Escape') {
           disclosureState.close();
+        }
+        if (!selectState.disabled()) {
+          switch (e.key) {
+            case 'ArrowLeft':
+              if (context.horizontal) {
+                e.preventDefault();
+                controller.setPrevChecked(true);
+              }
+              break;
+            case 'ArrowUp':
+              if (!context.horizontal) {
+                e.preventDefault();
+                controller.setPrevChecked(true);
+              }
+              break;
+            case 'ArrowRight':
+              if (context.horizontal) {
+                e.preventDefault();
+                controller.setNextChecked(true);
+              }
+              break;
+            case 'ArrowDown':
+              if (!context.horizontal) {
+                e.preventDefault();
+                controller.setNextChecked(true);
+              }
+              break;
+            case 'Home':
+              e.preventDefault();
+              controller.setFirstChecked();
+              break;
+            case 'End':
+              e.preventDefault();
+              controller.setLastChecked();
+              break;
+            case ' ':
+            case 'Enter':
+              e.preventDefault();
+              break;
+            default:
+              if (e.key.length === 1) {
+                characters = `${characters}${e.key}`;
+                if (timeout) {
+                  clearTimeout(timeout);
+                }
+                timeout = setTimeout(() => {
+                  controller.setFirstMatch(characters);
+                  characters = '';
+                }, 100);
+              }
+              break;
+          }
         }
       };
       const onBlur = (e: FocusEvent) => {
@@ -62,10 +124,17 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
           disclosureState.close();
         }
       };
+      const onFocusIn = (e: FocusEvent) => {
+        if (e.target && e.target !== ref) {
+          controller.setCurrent(e.target as HTMLElement);
+        }
+      };
       ref.addEventListener('keydown', onKeyDown);
       ref.addEventListener('focusout', onBlur);
+      ref.addEventListener('focusin', onFocusIn);
       onCleanup(() => {
         ref.removeEventListener('keydown', onKeyDown);
+        ref.removeEventListener('focusin', onFocusIn);
         ref.removeEventListener('focusout', onBlur);
       });
     }
@@ -78,7 +147,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
       if (!untrack(() => selectState.hasSelected())) {
         controller.setFirstChecked();
       } else {
-        controller.setFirstChecked('[data-tc-selected="true"]');
+        controller.setFirstChecked(SELECTED_NODE);
       }
     }
   });

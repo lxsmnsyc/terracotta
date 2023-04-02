@@ -4,6 +4,7 @@ import {
   createUniqueId,
   JSX,
   mergeProps,
+  onCleanup,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import {
@@ -25,6 +26,7 @@ import { Prettify } from '../../utils/types';
 import { RadioGroupContext } from './RadioGroupContext';
 import { createRadioGroupOptionFocusNavigator, RadioGroupRootContext } from './RadioGroupRootContext';
 import { RADIO_GROUP_TAG } from './tags';
+import { CHECKED_NODE } from '../../utils/namespace';
 
 export type RadioGroupControlledBaseProps<V> = Prettify<
   & SingleSelectStateControlledOptions<V>
@@ -64,8 +66,39 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
 
   createEffect(() => {
     const current = ref();
-    if (current) {
+    if (current instanceof HTMLElement) {
       controller.setRef(current);
+
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (!state.disabled()) {
+          switch (e.key) {
+            case 'ArrowLeft':
+            case 'ArrowUp':
+              e.preventDefault();
+              controller.setPrevChecked(true);
+              break;
+            case 'ArrowRight':
+            case 'ArrowDown':
+              e.preventDefault();
+              controller.setNextChecked(true);
+              break;
+            default:
+              break;
+          }
+        }
+      };
+      current.addEventListener('keydown', onKeyDown);
+      onCleanup(() => {
+        current.removeEventListener('keydown', onKeyDown);
+      });
+    }
+  });
+
+  createEffect(() => {
+    if (!state.hasSelected()) {
+      controller.setFirstChecked();
+    } else {
+      controller.setFirstChecked(CHECKED_NODE);
     }
   });
 

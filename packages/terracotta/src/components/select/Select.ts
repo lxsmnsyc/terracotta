@@ -36,6 +36,7 @@ import {
   createMultipleSelectState,
 } from '../../states/create-select-state';
 import { Prettify } from '../../utils/types';
+import { SELECTED_NODE } from '../../utils/namespace';
 
 export type SingleSelectControlledBaseProps<V> = Prettify<
   & SelectBaseProps
@@ -107,21 +108,86 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
       ? createMultipleSelectState(props)
       : createSingleSelectState(props);
 
+    let characters = '';
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+
+    onCleanup(() => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    });
+
     createEffect(() => {
       const current = ref();
       if (current instanceof HTMLElement) {
         controller.setRef(current);
 
+        const onKeyDown = (e: KeyboardEvent) => {
+          if (!state.disabled()) {
+            switch (e.key) {
+              case 'ArrowUp':
+                if (!props.horizontal) {
+                  e.preventDefault();
+                  controller.setPrevChecked(true);
+                }
+                break;
+              case 'ArrowLeft':
+                if (props.horizontal) {
+                  e.preventDefault();
+                  controller.setPrevChecked(true);
+                }
+                break;
+              case 'ArrowDown':
+                if (!props.horizontal) {
+                  e.preventDefault();
+                  controller.setNextChecked(true);
+                }
+                break;
+              case 'ArrowRight':
+                if (props.horizontal) {
+                  e.preventDefault();
+                  controller.setNextChecked(true);
+                }
+                break;
+              case 'Home':
+                e.preventDefault();
+                controller.setFirstChecked();
+                break;
+              case 'End':
+                e.preventDefault();
+                controller.setLastChecked();
+                break;
+              case ' ':
+              case 'Enter':
+                e.preventDefault();
+                break;
+              default:
+                if (e.key.length === 1) {
+                  characters = `${characters}${e.key}`;
+                  if (timeout) {
+                    clearTimeout(timeout);
+                  }
+                  timeout = setTimeout(() => {
+                    controller.setFirstMatch(characters);
+                    characters = '';
+                  }, 100);
+                }
+                break;
+            }
+          }
+        };
         const onFocus = () => {
           if (!state.hasSelected()) {
             controller.setFirstChecked();
           } else {
-            controller.setFirstChecked('[data-tc-selected="true"]');
+            controller.setFirstChecked(SELECTED_NODE);
           }
         };
 
+        current.addEventListener('keydown', onKeyDown);
         current.addEventListener('focus', onFocus);
         onCleanup(() => {
+          current.removeEventListener('keydown', onKeyDown);
           current.removeEventListener('focus', onFocus);
         });
       }

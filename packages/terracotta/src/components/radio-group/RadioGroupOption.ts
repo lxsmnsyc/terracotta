@@ -15,7 +15,6 @@ import {
   SelectOptionStateProvider,
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
-import createDynamic from '../../utils/create-dynamic';
 import {
   createForwardRef,
   DynamicProps,
@@ -36,6 +35,7 @@ import {
   useRadioGroupRootContext,
 } from './RadioGroupRootContext';
 import { RADIO_GROUP_OPTION_TAG } from './tags';
+import { Button } from '../button';
 
 export type RadioGroupOptionBaseProps<V> = Prettify<
   & SelectOptionStateOptions<V>
@@ -59,31 +59,6 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      const onKeyDown = (e: KeyboardEvent) => {
-        if (!state.disabled()) {
-          switch (e.key) {
-            case 'ArrowLeft':
-            case 'ArrowUp':
-              e.preventDefault();
-              context.setPrevChecked(ref, true);
-              break;
-            case 'ArrowRight':
-            case 'ArrowDown':
-              e.preventDefault();
-              context.setNextChecked(ref, true);
-              break;
-            case ' ':
-            case 'Enter':
-              if (ref.tagName === 'BUTTON') {
-                e.preventDefault();
-              }
-              context.setChecked(ref);
-              break;
-            default:
-              break;
-          }
-        }
-      };
       const onClick = () => {
         state.select();
       };
@@ -95,12 +70,10 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
         state.blur();
       };
 
-      ref.addEventListener('keydown', onKeyDown);
       ref.addEventListener('click', onClick);
       ref.addEventListener('focus', onFocus);
       ref.addEventListener('blur', onBlur);
       onCleanup(() => {
-        ref.removeEventListener('keydown', onKeyDown);
         ref.removeEventListener('click', onClick);
         ref.removeEventListener('focus', onFocus);
         ref.removeEventListener('blur', onBlur);
@@ -111,43 +84,43 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
   return createComponent(RadioGroupContext.Provider, {
     value: { descriptionID, labelID },
     get children() {
-      return createDynamic(
-        () => props.as || ('div' as T),
-        mergeProps(
-          omitProps(props, [
-            'as',
-            'children',
-            'value',
-            'disabled',
-            'ref',
-          ]),
-          RADIO_GROUP_OPTION_TAG,
-          createOwnerAttribute(context.getId()),
-          {
-            role: 'radio',
-            'aria-labelledby': labelID,
-            'aria-describedby': descriptionID,
-            ref: setInternalRef,
-            get tabindex() {
-              const selected = state.isSelected();
-              return (state.disabled() || !selected) ? -1 : 0;
-            },
+      return createComponent(Button, mergeProps(
+        omitProps(props, [
+          'as',
+          'children',
+          'value',
+          'disabled',
+          'ref',
+        ]),
+        RADIO_GROUP_OPTION_TAG,
+        createOwnerAttribute(context.getId()),
+        {
+          get as() {
+            return props.as || ('div' as T);
           },
-          createDisabled(() => state.disabled()),
-          createChecked(() => state.isSelected()),
-          createActive(() => state.isActive()),
-          {
-            get children() {
-              return createComponent(SelectOptionStateProvider, {
-                state,
-                get children() {
-                  return props.children;
-                },
-              });
-            },
+          role: 'radio',
+          'aria-labelledby': labelID,
+          'aria-describedby': descriptionID,
+          ref: setInternalRef,
+          get tabindex() {
+            const selected = state.isSelected();
+            return (state.disabled() || !selected) ? -1 : 0;
           },
-        ) as DynamicProps<T>,
-      );
+        },
+        createDisabled(() => state.disabled()),
+        createChecked(() => state.isSelected()),
+        createActive(() => state.isActive()),
+        {
+          get children() {
+            return createComponent(SelectOptionStateProvider, {
+              state,
+              get children() {
+                return props.children;
+              },
+            });
+          },
+        },
+      ) as DynamicProps<T>);
     },
   });
 }

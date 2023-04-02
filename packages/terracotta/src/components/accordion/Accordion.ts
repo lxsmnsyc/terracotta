@@ -4,6 +4,7 @@ import {
   createMemo,
   JSX,
   mergeProps,
+  onCleanup,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import {
@@ -90,8 +91,43 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
 
     createEffect(() => {
       const current = ref();
-      if (current) {
+      if (current instanceof HTMLElement) {
         controller.setRef(current);
+        const onKeyDown = (e: KeyboardEvent) => {
+          if (!state.disabled()) {
+            switch (e.key) {
+              case 'ArrowUp':
+                e.preventDefault();
+                controller.setPrevChecked(true);
+                break;
+              case 'ArrowDown':
+                e.preventDefault();
+                controller.setNextChecked(true);
+                break;
+              case 'Home':
+                e.preventDefault();
+                controller.setFirstChecked();
+                break;
+              case 'End':
+                e.preventDefault();
+                controller.setLastChecked();
+                break;
+              default:
+                break;
+            }
+          }
+        };
+        const onFocusIn = (e: FocusEvent) => {
+          if (e.target && e.target !== current) {
+            controller.setCurrent(e.target as HTMLElement);
+          }
+        };
+        current.addEventListener('keydown', onKeyDown);
+        current.addEventListener('focusin', onFocusIn);
+        onCleanup(() => {
+          current.removeEventListener('keydown', onKeyDown);
+          current.removeEventListener('focusin', onFocusIn);
+        });
       }
     });
 

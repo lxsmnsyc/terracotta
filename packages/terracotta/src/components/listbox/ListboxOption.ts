@@ -57,69 +57,10 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  let characters = '';
-  let timeout: ReturnType<typeof setTimeout> | undefined;
-
-  onCleanup(() => {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-  });
-
   createEffect(() => {
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
-      const onKeyDown = (e: KeyboardEvent) => {
-        if (!state.disabled()) {
-          switch (e.key) {
-            case 'ArrowLeft':
-              if (rootContext.horizontal) {
-                e.preventDefault();
-                context.setPrevChecked(ref, true);
-              }
-              break;
-            case 'ArrowUp':
-              if (!rootContext.horizontal) {
-                e.preventDefault();
-                context.setPrevChecked(ref, true);
-              }
-              break;
-            case 'ArrowRight':
-              if (rootContext.horizontal) {
-                e.preventDefault();
-                context.setNextChecked(ref, true);
-              }
-              break;
-            case 'ArrowDown':
-              if (!rootContext.horizontal) {
-                e.preventDefault();
-                context.setNextChecked(ref, true);
-              }
-              break;
-            case 'Home':
-              e.preventDefault();
-              context.setFirstChecked();
-              break;
-            case 'End':
-              e.preventDefault();
-              context.setLastChecked();
-              break;
-            default:
-              if (e.key.length === 1) {
-                characters = `${characters}${e.key}`;
-                if (timeout) {
-                  clearTimeout(timeout);
-                }
-                timeout = setTimeout(() => {
-                  context.setFirstMatch(characters);
-                  characters = '';
-                }, 100);
-              }
-              break;
-          }
-        }
-      };
       const onClick = () => {
         state.select();
         if (!rootContext.multiple) {
@@ -136,12 +77,10 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
       ref.addEventListener('click', onClick);
       ref.addEventListener('focus', onFocus);
       ref.addEventListener('blur', onBlur);
-      ref.addEventListener('keydown', onKeyDown);
       onCleanup(() => {
         ref.removeEventListener('click', onClick);
         ref.removeEventListener('focus', onFocus);
         ref.removeEventListener('blur', onBlur);
-        ref.removeEventListener('keydown', onKeyDown);
       });
     }
   });
@@ -157,12 +96,12 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
     LISTBOX_OPTION_TAG,
     createOwnerAttribute(context.getId()),
     {
-      role: 'option',
-      tabindex: -1,
-      ref: setInternalRef,
       get as() {
         return props.as || ('li' as T);
       },
+      role: 'option',
+      tabindex: -1,
+      ref: setInternalRef,
     },
     createDisabled(() => state.disabled()),
     createSelected(() => state.isSelected()),

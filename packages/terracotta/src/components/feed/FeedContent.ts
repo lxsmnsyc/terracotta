@@ -42,20 +42,41 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
         if (e.ctrlKey) {
           switch (e.key) {
             case 'Home':
+              e.preventDefault();
               context.focusPrev();
               break;
             case 'End':
+              e.preventDefault();
               context.focusNext();
               break;
             default:
               break;
           }
         }
+        switch (e.key) {
+          case 'PageUp':
+            e.preventDefault();
+            controller.setPrevChecked(false);
+            break;
+          case 'PageDown':
+            e.preventDefault();
+            controller.setNextChecked(false);
+            break;
+          default:
+            break;
+        }
       };
 
+      const onFocusIn = (e: FocusEvent) => {
+        if (e.target && e.target !== ref) {
+          controller.setCurrent(e.target as HTMLElement);
+        }
+      };
       ref.addEventListener('keydown', onKeyDown);
+      ref.addEventListener('focusin', onFocusIn);
       onCleanup(() => {
         ref.removeEventListener('keydown', onKeyDown);
+        ref.removeEventListener('focusin', onFocusIn);
       });
     }
   });

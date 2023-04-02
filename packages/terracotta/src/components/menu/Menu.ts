@@ -3,6 +3,7 @@ import {
   mergeProps,
   JSX,
   createEffect,
+  onCleanup,
 } from 'solid-js';
 import {
   omitProps,
@@ -29,10 +30,71 @@ export function Menu<T extends ValidConstructor = 'ul'>(
 
   const [ref, setRef] = createForwardRef(props);
 
+  let characters = '';
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+
+  onCleanup(() => {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+  });
+
   createEffect(() => {
     const current = ref();
-    if (current) {
+    if (current instanceof HTMLElement) {
       controller.setRef(current);
+
+      const onKeyDown = (e: KeyboardEvent) => {
+        switch (e.key) {
+          case 'ArrowUp':
+          case 'ArrowLeft':
+            e.preventDefault();
+            controller.setPrevChecked(true);
+            break;
+          case 'ArrowDown':
+          case 'ArrowRight':
+            e.preventDefault();
+            controller.setNextChecked(true);
+            break;
+          case 'Home':
+            e.preventDefault();
+            controller.setFirstChecked();
+            break;
+          case 'End':
+            e.preventDefault();
+            controller.setLastChecked();
+            break;
+          case ' ':
+          case 'Enter':
+            e.preventDefault();
+            break;
+          default:
+            if (e.key.length === 1) {
+              characters = `${characters}${e.key}`;
+              if (timeout) {
+                clearTimeout(timeout);
+              }
+              timeout = setTimeout(() => {
+                controller.setFirstMatch(characters);
+                characters = '';
+              }, 100);
+            }
+            break;
+        }
+      };
+
+      const onFocusIn = (e: FocusEvent) => {
+        if (e.target && e.target !== current) {
+          controller.setCurrent(e.target as HTMLElement);
+        }
+      };
+
+      current.addEventListener('keydown', onKeyDown);
+      current.addEventListener('focusin', onFocusIn);
+      onCleanup(() => {
+        current.removeEventListener('keydown', onKeyDown);
+        current.removeEventListener('focusin', onFocusIn);
+      });
     }
   });
 

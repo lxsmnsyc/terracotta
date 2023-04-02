@@ -3,11 +3,16 @@ import {
   createEffect,
   JSX,
   mergeProps,
+  onCleanup,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
-import { SelectStateChild, SelectStateRenderProps } from '../../states/create-select-state';
+import {
+  SelectStateChild,
+  SelectStateRenderProps,
+  useSelectState,
+} from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import {
   createForwardRef,
@@ -21,6 +26,7 @@ import {
   TabListContext,
 } from './TabListContext';
 import { TAB_LIST_TAG } from './tags';
+import { SELECTED_NODE } from '../../utils/namespace';
 
 export type TabListProps<V, T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, SelectStateRenderProps<V>>;
@@ -30,12 +36,67 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
 ): JSX.Element {
   const rootContext = useTabGroupContext('TabList');
   const controller = createTabFocusNavigator();
+  const state = useSelectState();
   const [ref, setRef] = createForwardRef(props);
 
   createEffect(() => {
     const current = ref();
-    if (current) {
+    if (current instanceof HTMLElement) {
       controller.setRef(current);
+
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (!state.disabled()) {
+          switch (e.key) {
+            case 'ArrowUp':
+              if (!rootContext.horizontal) {
+                e.preventDefault();
+                controller.setPrevChecked(true);
+              }
+              break;
+            case 'ArrowLeft':
+              if (rootContext.horizontal) {
+                e.preventDefault();
+                controller.setPrevChecked(true);
+              }
+              break;
+            case 'ArrowDown':
+              if (!rootContext.horizontal) {
+                e.preventDefault();
+                controller.setNextChecked(true);
+              }
+              break;
+            case 'ArrowRight':
+              if (rootContext.horizontal) {
+                e.preventDefault();
+                controller.setNextChecked(true);
+              }
+              break;
+            case 'Home':
+              e.preventDefault();
+              controller.setFirstChecked();
+              break;
+            case 'End':
+              e.preventDefault();
+              controller.setLastChecked();
+              break;
+            default:
+              break;
+          }
+        }
+      };
+
+      current.addEventListener('keydown', onKeyDown);
+      onCleanup(() => {
+        current.removeEventListener('keydown', onKeyDown);
+      });
+    }
+  });
+
+  createEffect(() => {
+    if (!state.hasSelected()) {
+      controller.setFirstChecked();
+    } else {
+      controller.setFirstChecked(SELECTED_NODE);
     }
   });
 

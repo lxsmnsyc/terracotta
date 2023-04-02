@@ -1,17 +1,14 @@
 import {
   createComponent,
-  createEffect,
   createUniqueId,
   JSX,
   mergeProps,
-  onCleanup,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import {
-  createForwardRef,
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -20,9 +17,6 @@ import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
   FeedArticleContext,
 } from './FeedArticleContext';
-import {
-  useFeedContentContext,
-} from './FeedContentContext';
 import {
   useFeedContext,
 } from './FeedContext';
@@ -35,32 +29,6 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
   props: FeedArticleProps<T>,
 ): JSX.Element {
   const rootContext = useFeedContext('FeedArticle');
-  const contentContext = useFeedContentContext('FeedArticle');
-
-  const [internalRef, setInternalRef] = createForwardRef(props);
-
-  createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      const onKeyDown = (e: KeyboardEvent) => {
-        switch (e.key) {
-          case 'PageUp':
-            contentContext.setPrevChecked(ref, false);
-            break;
-          case 'PageDown':
-            contentContext.setNextChecked(ref, false);
-            break;
-          default:
-            break;
-        }
-      };
-
-      ref.addEventListener('keydown', onKeyDown);
-      onCleanup(() => {
-        ref.removeEventListener('keydown', onKeyDown);
-      });
-    }
-  });
 
   const ownerID = createUniqueId();
   const labelID = createUniqueId();
@@ -90,7 +58,6 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
             get 'aria-setsize'() {
               return rootContext.size;
             },
-            ref: setInternalRef,
           },
         ) as DynamicProps<T>,
       );

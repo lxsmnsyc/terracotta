@@ -52,30 +52,6 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
-      const onKeyDown = (e: KeyboardEvent) => {
-        if (!(state.disabled() || props.disabled)) {
-          switch (e.key) {
-            case 'ArrowUp':
-              e.preventDefault();
-              rootContext.setPrevChecked(ref, true);
-              break;
-            case 'ArrowDown':
-              e.preventDefault();
-              rootContext.setNextChecked(ref, true);
-              break;
-            case 'Home':
-              e.preventDefault();
-              rootContext.setFirstChecked();
-              break;
-            case 'End':
-              e.preventDefault();
-              rootContext.setLastChecked();
-              break;
-            default:
-              break;
-          }
-        }
-      };
       const onClick = () => {
         if (!(state.disabled() || props.disabled)) {
           state.select();
@@ -92,12 +68,10 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
         }
       };
 
-      ref.addEventListener('keydown', onKeyDown);
       ref.addEventListener('click', onClick);
       ref.addEventListener('focus', onFocus);
       ref.addEventListener('blur', onBlur);
       onCleanup(() => {
-        ref.removeEventListener('keydown', onKeyDown);
         ref.removeEventListener('click', onClick);
         ref.removeEventListener('focus', onFocus);
         ref.removeEventListener('blur', onBlur);
