@@ -59,7 +59,7 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
             if (e.key === 'Tab') {
               e.preventDefault();
 
-              lockFocus(ref, e.shiftKey, true);
+              lockFocus(ref, e.shiftKey, false);
             } else if (e.key === 'Escape') {
               state.close();
             }
