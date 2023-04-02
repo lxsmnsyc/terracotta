@@ -45,10 +45,10 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
       const onKeyDown = (e: KeyboardEvent) => {
         switch (e.key) {
           case 'PageUp':
-            contentContext.setPrevChecked(ref);
+            contentContext.setPrevChecked(ref, false);
             break;
           case 'PageDown':
-            contentContext.setNextChecked(ref);
+            contentContext.setNextChecked(ref, false);
             break;
           default:
             break;

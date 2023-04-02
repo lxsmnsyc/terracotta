@@ -64,25 +64,25 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
             case 'ArrowUp':
               if (!context.horizontal) {
                 e.preventDefault();
-                context.controller.setPrevChecked(ref);
+                context.controller.setPrevChecked(ref, true);
               }
               break;
             case 'ArrowLeft':
               if (context.horizontal) {
                 e.preventDefault();
-                context.controller.setPrevChecked(ref);
+                context.controller.setPrevChecked(ref, true);
               }
               break;
             case 'ArrowDown':
               if (!context.horizontal) {
                 e.preventDefault();
-                context.controller.setNextChecked(ref);
+                context.controller.setNextChecked(ref, true);
               }
               break;
             case 'ArrowRight':
               if (context.horizontal) {
                 e.preventDefault();
-                context.controller.setNextChecked(ref);
+                context.controller.setNextChecked(ref, true);
               }
               break;
             case ' ':

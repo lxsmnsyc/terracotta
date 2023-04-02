@@ -52,14 +52,14 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       if (properties.isOpen()) {
-        focusFirst(getFocusableElements(ref));
+        focusFirst(getFocusableElements(ref), false);
 
         const onKeyDown = (e: KeyboardEvent) => {
           if (!props.disabled) {
             if (e.key === 'Tab') {
               e.preventDefault();
 
-              lockFocus(ref, e.shiftKey);
+              lockFocus(ref, e.shiftKey, false);
             } else if (e.key === 'Escape') {
               properties.setState(false);
             }

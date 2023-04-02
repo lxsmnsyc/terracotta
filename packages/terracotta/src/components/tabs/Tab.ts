@@ -60,25 +60,25 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
             case 'ArrowUp':
               if (!rootContext.horizontal) {
                 e.preventDefault();
-                listContext.setPrevChecked(ref);
+                listContext.setPrevChecked(ref, true);
               }
               break;
             case 'ArrowLeft':
               if (rootContext.horizontal) {
                 e.preventDefault();
-                listContext.setPrevChecked(ref);
+                listContext.setPrevChecked(ref, true);
               }
               break;
             case 'ArrowDown':
               if (!rootContext.horizontal) {
                 e.preventDefault();
-                listContext.setNextChecked(ref);
+                listContext.setNextChecked(ref, true);
               }
               break;
             case 'ArrowRight':
               if (rootContext.horizontal) {
                 e.preventDefault();
-                listContext.setNextChecked(ref);
+                listContext.setNextChecked(ref, true);
               }
               break;
             case ' ':

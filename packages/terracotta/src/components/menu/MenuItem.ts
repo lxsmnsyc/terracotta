@@ -56,12 +56,12 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
             case 'ArrowUp':
             case 'ArrowLeft':
               e.preventDefault();
-              context.setPrevChecked(ref);
+              context.setPrevChecked(ref, true);
               break;
             case 'ArrowDown':
             case 'ArrowRight':
               e.preventDefault();
-              context.setNextChecked(ref);
+              context.setNextChecked(ref, true);
               break;
             case ' ':
             case 'Enter':
@@ -102,7 +102,7 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
   });
 
   return createDynamic(
-    () => props.as || ('div' as T),
+    () => props.as || ('li' as T),
     mergeProps(
       omitProps(props, [
         'as',

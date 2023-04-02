@@ -52,14 +52,14 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       if (state.isOpen()) {
-        focusFirst(getFocusableElements(ref));
+        focusFirst(getFocusableElements(ref), true);
 
         const onKeyDown = (e: KeyboardEvent) => {
           if (!state.disabled()) {
             if (e.key === 'Tab') {
               e.preventDefault();
 
-              lockFocus(ref, e.shiftKey);
+              lockFocus(ref, e.shiftKey, true);
             } else if (e.key === 'Escape') {
               state.close();
             }

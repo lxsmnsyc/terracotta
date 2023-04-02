@@ -76,25 +76,25 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
             case 'ArrowLeft':
               if (rootContext.horizontal) {
                 e.preventDefault();
-                context.setPrevChecked(ref);
+                context.setPrevChecked(ref, true);
               }
               break;
             case 'ArrowUp':
               if (!rootContext.horizontal) {
                 e.preventDefault();
-                context.setPrevChecked(ref);
+                context.setPrevChecked(ref, true);
               }
               break;
             case 'ArrowRight':
               if (rootContext.horizontal) {
                 e.preventDefault();
-                context.setNextChecked(ref);
+                context.setNextChecked(ref, true);
               }
               break;
             case 'ArrowDown':
               if (!rootContext.horizontal) {
                 e.preventDefault();
-                context.setNextChecked(ref);
+                context.setNextChecked(ref, true);
               }
               break;
             case 'Home':
