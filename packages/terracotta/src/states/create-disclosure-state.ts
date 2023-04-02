@@ -74,30 +74,30 @@ export function createDisclosureState(
     };
   }
 
+  const isDisabled = createMemo(() => !!options.disabled);
+
   return {
     isOpen() {
       return signal();
     },
     setState(value) {
-      if (!options.disabled) {
+      if (!untrack(isDisabled)) {
         setSignal(value);
       }
     },
-    disabled() {
-      return !!options.disabled;
-    },
+    disabled: isDisabled,
     open() {
-      if (!options.disabled) {
+      if (!untrack(isDisabled)) {
         setSignal(true);
       }
     },
     close() {
-      if (!options.disabled) {
+      if (!untrack(isDisabled)) {
         setSignal(false);
       }
     },
     toggle() {
-      if (!options.disabled) {
+      if (!untrack(isDisabled)) {
         setSignal(!untrack(signal));
       }
     },

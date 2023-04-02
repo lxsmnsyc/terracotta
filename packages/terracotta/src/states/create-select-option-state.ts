@@ -3,6 +3,7 @@ import {
   createContext,
   createMemo,
   JSX,
+  untrack,
   useContext,
 } from 'solid-js';
 import assert from '../utils/assert';
@@ -26,30 +27,26 @@ export function createSelectOptionState<T>(
   options: SelectOptionStateOptions<T>,
 ): SelectOptionStateProperties {
   const properties = useSelectState<T>();
-  const isDisabled = () => {
+  const isDisabled = createMemo(() => {
     const local = options.disabled || false;
     const parent = properties.disabled();
     return local || parent;
-  };
+  });
   return {
-    isSelected() {
-      return properties.isSelected(options.value);
-    },
-    isActive() {
-      return properties.isActive(options.value);
-    },
+    isSelected: createMemo(() => properties.isSelected(options.value)),
+    isActive: createMemo(() => properties.isActive(options.value)),
     select() {
-      if (!isDisabled()) {
+      if (!untrack(isDisabled)) {
         properties.select(options.value);
       }
     },
     focus() {
-      if (!isDisabled()) {
+      if (!untrack(isDisabled)) {
         properties.focus(options.value);
       }
     },
     blur() {
-      if (!isDisabled() && this.isActive()) {
+      if (!untrack(isDisabled) && this.isActive()) {
         properties.blur();
       }
     },

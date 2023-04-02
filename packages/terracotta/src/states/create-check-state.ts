@@ -67,35 +67,35 @@ export function createCheckState(
     };
   }
 
+  const isDisabled = createMemo(() => !!options.disabled);
+
   return {
     checked() {
       return signal();
     },
     setState(value) {
-      if (!options.disabled) {
+      if (!untrack(isDisabled)) {
         setSignal(value);
       }
     },
-    disabled() {
-      return !!options.disabled;
-    },
+    disabled: isDisabled,
     check() {
-      if (!options.disabled) {
+      if (!untrack(isDisabled)) {
         setSignal(true);
       }
     },
     uncheck() {
-      if (!options.disabled) {
+      if (!untrack(isDisabled)) {
         setSignal(false);
       }
     },
     reset() {
-      if (!options.disabled) {
+      if (!untrack(isDisabled)) {
         setSignal(undefined);
       }
     },
     toggle() {
-      if (!options.disabled) {
+      if (!untrack(isDisabled)) {
         setSignal(!untrack(signal));
       }
     },

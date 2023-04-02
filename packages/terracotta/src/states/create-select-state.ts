@@ -73,23 +73,25 @@ export function createSingleSelectState<T>(
     };
   }
 
+  const isDisabled = createMemo(() => !!options.disabled);
+
   return {
     isSelected(value) {
       return isEqual(value, selectedValue());
     },
     select(value) {
-      if (options.toggleable && equals(untrack(selectedValue) as T, value)) {
-        setSelectedValue(undefined);
-      } else {
-        setSelectedValue(value);
+      if (!untrack(isDisabled)) {
+        if (options.toggleable && equals(untrack(selectedValue) as T, value)) {
+          setSelectedValue(undefined);
+        } else {
+          setSelectedValue(value);
+        }
       }
     },
     hasSelected() {
       return selectedValue() != null;
     },
-    disabled() {
-      return !!options.disabled;
-    },
+    disabled: isDisabled,
     hasActive() {
       return !!active();
     },
@@ -98,12 +100,16 @@ export function createSingleSelectState<T>(
       return ref ? equals(value, ref.value) : false;
     },
     focus(value) {
-      return setActive({
-        value,
-      });
+      if (!untrack(isDisabled)) {
+        setActive({
+          value,
+        });
+      }
     },
     blur() {
-      return setActive(undefined);
+      if (!untrack(isDisabled)) {
+        setActive(undefined);
+      }
     },
   };
 }
@@ -158,6 +164,8 @@ export function createMultipleSelectState<T>(
     };
   }
 
+  const isDisabled = createMemo(() => !!options.disabled);
+
   return {
     isSelected(value) {
       const values = selectedValues();
@@ -169,33 +177,29 @@ export function createMultipleSelectState<T>(
       return false;
     },
     select(value) {
-      const newValues: T[] = [];
-      const currentValues = untrack(selectedValues);
-      let hasValue = false;
-      for (let i = 0, len = currentValues.length; i < len; i += 1) {
-        const item = currentValues[i];
-        const isSame = equals(item, value);
-        if (isSame) {
-          hasValue = true;
+      if (!untrack(isDisabled)) {
+        const newValues: T[] = [];
+        const currentValues = untrack(selectedValues);
+        let hasValue = false;
+        for (let i = 0, len = currentValues.length; i < len; i += 1) {
+          const item = currentValues[i];
+          const isSame = equals(item, value);
+          if (isSame) {
+            hasValue = true;
+          }
+          if (!(options.toggleable && isSame)) {
+            newValues.push(item);
+          }
         }
-        if (!(options.toggleable && isSame)) {
-          newValues.push(item);
+        if (!hasValue) {
+          newValues.push(value);
         }
+        setSelectedValues(newValues);
       }
-      if (!hasValue) {
-        newValues.push(value);
-      }
-      setSelectedValues(newValues);
     },
-    hasSelected() {
-      return selectedValues().length > 0;
-    },
-    disabled() {
-      return !!options.disabled;
-    },
-    hasActive() {
-      return !!active();
-    },
+    hasSelected: createMemo(() => selectedValues().length > 0),
+    disabled: isDisabled,
+    hasActive: createMemo(() => !!active()),
     isActive(value) {
       const ref = active();
       if (ref) {
@@ -204,12 +208,16 @@ export function createMultipleSelectState<T>(
       return false;
     },
     focus(value) {
-      return setActive({
-        value,
-      });
+      if (!untrack(isDisabled)) {
+        setActive({
+          value,
+        });
+      }
     },
     blur() {
-      return setActive(undefined);
+      if (!untrack(isDisabled)) {
+        setActive(undefined);
+      }
     },
   };
 }
