@@ -169,8 +169,7 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
     {
       role: 'option',
       get tabindex() {
-        const selected = state.isSelected();
-        return (state.disabled() || !selected) ? -1 : 0;
+        return state.isActive() ? 0 : -1;
       },
       ref: setInternalRef,
     },

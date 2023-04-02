@@ -4,6 +4,7 @@ import {
   createMemo,
   JSX,
   mergeProps,
+  onCleanup,
 } from 'solid-js';
 import {
   omitProps,
@@ -108,8 +109,21 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
 
     createEffect(() => {
       const current = ref();
-      if (current) {
+      if (current instanceof HTMLElement) {
         controller.setRef(current);
+
+        const onFocus = () => {
+          if (!state.hasSelected()) {
+            controller.setFirstChecked();
+          } else {
+            controller.setFirstChecked('[data-tc-selected="true"]');
+          }
+        };
+
+        current.addEventListener('focus', onFocus);
+        onCleanup(() => {
+          current.removeEventListener('focus', onFocus);
+        });
       }
     });
 
@@ -157,6 +171,9 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
               ref: setRef,
               get 'aria-orientation'() {
                 return props.horizontal ? 'horizontal' : 'vertical';
+              },
+              get tabindex() {
+                return state.hasActive() ? -1 : 0;
               },
             },
             createDisabled(() => state.disabled()),
