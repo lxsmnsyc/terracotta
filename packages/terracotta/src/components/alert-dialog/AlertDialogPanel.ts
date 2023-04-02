@@ -18,22 +18,22 @@ import {
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
 import {
-  useDialogContext,
+  useAlertDialogContext,
 } from './AlertDialogContext';
-import { DIALOG_PANEL_TAG } from './tags';
+import { ALERT_DIALOG_PANEL_TAG } from './tags';
 import {
   DisclosureStateChild,
   DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 
-export type DialogPanelProps<T extends ValidConstructor = 'div'> =
+export type AlertDialogPanelProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
-export function DialogPanel<T extends ValidConstructor = 'div'>(
-  props: DialogPanelProps<T>,
+export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
+  props: AlertDialogPanelProps<T>,
 ): JSX.Element {
-  const context = useDialogContext('DialogPanel');
+  const context = useAlertDialogContext('AlertDialogPanel');
   const state = useDisclosureState();
 
   const [internalRef, setInternalRef] = createForwardRef(props);
@@ -42,14 +42,14 @@ export function DialogPanel<T extends ValidConstructor = 'div'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       if (state.isOpen()) {
-        focusFirst(getFocusableElements(ref));
+        focusFirst(getFocusableElements(ref), false);
 
         const onKeyDown = (e: KeyboardEvent) => {
           if (!props.disabled) {
             if (e.key === 'Tab') {
               e.preventDefault();
 
-              lockFocus(ref, e.shiftKey);
+              lockFocus(ref, e.shiftKey, false);
             } else if (e.key === 'Escape') {
               state.close();
             }
@@ -72,7 +72,7 @@ export function DialogPanel<T extends ValidConstructor = 'div'>(
         'children',
         'ref',
       ]),
-      DIALOG_PANEL_TAG,
+      ALERT_DIALOG_PANEL_TAG,
       {
         id: context.panelID,
         ref: setInternalRef,

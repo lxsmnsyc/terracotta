@@ -13,21 +13,21 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
-  useDialogContext,
+  useAlertDialogContext,
 } from './AlertDialogContext';
-import { DIALOG_TITLE_TAG } from './tags';
+import { ALERT_DIALOG_TITLE_TAG } from './tags';
 import {
   DisclosureStateChild,
   DisclosureStateRenderProps,
 } from '../../states/create-disclosure-state';
 
-export type DialogTitleProps<T extends ValidConstructor = 'h2'> =
+export type AlertDialogTitleProps<T extends ValidConstructor = 'h2'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
-export function DialogTitle<T extends ValidConstructor = 'h2'>(
-  props: DialogTitleProps<T>,
+export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
+  props: AlertDialogTitleProps<T>,
 ): JSX.Element {
-  const context = useDialogContext('DialogTitle');
+  const context = useAlertDialogContext('AlertDialogTitle');
   return createDynamic(
     () => props.as || ('h2' as T),
     mergeProps(
@@ -35,7 +35,7 @@ export function DialogTitle<T extends ValidConstructor = 'h2'>(
         'as',
         'children',
       ]),
-      DIALOG_TITLE_TAG,
+      ALERT_DIALOG_TITLE_TAG,
       {
         id: context.titleID,
         get children() {
