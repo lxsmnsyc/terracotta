@@ -1,7 +1,6 @@
 import {
   onCleanup,
   createEffect,
-  untrack,
   JSX,
   createComponent,
   mergeProps,
@@ -98,17 +97,6 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
                 context.setNextChecked(ref);
               }
               break;
-            case ' ':
-            case 'Enter':
-              if (ref.tagName === 'BUTTON') {
-                e.preventDefault();
-              }
-              state.select();
-              if (!rootContext.multiple) {
-                e.preventDefault();
-                disclosure.setState(false);
-              }
-              break;
             case 'Home':
               e.preventDefault();
               context.setFirstChecked();
@@ -135,7 +123,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
       const onClick = () => {
         state.select();
         if (!rootContext.multiple) {
-          disclosure.setState(false);
+          disclosure.close();
         }
       };
       const onFocus = () => {
@@ -145,28 +133,16 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
         state.blur();
       };
 
-      ref.addEventListener('keydown', onKeyDown);
       ref.addEventListener('click', onClick);
       ref.addEventListener('focus', onFocus);
       ref.addEventListener('blur', onBlur);
+      ref.addEventListener('keydown', onKeyDown);
       onCleanup(() => {
-        ref.removeEventListener('keydown', onKeyDown);
         ref.removeEventListener('click', onClick);
         ref.removeEventListener('focus', onFocus);
         ref.removeEventListener('blur', onBlur);
+        ref.removeEventListener('keydown', onKeyDown);
       });
-    }
-  });
-
-  createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      if (disclosure.isOpen()
-        && untrack(() => state.isSelected())
-        && !state.disabled()
-      ) {
-        ref.focus();
-      }
     }
   });
 

@@ -323,7 +323,9 @@ export function Listbox<V, T extends ValidConstructor = typeof Fragment>(
 
     return createComponent(ListboxContext.Provider, {
       value: {
-        multiple: false,
+        get multiple() {
+          return props.multiple;
+        },
         ownerID,
         labelID,
         buttonID,

@@ -4,6 +4,7 @@ import {
   JSX,
   createComponent,
   mergeProps,
+  untrack,
 } from 'solid-js';
 import {
   omitProps,
@@ -44,27 +45,41 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
   const controller = createListboxOptionsFocusNavigator(context.optionsID);
 
   createEffect(() => {
-    if (!selectState.hasSelected()) {
-      controller.setFirstChecked();
-    }
-  });
-
-  createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       controller.setRef(ref);
+
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (!disclosureState.disabled() && e.key === 'Escape') {
+          disclosureState.close();
+        }
+      };
       const onBlur = (e: FocusEvent) => {
         if (context.hovering) {
           return;
         }
         if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
-          disclosureState.setState(false);
+          disclosureState.close();
         }
       };
+      ref.addEventListener('keydown', onKeyDown);
       ref.addEventListener('focusout', onBlur);
       onCleanup(() => {
+        ref.removeEventListener('keydown', onKeyDown);
         ref.removeEventListener('focusout', onBlur);
       });
+    }
+  });
+
+  // This refocuses on the first item checked or first focusable item
+  // when the Disclosure opens
+  createEffect(() => {
+    if (disclosureState.isOpen()) {
+      if (!untrack(() => selectState.hasSelected())) {
+        controller.setFirstChecked();
+      } else {
+        controller.setFirstChecked('[data-tc-selected="true"]');
+      }
     }
   });
 
