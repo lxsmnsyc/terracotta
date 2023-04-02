@@ -18,8 +18,9 @@ const OWNER = `${DATA_SET_NAMESPACE}-owner`;
 function queryNodes<T extends Element>(
   el: T,
   ownerID: string,
+  condition = '',
 ): NodeListOf<HTMLElement> {
-  return el.querySelectorAll(`[${OWNER}="${ownerID}"]`);
+  return el.querySelectorAll(`[${OWNER}="${ownerID}"]${condition}`);
 }
 
 export function createOwnerAttribute(ownerID: string) {
@@ -41,8 +42,8 @@ export default class FocusNavigator<T extends ValidConstructor> {
     this.internalRef = ref;
   }
 
-  private query(ref: HTMLElement) {
-    return queryNodes(ref, this.ownerID);
+  private query(ref: HTMLElement, condition = '') {
+    return queryNodes(ref, this.ownerID, condition);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -82,15 +83,15 @@ export default class FocusNavigator<T extends ValidConstructor> {
     }
   }
 
-  setFirstChecked() {
+  setFirstChecked(condition = '') {
     if (this.internalRef instanceof HTMLElement) {
-      focusFirst(this.query(this.internalRef));
+      focusFirst(this.query(this.internalRef, condition));
     }
   }
 
-  setLastChecked() {
+  setLastChecked(condition = '') {
     if (this.internalRef instanceof HTMLElement) {
-      focusLast(this.query(this.internalRef));
+      focusLast(this.query(this.internalRef, condition));
     }
   }
 
