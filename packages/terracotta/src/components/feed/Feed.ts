@@ -53,12 +53,16 @@ export function Feed<T extends ValidConstructor = 'div'>(
         focusNext(
           getFocusableElements(document.documentElement),
           ref(),
+          false,
+          false,
         );
       },
       focusPrev() {
         focusPrev(
           getFocusableElements(document.documentElement),
           ref(),
+          false,
+          false,
         );
       },
     },

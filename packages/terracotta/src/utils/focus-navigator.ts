@@ -8,10 +8,9 @@ import {
   focusFirst,
   focusLast,
   focusMatch,
-  focusNextContinuous,
-  focusPrevContinuous,
 } from './focus-navigation';
 import { DATA_SET_NAMESPACE } from './namespace';
+import { focusVirtually } from './virtual-focus';
 
 const OWNER = `${DATA_SET_NAMESPACE}-owner`;
 
@@ -32,10 +31,13 @@ export function createOwnerAttribute(ownerID: string) {
 export default class FocusNavigator<T extends ValidConstructor> {
   private ownerID: string;
 
+  private virtual: boolean;
+
   private internalRef?: DynamicNode<T>;
 
-  constructor(ownerID: string) {
+  constructor(ownerID: string, virtual = false) {
     this.ownerID = ownerID;
+    this.virtual = virtual;
   }
 
   setRef(ref: DynamicNode<T>) {
@@ -48,50 +50,44 @@ export default class FocusNavigator<T extends ValidConstructor> {
 
   // eslint-disable-next-line class-methods-use-this
   setChecked(node: Element) {
-    (node as HTMLElement).focus();
-  }
-
-  setNextChecked(node: Element, continuous?: boolean) {
-    if (this.internalRef instanceof HTMLElement) {
-      if (continuous) {
-        focusNextContinuous(
-          this.query(this.internalRef),
-          node,
-        );
-      } else {
-        focusNext(
-          this.query(this.internalRef),
-          node,
-        );
-      }
+    if (this.virtual) {
+      focusVirtually(node as HTMLElement);
+    } else {
+      (node as HTMLElement).focus();
     }
   }
 
-  setPrevChecked(node: Element, continuous?: boolean) {
+  setNextChecked(node: Element, loop: boolean) {
     if (this.internalRef instanceof HTMLElement) {
-      if (continuous) {
-        focusPrevContinuous(
-          this.query(this.internalRef),
-          node,
-        );
-      } else {
-        focusPrev(
-          this.query(this.internalRef),
-          node,
-        );
-      }
+      focusNext(
+        this.query(this.internalRef),
+        node,
+        loop,
+        this.virtual,
+      );
+    }
+  }
+
+  setPrevChecked(node: Element, loop: boolean) {
+    if (this.internalRef instanceof HTMLElement) {
+      focusPrev(
+        this.query(this.internalRef),
+        node,
+        loop,
+        this.virtual,
+      );
     }
   }
 
   setFirstChecked(condition = '') {
     if (this.internalRef instanceof HTMLElement) {
-      focusFirst(this.query(this.internalRef, condition));
+      focusFirst(this.query(this.internalRef, condition), this.virtual);
     }
   }
 
   setLastChecked(condition = '') {
     if (this.internalRef instanceof HTMLElement) {
-      focusLast(this.query(this.internalRef, condition));
+      focusLast(this.query(this.internalRef, condition), this.virtual);
     }
   }
 
@@ -100,6 +96,7 @@ export default class FocusNavigator<T extends ValidConstructor> {
       focusMatch(
         this.query(this.internalRef),
         character,
+        this.virtual,
       );
     }
   }

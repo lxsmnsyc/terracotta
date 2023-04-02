@@ -1,5 +1,12 @@
 export function getFocusStartPoint() {
-  return window.getSelection()?.focusNode?.parentElement;
+  const selection = window.getSelection();
+  if (selection) {
+    const node = selection.focusNode;
+    if (node) {
+      return node.parentElement;
+    }
+  }
+  return undefined;
 }
 
 export function setFocusStartPoint(element?: HTMLElement | null) {

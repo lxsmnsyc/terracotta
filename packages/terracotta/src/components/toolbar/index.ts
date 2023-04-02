@@ -42,7 +42,12 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
       && document.activeElement
       && ref.contains(document.activeElement)
     ) {
-      focusNext(getFocusableElements(ref), document.activeElement);
+      focusNext(
+        getFocusableElements(ref),
+        document.activeElement,
+        false,
+        false,
+      );
     }
   }
 
@@ -53,7 +58,12 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
       && document.activeElement
       && ref.contains(document.activeElement)
     ) {
-      focusPrev(getFocusableElements(ref), document.activeElement);
+      focusPrev(
+        getFocusableElements(ref),
+        document.activeElement,
+        false,
+        false,
+      );
     }
   }
 
@@ -87,12 +97,12 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
             }
             break;
           case 'Home':
-            if (focusFirst(getFocusableElements(ref))) {
+            if (focusFirst(getFocusableElements(ref), false)) {
               e.preventDefault();
             }
             break;
           case 'End':
-            if (focusLast(getFocusableElements(ref))) {
+            if (focusLast(getFocusableElements(ref), false)) {
               e.preventDefault();
             }
             break;
@@ -105,7 +115,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
         if (focusedElement) {
           focusedElement.focus();
         } else {
-          focusFirst(getFocusableElements(ref));
+          focusFirst(getFocusableElements(ref), false);
         }
       };
 

@@ -4,17 +4,46 @@ import {
 } from './dynamic-prop';
 import getFocusableElements from './focus-query';
 import { DATA_SET_NAMESPACE } from './namespace';
+import { focusVirtually } from './virtual-focus';
+
+const enum Direction {
+  Next = 1,
+  Prev = -1,
+}
 
 function isFocusable(el: HTMLElement) {
   return !el.matches(`[${DATA_SET_NAMESPACE}-disabled="true"]`);
 }
 
+// Gets the next focusable element
 function getNextFocusable(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
   anchor: number,
-  direction: number,
+  direction: Direction,
+  loop: boolean,
 ) {
   let current = anchor + direction;
+  if (loop) {
+    if (direction === Direction.Next && current === nodes.length) {
+      current = 0;
+    }
+    if (direction === Direction.Prev && current === -1) {
+      current = nodes.length - 1;
+    }
+    while (anchor !== current) {
+      if (isFocusable(nodes[current])) {
+        return nodes[current];
+      }
+      current += direction;
+      if (direction === 1 && current >= nodes.length) {
+        current = 0;
+      }
+      if (direction === -1 && current < 0) {
+        current = nodes.length - 1;
+      }
+    }
+    return undefined;
+  }
   while (current >= 0 && current < nodes.length) {
     if (isFocusable(nodes[current])) {
       return nodes[current];
@@ -24,53 +53,12 @@ function getNextFocusable(
   return undefined;
 }
 
-function getNextLockedFocusable(
-  nodes: HTMLElement[] | NodeListOf<HTMLElement>,
-  anchor: number,
-  direction: number,
-) {
-  let current = anchor + direction;
-  if (direction === 1 && current === nodes.length) {
-    current = 0;
-  }
-  if (direction === -1 && current === -1) {
-    current = nodes.length - 1;
-  }
-  while (anchor !== current) {
-    if (isFocusable(nodes[current])) {
-      return nodes[current];
-    }
-    current += direction;
-    if (direction === 1 && current >= nodes.length) {
-      current = 0;
-    }
-    if (direction === -1 && current < 0) {
-      current = nodes.length - 1;
-    }
-  }
-  return undefined;
-}
-
-export function focusNextContinuous<T extends ValidConstructor>(
-  nodes: HTMLElement[] | NodeListOf<HTMLElement>,
-  targetNode: DynamicNode<T>,
-): void {
-  for (let i = 0, len = nodes.length; i < len; i += 1) {
-    if (targetNode === nodes[i] && i + 1 < len) {
-      getNextFocusable(nodes, i, 1)?.focus();
-      break;
-    }
-  }
-}
-
-export function focusPrevContinuous<T extends ValidConstructor>(
-  nodes: HTMLElement[] | NodeListOf<HTMLElement>,
-  targetNode: DynamicNode<T>,
-): void {
-  for (let i = 0, len = nodes.length; i < len; i += 1) {
-    if (targetNode === nodes[i] && i - 1 >= 0) {
-      getNextFocusable(nodes, i, -1)?.focus();
-      break;
+function focusNode(node: HTMLElement | undefined, virtual: boolean) {
+  if (node) {
+    if (virtual) {
+      focusVirtually(node);
+    } else {
+      node.focus();
     }
   }
 }
@@ -78,10 +66,12 @@ export function focusPrevContinuous<T extends ValidConstructor>(
 export function focusNext<T extends ValidConstructor>(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
   targetNode: DynamicNode<T>,
+  loop: boolean,
+  virtual: boolean,
 ): void {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i]) {
-      getNextLockedFocusable(nodes, i, 1)?.focus();
+      focusNode(getNextFocusable(nodes, i, Direction.Next, loop), virtual);
       break;
     }
   }
@@ -90,10 +80,12 @@ export function focusNext<T extends ValidConstructor>(
 export function focusPrev<T extends ValidConstructor>(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
   targetNode: DynamicNode<T>,
+  loop: boolean,
+  virtual: boolean,
 ): void {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i]) {
-      getNextLockedFocusable(nodes, i, -1)?.focus();
+      focusNode(getNextFocusable(nodes, i, Direction.Prev, loop), virtual);
       break;
     }
   }
@@ -101,9 +93,10 @@ export function focusPrev<T extends ValidConstructor>(
 
 export function focusFirst(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
+  virtual: boolean,
 ): boolean {
   if (nodes.length) {
-    getNextFocusable(nodes, -1, 1)?.focus();
+    focusNode(getNextFocusable(nodes, -1, Direction.Next, false), virtual);
     return true;
   }
   return false;
@@ -111,9 +104,10 @@ export function focusFirst(
 
 export function focusLast(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
+  virtual: boolean,
 ): boolean {
   if (nodes.length) {
-    getNextFocusable(nodes, nodes.length, -1)?.focus();
+    focusNode(getNextFocusable(nodes, nodes.length, Direction.Prev, false), virtual);
     return true;
   }
   return false;
@@ -122,11 +116,12 @@ export function focusLast(
 export function focusMatch(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
   character: string,
+  virtual: boolean,
 ): void {
   const lower = character.toLowerCase();
   for (let i = 0, l = nodes.length; i < l; i += 1) {
     if (nodes[i].textContent?.toLowerCase().startsWith(lower)) {
-      nodes[i].focus();
+      focusNode(nodes[i], virtual);
       return;
     }
   }
@@ -135,17 +130,18 @@ export function focusMatch(
 export function lockFocus(
   ref: HTMLElement,
   reverse: boolean,
+  virtual: boolean,
 ): void {
   const nodes = getFocusableElements(ref);
   if (reverse) {
     if (!document.activeElement || !ref.contains(document.activeElement)) {
-      focusLast(nodes);
+      focusLast(nodes, virtual);
     } else {
-      focusPrev(nodes, document.activeElement);
+      focusPrev(nodes, document.activeElement, true, virtual);
     }
   } else if (!document.activeElement || !ref.contains(document.activeElement)) {
-    focusFirst(nodes);
+    focusFirst(nodes, virtual);
   } else {
-    focusNext(nodes, document.activeElement);
+    focusNext(nodes, document.activeElement, true, virtual);
   }
 }
