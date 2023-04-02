@@ -57,11 +57,11 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
           switch (e.key) {
             case 'ArrowUp':
               e.preventDefault();
-              rootContext.setPrevChecked(ref);
+              rootContext.setPrevChecked(ref, true);
               break;
             case 'ArrowDown':
               e.preventDefault();
-              rootContext.setNextChecked(ref);
+              rootContext.setNextChecked(ref, true);
               break;
             case 'Home':
               e.preventDefault();
