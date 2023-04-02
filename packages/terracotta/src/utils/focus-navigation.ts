@@ -61,6 +61,7 @@ function focusNode(node: HTMLElement | undefined, virtual: boolean) {
       node.focus();
     }
   }
+  return node;
 }
 
 export function focusNext<T extends ValidConstructor>(
@@ -68,13 +69,13 @@ export function focusNext<T extends ValidConstructor>(
   targetNode: DynamicNode<T>,
   loop: boolean,
   virtual: boolean,
-): void {
+): HTMLElement | undefined {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i]) {
-      focusNode(getNextFocusable(nodes, i, Direction.Next, loop), virtual);
-      break;
+      return focusNode(getNextFocusable(nodes, i, Direction.Next, loop), virtual);
     }
   }
+  return undefined;
 }
 
 export function focusPrev<T extends ValidConstructor>(
@@ -82,66 +83,64 @@ export function focusPrev<T extends ValidConstructor>(
   targetNode: DynamicNode<T>,
   loop: boolean,
   virtual: boolean,
-): void {
+): HTMLElement | undefined {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i]) {
-      focusNode(getNextFocusable(nodes, i, Direction.Prev, loop), virtual);
-      break;
+      return focusNode(getNextFocusable(nodes, i, Direction.Prev, loop), virtual);
     }
   }
+  return undefined;
 }
 
 export function focusFirst(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
   virtual: boolean,
-): boolean {
+): HTMLElement | undefined {
   if (nodes.length) {
-    focusNode(getNextFocusable(nodes, -1, Direction.Next, false), virtual);
-    return true;
+    return focusNode(getNextFocusable(nodes, -1, Direction.Next, false), virtual);
   }
-  return false;
+  return undefined;
 }
 
 export function focusLast(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
   virtual: boolean,
-): boolean {
+): HTMLElement | undefined {
   if (nodes.length) {
-    focusNode(getNextFocusable(nodes, nodes.length, Direction.Prev, false), virtual);
-    return true;
+    return focusNode(getNextFocusable(nodes, nodes.length, Direction.Prev, false), virtual);
   }
-  return false;
+  return undefined;
 }
 
 export function focusMatch(
   nodes: HTMLElement[] | NodeListOf<HTMLElement>,
   character: string,
   virtual: boolean,
-): void {
+): HTMLElement | undefined {
   const lower = character.toLowerCase();
   for (let i = 0, l = nodes.length; i < l; i += 1) {
-    if (nodes[i].textContent?.toLowerCase().startsWith(lower)) {
-      focusNode(nodes[i], virtual);
-      return;
+    const content = nodes[i].textContent;
+    if (content != null && content.toLowerCase().startsWith(lower)) {
+      return focusNode(nodes[i], virtual);
     }
   }
+  return undefined;
 }
 
 export function lockFocus(
   ref: HTMLElement,
   reverse: boolean,
   virtual: boolean,
-): void {
+): HTMLElement | undefined {
   const nodes = getFocusableElements(ref);
   if (reverse) {
     if (!document.activeElement || !ref.contains(document.activeElement)) {
-      focusLast(nodes, virtual);
-    } else {
-      focusPrev(nodes, document.activeElement, true, virtual);
+      return focusLast(nodes, virtual);
     }
-  } else if (!document.activeElement || !ref.contains(document.activeElement)) {
-    focusFirst(nodes, virtual);
-  } else {
-    focusNext(nodes, document.activeElement, true, virtual);
+    return focusPrev(nodes, document.activeElement, true, virtual);
   }
+  if (!document.activeElement || !ref.contains(document.activeElement)) {
+    return focusFirst(nodes, virtual);
+  }
+  return focusNext(nodes, document.activeElement, true, virtual);
 }
