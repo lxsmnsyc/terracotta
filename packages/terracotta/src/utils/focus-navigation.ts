@@ -50,6 +50,7 @@ function getNextFocusable(
 }
 
 function focusNode(node: HTMLElement | undefined, virtual: boolean) {
+  console.log('focusing', node);
   if (node) {
     if (virtual) {
       focusVirtually(node);
@@ -57,6 +58,7 @@ function focusNode(node: HTMLElement | undefined, virtual: boolean) {
       node.focus();
     }
   }
+  console.log('current active', document.activeElement);
   return node;
 }
 
@@ -67,7 +69,7 @@ export function focusNext(
   virtual: boolean,
 ): HTMLElement | undefined {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
-    if (nodes[i].contains(targetNode)) {
+    if (targetNode === nodes[i] || nodes[i].contains(targetNode)) {
       return focusNode(getNextFocusable(nodes, i, Direction.Next, loop), virtual);
     }
   }

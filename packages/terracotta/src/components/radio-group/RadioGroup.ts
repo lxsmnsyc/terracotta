@@ -21,7 +21,7 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { createDisabled } from '../../utils/state-props';
+import { createDisabledState } from '../../utils/state-props';
 import { Prettify } from '../../utils/types';
 import { RadioGroupContext } from './RadioGroupContext';
 import { createRadioGroupOptionFocusNavigator, RadioGroupRootContext } from './RadioGroupRootContext';
@@ -144,7 +144,7 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
                 'aria-describedby': descriptionID,
                 ref: setRef,
               },
-              createDisabled(() => state.disabled()),
+              createDisabledState(() => state.disabled()),
               {
                 get children() {
                   return createComponent(SelectStateProvider, {

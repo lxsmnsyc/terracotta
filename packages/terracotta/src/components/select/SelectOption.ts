@@ -20,7 +20,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
-import { createActive, createDisabled, createSelected } from '../../utils/state-props';
+import { createActiveState, createDisabledState, createSelectedState } from '../../utils/state-props';
 import { OmitAndMerge, Prettify } from '../../utils/types';
 import {
   Button,
@@ -103,9 +103,9 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
       },
       ref: setInternalRef,
     },
-    createDisabled(() => state.disabled()),
-    createSelected(() => state.isSelected()),
-    createActive(() => state.isActive()),
+    createDisabledState(() => state.disabled()),
+    createSelectedState(() => state.isSelected()),
+    createActiveState(() => state.isActive()),
     {
       get children() {
         return createComponent(SelectOptionStateProvider, {

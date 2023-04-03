@@ -22,7 +22,7 @@ import {
 import { CheckboxContext } from './CheckboxContext';
 import createDynamic from '../../utils/create-dynamic';
 import { CHECKBOX_TAG } from './tags';
-import { createDisabled } from '../../utils/state-props';
+import { createDisabledState } from '../../utils/state-props';
 
 export type CheckboxControlledBaseProps = Prettify<
   & CheckStateControlledOptions
@@ -87,7 +87,7 @@ export function Checkbox<T extends ValidConstructor = typeof Fragment>(
               'onChange',
             ]),
           CHECKBOX_TAG,
-          createDisabled(() => state.disabled()),
+          createDisabledState(() => state.disabled()),
           {
             get children() {
               return createComponent(CheckStateProvider, {

@@ -13,7 +13,7 @@ import {
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
-  createDisabled,
+  createDisabledState,
 } from '../../utils/state-props';
 import {
   MenuChildProps,
@@ -49,7 +49,7 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
       role: 'menuitem',
       tabindex: -1,
     },
-    createDisabled(() => props.disabled),
+    createDisabledState(() => props.disabled),
     {
       get children() {
         return createComponent(MenuChild, {

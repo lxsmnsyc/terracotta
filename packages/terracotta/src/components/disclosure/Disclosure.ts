@@ -15,7 +15,7 @@ import {
 } from '../../utils/dynamic-prop';
 import Fragment from '../../utils/Fragment';
 import {
-  createDisabled,
+  createDisabledState,
 } from '../../utils/state-props';
 import {
   DisclosureContext,
@@ -94,7 +94,7 @@ export function Disclosure<T extends ValidConstructor = typeof Fragment>(
               'onOpen',
             ]),
           DISCLOSURE_TAG,
-          createDisabled(() => state.disabled()),
+          createDisabledState(() => state.disabled()),
           {
             get children() {
               return createComponent(DisclosureStateProvider, {

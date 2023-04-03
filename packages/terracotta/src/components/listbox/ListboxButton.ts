@@ -14,8 +14,8 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
-  createDisabled,
-  createExpanded,
+  createDisabledState,
+  createExpandedState,
 } from '../../utils/state-props';
 import { OmitAndMerge } from '../../utils/types';
 import {
@@ -104,12 +104,8 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
       'aria-controls': context.optionsID,
       ref: setInternalRef,
     },
-    createDisabled(() => {
-      const internalDisabled = state.disabled();
-      const granularDisabled = props.disabled;
-      return internalDisabled || granularDisabled;
-    }),
-    createExpanded(() => state.isOpen()),
+    createDisabledState(() => state.disabled() || props.disabled),
+    createExpandedState(() => state.isOpen()),
     {
       get children() {
         return createComponent(DisclosureStateChild, {

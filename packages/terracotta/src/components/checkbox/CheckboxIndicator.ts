@@ -14,8 +14,8 @@ import {
   createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
-  createChecked,
-  createDisabled,
+  createCheckedState,
+  createDisabledState,
 } from '../../utils/state-props';
 import {
   Button,
@@ -78,8 +78,8 @@ export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
       'aria-describedby': context.descriptionID,
       ref: setInternalRef,
     },
-    createDisabled(() => state.disabled()),
-    createChecked(() => state.checked()),
+    createDisabledState(() => state.disabled()),
+    createCheckedState(() => state.checked()),
     {
       get children() {
         return createComponent(CheckStateChild, {

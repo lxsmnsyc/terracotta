@@ -16,7 +16,7 @@ import {
 } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 import {
-  createDisabled,
+  createDisabledState,
 } from '../../utils/state-props';
 
 const BUTTON_TAG = createTag('button');
@@ -61,7 +61,7 @@ export function Button<T extends ValidConstructor = 'button'>(
         },
         role: 'button',
       },
-      createDisabled(() => props.disabled),
+      createDisabledState(() => props.disabled),
       omitProps(props, [
         'as',
         'ref',

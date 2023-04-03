@@ -4,7 +4,7 @@ interface DisabledProps {
   'data-tc-disabled'?: boolean;
 }
 
-export function createDisabled(
+export function createDisabledState(
   disabled: () => boolean | undefined,
 ): DisabledProps {
   return {
@@ -25,7 +25,7 @@ interface ExpandedProps {
   'data-tc-expanded'?: boolean;
 }
 
-export function createExpanded(
+export function createExpandedState(
   expanded: () => boolean | undefined,
 ): ExpandedProps {
   return {
@@ -43,7 +43,7 @@ interface CheckedProps {
   'data-tc-checked': boolean | 'mixed';
 }
 
-export function createChecked(
+export function createCheckedState(
   checked: () => boolean | undefined,
 ): CheckedProps {
   return {
@@ -61,7 +61,7 @@ interface SelectedProps {
   'data-tc-selected': boolean;
 }
 
-export function createSelected(
+export function createSelectedState(
   checked: () => boolean,
 ): SelectedProps {
   return {
@@ -78,7 +78,7 @@ interface ActiveProps {
   'data-tc-active': boolean;
 }
 
-export function createActive(
+export function createActiveState(
   checked: () => boolean,
 ): ActiveProps {
   return {

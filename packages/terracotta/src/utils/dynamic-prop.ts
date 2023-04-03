@@ -43,6 +43,8 @@ export type DynamicNode<T extends ValidConstructor> =
     ? UnboxComponentProp<U>
     : never;
 
+// Just a dynamic way to make a `ref` property
+// based on the constructor
 export interface WithRef<T extends ValidConstructor> {
   ref?: RefField<DynamicNode<T>>;
 }
@@ -69,6 +71,12 @@ function isRefFunction<U extends ValidConstructor>(
   return typeof callback === 'function';
 }
 
+// `props.ref` could have been used however it doesn't enforce
+// proper timing. We want to make sure that `ref` is called in
+// a way that it behaves the same way as if it were called
+// natively on an element (which runs in the same scope as the component)
+// This is useful if the ref function itself has ownership-based calls
+// like createEffect
 export function createForwardRef<U extends ValidConstructor>(
   props: WithRef<U>,
 ): Signal<DynamicNode<U> | undefined> {
@@ -76,6 +84,9 @@ export function createForwardRef<U extends ValidConstructor>(
 
   createEffect(() => {
     const current = ref();
+    // Technically Solid compiles refs on components into
+    // a function, despite the fact that its type definition
+    // says that it is either a function or the ref type
     if (current && 'ref' in props && isRefFunction(props.ref)) {
       props.ref(current);
     }

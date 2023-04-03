@@ -22,9 +22,9 @@ import {
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
-  createActive,
-  createDisabled,
-  createSelected,
+  createActiveState,
+  createDisabledState,
+  createSelectedState,
 } from '../../utils/state-props';
 import { Prettify } from '../../utils/types';
 import {
@@ -110,8 +110,8 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
         });
       },
     },
-    createDisabled(() => state.disabled()),
-    createSelected(() => state.isSelected()),
-    createActive(() => state.isActive()),
+    createDisabledState(() => state.disabled()),
+    createSelectedState(() => state.isSelected()),
+    createActiveState(() => state.isActive()),
   ) as DynamicProps<T>);
 }

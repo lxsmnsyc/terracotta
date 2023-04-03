@@ -17,7 +17,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
-  createDisabled,
+  createDisabledState,
 } from '../../utils/state-props';
 import {
   useListboxContext,
@@ -177,7 +177,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
               return selectState.disabled() ? -1 : 0;
             },
           },
-          createDisabled(() => selectState.disabled()),
+          createDisabledState(() => selectState.disabled()),
           {
             get children() {
               return createComponent(SelectStateProvider, {

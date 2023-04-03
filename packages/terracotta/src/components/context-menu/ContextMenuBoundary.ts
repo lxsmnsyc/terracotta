@@ -16,8 +16,8 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
-  createDisabled,
-  createExpanded,
+  createDisabledState,
+  createExpandedState,
 } from '../../utils/state-props';
 import {
   useContextMenuContext,
@@ -75,8 +75,8 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
           return state.isOpen() && context.panelID;
         },
       },
-      createDisabled(() => state.disabled()),
-      createExpanded(() => state.isOpen()),
+      createDisabledState(() => state.disabled()),
+      createExpandedState(() => state.isOpen()),
       {
         get children() {
           return createComponent(DisclosureStateChild, {

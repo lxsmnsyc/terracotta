@@ -16,6 +16,10 @@ function queryNodes<T extends Element>(
   ownerID: string,
   condition = '',
 ): NodeListOf<HTMLElement> {
+  // We only query nodes that are:
+  // - owned by the root component via ownerID
+  // - node isn't disabled
+  // - extra condition
   return el.querySelectorAll(`[${OWNER}="${ownerID}"]:not(${DISABLED_NODE})${condition}`);
 }
 

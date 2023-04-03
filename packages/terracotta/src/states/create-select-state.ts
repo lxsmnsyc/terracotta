@@ -169,6 +169,7 @@ export function createMultipleSelectState<T>(
   return {
     isSelected(value) {
       const values = selectedValues();
+      // Looks up for the value
       for (let i = 0, len = values.length; i < len; i += 1) {
         if (equals(value, values[i])) {
           return true;
@@ -183,14 +184,20 @@ export function createMultipleSelectState<T>(
         let hasValue = false;
         for (let i = 0, len = currentValues.length; i < len; i += 1) {
           const item = currentValues[i];
+          // Compare ahead
           const isSame = equals(item, value);
+          // If it's the same then we mark the the target value
+          // as already existing in the array
           if (isSame) {
             hasValue = true;
           }
+          // If it's the same and the list is toggleable
+          // don't push the item
           if (!(options.toggleable && isSame)) {
             newValues.push(item);
           }
         }
+        // The value doesn't exist, push the new value
         if (!hasValue) {
           newValues.push(value);
         }

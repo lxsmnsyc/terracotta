@@ -14,7 +14,7 @@ import {
   DynamicProps,
 } from '../../utils/dynamic-prop';
 import {
-  createDisabled,
+  createDisabledState,
 } from '../../utils/state-props';
 import { useAccordionContext } from './AccordionContext';
 import {
@@ -58,7 +58,7 @@ export function AccordionItem<V, T extends ValidConstructor = 'div'>(
             'disabled',
           ]),
           ACCORDION_ITEM_TAG,
-          createDisabled(() => state.disabled()),
+          createDisabledState(() => state.disabled()),
           {
             get children() {
               return createComponent(SelectOptionStateProvider, {

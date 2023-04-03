@@ -1,3 +1,5 @@
+// document.activeElement isn't accurate for this specific behavior
+
 export function getFocusStartPoint() {
   const selection = window.getSelection();
   if (selection) {

@@ -23,9 +23,9 @@ import {
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
-  createActive,
-  createChecked,
-  createDisabled,
+  createActiveState,
+  createCheckedState,
+  createDisabledState,
 } from '../../utils/state-props';
 import { Prettify } from '../../utils/types';
 import {
@@ -107,9 +107,9 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
             return (state.disabled() || !selected) ? -1 : 0;
           },
         },
-        createDisabled(() => state.disabled()),
-        createChecked(() => state.isSelected()),
-        createActive(() => state.isActive()),
+        createDisabledState(() => state.disabled()),
+        createCheckedState(() => state.isSelected()),
+        createActiveState(() => state.isActive()),
         {
           get children() {
             return createComponent(SelectOptionStateProvider, {

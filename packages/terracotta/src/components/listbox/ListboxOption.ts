@@ -15,9 +15,9 @@ import {
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
-  createActive,
-  createDisabled,
-  createSelected,
+  createActiveState,
+  createDisabledState,
+  createSelectedState,
 } from '../../utils/state-props';
 import { OmitAndMerge, Prettify } from '../../utils/types';
 import {
@@ -68,6 +68,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
         }
       };
       const onFocus = () => {
+        console.log('focused', ref);
         state.focus();
       };
       const onBlur = () => {
@@ -103,9 +104,9 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
       tabindex: -1,
       ref: setInternalRef,
     },
-    createDisabled(() => state.disabled()),
-    createSelected(() => state.isSelected()),
-    createActive(() => state.isActive()),
+    createDisabledState(() => state.disabled()),
+    createSelectedState(() => state.isSelected()),
+    createActiveState(() => state.isActive()),
     {
       get children() {
         return createComponent(SelectOptionStateProvider, {

@@ -21,7 +21,7 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { createDisabled } from '../../utils/state-props';
+import { createDisabledState } from '../../utils/state-props';
 import { OmitAndMerge, Prettify } from '../../utils/types';
 import {
   Button,
@@ -111,6 +111,6 @@ export function Toggle<T extends ValidConstructor = 'button'>(
         });
       },
     },
-    createDisabled(() => state.disabled()),
+    createDisabledState(() => state.disabled()),
   ) as DynamicProps<T>);
 }

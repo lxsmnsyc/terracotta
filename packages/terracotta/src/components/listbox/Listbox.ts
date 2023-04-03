@@ -18,7 +18,7 @@ import {
 } from '../../utils/dynamic-prop';
 import Fragment from '../../utils/Fragment';
 import {
-  createDisabled,
+  createDisabledState,
 } from '../../utils/state-props';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
@@ -349,7 +349,7 @@ export function Listbox<V, T extends ValidConstructor = typeof Fragment>(
             {
               'aria-labelledby': labelID,
             },
-            createDisabled(() => selectState.disabled()),
+            createDisabledState(() => selectState.disabled()),
             {
               get children() {
                 return createComponent(SelectStateProvider, {

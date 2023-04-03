@@ -27,11 +27,7 @@ export function createSelectOptionState<T>(
   options: SelectOptionStateOptions<T>,
 ): SelectOptionStateProperties {
   const properties = useSelectState<T>();
-  const isDisabled = createMemo(() => {
-    const local = options.disabled || false;
-    const parent = properties.disabled();
-    return local || parent;
-  });
+  const isDisabled = createMemo(() => options.disabled || properties.disabled());
   return {
     isSelected: createMemo(() => properties.isSelected(options.value)),
     isActive: createMemo(() => properties.isActive(options.value)),
