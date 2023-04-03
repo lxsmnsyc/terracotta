@@ -1,5 +1,6 @@
 import {
   createComponent,
+  createEffect,
   createMemo,
   createSignal,
   createUniqueId,
@@ -114,6 +115,12 @@ export function Command<V, T extends ValidConstructor = typeof Fragment>(
     const inputID = createUniqueId();
     const optionsID = createUniqueId();
     const labelID = createUniqueId();
+
+    createEffect(() => {
+      if (!state.hasActive()) {
+        setActiveDescendant(undefined);
+      }
+    });
 
     return createComponent(CommandContext.Provider, {
       value: {

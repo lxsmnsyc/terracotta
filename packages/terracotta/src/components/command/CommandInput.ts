@@ -82,11 +82,16 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
           context.controller.setFirstChecked(SELECTED_NODE);
         }
       };
+      const onBlur = () => {
+        state.blur();
+      };
       current.addEventListener('keydown', onKeyDown);
       current.addEventListener('focus', onFocus);
+      current.addEventListener('blur', onBlur);
       onCleanup(() => {
         current.removeEventListener('keydown', onKeyDown);
         current.removeEventListener('focus', onFocus);
+        current.removeEventListener('blur', onBlur);
       });
     }
   });

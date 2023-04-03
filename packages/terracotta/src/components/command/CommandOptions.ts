@@ -1,6 +1,5 @@
 import {
   createEffect,
-  onCleanup,
   JSX,
   createComponent,
   mergeProps,
@@ -43,16 +42,6 @@ export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       context.controller.setRef(ref);
-
-      const onFocusIn = (e: FocusEvent) => {
-        if (e.target && e.target !== ref) {
-          context.controller.setCurrent(e.target as HTMLElement);
-        }
-      };
-      ref.addEventListener('focusin', onFocusIn);
-      onCleanup(() => {
-        ref.removeEventListener('focusin', onFocusIn);
-      });
     }
   });
 
