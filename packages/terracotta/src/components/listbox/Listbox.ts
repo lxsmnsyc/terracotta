@@ -26,11 +26,6 @@ import {
 } from './ListboxContext';
 import { LISTBOX_TAG } from './tags';
 import {
-  ListboxBaseProps,
-  ListboxMultipleBaseProps,
-  ListboxSingleBaseProps,
-} from './types';
-import {
   createMultipleSelectState,
   createSingleSelectState,
   MultipleSelectStateControlledOptions,
@@ -46,6 +41,19 @@ import {
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
 import { Prettify } from '../../utils/types';
+
+export interface ListboxBaseProps {
+  horizontal?: boolean;
+  onDisclosureChange?: (value: boolean) => void
+}
+
+export interface ListboxMultipleBaseProps<V> {
+  onSelectChange?: (value: V[]) => void;
+}
+
+export interface ListboxSingleBaseProps<V> {
+  onSelectChange?: (value?: V) => void;
+}
 
 // SCSCD = Single, Controlled Select, Controlled Disclosure
 export type ListboxSCSCDBaseProps<V> = Prettify<

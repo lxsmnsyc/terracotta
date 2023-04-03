@@ -10,9 +10,6 @@ import {
   omitProps,
 } from 'solid-use/props';
 import {
-  SelectBaseProps,
-} from './types';
-import {
   createForwardRef,
   DynamicProps,
   HeadlessPropsWithRef,
@@ -38,6 +35,10 @@ import {
 import { Prettify } from '../../utils/types';
 import { SELECTED_NODE } from '../../utils/namespace';
 import createTypeAhead from '../../utils/create-type-ahead';
+
+export interface SelectBaseProps {
+  horizontal?: boolean;
+}
 
 export type SingleSelectControlledBaseProps<V> = Prettify<
   & SelectBaseProps
@@ -222,7 +223,9 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
             {
               id: controller.getId(),
               role: 'listbox',
-              'aria-multiselectable': true,
+              get 'aria-multiselectable'() {
+                return props.multiple;
+              },
               ref: setRef,
               get 'aria-orientation'() {
                 return props.horizontal ? 'horizontal' : 'vertical';
