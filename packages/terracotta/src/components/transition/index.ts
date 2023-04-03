@@ -229,7 +229,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
             ]),
             {
               ref: setRef,
-              get 'data-tc-transition'() {
+              get 'tc-transition'() {
                 return state();
               },
             },

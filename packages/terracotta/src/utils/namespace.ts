@@ -1,4 +1,4 @@
-export const DATA_SET_NAMESPACE = 'data-tc';
+export const DATA_SET_NAMESPACE = 'tc';
 
 export const DISABLED_NODE = `[${DATA_SET_NAMESPACE}-disabled="true"]`;
 export const SELECTED_NODE = `[${DATA_SET_NAMESPACE}-selected="true"]`;

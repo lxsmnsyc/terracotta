@@ -99,7 +99,7 @@ export function Toggle<T extends ValidConstructor = 'button'>(
       get 'aria-pressed'() {
         return props.pressed;
       },
-      get 'data-tc-pressed'() {
+      get 'tc-pressed'() {
         return props.pressed;
       },
       get children() {
