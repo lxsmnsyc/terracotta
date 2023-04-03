@@ -42,7 +42,7 @@ export type SelectOptionProps<V, T extends ValidConstructor = 'li'> =
 export function SelectOption<V, T extends ValidConstructor = 'li'>(
   props: SelectOptionProps<V, T>,
 ): JSX.Element {
-  const context = useSelectContext('Select');
+  const context = useSelectContext('SelectOption');
   const [internalRef, setInternalRef] = createForwardRef(props);
   const state = createSelectOptionState(props);
 

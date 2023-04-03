@@ -31,7 +31,7 @@ export type MenuItemProps<T extends ValidConstructor = 'li'> =
 export function MenuItem<T extends ValidConstructor = 'li'>(
   props: MenuItemProps<T>,
 ): JSX.Element {
-  const context = useMenuContext('Menu');
+  const context = useMenuContext('MenuItem');
 
   return createComponent(Button, mergeProps(
     omitProps(props, [
