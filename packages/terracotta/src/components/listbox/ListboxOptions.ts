@@ -5,6 +5,7 @@ import {
   createComponent,
   mergeProps,
   untrack,
+  onMount,
 } from 'solid-js';
 import {
   omitProps,
@@ -54,102 +55,102 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
     }
   });
 
-  createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      controller.setRef(ref);
+  // This is a potential bug. The reason is that
+  // the ListboxOptions is focusing too early in such
+  // a way that the ListboxOption has yet to register
+  // the focus event
+  onMount(() => {
+    createEffect(() => {
+      const ref = internalRef();
+      if (ref instanceof HTMLElement) {
+        controller.setRef(ref);
 
-      const onKeyDown = (e: KeyboardEvent) => {
-        if (!disclosureState.disabled() && e.key === 'Escape') {
-          disclosureState.close();
+        if (!untrack(() => selectState.hasSelected())) {
+          controller.setFirstChecked();
+        } else {
+          controller.setFirstChecked(SELECTED_NODE);
         }
-        if (!selectState.disabled()) {
-          switch (e.key) {
-            case 'ArrowLeft':
-              if (context.horizontal) {
-                e.preventDefault();
-                controller.setPrevChecked(true);
-              }
-              break;
-            case 'ArrowUp':
-              if (!context.horizontal) {
-                e.preventDefault();
-                controller.setPrevChecked(true);
-              }
-              break;
-            case 'ArrowRight':
-              if (context.horizontal) {
-                e.preventDefault();
-                controller.setNextChecked(true);
-              }
-              break;
-            case 'ArrowDown':
-              if (!context.horizontal) {
-                e.preventDefault();
-                controller.setNextChecked(true);
-              }
-              break;
-            case 'Home':
-              e.preventDefault();
-              controller.setFirstChecked();
-              break;
-            case 'End':
-              e.preventDefault();
-              controller.setLastChecked();
-              break;
-            case ' ':
-            case 'Enter':
-              e.preventDefault();
-              break;
-            default:
-              if (e.key.length === 1) {
-                characters = `${characters}${e.key}`;
-                if (timeout) {
-                  clearTimeout(timeout);
-                }
-                timeout = setTimeout(() => {
-                  controller.setFirstMatch(characters);
-                  characters = '';
-                }, 100);
-              }
-              break;
+
+        const onKeyDown = (e: KeyboardEvent) => {
+          if (!disclosureState.disabled() && e.key === 'Escape') {
+            disclosureState.close();
           }
-        }
-      };
-      const onBlur = (e: FocusEvent) => {
-        if (context.hovering) {
-          return;
-        }
-        if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
-          disclosureState.close();
-        }
-      };
-      const onFocusIn = (e: FocusEvent) => {
-        if (e.target && e.target !== ref) {
-          controller.setCurrent(e.target as HTMLElement);
-        }
-      };
-      ref.addEventListener('keydown', onKeyDown);
-      ref.addEventListener('focusout', onBlur);
-      ref.addEventListener('focusin', onFocusIn);
-      onCleanup(() => {
-        ref.removeEventListener('keydown', onKeyDown);
-        ref.removeEventListener('focusin', onFocusIn);
-        ref.removeEventListener('focusout', onBlur);
-      });
-    }
-  });
-
-  // This refocuses on the first item checked or first focusable item
-  // when the Disclosure opens
-  createEffect(() => {
-    if (disclosureState.isOpen()) {
-      if (!untrack(() => selectState.hasSelected())) {
-        controller.setFirstChecked();
-      } else {
-        controller.setFirstChecked(SELECTED_NODE);
+          if (!selectState.disabled()) {
+            switch (e.key) {
+              case 'ArrowLeft':
+                if (context.horizontal) {
+                  e.preventDefault();
+                  controller.setPrevChecked(true);
+                }
+                break;
+              case 'ArrowUp':
+                if (!context.horizontal) {
+                  e.preventDefault();
+                  controller.setPrevChecked(true);
+                }
+                break;
+              case 'ArrowRight':
+                if (context.horizontal) {
+                  e.preventDefault();
+                  controller.setNextChecked(true);
+                }
+                break;
+              case 'ArrowDown':
+                if (!context.horizontal) {
+                  e.preventDefault();
+                  controller.setNextChecked(true);
+                }
+                break;
+              case 'Home':
+                e.preventDefault();
+                controller.setFirstChecked();
+                break;
+              case 'End':
+                e.preventDefault();
+                controller.setLastChecked();
+                break;
+              case ' ':
+              case 'Enter':
+                e.preventDefault();
+                break;
+              default:
+                if (e.key.length === 1) {
+                  characters = `${characters}${e.key}`;
+                  if (timeout) {
+                    clearTimeout(timeout);
+                  }
+                  timeout = setTimeout(() => {
+                    controller.setFirstMatch(characters);
+                    characters = '';
+                  }, 100);
+                }
+                break;
+            }
+          }
+        };
+        const onBlur = (e: FocusEvent) => {
+          if (context.hovering) {
+            return;
+          }
+          if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
+            disclosureState.close();
+          }
+        };
+        const onFocusIn = (e: FocusEvent) => {
+          if (e.target && e.target !== ref) {
+            controller.setCurrent(e.target as HTMLElement);
+          }
+        };
+        ref.addEventListener('keydown', onKeyDown);
+        ref.addEventListener('focusout', onBlur);
+        ref.addEventListener('focusin', onFocusIn);
+        onCleanup(() => {
+          ref.removeEventListener('keydown', onKeyDown);
+          ref.removeEventListener('focusin', onFocusIn);
+          ref.removeEventListener('focusout', onBlur);
+        });
       }
-    }
+    });
   });
 
   return createComponent(ListboxOptionsContext.Provider, {

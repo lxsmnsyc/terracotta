@@ -1,9 +1,9 @@
 import {
   onCleanup,
-  createEffect,
   JSX,
   createComponent,
   mergeProps,
+  createRenderEffect,
 } from 'solid-js';
 import {
   omitProps,
@@ -57,7 +57,9 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(() => {
+  // I would really love to use createEffect but for some reason
+  // the timing is never accurate
+  createRenderEffect(() => {
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
@@ -68,7 +70,6 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
         }
       };
       const onFocus = () => {
-        console.log('focused', ref);
         state.focus();
       };
       const onBlur = () => {

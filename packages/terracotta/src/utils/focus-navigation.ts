@@ -50,7 +50,6 @@ function getNextFocusable(
 }
 
 function focusNode(node: HTMLElement | undefined, virtual: boolean) {
-  console.log('focusing', node);
   if (node) {
     if (virtual) {
       focusVirtually(node);
@@ -58,7 +57,6 @@ function focusNode(node: HTMLElement | undefined, virtual: boolean) {
       node.focus();
     }
   }
-  console.log('current active', document.activeElement);
   return node;
 }
 
