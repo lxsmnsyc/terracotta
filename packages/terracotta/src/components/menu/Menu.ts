@@ -20,6 +20,7 @@ import {
   MenuContext,
 } from './MenuContext';
 import { MENU_TAG } from './tags';
+import createTypeAhead from '../../utils/create-type-ahead';
 
 export type MenuProps<T extends ValidConstructor = 'ul'> = HeadlessPropsWithRef<T>;
 
@@ -30,13 +31,8 @@ export function Menu<T extends ValidConstructor = 'ul'>(
 
   const [ref, setRef] = createForwardRef(props);
 
-  let characters = '';
-  let timeout: ReturnType<typeof setTimeout> | undefined;
-
-  onCleanup(() => {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
+  const pushCharacter = createTypeAhead((value) => {
+    controller.setFirstMatch(value);
   });
 
   createEffect(() => {
@@ -70,14 +66,7 @@ export function Menu<T extends ValidConstructor = 'ul'>(
             break;
           default:
             if (e.key.length === 1) {
-              characters = `${characters}${e.key}`;
-              if (timeout) {
-                clearTimeout(timeout);
-              }
-              timeout = setTimeout(() => {
-                controller.setFirstMatch(characters);
-                characters = '';
-              }, 100);
+              pushCharacter(e.key);
             }
             break;
         }

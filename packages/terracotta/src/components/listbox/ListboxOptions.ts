@@ -31,6 +31,7 @@ import { LISTBOX_OPTIONS_TAG } from './tags';
 import { SelectStateProvider, SelectStateRenderProps, useSelectState } from '../../states/create-select-state';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import { SELECTED_NODE } from '../../utils/namespace';
+import createTypeAhead from '../../utils/create-type-ahead';
 
 export type ListboxOptionsProps<V, T extends ValidConstructor = 'ul'> =
   HeadlessPropsWithRef<T, SelectStateRenderProps<V>>;
@@ -46,13 +47,8 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
 
   const controller = createListboxOptionsFocusNavigator(context.optionsID);
 
-  let characters = '';
-  let timeout: ReturnType<typeof setTimeout> | undefined;
-
-  onCleanup(() => {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
+  const pushCharacter = createTypeAhead((value) => {
+    controller.setFirstMatch(value);
   });
 
   // This is a potential bug. The reason is that
@@ -115,14 +111,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
                 break;
               default:
                 if (e.key.length === 1) {
-                  characters = `${characters}${e.key}`;
-                  if (timeout) {
-                    clearTimeout(timeout);
-                  }
-                  timeout = setTimeout(() => {
-                    controller.setFirstMatch(characters);
-                    characters = '';
-                  }, 100);
+                  pushCharacter(e.key);
                 }
                 break;
             }

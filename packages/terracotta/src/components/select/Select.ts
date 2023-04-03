@@ -37,6 +37,7 @@ import {
 } from '../../states/create-select-state';
 import { Prettify } from '../../utils/types';
 import { SELECTED_NODE } from '../../utils/namespace';
+import createTypeAhead from '../../utils/create-type-ahead';
 
 export type SingleSelectControlledBaseProps<V> = Prettify<
   & SelectBaseProps
@@ -108,13 +109,8 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
       ? createMultipleSelectState(props)
       : createSingleSelectState(props);
 
-    let characters = '';
-    let timeout: ReturnType<typeof setTimeout> | undefined;
-
-    onCleanup(() => {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
+    const pushCharacter = createTypeAhead((value) => {
+      controller.setFirstMatch(value);
     });
 
     createEffect(() => {
@@ -163,14 +159,7 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
                 break;
               default:
                 if (e.key.length === 1) {
-                  characters = `${characters}${e.key}`;
-                  if (timeout) {
-                    clearTimeout(timeout);
-                  }
-                  timeout = setTimeout(() => {
-                    controller.setFirstMatch(characters);
-                    characters = '';
-                  }, 100);
+                  pushCharacter(e.key);
                 }
                 break;
             }
