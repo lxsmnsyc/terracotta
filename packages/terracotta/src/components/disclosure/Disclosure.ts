@@ -72,7 +72,7 @@ export function Disclosure<T extends ValidConstructor = typeof Fragment>(
     },
     get children() {
       return createDynamic(
-        () => props.as || (Fragment as T),
+        () => props.as || Fragment,
         mergeProps(
           isDisclosureUncontrolled(props)
             ? omitProps(props, [

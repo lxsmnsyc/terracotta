@@ -69,7 +69,7 @@ export function Checkbox<T extends ValidConstructor = typeof Fragment>(
     },
     get children() {
       return createDynamic(
-        () => props.as || (Fragment as T),
+        () => props.as || Fragment,
         mergeProps(
           isCheckboxUncontrolled(props)
             ? omitProps(props, [

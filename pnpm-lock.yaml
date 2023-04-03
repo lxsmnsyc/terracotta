@@ -64,6 +64,31 @@ importers:
       vite: 4.2.1
       vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
 
+  examples/command:
+    specifiers:
+      autoprefixer: ^10.4.13
+      eslint: ^8.37.0
+      eslint-config-lxsmnsyc: ^0.5.1
+      postcss: ^8.4.21
+      solid-js: ^1.7.0
+      tailwindcss: ^3.3.1
+      terracotta: 0.13.1
+      typescript: ^4.9.5
+      vite: ^4.2.1
+      vite-plugin-solid: ^2.6.1
+    dependencies:
+      solid-js: 1.7.0
+      tailwindcss: 3.3.1_postcss@8.4.21
+      terracotta: link:../../packages/terracotta
+    devDependencies:
+      autoprefixer: 10.4.13_postcss@8.4.21
+      eslint: 8.37.0
+      eslint-config-lxsmnsyc: 0.5.1_ip5up2nocltd47wbnuyybe5dxu
+      postcss: 8.4.21
+      typescript: 4.9.5
+      vite: 4.2.1
+      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+
   examples/commandbar:
     specifiers:
       autoprefixer: ^10.4.13
@@ -467,7 +492,7 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       '@jridgewell/gen-mapping': 0.1.1
-      '@jridgewell/trace-mapping': 0.3.13
+      '@jridgewell/trace-mapping': 0.3.17
     dev: true
 
   /@babel/code-frame/7.18.6:
@@ -488,14 +513,14 @@ packages:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@babel/code-frame': 7.18.6
-      '@babel/generator': 7.20.14
+      '@babel/generator': 7.21.4
       '@babel/helper-compilation-targets': 7.20.7_@babel+core@7.20.12
       '@babel/helper-module-transforms': 7.20.11
       '@babel/helpers': 7.20.13
       '@babel/parser': 7.20.15
       '@babel/template': 7.20.7
       '@babel/traverse': 7.20.13
-      '@babel/types': 7.21.0
+      '@babel/types': 7.21.4
       convert-source-map: 1.8.0
       debug: 4.3.4
       gensync: 1.0.0-beta.2
@@ -517,15 +542,6 @@ packages:
       eslint-scope: 5.1.1
       eslint-visitor-keys: 2.1.0
       semver: 6.3.0
-    dev: true
-
-  /@babel/generator/7.20.14:
-    resolution: {integrity: sha512-AEmuXHdcD3A52HHXxaTmYlb8q/xMEhoRP67B3T4Oq7lbmSoqroMZzjnGj3+i1io3pdnF8iBYVu4Ilj+c4hBxYg==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/types': 7.21.4
-      '@jridgewell/gen-mapping': 0.3.2
-      jsesc: 2.5.2
     dev: true
 
   /@babel/generator/7.21.4:
@@ -810,15 +826,6 @@ packages:
       - supports-color
     dev: true
 
-  /@babel/types/7.21.0:
-    resolution: {integrity: sha512-uR7NWq2VNFnDi7EYqiRz2Jv/VQIu38tu64Zy8TX2nQFQ6etJ9V/Rr2msW8BS132mum2rL645qpDrLtAJtVpuow==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/helper-string-parser': 7.19.4
-      '@babel/helper-validator-identifier': 7.19.1
-      to-fast-properties: 2.0.0
-    dev: true
-
   /@babel/types/7.21.4:
     resolution: {integrity: sha512-rU2oY501qDxE8Pyo7i/Orqma4ziCOrby0/9mvbDUGEfvZjb279Nk9k19e2fiCxHbRRpY2ZyrgW1eq22mvmOIzA==}
     engines: {node: '>=6.9.0'}
@@ -1101,7 +1108,7 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       '@jridgewell/set-array': 1.1.1
-      '@jridgewell/sourcemap-codec': 1.4.13
+      '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
   /@jridgewell/gen-mapping/0.3.2:
@@ -1109,13 +1116,8 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       '@jridgewell/set-array': 1.1.1
-      '@jridgewell/sourcemap-codec': 1.4.13
+      '@jridgewell/sourcemap-codec': 1.4.14
       '@jridgewell/trace-mapping': 0.3.17
-    dev: true
-
-  /@jridgewell/resolve-uri/3.0.7:
-    resolution: {integrity: sha512-8cXDaBBHOr2pQ7j77Y6Vp5VDT2sIqWyWQ56TjEq4ih/a4iST3dItRe8Q9fp0rrIl9DoKhWQtUQz/YpOxLkXbNA==}
-    engines: {node: '>=6.0.0'}
     dev: true
 
   /@jridgewell/resolve-uri/3.1.0:
@@ -1128,19 +1130,8 @@ packages:
     engines: {node: '>=6.0.0'}
     dev: true
 
-  /@jridgewell/sourcemap-codec/1.4.13:
-    resolution: {integrity: sha512-GryiOJmNcWbovBxTfZSF71V/mXbgcV3MewDe3kIMCLyIh5e7SKAeUZs+rMnJ8jkMolZ/4/VsdBmMrw3l+VdZ3w==}
-    dev: true
-
   /@jridgewell/sourcemap-codec/1.4.14:
     resolution: {integrity: sha512-XPSJHWmi394fuUuzDnGz1wiKqWfo1yXecHQMRf2l6hztTO+nPru658AyDngaBe7isIxEkRsPR3FZh+s7iVa4Uw==}
-    dev: true
-
-  /@jridgewell/trace-mapping/0.3.13:
-    resolution: {integrity: sha512-o1xbKhp9qnIAoHJSWd6KlCZfqslL4valSF81H8ImioOAxluWYWOpWkpyktY2vnt4tbrX9XYaxovq6cgowaJp2w==}
-    dependencies:
-      '@jridgewell/resolve-uri': 3.0.7
-      '@jridgewell/sourcemap-codec': 1.4.13
     dev: true
 
   /@jridgewell/trace-mapping/0.3.17:
@@ -1590,7 +1581,7 @@ packages:
     resolution: {integrity: sha512-+n8dL/9GWblDO0iU6eZAwEIJVr5DWigtle+Q6HLOrh/pdbXOhOtqzq8VPPE2zvNJzSKY4vH/z3iT3tn0A3ypiQ==}
     dependencies:
       '@babel/parser': 7.20.15
-      '@babel/types': 7.21.0
+      '@babel/types': 7.21.4
       '@types/babel__generator': 7.6.4
       '@types/babel__template': 7.4.1
       '@types/babel__traverse': 7.18.3
@@ -2152,7 +2143,7 @@ packages:
       '@babel/core': 7.20.12
       '@babel/helper-module-imports': 7.18.6
       '@babel/plugin-syntax-jsx': 7.18.6_@babel+core@7.20.12
-      '@babel/types': 7.21.0
+      '@babel/types': 7.21.4
       html-entities: 2.3.3
       validate-html-nesting: 1.2.1
     dev: true

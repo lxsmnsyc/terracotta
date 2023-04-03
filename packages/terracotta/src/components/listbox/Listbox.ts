@@ -350,7 +350,7 @@ export function Listbox<V, T extends ValidConstructor = typeof Fragment>(
       },
       get children() {
         return createDynamic(
-          () => props.as || (Fragment as T),
+          () => props.as || Fragment,
           mergeProps(
             getProps(props),
             LISTBOX_TAG,
