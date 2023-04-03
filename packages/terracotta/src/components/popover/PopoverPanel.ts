@@ -50,38 +50,36 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
 
   createEffect(() => {
     const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      if (state.isOpen()) {
-        focusFirst(getFocusableElements(ref), true);
+    if (ref instanceof HTMLElement && state.isOpen()) {
+      focusFirst(getFocusableElements(ref), false);
 
-        const onKeyDown = (e: KeyboardEvent) => {
-          if (!state.disabled()) {
-            if (e.key === 'Tab') {
-              e.preventDefault();
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (!state.disabled()) {
+          if (e.key === 'Tab') {
+            e.preventDefault();
 
-              lockFocus(ref, e.shiftKey, false);
-            } else if (e.key === 'Escape') {
-              state.close();
-            }
-          }
-        };
-
-        const onBlur = (e: FocusEvent) => {
-          if (context.hovering) {
-            return;
-          }
-          if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
+            lockFocus(ref, e.shiftKey, false);
+          } else if (e.key === 'Escape') {
             state.close();
           }
-        };
+        }
+      };
 
-        ref.addEventListener('keydown', onKeyDown);
-        ref.addEventListener('focusout', onBlur);
-        onCleanup(() => {
-          ref.removeEventListener('keydown', onKeyDown);
-          ref.removeEventListener('focusout', onBlur);
-        });
-      }
+      const onBlur = (e: FocusEvent) => {
+        if (context.hovering) {
+          return;
+        }
+        if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
+          state.close();
+        }
+      };
+
+      ref.addEventListener('keydown', onKeyDown);
+      ref.addEventListener('focusout', onBlur);
+      onCleanup(() => {
+        ref.removeEventListener('keydown', onKeyDown);
+        ref.removeEventListener('focusout', onBlur);
+      });
     }
   });
 

@@ -40,27 +40,24 @@ export function DialogPanel<T extends ValidConstructor = 'div'>(
 
   createEffect(() => {
     const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      if (state.isOpen()) {
-        focusFirst(getFocusableElements(ref), false);
+    if (ref instanceof HTMLElement && state.isOpen()) {
+      focusFirst(getFocusableElements(ref), false);
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (!props.disabled) {
+          if (e.key === 'Tab') {
+            e.preventDefault();
 
-        const onKeyDown = (e: KeyboardEvent) => {
-          if (!props.disabled) {
-            if (e.key === 'Tab') {
-              e.preventDefault();
-
-              lockFocus(ref, e.shiftKey, false);
-            } else if (e.key === 'Escape') {
-              state.close();
-            }
+            lockFocus(ref, e.shiftKey, false);
+          } else if (e.key === 'Escape') {
+            state.close();
           }
-        };
+        }
+      };
 
-        ref.addEventListener('keydown', onKeyDown);
-        onCleanup(() => {
-          ref.removeEventListener('keydown', onKeyDown);
-        });
-      }
+      ref.addEventListener('keydown', onKeyDown);
+      onCleanup(() => {
+        ref.removeEventListener('keydown', onKeyDown);
+      });
     }
   });
 
