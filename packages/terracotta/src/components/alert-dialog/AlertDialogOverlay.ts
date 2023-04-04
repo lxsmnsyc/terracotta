@@ -24,6 +24,7 @@ import {
   DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
+import { createExpandedState } from '../../utils/state-props';
 
 export type AlertDialogOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -71,6 +72,7 @@ export function AlertDialogOverlay<T extends ValidConstructor = 'div'>(
           });
         },
       },
+      createExpandedState(() => state.isOpen()),
     ) as DynamicProps<T>,
   );
 }

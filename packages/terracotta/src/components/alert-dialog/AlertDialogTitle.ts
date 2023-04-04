@@ -19,7 +19,9 @@ import { ALERT_DIALOG_TITLE_TAG } from './tags';
 import {
   DisclosureStateChild,
   DisclosureStateRenderProps,
+  useDisclosureState,
 } from '../../states/create-disclosure-state';
+import { createExpandedState } from '../../utils/state-props';
 
 export type AlertDialogTitleProps<T extends ValidConstructor = 'h2'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -28,6 +30,8 @@ export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
   props: AlertDialogTitleProps<T>,
 ): JSX.Element {
   const context = useAlertDialogContext('AlertDialogTitle');
+  const state = useDisclosureState();
+
   return createDynamic(
     () => props.as || ('h2' as T),
     mergeProps(
@@ -46,6 +50,7 @@ export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
           });
         },
       },
+      createExpandedState(() => state.isOpen()),
     ) as DynamicProps<T>,
   );
 }

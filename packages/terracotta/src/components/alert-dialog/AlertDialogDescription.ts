@@ -16,7 +16,8 @@ import {
   useAlertDialogContext,
 } from './AlertDialogContext';
 import { ALERT_DIALOG_DESCRIPTION_TAG } from './tags';
-import { DisclosureStateChild, DisclosureStateRenderProps } from '../../states/create-disclosure-state';
+import { DisclosureStateChild, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
+import { createExpandedState } from '../../utils/state-props';
 
 export type AlertDialogDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
@@ -25,6 +26,7 @@ export function AlertDialogDescription<T extends ValidConstructor = 'p'>(
   props: AlertDialogDescriptionProps<T>,
 ): JSX.Element {
   const context = useAlertDialogContext('AlertDialogDescription');
+  const state = useDisclosureState();
   return createDynamic(
     () => props.as || ('p' as T),
     mergeProps(
@@ -43,6 +45,7 @@ export function AlertDialogDescription<T extends ValidConstructor = 'p'>(
           });
         },
       },
+      createExpandedState(() => state.isOpen()),
     ) as DynamicProps<T>,
   );
 }
