@@ -1,20 +1,28 @@
 /**
+ * Hybrid states
+ */
+
+/**
  * ARIA states
  */
 
-interface ARIADisabledProps {
+interface DisabledProps {
   disabled?: boolean;
   'aria-disabled'?: boolean;
+  'tc-disabled'?: boolean;
 }
 
-export function createARIADisabledState(
+export function createDisabledState(
   disabled: () => boolean | undefined,
-): ARIADisabledProps {
+): DisabledProps {
   return {
     get disabled() {
       return disabled();
     },
     get 'aria-disabled'() {
+      return disabled();
+    },
+    get 'tc-disabled'() {
       return disabled();
     },
   };
@@ -52,11 +60,11 @@ interface ARIASelectedProps {
 }
 
 export function createARIASelectedState(
-  checked: () => boolean,
+  selected: () => boolean,
 ): ARIASelectedProps {
   return {
     get 'aria-selected'() {
-      return checked();
+      return selected();
     },
   };
 }
@@ -64,20 +72,6 @@ export function createARIASelectedState(
 /**
  * Terracotta States
  */
-
-interface DisabledProps {
-  'tc-disabled'?: boolean;
-}
-
-export function createDisabledState(
-  disabled: () => boolean | undefined,
-): DisabledProps {
-  return {
-    get 'tc-disabled'() {
-      return disabled();
-    },
-  };
-}
 
 interface ExpandedProps {
   'tc-expanded'?: boolean;
@@ -98,11 +92,12 @@ interface CheckedProps {
 }
 
 export function createCheckedState(
-  checked: () => boolean | undefined,
+  isChecked: () => boolean | undefined,
 ): CheckedProps {
   return {
     get 'tc-checked'() {
-      return checked() ?? 'mixed';
+      const result = isChecked();
+      return result == null ? 'mixed' : result;
     },
   };
 }
@@ -112,11 +107,11 @@ interface SelectedProps {
 }
 
 export function createSelectedState(
-  checked: () => boolean,
+  isSelected: () => boolean,
 ): SelectedProps {
   return {
     get 'tc-selected'() {
-      return checked();
+      return isSelected();
     },
   };
 }
@@ -126,11 +121,11 @@ interface ActiveProps {
 }
 
 export function createActiveState(
-  checked: () => boolean,
+  isActive: () => boolean,
 ): ActiveProps {
   return {
     get 'tc-active'() {
-      return checked();
+      return isActive();
     },
   };
 }
@@ -140,11 +135,11 @@ interface MatchesProps {
 }
 
 export function createMatchesState(
-  checked: () => boolean,
+  matches: () => boolean,
 ): MatchesProps {
   return {
     get 'tc-matches'() {
-      return checked();
+      return matches();
     },
   };
 }
