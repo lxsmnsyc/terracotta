@@ -24,6 +24,7 @@ import {
   DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
+import { createExpandedState } from '../../utils/state-props';
 
 export type CommandBarOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -71,6 +72,7 @@ export function CommandBarOverlay<T extends ValidConstructor = 'p'>(
           });
         },
       },
+      createExpandedState(() => state.isOpen()),
     ) as DynamicProps<T>,
   );
 }

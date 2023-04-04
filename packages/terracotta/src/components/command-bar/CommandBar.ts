@@ -4,6 +4,7 @@ import {
   createUniqueId,
   JSX,
   mergeProps,
+  onCleanup,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import {
@@ -21,10 +22,10 @@ import {
 } from '../../states/create-disclosure-state';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import { CommandBarContext } from './CommandBarContext';
-import CommandBarEvents from './CommandBarEvents';
 import { createUnmountable, UnmountableProps } from '../../utils/create-unmountable';
 import createDynamic from '../../utils/create-dynamic';
 import { COMMAND_BAR_TAG } from './tags';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 
 export type CommandBarControlledBaseProps = Prettify<
   & DisclosureStateControlledOptions
@@ -73,6 +74,20 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
     }
   });
 
+  createEffect(() => {
+    const onKeyDown = (ev: KeyboardEvent) => {
+      if ((ev.metaKey || ev.ctrlKey) && ev.key === 'k' && ev.defaultPrevented === false) {
+        ev.preventDefault();
+        state.open();
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    onCleanup(() => {
+      window.removeEventListener('keydown', onKeyDown);
+    });
+  });
+
   return createComponent(CommandBarContext.Provider, {
     value: {
       ownerID,
@@ -81,58 +96,56 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
       descriptionID,
     },
     get children() {
-      return createComponent(DisclosureStateProvider, {
-        state,
-        get children() {
-          return createComponent(CommandBarEvents, {
-            get children() {
-              return createUnmountable(
-                props,
-                () => state.isOpen(),
-                () => createDynamic(
-                  () => props.as || ('div' as T),
-                  mergeProps(
-                    isCommandBarUncontrolled(props)
-                      ? omitProps(props, [
-                        'as',
-                        'children',
-                        'defaultOpen',
-                        'disabled',
-                        'onChange',
-                        'onClose',
-                        'onOpen',
-                        'unmount',
-                      ])
-                      : omitProps(props, [
-                        'as',
-                        'children',
-                        'isOpen',
-                        'disabled',
-                        'onChange',
-                        'onClose',
-                        'onOpen',
-                        'unmount',
-                      ]),
-                    {
-                      id: ownerID,
-                      role: 'dialog',
-                      'aria-modal': true,
-                      'aria-labelledby': titleID,
-                      'aria-describedby': descriptionID,
-                    },
-                    COMMAND_BAR_TAG,
-                    {
-                      get children() {
-                        return props.children;
-                      },
-                    },
-                  ) as DynamicProps<T>,
-                ),
-              );
+      return createUnmountable(
+        props,
+        () => state.isOpen(),
+        () => createDynamic(
+          () => props.as || ('div' as T),
+          mergeProps(
+            isCommandBarUncontrolled(props)
+              ? omitProps(props, [
+                'as',
+                'children',
+                'defaultOpen',
+                'disabled',
+                'onChange',
+                'onClose',
+                'onOpen',
+                'unmount',
+              ])
+              : omitProps(props, [
+                'as',
+                'children',
+                'isOpen',
+                'disabled',
+                'onChange',
+                'onClose',
+                'onOpen',
+                'unmount',
+              ]),
+            {
+              id: ownerID,
+              role: 'dialog',
+              'aria-modal': true,
+              'aria-labelledby': titleID,
+              'aria-describedby': descriptionID,
             },
-          });
-        },
-      });
+            COMMAND_BAR_TAG,
+            createDisabledState(() => state.disabled()),
+            createExpandedState(() => state.isOpen()),
+            {
+              get children() {
+                return createComponent(DisclosureStateProvider, {
+                  state,
+                  get children() {
+                    return props.children;
+                  },
+                });
+              },
+            },
+          ) as DynamicProps<T>,
+        ),
+      );
     },
   });
 }

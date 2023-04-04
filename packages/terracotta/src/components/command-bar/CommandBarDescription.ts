@@ -19,7 +19,9 @@ import { COMMAND_BAR_DESCRIPTION_TAG } from './tags';
 import {
   DisclosureStateChild,
   DisclosureStateRenderProps,
+  useDisclosureState,
 } from '../../states/create-disclosure-state';
+import { createExpandedState } from '../../utils/state-props';
 
 export type CommandBarDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
@@ -28,6 +30,7 @@ export function CommandBarDescription<T extends ValidConstructor = 'p'>(
   props: CommandBarDescriptionProps<T>,
 ): JSX.Element {
   const context = useCommandBarContext('CommandBarDescription');
+  const state = useDisclosureState();
   return createDynamic(
     () => props.as || ('p' as T),
     mergeProps(
@@ -46,6 +49,7 @@ export function CommandBarDescription<T extends ValidConstructor = 'p'>(
           });
         },
       },
+      createExpandedState(() => state.isOpen()),
     ) as DynamicProps<T>,
   );
 }
