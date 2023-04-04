@@ -21,7 +21,7 @@ import {
 } from '../../states/create-disclosure-state';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import { ContextMenuContext } from './ContextMenuContext';
-import { createDisabledState } from '../../utils/state-props';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import createDynamic from '../../utils/create-dynamic';
 import { CONTEXT_MENU_TAG } from './tags';
 
@@ -101,6 +101,7 @@ export function ContextMenu<T extends ValidConstructor = 'div'>(
             ]),
           CONTEXT_MENU_TAG,
           createDisabledState(() => state.disabled()),
+          createExpandedState(() => state.isOpen()),
           {
             get children() {
               return createComponent(DisclosureStateProvider, {

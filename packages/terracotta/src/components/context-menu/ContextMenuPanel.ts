@@ -31,6 +31,7 @@ import {
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 import { Prettify } from '../../utils/types';
+import { createExpandedState } from '../../utils/state-props';
 
 export type ContextMenuPanelBaseProps = Prettify<
   & DisclosureStateRenderProps
@@ -44,14 +45,14 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
   props: ContextMenuPanelProps<T>,
 ): JSX.Element {
   const context = useContextMenuContext('ContextMenuPanel');
-  const properties = useDisclosureState();
+  const state = useDisclosureState();
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      if (properties.isOpen()) {
+      if (state.isOpen()) {
         focusFirst(getFocusableElements(ref), false);
 
         const onKeyDown = (e: KeyboardEvent) => {
@@ -61,14 +62,14 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
 
               lockFocus(ref, e.shiftKey, false);
             } else if (e.key === 'Escape') {
-              properties.setState(false);
+              state.close();
             }
           }
         };
 
         const onClickOutside = (e: FocusEvent) => {
           if (!ref.contains(e.target as Node)) {
-            properties.setState(false);
+            state.close();
           }
         };
 
@@ -84,7 +85,7 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
 
   return createUnmountable(
     props,
-    () => properties.isOpen(),
+    () => state.isOpen(),
     () => createDynamic(
       () => props.as || ('div' as T),
       mergeProps(
@@ -106,6 +107,7 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
             });
           },
         },
+        createExpandedState(() => state.isOpen()),
       ) as DynamicProps<T>,
     ),
   );
