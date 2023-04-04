@@ -20,7 +20,7 @@ import {
   SelectContext,
 } from './SelectContext';
 import createDynamic from '../../utils/create-dynamic';
-import { createDisabledState } from '../../utils/state-props';
+import { createDisabledState, createHasActiveState, createHasSelectedState } from '../../utils/state-props';
 import { SELECT_TAG } from './tags';
 import {
   createSingleSelectState,
@@ -235,6 +235,8 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
               },
             },
             createDisabledState(() => state.disabled()),
+            createHasSelectedState(() => state.hasSelected()),
+            createHasActiveState(() => state.hasActive()),
             {
               get children() {
                 return createComponent(SelectStateProvider, {
