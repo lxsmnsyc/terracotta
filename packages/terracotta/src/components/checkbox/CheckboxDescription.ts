@@ -16,7 +16,8 @@ import {
   useCheckboxContext,
 } from './CheckboxContext';
 import { CHECKBOX_DESCRIPTION } from './tags';
-import { CheckStateChild, CheckStateRenderProps } from '../../states/create-check-state';
+import { CheckStateChild, CheckStateRenderProps, useCheckState } from '../../states/create-check-state';
+import { createCheckedState } from '../../utils/state-props';
 
 export type CheckboxDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, CheckStateRenderProps>;
@@ -25,6 +26,7 @@ export function CheckboxDescription<T extends ValidConstructor = 'p'>(
   props: CheckboxDescriptionProps<T>,
 ): JSX.Element {
   const context = useCheckboxContext('CheckboxDescription');
+  const state = useCheckState();
   return createDynamic(
     () => props.as || ('p' as T),
     mergeProps(
@@ -43,6 +45,7 @@ export function CheckboxDescription<T extends ValidConstructor = 'p'>(
           });
         },
       },
+      createCheckedState(() => state.checked()),
     ) as DynamicProps<T>,
   );
 }

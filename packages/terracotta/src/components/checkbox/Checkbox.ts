@@ -10,7 +10,6 @@ import {
   HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import Fragment from '../../utils/Fragment';
 import { Prettify } from '../../utils/types';
 import {
   CheckStateControlledOptions,
@@ -22,14 +21,14 @@ import {
 import { CheckboxContext } from './CheckboxContext';
 import createDynamic from '../../utils/create-dynamic';
 import { CHECKBOX_TAG } from './tags';
-import { createDisabledState } from '../../utils/state-props';
+import { createCheckedState, createDisabledState } from '../../utils/state-props';
 
 export type CheckboxControlledBaseProps = Prettify<
   & CheckStateControlledOptions
   & CheckStateRenderProps
 >;
 
-export type CheckboxControlledProps<T extends ValidConstructor = typeof Fragment> =
+export type CheckboxControlledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, CheckboxControlledBaseProps>;
 
 export type CheckboxUncontrolledBaseProps = Prettify<
@@ -37,20 +36,20 @@ export type CheckboxUncontrolledBaseProps = Prettify<
   & CheckStateRenderProps
 >;
 
-export type CheckboxUncontrolledProps<T extends ValidConstructor = typeof Fragment> =
+export type CheckboxUncontrolledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, CheckboxUncontrolledBaseProps>;
 
-export type CheckboxProps<T extends ValidConstructor = typeof Fragment> =
+export type CheckboxProps<T extends ValidConstructor = 'div'> =
   | CheckboxControlledProps<T>
   | CheckboxUncontrolledProps<T>;
 
-function isCheckboxUncontrolled<T extends ValidConstructor = typeof Fragment>(
+function isCheckboxUncontrolled<T extends ValidConstructor = 'div'>(
   props: CheckboxProps<T>,
 ): props is CheckboxUncontrolledProps<T> {
   return 'defaultChecked' in props;
 }
 
-export function Checkbox<T extends ValidConstructor = typeof Fragment>(
+export function Checkbox<T extends ValidConstructor = 'div'>(
   props: CheckboxProps<T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
@@ -69,7 +68,7 @@ export function Checkbox<T extends ValidConstructor = typeof Fragment>(
     },
     get children() {
       return createDynamic(
-        () => props.as || Fragment,
+        () => props.as || 'div',
         mergeProps(
           isCheckboxUncontrolled(props)
             ? omitProps(props, [
@@ -88,6 +87,7 @@ export function Checkbox<T extends ValidConstructor = typeof Fragment>(
             ]),
           CHECKBOX_TAG,
           createDisabledState(() => state.disabled()),
+          createCheckedState(() => state.checked()),
           {
             get children() {
               return createComponent(CheckStateProvider, {
