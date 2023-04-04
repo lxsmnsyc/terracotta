@@ -14,6 +14,11 @@ import {
   useRadioGroupContext,
 } from './RadioGroupContext';
 import { RADIO_GROUP_DESCRIPTION_TAG } from './tags';
+import {
+  createActiveState,
+  createCheckedState,
+} from '../../utils/state-props';
+import { useSelectOptionState } from '../../states/create-select-option-state';
 
 export type RadioGroupDescriptionProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T>;
@@ -22,6 +27,7 @@ export function RadioGroupDescription<T extends ValidConstructor = 'div'>(
   props: RadioGroupDescriptionProps<T>,
 ): JSX.Element {
   const context = useRadioGroupContext('RadioGroupDescription');
+  const state = useSelectOptionState();
 
   return createDynamic(
     () => props.as || ('div' as T),
@@ -31,6 +37,8 @@ export function RadioGroupDescription<T extends ValidConstructor = 'div'>(
       {
         id: context.descriptionID,
       },
+      createCheckedState(() => state.isSelected()),
+      createActiveState(() => state.isActive()),
     ) as DynamicProps<T>,
   );
 }

@@ -24,6 +24,7 @@ import {
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
   createActiveState,
+  createARIACheckedState,
   createCheckedState,
   createDisabledState,
 } from '../../utils/state-props';
@@ -109,6 +110,7 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
         },
         createDisabledState(() => state.disabled()),
         createCheckedState(() => state.isSelected()),
+        createARIACheckedState(() => state.isSelected()),
         createActiveState(() => state.isActive()),
         {
           get children() {
