@@ -18,7 +18,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
-  createDisabledState,
+  createDisabledState, createExpandedState, createHasActiveState, createHasSelectedState,
 } from '../../utils/state-props';
 import {
   useListboxContext,
@@ -168,6 +168,9 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
             },
           },
           createDisabledState(() => selectState.disabled()),
+          createExpandedState(() => disclosureState.isOpen()),
+          createHasSelectedState(() => selectState.hasSelected()),
+          createHasActiveState(() => selectState.hasActive()),
           {
             get children() {
               return createComponent(SelectStateProvider, {

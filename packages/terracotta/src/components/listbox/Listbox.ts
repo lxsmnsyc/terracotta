@@ -16,9 +16,8 @@ import {
   HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import Fragment from '../../utils/Fragment';
 import {
-  createDisabledState,
+  createDisabledState, createExpandedState, createHasActiveState, createHasSelectedState,
 } from '../../utils/state-props';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
@@ -64,7 +63,7 @@ export type ListboxSCSCDBaseProps<V> = Prettify<
   & { children?: JSX.Element }
 >;
 
-export type ListboxSCSCDProps<V, T extends ValidConstructor = typeof Fragment> =
+export type ListboxSCSCDProps<V, T extends ValidConstructor = 'div'> =
   HeadlessProps<T, ListboxSCSCDBaseProps<V>>;
 
 // SCSCD = Single, Controlled Select, Uncontrolled Disclosure
@@ -76,7 +75,7 @@ export type ListboxSCSUDBaseProps<V> = Prettify<
   & { children?: JSX.Element }
 >;
 
-export type ListboxSCSUDProps<V, T extends ValidConstructor = typeof Fragment> =
+export type ListboxSCSUDProps<V, T extends ValidConstructor = 'div'> =
   HeadlessProps<T, ListboxSCSUDBaseProps<V>>;
 
 // SCSCD = Single, Uncontrolled Select, Controlled Disclosure
@@ -88,7 +87,7 @@ export type ListboxSUSCDBaseProps<V> = Prettify<
   & { children?: JSX.Element }
 >;
 
-export type ListboxSUSCDProps<V, T extends ValidConstructor = typeof Fragment> =
+export type ListboxSUSCDProps<V, T extends ValidConstructor = 'div'> =
   HeadlessProps<T, ListboxSUSCDBaseProps<V>>;
 
 // SCSCD = Single, Uncontrolled Select, Uncontrolled Disclosure
@@ -100,10 +99,10 @@ export type ListboxSUSUDBaseProps<V> = Prettify<
   & { children?: JSX.Element }
 >;
 
-export type ListboxSUSUDProps<V, T extends ValidConstructor = typeof Fragment> =
+export type ListboxSUSUDProps<V, T extends ValidConstructor = 'div'> =
   HeadlessProps<T, ListboxSUSUDBaseProps<V>>;
 
-export type ListboxSingleProps<V, T extends ValidConstructor = typeof Fragment> =
+export type ListboxSingleProps<V, T extends ValidConstructor = 'div'> =
   | ListboxSCSCDProps<V, T>
   | ListboxSCSUDProps<V, T>
   | ListboxSUSCDProps<V, T>
@@ -118,7 +117,7 @@ export type ListboxMCSCDBaseProps<V> = Prettify<
   & { children?: JSX.Element }
 >;
 
-export type ListboxMCSCDProps<V, T extends ValidConstructor = typeof Fragment> =
+export type ListboxMCSCDProps<V, T extends ValidConstructor = 'div'> =
   HeadlessProps<T, ListboxMCSCDBaseProps<V>>;
 
 // MCSCD = Multiple, Controlled Select, Uncontrolled Disclosure
@@ -130,7 +129,7 @@ export type ListboxMCSUDBaseProps<V> = Prettify<
   & { children?: JSX.Element }
 >;
 
-export type ListboxMCSUDProps<V, T extends ValidConstructor = typeof Fragment> =
+export type ListboxMCSUDProps<V, T extends ValidConstructor = 'div'> =
   HeadlessProps<T, ListboxMCSUDBaseProps<V>>;
 
 // MCSCD = Multiple, Uncontrolled Select, Controlled Disclosure
@@ -142,7 +141,7 @@ export type ListboxMUSCDBaseProps<V> = Prettify<
   & { children?: JSX.Element }
 >;
 
-export type ListboxMUSCDProps<V, T extends ValidConstructor = typeof Fragment> =
+export type ListboxMUSCDProps<V, T extends ValidConstructor = 'div'> =
   HeadlessProps<T, ListboxMUSCDBaseProps<V>>;
 
 // MCSCD = Multiple, Uncontrolled Select, Uncontrolled Disclosure
@@ -154,50 +153,50 @@ export type ListboxMUSUDBaseProps<V> = Prettify<
   & { children?: JSX.Element }
 >;
 
-export type ListboxMUSUDProps<V, T extends ValidConstructor = typeof Fragment> =
+export type ListboxMUSUDProps<V, T extends ValidConstructor = 'div'> =
   HeadlessProps<T, ListboxMUSUDBaseProps<V>>;
 
-export type ListboxMultipleProps<V, T extends ValidConstructor = typeof Fragment> =
+export type ListboxMultipleProps<V, T extends ValidConstructor = 'div'> =
   | ListboxMCSCDProps<V, T>
   | ListboxMCSUDProps<V, T>
   | ListboxMUSCDProps<V, T>
   | ListboxMUSUDProps<V, T>;
 
-type ListboxSelectUncontrolledProps<V, T extends ValidConstructor = typeof Fragment> =
+type ListboxSelectUncontrolledProps<V, T extends ValidConstructor = 'div'> =
   | ListboxMUSCDProps<V, T>
   | ListboxMUSUDProps<V, T>
   | ListboxSUSCDProps<V, T>
   | ListboxSUSUDProps<V, T>;
 
-type ListboxDisclosureUncontrolledProps<V, T extends ValidConstructor = typeof Fragment> =
+type ListboxDisclosureUncontrolledProps<V, T extends ValidConstructor = 'div'> =
   | ListboxMCSUDProps<V, T>
   | ListboxMUSUDProps<V, T>
   | ListboxSCSUDProps<V, T>
   | ListboxSUSUDProps<V, T>;
 
-export type ListboxProps<V, T extends ValidConstructor = typeof Fragment> =
+export type ListboxProps<V, T extends ValidConstructor = 'div'> =
   | ListboxMultipleProps<V, T>
   | ListboxSingleProps<V, T>;
 
-function isListboxMultiple<V, T extends ValidConstructor = typeof Fragment>(
+function isListboxMultiple<V, T extends ValidConstructor = 'div'>(
   props: ListboxProps<V, T>,
 ): props is ListboxMultipleProps<V, T> {
   return !!props.multiple;
 }
 
-function isListboxSelectUncontrolled<V, T extends ValidConstructor = typeof Fragment>(
+function isListboxSelectUncontrolled<V, T extends ValidConstructor = 'div'>(
   props: ListboxProps<V, T>,
 ): props is ListboxSelectUncontrolledProps<V, T> {
   return 'defaultValue' in props;
 }
 
-function isListboxDisclosureUncontrolled<V, T extends ValidConstructor = typeof Fragment>(
+function isListboxDisclosureUncontrolled<V, T extends ValidConstructor = 'div'>(
   props: ListboxProps<V, T>,
 ): props is ListboxDisclosureUncontrolledProps<V, T> {
   return 'defaultOpen' in props;
 }
 
-function getProps<V, T extends ValidConstructor = typeof Fragment>(
+function getProps<V, T extends ValidConstructor = 'div'>(
   props: ListboxProps<V, T>,
 ) {
   if (isListboxSelectUncontrolled(props)) {
@@ -268,7 +267,7 @@ function getProps<V, T extends ValidConstructor = typeof Fragment>(
   ]);
 }
 
-export function Listbox<V, T extends ValidConstructor = typeof Fragment>(
+export function Listbox<V, T extends ValidConstructor = 'div'>(
   props: ListboxProps<V, T>,
 ): JSX.Element {
   return createMemo(() => {
@@ -350,7 +349,7 @@ export function Listbox<V, T extends ValidConstructor = typeof Fragment>(
       },
       get children() {
         return createDynamic(
-          () => props.as || Fragment,
+          () => props.as || 'div',
           mergeProps(
             getProps(props),
             LISTBOX_TAG,
@@ -358,6 +357,9 @@ export function Listbox<V, T extends ValidConstructor = typeof Fragment>(
               'aria-labelledby': labelID,
             },
             createDisabledState(() => selectState.disabled()),
+            createHasSelectedState(() => selectState.hasSelected()),
+            createHasActiveState(() => selectState.hasActive()),
+            createExpandedState(() => disclosureState.isOpen()),
             {
               get children() {
                 return createComponent(SelectStateProvider, {

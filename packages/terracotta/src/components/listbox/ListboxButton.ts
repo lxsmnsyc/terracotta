@@ -14,8 +14,11 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  createARIAExpandedState,
   createDisabledState,
   createExpandedState,
+  createHasActiveState,
+  createHasSelectedState,
 } from '../../utils/state-props';
 import { OmitAndMerge } from '../../utils/types';
 import {
@@ -30,6 +33,7 @@ import {
   DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
+import { useSelectState } from '../../states/create-select-state';
 
 export type ListboxButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>>;
@@ -38,9 +42,11 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
   props: ListboxButtonProps<T>,
 ): JSX.Element {
   const context = useListboxContext('ListboxButton');
-  const state = useDisclosureState();
-
+  const disclosureState = useDisclosureState();
+  const selectState = useSelectState();
   const [internalRef, setInternalRef] = createForwardRef(props);
+
+  const isDisabled = () => disclosureState.disabled() || props.disabled;
 
   createEffect(() => {
     const ref = internalRef();
@@ -49,18 +55,18 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
       context.anchor = ref;
 
       const toggle = () => {
-        if (!(state.disabled() || props.disabled)) {
-          state.toggle();
+        if (!isDisabled()) {
+          disclosureState.toggle();
         }
       };
 
       const onKeyDown = (e: KeyboardEvent) => {
-        if (!(state.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           switch (e.key) {
             case 'ArrowUp':
             case 'ArrowDown':
               e.preventDefault();
-              state.toggle();
+              disclosureState.toggle();
               break;
             default:
               break;
@@ -104,8 +110,11 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
       'aria-controls': context.optionsID,
       ref: setInternalRef,
     },
-    createDisabledState(() => state.disabled() || props.disabled),
-    createExpandedState(() => state.isOpen()),
+    createDisabledState(isDisabled),
+    createExpandedState(() => disclosureState.isOpen()),
+    createARIAExpandedState(() => disclosureState.isOpen()),
+    createHasSelectedState(() => selectState.hasSelected()),
+    createHasActiveState(() => selectState.hasActive()),
     {
       get children() {
         return createComponent(DisclosureStateChild, {
