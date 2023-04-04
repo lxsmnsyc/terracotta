@@ -7,26 +7,27 @@ import {
   useContext,
 } from 'solid-js';
 import assert from '../utils/assert';
-import { useSelectState } from './create-select-state';
+import { useAutocompleteState } from './create-autocomplete-state';
 
-export interface SelectOptionStateOptions<T> {
+export interface AutocompleteOptionStateOptions<T> {
   value: T;
   disabled?: boolean;
 }
 
-export interface SelectOptionStateProperties {
+export interface AutocompleteOptionStateProperties {
   isSelected(): boolean;
   select(): void;
   isActive(): boolean;
   focus(): void;
   blur(): void;
   disabled(): boolean;
+  matches(): boolean;
 }
 
-export function createSelectOptionState<T>(
-  options: SelectOptionStateOptions<T>,
-): SelectOptionStateProperties {
-  const state = useSelectState<T>();
+export function createAutocompleteOptionState<T>(
+  options: AutocompleteOptionStateOptions<T>,
+): AutocompleteOptionStateProperties {
+  const state = useAutocompleteState<T>();
   const isDisabled = createMemo(() => options.disabled || state.disabled());
   return {
     isSelected: createMemo(() => state.isSelected(options.value)),
@@ -46,23 +47,24 @@ export function createSelectOptionState<T>(
         state.blur();
       }
     },
+    matches: createMemo(() => state.matches(options.value)),
     disabled: isDisabled,
   };
 }
 
-export interface SelectOptionStateRenderProps {
-  children: JSX.Element | ((state: SelectOptionStateProperties) => JSX.Element);
+export interface AutocompleteOptionStateRenderProps {
+  children: JSX.Element | ((state: AutocompleteOptionStateProperties) => JSX.Element);
 }
 
-export interface SelectOptionStateProviderProps extends SelectOptionStateRenderProps {
-  state: SelectOptionStateProperties;
+export interface AutocompleteOptionStateProviderProps extends AutocompleteOptionStateRenderProps {
+  state: AutocompleteOptionStateProperties;
 }
 
-const SelectOptionStateContext = createContext<SelectOptionStateProperties>();
+const AutocompleteOptionStateContext = createContext<AutocompleteOptionStateProperties>();
 
-export function SelectOptionStateProvider(props: SelectOptionStateProviderProps) {
+export function AutocompleteOptionStateProvider(props: AutocompleteOptionStateProviderProps) {
   return (
-    createComponent(SelectOptionStateContext.Provider, {
+    createComponent(AutocompleteOptionStateContext.Provider, {
       value: props.state,
       get children() {
         const current = props.children;
@@ -75,16 +77,16 @@ export function SelectOptionStateProvider(props: SelectOptionStateProviderProps)
   );
 }
 
-export function useSelectOptionState(): SelectOptionStateProperties {
-  const ctx = useContext(SelectOptionStateContext);
-  assert(ctx, new Error('Missing <SelectOptionStateProvider>'));
+export function useAutocompleteOptionState(): AutocompleteOptionStateProperties {
+  const ctx = useContext(AutocompleteOptionStateContext);
+  assert(ctx, new Error('Missing <AutocompleteOptionStateProvider>'));
   return ctx;
 }
 
-export function SelectOptionStateChild(
-  props: SelectOptionStateRenderProps,
+export function AutocompleteOptionStateChild(
+  props: AutocompleteOptionStateRenderProps,
 ): JSX.Element {
-  const state = useSelectOptionState();
+  const state = useAutocompleteOptionState();
   return createMemo(() => {
     const current = props.children;
     if (typeof current === 'function') {

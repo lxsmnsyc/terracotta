@@ -171,3 +171,17 @@ export function createHasActiveState(
     },
   };
 }
+
+interface HasQueryProps {
+  'tc-has-query': boolean;
+}
+
+export function createHasQueryState(
+  hasQuery: () => boolean,
+): HasQueryProps {
+  return {
+    get 'tc-has-query'() {
+      return hasQuery();
+    },
+  };
+}

@@ -16,21 +16,25 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import createDynamic from '../../utils/create-dynamic';
-import { createDisabledState } from '../../utils/state-props';
 import {
-  createSingleSelectState,
-  SingleSelectStateControlledOptions,
-  SingleSelectStateUncontrolledOptions,
-  SelectStateProvider,
-  SelectStateRenderProps,
-  MultipleSelectStateUncontrolledOptions,
-  MultipleSelectStateControlledOptions,
-  createMultipleSelectState,
-} from '../../states/create-select-state';
+  createDisabledState,
+  createHasActiveState,
+  createHasQueryState,
+  createHasSelectedState,
+} from '../../utils/state-props';
+import {
+  createSingleAutocompleteState,
+  SingleAutocompleteStateControlledOptions,
+  SingleAutocompleteStateUncontrolledOptions,
+  AutocompleteStateProvider,
+  AutocompleteStateRenderProps,
+  MultipleAutocompleteStateUncontrolledOptions,
+  MultipleAutocompleteStateControlledOptions,
+  createMultipleAutocompleteState,
+} from '../../states/create-autocomplete-state';
 import { Prettify } from '../../utils/types';
 import { CommandContext, createCommandOptionFocusNavigator } from './CommandContext';
 import { COMMAND_TAG } from './tags';
-import Fragment from '../../utils/Fragment';
 
 export interface CommandBaseProps {
   horizontal?: boolean;
@@ -38,72 +42,72 @@ export interface CommandBaseProps {
 
 export type SingleCommandControlledBaseProps<V> = Prettify<
   & CommandBaseProps
-  & SingleSelectStateControlledOptions<V>
-  & SelectStateRenderProps<V>
+  & SingleAutocompleteStateControlledOptions<V>
+  & AutocompleteStateRenderProps<V>
 >;
 
-export type SingleCommandControlledProps<V, T extends ValidConstructor = typeof Fragment> =
+export type SingleCommandControlledProps<V, T extends ValidConstructor = 'div'> =
   HeadlessProps<T, SingleCommandControlledBaseProps<V>>;
 
 export type SingleCommandUncontrolledBaseProps<V> = Prettify<
   & CommandBaseProps
-  & SingleSelectStateUncontrolledOptions<V>
-  & SelectStateRenderProps<V>
+  & SingleAutocompleteStateUncontrolledOptions<V>
+  & AutocompleteStateRenderProps<V>
 >;
 
-export type SingleCommandUncontrolledProps<V, T extends ValidConstructor = typeof Fragment> =
+export type SingleCommandUncontrolledProps<V, T extends ValidConstructor = 'div'> =
   HeadlessProps<T, SingleCommandUncontrolledBaseProps<V>>;
 
-export type SingleCommandProps<V, T extends ValidConstructor = typeof Fragment> =
+export type SingleCommandProps<V, T extends ValidConstructor = 'div'> =
   | SingleCommandControlledProps<V, T>
   | SingleCommandUncontrolledProps<V, T>
 
 export type MultipleCommandControlledBaseProps<V> = Prettify<
   & CommandBaseProps
-  & MultipleSelectStateControlledOptions<V>
-  & SelectStateRenderProps<V>
+  & MultipleAutocompleteStateControlledOptions<V>
+  & AutocompleteStateRenderProps<V>
 >;
 
-export type MultipleCommandControlledProps<V, T extends ValidConstructor = typeof Fragment> =
+export type MultipleCommandControlledProps<V, T extends ValidConstructor = 'div'> =
   HeadlessProps<T, MultipleCommandControlledBaseProps<V>>;
 
 export type MultipleCommandUncontrolledBaseProps<V> = Prettify<
   & CommandBaseProps
-  & MultipleSelectStateUncontrolledOptions<V>
-  & SelectStateRenderProps<V>
+  & MultipleAutocompleteStateUncontrolledOptions<V>
+  & AutocompleteStateRenderProps<V>
 >;
 
-export type MultipleCommandUncontrolledProps<V, T extends ValidConstructor = typeof Fragment> =
+export type MultipleCommandUncontrolledProps<V, T extends ValidConstructor = 'div'> =
   HeadlessProps<T, MultipleCommandUncontrolledBaseProps<V>>;
 
-export type MultipleCommandProps<V, T extends ValidConstructor = typeof Fragment> =
+export type MultipleCommandProps<V, T extends ValidConstructor = 'div'> =
   | MultipleCommandControlledProps<V, T>
   | MultipleCommandUncontrolledProps<V, T>;
 
-export type CommandProps<V, T extends ValidConstructor = typeof Fragment> =
+export type CommandProps<V, T extends ValidConstructor = 'div'> =
   | SingleCommandProps<V, T>
   | MultipleCommandProps<V, T>;
 
-function isCommandMultiple<V, T extends ValidConstructor = typeof Fragment>(
+function isCommandMultiple<V, T extends ValidConstructor = 'div'>(
   props: CommandProps<V, T>,
 ): props is MultipleCommandProps<V, T> {
   return !!props.multiple;
 }
 
-function isCommandUncontrolled<V, T extends ValidConstructor = typeof Fragment>(
+function isCommandUncontrolled<V, T extends ValidConstructor = 'div'>(
   props: CommandProps<V, T>,
 ): props is SingleCommandUncontrolledProps<V, T> | MultipleCommandUncontrolledProps<V, T> {
   return 'defaultValue' in props;
 }
 
-export function Command<V, T extends ValidConstructor = typeof Fragment>(
+export function Command<V, T extends ValidConstructor = 'div'>(
   props: CommandProps<V, T>,
 ): JSX.Element {
   return createMemo(() => {
     const controller = createCommandOptionFocusNavigator();
     const state = isCommandMultiple(props)
-      ? createMultipleSelectState(props)
-      : createSingleSelectState(props);
+      ? createMultipleAutocompleteState(props)
+      : createSingleAutocompleteState(props);
     const [activeDescendant, setActiveDescendant] = createSignal<string>();
     const [selectedDescendant, setSelectedDescendant] = createSignal<string | undefined>(
       undefined,
@@ -144,7 +148,7 @@ export function Command<V, T extends ValidConstructor = typeof Fragment>(
       },
       get children() {
         return createDynamic(
-          () => props.as || Fragment,
+          () => props.as || 'div',
           mergeProps(
             isCommandUncontrolled(props)
               ? omitProps(props, [
@@ -174,9 +178,12 @@ export function Command<V, T extends ValidConstructor = typeof Fragment>(
               id: controller.getId(),
             },
             createDisabledState(() => state.disabled()),
+            createHasSelectedState(() => state.hasSelected()),
+            createHasActiveState(() => state.hasActive()),
+            createHasQueryState(() => state.hasQuery()),
             {
               get children() {
-                return createComponent(SelectStateProvider, {
+                return createComponent(AutocompleteStateProvider, {
                   state,
                   get children() {
                     return props.children;

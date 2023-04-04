@@ -13,10 +13,14 @@ import {
 } from '../../utils/dynamic-prop';
 import { useCommandContext } from './CommandContext';
 import createDynamic from '../../utils/create-dynamic';
-import { useSelectState } from '../../states/create-select-state';
-import { SELECTED_NODE } from '../../utils/namespace';
-import createInputReader from '../../utils/create-input-reader';
-import { createDisabledState } from '../../utils/state-props';
+import { useAutocompleteState } from '../../states/create-autocomplete-state';
+import { MATCHES_NODE, SELECTED_NODE } from '../../utils/namespace';
+import {
+  createDisabledState,
+  createHasActiveState,
+  createHasQueryState,
+  createHasSelectedState,
+} from '../../utils/state-props';
 import { COMMAND_INPUT_TAG } from './tags';
 
 export type CommandInputProps<T extends ValidConstructor = 'input'> =
@@ -26,10 +30,8 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
   props: CommandInputProps<T>,
 ): JSX.Element {
   const context = useCommandContext('CommandInput');
-  const state = useSelectState();
+  const state = useAutocompleteState();
   const [internalRef, setInternalRef] = createForwardRef(props);
-
-  const [input, setInput] = createInputReader();
 
   const isDisabled = () => state.disabled() || props.disabled;
 
@@ -39,7 +41,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
       if (current instanceof HTMLInputElement) {
         const onInput = () => {
           if (!isDisabled()) {
-            setInput(current.value);
+            state.setQuery(current.value);
           }
         };
         current.addEventListener('input', onInput);
@@ -97,8 +99,8 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
   });
 
   createEffect(() => {
-    if (input() !== '') {
-      context.controller.setFirstMatch(input());
+    if (state.query() !== '') {
+      context.controller.setFirstChecked(MATCHES_NODE);
     }
   });
 
@@ -128,6 +130,9 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
       },
       COMMAND_INPUT_TAG,
       createDisabledState(isDisabled),
+      createHasSelectedState(() => state.hasSelected()),
+      createHasActiveState(() => state.hasActive()),
+      createHasQueryState(() => state.hasQuery()),
     ) as DynamicProps<T>,
   );
 }

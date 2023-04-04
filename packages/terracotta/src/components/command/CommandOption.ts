@@ -10,18 +10,24 @@ import {
   omitProps,
 } from 'solid-use/props';
 import {
-  createSelectOptionState,
-  SelectOptionStateOptions,
-  SelectOptionStateProvider,
-  SelectOptionStateRenderProps,
-} from '../../states/create-select-option-state';
+  createAutocompleteOptionState,
+  AutocompleteOptionStateOptions,
+  AutocompleteOptionStateProvider,
+  AutocompleteOptionStateRenderProps,
+} from '../../states/create-autocomplete-option-state';
 import {
   createForwardRef,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
-import { createActiveState, createDisabledState, createSelectedState } from '../../utils/state-props';
+import {
+  createActiveState,
+  createARIASelectedState,
+  createDisabledState,
+  createMatchesState,
+  createSelectedState,
+} from '../../utils/state-props';
 import { OmitAndMerge, Prettify } from '../../utils/types';
 import {
   Button,
@@ -32,8 +38,8 @@ import { useCommandContext } from './CommandContext';
 import { registerVirtualFocus } from '../../utils/virtual-focus';
 
 export type CommandOptionBaseProps<V> = Prettify<
-  & SelectOptionStateOptions<V>
-  & SelectOptionStateRenderProps
+  & AutocompleteOptionStateOptions<V>
+  & AutocompleteOptionStateRenderProps
 >;
 
 export type CommandOptionProps<V, T extends ValidConstructor = 'li'> =
@@ -44,7 +50,7 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
 ): JSX.Element {
   const context = useCommandContext('CommandOption');
   const [internalRef, setInternalRef] = createForwardRef(props);
-  const state = createSelectOptionState(props);
+  const state = createAutocompleteOptionState(props);
   const id = createUniqueId();
 
   createEffect(() => {
@@ -108,10 +114,12 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
     },
     createDisabledState(() => state.disabled()),
     createSelectedState(() => state.isSelected()),
+    createARIASelectedState(() => state.isSelected()),
     createActiveState(() => state.isActive()),
+    createMatchesState(() => state.matches()),
     {
       get children() {
-        return createComponent(SelectOptionStateProvider, {
+        return createComponent(AutocompleteOptionStateProvider, {
           state,
           get children() {
             return props.children;

@@ -15,26 +15,29 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
-  createDisabledState,
-} from '../../utils/state-props';
-import {
   useCommandContext,
 } from './CommandContext';
 import { COMMAND_OPTIONS_TAG } from './tags';
 import {
-  SelectStateChild,
-  SelectStateRenderProps,
-  useSelectState,
-} from '../../states/create-select-state';
+  createDisabledState,
+  createHasSelectedState,
+  createHasActiveState,
+  createHasQueryState,
+} from '../../utils/state-props';
+import {
+  AutocompleteStateChild,
+  AutocompleteStateRenderProps,
+  useAutocompleteState,
+} from '../../states/create-autocomplete-state';
 
 export type CommandOptionsProps<V, T extends ValidConstructor = 'ul'> =
-  HeadlessPropsWithRef<T, SelectStateRenderProps<V>>;
+  HeadlessPropsWithRef<T, AutocompleteStateRenderProps<V>>;
 
 export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
   props: CommandOptionsProps<V, T>,
 ): JSX.Element {
   const context = useCommandContext('CommandOptions');
-  const state = useSelectState();
+  const state = useAutocompleteState();
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
@@ -64,9 +67,12 @@ export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
         tabindex: -1,
       },
       createDisabledState(() => state.disabled()),
+      createHasSelectedState(() => state.hasSelected()),
+      createHasActiveState(() => state.hasActive()),
+      createHasQueryState(() => state.hasQuery()),
       {
         get children() {
-          return createComponent(SelectStateChild, {
+          return createComponent(AutocompleteStateChild, {
             get children() {
               return props.children;
             },

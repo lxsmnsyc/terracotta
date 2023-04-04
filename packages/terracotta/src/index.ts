@@ -23,13 +23,17 @@ export * from './components/transition';
 
 export {
   AutocompleteStateChild,
-  AutocompleteStateControlledOptions,
-  AutocompleteStateOptions,
   AutocompleteStateProperties,
   AutocompleteStateRenderProps,
-  AutocompleteStateUncontrolledOptions,
+  SingleAutocompleteStateControlledOptions,
+  SingleAutocompleteStateOptions,
+  SingleAutocompleteStateUncontrolledOptions,
+  MultipleAutocompleteStateControlledOptions,
+  MultipleAutocompleteStateOptions,
+  MultipleAutocompleteStateUncontrolledOptions,
+  createSingleAutocompleteState,
+  createMultipleAutocompleteState,
   useAutocompleteState,
-  createAutocompleteState,
 } from './states/create-autocomplete-state';
 export {
   CheckStateChild,
