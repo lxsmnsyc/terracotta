@@ -49,11 +49,11 @@ export function AccordionPanel<T extends ValidConstructor = 'div'>(
           'children',
           'unmount',
         ]),
+        ACCORDION_PANEL_TAG,
         {
           id: context.panelID,
           'aria-labelledby': context.buttonID,
         },
-        ACCORDION_PANEL_TAG,
         createSelectedState(() => state.isSelected()),
         createExpandedState(() => state.isSelected()),
         createActiveState(() => state.isActive()),
