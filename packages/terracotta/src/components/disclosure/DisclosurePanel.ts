@@ -26,6 +26,7 @@ import {
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 import { Prettify } from '../../utils/types';
+import { createExpandedState } from '../../utils/state-props';
 
 export type DisclosurePanelBaseProps = Prettify<
   & DisclosureStateRenderProps
@@ -63,6 +64,7 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
             });
           },
         },
+        createExpandedState(() => state.isOpen()),
       ) as DynamicProps<T>,
     ),
   );

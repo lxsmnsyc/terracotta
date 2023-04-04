@@ -13,9 +13,9 @@ import {
   HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import Fragment from '../../utils/Fragment';
 import {
   createDisabledState,
+  createExpandedState,
 } from '../../utils/state-props';
 import {
   DisclosureContext,
@@ -35,7 +35,7 @@ export type DisclosureControlledBaseProps = Prettify<
   & DisclosureStateRenderProps
 >;
 
-export type DisclosureControlledProps<T extends ValidConstructor = typeof Fragment> =
+export type DisclosureControlledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, DisclosureControlledBaseProps>;
 
 export type DisclosureUncontrolledBaseProps = Prettify<
@@ -43,7 +43,7 @@ export type DisclosureUncontrolledBaseProps = Prettify<
   & DisclosureStateRenderProps
 >;
 
-export type DisclosureUncontrolledProps<T extends ValidConstructor = typeof Fragment> =
+export type DisclosureUncontrolledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, DisclosureUncontrolledBaseProps>;
 
 export type DisclosureProps<T extends ValidConstructor = 'div'> =
@@ -56,7 +56,7 @@ function isDisclosureUncontrolled<T extends ValidConstructor = 'div'>(
   return 'defaultOpen' in props;
 }
 
-export function Disclosure<T extends ValidConstructor = typeof Fragment>(
+export function Disclosure<T extends ValidConstructor = 'div'>(
   props: DisclosureProps<T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
@@ -72,7 +72,7 @@ export function Disclosure<T extends ValidConstructor = typeof Fragment>(
     },
     get children() {
       return createDynamic(
-        () => props.as || Fragment,
+        () => props.as || 'div',
         mergeProps(
           isDisclosureUncontrolled(props)
             ? omitProps(props, [
@@ -95,6 +95,7 @@ export function Disclosure<T extends ValidConstructor = typeof Fragment>(
             ]),
           DISCLOSURE_TAG,
           createDisabledState(() => state.disabled()),
+          createExpandedState(() => state.isOpen()),
           {
             get children() {
               return createComponent(DisclosureStateProvider, {

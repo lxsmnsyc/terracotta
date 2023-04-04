@@ -16,6 +16,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  createARIAExpandedState,
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
@@ -78,6 +79,7 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
     },
     createDisabledState(() => state.disabled() || props.disabled),
     createExpandedState(() => state.isOpen()),
+    createARIAExpandedState(() => state.isOpen()),
     {
       get children() {
         return createComponent(DisclosureStateChild, {
