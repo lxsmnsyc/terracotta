@@ -31,6 +31,7 @@ import {
   DisclosureStateUncontrolledOptions,
   createDisclosureState,
 } from '../../states/create-disclosure-state';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 
 export type DialogControlledBaseProps = Prettify<
   & DisclosureStateControlledOptions
@@ -131,6 +132,8 @@ export function Dialog<T extends ValidConstructor = 'div'>(
                 });
               },
             },
+            createDisabledState(() => state.disabled()),
+            createExpandedState(() => state.isOpen()),
           ) as DynamicProps<T>,
         ),
       );

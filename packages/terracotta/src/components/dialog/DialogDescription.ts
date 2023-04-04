@@ -16,7 +16,8 @@ import {
   useDialogContext,
 } from './DialogContext';
 import { DIALOG_DESCRIPTION_TAG } from './tags';
-import { DisclosureStateChild, DisclosureStateRenderProps } from '../../states/create-disclosure-state';
+import { DisclosureStateChild, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
+import { createExpandedState } from '../../utils/state-props';
 
 export type DialogDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
@@ -25,6 +26,7 @@ export function DialogDescription<T extends ValidConstructor = 'p'>(
   props: DialogDescriptionProps<T>,
 ): JSX.Element {
   const context = useDialogContext('DialogDescription');
+  const state = useDisclosureState();
   return createDynamic(
     () => props.as || ('p' as T),
     mergeProps(
@@ -43,6 +45,7 @@ export function DialogDescription<T extends ValidConstructor = 'p'>(
           });
         },
       },
+      createExpandedState(() => state.isOpen()),
     ) as DynamicProps<T>,
   );
 }

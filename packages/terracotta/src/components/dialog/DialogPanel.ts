@@ -26,6 +26,7 @@ import {
   DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
+import { createExpandedState } from '../../utils/state-props';
 
 export type DialogPanelProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -81,6 +82,7 @@ export function DialogPanel<T extends ValidConstructor = 'div'>(
           });
         },
       },
+      createExpandedState(() => state.isOpen()),
     ) as DynamicProps<T>,
   );
 }

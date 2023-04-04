@@ -19,7 +19,9 @@ import { DIALOG_TITLE_TAG } from './tags';
 import {
   DisclosureStateChild,
   DisclosureStateRenderProps,
+  useDisclosureState,
 } from '../../states/create-disclosure-state';
+import { createExpandedState } from '../../utils/state-props';
 
 export type DialogTitleProps<T extends ValidConstructor = 'h2'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -28,6 +30,7 @@ export function DialogTitle<T extends ValidConstructor = 'h2'>(
   props: DialogTitleProps<T>,
 ): JSX.Element {
   const context = useDialogContext('DialogTitle');
+  const state = useDisclosureState();
   return createDynamic(
     () => props.as || ('h2' as T),
     mergeProps(
@@ -46,6 +49,7 @@ export function DialogTitle<T extends ValidConstructor = 'h2'>(
           });
         },
       },
+      createExpandedState(() => state.isOpen()),
     ) as DynamicProps<T>,
   );
 }
