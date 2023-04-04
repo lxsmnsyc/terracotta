@@ -163,6 +163,7 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
             ACCORDION_TAG,
             {
               ref: setRef,
+              id: controller.getId(),
             },
             createDisabledState(() => state.disabled()),
             createHasSelectedState(() => state.hasSelected()),
