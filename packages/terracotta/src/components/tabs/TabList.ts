@@ -27,6 +27,10 @@ import {
 } from './TabListContext';
 import { TAB_LIST_TAG } from './tags';
 import { SELECTED_NODE } from '../../utils/namespace';
+import {
+  createHasSelectedState,
+  createHasActiveState,
+} from '../../utils/state-props';
 
 export type TabListProps<V, T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, SelectStateRenderProps<V>>;
@@ -122,6 +126,8 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
               });
             },
           },
+          createHasSelectedState(() => state.hasSelected()),
+          createHasActiveState(() => state.hasActive()),
         ) as DynamicProps<T>,
       );
     },

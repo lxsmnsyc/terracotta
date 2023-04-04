@@ -19,6 +19,7 @@ import {
   useTabGroupContext,
 } from './TabGroupContext';
 import { TAB_PANEL_TAG } from './tags';
+import { createActiveState, createSelectedState } from '../../utils/state-props';
 
 export interface TabPanelBaseProps<V> extends Exclude<SelectOptionStateOptions<V>, 'disabled'> {
   unmount?: boolean;
@@ -61,6 +62,8 @@ export function TabPanel<V, T extends ValidConstructor = 'div'>(
             });
           },
         },
+        createSelectedState(() => state.isSelected()),
+        createActiveState(() => state.isActive()),
       ) as DynamicProps<T>,
     ),
   );

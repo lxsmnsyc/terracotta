@@ -19,7 +19,7 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { createDisabledState } from '../../utils/state-props';
+import { createDisabledState, createHasActiveState, createHasSelectedState } from '../../utils/state-props';
 import { Prettify } from '../../utils/types';
 import { TabGroupContext } from './TabGroupContext';
 import { TAB_GROUP_TAG } from './tags';
@@ -110,6 +110,8 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
               ]),
             TAB_GROUP_TAG,
             createDisabledState(() => state.disabled()),
+            createHasSelectedState(() => state.hasSelected()),
+            createHasActiveState(() => state.hasActive()),
             {
               get children() {
                 return createComponent(SelectStateProvider, {
