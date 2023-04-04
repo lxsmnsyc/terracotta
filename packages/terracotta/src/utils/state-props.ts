@@ -1,12 +1,15 @@
-interface DisabledProps {
+/**
+ * ARIA states
+ */
+
+interface ARIADisabledProps {
   disabled?: boolean;
   'aria-disabled'?: boolean;
-  'tc-disabled'?: boolean;
 }
 
-export function createDisabledState(
+export function createARIADisabledState(
   disabled: () => boolean | undefined,
-): DisabledProps {
+): ARIADisabledProps {
   return {
     get disabled() {
       return disabled();
@@ -14,6 +17,62 @@ export function createDisabledState(
     get 'aria-disabled'() {
       return disabled();
     },
+  };
+}
+
+interface ARIAExpandedProps {
+  'aria-expanded'?: boolean;
+}
+
+export function createARIAExpandedState(
+  expanded: () => boolean | undefined,
+): ARIAExpandedProps {
+  return {
+    get 'aria-expanded'() {
+      return expanded();
+    },
+  };
+}
+
+interface ARIACheckedProps {
+  'aria-checked': boolean | 'mixed';
+}
+
+export function createARIACheckedState(
+  checked: () => boolean | undefined,
+): ARIACheckedProps {
+  return {
+    get 'aria-checked'() {
+      return checked() ?? 'mixed';
+    },
+  };
+}
+interface ARIASelectedProps {
+  'aria-selected': boolean;
+}
+
+export function createARIASelectedState(
+  checked: () => boolean,
+): ARIASelectedProps {
+  return {
+    get 'aria-selected'() {
+      return checked();
+    },
+  };
+}
+
+/**
+ * Terracotta States
+ */
+
+interface DisabledProps {
+  'tc-disabled'?: boolean;
+}
+
+export function createDisabledState(
+  disabled: () => boolean | undefined,
+): DisabledProps {
+  return {
     get 'tc-disabled'() {
       return disabled();
     },
@@ -21,7 +80,6 @@ export function createDisabledState(
 }
 
 interface ExpandedProps {
-  'aria-expanded'?: boolean;
   'tc-expanded'?: boolean;
 }
 
@@ -29,9 +87,6 @@ export function createExpandedState(
   expanded: () => boolean | undefined,
 ): ExpandedProps {
   return {
-    get 'aria-expanded'() {
-      return expanded();
-    },
     get 'tc-expanded'() {
       return expanded();
     },
@@ -39,7 +94,6 @@ export function createExpandedState(
 }
 
 interface CheckedProps {
-  'aria-checked': boolean | 'mixed';
   'tc-checked': boolean | 'mixed';
 }
 
@@ -47,9 +101,6 @@ export function createCheckedState(
   checked: () => boolean | undefined,
 ): CheckedProps {
   return {
-    get 'aria-checked'() {
-      return checked() ?? 'mixed';
-    },
     get 'tc-checked'() {
       return checked() ?? 'mixed';
     },
@@ -57,7 +108,6 @@ export function createCheckedState(
 }
 
 interface SelectedProps {
-  'aria-selected': boolean;
   'tc-selected': boolean;
 }
 
@@ -65,9 +115,6 @@ export function createSelectedState(
   checked: () => boolean,
 ): SelectedProps {
   return {
-    get 'aria-selected'() {
-      return checked();
-    },
     get 'tc-selected'() {
       return checked();
     },
@@ -84,6 +131,48 @@ export function createActiveState(
   return {
     get 'tc-active'() {
       return checked();
+    },
+  };
+}
+
+interface MatchesProps {
+  'tc-matches': boolean;
+}
+
+export function createMatchesState(
+  checked: () => boolean,
+): MatchesProps {
+  return {
+    get 'tc-matches'() {
+      return checked();
+    },
+  };
+}
+
+interface HasSelectedProps {
+  'tc-has-selected': boolean;
+}
+
+export function createHasSelectedState(
+  hasSelected: () => boolean,
+): HasSelectedProps {
+  return {
+    get 'tc-has-selected'() {
+      return hasSelected();
+    },
+  };
+}
+
+interface HasActiveProps {
+  'tc-has-active': boolean;
+}
+
+export function createHasActiveState(
+  hasActive: () => boolean,
+): HasActiveProps {
+  return {
+    get 'tc-has-active'() {
+      return hasActive();
     },
   };
 }
