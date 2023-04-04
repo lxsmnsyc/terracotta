@@ -15,8 +15,11 @@ import {
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
+  createARIAExpandedState,
+  createActiveState,
   createDisabledState,
   createExpandedState,
+  createSelectedState,
 } from '../../utils/state-props';
 import { OmitAndMerge } from '../../utils/types';
 import {
@@ -91,7 +94,10 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
     },
     createOwnerAttribute(rootContext.getId()),
     createDisabledState(() => state.disabled() || props.disabled),
+    createSelectedState(() => state.isSelected()),
     createExpandedState(() => state.isSelected()),
+    createARIAExpandedState(() => state.isSelected()),
+    createActiveState(() => state.isActive()),
     {
       get children() {
         return createComponent(SelectOptionStateChild, {

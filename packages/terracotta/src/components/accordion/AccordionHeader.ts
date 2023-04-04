@@ -17,7 +17,13 @@ import { ACCORDION_HEADER_TAG } from './tags';
 import {
   SelectOptionStateChild,
   SelectOptionStateRenderProps,
+  useSelectOptionState,
 } from '../../states/create-select-option-state';
+import {
+  createSelectedState,
+  createExpandedState,
+  createActiveState,
+} from '../../utils/state-props';
 
 export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> =
   HeadlessProps<T, SelectOptionStateRenderProps>;
@@ -26,6 +32,7 @@ export function AccordionHeader<T extends ValidConstructor = 'h3'>(
   props: AccordionHeaderProps<T>,
 ): JSX.Element {
   useAccordionItemContext('AccordionHeader');
+  const state = useSelectOptionState();
   return createDynamic<T>(
     () => props.as || ('h3' as T),
     mergeProps(
@@ -34,6 +41,9 @@ export function AccordionHeader<T extends ValidConstructor = 'h3'>(
         'children',
       ]),
       ACCORDION_HEADER_TAG,
+      createSelectedState(() => state.isSelected()),
+      createExpandedState(() => state.isSelected()),
+      createActiveState(() => state.isActive()),
       {
         get children() {
           return createComponent(SelectOptionStateChild, {
