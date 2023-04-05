@@ -9,10 +9,10 @@ export default function createShow<T>(
   const condition = createMemo(() => !!when());
   return createMemo(() => {
     if (condition()) {
-      return children();
+      return createMemo(() => children());
     }
     if (fallback) {
-      return fallback();
+      return createMemo(() => fallback());
     }
     return undefined;
   }) as unknown as JSX.Element;
