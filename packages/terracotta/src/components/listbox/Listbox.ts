@@ -354,6 +354,7 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
             getProps(props),
             LISTBOX_TAG,
             {
+              id: ownerID,
               'aria-labelledby': labelID,
             },
             createDisabledState(() => selectState.disabled()),
