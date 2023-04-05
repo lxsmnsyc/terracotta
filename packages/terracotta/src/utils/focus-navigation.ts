@@ -49,7 +49,7 @@ function getNextFocusable(
   return undefined;
 }
 
-function focusNode(node: HTMLElement | undefined, virtual: boolean) {
+export function focusNode(node: HTMLElement | undefined, virtual: boolean) {
   if (node) {
     if (virtual) {
       focusVirtually(node);
