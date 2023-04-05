@@ -51,25 +51,33 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
   const state = createSelectOptionState(props);
 
+  const isDisabled = () => state.disabled() || props.disabled;
+
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onClick = () => {
-        state.select();
+        if (!isDisabled()) {
+          state.select();
+        }
       };
       const onFocus = () => {
-        state.focus();
+        if (!isDisabled()) {
+          state.focus();
+        }
       };
       const onBlur = () => {
-        state.blur();
+        if (!isDisabled()) {
+          state.blur();
+        }
       };
       const onMouseEnter = () => {
-        if (!state.disabled()) {
+        if (!isDisabled()) {
           ref.focus();
         }
       };
       const onMouseLeave = () => {
-        if (!state.disabled()) {
+        if (!isDisabled()) {
           ref.blur();
         }
       };
@@ -108,7 +116,7 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
       },
       ref: setInternalRef,
     },
-    createDisabledState(() => state.disabled()),
+    createDisabledState(isDisabled),
     createSelectedState(() => state.isSelected()),
     createARIASelectedState(() => state.isSelected()),
     createActiveState(() => state.isActive()),
