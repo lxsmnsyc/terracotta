@@ -28,13 +28,24 @@ import {
   ListboxOptionsContext,
 } from './ListboxOptionsContext';
 import { LISTBOX_OPTIONS_TAG } from './tags';
-import { SelectStateProvider, SelectStateRenderProps, useSelectState } from '../../states/create-select-state';
+import {
+  SelectStateProvider,
+  SelectStateRenderProps,
+  useSelectState,
+} from '../../states/create-select-state';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import { SELECTED_NODE } from '../../utils/namespace';
 import createTypeAhead from '../../utils/create-type-ahead';
+import { Prettify } from '../../utils/types';
+import { UnmountableProps, createUnmountable } from '../../utils/create-unmountable';
+
+export type ListboxOptionsBaseProps<V> = Prettify<
+  & UnmountableProps
+  & SelectStateRenderProps<V>
+>;
 
 export type ListboxOptionsProps<V, T extends ValidConstructor = 'ul'> =
-  HeadlessPropsWithRef<T, SelectStateRenderProps<V>>;
+  HeadlessPropsWithRef<T, ListboxOptionsBaseProps<V>>;
 
 export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
   props: ListboxOptionsProps<V, T>,
@@ -142,47 +153,51 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
     });
   });
 
-  return createComponent(ListboxOptionsContext.Provider, {
-    value: controller,
-    get children() {
-      return createDynamic(
-        () => props.as || ('ul' as T),
-        mergeProps(
-          omitProps(props, [
-            'as',
-            'children',
-            'ref',
-          ]),
-          LISTBOX_OPTIONS_TAG,
-          {
-            id: context.optionsID,
-            role: 'listbox',
-            'aria-multiselectable': context.multiple,
-            'aria-labelledby': context.buttonID,
-            ref: setInternalRef,
-            get 'aria-orientation'() {
-              return context.horizontal ? 'horizontal' : 'vertical';
+  return createUnmountable(
+    props,
+    () => disclosureState.isOpen(),
+    () => createComponent(ListboxOptionsContext.Provider, {
+      value: controller,
+      get children() {
+        return createDynamic(
+          () => props.as || ('ul' as T),
+          mergeProps(
+            omitProps(props, [
+              'as',
+              'children',
+              'ref',
+            ]),
+            LISTBOX_OPTIONS_TAG,
+            {
+              id: context.optionsID,
+              role: 'listbox',
+              'aria-multiselectable': context.multiple,
+              'aria-labelledby': context.buttonID,
+              ref: setInternalRef,
+              get 'aria-orientation'() {
+                return context.horizontal ? 'horizontal' : 'vertical';
+              },
+              get tabindex() {
+                return selectState.disabled() ? -1 : 0;
+              },
             },
-            get tabindex() {
-              return selectState.disabled() ? -1 : 0;
+            createDisabledState(() => selectState.disabled()),
+            createExpandedState(() => disclosureState.isOpen()),
+            createHasSelectedState(() => selectState.hasSelected()),
+            createHasActiveState(() => selectState.hasActive()),
+            {
+              get children() {
+                return createComponent(SelectStateProvider, {
+                  state: selectState,
+                  get children() {
+                    return props.children;
+                  },
+                });
+              },
             },
-          },
-          createDisabledState(() => selectState.disabled()),
-          createExpandedState(() => disclosureState.isOpen()),
-          createHasSelectedState(() => selectState.hasSelected()),
-          createHasActiveState(() => selectState.hasActive()),
-          {
-            get children() {
-              return createComponent(SelectStateProvider, {
-                state: selectState,
-                get children() {
-                  return props.children;
-                },
-              });
-            },
-          },
-        ) as DynamicProps<T>,
-      );
-    },
-  });
+          ) as DynamicProps<T>,
+        );
+      },
+    }),
+  );
 }
