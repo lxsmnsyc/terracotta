@@ -84,28 +84,14 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
           state.blur();
         }
       };
-      const onMouseEnter = () => {
-        if (!isDisabled()) {
-          ref.focus();
-        }
-      };
-      const onMouseLeave = () => {
-        if (!isDisabled()) {
-          ref.blur();
-        }
-      };
 
       ref.addEventListener('click', onClick);
       ref.addEventListener('focus', onFocus);
       ref.addEventListener('blur', onBlur);
-      ref.addEventListener('mouseenter', onMouseEnter);
-      ref.addEventListener('mouseleave', onMouseLeave);
       onCleanup(() => {
         ref.removeEventListener('click', onClick);
         ref.removeEventListener('focus', onFocus);
         ref.removeEventListener('blur', onBlur);
-        ref.removeEventListener('mouseenter', onMouseEnter);
-        ref.removeEventListener('mouseleave', onMouseLeave);
       });
     }
   });
