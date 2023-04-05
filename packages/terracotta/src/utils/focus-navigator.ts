@@ -29,18 +29,26 @@ export function createOwnerAttribute(ownerID: string) {
   };
 }
 
+export interface FocusNavigatorOptions {
+  virtual: boolean;
+  base: string;
+}
+
 export default class FocusNavigator {
   private ownerID: string;
 
-  private virtual: boolean;
+  private options: FocusNavigatorOptions;
 
   private internalRef?: HTMLElement;
 
   private current: HTMLElement | undefined;
 
-  constructor(ownerID: string, virtual = false) {
+  constructor(ownerID: string, options: Partial<FocusNavigatorOptions> = {}) {
     this.ownerID = ownerID;
-    this.virtual = virtual;
+    this.options = Object.assign(
+      { virtual: false, base: '' } as FocusNavigatorOptions,
+      options,
+    );
   }
 
   setRef(ref: HTMLElement) {
@@ -48,7 +56,7 @@ export default class FocusNavigator {
   }
 
   private query(ref: HTMLElement, condition = '') {
-    return queryNodes(ref, this.ownerID, condition);
+    return queryNodes(ref, this.ownerID, `${this.options.base}${condition}`);
   }
 
   setCurrent(node: HTMLElement) {
@@ -56,7 +64,7 @@ export default class FocusNavigator {
   }
 
   setChecked(node: HTMLElement) {
-    if (this.virtual) {
+    if (this.options.virtual) {
       focusVirtually(node);
     } else {
       node.focus();
@@ -71,7 +79,7 @@ export default class FocusNavigator {
         this.query(this.internalRef),
         this.current,
         loop,
-        this.virtual,
+        this.options.virtual,
       );
       if (current) {
         this.current = current;
@@ -86,7 +94,7 @@ export default class FocusNavigator {
         this.query(this.internalRef),
         this.current,
         loop,
-        this.virtual,
+        this.options.virtual,
       );
       if (current) {
         this.current = current;
@@ -98,7 +106,7 @@ export default class FocusNavigator {
     if (this.internalRef instanceof HTMLElement) {
       const current = focusFirst(
         this.query(this.internalRef, condition),
-        this.virtual,
+        this.options.virtual,
       );
       if (current) {
         this.current = current;
@@ -110,7 +118,7 @@ export default class FocusNavigator {
     if (this.internalRef instanceof HTMLElement) {
       const current = focusLast(
         this.query(this.internalRef, condition),
-        this.virtual,
+        this.options.virtual,
       );
       if (current) {
         this.current = current;
@@ -123,7 +131,7 @@ export default class FocusNavigator {
       const current = focusMatch(
         this.query(this.internalRef),
         character,
-        this.virtual,
+        this.options.virtual,
       );
       if (current) {
         this.current = current;

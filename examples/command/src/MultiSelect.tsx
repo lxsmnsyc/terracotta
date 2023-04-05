@@ -20,16 +20,13 @@ const people = [
 export default function MultipleSelect(): JSX.Element {
   const [selected, setSelected] = createSignal(people);
 
-  function toValue() {
-    selected();
-    return '';
-  }
-
   function matchBy(item: { name: string }, query: string) {
     // split queries
     const queries = query.split(',');
 
-    return queries.some((text) => item.name.toLowerCase().includes(text.trim().toLowerCase()));
+    return queries.some((text) => (
+      item.name.toLowerCase().includes(text.trim().toLowerCase())
+    ));
   }
 
   return (
@@ -55,7 +52,6 @@ export default function MultipleSelect(): JSX.Element {
         <CommandInput
           class="w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
           placeholder="Select an item"
-          value={toValue()}
         />
         <CommandOptions>
           <div class="bg-gray-50 bg-opacity-50 rounded-lg overflow-hidden">

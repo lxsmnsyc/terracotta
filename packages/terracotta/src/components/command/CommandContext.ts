@@ -5,6 +5,7 @@ import {
 } from 'solid-js';
 import assert from '../../utils/assert';
 import FocusNavigator from '../../utils/focus-navigator';
+import { MATCHES_NODE } from '../../utils/namespace';
 
 interface CommandContext {
   multiple: boolean;
@@ -27,5 +28,8 @@ export function useCommandContext(
 }
 
 export function createCommandOptionFocusNavigator() {
-  return new FocusNavigator(createUniqueId(), true);
+  return new FocusNavigator(createUniqueId(), {
+    virtual: true,
+    base: MATCHES_NODE,
+  });
 }

@@ -14,7 +14,7 @@ import {
 import { useCommandContext } from './CommandContext';
 import createDynamic from '../../utils/create-dynamic';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
-import { MATCHES_NODE, SELECTED_NODE } from '../../utils/namespace';
+import { SELECTED_NODE } from '../../utils/namespace';
 import {
   createDisabledState,
   createHasActiveState,
@@ -100,7 +100,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
 
   createEffect(() => {
     if (state.query() !== '') {
-      context.controller.setFirstChecked(MATCHES_NODE);
+      context.controller.setFirstChecked();
     }
   });
 
