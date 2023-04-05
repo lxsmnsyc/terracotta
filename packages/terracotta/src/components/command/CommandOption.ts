@@ -59,19 +59,23 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
     }
   });
 
+  const isDisabled = () => state.disabled() || props.disabled;
+
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onClick = () => {
-        state.select();
+        if (isDisabled()) {
+          state.select();
+        }
       };
       const onMouseEnter = () => {
-        if (!state.disabled()) {
+        if (!isDisabled()) {
           state.focus();
         }
       };
       const onMouseLeave = () => {
-        if (!state.disabled()) {
+        if (!isDisabled()) {
           state.blur();
         }
       };
@@ -112,7 +116,7 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
       tabindex: -1,
       ref: setInternalRef,
     },
-    createDisabledState(() => state.disabled()),
+    createDisabledState(isDisabled),
     createSelectedState(() => state.isSelected()),
     createARIASelectedState(() => state.isSelected()),
     createActiveState(() => state.isActive()),
