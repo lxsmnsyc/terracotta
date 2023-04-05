@@ -119,7 +119,6 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
 
         // Controls the options listbox
         'aria-controls': context.optionsID,
-        'aria-labelledby': context.labelID,
         // Since combobox roles have aria-expanded=false
         // as default but Command has a visible listbox
         // we set this to true

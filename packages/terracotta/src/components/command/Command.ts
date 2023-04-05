@@ -176,6 +176,7 @@ export function Command<V, T extends ValidConstructor = 'div'>(
             COMMAND_TAG,
             {
               id: controller.getId(),
+              'aria-labelledby': labelID,
             },
             createDisabledState(() => state.disabled()),
             createHasSelectedState(() => state.hasSelected()),
