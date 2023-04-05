@@ -60,14 +60,6 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
               e.preventDefault();
               context.controller.setNextChecked(true);
               break;
-            case 'Home':
-              e.preventDefault();
-              context.controller.setFirstChecked();
-              break;
-            case 'End':
-              e.preventDefault();
-              context.controller.setLastChecked();
-              break;
             case 'Enter':
               e.preventDefault();
               context.selectedDescendant = context.activeDescendant;
