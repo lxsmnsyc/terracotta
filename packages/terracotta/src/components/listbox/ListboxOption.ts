@@ -58,6 +58,8 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
+  const isDisabled = () => state.disabled() || props.disabled;
+
   // I would really love to use createEffect but for some reason
   // the timing is never accurate
   createRenderEffect(() => {
@@ -65,25 +67,45 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
 
     if (ref instanceof HTMLElement) {
       const onClick = () => {
-        state.select();
-        if (!rootContext.multiple) {
-          disclosure.close();
+        if (!isDisabled()) {
+          state.select();
+          if (!rootContext.multiple) {
+            disclosure.close();
+          }
         }
       };
       const onFocus = () => {
-        state.focus();
+        if (!isDisabled()) {
+          state.focus();
+        }
       };
       const onBlur = () => {
-        state.blur();
+        if (!isDisabled()) {
+          state.blur();
+        }
+      };
+      const onMouseEnter = () => {
+        if (!isDisabled()) {
+          ref.focus();
+        }
+      };
+      const onMouseLeave = () => {
+        if (!isDisabled()) {
+          ref.blur();
+        }
       };
 
       ref.addEventListener('click', onClick);
       ref.addEventListener('focus', onFocus);
       ref.addEventListener('blur', onBlur);
+      ref.addEventListener('mouseenter', onMouseEnter);
+      ref.addEventListener('mouseleave', onMouseLeave);
       onCleanup(() => {
         ref.removeEventListener('click', onClick);
         ref.removeEventListener('focus', onFocus);
         ref.removeEventListener('blur', onBlur);
+        ref.removeEventListener('mouseenter', onMouseEnter);
+        ref.removeEventListener('mouseleave', onMouseLeave);
       });
     }
   });
@@ -106,7 +128,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
       tabindex: -1,
       ref: setInternalRef,
     },
-    createDisabledState(() => state.disabled()),
+    createDisabledState(isDisabled),
     createSelectedState(() => state.isSelected()),
     createARIASelectedState(() => state.isSelected()),
     createActiveState(() => state.isActive()),
