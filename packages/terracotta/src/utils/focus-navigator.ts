@@ -1,5 +1,6 @@
 import assert from './assert';
 import {
+  focusNode,
   focusNext,
   focusPrev,
   focusFirst,
@@ -7,7 +8,6 @@ import {
   focusMatch,
 } from './focus-navigation';
 import { DATA_SET_NAMESPACE, DISABLED_NODE } from './namespace';
-import { focusVirtually } from './virtual-focus';
 
 const OWNER = `${DATA_SET_NAMESPACE}-owner`;
 
@@ -20,7 +20,9 @@ function queryNodes<T extends Element>(
   // - owned by the root component via ownerID
   // - node isn't disabled
   // - extra condition
-  return el.querySelectorAll(`[${OWNER}="${ownerID}"]:not(${DISABLED_NODE})${condition}`);
+  const query = `[${OWNER}="${ownerID}"]:not(${DISABLED_NODE})${condition}`;
+  const nodes = el.querySelectorAll<HTMLElement>(query);
+  return nodes;
 }
 
 export function createOwnerAttribute(ownerID: string) {
@@ -45,14 +47,18 @@ export default class FocusNavigator {
 
   constructor(ownerID: string, options: Partial<FocusNavigatorOptions> = {}) {
     this.ownerID = ownerID;
-    this.options = Object.assign(
-      { virtual: false, base: '' } as FocusNavigatorOptions,
-      options,
-    );
+    this.options = {
+      virtual: options.virtual ?? false,
+      base: options.base ?? '',
+    };
   }
 
   setRef(ref: HTMLElement) {
     this.internalRef = ref;
+  }
+
+  clearRef() {
+    this.internalRef = undefined;
   }
 
   private query(ref: HTMLElement, condition = '') {
@@ -64,12 +70,7 @@ export default class FocusNavigator {
   }
 
   setChecked(node: HTMLElement) {
-    if (this.options.virtual) {
-      focusVirtually(node);
-    } else {
-      node.focus();
-    }
-    this.current = node;
+    this.current = focusNode(node, this.options.virtual);
   }
 
   setNextChecked(loop: boolean) {
