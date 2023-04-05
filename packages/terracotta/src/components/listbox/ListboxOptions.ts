@@ -69,7 +69,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
   onMount(() => {
     createEffect(() => {
       const ref = internalRef();
-      if (ref instanceof HTMLElement) {
+      if (ref instanceof HTMLElement && disclosureState.isOpen()) {
         controller.setRef(ref);
 
         if (!untrack(() => selectState.hasSelected())) {
