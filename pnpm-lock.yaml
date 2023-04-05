@@ -20,14 +20,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -37,7 +37,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/checkbox:
     specifiers:
@@ -45,14 +45,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -62,7 +62,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/combobox:
     specifiers:
@@ -70,14 +70,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -87,7 +87,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/command:
     specifiers:
@@ -95,14 +95,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -112,7 +112,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/commandbar:
     specifiers:
@@ -120,14 +120,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -137,7 +137,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/context-menu:
     specifiers:
@@ -145,14 +145,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -162,7 +162,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/dialog:
     specifiers:
@@ -170,14 +170,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -187,7 +187,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/disclosure:
     specifiers:
@@ -195,14 +195,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -212,7 +212,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/dropdown-menu:
     specifiers:
@@ -220,14 +220,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -237,7 +237,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/feed:
     specifiers:
@@ -245,14 +245,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -262,7 +262,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/listbox:
     specifiers:
@@ -270,14 +270,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -287,7 +287,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/menu:
     specifiers:
@@ -295,14 +295,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -312,7 +312,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/popover:
     specifiers:
@@ -320,14 +320,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -337,7 +337,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/radiogroup:
     specifiers:
@@ -345,14 +345,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -362,7 +362,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/select:
     specifiers:
@@ -370,14 +370,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -387,7 +387,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/tabs:
     specifiers:
@@ -395,14 +395,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -412,7 +412,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/toaster:
     specifiers:
@@ -420,14 +420,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -437,7 +437,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/toolbar:
     specifiers:
@@ -445,14 +445,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -462,7 +462,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   examples/transitions:
     specifiers:
@@ -470,14 +470,14 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       postcss: ^8.4.21
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       tailwindcss: ^3.3.1
       terracotta: 0.13.1
       typescript: ^4.9.5
       vite: ^4.2.1
-      vite-plugin-solid: ^2.6.1
+      vite-plugin-solid: ^2.7.0
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tailwindcss: 3.3.1_postcss@8.4.21
       terracotta: link:../../packages/terracotta
     devDependencies:
@@ -487,7 +487,7 @@ importers:
       postcss: 8.4.21
       typescript: 4.9.5
       vite: 4.2.1
-      vite-plugin-solid: 2.6.1_solid-js@1.7.0+vite@4.2.1
+      vite-plugin-solid: 2.7.0_solid-js@1.7.2+vite@4.2.1
 
   packages/terracotta:
     specifiers:
@@ -495,18 +495,18 @@ importers:
       eslint: ^8.37.0
       eslint-config-lxsmnsyc: ^0.5.1
       pridepack: ^2.4.1
-      solid-js: ^1.7.0
+      solid-js: ^1.7.2
       solid-use: ^0.7.0
       tslib: ^2.5.0
       typescript: ^4.9.5
     dependencies:
-      solid-use: 0.7.0_solid-js@1.7.0
+      solid-use: 0.7.0_solid-js@1.7.2
     devDependencies:
       '@types/node': 18.13.0
       eslint: 8.37.0
       eslint-config-lxsmnsyc: 0.5.1_ip5up2nocltd47wbnuyybe5dxu
       pridepack: 2.4.1_mb3qd3v6qjzdt7osotkfpwypve
-      solid-js: 1.7.0
+      solid-js: 1.7.2
       tslib: 2.5.0
       typescript: 4.9.5
 
@@ -2160,8 +2160,8 @@ packages:
       deep-equal: 2.2.0
     dev: true
 
-  /babel-plugin-jsx-dom-expressions/0.35.15_@babel+core@7.20.12:
-    resolution: {integrity: sha512-33GQnanjYKefOTO2lQK6EaKXPJ1W8vtzvBneGfhKaOZHQJLqe61P93jP0TLTz67sqsA0m1ph1cNdGpLc/Nx2Xg==}
+  /babel-plugin-jsx-dom-expressions/0.36.8_@babel+core@7.20.12:
+    resolution: {integrity: sha512-hWG9WOa0gAxD1CKtzBxXMZoDMfn0Fxv8pYrl4y8znOpaS0vLuyNsclLH/w4hv+VBpv1yt9Rn4Gm/ImLBcqUfKA==}
     peerDependencies:
       '@babel/core': ^7.20.12
     dependencies:
@@ -2173,13 +2173,13 @@ packages:
       validate-html-nesting: 1.2.1
     dev: true
 
-  /babel-preset-solid/1.6.10_@babel+core@7.20.12:
-    resolution: {integrity: sha512-qBLjzeWmgY5jX11sJg/lriXABYdClfJrJJrIHaT6G5EuGhxhm6jn7XjqXjLBZHBgy5n/Z+iqJ5YfQj8KG2jKTA==}
+  /babel-preset-solid/1.7.2_@babel+core@7.20.12:
+    resolution: {integrity: sha512-2SVcLTk6RXgXv3ebbm4iKiAPTPhQ/+3zd1KUOnMq/qBMr9ZshzdtIS4dMr9orWPHwDTdvJ2ZAadyGf3ZfTwWjg==}
     peerDependencies:
       '@babel/core': ^7.0.0
     dependencies:
       '@babel/core': 7.20.12
-      babel-plugin-jsx-dom-expressions: 0.35.15_@babel+core@7.20.12
+      babel-plugin-jsx-dom-expressions: 0.36.8_@babel+core@7.20.12
     dev: true
 
   /balanced-match/1.0.2:
@@ -6531,13 +6531,13 @@ packages:
       smart-buffer: 4.2.0
     dev: true
 
-  /solid-js/1.7.0:
-    resolution: {integrity: sha512-tLG68KWlVRgzYeAW003G3E70emZqTcqCKJR9QoGr0rcuiLIuKrlUoezT8jLME1YSl3Wfu35jzgeY10iLEY4YQQ==}
+  /solid-js/1.7.2:
+    resolution: {integrity: sha512-01f8GIc+HTTlfDXtK+TFku3AllHyJ3hNsIpxM2qpObRP4VbEGVIP6VbULnThPlpse+J1y/I/1N9QeQ9MNkE8Ow==}
     dependencies:
       csstype: 3.1.1
       seroval: 0.5.1
 
-  /solid-refresh/0.5.2_solid-js@1.7.0:
+  /solid-refresh/0.5.2_solid-js@1.7.2:
     resolution: {integrity: sha512-I69HmFj0LsGRJ3n8CEMVjyQFgVtuM2bSjznu2hCnsY+i5oOxh8ioWj00nnHBv0UYD3WpE/Sq4Q3TNw2IKmKN7A==}
     peerDependencies:
       solid-js: ^1.3
@@ -6545,10 +6545,10 @@ packages:
       '@babel/generator': 7.21.4
       '@babel/helper-module-imports': 7.18.6
       '@babel/types': 7.21.4
-      solid-js: 1.7.0
+      solid-js: 1.7.2
     dev: true
 
-  /solid-use/0.7.0_solid-js@1.7.0:
+  /solid-use/0.7.0_solid-js@1.7.2:
     resolution: {integrity: sha512-okMWy/dADFS8EqXr2Ckr2W1gEu1Rz7g+a204Hp4LWwrk6/BxB26WdEB4b4eyax5lq3XEoiaKNWxFepBBeeE8rw==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -6558,7 +6558,7 @@ packages:
       seroval:
         optional: true
     dependencies:
-      solid-js: 1.7.0
+      solid-js: 1.7.2
     dev: false
 
   /sort-keys/2.0.0:
@@ -7151,19 +7151,19 @@ packages:
       builtins: 5.0.1
     dev: true
 
-  /vite-plugin-solid/2.6.1_solid-js@1.7.0+vite@4.2.1:
-    resolution: {integrity: sha512-/khM/ha3B5/pTWQWVJd/0n6ODPIrOcajwhbrD8Gnv37XmJJssu+KA8ssN73raMIicf2eiQKiTAV39w7dSl4Irg==}
+  /vite-plugin-solid/2.7.0_solid-js@1.7.2+vite@4.2.1:
+    resolution: {integrity: sha512-avp/Jl5zOp/Itfo67xtDB2O61U7idviaIp4mLsjhCa13PjKNasz+IID0jYTyqUp9SFx6/PmBr6v4KgDppqompg==}
     peerDependencies:
-      solid-js: ^1.3.17 || ^1.4.0 || ^1.5.0 || ^1.6.0
+      solid-js: ^1.7.2
       vite: ^3.0.0 || ^4.0.0
     dependencies:
       '@babel/core': 7.20.12
       '@babel/preset-typescript': 7.18.6_@babel+core@7.20.12
       '@types/babel__core': 7.20.0
-      babel-preset-solid: 1.6.10_@babel+core@7.20.12
+      babel-preset-solid: 1.7.2_@babel+core@7.20.12
       merge-anything: 5.1.4
-      solid-js: 1.7.0
-      solid-refresh: 0.5.2_solid-js@1.7.0
+      solid-js: 1.7.2
+      solid-refresh: 0.5.2_solid-js@1.7.2
       vite: 4.2.1
       vitefu: 0.2.4_vite@4.2.1
     transitivePeerDependencies:
