@@ -53,19 +53,18 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
   const state = createAutocompleteOptionState(props);
   const id = createUniqueId();
 
+  const isDisabled = () => state.disabled() || props.disabled;
   createEffect(() => {
-    if (context.selectedDescendant === id) {
+    if (!isDisabled() && context.selectedDescendant === id) {
       state.select();
     }
   });
-
-  const isDisabled = () => state.disabled() || props.disabled;
 
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onClick = () => {
-        if (isDisabled()) {
+        if (!isDisabled()) {
           state.select();
         }
       };
