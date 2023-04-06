@@ -17,6 +17,7 @@ import {
 import { COMMAND_LABEL_TAG } from './tags';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import {
+  createDisabledState,
   createHasSelectedState,
   createHasActiveState,
   createHasQueryState,
@@ -41,6 +42,7 @@ export function CommandLabel<T extends ValidConstructor = 'label'>(
       {
         id: context.labelID,
       },
+      createDisabledState(() => state.disabled()),
       createHasSelectedState(() => state.hasSelected()),
       createHasActiveState(() => state.hasActive()),
       createHasQueryState(() => state.hasQuery()),
