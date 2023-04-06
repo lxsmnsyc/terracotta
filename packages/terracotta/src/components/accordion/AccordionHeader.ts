@@ -20,6 +20,7 @@ import {
   useSelectOptionState,
 } from '../../states/create-select-option-state';
 import {
+  createDisabledState,
   createSelectedState,
   createExpandedState,
   createActiveState,
@@ -41,6 +42,7 @@ export function AccordionHeader<T extends ValidConstructor = 'h3'>(
         'children',
       ]),
       ACCORDION_HEADER_TAG,
+      createDisabledState(() => state.disabled()),
       createSelectedState(() => state.isSelected()),
       createExpandedState(() => state.isSelected()),
       createActiveState(() => state.isActive()),

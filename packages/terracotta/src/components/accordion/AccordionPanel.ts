@@ -22,7 +22,12 @@ import {
 import { ACCORDION_PANEL_TAG } from './tags';
 import { SelectOptionStateChild, SelectOptionStateRenderProps, useSelectOptionState } from '../../states/create-select-option-state';
 import { Prettify } from '../../utils/types';
-import { createSelectedState, createExpandedState, createActiveState } from '../../utils/state-props';
+import {
+  createDisabledState,
+  createSelectedState,
+  createExpandedState,
+  createActiveState,
+} from '../../utils/state-props';
 
 export type AccordionPanelBaseProps = Prettify<
   & SelectOptionStateRenderProps
@@ -54,6 +59,7 @@ export function AccordionPanel<T extends ValidConstructor = 'div'>(
           id: context.panelID,
           'aria-labelledby': context.buttonID,
         },
+        createDisabledState(() => state.disabled()),
         createSelectedState(() => state.isSelected()),
         createExpandedState(() => state.isSelected()),
         createActiveState(() => state.isActive()),
