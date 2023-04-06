@@ -361,35 +361,35 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
         },
       },
       get children() {
-        return createDynamic(
-          () => props.as || 'div',
-          mergeProps(
-            getProps(props),
-            COMBOBOX_TAG,
-            {
-              'aria-labelledby': labelID,
-            },
-            createDisabledState(() => selectState.disabled()),
-            createHasSelectedState(() => selectState.hasSelected()),
-            createHasActiveState(() => selectState.hasActive()),
-            createExpandedState(() => disclosureState.isOpen()),
-            {
+        return createComponent(AutocompleteStateProvider, {
+          state: selectState,
+          get children() {
+            return createComponent(DisclosureStateProvider, {
+              state: disclosureState,
               get children() {
-                return createComponent(AutocompleteStateProvider, {
-                  state: selectState,
-                  get children() {
-                    return createComponent(DisclosureStateProvider, {
-                      state: disclosureState,
+                return createDynamic(
+                  () => props.as || 'div',
+                  mergeProps(
+                    getProps(props),
+                    COMBOBOX_TAG,
+                    {
+                      'aria-labelledby': labelID,
+                    },
+                    createDisabledState(() => selectState.disabled()),
+                    createHasSelectedState(() => selectState.hasSelected()),
+                    createHasActiveState(() => selectState.hasActive()),
+                    createExpandedState(() => disclosureState.isOpen()),
+                    {
                       get children() {
                         return props.children;
                       },
-                    });
-                  },
-                });
+                    },
+                  ) as DynamicProps<T>,
+                );
               },
-            },
-          ) as DynamicProps<T>,
-        );
+            });
+          },
+        });
       },
     });
   }) as unknown as JSX.Element;
