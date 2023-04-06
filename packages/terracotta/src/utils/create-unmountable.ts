@@ -1,7 +1,7 @@
 import {
   JSX,
+  createMemo,
 } from 'solid-js';
-import createShow from './create-show';
 
 // An `unmountable` is a kind of component
 // where one can decide if it should conditionally
@@ -10,7 +10,7 @@ import createShow from './create-show';
 // as some implementations may allow users to use various
 // ways to hide the element (e.g. opacity, display, visibility)
 export interface UnmountableProps {
-  unmount?: boolean;
+  unmount?: boolean | 'offscreen';
 }
 
 export function createUnmountable(
@@ -18,9 +18,29 @@ export function createUnmountable(
   shouldMount: () => boolean,
   render: () => JSX.Element,
 ): JSX.Element {
-  return createShow(
-    () => (props.unmount == null ? true : props.unmount),
-    () => createShow(shouldMount, render),
-    render,
-  );
+  const mode = createMemo(() => (props.unmount == null ? true : props.unmount));
+  return createMemo(() => {
+    const currentMode = mode();
+
+    if (currentMode === 'offscreen') {
+      const condition = createMemo(() => shouldMount());
+      const children = createMemo(() => render());
+      return createMemo(() => {
+        if (condition()) {
+          return children;
+        }
+        return undefined;
+      });
+    }
+    if (currentMode) {
+      const condition = createMemo(() => shouldMount());
+      return createMemo(() => {
+        if (condition()) {
+          return createMemo(() => render());
+        }
+        return undefined;
+      });
+    }
+    return createMemo(() => render());
+  }) as unknown as JSX.Element;
 }
