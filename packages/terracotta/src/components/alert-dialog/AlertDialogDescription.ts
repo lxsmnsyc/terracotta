@@ -17,7 +17,10 @@ import {
 } from './AlertDialogContext';
 import { ALERT_DIALOG_DESCRIPTION_TAG } from './tags';
 import { DisclosureStateChild, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
-import { createExpandedState } from '../../utils/state-props';
+import {
+  createDisabledState,
+  createExpandedState,
+} from '../../utils/state-props';
 
 export type AlertDialogDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
@@ -45,6 +48,7 @@ export function AlertDialogDescription<T extends ValidConstructor = 'p'>(
           });
         },
       },
+      createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
     ) as DynamicProps<T>,
   );
