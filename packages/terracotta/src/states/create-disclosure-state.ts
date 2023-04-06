@@ -145,8 +145,8 @@ export function DisclosureStateChild(
   const state = useDisclosureState();
   return createMemo(() => {
     const current = props.children;
-    if (typeof current === 'function') {
-      return current(state);
+    if (typeof current === 'function' && current.length === 1) {
+      return createMemo(() => current(state));
     }
     return current;
   }) as unknown as JSX.Element;
