@@ -27,7 +27,12 @@ import {
 import { AccordionContext, createAccordionFocusNavigator } from './AccordionContext';
 import createDynamic from '../../utils/create-dynamic';
 import { ACCORDION_TAG } from './tags';
-import { createDisabledState, createHasActiveState, createHasSelectedState } from '../../utils/state-props';
+import {
+  createARIADisabledState,
+  createDisabledState,
+  createHasActiveState,
+  createHasSelectedState,
+} from '../../utils/state-props';
 
 export type AccordionSingleControlledBaseProps<V> = Prettify<
   & SingleSelectStateControlledOptions<V>
@@ -166,6 +171,7 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
               id: controller.getId(),
             },
             createDisabledState(() => state.disabled()),
+            createARIADisabledState(() => state.disabled()),
             createHasSelectedState(() => state.hasSelected()),
             createHasActiveState(() => state.hasActive()),
             {

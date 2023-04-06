@@ -16,6 +16,7 @@ import {
 } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 import {
+  createARIADisabledState,
   createDisabledState,
 } from '../../utils/state-props';
 
@@ -62,6 +63,7 @@ export function Button<T extends ValidConstructor = 'button'>(
         role: 'button',
       },
       createDisabledState(() => props.disabled),
+      createARIADisabledState(() => props.disabled),
       omitProps(props, [
         'as',
         'ref',

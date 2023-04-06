@@ -14,6 +14,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  createARIADisabledState,
   createARIAExpandedState,
   createDisabledState,
   createExpandedState,
@@ -111,6 +112,7 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
       ref: setInternalRef,
     },
     createDisabledState(isDisabled),
+    createARIADisabledState(isDisabled),
     createExpandedState(() => disclosureState.isOpen()),
     createARIAExpandedState(() => disclosureState.isOpen()),
     createHasSelectedState(() => selectState.hasSelected()),

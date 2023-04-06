@@ -15,6 +15,7 @@ import {
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
+  createARIADisabledState,
   createARIAExpandedState,
   createActiveState,
   createDisabledState,
@@ -51,22 +52,24 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
+  const isDisabled = () => state.disabled() || props.disabled;
+
   createEffect(() => {
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
       const onClick = () => {
-        if (!(state.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           state.select();
         }
       };
       const onFocus = () => {
-        if (!(state.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           state.focus();
         }
       };
       const onBlur = () => {
-        if (!(state.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           state.blur();
         }
       };
@@ -93,7 +96,8 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
       },
     },
     createOwnerAttribute(rootContext.getId()),
-    createDisabledState(() => state.disabled() || props.disabled),
+    createDisabledState(isDisabled),
+    createARIADisabledState(isDisabled),
     createSelectedState(() => state.isSelected()),
     createExpandedState(() => state.isSelected()),
     createARIAExpandedState(() => state.isSelected()),

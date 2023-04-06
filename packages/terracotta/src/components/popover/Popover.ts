@@ -24,7 +24,11 @@ import useFocusStartPoint from '../../utils/use-focus-start-point';
 import { PopoverContext } from './PopoverContext';
 import createDynamic from '../../utils/create-dynamic';
 import { POPOVER_TAG } from './tags';
-import { createDisabledState, createExpandedState } from '../../utils/state-props';
+import {
+  createARIADisabledState,
+  createDisabledState,
+  createExpandedState,
+} from '../../utils/state-props';
 
 export type PopoverControlledBaseProps = Prettify<
   & DisclosureStateRenderProps
@@ -109,6 +113,7 @@ export function Popover<T extends ValidConstructor = 'div'>(
             ]),
           POPOVER_TAG,
           createDisabledState(() => state.disabled()),
+          createARIADisabledState(() => state.disabled()),
           createExpandedState(() => state.isOpen()),
           {
             get children() {

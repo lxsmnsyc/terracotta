@@ -25,7 +25,11 @@ import { CommandBarContext } from './CommandBarContext';
 import { createUnmountable, UnmountableProps } from '../../utils/create-unmountable';
 import createDynamic from '../../utils/create-dynamic';
 import { COMMAND_BAR_TAG } from './tags';
-import { createDisabledState, createExpandedState } from '../../utils/state-props';
+import {
+  createARIADisabledState,
+  createDisabledState,
+  createExpandedState,
+} from '../../utils/state-props';
 
 export type CommandBarControlledBaseProps = Prettify<
   & DisclosureStateControlledOptions
@@ -132,6 +136,7 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
             },
             COMMAND_BAR_TAG,
             createDisabledState(() => state.disabled()),
+            createARIADisabledState(() => state.disabled()),
             createExpandedState(() => state.isOpen()),
             {
               get children() {

@@ -21,7 +21,12 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { createDisabledState } from '../../utils/state-props';
+import {
+  createARIADisabledState,
+  createARIAPressedState,
+  createDisabledState,
+  createPressedState,
+} from '../../utils/state-props';
 import { OmitAndMerge, Prettify } from '../../utils/types';
 import {
   Button,
@@ -96,12 +101,6 @@ export function Toggle<T extends ValidConstructor = 'button'>(
     TOGGLE_TAG,
     {
       ref: setRef,
-      get 'aria-pressed'() {
-        return props.pressed;
-      },
-      get 'tc-pressed'() {
-        return props.pressed;
-      },
       get children() {
         return createComponent(ToggleStateProvider, {
           state,
@@ -111,6 +110,9 @@ export function Toggle<T extends ValidConstructor = 'button'>(
         });
       },
     },
+    createPressedState(() => state.pressed()),
+    createARIAPressedState(() => state.pressed()),
     createDisabledState(() => state.disabled()),
+    createARIADisabledState(() => state.disabled()),
   ) as DynamicProps<T>);
 }

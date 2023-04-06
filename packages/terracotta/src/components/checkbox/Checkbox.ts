@@ -21,7 +21,7 @@ import {
 import { CheckboxContext } from './CheckboxContext';
 import createDynamic from '../../utils/create-dynamic';
 import { CHECKBOX_TAG } from './tags';
-import { createCheckedState, createDisabledState } from '../../utils/state-props';
+import { createARIADisabledState, createCheckedState, createDisabledState } from '../../utils/state-props';
 
 export type CheckboxControlledBaseProps = Prettify<
   & CheckStateControlledOptions
@@ -87,6 +87,7 @@ export function Checkbox<T extends ValidConstructor = 'div'>(
             ]),
           CHECKBOX_TAG,
           createDisabledState(() => state.disabled()),
+          createARIADisabledState(() => state.disabled()),
           createCheckedState(() => state.checked()),
           {
             get children() {

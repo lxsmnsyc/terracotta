@@ -14,6 +14,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  createARIADisabledState,
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
@@ -95,6 +96,7 @@ export function Disclosure<T extends ValidConstructor = 'div'>(
             ]),
           DISCLOSURE_TAG,
           createDisabledState(() => state.disabled()),
+          createARIADisabledState(() => state.disabled()),
           createExpandedState(() => state.isOpen()),
           {
             get children() {

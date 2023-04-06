@@ -6,23 +6,19 @@
  * ARIA states
  */
 
-interface DisabledProps {
+interface ARIADisabledProps {
   disabled?: boolean;
   'aria-disabled'?: boolean;
-  'tc-disabled'?: boolean;
 }
 
-export function createDisabledState(
+export function createARIADisabledState(
   disabled: () => boolean | undefined,
-): DisabledProps {
+): ARIADisabledProps {
   return {
     get disabled() {
       return disabled();
     },
     get 'aria-disabled'() {
-      return disabled();
-    },
-    get 'tc-disabled'() {
       return disabled();
     },
   };
@@ -69,9 +65,37 @@ export function createARIASelectedState(
   };
 }
 
+interface PressedProps {
+  'aria-pressed': boolean;
+}
+
+export function createARIAPressedState(
+  pressed: () => boolean,
+): PressedProps {
+  return {
+    get 'aria-pressed'() {
+      return pressed();
+    },
+  };
+}
+
 /**
  * Terracotta States
  */
+
+interface DisabledProps {
+  'tc-disabled'?: boolean;
+}
+
+export function createDisabledState(
+  disabled: () => boolean | undefined,
+): DisabledProps {
+  return {
+    get 'tc-disabled'() {
+      return disabled();
+    },
+  };
+}
 
 interface ExpandedProps {
   'tc-expanded'?: boolean;
@@ -182,6 +206,20 @@ export function createHasQueryState(
   return {
     get 'tc-has-query'() {
       return hasQuery();
+    },
+  };
+}
+
+interface PressedProps {
+  'tc-pressed': boolean;
+}
+
+export function createPressedState(
+  pressed: () => boolean,
+): PressedProps {
+  return {
+    get 'tc-pressed'() {
+      return pressed();
     },
   };
 }

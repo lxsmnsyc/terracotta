@@ -17,6 +17,7 @@ import {
 } from '../../utils/dynamic-prop';
 import createDynamic from '../../utils/create-dynamic';
 import {
+  createARIADisabledState,
   createDisabledState,
   createHasActiveState,
   createHasQueryState,
@@ -179,6 +180,7 @@ export function Command<V, T extends ValidConstructor = 'div'>(
               'aria-labelledby': labelID,
             },
             createDisabledState(() => state.disabled()),
+            createARIADisabledState(() => state.disabled()),
             createHasSelectedState(() => state.hasSelected()),
             createHasActiveState(() => state.hasActive()),
             createHasQueryState(() => state.hasQuery()),

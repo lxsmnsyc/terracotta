@@ -16,6 +16,7 @@ import createDynamic from '../../utils/create-dynamic';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import { SELECTED_NODE } from '../../utils/namespace';
 import {
+  createARIADisabledState,
   createDisabledState,
   createHasActiveState,
   createHasQueryState,
@@ -121,6 +122,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
       },
       COMMAND_INPUT_TAG,
       createDisabledState(isDisabled),
+      createARIADisabledState(isDisabled),
       createHasSelectedState(() => state.hasSelected()),
       createHasActiveState(() => state.hasActive()),
       createHasQueryState(() => state.hasQuery()),

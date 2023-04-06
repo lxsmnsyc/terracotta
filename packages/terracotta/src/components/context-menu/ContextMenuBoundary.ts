@@ -16,6 +16,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  createARIADisabledState,
   createARIAExpandedState,
   createDisabledState,
   createExpandedState,
@@ -77,6 +78,7 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
         },
       },
       createDisabledState(() => state.disabled()),
+      createARIADisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
       createARIAExpandedState(() => state.isOpen()),
       {

@@ -16,6 +16,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  createARIADisabledState,
   createARIAExpandedState,
   createDisabledState,
   createExpandedState,
@@ -46,12 +47,14 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
+  const isDisabled = () => state.disabled() || props.disabled;
+
   createEffect(() => {
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
       const toggle = () => {
-        if (!(state.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           state.toggle();
         }
       };
@@ -77,7 +80,8 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
         return state.isOpen() && context.panelID;
       },
     },
-    createDisabledState(() => state.disabled() || props.disabled),
+    createDisabledState(isDisabled),
+    createARIADisabledState(isDisabled),
     createExpandedState(() => state.isOpen()),
     createARIAExpandedState(() => state.isOpen()),
     {

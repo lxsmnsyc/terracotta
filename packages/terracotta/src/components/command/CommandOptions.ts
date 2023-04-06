@@ -19,6 +19,7 @@ import {
 } from './CommandContext';
 import { COMMAND_OPTIONS_TAG } from './tags';
 import {
+  createARIADisabledState,
   createDisabledState,
   createHasSelectedState,
   createHasActiveState,
@@ -67,6 +68,7 @@ export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
         tabindex: -1,
       },
       createDisabledState(() => state.disabled()),
+      createARIADisabledState(() => state.disabled()),
       createHasSelectedState(() => state.hasSelected()),
       createHasActiveState(() => state.hasActive()),
       createHasQueryState(() => state.hasQuery()),

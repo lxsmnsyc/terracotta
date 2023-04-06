@@ -17,6 +17,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  createARIADisabledState,
   createDisabledState,
   createExpandedState,
   createHasActiveState,
@@ -378,6 +379,7 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
                       'aria-labelledby': labelID,
                     },
                     createDisabledState(() => selectState.disabled()),
+                    createARIADisabledState(() => selectState.disabled()),
                     createHasSelectedState(() => selectState.hasSelected()),
                     createHasActiveState(() => selectState.hasActive()),
                     createExpandedState(() => disclosureState.isOpen()),

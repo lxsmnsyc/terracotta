@@ -15,6 +15,7 @@ import {
 } from '../../utils/dynamic-prop';
 import {
   createActiveState,
+  createARIADisabledState,
   createDisabledState, createExpandedState, createSelectedState,
 } from '../../utils/state-props';
 import { useAccordionContext } from './AccordionContext';
@@ -60,6 +61,7 @@ export function AccordionItem<V, T extends ValidConstructor = 'div'>(
           ]),
           ACCORDION_ITEM_TAG,
           createDisabledState(() => state.disabled()),
+          createARIADisabledState(() => state.disabled()),
           createSelectedState(() => state.isSelected()),
           createExpandedState(() => state.isSelected()),
           createActiveState(() => state.isActive()),

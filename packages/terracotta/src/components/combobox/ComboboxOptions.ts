@@ -27,6 +27,7 @@ import {
   createHasActiveState,
   createHasQueryState,
   createExpandedState,
+  createARIADisabledState,
 } from '../../utils/state-props';
 import {
   AutocompleteStateChild,
@@ -105,6 +106,7 @@ export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
           tabindex: -1,
         },
         createDisabledState(() => autocompleteState.disabled()),
+        createARIADisabledState(() => autocompleteState.disabled()),
         createExpandedState(() => disclosureState.isOpen()),
         createHasSelectedState(() => autocompleteState.hasSelected()),
         createHasActiveState(() => autocompleteState.hasActive()),

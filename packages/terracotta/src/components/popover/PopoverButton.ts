@@ -14,6 +14,7 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
+  createARIADisabledState,
   createARIAExpandedState,
   createDisabledState,
   createExpandedState,
@@ -44,13 +45,15 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
+  const isDisabled = () => state.disabled() || props.disabled;
+
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       context.anchor = ref;
 
       const toggle = () => {
-        if (!(state.disabled() || props.disabled)) {
+        if (!isDisabled()) {
           state.toggle();
         }
       };
@@ -90,7 +93,8 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
         return state.isOpen() && context.panelID;
       },
     },
-    createDisabledState(() => state.disabled() || props.disabled),
+    createDisabledState(isDisabled),
+    createARIADisabledState(isDisabled),
     createExpandedState(() => state.isOpen()),
     createARIAExpandedState(() => state.isOpen()),
     {

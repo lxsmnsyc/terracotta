@@ -17,6 +17,7 @@ import {
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
+  createARIADisabledState,
   createARIASelectedState,
   createActiveState,
   createDisabledState,
@@ -132,6 +133,7 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
       ref: setInternalRef,
     },
     createDisabledState(() => state.disabled()),
+    createARIADisabledState(() => state.disabled()),
     createSelectedState(() => state.isSelected()),
     createARIASelectedState(() => state.isSelected()),
     createActiveState(() => state.isActive()),

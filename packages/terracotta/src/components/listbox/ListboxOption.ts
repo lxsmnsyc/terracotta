@@ -15,6 +15,7 @@ import {
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
+  createARIADisabledState,
   createARIASelectedState,
   createActiveState,
   createDisabledState,
@@ -115,6 +116,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
       ref: setInternalRef,
     },
     createDisabledState(isDisabled),
+    createARIADisabledState(isDisabled),
     createSelectedState(() => state.isSelected()),
     createARIASelectedState(() => state.isSelected()),
     createActiveState(() => state.isActive()),

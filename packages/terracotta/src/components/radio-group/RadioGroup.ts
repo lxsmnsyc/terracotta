@@ -21,7 +21,12 @@ import {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { createDisabledState, createHasActiveState, createHasSelectedState } from '../../utils/state-props';
+import {
+  createARIADisabledState,
+  createDisabledState,
+  createHasActiveState,
+  createHasSelectedState,
+} from '../../utils/state-props';
 import { Prettify } from '../../utils/types';
 import { RadioGroupContext } from './RadioGroupContext';
 import { createRadioGroupOptionFocusNavigator, RadioGroupRootContext } from './RadioGroupRootContext';
@@ -145,6 +150,7 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
                 ref: setRef,
               },
               createDisabledState(() => state.disabled()),
+              createARIADisabledState(() => state.disabled()),
               createHasActiveState(() => state.hasActive()),
               createHasSelectedState(() => state.hasSelected()),
               {

@@ -17,7 +17,11 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
-  createDisabledState, createExpandedState, createHasActiveState, createHasSelectedState,
+  createARIADisabledState,
+  createDisabledState,
+  createExpandedState,
+  createHasActiveState,
+  createHasSelectedState,
 } from '../../utils/state-props';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import {
@@ -363,6 +367,7 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
                       'aria-labelledby': labelID,
                     },
                     createDisabledState(() => selectState.disabled()),
+                    createARIADisabledState(() => selectState.disabled()),
                     createHasSelectedState(() => selectState.hasSelected()),
                     createHasActiveState(() => selectState.hasActive()),
                     createExpandedState(() => disclosureState.isOpen()),

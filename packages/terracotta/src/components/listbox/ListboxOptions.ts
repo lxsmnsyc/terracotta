@@ -18,7 +18,11 @@ import {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
-  createDisabledState, createExpandedState, createHasActiveState, createHasSelectedState,
+  createARIADisabledState,
+  createDisabledState,
+  createExpandedState,
+  createHasActiveState,
+  createHasSelectedState,
 } from '../../utils/state-props';
 import {
   useListboxContext,
@@ -182,6 +186,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
               },
             },
             createDisabledState(() => selectState.disabled()),
+            createARIADisabledState(() => selectState.disabled()),
             createExpandedState(() => disclosureState.isOpen()),
             createHasSelectedState(() => selectState.hasSelected()),
             createHasActiveState(() => selectState.hasActive()),

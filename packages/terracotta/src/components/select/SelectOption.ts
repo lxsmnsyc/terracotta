@@ -22,6 +22,7 @@ import {
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
   createActiveState,
+  createARIADisabledState,
   createARIASelectedState,
   createDisabledState,
   createSelectedState,
@@ -117,6 +118,7 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
       ref: setInternalRef,
     },
     createDisabledState(isDisabled),
+    createARIADisabledState(isDisabled),
     createSelectedState(() => state.isSelected()),
     createARIASelectedState(() => state.isSelected()),
     createActiveState(() => state.isActive()),

@@ -16,6 +16,7 @@ import { useComboboxContext } from './ComboboxContext';
 import createDynamic from '../../utils/create-dynamic';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import {
+  createARIADisabledState,
   createARIAExpandedState,
   createDisabledState,
   createExpandedState,
@@ -169,6 +170,7 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
       },
       COMMAND_INPUT_TAG,
       createDisabledState(isDisabled),
+      createARIADisabledState(isDisabled),
       createExpandedState(() => disclosureState.isOpen()),
       createARIAExpandedState(() => disclosureState.isOpen()),
       createHasSelectedState(() => autocompleteState.hasSelected()),
