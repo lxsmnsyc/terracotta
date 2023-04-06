@@ -377,17 +377,15 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
                     COMBOBOX_TAG,
                     {
                       'aria-labelledby': labelID,
+                      get children() {
+                        return props.children;
+                      },
                     },
                     createDisabledState(() => autocompleteState.disabled()),
                     createARIADisabledState(() => autocompleteState.disabled()),
                     createHasSelectedState(() => autocompleteState.hasSelected()),
                     createHasActiveState(() => autocompleteState.hasActive()),
                     createExpandedState(() => disclosureState.isOpen()),
-                    {
-                      get children() {
-                        return props.children;
-                      },
-                    },
                   ) as DynamicProps<T>,
                 );
               },

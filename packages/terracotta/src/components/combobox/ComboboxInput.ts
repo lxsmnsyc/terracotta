@@ -116,20 +116,6 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
         current.removeEventListener('keydown', onKeyDown);
         current.removeEventListener('blur', onBlur);
       });
-
-      const onMouseEnter = () => {
-        context.hovering = true;
-      };
-      const onMouseLeave = () => {
-        context.hovering = false;
-      };
-
-      current.addEventListener('mouseenter', onMouseEnter);
-      current.addEventListener('mouseleave', onMouseLeave);
-      onCleanup(() => {
-        current.removeEventListener('mouseenter', onMouseEnter);
-        current.removeEventListener('mouseleave', onMouseLeave);
-      });
     }
   });
 
