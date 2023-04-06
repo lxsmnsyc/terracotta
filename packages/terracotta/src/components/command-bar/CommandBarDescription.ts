@@ -21,7 +21,10 @@ import {
   DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
-import { createExpandedState } from '../../utils/state-props';
+import {
+  createDisabledState,
+  createExpandedState,
+} from '../../utils/state-props';
 
 export type CommandBarDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
@@ -49,6 +52,7 @@ export function CommandBarDescription<T extends ValidConstructor = 'p'>(
           });
         },
       },
+      createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
     ) as DynamicProps<T>,
   );
