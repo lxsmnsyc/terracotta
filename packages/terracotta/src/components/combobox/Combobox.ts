@@ -292,7 +292,7 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
       ),
     );
 
-    const selectState = (
+    const autocompleteState = (
       isComboboxMultiple(props)
         ? createMultipleAutocompleteState(
           mergeProps(
@@ -330,7 +330,7 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
     );
 
     createEffect(() => {
-      if (!selectState.hasActive()) {
+      if (!autocompleteState.hasActive()) {
         setActiveDescendant(undefined);
       }
     });
@@ -365,7 +365,7 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
       },
       get children() {
         return createComponent(AutocompleteStateProvider, {
-          state: selectState,
+          state: autocompleteState,
           get children() {
             return createComponent(DisclosureStateProvider, {
               state: disclosureState,
@@ -378,10 +378,10 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
                     {
                       'aria-labelledby': labelID,
                     },
-                    createDisabledState(() => selectState.disabled()),
-                    createARIADisabledState(() => selectState.disabled()),
-                    createHasSelectedState(() => selectState.hasSelected()),
-                    createHasActiveState(() => selectState.hasActive()),
+                    createDisabledState(() => autocompleteState.disabled()),
+                    createARIADisabledState(() => autocompleteState.disabled()),
+                    createHasSelectedState(() => autocompleteState.hasSelected()),
+                    createHasActiveState(() => autocompleteState.hasActive()),
                     createExpandedState(() => disclosureState.isOpen()),
                     {
                       get children() {

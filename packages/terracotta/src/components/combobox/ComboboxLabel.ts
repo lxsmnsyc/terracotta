@@ -17,6 +17,7 @@ import {
 import { COMBOBOX_LABEL_TAG } from './tags';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import {
+  createDisabledState,
   createHasSelectedState,
   createHasActiveState,
   createHasQueryState,
@@ -44,6 +45,7 @@ export function ComboboxLabel<T extends ValidConstructor = 'label'>(
       {
         id: context.labelID,
       },
+      createDisabledState(() => autocompleteState.disabled()),
       createExpandedState(() => disclosureState.isOpen()),
       createHasSelectedState(() => autocompleteState.hasSelected()),
       createHasActiveState(() => autocompleteState.hasActive()),
