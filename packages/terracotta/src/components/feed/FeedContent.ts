@@ -38,6 +38,9 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       controller.setRef(ref);
+      onCleanup(() => {
+        controller.clearRef();
+      });
       const onKeyDown = (e: KeyboardEvent) => {
         if (e.ctrlKey) {
           switch (e.key) {

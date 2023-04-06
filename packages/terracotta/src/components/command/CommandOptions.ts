@@ -3,6 +3,7 @@ import {
   JSX,
   createComponent,
   mergeProps,
+  onCleanup,
 } from 'solid-js';
 import {
   omitProps,
@@ -46,6 +47,9 @@ export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       context.controller.setRef(ref);
+      onCleanup(() => {
+        context.controller.clearRef();
+      });
     }
   });
 

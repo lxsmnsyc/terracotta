@@ -39,6 +39,9 @@ export function Menu<T extends ValidConstructor = 'ul'>(
     const current = ref();
     if (current instanceof HTMLElement) {
       controller.setRef(current);
+      onCleanup(() => {
+        controller.clearRef();
+      });
 
       const onKeyDown = (e: KeyboardEvent) => {
         switch (e.key) {

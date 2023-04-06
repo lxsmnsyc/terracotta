@@ -47,6 +47,9 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
     const current = ref();
     if (current instanceof HTMLElement) {
       controller.setRef(current);
+      onCleanup(() => {
+        controller.clearRef();
+      });
 
       const onKeyDown = (e: KeyboardEvent) => {
         if (!state.disabled()) {

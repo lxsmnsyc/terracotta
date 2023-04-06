@@ -75,6 +75,9 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
       const ref = internalRef();
       if (ref instanceof HTMLElement && disclosureState.isOpen()) {
         controller.setRef(ref);
+        onCleanup(() => {
+          controller.clearRef();
+        });
 
         if (!untrack(() => selectState.hasSelected())) {
           controller.setFirstChecked();

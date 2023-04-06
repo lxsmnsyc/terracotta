@@ -60,6 +60,9 @@ export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       context.controller.setRef(ref);
+      onCleanup(() => {
+        context.controller.clearRef();
+      });
 
       const onMouseEnter = () => {
         context.hovering = true;
@@ -73,10 +76,6 @@ export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
       onCleanup(() => {
         ref.removeEventListener('mouseenter', onMouseEnter);
         ref.removeEventListener('mouseleave', onMouseLeave);
-      });
-
-      onCleanup(() => {
-        context.controller.clearRef();
       });
     }
   });
