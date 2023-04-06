@@ -17,7 +17,10 @@ import {
 } from './CheckboxContext';
 import { CHECKBOX_DESCRIPTION } from './tags';
 import { CheckStateChild, CheckStateRenderProps, useCheckState } from '../../states/create-check-state';
-import { createCheckedState } from '../../utils/state-props';
+import {
+  createCheckedState,
+  createDisabledState,
+} from '../../utils/state-props';
 
 export type CheckboxDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, CheckStateRenderProps>;
@@ -45,6 +48,7 @@ export function CheckboxDescription<T extends ValidConstructor = 'p'>(
           });
         },
       },
+      createDisabledState(() => state.disabled()),
       createCheckedState(() => state.checked()),
     ) as DynamicProps<T>,
   );

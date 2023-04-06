@@ -21,7 +21,10 @@ import {
   CheckStateChild,
   useCheckState,
 } from '../../states/create-check-state';
-import { createCheckedState } from '../../utils/state-props';
+import {
+  createCheckedState,
+  createDisabledState,
+} from '../../utils/state-props';
 
 export type CheckboxLabelProps<T extends ValidConstructor = 'label'> =
   HeadlessProps<T, CheckStateRenderProps>;
@@ -50,6 +53,7 @@ export function CheckboxLabel<T extends ValidConstructor = 'label'>(
           });
         },
       },
+      createDisabledState(() => state.disabled()),
       createCheckedState(() => state.checked()),
     ) as DynamicProps<T>,
   );

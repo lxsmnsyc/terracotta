@@ -51,17 +51,9 @@ export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
         state.toggle();
       };
 
-      const onKeyDown = (e: KeyboardEvent) => {
-        if (e.key === ' ') {
-          state.toggle();
-        }
-      };
-
       ref.addEventListener('click', toggle);
-      ref.addEventListener('keydown', onKeyDown);
       onCleanup(() => {
         ref.removeEventListener('click', toggle);
-        ref.removeEventListener('keydown', onKeyDown);
       });
     }
   });
