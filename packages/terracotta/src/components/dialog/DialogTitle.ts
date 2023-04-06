@@ -21,7 +21,10 @@ import {
   DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
-import { createExpandedState } from '../../utils/state-props';
+import {
+  createDisabledState,
+  createExpandedState,
+} from '../../utils/state-props';
 
 export type DialogTitleProps<T extends ValidConstructor = 'h2'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -49,6 +52,7 @@ export function DialogTitle<T extends ValidConstructor = 'h2'>(
           });
         },
       },
+      createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
     ) as DynamicProps<T>,
   );

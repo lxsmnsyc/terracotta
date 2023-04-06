@@ -17,7 +17,10 @@ import {
 } from './DialogContext';
 import { DIALOG_DESCRIPTION_TAG } from './tags';
 import { DisclosureStateChild, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
-import { createExpandedState } from '../../utils/state-props';
+import {
+  createDisabledState,
+  createExpandedState,
+} from '../../utils/state-props';
 
 export type DialogDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
@@ -45,6 +48,7 @@ export function DialogDescription<T extends ValidConstructor = 'p'>(
           });
         },
       },
+      createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
     ) as DynamicProps<T>,
   );
