@@ -65,13 +65,13 @@ export function createARIASelectedState(
   };
 }
 
-interface PressedProps {
+interface ARIAPressedProps {
   'aria-pressed': boolean;
 }
 
 export function createARIAPressedState(
   pressed: () => boolean,
-): PressedProps {
+): ARIAPressedProps {
   return {
     get 'aria-pressed'() {
       return pressed();
