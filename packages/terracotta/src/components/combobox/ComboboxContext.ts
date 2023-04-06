@@ -8,7 +8,7 @@ import FocusNavigator from '../../utils/focus-navigator';
 import { MATCHES_NODE } from '../../utils/namespace';
 
 interface ComboboxContext {
-  multiple: boolean;
+  multiple?: boolean;
   controller: FocusNavigator;
   activeDescendant: string | undefined;
   selectedDescendant: string | undefined;

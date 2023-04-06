@@ -63,6 +63,9 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
   createEffect(() => {
     if (!isDisabled() && context.selectedDescendant === id) {
       state.select();
+      if (!context.multiple) {
+        disclosure.close();
+      }
     }
   });
 

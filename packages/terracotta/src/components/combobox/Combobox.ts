@@ -336,7 +336,9 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
 
     return createComponent(ComboboxContext.Provider, {
       value: {
-        multiple: !!props.multiple,
+        get multiple() {
+          return props.multiple;
+        },
         labelID,
         inputID,
         optionsID,
