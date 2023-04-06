@@ -31,7 +31,10 @@ import {
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 import { Prettify } from '../../utils/types';
-import { createExpandedState } from '../../utils/state-props';
+import {
+  createDisabledState,
+  createExpandedState,
+} from '../../utils/state-props';
 
 export type ContextMenuPanelBaseProps = Prettify<
   & DisclosureStateRenderProps
@@ -107,6 +110,7 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
             });
           },
         },
+        createDisabledState(() => state.disabled()),
         createExpandedState(() => state.isOpen()),
       ) as DynamicProps<T>,
     ),
