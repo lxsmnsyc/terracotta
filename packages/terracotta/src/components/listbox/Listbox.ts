@@ -2,7 +2,6 @@ import {
   createComponent,
   createEffect,
   createMemo,
-  createSignal,
   createUniqueId,
   JSX,
   mergeProps,
@@ -275,7 +274,6 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
   props: ListboxProps<V, T>,
 ): JSX.Element {
   return createMemo(() => {
-    const [hovering, setHovering] = createSignal(false);
     const ownerID = createUniqueId();
     const labelID = createUniqueId();
     const buttonID = createUniqueId();
@@ -343,12 +341,7 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
         get horizontal() {
           return props.horizontal;
         },
-        get hovering() {
-          return hovering();
-        },
-        set hovering(value: boolean) {
-          setHovering(value);
-        },
+        hovering: false,
       },
       get children() {
         return createComponent(SelectStateProvider, {
