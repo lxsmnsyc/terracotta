@@ -31,7 +31,7 @@ import {
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 import { Prettify } from '../../utils/types';
-import { createExpandedState } from '../../utils/state-props';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 
 export type PopoverPanelBaseProps = Prettify<
   & DisclosureStateRenderProps
@@ -56,12 +56,16 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
 
       const onKeyDown = (e: KeyboardEvent) => {
         if (!state.disabled()) {
-          if (e.key === 'Tab') {
-            e.preventDefault();
-
-            lockFocus(ref, e.shiftKey, false);
-          } else if (e.key === 'Escape') {
-            state.close();
+          switch (e.key) {
+            case 'Tab':
+              e.preventDefault();
+              lockFocus(ref, e.shiftKey, false);
+              break;
+            case 'Escape':
+              state.close();
+              break;
+            default:
+              break;
           }
         }
       };
@@ -108,6 +112,7 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
             });
           },
         },
+        createDisabledState(() => state.disabled()),
         createExpandedState(() => state.isOpen()),
       ) as DynamicProps<T>,
     ),
