@@ -23,6 +23,7 @@ import {
 } from '../../states/create-disclosure-state';
 import { useSelectState } from '../../states/create-select-state';
 import {
+  createDisabledState,
   createExpandedState,
   createHasActiveState,
   createHasSelectedState,
@@ -56,6 +57,7 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
           });
         },
       },
+      createDisabledState(() => disclosureState.disabled()),
       createExpandedState(() => disclosureState.isOpen()),
       createHasSelectedState(() => selectState.hasSelected()),
       createHasActiveState(() => selectState.hasActive()),
