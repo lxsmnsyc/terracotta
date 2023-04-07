@@ -61,17 +61,23 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
     }
   });
 
+  function focusOption() {
+    context.activeDescendant = id;
+    state.focus();
+  }
+
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       const onClick = () => {
         if (!isDisabled()) {
           state.select();
+          focusOption();
         }
       };
       const onMouseEnter = () => {
         if (!isDisabled()) {
-          state.focus();
+          focusOption();
         }
       };
       const onMouseLeave = () => {
@@ -91,8 +97,7 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
 
       onCleanup(registerVirtualFocus((el) => {
         if (el === ref) {
-          context.activeDescendant = id;
-          state.focus();
+          focusOption();
         }
       }));
     }

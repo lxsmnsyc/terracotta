@@ -15,6 +15,8 @@ interface CommandContext {
   inputID: string;
   labelID: string;
   optionsID: string;
+  anchor?: HTMLElement | null;
+  optionsHovering: boolean;
 }
 
 export const CommandContext = createContext<CommandContext>();

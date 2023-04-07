@@ -39,6 +39,8 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
   createEffect(() => {
     const current = internalRef();
     if (current instanceof HTMLElement) {
+      context.anchor = current;
+
       if (current instanceof HTMLInputElement) {
         const onInput = () => {
           if (!isDisabled()) {
@@ -71,14 +73,21 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
         }
       };
       const onFocus = () => {
-        if (!state.hasSelected()) {
-          context.controller.setFirstChecked();
-        } else {
+        if (context.activeDescendant) {
+          const ref = document.getElementById(context.activeDescendant);
+          if (ref) {
+            context.controller.setCurrent(ref);
+          }
+        } else if (state.hasSelected()) {
           context.controller.setFirstChecked(SELECTED_NODE);
+        } else {
+          context.controller.setFirstChecked();
         }
       };
       const onBlur = () => {
-        state.blur();
+        if (!context.optionsHovering) {
+          state.blur();
+        }
       };
       current.addEventListener('keydown', onKeyDown);
       current.addEventListener('focus', onFocus);
@@ -94,6 +103,15 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
   createEffect(() => {
     if (state.query() !== '') {
       context.controller.setFirstChecked();
+    }
+  });
+
+  createEffect(() => {
+    if (context.activeDescendant) {
+      const ref = document.getElementById(context.activeDescendant);
+      if (ref) {
+        context.controller.setCurrent(ref);
+      }
     }
   });
 

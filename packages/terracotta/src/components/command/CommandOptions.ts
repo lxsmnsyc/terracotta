@@ -44,11 +44,32 @@ export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      context.controller.setRef(ref);
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      context.controller.setRef(current);
       onCleanup(() => {
         context.controller.clearRef();
+      });
+      const onFocus = () => {
+        if (context.anchor) {
+          context.anchor.focus();
+        }
+      };
+
+      const onMouseEnter = () => {
+        context.optionsHovering = true;
+      };
+      const onMouseLeave = () => {
+        context.optionsHovering = false;
+      };
+
+      current.addEventListener('focusin', onFocus);
+      current.addEventListener('mouseenter', onMouseEnter);
+      current.addEventListener('mouseleave', onMouseLeave);
+      onCleanup(() => {
+        current.removeEventListener('focusin', onFocus);
+        current.removeEventListener('mouseenter', onMouseEnter);
+        current.removeEventListener('mouseleave', onMouseLeave);
       });
     }
   });
