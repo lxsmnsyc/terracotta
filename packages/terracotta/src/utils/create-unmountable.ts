@@ -1,5 +1,6 @@
 import {
   JSX,
+  children,
   createMemo,
 } from 'solid-js';
 
@@ -24,10 +25,10 @@ export function createUnmountable(
 
     if (currentMode === 'offscreen') {
       const condition = createMemo(() => shouldMount());
-      const children = createMemo(() => render());
+      const current = children(() => render());
       return createMemo(() => {
         if (condition()) {
-          return children;
+          return current;
         }
         return undefined;
       });
@@ -36,11 +37,11 @@ export function createUnmountable(
       const condition = createMemo(() => shouldMount());
       return createMemo(() => {
         if (condition()) {
-          return createMemo(() => render());
+          return render;
         }
         return undefined;
       });
     }
-    return createMemo(() => render());
+    return render;
   }) as unknown as JSX.Element;
 }
