@@ -1,7 +1,6 @@
 import {
   createComponent,
   createEffect,
-  createSignal,
   createUniqueId,
   JSX,
   mergeProps,
@@ -59,7 +58,6 @@ function isPopoverUncontrolled<T extends ValidConstructor = 'div'>(
 export function Popover<T extends ValidConstructor = 'div'>(
   props: PopoverProps<T>,
 ): JSX.Element {
-  const [hovering, setHovering] = createSignal(false);
   const ownerID = createUniqueId();
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
@@ -81,12 +79,7 @@ export function Popover<T extends ValidConstructor = 'div'>(
       ownerID,
       buttonID,
       panelID,
-      get hovering() {
-        return hovering();
-      },
-      set hovering(value: boolean) {
-        setHovering(value);
-      },
+      hovering: false,
     },
     get children() {
       return createDynamic(
