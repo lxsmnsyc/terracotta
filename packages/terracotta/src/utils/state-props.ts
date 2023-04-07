@@ -1,6 +1,8 @@
-/**
- * Hybrid states
- */
+type Booleanish = '' | undefined;
+
+function toBooleanish(value?: boolean): Booleanish {
+  return value ? '' : undefined;
+}
 
 /**
  * ARIA states
@@ -84,7 +86,7 @@ export function createARIAPressedState(
  */
 
 interface DisabledProps {
-  'tc-disabled'?: boolean;
+  'tc-disabled'?: Booleanish;
 }
 
 export function createDisabledState(
@@ -92,13 +94,13 @@ export function createDisabledState(
 ): DisabledProps {
   return {
     get 'tc-disabled'() {
-      return disabled();
+      return toBooleanish(disabled());
     },
   };
 }
 
 interface ExpandedProps {
-  'tc-expanded'?: boolean;
+  'tc-expanded'?: Booleanish;
 }
 
 export function createExpandedState(
@@ -106,13 +108,13 @@ export function createExpandedState(
 ): ExpandedProps {
   return {
     get 'tc-expanded'() {
-      return expanded();
+      return toBooleanish(expanded());
     },
   };
 }
 
 interface CheckedProps {
-  'tc-checked': boolean | 'mixed';
+  'tc-checked': Booleanish | 'mixed';
 }
 
 export function createCheckedState(
@@ -121,13 +123,13 @@ export function createCheckedState(
   return {
     get 'tc-checked'() {
       const result = isChecked();
-      return result == null ? 'mixed' : result;
+      return result == null ? 'mixed' : toBooleanish(result);
     },
   };
 }
 
 interface SelectedProps {
-  'tc-selected': boolean;
+  'tc-selected': Booleanish;
 }
 
 export function createSelectedState(
@@ -135,13 +137,13 @@ export function createSelectedState(
 ): SelectedProps {
   return {
     get 'tc-selected'() {
-      return isSelected();
+      return toBooleanish(isSelected());
     },
   };
 }
 
 interface ActiveProps {
-  'tc-active': boolean;
+  'tc-active': Booleanish;
 }
 
 export function createActiveState(
@@ -149,13 +151,13 @@ export function createActiveState(
 ): ActiveProps {
   return {
     get 'tc-active'() {
-      return isActive();
+      return toBooleanish(isActive());
     },
   };
 }
 
 interface MatchesProps {
-  'tc-matches': boolean;
+  'tc-matches': Booleanish;
 }
 
 export function createMatchesState(
@@ -163,13 +165,13 @@ export function createMatchesState(
 ): MatchesProps {
   return {
     get 'tc-matches'() {
-      return matches();
+      return toBooleanish(matches());
     },
   };
 }
 
 interface HasSelectedProps {
-  'tc-has-selected': boolean;
+  'tc-has-selected': Booleanish;
 }
 
 export function createHasSelectedState(
@@ -177,13 +179,13 @@ export function createHasSelectedState(
 ): HasSelectedProps {
   return {
     get 'tc-has-selected'() {
-      return hasSelected();
+      return toBooleanish(hasSelected());
     },
   };
 }
 
 interface HasActiveProps {
-  'tc-has-active': boolean;
+  'tc-has-active': Booleanish;
 }
 
 export function createHasActiveState(
@@ -191,13 +193,13 @@ export function createHasActiveState(
 ): HasActiveProps {
   return {
     get 'tc-has-active'() {
-      return hasActive();
+      return toBooleanish(hasActive());
     },
   };
 }
 
 interface HasQueryProps {
-  'tc-has-query': boolean;
+  'tc-has-query': Booleanish;
 }
 
 export function createHasQueryState(
@@ -205,13 +207,13 @@ export function createHasQueryState(
 ): HasQueryProps {
   return {
     get 'tc-has-query'() {
-      return hasQuery();
+      return toBooleanish(hasQuery());
     },
   };
 }
 
 interface PressedProps {
-  'tc-pressed': boolean;
+  'tc-pressed': Booleanish;
 }
 
 export function createPressedState(
@@ -219,7 +221,7 @@ export function createPressedState(
 ): PressedProps {
   return {
     get 'tc-pressed'() {
-      return pressed();
+      return toBooleanish(pressed());
     },
   };
 }
