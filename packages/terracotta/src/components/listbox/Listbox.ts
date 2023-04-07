@@ -341,7 +341,8 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
         get horizontal() {
           return props.horizontal;
         },
-        hovering: false,
+        buttonHovering: false,
+        optionsHovering: false,
       },
       get children() {
         return createComponent(SelectStateProvider, {

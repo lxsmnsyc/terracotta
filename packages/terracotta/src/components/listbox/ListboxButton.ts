@@ -84,10 +84,10 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
       });
 
       const onMouseEnter = () => {
-        context.hovering = true;
+        context.buttonHovering = true;
       };
       const onMouseLeave = () => {
-        context.hovering = false;
+        context.buttonHovering = false;
       };
 
       ref.addEventListener('mouseenter', onMouseEnter);

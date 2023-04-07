@@ -136,7 +136,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
           }
         };
         const onBlur = (e: FocusEvent) => {
-          if (context.hovering) {
+          if (context.buttonHovering || context.optionsHovering) {
             return;
           }
           if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
@@ -155,6 +155,20 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
           ref.removeEventListener('keydown', onKeyDown);
           ref.removeEventListener('focusin', onFocusIn);
           ref.removeEventListener('focusout', onBlur);
+        });
+
+        const onMouseEnter = () => {
+          context.optionsHovering = true;
+        };
+        const onMouseLeave = () => {
+          context.optionsHovering = false;
+        };
+
+        ref.addEventListener('mouseenter', onMouseEnter);
+        ref.addEventListener('mouseleave', onMouseLeave);
+        onCleanup(() => {
+          ref.removeEventListener('mouseenter', onMouseEnter);
+          ref.removeEventListener('mouseleave', onMouseLeave);
         });
       }
     });

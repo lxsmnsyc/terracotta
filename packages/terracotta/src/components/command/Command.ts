@@ -146,6 +146,7 @@ export function Command<V, T extends ValidConstructor = 'div'>(
         inputID,
         optionsID,
         labelID,
+        optionsHovering: false,
       },
       get children() {
         return createDynamic(

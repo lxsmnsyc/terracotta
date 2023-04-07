@@ -11,7 +11,8 @@ interface ListboxContext {
   labelID: string;
   buttonID: string;
   optionsID: string;
-  hovering: boolean;
+  buttonHovering: boolean;
+  optionsHovering: boolean;
   anchor?: HTMLElement | null;
 }
 
