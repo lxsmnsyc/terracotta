@@ -84,6 +84,7 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
       const onClick = () => {
         if (!isDisabled()) {
           state.select();
+          focusOption();
           if (!context.multiple) {
             disclosure.close();
           }

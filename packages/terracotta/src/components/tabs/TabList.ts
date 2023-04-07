@@ -100,10 +100,10 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
   });
 
   createEffect(() => {
-    if (!state.hasSelected()) {
-      controller.setFirstChecked();
-    } else {
+    if (state.hasSelected()) {
       controller.setFirstChecked(SELECTED_NODE);
+    } else {
+      controller.setFirstChecked();
     }
   });
 

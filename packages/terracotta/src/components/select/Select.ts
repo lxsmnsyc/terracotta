@@ -175,10 +175,10 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
           }
         };
         const onFocus = () => {
-          if (!state.hasSelected()) {
-            controller.setFirstChecked();
-          } else {
+          if (state.hasSelected()) {
             controller.setFirstChecked(SELECTED_NODE);
+          } else {
+            controller.setFirstChecked();
           }
         };
 
