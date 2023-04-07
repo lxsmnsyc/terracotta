@@ -57,25 +57,33 @@ export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      context.controller.setRef(ref);
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      context.controller.setRef(current);
       onCleanup(() => {
         context.controller.clearRef();
       });
 
-      const onMouseEnter = () => {
-        context.hovering = true;
-      };
-      const onMouseLeave = () => {
-        context.hovering = false;
+      const onFocus = () => {
+        if (context.anchor) {
+          context.anchor.focus();
+        }
       };
 
-      ref.addEventListener('mouseenter', onMouseEnter);
-      ref.addEventListener('mouseleave', onMouseLeave);
+      const onMouseEnter = () => {
+        context.optionsHovering = true;
+      };
+      const onMouseLeave = () => {
+        context.optionsHovering = false;
+      };
+
+      current.addEventListener('focusin', onFocus);
+      current.addEventListener('mouseenter', onMouseEnter);
+      current.addEventListener('mouseleave', onMouseLeave);
       onCleanup(() => {
-        ref.removeEventListener('mouseenter', onMouseEnter);
-        ref.removeEventListener('mouseleave', onMouseLeave);
+        current.removeEventListener('focusin', onFocus);
+        current.removeEventListener('mouseenter', onMouseEnter);
+        current.removeEventListener('mouseleave', onMouseLeave);
       });
     }
   });

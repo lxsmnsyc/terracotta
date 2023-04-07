@@ -15,8 +15,9 @@ interface ComboboxContext {
   inputID: string;
   labelID: string;
   optionsID: string;
-  hovering: boolean;
   anchor?: HTMLElement | null;
+  inputHovering: boolean;
+  optionsHovering: boolean;
 }
 
 export const ComboboxContext = createContext<ComboboxContext>();

@@ -274,7 +274,6 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
   props: ComboboxProps<V, T>,
 ): JSX.Element {
   return createMemo(() => {
-    const [hovering, setHovering] = createSignal(false);
     const labelID = createUniqueId();
     const inputID = createUniqueId();
     const optionsID = createUniqueId();
@@ -343,13 +342,9 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
         labelID,
         inputID,
         optionsID,
-        get hovering() {
-          return hovering();
-        },
-        set hovering(value: boolean) {
-          setHovering(value);
-        },
         controller,
+        inputHovering: false,
+        optionsHovering: false,
         get activeDescendant() {
           return activeDescendant();
         },

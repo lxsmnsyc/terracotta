@@ -70,6 +70,11 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
     }
   });
 
+  function focusOption() {
+    context.activeDescendant = id;
+    state.focus();
+  }
+
   // I would really love to use createEffect but for some reason
   // the timing is never accurate
   createRenderEffect(() => {
@@ -86,7 +91,7 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
       };
       const onMouseEnter = () => {
         if (!isDisabled()) {
-          state.focus();
+          focusOption();
         }
       };
       const onMouseLeave = () => {
@@ -106,8 +111,7 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
 
       onCleanup(registerVirtualFocus((el) => {
         if (el === ref) {
-          context.activeDescendant = id;
-          state.focus();
+          focusOption();
         }
       }));
     }

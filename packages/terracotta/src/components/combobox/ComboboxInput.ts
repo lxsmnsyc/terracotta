@@ -98,7 +98,7 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
       };
 
       const onBlur = (e: FocusEvent) => {
-        if (context.hovering) {
+        if (context.optionsHovering) {
           return;
         }
         autocompleteState.blur();
@@ -116,6 +116,20 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
         current.removeEventListener('keydown', onKeyDown);
         current.removeEventListener('blur', onBlur);
       });
+
+      const onMouseEnter = () => {
+        context.inputHovering = true;
+      };
+      const onMouseLeave = () => {
+        context.inputHovering = false;
+      };
+
+      current.addEventListener('mouseenter', onMouseEnter);
+      current.addEventListener('mouseleave', onMouseLeave);
+      onCleanup(() => {
+        current.removeEventListener('mouseenter', onMouseEnter);
+        current.removeEventListener('mouseleave', onMouseLeave);
+      });
     }
   });
 
@@ -125,6 +139,15 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
         context.controller.setFirstChecked();
       } else {
         disclosureState.open();
+      }
+    }
+  });
+
+  createEffect(() => {
+    if (context.activeDescendant) {
+      const current = document.getElementById(context.activeDescendant);
+      if (current) {
+        context.controller.setCurrent(current);
       }
     }
   });
