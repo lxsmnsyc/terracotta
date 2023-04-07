@@ -89,10 +89,14 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
       ref.addEventListener('click', onClick);
       ref.addEventListener('focus', onFocus);
       ref.addEventListener('blur', onBlur);
+      ref.addEventListener('mouseenter', onFocus);
+      ref.addEventListener('mouseleave', onBlur);
       onCleanup(() => {
         ref.removeEventListener('click', onClick);
         ref.removeEventListener('focus', onFocus);
         ref.removeEventListener('blur', onBlur);
+        ref.removeEventListener('mouseenter', onFocus);
+        ref.removeEventListener('mouseleave', onBlur);
       });
     }
   });
