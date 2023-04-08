@@ -26,21 +26,11 @@ export function createUnmountable(
     if (currentMode === 'offscreen') {
       const condition = createMemo(() => shouldMount());
       const current = children(() => render());
-      return createMemo(() => {
-        if (condition()) {
-          return current;
-        }
-        return undefined;
-      });
+      return createMemo(() => condition() && current);
     }
     if (currentMode) {
       const condition = createMemo(() => shouldMount());
-      return createMemo(() => {
-        if (condition()) {
-          return render;
-        }
-        return undefined;
-      });
+      return createMemo(() => condition() && render);
     }
     return render;
   }) as unknown as JSX.Element;
