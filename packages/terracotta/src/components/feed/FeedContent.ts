@@ -25,6 +25,7 @@ import {
   useFeedContext,
 } from './FeedContext';
 import { FEED_CONTENT_TAG } from './tags';
+import useEventListener from '../../utils/use-event-listener';
 
 export type FeedContentProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<T>;
 
@@ -37,13 +38,13 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      controller.setRef(ref);
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      controller.setRef(current);
       onCleanup(() => {
         controller.clearRef();
       });
-      const onKeyDown = (e: KeyboardEvent): void => {
+      useEventListener(current, 'keydown', (e) => {
         if (e.ctrlKey) {
           switch (e.key) {
             case 'Home':
@@ -70,18 +71,11 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
           default:
             break;
         }
-      };
-
-      const onFocusIn = (e: FocusEvent): void => {
-        if (e.target && e.target !== ref) {
+      });
+      useEventListener(current, 'focusin', (e) => {
+        if (e.target && e.target !== current) {
           controller.setCurrent(e.target as HTMLElement);
         }
-      };
-      ref.addEventListener('keydown', onKeyDown);
-      ref.addEventListener('focusin', onFocusIn);
-      onCleanup(() => {
-        ref.removeEventListener('keydown', onKeyDown);
-        ref.removeEventListener('focusin', onFocusIn);
       });
     }
   });
