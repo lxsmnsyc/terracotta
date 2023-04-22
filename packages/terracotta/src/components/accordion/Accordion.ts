@@ -37,6 +37,7 @@ import {
   createHasActiveState,
   createHasSelectedState,
 } from '../../utils/state-props';
+import useEventListener from '../../utils/use-event-listener';
 
 export type AccordionSingleControlledBaseProps<V> = Prettify<
   & SingleSelectStateControlledOptions<V>
@@ -105,7 +106,7 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
         onCleanup(() => {
           controller.clearRef();
         });
-        const onKeyDown = (e: KeyboardEvent): void => {
+        useEventListener(current, 'keydown', (e) => {
           if (!state.disabled()) {
             switch (e.key) {
               case 'ArrowUp':
@@ -128,17 +129,11 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
                 break;
             }
           }
-        };
-        const onFocusIn = (e: FocusEvent): void => {
+        });
+        useEventListener(current, 'focusin', (e) => {
           if (e.target && e.target !== current) {
             controller.setCurrent(e.target as HTMLElement);
           }
-        };
-        current.addEventListener('keydown', onKeyDown);
-        current.addEventListener('focusin', onFocusIn);
-        onCleanup(() => {
-          current.removeEventListener('keydown', onKeyDown);
-          current.removeEventListener('focusin', onFocusIn);
         });
       }
     });

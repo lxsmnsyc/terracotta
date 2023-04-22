@@ -1,7 +1,6 @@
 import type { JSX } from 'solid-js';
 import {
   createEffect,
-  onCleanup,
   createComponent,
   mergeProps,
 } from 'solid-js';
@@ -41,6 +40,7 @@ import {
   SelectOptionStateChild,
   useSelectOptionState,
 } from '../../states/create-select-option-state';
+import useEventListener from '../../utils/use-event-listener';
 
 export type AccordionButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, OmitAndMerge<SelectOptionStateRenderProps, ButtonProps<T>>>;
@@ -57,32 +57,23 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
   const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
   createEffect(() => {
-    const ref = internalRef();
+    const current = internalRef();
 
-    if (ref instanceof HTMLElement) {
-      const onClick = (): void => {
+    if (current instanceof HTMLElement) {
+      useEventListener(current, 'click', () => {
         if (!isDisabled()) {
           state.select();
         }
-      };
-      const onFocus = (): void => {
+      });
+      useEventListener(current, 'focus', () => {
         if (!isDisabled()) {
           state.focus();
         }
-      };
-      const onBlur = (): void => {
+      });
+      useEventListener(current, 'blur', () => {
         if (!isDisabled()) {
           state.blur();
         }
-      };
-
-      ref.addEventListener('click', onClick);
-      ref.addEventListener('focus', onFocus);
-      ref.addEventListener('blur', onBlur);
-      onCleanup(() => {
-        ref.removeEventListener('click', onClick);
-        ref.removeEventListener('focus', onFocus);
-        ref.removeEventListener('blur', onBlur);
       });
     }
   });
