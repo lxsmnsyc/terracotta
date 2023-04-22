@@ -32,6 +32,7 @@ import {
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
+import useEventListener from '../../utils/use-event-listener';
 
 export type AlertDialogPanelProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -45,26 +46,25 @@ export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
       if (state.isOpen()) {
-        focusFirst(getFocusableElements(ref), false);
+        focusFirst(getFocusableElements(current), false);
 
-        const onKeyDown = (e: KeyboardEvent): void => {
+        useEventListener(current, 'keydown', (e) => {
           if (!props.disabled) {
-            if (e.key === 'Tab') {
-              e.preventDefault();
-
-              lockFocus(ref, e.shiftKey, false);
-            } else if (e.key === 'Escape') {
-              state.close();
+            switch (e.key) {
+              case 'Tab':
+                e.preventDefault();
+                lockFocus(current, e.shiftKey, false);
+                break;
+              case 'Escape':
+                state.close();
+                break;
+              default:
+                break;
             }
           }
-        };
-
-        ref.addEventListener('keydown', onKeyDown);
-        onCleanup(() => {
-          ref.removeEventListener('keydown', onKeyDown);
         });
       }
     }
