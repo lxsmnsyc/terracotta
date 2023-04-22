@@ -22,7 +22,7 @@ class FocusStartPoint {
     }
   }
 
-  load() {
+  load(): void {
     if (this.returnElement instanceof HTMLElement) {
       this.returnElement.focus();
     } else {
@@ -30,15 +30,10 @@ class FocusStartPoint {
     }
   }
 
-  save() {
+  save(): void {
     this.returnElement = document.activeElement;
     this.fsp = getFocusStartPoint();
   }
-}
-
-interface FocusStartPoint {
-  load(): void;
-  save(): void;
 }
 
 export default function useFocusStartPoint(): FocusStartPoint {

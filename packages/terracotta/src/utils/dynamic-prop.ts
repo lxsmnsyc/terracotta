@@ -1,10 +1,12 @@
-import {
-  createEffect,
-  createSignal,
+import type {
   JSX,
   Signal,
 } from 'solid-js';
-import { OmitAndMerge } from './types';
+import {
+  createEffect,
+  createSignal,
+} from 'solid-js';
+import type { OmitAndMerge } from './types';
 
 export type ValidElements = keyof JSX.IntrinsicElements;
 export type ValidComponent<P> = (props: P) => JSX.Element;

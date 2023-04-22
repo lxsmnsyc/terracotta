@@ -1,6 +1,6 @@
 // document.activeElement isn't accurate for this specific behavior
 
-export function getFocusStartPoint() {
+export function getFocusStartPoint(): HTMLElement | null | undefined {
   const selection = window.getSelection();
   if (selection) {
     const node = selection.focusNode;
@@ -11,7 +11,7 @@ export function getFocusStartPoint() {
   return undefined;
 }
 
-export function setFocusStartPoint(element?: HTMLElement | null) {
+export function setFocusStartPoint(element?: HTMLElement | null): void {
   if (element) {
     const tabindex = element.getAttribute('tabindex');
 

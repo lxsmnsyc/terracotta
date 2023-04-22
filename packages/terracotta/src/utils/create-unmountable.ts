@@ -1,5 +1,5 @@
+import type { JSX } from 'solid-js';
 import {
-  JSX,
   children,
   createMemo,
 } from 'solid-js';

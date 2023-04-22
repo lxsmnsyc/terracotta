@@ -9,7 +9,7 @@ import {
 } from './focus-navigation';
 import { DATA_SET_NAMESPACE, DISABLED_NODE } from './namespace';
 
-const OWNER = `${DATA_SET_NAMESPACE}-owner`;
+const OWNER = `${DATA_SET_NAMESPACE}-owner` as const;
 
 function queryNodes<T extends Element>(
   el: T,
@@ -25,7 +25,11 @@ function queryNodes<T extends Element>(
   return nodes;
 }
 
-export function createOwnerAttribute(ownerID: string) {
+type OwnerAttribute = {
+  [key in typeof OWNER]: string;
+}
+
+export function createOwnerAttribute(ownerID: string): OwnerAttribute {
   return {
     [OWNER]: ownerID,
   };
@@ -53,27 +57,27 @@ export default class FocusNavigator {
     };
   }
 
-  setRef(ref: HTMLElement) {
+  setRef(ref: HTMLElement): void {
     this.internalRef = ref;
   }
 
-  clearRef() {
+  clearRef(): void {
     this.internalRef = undefined;
   }
 
-  private query(ref: HTMLElement, condition = '') {
+  private query(ref: HTMLElement, condition = ''): NodeListOf<HTMLElement> {
     return queryNodes(ref, this.ownerID, `${this.options.base}${condition}`);
   }
 
-  setCurrent(node: HTMLElement) {
+  setCurrent(node: HTMLElement): void {
     this.current = node;
   }
 
-  setChecked(node: HTMLElement) {
+  setChecked(node: HTMLElement): void {
     this.current = focusNode(node, this.options.virtual);
   }
 
-  setNextChecked(loop: boolean) {
+  setNextChecked(loop: boolean): void {
     if (this.internalRef instanceof HTMLElement) {
       assert(this.current, new Error('missing current ref'));
       const current = focusNext(
@@ -88,7 +92,7 @@ export default class FocusNavigator {
     }
   }
 
-  setPrevChecked(loop: boolean) {
+  setPrevChecked(loop: boolean): void {
     if (this.internalRef instanceof HTMLElement) {
       assert(this.current, new Error('missing current ref'));
       const current = focusPrev(
@@ -103,7 +107,7 @@ export default class FocusNavigator {
     }
   }
 
-  setFirstChecked(condition = '') {
+  setFirstChecked(condition = ''): void {
     if (this.internalRef instanceof HTMLElement) {
       const current = focusFirst(
         this.query(this.internalRef, condition),
@@ -115,7 +119,7 @@ export default class FocusNavigator {
     }
   }
 
-  setLastChecked(condition = '') {
+  setLastChecked(condition = ''): void {
     if (this.internalRef instanceof HTMLElement) {
       const current = focusLast(
         this.query(this.internalRef, condition),
@@ -127,7 +131,7 @@ export default class FocusNavigator {
     }
   }
 
-  setFirstMatch(character: string) {
+  setFirstMatch(character: string): void {
     if (this.internalRef instanceof HTMLElement) {
       const current = focusMatch(
         this.query(this.internalRef),
@@ -140,7 +144,7 @@ export default class FocusNavigator {
     }
   }
 
-  getId() {
+  getId(): string {
     return this.ownerID;
   }
 }

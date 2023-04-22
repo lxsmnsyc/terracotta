@@ -1,10 +1,10 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
-  JSX,
   mergeProps,
 } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
-import {
+import type {
   DynamicProps,
   ValidConstructor,
 } from './dynamic-prop';

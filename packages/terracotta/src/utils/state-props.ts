@@ -17,10 +17,10 @@ export function createARIADisabledState(
   disabled: () => boolean | undefined,
 ): ARIADisabledProps {
   return {
-    get disabled() {
+    get disabled(): boolean | undefined {
       return disabled();
     },
-    get 'aria-disabled'() {
+    get 'aria-disabled'(): boolean | undefined {
       return disabled();
     },
   };
@@ -34,7 +34,7 @@ export function createARIAExpandedState(
   expanded: () => boolean | undefined,
 ): ARIAExpandedProps {
   return {
-    get 'aria-expanded'() {
+    get 'aria-expanded'(): boolean | undefined {
       return expanded();
     },
   };
@@ -48,7 +48,7 @@ export function createARIACheckedState(
   checked: () => boolean | undefined,
 ): ARIACheckedProps {
   return {
-    get 'aria-checked'() {
+    get 'aria-checked'(): boolean | 'mixed' {
       return checked() ?? 'mixed';
     },
   };
@@ -61,7 +61,7 @@ export function createARIASelectedState(
   selected: () => boolean,
 ): ARIASelectedProps {
   return {
-    get 'aria-selected'() {
+    get 'aria-selected'(): boolean {
       return selected();
     },
   };
@@ -75,7 +75,7 @@ export function createARIAPressedState(
   pressed: () => boolean,
 ): ARIAPressedProps {
   return {
-    get 'aria-pressed'() {
+    get 'aria-pressed'(): boolean {
       return pressed();
     },
   };
@@ -93,7 +93,7 @@ export function createDisabledState(
   disabled: () => boolean | undefined,
 ): DisabledProps {
   return {
-    get 'tc-disabled'() {
+    get 'tc-disabled'(): Booleanish {
       return toBooleanish(disabled());
     },
   };
@@ -107,7 +107,7 @@ export function createExpandedState(
   expanded: () => boolean | undefined,
 ): ExpandedProps {
   return {
-    get 'tc-expanded'() {
+    get 'tc-expanded'(): Booleanish {
       return toBooleanish(expanded());
     },
   };
@@ -121,7 +121,7 @@ export function createCheckedState(
   isChecked: () => boolean | undefined,
 ): CheckedProps {
   return {
-    get 'tc-checked'() {
+    get 'tc-checked'(): Booleanish | 'mixed' {
       const result = isChecked();
       return result == null ? 'mixed' : toBooleanish(result);
     },
@@ -136,7 +136,7 @@ export function createSelectedState(
   isSelected: () => boolean,
 ): SelectedProps {
   return {
-    get 'tc-selected'() {
+    get 'tc-selected'(): Booleanish {
       return toBooleanish(isSelected());
     },
   };
@@ -150,7 +150,7 @@ export function createActiveState(
   isActive: () => boolean,
 ): ActiveProps {
   return {
-    get 'tc-active'() {
+    get 'tc-active'(): Booleanish {
       return toBooleanish(isActive());
     },
   };
@@ -164,7 +164,7 @@ export function createMatchesState(
   matches: () => boolean,
 ): MatchesProps {
   return {
-    get 'tc-matches'() {
+    get 'tc-matches'(): Booleanish {
       return toBooleanish(matches());
     },
   };
@@ -178,7 +178,7 @@ export function createHasSelectedState(
   hasSelected: () => boolean,
 ): HasSelectedProps {
   return {
-    get 'tc-has-selected'() {
+    get 'tc-has-selected'(): Booleanish {
       return toBooleanish(hasSelected());
     },
   };
@@ -192,7 +192,7 @@ export function createHasActiveState(
   hasActive: () => boolean,
 ): HasActiveProps {
   return {
-    get 'tc-has-active'() {
+    get 'tc-has-active'(): Booleanish {
       return toBooleanish(hasActive());
     },
   };
@@ -206,7 +206,7 @@ export function createHasQueryState(
   hasQuery: () => boolean,
 ): HasQueryProps {
   return {
-    get 'tc-has-query'() {
+    get 'tc-has-query'(): Booleanish {
       return toBooleanish(hasQuery());
     },
   };
@@ -220,7 +220,7 @@ export function createPressedState(
   pressed: () => boolean,
 ): PressedProps {
   return {
-    get 'tc-pressed'() {
+    get 'tc-pressed'(): Booleanish {
       return toBooleanish(pressed());
     },
   };

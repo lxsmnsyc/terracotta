@@ -1,4 +1,5 @@
-import { createMemo, JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
+import { createMemo } from 'solid-js';
 
 // Show has a quirky TS support since 1.7
 export default function createShow<T>(

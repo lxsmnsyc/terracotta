@@ -7,7 +7,7 @@ const enum Direction {
   Prev = -1,
 }
 
-function isFocusable(el: HTMLElement) {
+function isFocusable(el: HTMLElement): boolean {
   return !el.matches(DISABLED_NODE);
 }
 
@@ -17,7 +17,7 @@ function getNextFocusable(
   anchor: number,
   direction: Direction,
   loop: boolean,
-) {
+): HTMLElement | undefined {
   let current = anchor + direction;
   if (loop) {
     if (direction === Direction.Next && current === nodes.length) {
@@ -31,10 +31,10 @@ function getNextFocusable(
         return nodes[current];
       }
       current += direction;
-      if (direction === 1 && current >= nodes.length) {
+      if (direction === Direction.Next && current >= nodes.length) {
         current = 0;
       }
-      if (direction === -1 && current < 0) {
+      if (direction === Direction.Prev && current < 0) {
         current = nodes.length - 1;
       }
     }
@@ -49,7 +49,10 @@ function getNextFocusable(
   return undefined;
 }
 
-export function focusNode(node: HTMLElement | undefined, virtual: boolean) {
+export function focusNode(
+  node: HTMLElement | undefined,
+  virtual: boolean,
+): HTMLElement | undefined {
   if (node) {
     if (virtual) {
       focusVirtually(node);
