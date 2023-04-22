@@ -1,28 +1,32 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createEffect,
   createMemo,
-  JSX,
   mergeProps,
   onCleanup,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import {
-  createForwardRef,
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { Prettify } from '../../utils/types';
 import {
-  createMultipleSelectState,
-  createSingleSelectState,
+  createForwardRef,
+} from '../../utils/dynamic-prop';
+import type { Prettify } from '../../utils/types';
+import type {
   MultipleSelectStateControlledOptions,
   MultipleSelectStateUncontrolledOptions,
-  SelectStateProvider,
   SelectStateRenderProps,
   SingleSelectStateControlledOptions,
   SingleSelectStateUncontrolledOptions,
+} from '../../states/create-select-state';
+import {
+  createMultipleSelectState,
+  createSingleSelectState,
+  SelectStateProvider,
 } from '../../states/create-select-state';
 import { AccordionContext, createAccordionFocusNavigator } from './AccordionContext';
 import createDynamic from '../../utils/create-dynamic';
@@ -101,7 +105,7 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
         onCleanup(() => {
           controller.clearRef();
         });
-        const onKeyDown = (e: KeyboardEvent) => {
+        const onKeyDown = (e: KeyboardEvent): void => {
           if (!state.disabled()) {
             switch (e.key) {
               case 'ArrowUp':
@@ -125,7 +129,7 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
             }
           }
         };
-        const onFocusIn = (e: FocusEvent) => {
+        const onFocusIn = (e: FocusEvent): void => {
           if (e.target && e.target !== current) {
             controller.setCurrent(e.target as HTMLElement);
           }

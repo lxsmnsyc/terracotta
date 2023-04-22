@@ -1,5 +1,5 @@
+import type { JSX } from 'solid-js';
 import {
-  JSX,
   createComponent,
   mergeProps,
 } from 'solid-js';
@@ -7,21 +7,22 @@ import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   ValidConstructor,
   HeadlessProps,
   DynamicProps,
 } from '../../utils/dynamic-prop';
+import type { UnmountableProps } from '../../utils/create-unmountable';
 import {
   createUnmountable,
-  UnmountableProps,
 } from '../../utils/create-unmountable';
 import {
   useAccordionItemContext,
 } from './AccordionItemContext';
 import { ACCORDION_PANEL_TAG } from './tags';
-import { SelectOptionStateChild, SelectOptionStateRenderProps, useSelectOptionState } from '../../states/create-select-option-state';
-import { Prettify } from '../../utils/types';
+import type { SelectOptionStateRenderProps } from '../../states/create-select-option-state';
+import { SelectOptionStateChild, useSelectOptionState } from '../../states/create-select-option-state';
+import type { Prettify } from '../../utils/types';
 import {
   createDisabledState,
   createSelectedState,

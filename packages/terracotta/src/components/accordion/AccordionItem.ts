@@ -1,14 +1,14 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createUniqueId,
-  JSX,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   ValidConstructor,
   HeadlessProps,
   DynamicProps,
@@ -23,13 +23,15 @@ import {
   AccordionItemContext,
 } from './AccordionItemContext';
 import { ACCORDION_ITEM_TAG } from './tags';
-import {
-  createSelectOptionState,
+import type {
   SelectOptionStateOptions,
-  SelectOptionStateProvider,
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
-import { Prettify } from '../../utils/types';
+import {
+  createSelectOptionState,
+  SelectOptionStateProvider,
+} from '../../states/create-select-option-state';
+import type { Prettify } from '../../utils/types';
 
 export type AccordionItemprops<V> = Prettify<
   & SelectOptionStateOptions<V>

@@ -1,5 +1,5 @@
+import type { JSX } from 'solid-js';
 import {
-  JSX,
   createComponent,
   mergeProps,
 } from 'solid-js';
@@ -7,16 +7,16 @@ import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   ValidConstructor,
   HeadlessProps,
   DynamicProps,
 } from '../../utils/dynamic-prop';
 import { useAccordionItemContext } from './AccordionItemContext';
 import { ACCORDION_HEADER_TAG } from './tags';
+import type { SelectOptionStateRenderProps } from '../../states/create-select-option-state';
 import {
   SelectOptionStateChild,
-  SelectOptionStateRenderProps,
   useSelectOptionState,
 } from '../../states/create-select-option-state';
 import {

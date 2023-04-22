@@ -1,16 +1,18 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
   onCleanup,
-  JSX,
   createComponent,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
-import {
+import type {
   ValidConstructor,
   HeadlessPropsWithRef,
+} from '../../utils/dynamic-prop';
+import {
   createForwardRef,
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
@@ -22,9 +24,9 @@ import {
   createExpandedState,
   createSelectedState,
 } from '../../utils/state-props';
-import { OmitAndMerge } from '../../utils/types';
+import type { OmitAndMerge } from '../../utils/types';
+import type { ButtonProps } from '../button';
 import {
-  ButtonProps,
   Button,
 } from '../button';
 import {
@@ -34,9 +36,9 @@ import {
   useAccordionItemContext,
 } from './AccordionItemContext';
 import { ACCORDION_BUTTON_TAG } from './tags';
+import type { SelectOptionStateRenderProps } from '../../states/create-select-option-state';
 import {
   SelectOptionStateChild,
-  SelectOptionStateRenderProps,
   useSelectOptionState,
 } from '../../states/create-select-option-state';
 
@@ -52,23 +54,23 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = () => state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
   createEffect(() => {
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
-      const onClick = () => {
+      const onClick = (): void => {
         if (!isDisabled()) {
           state.select();
         }
       };
-      const onFocus = () => {
+      const onFocus = (): void => {
         if (!isDisabled()) {
           state.focus();
         }
       };
-      const onBlur = () => {
+      const onBlur = (): void => {
         if (!isDisabled()) {
           state.blur();
         }
