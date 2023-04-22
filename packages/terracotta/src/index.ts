@@ -22,8 +22,7 @@ export * from './components/toggle';
 export * from './components/toolbar';
 export * from './components/transition';
 
-export {
-  AutocompleteStateChild,
+export type {
   AutocompleteStateProperties,
   AutocompleteStateRenderProps,
   SingleAutocompleteStateControlledOptions,
@@ -32,69 +31,68 @@ export {
   MultipleAutocompleteStateControlledOptions,
   MultipleAutocompleteStateOptions,
   MultipleAutocompleteStateUncontrolledOptions,
+} from './states/create-autocomplete-state';
+export {
+  AutocompleteStateChild,
   createSingleAutocompleteState,
   createMultipleAutocompleteState,
   useAutocompleteState,
 } from './states/create-autocomplete-state';
-export {
-  CheckStateChild,
+export type {
   CheckStateControlledOptions,
   CheckStateOptions,
   CheckStateProperties,
   CheckStateRenderProps,
   CheckStateUncontrolledOptions,
+} from './states/create-check-state';
+export {
+  CheckStateChild,
   createCheckState,
   useCheckState,
 } from './states/create-check-state';
-export {
-  DisclosureStateChild,
+export type {
   DisclosureStateControlledOptions,
   DisclosureStateOptions,
   DisclosureStateProperties,
   DisclosureStateRenderProps,
   DisclosureStateUncontrolledOptions,
+} from './states/create-disclosure-state';
+export {
+  DisclosureStateChild,
   useDisclosureState,
   createDisclosureState,
 } from './states/create-disclosure-state';
-export {
-  InputStateChild,
+export type {
   InputStateControlledOptions,
   InputStateOptions,
   InputStateProperties,
   InputStateRenderProps,
   InputStateUncontrolledOptions,
-  useInputState,
-  createInputState,
 } from './states/create-input-state';
-export {
-  SelectOptionStateChild,
-  SelectOptionStateOptions,
-  SelectOptionStateProperties,
-  SelectOptionStateRenderProps,
-  useSelectOptionState,
-  createSelectOptionState,
-} from './states/create-select-option-state';
-export {
-  SelectStateChild,
+export { InputStateChild, useInputState, createInputState } from './states/create-input-state';
+export type { SelectOptionStateOptions, SelectOptionStateProperties, SelectOptionStateRenderProps } from './states/create-select-option-state';
+export { SelectOptionStateChild, useSelectOptionState, createSelectOptionState } from './states/create-select-option-state';
+export type {
   SelectStateProperties,
   SelectStateRenderProps,
   SingleSelectStateControlledOptions,
   SingleSelectStateOptions,
   SingleSelectStateUncontrolledOptions,
-  useSelectState,
-  createSingleSelectState,
   MultipleSelectStateControlledOptions,
   MultipleSelectStateOptions,
   MultipleSelectStateUncontrolledOptions,
-  createMultipleSelectState,
 } from './states/create-select-state';
 export {
-  ToggleStateChild,
+  SelectStateChild,
+  useSelectState,
+  createSingleSelectState,
+  createMultipleSelectState,
+} from './states/create-select-state';
+export type {
   ToggleStateControlledOptions,
   ToggleStateOptions,
   ToggleStateProperties,
   ToggleStateRenderProps,
   ToggleStateUncontrolledOptions,
-  useToggleState,
-  createToggleState,
 } from './states/create-toggle-state';
+export { ToggleStateChild, useToggleState, createToggleState } from './states/create-toggle-state';
