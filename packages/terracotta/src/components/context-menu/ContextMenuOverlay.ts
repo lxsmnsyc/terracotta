@@ -30,6 +30,7 @@ import {
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
+import useEventListener from '../../utils/use-event-listener';
 
 export type ContextMenuOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -43,16 +44,10 @@ export function ContextMenuOverlay<T extends ValidConstructor = 'div'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      const onClick = (): void => {
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      useEventListener(current, 'click', () => {
         state.close();
-      };
-
-      ref.addEventListener('click', onClick);
-
-      onCleanup(() => {
-        ref.removeEventListener('click', onClick);
       });
     }
   });

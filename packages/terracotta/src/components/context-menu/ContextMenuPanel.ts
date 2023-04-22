@@ -37,6 +37,7 @@ import {
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
+import useEventListener from '../../utils/use-event-listener';
 
 export type ContextMenuPanelBaseProps = Prettify<
   & DisclosureStateRenderProps
@@ -55,34 +56,29 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
       if (state.isOpen()) {
-        focusFirst(getFocusableElements(ref), false);
-
-        const onKeyDown = (e: KeyboardEvent): void => {
+        focusFirst(getFocusableElements(current), false);
+        useEventListener(current, 'keydown', (e) => {
           if (!props.disabled) {
-            if (e.key === 'Tab') {
-              e.preventDefault();
-
-              lockFocus(ref, e.shiftKey, false);
-            } else if (e.key === 'Escape') {
-              state.close();
+            switch (e.key) {
+              case 'Tab':
+                e.preventDefault();
+                lockFocus(current, e.shiftKey, false);
+                break;
+              case 'Escape':
+                state.close();
+                break;
+              default:
+                break;
             }
           }
-        };
-
-        const onClickOutside = (e: FocusEvent): void => {
-          if (!ref.contains(e.target as Node)) {
+        });
+        useEventListener(document, 'click', (e) => {
+          if (!current.contains(e.target as Node)) {
             state.close();
           }
-        };
-
-        ref.addEventListener('keydown', onKeyDown);
-        document.addEventListener('click', onClickOutside);
-        onCleanup(() => {
-          ref.removeEventListener('keydown', onKeyDown);
-          document.removeEventListener('click', onClickOutside);
         });
       }
     }

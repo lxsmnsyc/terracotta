@@ -32,6 +32,7 @@ import {
   DisclosureStateChild,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
+import useEventListener from '../../utils/use-event-listener';
 
 export type ContextMenuBoundaryProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -45,20 +46,14 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      context.anchor = ref;
-      const toggle = (e: MouseEvent): void => {
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      context.anchor = current;
+      useEventListener(current, 'contextmenu', (e) => {
         if (!state.disabled()) {
           e.preventDefault();
           state.open();
         }
-      };
-
-      ref.addEventListener('contextmenu', toggle);
-
-      onCleanup(() => {
-        ref.removeEventListener('contextmenu', toggle);
       });
     }
   });
