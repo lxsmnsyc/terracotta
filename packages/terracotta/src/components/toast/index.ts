@@ -1,10 +1,10 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createContext,
   createEffect,
   createSignal,
   createUniqueId,
-  JSX,
   mergeProps,
   onCleanup,
   useContext,
@@ -14,7 +14,7 @@ import {
 } from 'solid-use/props';
 import assert from '../../utils/assert';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   DynamicProps,
   HeadlessProps,
   ValidConstructor,
@@ -24,13 +24,13 @@ import { createTag } from '../../utils/namespace';
 const TOAST_TAG = createTag('toast');
 const TOASTER_TAG = createTag('toaster');
 
-interface ToastContext {
+interface ToastContextData {
   ownerID: string;
 }
 
-const ToastContext = createContext<ToastContext>();
+const ToastContext = createContext<ToastContextData>();
 
-function useToastContext(componentName: string): ToastContext {
+function useToastContext(componentName: string): ToastContextData {
   const context = useContext(ToastContext);
   assert(context, new Error(`<${componentName}> must be used inside a <Toaster>`));
   return context;
