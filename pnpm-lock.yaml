@@ -8,8 +8,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       lerna:
         specifier: ^6.5.1
         version: 6.5.1
@@ -36,8 +36,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -70,8 +70,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -104,8 +104,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -138,8 +138,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -172,8 +172,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -206,8 +206,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -240,8 +240,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -274,8 +274,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -308,8 +308,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -342,8 +342,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -376,8 +376,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -410,8 +410,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -444,8 +444,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -478,8 +478,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -512,8 +512,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -546,8 +546,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -580,8 +580,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -614,8 +614,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -648,8 +648,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       postcss:
         specifier: ^8.4.21
         version: 8.4.21
@@ -676,8 +676,8 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0
       eslint-config-lxsmnsyc:
-        specifier: ^0.6.0
-        version: 0.6.0(eslint@8.37.0)(typescript@4.9.5)
+        specifier: ^0.6.2
+        version: 0.6.2(eslint@8.37.0)(typescript@4.9.5)
       pridepack:
         specifier: ^2.4.1
         version: 2.4.1(eslint@8.37.0)(tslib@2.5.0)(typescript@4.9.5)
@@ -3325,8 +3325,8 @@ packages:
       object.entries: 1.1.6
     dev: true
 
-  /eslint-config-lxsmnsyc@0.6.0(eslint@8.37.0)(typescript@4.9.5):
-    resolution: {integrity: sha512-jtUfyA5SYpw45wbqoQBfz4ok+sYg7w3pxDWecK/BkbfonS/mcXSfF8mt4oEbv5aK2n/MwtFiOPhiwwRGGKVZcA==}
+  /eslint-config-lxsmnsyc@0.6.2(eslint@8.37.0)(typescript@4.9.5):
+    resolution: {integrity: sha512-A87XLbeTgT8OQ0vKdjyaXJcEqGVo2xnMTvYShm8hck6J5xYQS8P9rmXi6FbaTvSHCTOyIYWZQ9wv44C/xM1VgQ==}
     peerDependencies:
       eslint: ^8.0
       typescript: ^4.0 || ^5.0
