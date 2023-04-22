@@ -1,7 +1,6 @@
 import type { JSX } from 'solid-js';
 import {
   createEffect,
-  onCleanup,
   mergeProps,
   createComponent,
 } from 'solid-js';
@@ -32,6 +31,7 @@ import {
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
+import useEventListener from '../../utils/use-event-listener';
 
 export type DialogPanelProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -45,24 +45,23 @@ export function DialogPanel<T extends ValidConstructor = 'div'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement && state.isOpen()) {
-      focusFirst(getFocusableElements(ref), false);
-      const onKeyDown = (e: KeyboardEvent): void => {
+    const current = internalRef();
+    if (current instanceof HTMLElement && state.isOpen()) {
+      focusFirst(getFocusableElements(current), false);
+      useEventListener(current, 'keydown', (e) => {
         if (!props.disabled) {
-          if (e.key === 'Tab') {
-            e.preventDefault();
-
-            lockFocus(ref, e.shiftKey, false);
-          } else if (e.key === 'Escape') {
-            state.close();
+          switch (e.key) {
+            case 'Tab':
+              e.preventDefault();
+              lockFocus(current, e.shiftKey, false);
+              break;
+            case 'Escape':
+              state.close();
+              break;
+            default:
+              break;
           }
         }
-      };
-
-      ref.addEventListener('keydown', onKeyDown);
-      onCleanup(() => {
-        ref.removeEventListener('keydown', onKeyDown);
       });
     }
   });
