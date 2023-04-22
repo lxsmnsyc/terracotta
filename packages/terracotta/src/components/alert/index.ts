@@ -1,13 +1,13 @@
+import type { JSX } from 'solid-js';
 import {
   createUniqueId,
-  JSX,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   ValidConstructor,
   HeadlessProps,
   DynamicProps,
