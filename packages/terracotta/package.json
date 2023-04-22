@@ -32,7 +32,7 @@
   "devDependencies": {
     "@types/node": "^18.13.0",
     "eslint": "^8.37.0",
-    "eslint-config-lxsmnsyc": "^0.5.1",
+    "eslint-config-lxsmnsyc": "^0.6.0",
     "pridepack": "^2.4.1",
     "solid-js": "^1.7.2",
     "tslib": "^2.5.0",
