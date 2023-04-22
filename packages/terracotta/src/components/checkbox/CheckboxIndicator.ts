@@ -1,16 +1,18 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
   onCleanup,
-  JSX,
   createComponent,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
-import {
+import type {
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
   createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
@@ -18,17 +20,17 @@ import {
   createCheckedState,
   createDisabledState,
 } from '../../utils/state-props';
+import type { ButtonProps } from '../button';
 import {
   Button,
-  ButtonProps,
 } from '../button';
 import {
   useCheckboxContext,
 } from './CheckboxContext';
 import { CHECKBOX_INDICATOR } from './tags';
+import type { CheckStateRenderProps } from '../../states/create-check-state';
 import {
   CheckStateChild,
-  CheckStateRenderProps,
   useCheckState,
 } from '../../states/create-check-state';
 
@@ -47,7 +49,7 @@ export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
-      const toggle = () => {
+      const toggle = (): void => {
         state.toggle();
       };
 

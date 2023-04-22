@@ -1,21 +1,23 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createUniqueId,
-  JSX,
   mergeProps,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import {
+import type {
   DynamicProps,
   HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { Prettify } from '../../utils/types';
-import {
+import type { Prettify } from '../../utils/types';
+import type {
   CheckStateControlledOptions,
-  CheckStateProvider,
   CheckStateRenderProps,
   CheckStateUncontrolledOptions,
+} from '../../states/create-check-state';
+import {
+  CheckStateProvider,
   createCheckState,
 } from '../../states/create-check-state';
 import { CheckboxContext } from './CheckboxContext';

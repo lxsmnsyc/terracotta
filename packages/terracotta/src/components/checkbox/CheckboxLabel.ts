@@ -1,5 +1,5 @@
+import type { JSX } from 'solid-js';
 import {
-  JSX,
   createComponent,
   mergeProps,
 } from 'solid-js';
@@ -7,7 +7,7 @@ import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   ValidConstructor,
   HeadlessProps,
   DynamicProps,
@@ -16,8 +16,8 @@ import {
   useCheckboxContext,
 } from './CheckboxContext';
 import { CHECKBOX_LABEL } from './tags';
+import type { CheckStateRenderProps } from '../../states/create-check-state';
 import {
-  CheckStateRenderProps,
   CheckStateChild,
   useCheckState,
 } from '../../states/create-check-state';
