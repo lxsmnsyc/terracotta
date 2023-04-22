@@ -1,7 +1,7 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
   onCleanup,
-  JSX,
   mergeProps,
   createComponent,
 } from 'solid-js';
@@ -9,19 +9,21 @@ import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
   createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   useContextMenuContext,
 } from './ContextMenuContext';
 import { CONTEXT_MENU_OVERLAY_TAG } from './tags';
+import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
-  DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 import {
@@ -43,7 +45,7 @@ export function ContextMenuOverlay<T extends ValidConstructor = 'div'>(
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      const onClick = () => {
+      const onClick = (): void => {
         state.close();
       };
 

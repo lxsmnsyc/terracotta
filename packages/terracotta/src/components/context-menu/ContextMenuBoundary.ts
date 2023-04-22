@@ -1,7 +1,7 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
   onCleanup,
-  JSX,
   mergeProps,
   createComponent,
 } from 'solid-js';
@@ -9,11 +9,13 @@ import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
-  createForwardRef,
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
@@ -25,9 +27,9 @@ import {
   useContextMenuContext,
 } from './ContextMenuContext';
 import { CONTEXT_MENU_BOUNDARY_TAG } from './tags';
+import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
-  DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 
@@ -46,7 +48,7 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
       context.anchor = ref;
-      const toggle = (e: MouseEvent) => {
+      const toggle = (e: MouseEvent): void => {
         if (!state.disabled()) {
           e.preventDefault();
           state.open();

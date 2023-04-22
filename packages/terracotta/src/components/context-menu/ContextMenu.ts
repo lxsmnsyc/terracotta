@@ -1,23 +1,25 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createEffect,
   createUniqueId,
-  JSX,
   mergeProps,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import {
+import type {
   DynamicProps,
   HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { Prettify } from '../../utils/types';
-import {
-  createDisclosureState,
+import type { Prettify } from '../../utils/types';
+import type {
   DisclosureStateControlledOptions,
-  DisclosureStateProvider,
   DisclosureStateRenderProps,
   DisclosureStateUncontrolledOptions,
+} from '../../states/create-disclosure-state';
+import {
+  createDisclosureState,
+  DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import { ContextMenuContext } from './ContextMenuContext';
