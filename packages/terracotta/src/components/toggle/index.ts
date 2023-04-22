@@ -1,25 +1,29 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
   onCleanup,
   createComponent,
   mergeProps,
-  JSX,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
-import {
-  createToggleState,
+import type {
   ToggleStateControlledOptions,
-  ToggleStateProvider,
   ToggleStateRenderProps,
   ToggleStateUncontrolledOptions,
 } from '../../states/create-toggle-state';
 import {
-  createForwardRef,
+  createToggleState,
+  ToggleStateProvider,
+} from '../../states/create-toggle-state';
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
@@ -27,10 +31,10 @@ import {
   createDisabledState,
   createPressedState,
 } from '../../utils/state-props';
-import { OmitAndMerge, Prettify } from '../../utils/types';
+import type { OmitAndMerge, Prettify } from '../../utils/types';
+import type { ButtonProps } from '../button';
 import {
   Button,
-  ButtonProps,
 } from '../button';
 import { createTag } from '../../utils/namespace';
 
@@ -71,7 +75,7 @@ export function Toggle<T extends ValidConstructor = 'button'>(
   createEffect(() => {
     const current = ref();
     if (current instanceof HTMLElement) {
-      const onClick = () => {
+      const onClick = (): void => {
         state.toggle();
       };
 
