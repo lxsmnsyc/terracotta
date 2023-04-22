@@ -1,18 +1,20 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
   onCleanup,
-  JSX,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
-  createForwardRef,
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 import {
@@ -39,7 +41,7 @@ export function Button<T extends ValidConstructor = 'button'>(
     if (ref instanceof HTMLElement) {
       // This behavior is redundant for buttons
       if (ref.tagName !== 'BUTTON') {
-        const onKeyDown = (e: KeyboardEvent) => {
+        const onKeyDown = (e: KeyboardEvent): void => {
           if (e.key === 'Enter' || e.key === ' ') {
             ref.click();
           }
