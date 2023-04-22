@@ -1,25 +1,29 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createEffect,
   createUniqueId,
-  JSX,
   mergeProps,
   onCleanup,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
-import {
-  createSelectOptionState,
+import type {
   SelectOptionStateOptions,
-  SelectOptionStateProvider,
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
 import {
-  createForwardRef,
+  createSelectOptionState,
+  SelectOptionStateProvider,
+} from '../../states/create-select-option-state';
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
@@ -29,7 +33,7 @@ import {
   createCheckedState,
   createDisabledState,
 } from '../../utils/state-props';
-import { Prettify } from '../../utils/types';
+import type { Prettify } from '../../utils/types';
 import {
   RadioGroupContext,
 } from './RadioGroupContext';
@@ -61,14 +65,14 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      const onClick = () => {
+      const onClick = (): void => {
         state.select();
       };
-      const onFocus = () => {
+      const onFocus = (): void => {
         state.focus();
         state.select();
       };
-      const onBlur = () => {
+      const onBlur = (): void => {
         state.blur();
       };
 

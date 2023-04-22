@@ -1,25 +1,29 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createEffect,
   createUniqueId,
-  JSX,
   mergeProps,
   onCleanup,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import {
-  createSingleSelectState,
-  SelectStateProvider,
+import type {
   SelectStateRenderProps,
   SingleSelectStateControlledOptions,
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
-import createDynamic from '../../utils/create-dynamic';
 import {
-  createForwardRef,
+  createSingleSelectState,
+  SelectStateProvider,
+} from '../../states/create-select-state';
+import createDynamic from '../../utils/create-dynamic';
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
@@ -27,7 +31,7 @@ import {
   createHasActiveState,
   createHasSelectedState,
 } from '../../utils/state-props';
-import { Prettify } from '../../utils/types';
+import type { Prettify } from '../../utils/types';
 import { RadioGroupContext } from './RadioGroupContext';
 import { createRadioGroupOptionFocusNavigator, RadioGroupRootContext } from './RadioGroupRootContext';
 import { RADIO_GROUP_TAG } from './tags';
@@ -77,7 +81,7 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
         controller.clearRef();
       });
 
-      const onKeyDown = (e: KeyboardEvent) => {
+      const onKeyDown = (e: KeyboardEvent): void => {
         if (!state.disabled()) {
           switch (e.key) {
             case 'ArrowLeft':
