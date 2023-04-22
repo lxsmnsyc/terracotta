@@ -1,5 +1,5 @@
+import type { JSX } from 'solid-js';
 import {
-  JSX,
   createComponent,
   mergeProps,
 } from 'solid-js';
@@ -7,7 +7,7 @@ import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   DynamicProps,
   HeadlessProps,
   ValidConstructor,
@@ -16,7 +16,8 @@ import {
   useDialogContext,
 } from './DialogContext';
 import { DIALOG_DESCRIPTION_TAG } from './tags';
-import { DisclosureStateChild, DisclosureStateRenderProps, useDisclosureState } from '../../states/create-disclosure-state';
+import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import {
   createDisabledState,
   createExpandedState,

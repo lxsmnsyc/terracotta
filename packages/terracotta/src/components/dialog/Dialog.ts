@@ -1,6 +1,6 @@
+import type { JSX } from 'solid-js';
 import {
   createUniqueId,
-  JSX,
   mergeProps,
   createComponent,
   createEffect,
@@ -9,13 +9,13 @@ import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   ValidConstructor,
   HeadlessProps,
   DynamicProps,
 } from '../../utils/dynamic-prop';
+import type { UnmountableProps } from '../../utils/create-unmountable';
 import {
-  UnmountableProps,
   createUnmountable,
 } from '../../utils/create-unmountable';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
@@ -23,12 +23,14 @@ import {
   DialogContext,
 } from './DialogContext';
 import { DIALOG_TAG } from './tags';
-import { Prettify } from '../../utils/types';
-import {
+import type { Prettify } from '../../utils/types';
+import type {
   DisclosureStateControlledOptions,
-  DisclosureStateProvider,
   DisclosureStateRenderProps,
   DisclosureStateUncontrolledOptions,
+} from '../../states/create-disclosure-state';
+import {
+  DisclosureStateProvider,
   createDisclosureState,
 } from '../../states/create-disclosure-state';
 import {
