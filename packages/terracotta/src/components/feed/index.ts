@@ -1,24 +1,6 @@
-export {
-  Feed,
-  FeedProps,
-} from './Feed';
-export {
-  FeedArticle,
-  FeedArticleProps,
-} from './FeedArticle';
-export {
-  FeedArticleDescription,
-  FeedArticleDescriptionProps,
-} from './FeedArticleDescription';
-export {
-  FeedArticleLabel,
-  FeedArticleLabelProps,
-} from './FeedArticleLabel';
-export {
-  FeedContent,
-  FeedContentProps,
-} from './FeedContent';
-export {
-  FeedLabel,
-  FeedLabelProps,
-} from './FeedLabel';
+export * from './Feed';
+export * from './FeedArticle';
+export * from './FeedArticleDescription';
+export * from './FeedArticleLabel';
+export * from './FeedContent';
+export * from './FeedLabel';

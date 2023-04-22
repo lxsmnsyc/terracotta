@@ -1,7 +1,7 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
   onCleanup,
-  JSX,
   createComponent,
   mergeProps,
 } from 'solid-js';
@@ -9,10 +9,12 @@ import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
   createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
@@ -41,7 +43,7 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
       onCleanup(() => {
         controller.clearRef();
       });
-      const onKeyDown = (e: KeyboardEvent) => {
+      const onKeyDown = (e: KeyboardEvent): void => {
         if (e.ctrlKey) {
           switch (e.key) {
             case 'Home':
@@ -70,7 +72,7 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
         }
       };
 
-      const onFocusIn = (e: FocusEvent) => {
+      const onFocusIn = (e: FocusEvent): void => {
         if (e.target && e.target !== ref) {
           controller.setCurrent(e.target as HTMLElement);
         }

@@ -4,7 +4,7 @@ import {
 } from 'solid-js';
 import assert from '../../utils/assert';
 
-interface FeedContext {
+interface FeedContextData {
   ownerID: string;
   labelID: string;
   contentID: string;
@@ -14,9 +14,9 @@ interface FeedContext {
   focusNext: () => void;
 }
 
-export const FeedContext = createContext<FeedContext>();
+export const FeedContext = createContext<FeedContextData>();
 
-export function useFeedContext(componentName: string): FeedContext {
+export function useFeedContext(componentName: string): FeedContextData {
   const context = useContext(FeedContext);
   assert(context, new Error(`<${componentName}> must be used inside a <Feed>`));
   return context;

@@ -1,18 +1,20 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createUniqueId,
-  JSX,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
-  createForwardRef,
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import { focusNext, focusPrev } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
@@ -21,7 +23,7 @@ import {
 } from './FeedContext';
 import { FEED_TAG } from './tags';
 
-interface FeedBaseProps {
+export interface FeedBaseProps {
   size: number;
   busy?: boolean;
 }
