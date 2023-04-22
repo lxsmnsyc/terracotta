@@ -1,7 +1,6 @@
 import type { JSX } from 'solid-js';
 import {
   createEffect,
-  onCleanup,
   createComponent,
   mergeProps,
 } from 'solid-js';
@@ -33,6 +32,7 @@ import {
   CheckStateChild,
   useCheckState,
 } from '../../states/create-check-state';
+import useEventListener from '../../utils/use-event-listener';
 
 export type CheckboxIndicatorProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, CheckStateRenderProps>;
@@ -46,16 +46,10 @@ export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
-    const ref = internalRef();
-
-    if (ref instanceof HTMLElement) {
-      const toggle = (): void => {
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      useEventListener(current, 'click', () => {
         state.toggle();
-      };
-
-      ref.addEventListener('click', toggle);
-      onCleanup(() => {
-        ref.removeEventListener('click', toggle);
       });
     }
   });

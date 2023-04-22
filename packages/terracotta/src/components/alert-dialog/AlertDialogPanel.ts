@@ -1,7 +1,6 @@
 import type { JSX } from 'solid-js';
 import {
   createEffect,
-  onCleanup,
   mergeProps,
   createComponent,
 } from 'solid-js';
