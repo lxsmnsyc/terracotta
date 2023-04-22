@@ -1,9 +1,9 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createContext,
   createEffect,
   createSignal,
-  JSX,
   mergeProps,
   useContext,
 } from 'solid-js';
@@ -12,14 +12,17 @@ import {
 } from 'solid-use/props';
 import assert from '../../utils/assert';
 import createDynamic from '../../utils/create-dynamic';
-import {
-  createForwardRef,
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { createUnmountable, UnmountableProps } from '../../utils/create-unmountable';
-import { Prettify } from '../../utils/types';
+import {
+  createForwardRef,
+} from '../../utils/dynamic-prop';
+import type { UnmountableProps } from '../../utils/create-unmountable';
+import { createUnmountable } from '../../utils/create-unmountable';
+import type { Prettify } from '../../utils/types';
 
 export interface TransitionRootBaseProps {
   show: boolean;
@@ -46,13 +49,13 @@ function createTransitionCounter(): TransitionCounter {
 
   return {
     // Reactive set
-    register() {
+    register(): void {
       setSize((c) => c + 1);
     },
-    unregister() {
+    unregister(): void {
       setSize((c) => c - 1);
     },
-    done() {
+    done(): boolean {
       return size() === 0;
     },
   };
@@ -77,13 +80,13 @@ function getClassList(classes?: string): string[] {
   return classes ? classes.split(' ') : [];
 }
 
-function addClassList(ref: HTMLElement, classes: string[]) {
+function addClassList(ref: HTMLElement, classes: string[]): void {
   const filtered = classes.filter((value) => value);
   if (filtered.length) {
     ref.classList.add(...filtered);
   }
 }
-function removeClassList(ref: HTMLElement, classes: string[]) {
+function removeClassList(ref: HTMLElement, classes: string[]): void {
   const filtered = classes.filter((value) => value);
   if (filtered.length) {
     ref.classList.remove(...filtered);
@@ -122,7 +125,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
         const enterTo = getClassList(props.enterTo);
         const entered = getClassList(props.entered);
 
-        const endTransition = () => {
+        const endTransition = (): void => {
           removeClassList(element, enter);
           removeClassList(element, enterTo);
           setState('entered');
@@ -167,7 +170,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
         setState('leave-to');
         addClassList(element, leaveTo);
       });
-      const endTransition = () => {
+      const endTransition = (): void => {
         removeClassList(element, leave);
         removeClassList(element, leaveTo);
         setVisible(false);
