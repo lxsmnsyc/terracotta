@@ -21,6 +21,7 @@ import {
   createARIADisabledState,
   createDisabledState,
 } from '../../utils/state-props';
+import useEventListener from '../../utils/use-event-listener';
 
 const BUTTON_TAG = createTag('button');
 
@@ -37,19 +38,19 @@ export function Button<T extends ValidConstructor = 'button'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
       // This behavior is redundant for buttons
-      if (ref.tagName !== 'BUTTON') {
-        const onKeyDown = (e: KeyboardEvent): void => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            ref.click();
+      if (current.tagName !== 'BUTTON') {
+        useEventListener(current, 'keydown', (e) => {
+          switch (e.key) {
+            case 'Enter':
+            case ' ':
+              current.click();
+              break;
+            default:
+              break;
           }
-        };
-
-        ref.addEventListener('keydown', onKeyDown);
-        onCleanup(() => {
-          ref.removeEventListener('keydown', onKeyDown);
         });
       }
     }
