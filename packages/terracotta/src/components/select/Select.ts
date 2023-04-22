@@ -1,19 +1,21 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createEffect,
   createMemo,
-  JSX,
   mergeProps,
   onCleanup,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
-import {
-  createForwardRef,
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   createSelectOptionFocusNavigator,
@@ -27,17 +29,19 @@ import {
   createHasSelectedState,
 } from '../../utils/state-props';
 import { SELECT_TAG } from './tags';
-import {
-  createSingleSelectState,
+import type {
   SingleSelectStateControlledOptions,
   SingleSelectStateUncontrolledOptions,
-  SelectStateProvider,
   SelectStateRenderProps,
   MultipleSelectStateUncontrolledOptions,
   MultipleSelectStateControlledOptions,
+} from '../../states/create-select-state';
+import {
+  createSingleSelectState,
+  SelectStateProvider,
   createMultipleSelectState,
 } from '../../states/create-select-state';
-import { Prettify } from '../../utils/types';
+import type { Prettify } from '../../utils/types';
 import { SELECTED_NODE } from '../../utils/namespace';
 import createTypeAhead from '../../utils/create-type-ahead';
 
@@ -127,7 +131,7 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
           controller.clearRef();
         });
 
-        const onKeyDown = (e: KeyboardEvent) => {
+        const onKeyDown = (e: KeyboardEvent): void => {
           if (!state.disabled()) {
             switch (e.key) {
               case 'ArrowUp':
@@ -174,7 +178,7 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
             }
           }
         };
-        const onFocus = () => {
+        const onFocus = (): void => {
           if (state.hasSelected()) {
             controller.setFirstChecked(SELECTED_NODE);
           } else {

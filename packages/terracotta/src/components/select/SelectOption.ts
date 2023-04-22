@@ -1,23 +1,27 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createEffect,
-  JSX,
   mergeProps,
   onCleanup,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
-import {
-  createSelectOptionState,
+import type {
   SelectOptionStateOptions,
-  SelectOptionStateProvider,
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
 import {
-  createForwardRef,
+  createSelectOptionState,
+  SelectOptionStateProvider,
+} from '../../states/create-select-option-state';
+import type {
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
@@ -27,10 +31,10 @@ import {
   createDisabledState,
   createSelectedState,
 } from '../../utils/state-props';
-import { OmitAndMerge, Prettify } from '../../utils/types';
+import type { OmitAndMerge, Prettify } from '../../utils/types';
+import type { ButtonProps } from '../button';
 import {
   Button,
-  ButtonProps,
 } from '../button';
 import {
   useSelectContext,
@@ -52,32 +56,32 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
   const state = createSelectOptionState(props);
 
-  const isDisabled = () => state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      const onClick = () => {
+      const onClick = (): void => {
         if (!isDisabled()) {
           state.select();
         }
       };
-      const onFocus = () => {
+      const onFocus = (): void => {
         if (!isDisabled()) {
           state.focus();
         }
       };
-      const onBlur = () => {
+      const onBlur = (): void => {
         if (!isDisabled()) {
           state.blur();
         }
       };
-      const onMouseEnter = () => {
+      const onMouseEnter = (): void => {
         if (!isDisabled()) {
           ref.focus();
         }
       };
-      const onMouseLeave = () => {
+      const onMouseLeave = (): void => {
         if (!isDisabled()) {
           ref.blur();
         }
