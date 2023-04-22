@@ -1,7 +1,6 @@
 import type { JSX } from 'solid-js';
 import {
   createEffect,
-  onCleanup,
   createComponent,
   mergeProps,
 } from 'solid-js';
@@ -38,6 +37,7 @@ import {
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 import { useSelectState } from '../../states/create-select-state';
+import useEventListener from '../../utils/use-event-listener';
 
 export type ListboxButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>>;
@@ -53,18 +53,16 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
   const isDisabled = (): boolean | undefined => disclosureState.disabled() || props.disabled;
 
   createEffect(() => {
-    const ref = internalRef();
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      context.anchor = current;
 
-    if (ref instanceof HTMLElement) {
-      context.anchor = ref;
-
-      const toggle = (): void => {
+      useEventListener(current, 'click', () => {
         if (!isDisabled()) {
           disclosureState.toggle();
         }
-      };
-
-      const onKeyDown = (e: KeyboardEvent): void => {
+      });
+      useEventListener(current, 'keydown', (e) => {
         if (!isDisabled()) {
           switch (e.key) {
             case 'ArrowUp':
@@ -76,28 +74,12 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
               break;
           }
         }
-      };
-
-      ref.addEventListener('click', toggle);
-      ref.addEventListener('keydown', onKeyDown);
-
-      onCleanup(() => {
-        ref.removeEventListener('click', toggle);
-        ref.removeEventListener('keydown', onKeyDown);
       });
-
-      const onMouseEnter = (): void => {
+      useEventListener(current, 'mouseenter', () => {
         context.buttonHovering = true;
-      };
-      const onMouseLeave = (): void => {
+      });
+      useEventListener(current, 'mouseleave', () => {
         context.buttonHovering = false;
-      };
-
-      ref.addEventListener('mouseenter', onMouseEnter);
-      ref.addEventListener('mouseleave', onMouseLeave);
-      onCleanup(() => {
-        ref.removeEventListener('mouseenter', onMouseEnter);
-        ref.removeEventListener('mouseleave', onMouseLeave);
       });
     }
   });

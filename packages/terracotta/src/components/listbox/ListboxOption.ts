@@ -1,6 +1,5 @@
 import type { JSX } from 'solid-js';
 import {
-  onCleanup,
   createComponent,
   mergeProps,
   createRenderEffect,
@@ -44,6 +43,7 @@ import {
   SelectOptionStateProvider,
   createSelectOptionState,
 } from '../../states/create-select-option-state';
+import useEventListener from '../../utils/use-event-listener';
 
 export type ListboxOptionBaseProps<V> = Prettify<
   & SelectOptionStateOptions<V>
@@ -68,49 +68,36 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
   // I would really love to use createEffect but for some reason
   // the timing is never accurate
   createRenderEffect(() => {
-    const ref = internalRef();
+    const current = internalRef();
 
-    if (ref instanceof HTMLElement) {
-      const onClick = (): void => {
+    if (current instanceof HTMLElement) {
+      useEventListener(current, 'click', () => {
         if (!isDisabled()) {
           state.select();
           if (!rootContext.multiple) {
             disclosure.close();
           }
         }
-      };
-      const onFocus = (): void => {
+      });
+      useEventListener(current, 'focus', () => {
         if (!isDisabled()) {
           state.focus();
         }
-      };
-      const onBlur = (): void => {
+      });
+      useEventListener(current, 'blur', () => {
         if (!isDisabled()) {
           state.blur();
         }
-      };
-      const onMouseEnter = (): void => {
+      });
+      useEventListener(current, 'mouseenter', () => {
         if (!isDisabled()) {
-          ref.focus();
+          current.focus();
         }
-      };
-      const onMouseLeave = (): void => {
+      });
+      useEventListener(current, 'mouseleave', () => {
         if (!isDisabled()) {
           state.blur();
         }
-      };
-
-      ref.addEventListener('click', onClick);
-      ref.addEventListener('focus', onFocus);
-      ref.addEventListener('blur', onBlur);
-      ref.addEventListener('mouseenter', onMouseEnter);
-      ref.addEventListener('mouseleave', onMouseLeave);
-      onCleanup(() => {
-        ref.removeEventListener('click', onClick);
-        ref.removeEventListener('focus', onFocus);
-        ref.removeEventListener('blur', onBlur);
-        ref.removeEventListener('mouseenter', onMouseEnter);
-        ref.removeEventListener('mouseleave', onMouseLeave);
       });
     }
   });

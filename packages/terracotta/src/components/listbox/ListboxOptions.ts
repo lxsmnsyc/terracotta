@@ -45,6 +45,7 @@ import createTypeAhead from '../../utils/create-type-ahead';
 import type { Prettify } from '../../utils/types';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
+import useEventListener from '../../utils/use-event-listener';
 
 export type ListboxOptionsBaseProps<V> = Prettify<
   & UnmountableProps
@@ -75,9 +76,9 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
   // the focus event
   onMount(() => {
     createEffect(() => {
-      const ref = internalRef();
-      if (ref instanceof HTMLElement && disclosureState.isOpen()) {
-        controller.setRef(ref);
+      const current = internalRef();
+      if (current instanceof HTMLElement && disclosureState.isOpen()) {
+        controller.setRef(current);
         onCleanup(() => {
           controller.clearRef();
         });
@@ -88,12 +89,12 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
           controller.setFirstChecked(SELECTED_NODE);
         }
 
-        const onKeyDown = (e: KeyboardEvent): void => {
-          if (!disclosureState.disabled() && e.key === 'Escape') {
-            disclosureState.close();
-          }
+        useEventListener(current, 'keydown', (e) => {
           if (!selectState.disabled()) {
             switch (e.key) {
+              case 'Escape':
+                disclosureState.close();
+                break;
               case 'ArrowLeft':
                 if (context.horizontal) {
                   e.preventDefault();
@@ -137,41 +138,25 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
                 break;
             }
           }
-        };
-        const onBlur = (e: FocusEvent): void => {
+        });
+        useEventListener(current, 'focusout', (e) => {
           if (context.buttonHovering || context.optionsHovering) {
             return;
           }
-          if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
+          if (!e.relatedTarget || !current.contains(e.relatedTarget as Node)) {
             disclosureState.close();
           }
-        };
-        const onFocusIn = (e: FocusEvent): void => {
-          if (e.target && e.target !== ref) {
+        });
+        useEventListener(current, 'focusin', (e) => {
+          if (e.target && e.target !== current) {
             controller.setCurrent(e.target as HTMLElement);
           }
-        };
-        ref.addEventListener('keydown', onKeyDown);
-        ref.addEventListener('focusout', onBlur);
-        ref.addEventListener('focusin', onFocusIn);
-        onCleanup(() => {
-          ref.removeEventListener('keydown', onKeyDown);
-          ref.removeEventListener('focusin', onFocusIn);
-          ref.removeEventListener('focusout', onBlur);
         });
-
-        const onMouseEnter = (): void => {
+        useEventListener(current, 'mouseenter', () => {
           context.optionsHovering = true;
-        };
-        const onMouseLeave = (): void => {
+        });
+        useEventListener(current, 'mouseleave', () => {
           context.optionsHovering = false;
-        };
-
-        ref.addEventListener('mouseenter', onMouseEnter);
-        ref.addEventListener('mouseleave', onMouseLeave);
-        onCleanup(() => {
-          ref.removeEventListener('mouseenter', onMouseEnter);
-          ref.removeEventListener('mouseleave', onMouseLeave);
         });
       }
     });
