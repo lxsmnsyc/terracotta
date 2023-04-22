@@ -1,24 +1,28 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createEffect,
   createUniqueId,
-  JSX,
   mergeProps,
   onCleanup,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
-import {
-  createAutocompleteOptionState,
+import type {
   AutocompleteOptionStateOptions,
-  AutocompleteOptionStateProvider,
   AutocompleteOptionStateRenderProps,
 } from '../../states/create-autocomplete-option-state';
 import {
-  createForwardRef,
+  createAutocompleteOptionState,
+  AutocompleteOptionStateProvider,
+} from '../../states/create-autocomplete-option-state';
+import type {
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
@@ -29,10 +33,10 @@ import {
   createMatchesState,
   createSelectedState,
 } from '../../utils/state-props';
-import { OmitAndMerge, Prettify } from '../../utils/types';
+import type { OmitAndMerge, Prettify } from '../../utils/types';
+import type { ButtonProps } from '../button';
 import {
   Button,
-  ButtonProps,
 } from '../button';
 import { COMMAND_OPTION_TAG } from './tags';
 import { useCommandContext } from './CommandContext';
@@ -54,14 +58,14 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
   const state = createAutocompleteOptionState(props);
   const id = createUniqueId();
 
-  const isDisabled = () => state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
   createEffect(() => {
     if (!isDisabled() && context.selectedDescendant === id) {
       state.select();
     }
   });
 
-  function focusOption() {
+  function focusOption(): void {
     context.activeDescendant = id;
     state.focus();
   }
@@ -69,18 +73,18 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      const onClick = () => {
+      const onClick = (): void => {
         if (!isDisabled()) {
           state.select();
           focusOption();
         }
       };
-      const onMouseEnter = () => {
+      const onMouseEnter = (): void => {
         if (!isDisabled()) {
           focusOption();
         }
       };
-      const onMouseLeave = () => {
+      const onMouseLeave = (): void => {
         if (!isDisabled()) {
           state.blur();
         }

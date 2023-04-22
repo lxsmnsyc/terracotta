@@ -1,14 +1,16 @@
+import type { JSX } from 'solid-js';
 import {
-  JSX,
   createEffect,
   mergeProps,
   onCleanup,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import {
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
   createForwardRef,
 } from '../../utils/dynamic-prop';
 import { useCommandContext } from './CommandContext';
@@ -34,7 +36,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
   const state = useAutocompleteState();
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = () => state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
   createEffect(() => {
     const current = internalRef();
@@ -42,7 +44,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
       context.anchor = current;
 
       if (current instanceof HTMLInputElement) {
-        const onInput = () => {
+        const onInput = (): void => {
           if (!isDisabled()) {
             state.setQuery(current.value);
           }
@@ -52,7 +54,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
           current.removeEventListener('input', onInput);
         });
       }
-      const onKeyDown = (e: KeyboardEvent) => {
+      const onKeyDown = (e: KeyboardEvent): void => {
         if (!isDisabled()) {
           switch (e.key) {
             case 'ArrowUp':
@@ -72,7 +74,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
           }
         }
       };
-      const onFocus = () => {
+      const onFocus = (): void => {
         if (context.activeDescendant) {
           const ref = document.getElementById(context.activeDescendant);
           if (ref) {
@@ -84,7 +86,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
           context.controller.setFirstChecked();
         }
       };
-      const onBlur = () => {
+      const onBlur = (): void => {
         if (!context.optionsHovering) {
           state.blur();
         }

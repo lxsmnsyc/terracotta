@@ -1,6 +1,6 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
-  JSX,
   createComponent,
   mergeProps,
   onCleanup,
@@ -9,11 +9,13 @@ import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
-  createForwardRef,
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   useCommandContext,
@@ -26,9 +28,9 @@ import {
   createHasActiveState,
   createHasQueryState,
 } from '../../utils/state-props';
+import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
 import {
   AutocompleteStateChild,
-  AutocompleteStateRenderProps,
   useAutocompleteState,
 } from '../../states/create-autocomplete-state';
 
@@ -50,16 +52,16 @@ export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
       onCleanup(() => {
         context.controller.clearRef();
       });
-      const onFocus = () => {
+      const onFocus = (): void => {
         if (context.anchor) {
           context.anchor.focus();
         }
       };
 
-      const onMouseEnter = () => {
+      const onMouseEnter = (): void => {
         context.optionsHovering = true;
       };
-      const onMouseLeave = () => {
+      const onMouseLeave = (): void => {
         context.optionsHovering = false;
       };
 

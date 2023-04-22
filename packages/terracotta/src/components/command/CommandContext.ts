@@ -7,7 +7,7 @@ import assert from '../../utils/assert';
 import FocusNavigator from '../../utils/focus-navigator';
 import { MATCHES_NODE } from '../../utils/namespace';
 
-interface CommandContext {
+interface CommandContextData {
   multiple: boolean;
   controller: FocusNavigator;
   activeDescendant: string | undefined;
@@ -19,17 +19,17 @@ interface CommandContext {
   optionsHovering: boolean;
 }
 
-export const CommandContext = createContext<CommandContext>();
+export const CommandContext = createContext<CommandContextData>();
 
 export function useCommandContext(
   componentName: string,
-): CommandContext {
+): CommandContextData {
   const context = useContext(CommandContext);
   assert(context, new Error(`<${componentName}> must be used inside a <Command>`));
   return context;
 }
 
-export function createCommandOptionFocusNavigator() {
+export function createCommandOptionFocusNavigator(): FocusNavigator {
   return new FocusNavigator(createUniqueId(), {
     virtual: true,
     base: MATCHES_NODE,

@@ -1,16 +1,16 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createEffect,
   createMemo,
   createSignal,
   createUniqueId,
-  JSX,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
-import {
+import type {
   DynamicProps,
   HeadlessProps,
   ValidConstructor,
@@ -23,17 +23,19 @@ import {
   createHasQueryState,
   createHasSelectedState,
 } from '../../utils/state-props';
-import {
-  createSingleAutocompleteState,
+import type {
   SingleAutocompleteStateControlledOptions,
   SingleAutocompleteStateUncontrolledOptions,
-  AutocompleteStateProvider,
   AutocompleteStateRenderProps,
   MultipleAutocompleteStateUncontrolledOptions,
   MultipleAutocompleteStateControlledOptions,
+} from '../../states/create-autocomplete-state';
+import {
+  createSingleAutocompleteState,
+  AutocompleteStateProvider,
   createMultipleAutocompleteState,
 } from '../../states/create-autocomplete-state';
-import { Prettify } from '../../utils/types';
+import type { Prettify } from '../../utils/types';
 import { CommandContext, createCommandOptionFocusNavigator } from './CommandContext';
 import { COMMAND_TAG } from './tags';
 
