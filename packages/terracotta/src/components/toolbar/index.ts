@@ -1,16 +1,18 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
-  JSX,
   mergeProps,
   onCleanup,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
-  createForwardRef,
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   focusFirst,
@@ -24,14 +26,14 @@ import { createTag } from '../../utils/namespace';
 const TOOLBAR_TAG = createTag('toolbar');
 
 export type ToolbarProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, { horizontal?: boolean; }>;
+  HeadlessPropsWithRef<T, { horizontal?: boolean }>;
 
 export function Toolbar<T extends ValidConstructor = 'div'>(
   props: ToolbarProps<T>,
 ): JSX.Element {
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isHorizontal = () => (props.horizontal == null ? true : props.horizontal);
+  const isHorizontal = (): boolean => (props.horizontal == null ? true : props.horizontal);
 
   let focusedElement: HTMLElement | undefined;
 
@@ -70,7 +72,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
   createEffect(() => {
     const ref = internalRef();
     if (ref instanceof HTMLElement) {
-      const onKeyDown = (e: KeyboardEvent) => {
+      const onKeyDown = (e: KeyboardEvent): void => {
         switch (e.key) {
           case 'ArrowLeft':
             if (isHorizontal()) {
@@ -111,7 +113,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
         }
       };
 
-      const onFocus = () => {
+      const onFocus = (): void => {
         if (focusedElement) {
           focusedElement.focus();
         } else {
@@ -119,7 +121,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
         }
       };
 
-      const onFocusIn = (e: FocusEvent) => {
+      const onFocusIn = (e: FocusEvent): void => {
         if (e.target && e.target !== ref) {
           focusedElement = e.target as HTMLElement;
         }
