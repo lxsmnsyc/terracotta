@@ -1,28 +1,31 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createEffect,
   createUniqueId,
-  JSX,
   mergeProps,
   onCleanup,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import {
+import type {
   DynamicProps,
   HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { Prettify } from '../../utils/types';
-import {
-  createDisclosureState,
+import type { Prettify } from '../../utils/types';
+import type {
   DisclosureStateControlledOptions,
-  DisclosureStateProvider,
   DisclosureStateRenderProps,
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
+import {
+  createDisclosureState,
+  DisclosureStateProvider,
+} from '../../states/create-disclosure-state';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import { CommandBarContext } from './CommandBarContext';
-import { createUnmountable, UnmountableProps } from '../../utils/create-unmountable';
+import type { UnmountableProps } from '../../utils/create-unmountable';
+import { createUnmountable } from '../../utils/create-unmountable';
 import createDynamic from '../../utils/create-dynamic';
 import { COMMAND_BAR_TAG } from './tags';
 import {
@@ -79,8 +82,8 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
   });
 
   createEffect(() => {
-    const onKeyDown = (ev: KeyboardEvent) => {
-      if ((ev.metaKey || ev.ctrlKey) && ev.key === 'k' && ev.defaultPrevented === false) {
+    const onKeyDown = (ev: KeyboardEvent): void => {
+      if ((ev.metaKey || ev.ctrlKey) && ev.key === 'k' && !ev.defaultPrevented) {
         ev.preventDefault();
         state.open();
       }

@@ -1,7 +1,7 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
   onCleanup,
-  JSX,
   mergeProps,
   createComponent,
 } from 'solid-js';
@@ -9,10 +9,12 @@ import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
   createForwardRef,
 } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
@@ -21,9 +23,9 @@ import {
   useCommandBarContext,
 } from './CommandBarContext';
 import { COMMAND_BAR_PANEL_TAG } from './tags';
+import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
-  DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 import {
@@ -48,7 +50,7 @@ export function CommandBarPanel<T extends ValidConstructor = 'div'>(
       if (state.isOpen()) {
         focusFirst(getFocusableElements(ref), false);
 
-        const onKeyDown = (e: KeyboardEvent) => {
+        const onKeyDown = (e: KeyboardEvent): void => {
           if (!props.disabled) {
             if (e.key === 'Tab') {
               e.preventDefault();
