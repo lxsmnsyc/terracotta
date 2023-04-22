@@ -6,7 +6,6 @@ import {
   createContext,
   createEffect,
   createMemo,
-  onCleanup,
   useContext,
   createSignal,
   createComponent,
@@ -14,6 +13,7 @@ import {
 import { usePrefersDark } from 'solid-use/media-query';
 import usePageVisibility from 'solid-use/page-visibility';
 import assert from '../../utils/assert';
+import useEventListener from '../../utils/use-event-listener';
 
 export type NativeColorScheme = 'light' | 'dark';
 export type ColorScheme = NativeColorScheme | 'system';
@@ -87,13 +87,8 @@ export function ColorSchemeProvider(props: ColorSchemeProviderProps): JSX.Elemen
         set('system');
       }
     };
-    window.addEventListener('storage', onChange, false);
-
     onChange();
-
-    onCleanup(() => {
-      window.removeEventListener('storage', onChange, false);
-    });
+    useEventListener(window, 'storage', onChange, false);
   });
 
   // Sync storage when signal changes
