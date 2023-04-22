@@ -1,13 +1,15 @@
+import { onCleanup } from 'solid-js';
+
 type FocusListener = (el: HTMLElement) => void;
 
 const LISTENERS = new Set<FocusListener>();
 
-export function registerVirtualFocus(listener: FocusListener): () => void {
+export function useVirtualFocus(listener: FocusListener): () => void {
   LISTENERS.add(listener);
 
-  return () => {
+  onCleanup(() => {
     LISTENERS.delete(listener);
-  };
+  });
 }
 
 // This is just a way to emulate focus without actually losing the focused element

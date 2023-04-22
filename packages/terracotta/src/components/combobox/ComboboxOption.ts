@@ -1,6 +1,5 @@
 import type { JSX } from 'solid-js';
 import {
-  onCleanup,
   createComponent,
   mergeProps,
   createRenderEffect,
@@ -44,7 +43,8 @@ import {
   AutocompleteOptionStateProvider,
   createAutocompleteOptionState,
 } from '../../states/create-autocomplete-option-state';
-import { registerVirtualFocus } from '../../utils/virtual-focus';
+import { useVirtualFocus } from '../../utils/virtual-focus';
+import useEventListener from '../../utils/use-event-listener';
 
 export type ComboboxOptionBaseProps<V> = Prettify<
   & AutocompleteOptionStateOptions<V>
@@ -82,10 +82,10 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
   // I would really love to use createEffect but for some reason
   // the timing is never accurate
   createRenderEffect(() => {
-    const ref = internalRef();
+    const current = internalRef();
 
-    if (ref instanceof HTMLElement) {
-      const onClick = (): void => {
+    if (current instanceof HTMLElement) {
+      useEventListener(current, 'click', () => {
         if (!isDisabled()) {
           state.select();
           focusOption();
@@ -93,32 +93,22 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
             disclosure.close();
           }
         }
-      };
-      const onMouseEnter = (): void => {
+      });
+      useEventListener(current, 'mouseenter', () => {
         if (!isDisabled()) {
           focusOption();
         }
-      };
-      const onMouseLeave = (): void => {
+      });
+      useEventListener(current, 'mouseleave', () => {
         if (!isDisabled()) {
           state.blur();
         }
-      };
-
-      ref.addEventListener('click', onClick);
-      ref.addEventListener('mouseenter', onMouseEnter);
-      ref.addEventListener('mouseleave', onMouseLeave);
-      onCleanup(() => {
-        ref.removeEventListener('click', onClick);
-        ref.removeEventListener('mouseenter', onMouseEnter);
-        ref.removeEventListener('mouseleave', onMouseLeave);
       });
-
-      onCleanup(registerVirtualFocus((el) => {
-        if (el === ref) {
+      useVirtualFocus((el) => {
+        if (el === current) {
           focusOption();
         }
-      }));
+      });
     }
   });
 

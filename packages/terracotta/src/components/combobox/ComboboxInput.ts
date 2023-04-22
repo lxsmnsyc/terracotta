@@ -2,7 +2,6 @@ import type { JSX } from 'solid-js';
 import {
   createEffect,
   mergeProps,
-  onCleanup,
   untrack,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
@@ -28,6 +27,7 @@ import {
 } from '../../utils/state-props';
 import { COMMAND_INPUT_TAG } from '../command/tags';
 import { useDisclosureState } from '../../states/create-disclosure-state';
+import useEventListener from '../../utils/use-event-listener';
 
 export type ComboboxInputProps<T extends ValidConstructor = 'input'> =
   HeadlessPropsWithRef<T>;
@@ -48,18 +48,14 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
       context.anchor = current;
 
       if (current instanceof HTMLInputElement) {
-        const onInput = (): void => {
+        useEventListener(current, 'input', () => {
           if (!isDisabled()) {
             autocompleteState.setQuery(current.value);
           }
-        };
-        current.addEventListener('input', onInput);
-        onCleanup(() => {
-          current.removeEventListener('input', onInput);
         });
       }
 
-      const onKeyDown = (e: KeyboardEvent): void => {
+      useEventListener(current, 'keydown', (e) => {
         if (!isDisabled()) {
           switch (e.key) {
             case 'Escape':
@@ -91,15 +87,13 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
               break;
           }
         }
-      };
-
-      const toggle = (): void => {
+      });
+      useEventListener(current, 'click', () => {
         if (!isDisabled()) {
           disclosureState.toggle();
         }
-      };
-
-      const onBlur = (e: FocusEvent): void => {
+      });
+      useEventListener(current, 'blur', (e) => {
         if (context.optionsHovering) {
           return;
         }
@@ -107,30 +101,12 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
         if (!e.relatedTarget || !current.contains(e.relatedTarget as Node)) {
           disclosureState.close();
         }
-      };
-
-      current.addEventListener('click', toggle);
-      current.addEventListener('keydown', onKeyDown);
-      current.addEventListener('blur', onBlur);
-
-      onCleanup(() => {
-        current.removeEventListener('click', toggle);
-        current.removeEventListener('keydown', onKeyDown);
-        current.removeEventListener('blur', onBlur);
       });
-
-      const onMouseEnter = (): void => {
+      useEventListener(current, 'mouseenter', () => {
         context.inputHovering = true;
-      };
-      const onMouseLeave = (): void => {
+      });
+      useEventListener(current, 'mouseleave', () => {
         context.inputHovering = false;
-      };
-
-      current.addEventListener('mouseenter', onMouseEnter);
-      current.addEventListener('mouseleave', onMouseLeave);
-      onCleanup(() => {
-        current.removeEventListener('mouseenter', onMouseEnter);
-        current.removeEventListener('mouseleave', onMouseLeave);
       });
     }
   });
