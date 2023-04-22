@@ -1,11 +1,13 @@
+import type {
+  JSX,
+  Accessor,
+} from 'solid-js';
 import {
   createContext,
   createEffect,
   createMemo,
   onCleanup,
   useContext,
-  JSX,
-  Accessor,
   createSignal,
   createComponent,
 } from 'solid-js';
@@ -31,31 +33,37 @@ export type ColorSchemeProviderProps =
   | ColorSchemeProviderControlledProps
   | ColorSchemeProviderUncontrolledProps;
 
-interface ColorSchemeContext {
+interface ColorSchemeContextData {
   value: ColorScheme;
   setValue: (newScheme: ColorScheme) => void;
   native: NativeColorScheme;
   preferred: NativeColorScheme;
 }
 
-const ColorSchemeContext = createContext<ColorSchemeContext>();
+const ColorSchemeContext = createContext<ColorSchemeContextData>();
 
 const STORAGE_KEY = 'theme-preference';
 
-export function ColorSchemeProvider(props: ColorSchemeProviderProps) {
+export function ColorSchemeProvider(props: ColorSchemeProviderProps): JSX.Element {
   let get: Accessor<ColorScheme>;
   let set: (scheme: ColorScheme) => void;
 
   if ('initialValue' in props) {
     const [scheme, setScheme] = createSignal<ColorScheme>(props.initialValue);
     get = scheme;
-    set = (value) => {
+    set = (value): void => {
       setScheme(value);
-      props.onChange?.(value);
+      if (props.onChange) {
+        props.onChange(value);
+      }
     };
   } else {
-    get = () => props.value;
-    set = (value) => props.onChange?.(value);
+    get = (): ColorScheme => props.value;
+    set = (value): void => {
+      if (props.onChange) {
+        props.onChange(value);
+      }
+    };
   }
 
   const prefersDark = usePrefersDark();
@@ -70,7 +78,7 @@ export function ColorSchemeProvider(props: ColorSchemeProviderProps) {
   createEffect(() => {
     isVisible();
 
-    const onChange = () => {
+    const onChange = (): void => {
       const value = localStorage.getItem(STORAGE_KEY);
 
       if (value) {
@@ -122,7 +130,7 @@ export function ColorSchemeProvider(props: ColorSchemeProviderProps) {
   });
 }
 
-function useColorSchemeContext(): ColorSchemeContext {
+function useColorSchemeContext(): ColorSchemeContextData {
   const ctx = useContext(ColorSchemeContext);
   assert(ctx, new Error('Missing <ColorSchemeProvider>'));
   return ctx;
@@ -131,7 +139,7 @@ function useColorSchemeContext(): ColorSchemeContext {
 export function useColorScheme(): [() => ColorScheme, (newScheme: ColorScheme) => void] {
   const ctx = useColorSchemeContext();
   return [
-    () => ctx.value,
+    (): ColorScheme => ctx.value,
     ctx.setValue,
   ];
 }
