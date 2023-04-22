@@ -1,7 +1,7 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
   onCleanup,
-  JSX,
   mergeProps,
 } from 'solid-js';
 import {
@@ -10,10 +10,12 @@ import {
 import {
   omitProps,
 } from 'solid-use/props';
-import {
-  createForwardRef,
+import type {
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
@@ -21,18 +23,18 @@ import {
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
-import { OmitAndMerge } from '../../utils/types';
+import type { OmitAndMerge } from '../../utils/types';
+import type { ButtonProps } from '../button';
 import {
-  ButtonProps,
   Button,
 } from '../button';
 import {
   useDisclosureContext,
 } from './DisclosureContext';
 import { DISCLOSURE_BUTTON_TAG } from './tags';
+import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
-  DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 
@@ -47,13 +49,13 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = () => state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
   createEffect(() => {
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
-      const toggle = () => {
+      const toggle = (): void => {
         if (!isDisabled()) {
           state.toggle();
         }

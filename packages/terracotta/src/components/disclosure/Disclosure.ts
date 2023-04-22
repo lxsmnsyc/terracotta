@@ -1,14 +1,14 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createUniqueId,
-  JSX,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   DynamicProps,
   HeadlessProps,
   ValidConstructor,
@@ -22,13 +22,15 @@ import {
   DisclosureContext,
 } from './DisclosureContext';
 import { DISCLOSURE_TAG } from './tags';
-import { Prettify } from '../../utils/types';
-import {
-  createDisclosureState,
+import type { Prettify } from '../../utils/types';
+import type {
   DisclosureStateControlledOptions,
-  DisclosureStateProvider,
   DisclosureStateRenderProps,
   DisclosureStateUncontrolledOptions,
+} from '../../states/create-disclosure-state';
+import {
+  createDisclosureState,
+  DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
 
 export type DisclosureControlledBaseProps = Prettify<
