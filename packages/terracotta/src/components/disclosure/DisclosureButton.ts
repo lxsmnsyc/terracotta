@@ -1,7 +1,6 @@
 import type { JSX } from 'solid-js';
 import {
   createEffect,
-  onCleanup,
   mergeProps,
 } from 'solid-js';
 import {
@@ -37,6 +36,7 @@ import {
   DisclosureStateChild,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
+import useEventListener from '../../utils/use-event-listener';
 
 export type DisclosureButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>>;
@@ -52,19 +52,12 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
   const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
   createEffect(() => {
-    const ref = internalRef();
-
-    if (ref instanceof HTMLElement) {
-      const toggle = (): void => {
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      useEventListener(current, 'click', () => {
         if (!isDisabled()) {
           state.toggle();
         }
-      };
-
-      ref.addEventListener('click', toggle);
-
-      onCleanup(() => {
-        ref.removeEventListener('click', toggle);
       });
     }
   });
