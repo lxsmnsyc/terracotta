@@ -1,10 +1,12 @@
-import {
+import type {
   Accessor,
+  JSX,
+} from 'solid-js';
+import {
   createComponent,
   createContext,
   createMemo,
   createSignal,
-  JSX,
   untrack,
   useContext,
 } from 'solid-js';
@@ -50,7 +52,7 @@ export function createToggleState(
     // manages its own state.
     const [isOpen, setIsOpen] = createSignal<boolean>(options.defaultPressed);
     signal = isOpen;
-    setSignal = (value) => {
+    setSignal = (value): void => {
       setIsOpen(value);
       if (options.onChange) {
         options.onChange(value);
@@ -59,7 +61,7 @@ export function createToggleState(
   } else {
     // Controlled means relying on 3P state
     signal = createMemo(() => options.pressed);
-    setSignal = (value) => {
+    setSignal = (value): void => {
       if (options.onChange) {
         options.onChange(value);
       }
@@ -69,26 +71,26 @@ export function createToggleState(
   const isDisabled = createMemo(() => !!options.disabled);
 
   return {
-    pressed() {
+    pressed(): boolean {
       return signal();
     },
-    setState(value) {
+    setState(value): void {
       if (!untrack(isDisabled)) {
         setSignal(value);
       }
     },
     disabled: isDisabled,
-    check() {
+    check(): void {
       if (!untrack(isDisabled)) {
         setSignal(true);
       }
     },
-    uncheck() {
+    uncheck(): void {
       if (!untrack(isDisabled)) {
         setSignal(false);
       }
     },
-    toggle() {
+    toggle(): void {
       if (!untrack(isDisabled)) {
         setSignal(!untrack(signal));
       }
@@ -106,7 +108,7 @@ export interface ToggleStateProviderProps extends ToggleStateRenderProps {
 
 const ToggleStateContext = createContext<ToggleStateProperties>();
 
-export function ToggleStateProvider(props: ToggleStateProviderProps) {
+export function ToggleStateProvider(props: ToggleStateProviderProps): JSX.Element {
   return (
     createComponent(ToggleStateContext.Provider, {
       value: props.state,

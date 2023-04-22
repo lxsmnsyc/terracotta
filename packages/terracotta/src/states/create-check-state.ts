@@ -1,10 +1,12 @@
-import {
+import type {
   Accessor,
+  JSX,
+} from 'solid-js';
+import {
   createComponent,
   createContext,
   createMemo,
   createSignal,
-  JSX,
   untrack,
   useContext,
 } from 'solid-js';
@@ -51,7 +53,7 @@ export function createCheckState(
     // manages its own state.
     const [isOpen, setIsOpen] = createSignal<boolean | undefined>(options.defaultChecked);
     signal = isOpen;
-    setSignal = (value) => {
+    setSignal = (value): void => {
       setIsOpen(value);
       if (options.onChange) {
         options.onChange(value);
@@ -60,7 +62,7 @@ export function createCheckState(
   } else {
     // Controlled means relying on 3P state
     signal = createMemo(() => options.checked);
-    setSignal = (value) => {
+    setSignal = (value): void => {
       if (options.onChange) {
         options.onChange(value);
       }
@@ -70,31 +72,31 @@ export function createCheckState(
   const isDisabled = createMemo(() => !!options.disabled);
 
   return {
-    checked() {
+    checked(): boolean | undefined {
       return signal();
     },
-    setState(value) {
+    setState(value): void {
       if (!untrack(isDisabled)) {
         setSignal(value);
       }
     },
     disabled: isDisabled,
-    check() {
+    check(): void {
       if (!untrack(isDisabled)) {
         setSignal(true);
       }
     },
-    uncheck() {
+    uncheck(): void {
       if (!untrack(isDisabled)) {
         setSignal(false);
       }
     },
-    reset() {
+    reset(): void {
       if (!untrack(isDisabled)) {
         setSignal(undefined);
       }
     },
-    toggle() {
+    toggle(): void {
       if (!untrack(isDisabled)) {
         setSignal(!untrack(signal));
       }
@@ -116,7 +118,7 @@ const CheckStateContext = (
 
 export function CheckStateProvider(
   props: CheckStateProviderProps,
-) {
+): JSX.Element {
   return (
     createComponent(CheckStateContext.Provider, {
       value: props.state,

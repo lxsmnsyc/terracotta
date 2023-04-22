@@ -1,8 +1,10 @@
+import type {
+  Accessor,
+  JSX,
+} from 'solid-js';
 import {
   createSignal,
-  Accessor,
   untrack,
-  JSX,
   createContext,
   createComponent,
   useContext,
@@ -10,7 +12,7 @@ import {
 } from 'solid-js';
 import assert from '../utils/assert';
 import isEqual from '../utils/is-equal';
-import { Ref } from '../utils/types';
+import type { Ref } from '../utils/types';
 
 export interface SelectStateProperties<T> {
   isSelected(value: T): boolean;
@@ -58,7 +60,7 @@ export function createSingleSelectState<T>(
   if ('defaultValue' in options) {
     const [selected, setSelected] = createSignal<T | undefined>(options.defaultValue);
     selectedValue = selected;
-    setSelectedValue = (value) => {
+    setSelectedValue = (value): void => {
       setSelected(() => value);
       if (options.onChange) {
         options.onChange(value);
@@ -66,7 +68,7 @@ export function createSingleSelectState<T>(
     };
   } else {
     selectedValue = createMemo(() => options.value);
-    setSelectedValue = (value) => {
+    setSelectedValue = (value): void => {
       if (options.onChange) {
         options.onChange(value);
       }
@@ -76,10 +78,10 @@ export function createSingleSelectState<T>(
   const isDisabled = createMemo(() => !!options.disabled);
 
   return {
-    isSelected(value) {
+    isSelected(value): boolean {
       return isEqual(value, selectedValue());
     },
-    select(value) {
+    select(value): void {
       if (!untrack(isDisabled)) {
         if (options.toggleable && equals(untrack(selectedValue) as T, value)) {
           setSelectedValue(undefined);
@@ -88,25 +90,25 @@ export function createSingleSelectState<T>(
         }
       }
     },
-    hasSelected() {
+    hasSelected(): boolean {
       return selectedValue() != null;
     },
     disabled: isDisabled,
-    hasActive() {
+    hasActive(): boolean {
       return !!active();
     },
-    isActive(value) {
+    isActive(value): boolean {
       const ref = active();
       return ref ? equals(value, ref.value) : false;
     },
-    focus(value) {
+    focus(value): void {
       if (!untrack(isDisabled)) {
         setActive({
           value,
         });
       }
     },
-    blur() {
+    blur(): void {
       if (!untrack(isDisabled)) {
         setActive(undefined);
       }
@@ -149,7 +151,7 @@ export function createMultipleSelectState<T>(
   if ('defaultValue' in options) {
     const [selected, setSelected] = createSignal<T[]>(options.defaultValue);
     selectedValues = selected;
-    setSelectedValues = (value) => {
+    setSelectedValues = (value): void => {
       setSelected(() => value);
       if (options.onChange) {
         options.onChange(value);
@@ -157,7 +159,7 @@ export function createMultipleSelectState<T>(
     };
   } else {
     selectedValues = createMemo(() => options.value);
-    setSelectedValues = (value) => {
+    setSelectedValues = (value): void => {
       if (options.onChange) {
         options.onChange(value);
       }
@@ -167,7 +169,7 @@ export function createMultipleSelectState<T>(
   const isDisabled = createMemo(() => !!options.disabled);
 
   return {
-    isSelected(value) {
+    isSelected(value): boolean {
       const values = selectedValues();
       // Looks up for the value
       for (let i = 0, len = values.length; i < len; i += 1) {
@@ -177,7 +179,7 @@ export function createMultipleSelectState<T>(
       }
       return false;
     },
-    select(value) {
+    select(value): void {
       if (!untrack(isDisabled)) {
         const newValues: T[] = [];
         const currentValues = untrack(selectedValues);
@@ -207,21 +209,21 @@ export function createMultipleSelectState<T>(
     hasSelected: createMemo(() => selectedValues().length > 0),
     disabled: isDisabled,
     hasActive: createMemo(() => !!active()),
-    isActive(value) {
+    isActive(value): boolean {
       const ref = active();
       if (ref) {
         return equals(value, ref.value);
       }
       return false;
     },
-    focus(value) {
+    focus(value): void {
       if (!untrack(isDisabled)) {
         setActive({
           value,
         });
       }
     },
-    blur() {
+    blur(): void {
       if (!untrack(isDisabled)) {
         setActive(undefined);
       }
@@ -238,12 +240,12 @@ export interface SelectStateProviderProps<T> extends SelectStateRenderProps<T> {
 }
 
 const SelectStateContext = (
-  createContext<SelectStateProperties<any>>()
+  createContext<SelectStateProperties<unknown>>()
 );
 
 export function SelectStateProvider<T>(
   props: SelectStateProviderProps<T>,
-) {
+): JSX.Element {
   return (
     createComponent(SelectStateContext.Provider, {
       value: props.state,

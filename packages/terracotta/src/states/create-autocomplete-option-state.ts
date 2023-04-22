@@ -1,8 +1,8 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createContext,
   createMemo,
-  JSX,
   untrack,
   useContext,
 } from 'solid-js';
@@ -32,17 +32,17 @@ export function createAutocompleteOptionState<T>(
   return {
     isSelected: createMemo(() => state.isSelected(options.value)),
     isActive: createMemo(() => state.isActive(options.value)),
-    select() {
+    select(): void {
       if (!untrack(isDisabled)) {
         state.select(options.value);
       }
     },
-    focus() {
+    focus(): void {
       if (!untrack(isDisabled)) {
         state.focus(options.value);
       }
     },
-    blur() {
+    blur(): void {
       if (!untrack(isDisabled) && this.isActive()) {
         state.blur();
       }
@@ -62,7 +62,9 @@ export interface AutocompleteOptionStateProviderProps extends AutocompleteOption
 
 const AutocompleteOptionStateContext = createContext<AutocompleteOptionStateProperties>();
 
-export function AutocompleteOptionStateProvider(props: AutocompleteOptionStateProviderProps) {
+export function AutocompleteOptionStateProvider(
+  props: AutocompleteOptionStateProviderProps,
+): JSX.Element {
   return (
     createComponent(AutocompleteOptionStateContext.Provider, {
       value: props.state,

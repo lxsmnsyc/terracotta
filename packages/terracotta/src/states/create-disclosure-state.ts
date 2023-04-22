@@ -1,10 +1,12 @@
-import {
+import type {
   Accessor,
+  JSX,
+} from 'solid-js';
+import {
   createComponent,
   createContext,
   createMemo,
   createSignal,
-  JSX,
   untrack,
   useContext,
 } from 'solid-js';
@@ -47,7 +49,7 @@ export function createDisclosureState(
   if ('defaultOpen' in options) {
     const [isOpen, setIsOpen] = createSignal(options.defaultOpen);
     signal = isOpen;
-    setSignal = (value) => {
+    setSignal = (value): void => {
       setIsOpen(value);
       if (value && options.onOpen) {
         options.onOpen();
@@ -61,7 +63,7 @@ export function createDisclosureState(
     };
   } else {
     signal = createMemo(() => options.isOpen);
-    setSignal = (value) => {
+    setSignal = (value): void => {
       if (value && options.onOpen) {
         options.onOpen();
       }
@@ -77,26 +79,26 @@ export function createDisclosureState(
   const isDisabled = createMemo(() => !!options.disabled);
 
   return {
-    isOpen() {
+    isOpen(): boolean {
       return signal();
     },
-    setState(value) {
+    setState(value): void {
       if (!untrack(isDisabled)) {
         setSignal(value);
       }
     },
     disabled: isDisabled,
-    open() {
+    open(): void {
       if (!untrack(isDisabled)) {
         setSignal(true);
       }
     },
-    close() {
+    close(): void {
       if (!untrack(isDisabled)) {
         setSignal(false);
       }
     },
-    toggle() {
+    toggle(): void {
       if (!untrack(isDisabled)) {
         setSignal(!untrack(signal));
       }
@@ -118,7 +120,7 @@ const DisclosureStateContext = (
 
 export function DisclosureStateProvider(
   props: DisclosureStateProviderProps,
-) {
+): JSX.Element {
   return (
     createComponent(DisclosureStateContext.Provider, {
       value: props.state,

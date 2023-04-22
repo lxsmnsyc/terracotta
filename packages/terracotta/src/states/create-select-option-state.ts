@@ -1,8 +1,8 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createContext,
   createMemo,
-  JSX,
   untrack,
   useContext,
 } from 'solid-js';
@@ -31,17 +31,17 @@ export function createSelectOptionState<T>(
   return {
     isSelected: createMemo(() => state.isSelected(options.value)),
     isActive: createMemo(() => state.isActive(options.value)),
-    select() {
+    select(): void {
       if (!untrack(isDisabled)) {
         state.select(options.value);
       }
     },
-    focus() {
+    focus(): void {
       if (!untrack(isDisabled)) {
         state.focus(options.value);
       }
     },
-    blur() {
+    blur(): void {
       if (!untrack(isDisabled) && this.isActive()) {
         state.blur();
       }
@@ -60,7 +60,7 @@ export interface SelectOptionStateProviderProps extends SelectOptionStateRenderP
 
 const SelectOptionStateContext = createContext<SelectOptionStateProperties>();
 
-export function SelectOptionStateProvider(props: SelectOptionStateProviderProps) {
+export function SelectOptionStateProvider(props: SelectOptionStateProviderProps): JSX.Element {
   return (
     createComponent(SelectOptionStateContext.Provider, {
       value: props.state,

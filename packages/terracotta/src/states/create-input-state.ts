@@ -1,10 +1,12 @@
-import {
+import type {
   Accessor,
+  JSX,
+} from 'solid-js';
+import {
   createComponent,
   createContext,
   createMemo,
   createSignal,
-  JSX,
   useContext,
 } from 'solid-js';
 import assert from '../utils/assert';
@@ -40,15 +42,15 @@ export function createInputState(
   if ('defaultValue' in options) {
     const [input, setInput] = createSignal<string | undefined>(options.defaultValue);
     signal = input;
-    setSignal = (value) => {
+    setSignal = (value): void => {
       setInput(value);
       if (options.onChange) {
         options.onChange(value);
       }
     };
   } else {
-    signal = () => options.value;
-    setSignal = (value) => {
+    signal = (): string | undefined => options.value;
+    setSignal = (value): void => {
       if (options.onChange) {
         options.onChange(value);
       }
@@ -56,15 +58,15 @@ export function createInputState(
   }
 
   return {
-    value() {
+    value(): string | undefined {
       return signal();
     },
-    setState(value) {
+    setState(value): void {
       if (!options.disabled) {
         setSignal(value);
       }
     },
-    disabled() {
+    disabled(): boolean {
       return !!options.disabled;
     },
   };
@@ -84,7 +86,7 @@ const InputStateContext = (
 
 export function InputStateProvider(
   props: InputStateProviderProps,
-) {
+): JSX.Element {
   return (
     createComponent(InputStateContext.Provider, {
       value: props.state,
