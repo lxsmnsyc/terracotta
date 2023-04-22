@@ -1,24 +1,26 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createEffect,
-  JSX,
   mergeProps,
   onCleanup,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
+import type { SelectStateRenderProps } from '../../states/create-select-state';
 import {
   SelectStateChild,
-  SelectStateRenderProps,
   useSelectState,
 } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
-import {
-  createForwardRef,
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import { useTabGroupContext } from './TabGroupContext';
 import {
@@ -51,7 +53,7 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
         controller.clearRef();
       });
 
-      const onKeyDown = (e: KeyboardEvent) => {
+      const onKeyDown = (e: KeyboardEvent): void => {
         if (!state.disabled()) {
           switch (e.key) {
             case 'ArrowUp':

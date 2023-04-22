@@ -16,6 +16,6 @@ export function useTabListContext(
   return context;
 }
 
-export function createTabFocusNavigator() {
+export function createTabFocusNavigator(): FocusNavigator {
   return new FocusNavigator(createUniqueId());
 }

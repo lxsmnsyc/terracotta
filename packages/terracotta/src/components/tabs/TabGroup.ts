@@ -1,20 +1,22 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createMemo,
   createUniqueId,
-  JSX,
   mergeProps,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import {
-  createSingleSelectState,
-  SelectStateProvider,
+import type {
   SelectStateRenderProps,
   SingleSelectStateControlledOptions,
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
-import createDynamic from '../../utils/create-dynamic';
 import {
+  createSingleSelectState,
+  SelectStateProvider,
+} from '../../states/create-select-state';
+import createDynamic from '../../utils/create-dynamic';
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -25,7 +27,7 @@ import {
   createHasActiveState,
   createHasSelectedState,
 } from '../../utils/state-props';
-import { Prettify } from '../../utils/types';
+import type { Prettify } from '../../utils/types';
 import { TabGroupContext } from './TabGroupContext';
 import { TAB_GROUP_TAG } from './tags';
 
@@ -74,7 +76,7 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
     return createComponent(TabGroupContext.Provider, {
       value: {
         get horizontal() {
-          return props.horizontal ?? true;
+          return props.horizontal;
         },
         getId(kind: string, value: V): string {
           let currentID = ids.get(value);

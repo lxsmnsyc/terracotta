@@ -1,15 +1,15 @@
+import type { JSX } from 'solid-js';
 import {
-  createComponent,
-  JSX, mergeProps,
+  createComponent, mergeProps,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import type { SelectOptionStateOptions } from '../../states/create-select-option-state';
 import {
   createSelectOptionState,
-  SelectOptionStateOptions,
   SelectOptionStateProvider,
 } from '../../states/create-select-option-state';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   ValidConstructor,
   DynamicProps,
   HeadlessProps,
