@@ -1,17 +1,17 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createEffect,
   createMemo,
   createSignal,
   createUniqueId,
-  JSX,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   DynamicProps,
   HeadlessProps,
   ValidConstructor,
@@ -27,26 +27,30 @@ import {
   ComboboxContext,
   createComboboxOptionFocusNavigator,
 } from './ComboboxContext';
-import {
-  createMultipleAutocompleteState,
-  createSingleAutocompleteState,
+import type {
   MultipleAutocompleteStateControlledOptions,
   MultipleAutocompleteStateUncontrolledOptions,
-  AutocompleteStateProvider,
   SingleAutocompleteStateControlledOptions,
   SingleAutocompleteStateUncontrolledOptions,
 } from '../../states/create-autocomplete-state';
 import {
-  createDisclosureState,
+  createMultipleAutocompleteState,
+  createSingleAutocompleteState,
+  AutocompleteStateProvider,
+} from '../../states/create-autocomplete-state';
+import type {
   DisclosureStateControlledOptions,
-  DisclosureStateProvider,
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
-import { Prettify } from '../../utils/types';
+import {
+  createDisclosureState,
+  DisclosureStateProvider,
+} from '../../states/create-disclosure-state';
+import type { Prettify } from '../../utils/types';
 import { COMBOBOX_TAG } from './tags';
 
 export interface ComboboxBaseProps {
-  onDisclosureChange?: (value: boolean) => void
+  onDisclosureChange?: (value: boolean) => void;
 }
 
 export interface ComboboxMultipleBaseProps<V> {
@@ -201,7 +205,7 @@ function isComboboxDisclosureUncontrolled<V, T extends ValidConstructor = 'div'>
 
 function getProps<V, T extends ValidConstructor = 'div'>(
   props: ComboboxProps<V, T>,
-) {
+): DynamicProps<T> {
   if (isComboboxSelectUncontrolled(props)) {
     if (isComboboxDisclosureUncontrolled(props)) {
       return omitProps(props, [
@@ -218,7 +222,7 @@ function getProps<V, T extends ValidConstructor = 'div'>(
         'onOpen',
         'onSelectChange',
         'toggleable',
-      ]);
+      ]) as DynamicProps<T>;
     }
     return omitProps(props, [
       'as',
@@ -234,7 +238,7 @@ function getProps<V, T extends ValidConstructor = 'div'>(
       'onOpen',
       'onSelectChange',
       'toggleable',
-    ]);
+    ]) as DynamicProps<T>;
   }
   if (isComboboxDisclosureUncontrolled(props)) {
     return omitProps(props, [
@@ -251,7 +255,7 @@ function getProps<V, T extends ValidConstructor = 'div'>(
       'onSelectChange',
       'toggleable',
       'value',
-    ]);
+    ]) as DynamicProps<T>;
   }
   return omitProps(props, [
     'as',
@@ -267,7 +271,7 @@ function getProps<V, T extends ValidConstructor = 'div'>(
     'onSelectChange',
     'toggleable',
     'value',
-  ]);
+  ]) as DynamicProps<T>;
 }
 
 export function Combobox<V, T extends ValidConstructor = 'div'>(

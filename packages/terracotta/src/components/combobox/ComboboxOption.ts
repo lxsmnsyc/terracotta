@@ -1,6 +1,6 @@
+import type { JSX } from 'solid-js';
 import {
   onCleanup,
-  JSX,
   createComponent,
   mergeProps,
   createRenderEffect,
@@ -10,10 +10,12 @@ import {
 import {
   omitProps,
 } from 'solid-use/props';
-import {
-  createForwardRef,
+import type {
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
@@ -24,20 +26,22 @@ import {
   createMatchesState,
   createSelectedState,
 } from '../../utils/state-props';
-import { OmitAndMerge, Prettify } from '../../utils/types';
+import type { OmitAndMerge, Prettify } from '../../utils/types';
+import type { ButtonProps } from '../button';
 import {
   Button,
-  ButtonProps,
 } from '../button';
 import {
   useComboboxContext,
 } from './ComboboxContext';
 import { COMBOBOX_OPTION_TAG } from './tags';
 import { useDisclosureState } from '../../states/create-disclosure-state';
-import {
+import type {
   AutocompleteOptionStateOptions,
-  AutocompleteOptionStateProvider,
   AutocompleteOptionStateRenderProps,
+} from '../../states/create-autocomplete-option-state';
+import {
+  AutocompleteOptionStateProvider,
   createAutocompleteOptionState,
 } from '../../states/create-autocomplete-option-state';
 import { registerVirtualFocus } from '../../utils/virtual-focus';
@@ -58,7 +62,7 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
   const state = createAutocompleteOptionState(props);
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = () => state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
   const id = createUniqueId();
 
   createEffect(() => {
@@ -70,7 +74,7 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
     }
   });
 
-  function focusOption() {
+  function focusOption(): void {
     context.activeDescendant = id;
     state.focus();
   }
@@ -81,7 +85,7 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
-      const onClick = () => {
+      const onClick = (): void => {
         if (!isDisabled()) {
           state.select();
           focusOption();
@@ -90,12 +94,12 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
           }
         }
       };
-      const onMouseEnter = () => {
+      const onMouseEnter = (): void => {
         if (!isDisabled()) {
           focusOption();
         }
       };
-      const onMouseLeave = () => {
+      const onMouseLeave = (): void => {
         if (!isDisabled()) {
           state.blur();
         }

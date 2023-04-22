@@ -1,6 +1,6 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
-  JSX,
   createComponent,
   mergeProps,
   untrack,
@@ -11,11 +11,13 @@ import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
-  createForwardRef,
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   useComboboxContext,
@@ -29,13 +31,14 @@ import {
   createExpandedState,
   createARIADisabledState,
 } from '../../utils/state-props';
+import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
 import {
   AutocompleteStateChild,
-  AutocompleteStateRenderProps,
   useAutocompleteState,
 } from '../../states/create-autocomplete-state';
-import { UnmountableProps, createUnmountable } from '../../utils/create-unmountable';
-import { Prettify } from '../../utils/types';
+import type { UnmountableProps } from '../../utils/create-unmountable';
+import { createUnmountable } from '../../utils/create-unmountable';
+import type { Prettify } from '../../utils/types';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import { SELECTED_NODE } from '../../utils/namespace';
 
@@ -64,16 +67,16 @@ export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
         context.controller.clearRef();
       });
 
-      const onFocus = () => {
+      const onFocus = (): void => {
         if (context.anchor) {
           context.anchor.focus();
         }
       };
 
-      const onMouseEnter = () => {
+      const onMouseEnter = (): void => {
         context.optionsHovering = true;
       };
-      const onMouseLeave = () => {
+      const onMouseLeave = (): void => {
         context.optionsHovering = false;
       };
 

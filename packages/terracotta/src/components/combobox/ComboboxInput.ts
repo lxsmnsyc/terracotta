@@ -1,15 +1,17 @@
+import type { JSX } from 'solid-js';
 import {
-  JSX,
   createEffect,
   mergeProps,
   onCleanup,
   untrack,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import {
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
   createForwardRef,
 } from '../../utils/dynamic-prop';
 import { useComboboxContext } from './ComboboxContext';
@@ -38,7 +40,7 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
   const disclosureState = useDisclosureState();
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = () => autocompleteState.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => autocompleteState.disabled() || props.disabled;
 
   createEffect(() => {
     const current = internalRef();
@@ -46,7 +48,7 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
       context.anchor = current;
 
       if (current instanceof HTMLInputElement) {
-        const onInput = () => {
+        const onInput = (): void => {
           if (!isDisabled()) {
             autocompleteState.setQuery(current.value);
           }
@@ -57,7 +59,7 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
         });
       }
 
-      const onKeyDown = (e: KeyboardEvent) => {
+      const onKeyDown = (e: KeyboardEvent): void => {
         if (!isDisabled()) {
           switch (e.key) {
             case 'Escape':
@@ -91,13 +93,13 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
         }
       };
 
-      const toggle = () => {
+      const toggle = (): void => {
         if (!isDisabled()) {
           disclosureState.toggle();
         }
       };
 
-      const onBlur = (e: FocusEvent) => {
+      const onBlur = (e: FocusEvent): void => {
         if (context.optionsHovering) {
           return;
         }
@@ -117,10 +119,10 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
         current.removeEventListener('blur', onBlur);
       });
 
-      const onMouseEnter = () => {
+      const onMouseEnter = (): void => {
         context.inputHovering = true;
       };
-      const onMouseLeave = () => {
+      const onMouseLeave = (): void => {
         context.inputHovering = false;
       };
 

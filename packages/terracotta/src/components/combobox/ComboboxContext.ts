@@ -7,7 +7,7 @@ import assert from '../../utils/assert';
 import FocusNavigator from '../../utils/focus-navigator';
 import { MATCHES_NODE } from '../../utils/namespace';
 
-interface ComboboxContext {
+interface ComboboxContextData {
   multiple?: boolean;
   controller: FocusNavigator;
   activeDescendant: string | undefined;
@@ -20,17 +20,17 @@ interface ComboboxContext {
   optionsHovering: boolean;
 }
 
-export const ComboboxContext = createContext<ComboboxContext>();
+export const ComboboxContext = createContext<ComboboxContextData>();
 
 export function useComboboxContext(
   componentName: string,
-): ComboboxContext {
+): ComboboxContextData {
   const context = useContext(ComboboxContext);
   assert(context, new Error(`<${componentName}> must be used inside a <Combobox>`));
   return context;
 }
 
-export function createComboboxOptionFocusNavigator() {
+export function createComboboxOptionFocusNavigator(): FocusNavigator {
   return new FocusNavigator(createUniqueId(), {
     virtual: true,
     base: MATCHES_NODE,
