@@ -2,7 +2,6 @@ import type { JSX } from 'solid-js';
 import {
   createEffect,
   mergeProps,
-  onCleanup,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
@@ -25,6 +24,7 @@ import {
   createHasSelectedState,
 } from '../../utils/state-props';
 import { COMMAND_INPUT_TAG } from './tags';
+import useEventListener from '../../utils/use-event-listener';
 
 export type CommandInputProps<T extends ValidConstructor = 'input'> =
   HeadlessPropsWithRef<T>;
@@ -44,17 +44,13 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
       context.anchor = current;
 
       if (current instanceof HTMLInputElement) {
-        const onInput = (): void => {
+        useEventListener(current, 'input', () => {
           if (!isDisabled()) {
             state.setQuery(current.value);
           }
-        };
-        current.addEventListener('input', onInput);
-        onCleanup(() => {
-          current.removeEventListener('input', onInput);
         });
       }
-      const onKeyDown = (e: KeyboardEvent): void => {
+      useEventListener(current, 'keydown', (e) => {
         if (!isDisabled()) {
           switch (e.key) {
             case 'ArrowUp':
@@ -73,8 +69,8 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
               break;
           }
         }
-      };
-      const onFocus = (): void => {
+      });
+      useEventListener(current, 'focus', () => {
         if (context.activeDescendant) {
           const ref = document.getElementById(context.activeDescendant);
           if (ref) {
@@ -85,19 +81,11 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
         } else {
           context.controller.setFirstChecked();
         }
-      };
-      const onBlur = (): void => {
+      });
+      useEventListener(current, 'blur', () => {
         if (!context.optionsHovering) {
           state.blur();
         }
-      };
-      current.addEventListener('keydown', onKeyDown);
-      current.addEventListener('focus', onFocus);
-      current.addEventListener('blur', onBlur);
-      onCleanup(() => {
-        current.removeEventListener('keydown', onKeyDown);
-        current.removeEventListener('focus', onFocus);
-        current.removeEventListener('blur', onBlur);
       });
     }
   });

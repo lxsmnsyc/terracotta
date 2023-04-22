@@ -33,6 +33,7 @@ import {
   AutocompleteStateChild,
   useAutocompleteState,
 } from '../../states/create-autocomplete-state';
+import useEventListener from '../../utils/use-event-listener';
 
 export type CommandOptionsProps<V, T extends ValidConstructor = 'ul'> =
   HeadlessPropsWithRef<T, AutocompleteStateRenderProps<V>>;
@@ -52,26 +53,16 @@ export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
       onCleanup(() => {
         context.controller.clearRef();
       });
-      const onFocus = (): void => {
+      useEventListener(current, 'focusin', () => {
         if (context.anchor) {
           context.anchor.focus();
         }
-      };
-
-      const onMouseEnter = (): void => {
+      });
+      useEventListener(current, 'mouseenter', () => {
         context.optionsHovering = true;
-      };
-      const onMouseLeave = (): void => {
+      });
+      useEventListener(current, 'mouseleave', () => {
         context.optionsHovering = false;
-      };
-
-      current.addEventListener('focusin', onFocus);
-      current.addEventListener('mouseenter', onMouseEnter);
-      current.addEventListener('mouseleave', onMouseLeave);
-      onCleanup(() => {
-        current.removeEventListener('focusin', onFocus);
-        current.removeEventListener('mouseenter', onMouseEnter);
-        current.removeEventListener('mouseleave', onMouseLeave);
       });
     }
   });

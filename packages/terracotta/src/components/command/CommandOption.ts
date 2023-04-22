@@ -4,7 +4,6 @@ import {
   createEffect,
   createUniqueId,
   mergeProps,
-  onCleanup,
 } from 'solid-js';
 import {
   omitProps,
@@ -40,7 +39,8 @@ import {
 } from '../button';
 import { COMMAND_OPTION_TAG } from './tags';
 import { useCommandContext } from './CommandContext';
-import { registerVirtualFocus } from '../../utils/virtual-focus';
+import { useVirtualFocus } from '../../utils/virtual-focus';
+import useEventListener from '../../utils/use-event-listener';
 
 export type CommandOptionBaseProps<V> = Prettify<
   & AutocompleteOptionStateOptions<V>
@@ -71,39 +71,29 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
   }
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      const onClick = (): void => {
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      useEventListener(current, 'click', () => {
         if (!isDisabled()) {
           state.select();
           focusOption();
         }
-      };
-      const onMouseEnter = (): void => {
+      });
+      useEventListener(current, 'mouseenter', () => {
         if (!isDisabled()) {
           focusOption();
         }
-      };
-      const onMouseLeave = (): void => {
+      });
+      useEventListener(current, 'mouseleave', () => {
         if (!isDisabled()) {
           state.blur();
         }
-      };
-
-      ref.addEventListener('click', onClick);
-      ref.addEventListener('mouseenter', onMouseEnter);
-      ref.addEventListener('mouseleave', onMouseLeave);
-      onCleanup(() => {
-        ref.removeEventListener('click', onClick);
-        ref.removeEventListener('mouseenter', onMouseEnter);
-        ref.removeEventListener('mouseleave', onMouseLeave);
       });
-
-      onCleanup(registerVirtualFocus((el) => {
-        if (el === ref) {
+      useVirtualFocus((el) => {
+        if (el === current) {
           focusOption();
         }
-      }));
+      });
     }
   });
 
