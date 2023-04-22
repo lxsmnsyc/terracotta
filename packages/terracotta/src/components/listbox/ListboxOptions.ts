@@ -1,7 +1,7 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
   onCleanup,
-  JSX,
   createComponent,
   mergeProps,
   untrack,
@@ -11,11 +11,13 @@ import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
-  createForwardRef,
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
@@ -32,16 +34,17 @@ import {
   ListboxOptionsContext,
 } from './ListboxOptionsContext';
 import { LISTBOX_OPTIONS_TAG } from './tags';
+import type { SelectStateRenderProps } from '../../states/create-select-state';
 import {
   SelectStateProvider,
-  SelectStateRenderProps,
   useSelectState,
 } from '../../states/create-select-state';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import { SELECTED_NODE } from '../../utils/namespace';
 import createTypeAhead from '../../utils/create-type-ahead';
-import { Prettify } from '../../utils/types';
-import { UnmountableProps, createUnmountable } from '../../utils/create-unmountable';
+import type { Prettify } from '../../utils/types';
+import type { UnmountableProps } from '../../utils/create-unmountable';
+import { createUnmountable } from '../../utils/create-unmountable';
 
 export type ListboxOptionsBaseProps<V> = Prettify<
   & UnmountableProps
@@ -85,7 +88,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
           controller.setFirstChecked(SELECTED_NODE);
         }
 
-        const onKeyDown = (e: KeyboardEvent) => {
+        const onKeyDown = (e: KeyboardEvent): void => {
           if (!disclosureState.disabled() && e.key === 'Escape') {
             disclosureState.close();
           }
@@ -135,7 +138,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
             }
           }
         };
-        const onBlur = (e: FocusEvent) => {
+        const onBlur = (e: FocusEvent): void => {
           if (context.buttonHovering || context.optionsHovering) {
             return;
           }
@@ -143,7 +146,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
             disclosureState.close();
           }
         };
-        const onFocusIn = (e: FocusEvent) => {
+        const onFocusIn = (e: FocusEvent): void => {
           if (e.target && e.target !== ref) {
             controller.setCurrent(e.target as HTMLElement);
           }
@@ -157,10 +160,10 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
           ref.removeEventListener('focusout', onBlur);
         });
 
-        const onMouseEnter = () => {
+        const onMouseEnter = (): void => {
           context.optionsHovering = true;
         };
-        const onMouseLeave = () => {
+        const onMouseLeave = (): void => {
           context.optionsHovering = false;
         };
 

@@ -1,6 +1,6 @@
+import type { JSX } from 'solid-js';
 import {
   onCleanup,
-  JSX,
   createComponent,
   mergeProps,
   createRenderEffect,
@@ -8,10 +8,12 @@ import {
 import {
   omitProps,
 } from 'solid-use/props';
-import {
-  createForwardRef,
+import type {
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
@@ -21,10 +23,10 @@ import {
   createDisabledState,
   createSelectedState,
 } from '../../utils/state-props';
-import { OmitAndMerge, Prettify } from '../../utils/types';
+import type { OmitAndMerge, Prettify } from '../../utils/types';
+import type { ButtonProps } from '../button';
 import {
   Button,
-  ButtonProps,
 } from '../button';
 import {
   useListboxContext,
@@ -34,10 +36,12 @@ import {
 } from './ListboxOptionsContext';
 import { LISTBOX_OPTION_TAG } from './tags';
 import { useDisclosureState } from '../../states/create-disclosure-state';
-import {
+import type {
   SelectOptionStateOptions,
-  SelectOptionStateProvider,
   SelectOptionStateRenderProps,
+} from '../../states/create-select-option-state';
+import {
+  SelectOptionStateProvider,
   createSelectOptionState,
 } from '../../states/create-select-option-state';
 
@@ -59,7 +63,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = () => state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
   // I would really love to use createEffect but for some reason
   // the timing is never accurate
@@ -67,7 +71,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
     const ref = internalRef();
 
     if (ref instanceof HTMLElement) {
-      const onClick = () => {
+      const onClick = (): void => {
         if (!isDisabled()) {
           state.select();
           if (!rootContext.multiple) {
@@ -75,22 +79,22 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
           }
         }
       };
-      const onFocus = () => {
+      const onFocus = (): void => {
         if (!isDisabled()) {
           state.focus();
         }
       };
-      const onBlur = () => {
+      const onBlur = (): void => {
         if (!isDisabled()) {
           state.blur();
         }
       };
-      const onMouseEnter = () => {
+      const onMouseEnter = (): void => {
         if (!isDisabled()) {
           ref.focus();
         }
       };
-      const onMouseLeave = () => {
+      const onMouseLeave = (): void => {
         if (!isDisabled()) {
           state.blur();
         }

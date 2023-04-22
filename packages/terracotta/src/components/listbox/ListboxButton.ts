@@ -1,17 +1,19 @@
+import type { JSX } from 'solid-js';
 import {
   createEffect,
   onCleanup,
-  JSX,
   createComponent,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
-import {
-  createForwardRef,
+import type {
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
@@ -21,17 +23,18 @@ import {
   createHasActiveState,
   createHasSelectedState,
 } from '../../utils/state-props';
-import { OmitAndMerge } from '../../utils/types';
+import type { OmitAndMerge } from '../../utils/types';
+import type { ButtonProps } from '../button';
 import {
-  Button, ButtonProps,
+  Button,
 } from '../button';
 import {
   useListboxContext,
 } from './ListboxContext';
 import { LISTBOX_BUTTON_TAG } from './tags';
+import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
-  DisclosureStateRenderProps,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 import { useSelectState } from '../../states/create-select-state';
@@ -47,7 +50,7 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
   const selectState = useSelectState();
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = () => disclosureState.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => disclosureState.disabled() || props.disabled;
 
   createEffect(() => {
     const ref = internalRef();
@@ -55,13 +58,13 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
     if (ref instanceof HTMLElement) {
       context.anchor = ref;
 
-      const toggle = () => {
+      const toggle = (): void => {
         if (!isDisabled()) {
           disclosureState.toggle();
         }
       };
 
-      const onKeyDown = (e: KeyboardEvent) => {
+      const onKeyDown = (e: KeyboardEvent): void => {
         if (!isDisabled()) {
           switch (e.key) {
             case 'ArrowUp':
@@ -83,10 +86,10 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
         ref.removeEventListener('keydown', onKeyDown);
       });
 
-      const onMouseEnter = () => {
+      const onMouseEnter = (): void => {
         context.buttonHovering = true;
       };
-      const onMouseLeave = () => {
+      const onMouseLeave = (): void => {
         context.buttonHovering = false;
       };
 

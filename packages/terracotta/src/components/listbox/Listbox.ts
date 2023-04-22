@@ -1,16 +1,16 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   createEffect,
   createMemo,
   createUniqueId,
-  JSX,
   mergeProps,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
+import type {
   DynamicProps,
   HeadlessProps,
   ValidConstructor,
@@ -27,26 +27,30 @@ import {
   ListboxContext,
 } from './ListboxContext';
 import { LISTBOX_TAG } from './tags';
-import {
-  createMultipleSelectState,
-  createSingleSelectState,
+import type {
   MultipleSelectStateControlledOptions,
   MultipleSelectStateUncontrolledOptions,
-  SelectStateProvider,
   SingleSelectStateControlledOptions,
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
 import {
-  createDisclosureState,
+  createMultipleSelectState,
+  createSingleSelectState,
+  SelectStateProvider,
+} from '../../states/create-select-state';
+import type {
   DisclosureStateControlledOptions,
-  DisclosureStateProvider,
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
-import { Prettify } from '../../utils/types';
+import {
+  createDisclosureState,
+  DisclosureStateProvider,
+} from '../../states/create-disclosure-state';
+import type { Prettify } from '../../utils/types';
 
 export interface ListboxBaseProps {
   horizontal?: boolean;
-  onDisclosureChange?: (value: boolean) => void
+  onDisclosureChange?: (value: boolean) => void;
 }
 
 export interface ListboxMultipleBaseProps<V> {
@@ -201,7 +205,7 @@ function isListboxDisclosureUncontrolled<V, T extends ValidConstructor = 'div'>(
 
 function getProps<V, T extends ValidConstructor = 'div'>(
   props: ListboxProps<V, T>,
-) {
+): DynamicProps<T> {
   if (isListboxSelectUncontrolled(props)) {
     if (isListboxDisclosureUncontrolled(props)) {
       return omitProps(props, [
@@ -218,7 +222,7 @@ function getProps<V, T extends ValidConstructor = 'div'>(
         'onOpen',
         'onSelectChange',
         'toggleable',
-      ]);
+      ]) as DynamicProps<T>;
     }
     return omitProps(props, [
       'as',
@@ -234,7 +238,7 @@ function getProps<V, T extends ValidConstructor = 'div'>(
       'onOpen',
       'onSelectChange',
       'toggleable',
-    ]);
+    ]) as DynamicProps<T>;
   }
   if (isListboxDisclosureUncontrolled(props)) {
     return omitProps(props, [
@@ -251,7 +255,7 @@ function getProps<V, T extends ValidConstructor = 'div'>(
       'onOpen',
       'onSelectChange',
       'toggleable',
-    ]);
+    ]) as DynamicProps<T>;
   }
   return omitProps(props, [
     'as',
@@ -267,7 +271,7 @@ function getProps<V, T extends ValidConstructor = 'div'>(
     'onOpen',
     'onSelectChange',
     'toggleable',
-  ]);
+  ]) as DynamicProps<T>;
 }
 
 export function Listbox<V, T extends ValidConstructor = 'div'>(
