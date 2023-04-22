@@ -4,7 +4,6 @@ import {
   createEffect,
   createUniqueId,
   mergeProps,
-  onCleanup,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
@@ -33,6 +32,7 @@ import {
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
+import useEventListener from '../../utils/use-event-listener';
 
 export type CommandBarControlledBaseProps = Prettify<
   & DisclosureStateControlledOptions
@@ -82,16 +82,11 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
   });
 
   createEffect(() => {
-    const onKeyDown = (ev: KeyboardEvent): void => {
-      if ((ev.metaKey || ev.ctrlKey) && ev.key === 'k' && !ev.defaultPrevented) {
-        ev.preventDefault();
+    useEventListener(window, 'keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k' && !e.defaultPrevented) {
+        e.preventDefault();
         state.open();
       }
-    };
-
-    window.addEventListener('keydown', onKeyDown);
-    onCleanup(() => {
-      window.removeEventListener('keydown', onKeyDown);
     });
   });
 

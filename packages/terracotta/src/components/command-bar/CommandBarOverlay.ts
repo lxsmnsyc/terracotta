@@ -1,7 +1,6 @@
 import type { JSX } from 'solid-js';
 import {
   createEffect,
-  onCleanup,
   mergeProps,
   createComponent,
 } from 'solid-js';
@@ -30,6 +29,7 @@ import {
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
+import useEventListener from '../../utils/use-event-listener';
 
 export type CommandBarOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -43,17 +43,10 @@ export function CommandBarOverlay<T extends ValidConstructor = 'p'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
-    const ref = internalRef();
-
-    if (ref instanceof HTMLElement) {
-      const onClick = (): void => {
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      useEventListener(current, 'click', () => {
         state.close();
-      };
-
-      ref.addEventListener('click', onClick);
-
-      onCleanup(() => {
-        ref.removeEventListener('click', onClick);
       });
     }
   });
