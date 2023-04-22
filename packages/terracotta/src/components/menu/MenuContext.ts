@@ -16,6 +16,6 @@ export function useMenuContext(
   return context;
 }
 
-export function createMenuItemFocusNavigator() {
+export function createMenuItemFocusNavigator(): FocusNavigator {
   return new FocusNavigator(createUniqueId());
 }

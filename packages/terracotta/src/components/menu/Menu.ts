@@ -1,7 +1,7 @@
+import type { JSX } from 'solid-js';
 import {
   createComponent,
   mergeProps,
-  JSX,
   createEffect,
   onCleanup,
 } from 'solid-js';
@@ -9,11 +9,13 @@ import {
   omitProps,
 } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import {
-  createForwardRef,
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
 } from '../../utils/dynamic-prop';
 import {
   createMenuItemFocusNavigator,
@@ -43,7 +45,7 @@ export function Menu<T extends ValidConstructor = 'ul'>(
         controller.clearRef();
       });
 
-      const onKeyDown = (e: KeyboardEvent) => {
+      const onKeyDown = (e: KeyboardEvent): void => {
         switch (e.key) {
           case 'ArrowUp':
           case 'ArrowLeft':
@@ -75,7 +77,7 @@ export function Menu<T extends ValidConstructor = 'ul'>(
         }
       };
 
-      const onFocusIn = (e: FocusEvent) => {
+      const onFocusIn = (e: FocusEvent): void => {
         if (e.target && e.target !== current) {
           controller.setCurrent(e.target as HTMLElement);
         }

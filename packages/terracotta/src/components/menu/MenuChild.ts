@@ -1,6 +1,6 @@
+import type { JSX } from 'solid-js';
 import {
   createMemo,
-  JSX,
 } from 'solid-js';
 
 export interface MenuProperties {

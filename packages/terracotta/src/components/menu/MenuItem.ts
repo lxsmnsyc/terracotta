@@ -1,12 +1,12 @@
+import type { JSX } from 'solid-js';
 import {
-  JSX,
   mergeProps,
   createComponent,
 } from 'solid-js';
 import {
   omitProps,
 } from 'solid-use/props';
-import {
+import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -16,8 +16,8 @@ import {
   createARIADisabledState,
   createDisabledState,
 } from '../../utils/state-props';
+import type { MenuChildProps } from './MenuChild';
 import {
-  MenuChildProps,
   MenuChild,
 } from './MenuChild';
 import {
