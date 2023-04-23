@@ -1,7 +1,6 @@
 import type { JSX } from 'solid-js';
 import {
   createEffect,
-  onCleanup,
   createComponent,
   mergeProps,
 } from 'solid-js';
@@ -35,6 +34,7 @@ import {
   DisclosureStateChild,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
+import useEventListener from '../../utils/use-event-listener';
 
 export type PopoverButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>>;
@@ -50,34 +50,19 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
   const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      context.anchor = ref;
-
-      const toggle = (): void => {
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      context.anchor = current;
+      useEventListener(current, 'click', () => {
         if (!isDisabled()) {
           state.toggle();
         }
-      };
-
-      ref.addEventListener('click', toggle);
-
-      onCleanup(() => {
-        ref.removeEventListener('click', toggle);
       });
-
-      const onMouseEnter = (): void => {
+      useEventListener(current, 'mouseenter', () => {
         context.hovering = true;
-      };
-      const onMouseLeave = (): void => {
+      });
+      useEventListener(current, 'mouseleave', () => {
         context.hovering = false;
-      };
-
-      ref.addEventListener('mouseenter', onMouseEnter);
-      ref.addEventListener('mouseleave', onMouseLeave);
-      onCleanup(() => {
-        ref.removeEventListener('mouseenter', onMouseEnter);
-        ref.removeEventListener('mouseleave', onMouseLeave);
       });
     }
   });

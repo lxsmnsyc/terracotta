@@ -1,7 +1,6 @@
 import type { JSX } from 'solid-js';
 import {
   createEffect,
-  onCleanup,
   mergeProps,
   createComponent,
 } from 'solid-js';
@@ -34,6 +33,7 @@ import {
 } from '../../states/create-disclosure-state';
 import type { Prettify } from '../../utils/types';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
+import useEventListener from '../../utils/use-event-listener';
 
 export type PopoverPanelBaseProps = Prettify<
   & DisclosureStateRenderProps
@@ -52,16 +52,15 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement && state.isOpen()) {
-      focusFirst(getFocusableElements(ref), false);
-
-      const onKeyDown = (e: KeyboardEvent): void => {
+    const current = internalRef();
+    if (current instanceof HTMLElement && state.isOpen()) {
+      focusFirst(getFocusableElements(current), false);
+      useEventListener(current, 'keydown', (e) => {
         if (!state.disabled()) {
           switch (e.key) {
             case 'Tab':
               e.preventDefault();
-              lockFocus(ref, e.shiftKey, false);
+              lockFocus(current, e.shiftKey, false);
               break;
             case 'Escape':
               state.close();
@@ -70,22 +69,14 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
               break;
           }
         }
-      };
-
-      const onBlur = (e: FocusEvent): void => {
+      });
+      useEventListener(current, 'focusout', (e) => {
         if (context.hovering) {
           return;
         }
-        if (!e.relatedTarget || !ref.contains(e.relatedTarget as Node)) {
+        if (!e.relatedTarget || !current.contains(e.relatedTarget as Node)) {
           state.close();
         }
-      };
-
-      ref.addEventListener('keydown', onKeyDown);
-      ref.addEventListener('focusout', onBlur);
-      onCleanup(() => {
-        ref.removeEventListener('keydown', onKeyDown);
-        ref.removeEventListener('focusout', onBlur);
       });
     }
   });
