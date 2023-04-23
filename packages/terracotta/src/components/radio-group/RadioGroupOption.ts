@@ -4,7 +4,6 @@ import {
   createEffect,
   createUniqueId,
   mergeProps,
-  onCleanup,
 } from 'solid-js';
 import {
   omitProps,
@@ -42,6 +41,7 @@ import {
 } from './RadioGroupRootContext';
 import { RADIO_GROUP_OPTION_TAG } from './tags';
 import { Button } from '../button';
+import useEventListener from '../../utils/use-event-listener';
 
 export type RadioGroupOptionBaseProps<V> = Prettify<
   & SelectOptionStateOptions<V>
@@ -63,26 +63,17 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
   const state = createSelectOptionState(props);
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      const onClick = (): void => {
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      useEventListener(current, 'click', () => {
         state.select();
-      };
-      const onFocus = (): void => {
+      });
+      useEventListener(current, 'focus', () => {
         state.focus();
         state.select();
-      };
-      const onBlur = (): void => {
+      });
+      useEventListener(current, 'blur', () => {
         state.blur();
-      };
-
-      ref.addEventListener('click', onClick);
-      ref.addEventListener('focus', onFocus);
-      ref.addEventListener('blur', onBlur);
-      onCleanup(() => {
-        ref.removeEventListener('click', onClick);
-        ref.removeEventListener('focus', onFocus);
-        ref.removeEventListener('blur', onBlur);
       });
     }
   });

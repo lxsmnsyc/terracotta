@@ -36,6 +36,7 @@ import { RadioGroupContext } from './RadioGroupContext';
 import { createRadioGroupOptionFocusNavigator, RadioGroupRootContext } from './RadioGroupRootContext';
 import { RADIO_GROUP_TAG } from './tags';
 import { CHECKED_NODE } from '../../utils/namespace';
+import useEventListener from '../../utils/use-event-listener';
 
 export type RadioGroupControlledBaseProps<V> = Prettify<
   & SingleSelectStateControlledOptions<V>
@@ -80,8 +81,7 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
       onCleanup(() => {
         controller.clearRef();
       });
-
-      const onKeyDown = (e: KeyboardEvent): void => {
+      useEventListener(current, 'keydown', (e) => {
         if (!state.disabled()) {
           switch (e.key) {
             case 'ArrowLeft':
@@ -98,10 +98,6 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
               break;
           }
         }
-      };
-      current.addEventListener('keydown', onKeyDown);
-      onCleanup(() => {
-        current.removeEventListener('keydown', onKeyDown);
       });
     }
   });
