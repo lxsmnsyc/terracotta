@@ -33,6 +33,7 @@ import {
   createHasSelectedState,
   createHasActiveState,
 } from '../../utils/state-props';
+import useEventListener from '../../utils/use-event-listener';
 
 export type TabListProps<V, T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, SelectStateRenderProps<V>>;
@@ -52,8 +53,7 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
       onCleanup(() => {
         controller.clearRef();
       });
-
-      const onKeyDown = (e: KeyboardEvent): void => {
+      useEventListener(current, 'keydown', (e) => {
         if (!state.disabled()) {
           switch (e.key) {
             case 'ArrowUp':
@@ -92,11 +92,6 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
               break;
           }
         }
-      };
-
-      current.addEventListener('keydown', onKeyDown);
-      onCleanup(() => {
-        current.removeEventListener('keydown', onKeyDown);
       });
     }
   });
