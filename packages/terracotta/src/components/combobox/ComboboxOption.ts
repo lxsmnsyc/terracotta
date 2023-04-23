@@ -62,11 +62,10 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
   const state = createAutocompleteOptionState(props);
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
   const id = createUniqueId();
 
   createEffect(() => {
-    if (!isDisabled() && context.selectedDescendant === id) {
+    if (!state.disabled() && context.selectedDescendant === id) {
       state.select();
       if (!context.multiple) {
         disclosure.close();
@@ -86,7 +85,7 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
 
     if (current instanceof HTMLElement) {
       useEventListener(current, 'click', () => {
-        if (!isDisabled()) {
+        if (!state.disabled()) {
           state.select();
           focusOption();
           if (!context.multiple) {
@@ -95,14 +94,12 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
         }
       });
       useEventListener(current, 'mouseenter', () => {
-        if (!isDisabled()) {
+        if (!state.disabled()) {
           focusOption();
         }
       });
       useEventListener(current, 'mouseleave', () => {
-        if (!isDisabled()) {
-          state.blur();
-        }
+        state.blur();
       });
       useVirtualFocus((el) => {
         if (el === current) {
