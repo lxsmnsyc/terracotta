@@ -2,7 +2,6 @@ import type { JSX } from 'solid-js';
 import {
   createEffect,
   mergeProps,
-  onCleanup,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
@@ -22,6 +21,7 @@ import {
 } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
 import { createTag } from '../../utils/namespace';
+import useEventListener from '../../utils/use-event-listener';
 
 const TOOLBAR_TAG = createTag('toolbar');
 
@@ -70,9 +70,9 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
   }
 
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      const onKeyDown = (e: KeyboardEvent): void => {
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      useEventListener(current, 'keydown', (e) => {
         switch (e.key) {
           case 'ArrowLeft':
             if (isHorizontal()) {
@@ -99,41 +99,30 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
             }
             break;
           case 'Home':
-            if (focusFirst(getFocusableElements(ref), false)) {
+            if (focusFirst(getFocusableElements(current), false)) {
               e.preventDefault();
             }
             break;
           case 'End':
-            if (focusLast(getFocusableElements(ref), false)) {
+            if (focusLast(getFocusableElements(current), false)) {
               e.preventDefault();
             }
             break;
           default:
             break;
         }
-      };
-
-      const onFocus = (): void => {
+      });
+      useEventListener(current, 'focus', () => {
         if (focusedElement) {
           focusedElement.focus();
         } else {
-          focusFirst(getFocusableElements(ref), false);
+          focusFirst(getFocusableElements(current), false);
         }
-      };
-
-      const onFocusIn = (e: FocusEvent): void => {
-        if (e.target && e.target !== ref) {
+      });
+      useEventListener(current, 'focusin', (e) => {
+        if (e.target && e.target !== current) {
           focusedElement = e.target as HTMLElement;
         }
-      };
-
-      ref.addEventListener('keydown', onKeyDown);
-      ref.addEventListener('focus', onFocus);
-      ref.addEventListener('focusin', onFocusIn);
-      onCleanup(() => {
-        ref.removeEventListener('keydown', onKeyDown);
-        ref.removeEventListener('focus', onFocus);
-        ref.removeEventListener('focusin', onFocusIn);
       });
     }
   });
