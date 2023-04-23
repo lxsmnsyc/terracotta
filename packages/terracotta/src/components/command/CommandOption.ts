@@ -58,9 +58,8 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
   const state = createAutocompleteOptionState(props);
   const id = createUniqueId();
 
-  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
   createEffect(() => {
-    if (!isDisabled() && context.selectedDescendant === id) {
+    if (!state.disabled() && context.selectedDescendant === id) {
       state.select();
     }
   });
@@ -74,20 +73,18 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
     const current = internalRef();
     if (current instanceof HTMLElement) {
       useEventListener(current, 'click', () => {
-        if (!isDisabled()) {
+        if (!state.disabled()) {
           state.select();
           focusOption();
         }
       });
       useEventListener(current, 'mouseenter', () => {
-        if (!isDisabled()) {
+        if (!state.disabled()) {
           focusOption();
         }
       });
       useEventListener(current, 'mouseleave', () => {
-        if (!isDisabled()) {
-          state.blur();
-        }
+        state.blur();
       });
       useVirtualFocus((el) => {
         if (el === current) {
@@ -115,8 +112,8 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
       tabindex: -1,
       ref: setInternalRef,
     },
-    createDisabledState(isDisabled),
-    createARIADisabledState(isDisabled),
+    createDisabledState(() => state.disabled()),
+    createARIADisabledState(() => state.disabled()),
     createSelectedState(() => state.isSelected()),
     createARIASelectedState(() => state.isSelected()),
     createActiveState(() => state.isActive()),
