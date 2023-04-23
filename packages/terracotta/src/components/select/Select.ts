@@ -44,6 +44,7 @@ import {
 import type { Prettify } from '../../utils/types';
 import { SELECTED_NODE } from '../../utils/namespace';
 import createTypeAhead from '../../utils/create-type-ahead';
+import useEventListener from '../../utils/use-event-listener';
 
 export interface SelectBaseProps {
   horizontal?: boolean;
@@ -130,8 +131,7 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
         onCleanup(() => {
           controller.clearRef();
         });
-
-        const onKeyDown = (e: KeyboardEvent): void => {
+        useEventListener(current, 'keydown', (e) => {
           if (!state.disabled()) {
             switch (e.key) {
               case 'ArrowUp':
@@ -177,20 +177,13 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
                 break;
             }
           }
-        };
-        const onFocus = (): void => {
+        });
+        useEventListener(current, 'focus', () => {
           if (state.hasSelected()) {
             controller.setFirstChecked(SELECTED_NODE);
           } else {
             controller.setFirstChecked();
           }
-        };
-
-        current.addEventListener('keydown', onKeyDown);
-        current.addEventListener('focus', onFocus);
-        onCleanup(() => {
-          current.removeEventListener('keydown', onKeyDown);
-          current.removeEventListener('focus', onFocus);
         });
       }
     });

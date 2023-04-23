@@ -3,7 +3,6 @@ import {
   createComponent,
   createEffect,
   mergeProps,
-  onCleanup,
 } from 'solid-js';
 import {
   omitProps,
@@ -40,6 +39,7 @@ import {
   useSelectContext,
 } from './SelectContext';
 import { SELECT_OPTION_TAG } from './tags';
+import useEventListener from '../../utils/use-event-listener';
 
 export type SelectOptionBaseProps<V> = Prettify<
   & SelectOptionStateOptions<V>
@@ -56,48 +56,27 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
   const state = createSelectOptionState(props);
 
-  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
-
   createEffect(() => {
-    const ref = internalRef();
-    if (ref instanceof HTMLElement) {
-      const onClick = (): void => {
-        if (!isDisabled()) {
-          state.select();
+    const current = internalRef();
+    if (current instanceof HTMLElement) {
+      useEventListener(current, 'click', () => {
+        state.select();
+      });
+      useEventListener(current, 'focus', () => {
+        state.focus();
+      });
+      useEventListener(current, 'blur', () => {
+        state.blur();
+      });
+      useEventListener(current, 'mouseenter', () => {
+        if (!state.disabled()) {
+          current.focus();
         }
-      };
-      const onFocus = (): void => {
-        if (!isDisabled()) {
-          state.focus();
+      });
+      useEventListener(current, 'mouseleave', () => {
+        if (!state.disabled()) {
+          current.blur();
         }
-      };
-      const onBlur = (): void => {
-        if (!isDisabled()) {
-          state.blur();
-        }
-      };
-      const onMouseEnter = (): void => {
-        if (!isDisabled()) {
-          ref.focus();
-        }
-      };
-      const onMouseLeave = (): void => {
-        if (!isDisabled()) {
-          ref.blur();
-        }
-      };
-
-      ref.addEventListener('click', onClick);
-      ref.addEventListener('focus', onFocus);
-      ref.addEventListener('blur', onBlur);
-      ref.addEventListener('mouseenter', onMouseEnter);
-      ref.addEventListener('mouseleave', onMouseLeave);
-      onCleanup(() => {
-        ref.removeEventListener('click', onClick);
-        ref.removeEventListener('focus', onFocus);
-        ref.removeEventListener('blur', onBlur);
-        ref.removeEventListener('mouseenter', onMouseEnter);
-        ref.removeEventListener('mouseleave', onMouseLeave);
       });
     }
   });
@@ -121,8 +100,8 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
       },
       ref: setInternalRef,
     },
-    createDisabledState(isDisabled),
-    createARIADisabledState(isDisabled),
+    createDisabledState(() => state.disabled()),
+    createARIADisabledState(() => state.disabled()),
     createSelectedState(() => state.isSelected()),
     createARIASelectedState(() => state.isSelected()),
     createActiveState(() => state.isActive()),
