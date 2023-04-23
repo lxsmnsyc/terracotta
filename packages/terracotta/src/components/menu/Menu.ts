@@ -23,6 +23,7 @@ import {
 } from './MenuContext';
 import { MENU_TAG } from './tags';
 import createTypeAhead from '../../utils/create-type-ahead';
+import useEventListener from '../../utils/use-event-listener';
 
 export type MenuProps<T extends ValidConstructor = 'ul'> = HeadlessPropsWithRef<T>;
 
@@ -45,7 +46,7 @@ export function Menu<T extends ValidConstructor = 'ul'>(
         controller.clearRef();
       });
 
-      const onKeyDown = (e: KeyboardEvent): void => {
+      useEventListener(current, 'keydown', (e) => {
         switch (e.key) {
           case 'ArrowUp':
           case 'ArrowLeft':
@@ -75,19 +76,11 @@ export function Menu<T extends ValidConstructor = 'ul'>(
             }
             break;
         }
-      };
-
-      const onFocusIn = (e: FocusEvent): void => {
+      });
+      useEventListener(current, 'focusin', (e) => {
         if (e.target && e.target !== current) {
           controller.setCurrent(e.target as HTMLElement);
         }
-      };
-
-      current.addEventListener('keydown', onKeyDown);
-      current.addEventListener('focusin', onFocusIn);
-      onCleanup(() => {
-        current.removeEventListener('keydown', onKeyDown);
-        current.removeEventListener('focusin', onFocusIn);
       });
     }
   });
