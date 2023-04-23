@@ -1,7 +1,6 @@
 import type { JSX } from 'solid-js';
 import {
   createEffect,
-  onCleanup,
   createComponent,
   mergeProps,
 } from 'solid-js';
@@ -37,6 +36,7 @@ import {
   Button,
 } from '../button';
 import { createTag } from '../../utils/namespace';
+import useEventListener from '../../utils/use-event-listener';
 
 const TOGGLE_TAG = createTag('toggle');
 
@@ -75,13 +75,8 @@ export function Toggle<T extends ValidConstructor = 'button'>(
   createEffect(() => {
     const current = ref();
     if (current instanceof HTMLElement) {
-      const onClick = (): void => {
+      useEventListener(current, 'click', () => {
         state.toggle();
-      };
-
-      current.addEventListener('click', onClick);
-      onCleanup(() => {
-        current.removeEventListener('click', onClick);
       });
     }
   });
