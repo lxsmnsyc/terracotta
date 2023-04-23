@@ -63,8 +63,6 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
-
   // I would really love to use createEffect but for some reason
   // the timing is never accurate
   createRenderEffect(() => {
@@ -72,7 +70,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
 
     if (current instanceof HTMLElement) {
       useEventListener(current, 'click', () => {
-        if (!isDisabled()) {
+        if (!state.disabled()) {
           state.select();
           if (!rootContext.multiple) {
             disclosure.close();
@@ -80,22 +78,18 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
         }
       });
       useEventListener(current, 'focus', () => {
-        if (!isDisabled()) {
-          state.focus();
-        }
+        state.focus();
       });
       useEventListener(current, 'blur', () => {
-        if (!isDisabled()) {
-          state.blur();
-        }
+        state.blur();
       });
       useEventListener(current, 'mouseenter', () => {
-        if (!isDisabled()) {
+        if (!state.disabled()) {
           current.focus();
         }
       });
       useEventListener(current, 'mouseleave', () => {
-        if (!isDisabled()) {
+        if (!state.disabled()) {
           state.blur();
         }
       });
@@ -120,8 +114,8 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
       tabindex: -1,
       ref: setInternalRef,
     },
-    createDisabledState(isDisabled),
-    createARIADisabledState(isDisabled),
+    createDisabledState(() => state.disabled()),
+    createARIADisabledState(() => state.disabled()),
     createSelectedState(() => state.isSelected()),
     createARIASelectedState(() => state.isSelected()),
     createActiveState(() => state.isActive()),
