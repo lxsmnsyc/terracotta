@@ -17,6 +17,7 @@ pnpm add terracotta
 ```
 
 ## Note
+
 The project is still in development, as I aim to implement the [WAI-ARIA Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.1/).
 
 Here's the current components:
