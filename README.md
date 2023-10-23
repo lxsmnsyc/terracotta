@@ -1,31 +1,47 @@
-# ![solid-headless](/images/banner.png)
+# terracotta
 
-## Hi!
+> Headless UI library for SolidJS
 
-In case you're interested, please Star this repo. The project is still in development, as I aim to implement the [WAI-ARIA Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.1/).
+## Install
+
+```bash
+npm i terracotta
+```
+
+```bash
+yarn add terracotta
+```
+
+```bash
+pnpm add terracotta
+```
+
+## Note
+
+The project is still in development, as I aim to implement the [WAI-ARIA Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.1/).
 
 Here's the current components:
 
-- `Accordion`
+- `Accordion` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/accordion)
 - `Alert`
 - `Alert Dialog`
 - `Button`
 - `Button (Toggle)`
-- `Checkbox`
-- `Dialog (Modal)`
-- `Dialog (Popover)`
-- `Disclosure (Show/Hide)`
-- `Feed`
-- `Listbox (Select)`
-- `Listbox (Dropdown)`
-- `Menu`
-- `Radio Group`
-- `Toolbar`
-- `Transition`
-- `Toaster`/`Toast`
-- `ContextMenu (Dialog)`
-- `CommandBar (Dialog)`
-- `Tabs`
+- `Checkbox` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/checkbox)
+- `Dialog (Modal)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/dialog)
+- `Dialog (Popover)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/popover)
+- `Disclosure (Show/Hide)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/disclosure)
+- `Feed` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/feed)
+- `Listbox (Select)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/select)
+- `Listbox (Dropdown)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/listbox)
+- `Menu` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/menu)
+- `Radio Group` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/radiogroup)
+- `Toolbar` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/toolbar)
+- `Transition` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/transitions)
+- `Toaster`/`Toast` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/toaster)
+- `ContextMenu (Dialog)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/context-menu)
+- `CommandBar (Dialog)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/commandbar)
+- `Tabs` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/tabs)
 
 ## FAQ
 

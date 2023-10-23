@@ -1,0 +1,73 @@
+{
+  "name": "terracotta",
+  "version": "0.13.1",
+  "type": "module",
+  "types": "./dist/types/index.d.ts",
+  "main": "./dist/cjs/production/index.cjs",
+  "module": "./dist/esm/production/index.mjs",
+  "exports": {
+    ".": {
+      "development": {
+        "require": "./dist/cjs/development/index.cjs",
+        "import": "./dist/esm/development/index.mjs"
+      },
+      "require": "./dist/cjs/production/index.cjs",
+      "import": "./dist/esm/production/index.mjs",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "license": "MIT",
+  "keywords": [
+    "pridepack",
+    "solid-js",
+    "headless-ui"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.8.7",
+    "eslint": "^8.51.0",
+    "eslint-config-lxsmnsyc": "^0.6.5",
+    "pridepack": "2.5.1",
+    "solid-js": "^1.8.1",
+    "tslib": "^2.6.2",
+    "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "solid-js": "^1.8"
+  },
+  "dependencies": {
+    "solid-use": "^0.7.2"
+  },
+  "scripts": {
+    "prepublishOnly": "pridepack clean && pridepack build",
+    "build": "pridepack build",
+    "type-check": "pridepack check",
+    "lint": "pridepack lint",
+    "test": "pridepack test --passWithNoTests",
+    "clean": "pridepack clean",
+    "watch": "pridepack watch"
+  },
+  "description": "Headless UI for SolidJS",
+  "repository": {
+    "url": "https://github.com/lxsmnsyc/terracotta.git",
+    "type": "git"
+  },
+  "homepage": "https://github.com/lxsmnsyc/terracotta/tree/main/packages/terracotta",
+  "bugs": {
+    "url": "https://github.com/lxsmnsyc/terracotta/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Alexis Munsayac",
+  "private": false,
+  "typesVersions": {
+    "*": {}
+  }
+}

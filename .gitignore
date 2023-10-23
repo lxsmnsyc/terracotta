@@ -75,5 +75,4 @@ typings/
 # FuseBox cache
 .fusebox/
 
-docs/dist
-examples/**/dist
+dist
