@@ -1,6 +1,6 @@
 {
   "name": "commandbar-example",
-  "version": "0.13.1",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -16,9 +16,9 @@
     "vite-plugin-solid": "^2.7.2"
   },
   "dependencies": {
-    "terracotta": "0.13.1",
     "solid-js": "^1.8.1",
-    "tailwindcss": "^3.3.3"
+    "tailwindcss": "^3.3.3",
+    "terracotta": "1.0.0"
   },
   "private": true,
   "publishConfig": {
