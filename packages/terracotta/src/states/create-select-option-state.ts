@@ -51,7 +51,7 @@ export function createSelectOptionState<T>(
 }
 
 export interface SelectOptionStateRenderProps {
-  children: JSX.Element | ((state: SelectOptionStateProperties) => JSX.Element);
+  children?: JSX.Element | ((state: SelectOptionStateProperties) => JSX.Element);
 }
 
 export interface SelectOptionStateProviderProps extends SelectOptionStateRenderProps {

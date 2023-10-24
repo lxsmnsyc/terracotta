@@ -53,7 +53,7 @@ export function createAutocompleteOptionState<T>(
 }
 
 export interface AutocompleteOptionStateRenderProps {
-  children: JSX.Element | ((state: AutocompleteOptionStateProperties) => JSX.Element);
+  children?: JSX.Element | ((state: AutocompleteOptionStateProperties) => JSX.Element);
 }
 
 export interface AutocompleteOptionStateProviderProps extends AutocompleteOptionStateRenderProps {

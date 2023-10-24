@@ -232,7 +232,7 @@ export function createMultipleSelectState<T>(
 }
 
 export interface SelectStateRenderProps<T> {
-  children: JSX.Element | ((state: SelectStateProperties<T>) => JSX.Element);
+  children?: JSX.Element | ((state: SelectStateProperties<T>) => JSX.Element);
 }
 
 export interface SelectStateProviderProps<T> extends SelectStateRenderProps<T> {

@@ -267,7 +267,7 @@ export function createMultipleAutocompleteState<T>(
 }
 
 export interface AutocompleteStateRenderProps<T> {
-  children: JSX.Element | ((state: AutocompleteStateProperties<T>) => JSX.Element);
+  children?: JSX.Element | ((state: AutocompleteStateProperties<T>) => JSX.Element);
 }
 
 export interface AutocompleteStateProviderProps<T> extends AutocompleteStateRenderProps<T> {

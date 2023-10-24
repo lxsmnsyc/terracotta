@@ -107,7 +107,7 @@ export function createDisclosureState(
 }
 
 export interface DisclosureStateRenderProps {
-  children: JSX.Element | ((state: DisclosureStateProperties) => JSX.Element);
+  children?: JSX.Element | ((state: DisclosureStateProperties) => JSX.Element);
 }
 
 export interface DisclosureStateProviderProps extends DisclosureStateRenderProps {
