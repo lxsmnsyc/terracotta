@@ -35,7 +35,6 @@ import type { Prettify } from '../../utils/types';
 import { RadioGroupContext } from './RadioGroupContext';
 import { createRadioGroupOptionFocusNavigator, RadioGroupRootContext } from './RadioGroupRootContext';
 import { RADIO_GROUP_TAG } from './tags';
-import { CHECKED_NODE } from '../../utils/namespace';
 import useEventListener from '../../utils/use-event-listener';
 
 export type RadioGroupControlledBaseProps<V> = Prettify<
@@ -99,14 +98,11 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
           }
         }
       });
-    }
-  });
-
-  createEffect(() => {
-    if (state.hasSelected()) {
-      controller.setFirstChecked(CHECKED_NODE);
-    } else {
-      controller.setFirstChecked();
+      useEventListener(current, 'focusin', (e) => {
+        if (e.target && e.target !== current) {
+          controller.setCurrent(e.target as HTMLElement);
+        }
+      });
     }
   });
 
