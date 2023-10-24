@@ -95,4 +95,11 @@ export type {
   ToggleStateRenderProps,
   ToggleStateUncontrolledOptions,
 } from './states/create-toggle-state';
-export { ToggleStateChild, useToggleState, createToggleState } from './states/create-toggle-state';
+export {
+  ToggleStateChild,
+  useToggleState,
+  createToggleState,
+} from './states/create-toggle-state';
+
+export type { FragmentProps } from './utils/Fragment';
+export { default as Fragment } from './utils/Fragment';
