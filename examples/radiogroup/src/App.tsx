@@ -4,9 +4,9 @@ import {
   RadioGroupLabel,
   RadioGroupOption,
 } from 'terracotta';
+import type { JSX } from 'solid-js';
 import {
   createSignal,
-  JSX,
   For,
 } from 'solid-js';
 
@@ -31,7 +31,7 @@ const plans = [
   },
 ];
 
-function CheckIcon(props: JSX.IntrinsicElements['svg']) {
+function CheckIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
   return (
     <svg viewBox="0 0 24 24" fill="none" {...props}>
       <circle cx={12} cy={12} r={12} fill="#fff" opacity="0.2" />
@@ -50,7 +50,7 @@ function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function App() {
+export default function App(): JSX.Element {
   const [selected, setSelected] = createSignal(plans[0]);
 
   return (
@@ -60,14 +60,14 @@ export default function App() {
           value={selected()}
           onChange={setSelected}
         >
-          {({ isSelected, isActive }) => (
+          {({ isSelected, isActive }): JSX.Element => (
             <>
               <RadioGroupLabel class="sr-only">
                 Server size
               </RadioGroupLabel>
               <div class="space-y-2">
                 <For each={plans}>
-                  {(plan) => (
+                  {(plan): JSX.Element => (
                     <RadioGroupOption
                       value={plan}
                       class={classNames(
@@ -76,7 +76,7 @@ export default function App() {
                         'relative rounded-lg shadow-md px-5 py-4 cursor-pointer flex focus:outline-none',
                       )}
                     >
-                      {({ isSelected: checked }) => (
+                      {({ isSelected: checked }): JSX.Element => (
                         <div class="flex items-center justify-between w-full">
                           <div class="flex items-center">
                             <div class="text-sm">

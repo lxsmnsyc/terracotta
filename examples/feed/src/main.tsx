@@ -1,9 +1,10 @@
 import { render } from 'solid-js/web';
+import type { JSX } from 'solid-js';
 import App from './App';
 
 import './style.css';
 
-function Root() {
+function Root(): JSX.Element {
   return (
     <div class="bg-gradient-to-r from-violet-400 to-indigo-600 w-screen h-screen flex overflow-hidden">
       <div class="flex flex-col items-center justify-center w-full">

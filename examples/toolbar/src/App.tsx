@@ -2,7 +2,8 @@ import {
   Toggle,
   Toolbar,
 } from 'terracotta';
-import { JSX, For, createSignal } from 'solid-js';
+import type { JSX } from 'solid-js';
+import { For, createSignal } from 'solid-js';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -27,10 +28,11 @@ export default function App(): JSX.Element {
       <div class="p-2 bg-white rounded-lg">
         <Toolbar class="flex w-full space-x-1" horizontal>
           <For each={FONT_OPTIONS}>
-            {(item) => {
+            {(item): JSX.Element => {
               const [checked, setChecked] = createSignal(false);
               return (
                 <Toggle
+                  pressed={checked()}
                   class={classNames(
                     checked() ? 'text-color-600 bg-purple-200' : '',
                     'focus:outline-none focus-visible:ring focus-visible:ring-purple-400 focus-visible:ring-opacity-75',

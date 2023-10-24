@@ -5,9 +5,9 @@ import {
   ToasterStore,
   useToaster,
 } from 'terracotta';
+import type { JSX } from 'solid-js';
 import {
   createSignal,
-  JSX,
   For,
   createEffect,
   onCleanup,
@@ -42,7 +42,7 @@ function CloseIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
 function CustomToast(props: ToastProps): JSX.Element {
   const [isOpen, setIsOpen] = createSignal(true);
 
-  function dismiss() {
+  function dismiss(): void {
     setIsOpen(false);
   }
 
@@ -56,7 +56,7 @@ function CustomToast(props: ToastProps): JSX.Element {
       leave="ease-in duration-200"
       leaveFrom="opacity-100 scale-100"
       leaveTo="opacity-0 scale-50"
-      afterLeave={() => {
+      afterLeave={(): void => {
         notifications.remove(props.id);
       }}
     >
@@ -73,17 +73,17 @@ function CustomToast(props: ToastProps): JSX.Element {
 export default function App(): JSX.Element {
   const notifs = useToaster(notifications);
 
-  function createToast() {
+  function createToast(): void {
     notifications.create(`This toast is created on ${new Date().toTimeString()}`);
   }
 
   const [isOpen, setIsOpen] = createSignal(false);
 
-  function closeNotifs() {
+  function closeNotifs(): void {
     setIsOpen(false);
   }
 
-  function clearNotifs() {
+  function clearNotifs(): void {
     notifications.clear();
   }
 
@@ -147,7 +147,7 @@ export default function App(): JSX.Element {
                   </div>
                 )}
               >
-                {(item) => (
+                {(item): JSX.Element => (
                   <CustomToast id={item.id} message={item.data} />
                 )}
               </For>

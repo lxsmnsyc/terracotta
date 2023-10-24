@@ -5,7 +5,8 @@ import {
   CommandOption,
   CommandLabel,
 } from 'terracotta';
-import { createSignal, JSX, For } from 'solid-js';
+import type { JSX } from 'solid-js';
+import { createSignal, For } from 'solid-js';
 import { CheckIcon, classNames } from './utils';
 
 const people = [
@@ -27,7 +28,7 @@ export default function SingleSelect(): JSX.Element {
         toggleable
         value={selected()}
         onChange={setSelected}
-        matchBy={(item, query) => item.name.toLowerCase().includes(query.toLowerCase())}
+        matchBy={(item, query): boolean => item.name.toLowerCase().includes(query.toLowerCase())}
       >
         <CommandLabel class="text-xl font-semibold">Single Selection</CommandLabel>
         <CommandInput
@@ -37,9 +38,9 @@ export default function SingleSelect(): JSX.Element {
         />
         <CommandOptions class="bg-gray-50 bg-opacity-50 rounded-lg overflow-hidden">
           <For each={people}>
-            {(person) => (
+            {(person): JSX.Element => (
               <CommandOption class="focus:outline-none group" value={person}>
-                {({ isActive, isSelected, matches }) => (
+                {({ isActive, isSelected, matches }): JSX.Element => (
                   <div
                     class={classNames(
                       isActive() ? 'text-amber-900 bg-amber-100' : 'text-gray-900',

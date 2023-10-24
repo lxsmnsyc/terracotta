@@ -1,7 +1,8 @@
 import {
   Transition,
 } from 'terracotta';
-import { createSignal, JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
+import { createSignal } from 'solid-js';
 
 export default function App(): JSX.Element {
   const [isShowing, setIsShowing] = createSignal(true);
@@ -23,7 +24,7 @@ export default function App(): JSX.Element {
 
       <button
         type="button"
-        onClick={() => {
+        onClick={(): void => {
           setIsShowing(!isShowing());
         }}
         class="flex items-center px-3 py-2 mt-8 text-sm font-medium text-white transition transform bg-black rounded-full backface-visibility-hidden active:bg-opacity-40 hover:scale-105 hover:bg-opacity-30 focus:outline-none bg-opacity-20"

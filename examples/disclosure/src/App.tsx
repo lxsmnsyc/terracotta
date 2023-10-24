@@ -3,7 +3,7 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from 'terracotta';
-import { JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
 
 function ChevronUpIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
   return (
@@ -30,7 +30,7 @@ export default function App(): JSX.Element {
       <div class="w-full max-w-md p-2 mx-auto bg-white rounded-2xl space-y-2">
         <Disclosure defaultOpen as="div">
           <DisclosureButton as="div" class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-            {({ isOpen }) => (
+            {({ isOpen }): JSX.Element => (
               <>
                 <span>What is your refund policy?</span>
                 <ChevronUpIcon
@@ -46,7 +46,7 @@ export default function App(): JSX.Element {
         </Disclosure>
         <Disclosure defaultOpen as="div">
           <DisclosureButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-            {({ isOpen }) => (
+            {({ isOpen }): JSX.Element => (
               <>
                 <span>Do you offer technical support?</span>
                 <ChevronUpIcon

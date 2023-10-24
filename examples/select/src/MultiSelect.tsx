@@ -2,7 +2,8 @@ import {
   Select,
   SelectOption,
 } from 'terracotta';
-import { createSignal, JSX, For } from 'solid-js';
+import type { JSX } from 'solid-js';
+import { createSignal, For } from 'solid-js';
 import { CheckIcon, classNames } from './utils';
 
 const people = [
@@ -28,9 +29,9 @@ export default function MultiSelect(): JSX.Element {
       >
         <div class="relative mt-1 bg-gray-50 bg-opacity-50 rounded-lg overflow-hidden">
           <For each={people}>
-            {(person) => (
+            {(person): JSX.Element => (
               <SelectOption class="focus:outline-none group" value={person}>
-                {({ isActive, isSelected }) => (
+                {({ isActive, isSelected }): JSX.Element => (
                   <div
                     class={classNames(
                       isActive() ? 'text-amber-900 bg-amber-100' : 'text-gray-900',

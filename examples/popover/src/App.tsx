@@ -4,9 +4,10 @@ import {
   PopoverPanel,
   Transition,
 } from 'terracotta';
-import { For, JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
+import { For } from 'solid-js';
 
-function IconOne() {
+function IconOne(): JSX.Element {
   return (
     <svg
       width="48"
@@ -39,7 +40,7 @@ function IconOne() {
   );
 }
 
-function IconTwo() {
+function IconTwo(): JSX.Element {
   return (
     <svg
       width="48"
@@ -65,7 +66,7 @@ function IconTwo() {
   );
 }
 
-function IconThree() {
+function IconThree(): JSX.Element {
   return (
     <svg
       width="48"
@@ -133,7 +134,7 @@ export default function App(): JSX.Element {
   return (
     <div class="w-full flex mb-64 justify-center">
       <Popover defaultOpen class="relative">
-        {({ isOpen }) => (
+        {({ isOpen }): JSX.Element => (
           <>
             <PopoverButton
               class={classNames(
@@ -163,7 +164,7 @@ export default function App(): JSX.Element {
                 <div class="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                   <div class="relative grid gap-8 bg-white p-7 lg:grid-cols-2">
                     <For each={solutions}>
-                      {(item) => (
+                      {(item): JSX.Element => (
                         <a
                           href={item.href}
                           class="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"

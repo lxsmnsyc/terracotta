@@ -6,16 +6,17 @@ import {
   TransitionChild,
   DialogOverlay,
 } from 'terracotta';
-import { createSignal, JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
+import { createSignal } from 'solid-js';
 
 export default function App(): JSX.Element {
   const [isOpen, setIsOpen] = createSignal(false);
 
-  function closeModal() {
+  function closeModal(): void {
     setIsOpen(false);
   }
 
-  function openModal() {
+  function openModal(): void {
     setIsOpen(true);
   }
 

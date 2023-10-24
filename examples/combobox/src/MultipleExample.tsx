@@ -7,7 +7,8 @@ import {
   ComboboxInput,
   Transition,
 } from 'terracotta';
-import { createSignal, JSX, For } from 'solid-js';
+import type { JSX } from 'solid-js';
+import { createSignal, For } from 'solid-js';
 import { CheckIcon, classNames } from './utils';
 
 const people = [
@@ -22,7 +23,7 @@ const people = [
 export default function SingleExample(): JSX.Element {
   const [selected, setSelected] = createSignal(people);
 
-  function matchBy(item: { name: string }, query: string) {
+  function matchBy(item: { name: string }, query: string): boolean {
     // split queries
     const queries = query.split(',');
 
@@ -45,7 +46,7 @@ export default function SingleExample(): JSX.Element {
         <ComboboxLabel class="text-xl font-semibold">Multi Selection</ComboboxLabel>
         <div class="p-2 bg-gray-50 bg-opacity-50 rounded-lg flex flex-wrap gap-1">
           <For each={selected()} fallback={<span class="block truncate">No selected.</span>}>
-            {(item) => (
+            {(item): JSX.Element => (
               <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
                 {item.name}
               </span>
@@ -58,7 +59,7 @@ export default function SingleExample(): JSX.Element {
         />
         <div>
           <DisclosureStateChild>
-            {({ isOpen }) => (
+            {({ isOpen }): JSX.Element => (
               <Transition
                 show={isOpen()}
                 class="relative"
@@ -71,9 +72,9 @@ export default function SingleExample(): JSX.Element {
               >
                 <ComboboxOptions unmount={false} class="absolute w-full bg-gray-50 bg-opacity-50 rounded-lg overflow-hidden">
                   <For each={people}>
-                    {(person) => (
+                    {(person): JSX.Element => (
                       <ComboboxOption class="focus:outline-none group" value={person}>
-                        {({ isActive, isSelected, matches }) => (
+                        {({ isActive, isSelected, matches }): JSX.Element => (
                           <div
                             class={classNames(
                               isActive() ? 'text-amber-900 bg-amber-100' : 'text-gray-900',

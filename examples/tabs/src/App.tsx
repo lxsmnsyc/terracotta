@@ -4,7 +4,8 @@ import {
   TabList,
   TabPanel,
 } from 'terracotta';
-import { For, JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
+import { For } from 'solid-js';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -23,7 +24,7 @@ function random(max: number): number {
   return Math.round(Math.random() * 1000) % max;
 }
 
-function loadData(count: number) {
+function loadData(count: number): { title: string; description: string }[] {
   const data = new Array<Article>(count);
   for (let i = 0; i < count; i += 1) {
     data[i] = {
@@ -45,7 +46,7 @@ const FEED: Record<string, Article[]> = CATEGORIES.reduce((acc, current) => ({
   [current]: loadData(10),
 }), {});
 
-function Separator() {
+function Separator(): JSX.Element {
   return (
     <div class="flex items-center" aria-hidden="true">
       <div class="w-full border-t border-gray-200" />
@@ -62,13 +63,13 @@ export default function App(): JSX.Element {
           defaultValue={CATEGORIES[0]}
           horizontal
         >
-          {({ isSelected, isActive }) => (
+          {({ isSelected, isActive }): JSX.Element => (
             <>
               <TabList
                 class="w-full flex items-stretch justify-between space-x-2"
               >
                 <For each={CATEGORIES}>
-                  {(category) => (
+                  {(category): JSX.Element => (
                     <Tab
                       class={classNames(
                         isSelected(category) ? 'bg-rose-900 bg-opacity-75 text-white' : 'bg-white',
@@ -84,7 +85,7 @@ export default function App(): JSX.Element {
               </TabList>
               <div>
                 <For each={CATEGORIES}>
-                  {(category) => (
+                  {(category): JSX.Element => (
                     <TabPanel
                       value={category}
                       class={classNames(
@@ -93,7 +94,7 @@ export default function App(): JSX.Element {
                       )}
                     >
                       <For each={FEED[category]}>
-                        {(item) => (
+                        {(item): JSX.Element => (
                           <div tabindex={0} class="p-2 m-2 flex flex-col space-y-1 bg-opacity-25 rounded focus:outline-none focus-visible:ring focus-visible:ring-rose-500 focus-visible:ring-opacity-75">
                             <div class="text-lg text-gray-900 font-bold">
                               {item.title}

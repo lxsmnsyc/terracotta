@@ -6,13 +6,14 @@ import {
   Menu,
   MenuItem,
 } from 'terracotta';
-import { createSignal, JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
+import { createSignal } from 'solid-js';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-function Separator() {
+function Separator(): JSX.Element {
   return (
     <div class="flex items-center" aria-hidden="true">
       <div class="w-full border-t border-gray-200" />
@@ -26,14 +27,14 @@ export default function App(): JSX.Element {
   return (
     <div class="w-full flex items-center justify-center">
       <ContextMenu defaultOpen={false} class="relative">
-        {({ isOpen }) => (
+        {({ isOpen }): JSX.Element => (
           <>
             <ContextMenuBoundary
               class={classNames(
                 isOpen() && 'text-opacity-90',
                 'text-white group border border-dashed border-white p-32 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75',
               )}
-              onContextMenu={(e: MouseEvent) => {
+              onContextMenu={(e: MouseEvent): void => {
                 if (e.currentTarget) {
                   const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
                   setX(e.clientX - rect.left);

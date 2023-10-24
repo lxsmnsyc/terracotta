@@ -6,7 +6,7 @@ import {
   Menu,
   MenuItem,
 } from 'terracotta';
-import { JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
 
 function ChevronDownIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
   return (
@@ -31,7 +31,7 @@ function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-function Separator() {
+function Separator(): JSX.Element {
   return (
     <div class="flex items-center" aria-hidden="true">
       <div class="w-full border-t border-gray-200" />
@@ -43,7 +43,7 @@ export default function App(): JSX.Element {
   return (
     <div class="w-full flex items-center justify-center">
       <Popover defaultOpen={false} class="relative">
-        {({ isOpen }) => (
+        {({ isOpen }): JSX.Element => (
           <>
             <PopoverButton
               class={classNames(

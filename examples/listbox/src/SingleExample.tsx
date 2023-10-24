@@ -6,7 +6,8 @@ import {
   ListboxOptions,
   Transition,
 } from 'terracotta';
-import { createSignal, JSX, For } from 'solid-js';
+import type { JSX } from 'solid-js';
+import { createSignal, For } from 'solid-js';
 import { CheckIcon, SelectorIcon, classNames } from './utils';
 
 const people = [
@@ -36,7 +37,7 @@ export default function SingleExample(): JSX.Element {
             </span>
           </ListboxButton>
           <DisclosureStateChild>
-            {({ isOpen }) => (
+            {({ isOpen }): JSX.Element => (
               <Transition
                 show={isOpen()}
                 enter="transition ease-in duration-100"
@@ -48,9 +49,9 @@ export default function SingleExample(): JSX.Element {
               >
                 <ListboxOptions unmount={false} class="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                   <For each={people}>
-                    {(person) => (
+                    {(person): JSX.Element => (
                       <ListboxOption class="focus:outline-none group" value={person}>
-                        {({ isActive, isSelected }) => (
+                        {({ isActive, isSelected }): JSX.Element => (
                           <div
                             class={classNames(
                               isActive() ? 'text-amber-900 bg-amber-100' : 'text-gray-900',

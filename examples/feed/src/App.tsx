@@ -7,10 +7,10 @@ import {
   FeedLabel,
   Transition,
 } from 'terracotta';
+import type { JSX } from 'solid-js';
 import {
   createSignal,
   For,
-  JSX,
   Show,
 } from 'solid-js';
 
@@ -41,7 +41,7 @@ function random(max: number): number {
   return Math.round(Math.random() * 1000) % max;
 }
 
-function loadData(count: number) {
+function loadData(count: number): { title: string; description: string }[] {
   const data = new Array<Article>(count);
   for (let i = 0; i < count; i += 1) {
     data[i] = {
@@ -52,7 +52,7 @@ function loadData(count: number) {
   return data;
 }
 
-function Separator() {
+function Separator(): JSX.Element {
   return (
     <div class="flex items-center" aria-hidden="true">
       <div class="w-full border-t border-gray-200" />
@@ -64,13 +64,13 @@ export default function App(): JSX.Element {
   const [busy, setBusy] = createSignal(false);
   const [articles, setArticles] = createSignal<Article[]>(loadData(10));
 
-  function sleep(timeout: number) {
+  async function sleep(timeout: number): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       setTimeout(resolve, timeout, true);
     });
   }
 
-  async function loadMore() {
+  async function loadMore(): Promise<void> {
     setBusy(true);
     await sleep(1000);
     setArticles((current) => [
@@ -99,19 +99,22 @@ export default function App(): JSX.Element {
         </div>
         <FeedContent
           class="flex-1 overflow-y-auto flex flex-col rounded-lg bg-indigo-900 bg-opacity-25 p-2"
-          onScroll={(e) => {
+          onScroll={(e: Event): void => {
             const el = e.target as HTMLElement;
-            if (!busy()) {
-              if (el.offsetHeight + el.scrollTop >= el.scrollHeight - el.getBoundingClientRect().height) {
-                loadMore().catch(() => {
-                  //
-                });
-              }
+            if (
+              !busy()
+              && (
+                (el.offsetHeight + el.scrollTop)
+                >= el.scrollHeight - el.getBoundingClientRect().height)
+            ) {
+              loadMore().catch(() => {
+                //
+              });
             }
           }}
         >
           <For each={articles()}>
-            {(article, index) => (
+            {(article, index): JSX.Element => (
               <FeedArticle index={index()} class="p-2 m-2 flex flex-col space-y-1 bg-indigo-900 transition bg-opacity-25 rounded focus:outline-none focus-visible:ring focus:bg-indigo-700 focus-visible:ring-indigo-500 focus-visible:ring-opacity-75">
                 <FeedArticleLabel class="text-lg text-white font-bold">
                   {article.title}

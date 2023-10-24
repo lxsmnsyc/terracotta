@@ -4,9 +4,9 @@ import {
   CheckboxLabel,
   CheckboxDescription,
 } from 'terracotta';
+import type { JSX } from 'solid-js';
 import {
   createSignal,
-  JSX,
   Switch,
   Match,
 } from 'solid-js';
