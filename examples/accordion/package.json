@@ -1,6 +1,6 @@
 {
   "name": "accordion-example",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -18,7 +18,7 @@
   "dependencies": {
     "solid-js": "^1.8.1",
     "tailwindcss": "^3.3.3",
-    "terracotta": "1.0.0"
+    "terracotta": "1.0.1"
   },
   "private": true,
   "publishConfig": {
