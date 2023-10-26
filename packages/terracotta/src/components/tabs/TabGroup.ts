@@ -70,7 +70,6 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
     const ownerID = createUniqueId();
     const state = createSingleSelectState(props);
 
-    let id = 0;
     const ids = new Map<V, number>();
 
     return createComponent(TabGroupContext.Provider, {
@@ -81,9 +80,8 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
         getId(kind: string, value: V): string {
           let currentID = ids.get(value);
           if (!currentID) {
-            currentID = id;
+            currentID = ids.size;
             ids.set(value, currentID);
-            id += 1;
           }
           return `${ownerID}__${kind}-${currentID}`;
         },
