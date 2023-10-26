@@ -28,7 +28,6 @@ import {
   TabListContext,
 } from './TabListContext';
 import { TAB_LIST_TAG } from './tags';
-import { SELECTED_NODE } from '../../utils/namespace';
 import {
   createHasSelectedState,
   createHasActiveState,
@@ -93,14 +92,11 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
           }
         }
       });
-    }
-  });
-
-  createEffect(() => {
-    if (state.hasSelected()) {
-      controller.setFirstChecked(SELECTED_NODE);
-    } else {
-      controller.setFirstChecked();
+      useEventListener(current, 'focusin', (e) => {
+        if (e.target && e.target !== current) {
+          controller.setCurrent(e.target as HTMLElement);
+        }
+      });
     }
   });
 
