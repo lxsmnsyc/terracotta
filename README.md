@@ -28,6 +28,8 @@ Here's the current components:
 - `Button`
 - `Button (Toggle)`
 - `Checkbox` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/checkbox)
+- `Combobox` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/combobox)
+- `Command` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/command)
 - `Dialog (Modal)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/dialog)
 - `Dialog (Popover)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/popover)
 - `Disclosure (Show/Hide)` [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/github/LXSMNSYC/terracotta/tree/main/examples/disclosure)
