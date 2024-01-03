@@ -185,6 +185,11 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
             controller.setFirstChecked();
           }
         });
+        useEventListener(current, 'focusin', (e) => {
+          if (e.target && e.target !== current) {
+            controller.setCurrent(e.target as HTMLElement);
+          }
+        });
       }
     });
 
