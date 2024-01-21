@@ -25,9 +25,13 @@ export default function App(): JSX.Element {
       <div class="fixed inset-0 flex items-center justify-center">
         <span class="text-white text-sm bg-blue-900 bg-opacity-50 p-4 rounded-lg">
           {'Press '}
-          <span class="font-mono px-2 py-1 border border-white m-1 rounded">⌘ + K</span>
+          <span class="font-mono px-2 py-1 border border-white m-1 rounded">
+            ⌘ + K
+          </span>
           {' or '}
-          <span class="font-mono px-2 py-1 border border-white m-1 rounded">Ctrl + K</span>
+          <span class="font-mono px-2 py-1 border border-white m-1 rounded">
+            Ctrl + K
+          </span>
           !
         </span>
       </div>
@@ -38,7 +42,11 @@ export default function App(): JSX.Element {
         onOpen={openModal}
         onClose={closeModal}
       >
-        <Transition appear show={isOpen()} class="min-h-screen px-4 flex items-center justify-center">
+        <Transition
+          appear
+          show={isOpen()}
+          class="min-h-screen px-4 flex items-center justify-center"
+        >
           <TransitionChild
             enter="ease-out duration-300"
             enterFrom="opacity-0"
@@ -51,10 +59,7 @@ export default function App(): JSX.Element {
           </TransitionChild>
 
           {/* This element is to trick the browser into centering the modal contents. */}
-          <span
-            class="inline-block h-screen align-middle"
-            aria-hidden="true"
-          >
+          <span class="inline-block h-screen align-middle" aria-hidden="true">
             &#8203;
           </span>
           <TransitionChild
