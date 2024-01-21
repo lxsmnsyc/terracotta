@@ -1,5 +1,6 @@
 {
   "name": "radiogroup-example",
+  "type": "module",
   "version": "1.0.4",
   "scripts": {
     "dev": "vite",
