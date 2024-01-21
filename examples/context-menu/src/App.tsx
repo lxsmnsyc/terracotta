@@ -36,7 +36,9 @@ export default function App(): JSX.Element {
               )}
               onContextMenu={(e: MouseEvent): void => {
                 if (e.currentTarget) {
-                  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                  const rect = (
+                    e.currentTarget as HTMLElement
+                  ).getBoundingClientRect();
                   setX(e.clientX - rect.left);
                   setY(e.clientY - rect.top);
                 }
@@ -62,24 +64,42 @@ export default function App(): JSX.Element {
                 }}
               >
                 <Menu class="overflow-hidden w-64 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white flex flex-col space-y-1 p-1">
-                  <MenuItem as="button" class="text-sm p-1 text-left rounded hover:bg-violet-600 hover:text-white focus:outline-none focus:bg-violet-600 focus:text-white">
+                  <MenuItem
+                    as="button"
+                    class="text-sm p-1 text-left rounded hover:bg-violet-600 hover:text-white focus:outline-none focus:bg-violet-600 focus:text-white"
+                  >
                     Open Link in New Tab
                   </MenuItem>
-                  <MenuItem as="button" class="text-sm p-1 text-left rounded hover:bg-violet-600 hover:text-white focus:outline-none focus:bg-violet-600 focus:text-white">
+                  <MenuItem
+                    as="button"
+                    class="text-sm p-1 text-left rounded hover:bg-violet-600 hover:text-white focus:outline-none focus:bg-violet-600 focus:text-white"
+                  >
                     Open Link in New Window
                   </MenuItem>
-                  <MenuItem as="button" class="text-sm p-1 text-left rounded hover:bg-violet-600 hover:text-white focus:outline-none focus:bg-violet-600 focus:text-white">
+                  <MenuItem
+                    as="button"
+                    class="text-sm p-1 text-left rounded hover:bg-violet-600 hover:text-white focus:outline-none focus:bg-violet-600 focus:text-white"
+                  >
                     Open Link in New Incognito Window
                   </MenuItem>
                   <Separator />
-                  <MenuItem as="button" class="text-sm p-1 text-left rounded hover:bg-violet-600 hover:text-white focus:outline-none focus:bg-violet-600 focus:text-white">
+                  <MenuItem
+                    as="button"
+                    class="text-sm p-1 text-left rounded hover:bg-violet-600 hover:text-white focus:outline-none focus:bg-violet-600 focus:text-white"
+                  >
                     Save Link As...
                   </MenuItem>
-                  <MenuItem as="button" class="text-sm p-1 text-left rounded hover:bg-violet-600 hover:text-white focus:outline-none focus:bg-violet-600 focus:text-white">
+                  <MenuItem
+                    as="button"
+                    class="text-sm p-1 text-left rounded hover:bg-violet-600 hover:text-white focus:outline-none focus:bg-violet-600 focus:text-white"
+                  >
                     Copy Link Address
                   </MenuItem>
                   <Separator />
-                  <MenuItem as="button" class="text-sm p-1 text-left rounded hover:bg-violet-600 hover:text-white focus:outline-none focus:bg-violet-600 focus:text-white">
+                  <MenuItem
+                    as="button"
+                    class="text-sm p-1 text-left rounded hover:bg-violet-600 hover:text-white focus:outline-none focus:bg-violet-600 focus:text-white"
+                  >
                     Inspect
                   </MenuItem>
                 </Menu>
