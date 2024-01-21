@@ -32,10 +32,7 @@ export default function App(): JSX.Element {
         </button>
       </div>
 
-      <Transition
-        appear
-        show={isOpen()}
-      >
+      <Transition appear show={isOpen()}>
         <Dialog
           isOpen
           class="fixed inset-0 z-10 overflow-y-auto"
@@ -54,10 +51,7 @@ export default function App(): JSX.Element {
             </TransitionChild>
 
             {/* This element is to trick the browser into centering the modal contents. */}
-            <span
-              class="inline-block h-screen align-middle"
-              aria-hidden="true"
-            >
+            <span class="inline-block h-screen align-middle" aria-hidden="true">
               &#8203;
             </span>
             <TransitionChild
