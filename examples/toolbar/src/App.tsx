@@ -1,7 +1,4 @@
-import {
-  Toggle,
-  Toolbar,
-} from 'terracotta';
+import { Toggle, Toolbar } from 'terracotta';
 import type { JSX } from 'solid-js';
 import { For, createSignal } from 'solid-js';
 
