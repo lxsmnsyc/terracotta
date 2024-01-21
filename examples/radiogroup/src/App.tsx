@@ -5,10 +5,7 @@ import {
   RadioGroupOption,
 } from 'terracotta';
 import type { JSX } from 'solid-js';
-import {
-  createSignal,
-  For,
-} from 'solid-js';
+import { createSignal, For } from 'solid-js';
 
 const plans = [
   {
@@ -31,9 +28,12 @@ const plans = [
   },
 ];
 
-function CheckIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
+function CheckIcon(
+  props: JSX.IntrinsicElements['svg'] & { title: string },
+): JSX.Element {
   return (
     <svg viewBox="0 0 24 24" fill="none" {...props}>
+      <title>{props.title}</title>
       <circle cx={12} cy={12} r={12} fill="#fff" opacity="0.2" />
       <path
         d="M7 13l3 3 7-7"
@@ -56,23 +56,21 @@ export default function App(): JSX.Element {
   return (
     <div class="w-full px-4 py-16">
       <div class="w-full max-w-md mx-auto">
-        <RadioGroup
-          value={selected()}
-          onChange={setSelected}
-        >
+        <RadioGroup value={selected()} onChange={setSelected}>
           {({ isSelected, isActive }): JSX.Element => (
             <>
-              <RadioGroupLabel class="sr-only">
-                Server size
-              </RadioGroupLabel>
+              <RadioGroupLabel class="sr-only">Server size</RadioGroupLabel>
               <div class="space-y-2">
                 <For each={plans}>
                   {(plan): JSX.Element => (
                     <RadioGroupOption
                       value={plan}
                       class={classNames(
-                        isSelected(plan) ? 'bg-sky-900 bg-opacity-75 text-white' : 'bg-white',
-                        isActive(plan) && 'ring-2 ring-offset-2 ring-offset-sky-300 ring-white ring-opacity-60',
+                        isSelected(plan)
+                          ? 'bg-sky-900 bg-opacity-75 text-white'
+                          : 'bg-white',
+                        isActive(plan) &&
+                          'ring-2 ring-offset-2 ring-offset-sky-300 ring-white ring-opacity-60',
                         'relative rounded-lg shadow-md px-5 py-4 cursor-pointer flex focus:outline-none',
                       )}
                     >
@@ -82,33 +80,32 @@ export default function App(): JSX.Element {
                             <div class="text-sm">
                               <RadioGroupLabel
                                 as="p"
-                                class={`font-medium ${checked() ? 'text-white' : 'text-gray-900'}`}
+                                class={`font-medium ${
+                                  checked() ? 'text-white' : 'text-gray-900'
+                                }`}
                               >
                                 {plan.name}
                               </RadioGroupLabel>
                               <RadioGroupDescription
                                 as="span"
-                                class={`inline ${checked() ? 'text-sky-100' : 'text-gray-500'}`}
+                                class={`inline ${
+                                  checked() ? 'text-sky-100' : 'text-gray-500'
+                                }`}
                               >
-                                <span>
-                                  {`${plan.ram}/${plan.cpus}`}
-                                </span>
-                                {' '}
-                                <span aria-hidden="true">&middot;</span>
-                                {' '}
+                                <span>{`${plan.ram}/${plan.cpus}`}</span>{' '}
+                                <span aria-hidden="true">&middot;</span>{' '}
                                 <span>{plan.disk}</span>
                               </RadioGroupDescription>
                             </div>
                           </div>
                           {checked() && (
                             <div class="flex-shrink-0 text-white">
-                              <CheckIcon class="w-6 h-6" />
+                              <CheckIcon class="w-6 h-6" title="Checked" />
                             </div>
                           )}
                         </div>
                       )}
                     </RadioGroupOption>
-
                   )}
                 </For>
               </div>
