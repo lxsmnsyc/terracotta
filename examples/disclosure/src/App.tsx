@@ -1,11 +1,9 @@
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-} from 'terracotta';
+import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta';
 import type { JSX } from 'solid-js';
 
-function ChevronUpIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
+function ChevronUpIcon(
+  props: JSX.IntrinsicElements['svg'] & { title: string },
+): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,6 +12,7 @@ function ChevronUpIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
       stroke="currentColor"
       {...props}
     >
+      <title>{props.title}</title>
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -29,19 +28,25 @@ export default function App(): JSX.Element {
     <div class="w-full">
       <div class="w-full max-w-md p-2 mx-auto bg-white rounded-2xl space-y-2">
         <Disclosure defaultOpen as="div">
-          <DisclosureButton as="div" class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+          <DisclosureButton
+            as="div"
+            class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
+          >
             {({ isOpen }): JSX.Element => (
               <>
                 <span>What is your refund policy?</span>
                 <ChevronUpIcon
-                  class={`${isOpen() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                  class={`${
+                    isOpen() ? 'transform rotate-180' : ''
+                  } w-5 h-5 text-purple-500`}
+                  title={isOpen() ? 'Close' : 'Open'}
                 />
               </>
             )}
           </DisclosureButton>
           <DisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
-            If you're unhappy with your purchase for any reason, email us
-            within 90 days and we'll refund you in full, no questions asked.
+            If you're unhappy with your purchase for any reason, email us within
+            90 days and we'll refund you in full, no questions asked.
           </DisclosurePanel>
         </Disclosure>
         <Disclosure defaultOpen as="div">
@@ -50,7 +55,10 @@ export default function App(): JSX.Element {
               <>
                 <span>Do you offer technical support?</span>
                 <ChevronUpIcon
-                  class={`${isOpen() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                  class={`${
+                    isOpen() ? 'transform rotate-180' : ''
+                  } w-5 h-5 text-purple-500`}
+                  title={isOpen() ? 'Close' : 'Open'}
                 />
               </>
             )}
