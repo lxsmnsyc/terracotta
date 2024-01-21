@@ -6,12 +6,7 @@ import {
   useToaster,
 } from 'terracotta';
 import type { JSX } from 'solid-js';
-import {
-  createSignal,
-  For,
-  createEffect,
-  onCleanup,
-} from 'solid-js';
+import { createSignal, For, createEffect, onCleanup } from 'solid-js';
 
 const notifications = new ToasterStore<string>();
 
@@ -20,7 +15,9 @@ interface ToastProps {
   message: string;
 }
 
-function CloseIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
+function CloseIcon(
+  props: JSX.IntrinsicElements['svg'] & { title: string },
+): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -29,6 +26,7 @@ function CloseIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
       stroke="currentColor"
       {...props}
     >
+      <title>{props.title}</title>
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -61,9 +59,15 @@ function CustomToast(props: ToastProps): JSX.Element {
       }}
     >
       <Toast class="flex justify-between items-center">
-        <span class="flex-1 text-sm font-semibold text-white">{props.message}</span>
-        <button type="button" class="flex-none w-6 h-6 p-1 text-white bg-opacity-25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75" onClick={dismiss}>
-          <CloseIcon />
+        <span class="flex-1 text-sm font-semibold text-white">
+          {props.message}
+        </span>
+        <button
+          type="button"
+          class="flex-none w-6 h-6 p-1 text-white bg-opacity-25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          onClick={dismiss}
+        >
+          <CloseIcon title="Close" />
         </button>
       </Toast>
     </Transition>
@@ -74,7 +78,9 @@ export default function App(): JSX.Element {
   const notifs = useToaster(notifications);
 
   function createToast(): void {
-    notifications.create(`This toast is created on ${new Date().toTimeString()}`);
+    notifications.create(
+      `This toast is created on ${new Date().toTimeString()}`,
+    );
   }
 
   const [isOpen, setIsOpen] = createSignal(false);
@@ -134,18 +140,22 @@ export default function App(): JSX.Element {
           <div class="flex flex-col w-80 max-h-96 overflow-hidden rounded-xl shadow-xl bg-opacity-25 bg-rose-900 p-4 space-y-2">
             <div class="flex-none flex items-center justify-between">
               <span class="text-xl font-bold text-white">Notifications</span>
-              <button type="button" onClick={closeNotifs} class="w-6 h-6 p-1 text-white bg-opacity-25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-                <CloseIcon />
+              <button
+                type="button"
+                onClick={closeNotifs}
+                class="w-6 h-6 p-1 text-white bg-opacity-25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+              >
+                <CloseIcon title="Close" />
               </button>
             </div>
             <div class="flex-1 flex flex-col-reverse space-y-reverse space-y-1 overflow-y-auto rounded-lg">
               <For
                 each={notifs().slice(0).reverse()}
-                fallback={(
+                fallback={
                   <div class="bg-rose-900 bg-opacity-20 flex items-center justify-center text-bold text-white p-4">
                     There are no notifications.
                   </div>
-                )}
+                }
               >
                 {(item): JSX.Element => (
                   <CustomToast id={item.id} message={item.data} />
