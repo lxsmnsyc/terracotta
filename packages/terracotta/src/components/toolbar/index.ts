@@ -1,8 +1,5 @@
 import type { JSX } from 'solid-js';
-import {
-  createEffect,
-  mergeProps,
-} from 'solid-js';
+import { createEffect, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
@@ -10,9 +7,7 @@ import type {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   focusFirst,
   focusLast,
@@ -33,16 +28,17 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
 ): JSX.Element {
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isHorizontal = (): boolean => (props.horizontal == null ? true : props.horizontal);
+  const isHorizontal = (): boolean =>
+    props.horizontal == null ? true : props.horizontal;
 
   let focusedElement: HTMLElement | undefined;
 
   function getNextFocusable(): void {
     const ref = internalRef();
     if (
-      ref instanceof HTMLElement
-      && document.activeElement
-      && ref.contains(document.activeElement)
+      ref instanceof HTMLElement &&
+      document.activeElement &&
+      ref.contains(document.activeElement)
     ) {
       focusNext(
         getFocusableElements(ref),
@@ -56,9 +52,9 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
   function getPrevFocusable(): void {
     const ref = internalRef();
     if (
-      ref instanceof HTMLElement
-      && document.activeElement
-      && ref.contains(document.activeElement)
+      ref instanceof HTMLElement &&
+      document.activeElement &&
+      ref.contains(document.activeElement)
     ) {
       focusPrev(
         getFocusableElements(ref),
@@ -72,44 +68,48 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
   createEffect(() => {
     const current = internalRef();
     if (current instanceof HTMLElement) {
-      useEventListener(current, 'keydown', (e) => {
+      useEventListener(current, 'keydown', e => {
         switch (e.key) {
-          case 'ArrowLeft':
+          case 'ArrowLeft': {
             if (isHorizontal()) {
               e.preventDefault();
               getPrevFocusable();
             }
             break;
-          case 'ArrowUp':
+          }
+          case 'ArrowUp': {
             if (!isHorizontal()) {
               e.preventDefault();
               getPrevFocusable();
             }
             break;
-          case 'ArrowRight':
+          }
+          case 'ArrowRight': {
             if (isHorizontal()) {
               e.preventDefault();
               getNextFocusable();
             }
             break;
-          case 'ArrowDown':
+          }
+          case 'ArrowDown': {
             if (!isHorizontal()) {
               e.preventDefault();
               getNextFocusable();
             }
             break;
-          case 'Home':
+          }
+          case 'Home': {
             if (focusFirst(getFocusableElements(current), false)) {
               e.preventDefault();
             }
             break;
-          case 'End':
+          }
+          case 'End': {
             if (focusLast(getFocusableElements(current), false)) {
               e.preventDefault();
             }
             break;
-          default:
-            break;
+          }
         }
       });
       useEventListener(current, 'focus', () => {
@@ -119,7 +119,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
           focusFirst(getFocusableElements(current), false);
         }
       });
-      useEventListener(current, 'focusin', (e) => {
+      useEventListener(current, 'focusin', e => {
         if (e.target && e.target !== current) {
           focusedElement = e.target as HTMLElement;
         }
@@ -129,21 +129,13 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
 
   return createDynamic(
     () => props.as || ('div' as T),
-    mergeProps(
-      omitProps(props, [
-        'as',
-        'horizontal',
-        'ref',
-      ]),
-      TOOLBAR_TAG,
-      {
-        role: 'toolbar',
-        tabindex: 0,
-        ref: setInternalRef,
-        get 'aria-orientation'() {
-          return isHorizontal() ? 'horizontal' : 'vertical';
-        },
+    mergeProps(omitProps(props, ['as', 'horizontal', 'ref']), TOOLBAR_TAG, {
+      role: 'toolbar',
+      tabindex: 0,
+      ref: setInternalRef,
+      get 'aria-orientation'() {
+        return isHorizontal() ? 'horizontal' : 'vertical';
       },
-    ) as DynamicProps<T>,
+    }) as DynamicProps<T>,
   );
 }

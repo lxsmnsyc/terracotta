@@ -1,17 +1,12 @@
 import type { JSX } from 'solid-js';
-import {
-  createEffect,
-  mergeProps,
-} from 'solid-js';
+import { createEffect, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import { useCommandContext } from './CommandContext';
 import createDynamic from '../../utils/create-dynamic';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
@@ -36,7 +31,8 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
   const state = useAutocompleteState();
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined =>
+    state.disabled() || props.disabled;
 
   createEffect(() => {
     const current = internalRef();
@@ -50,23 +46,24 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
           }
         });
       }
-      useEventListener(current, 'keydown', (e) => {
+      useEventListener(current, 'keydown', e => {
         if (!isDisabled()) {
           switch (e.key) {
-            case 'ArrowUp':
+            case 'ArrowUp': {
               e.preventDefault();
               context.controller.setPrevChecked(true);
               break;
-            case 'ArrowDown':
+            }
+            case 'ArrowDown': {
               e.preventDefault();
               context.controller.setNextChecked(true);
               break;
-            case 'Enter':
+            }
+            case 'Enter': {
               e.preventDefault();
               context.selectedDescendant = context.activeDescendant;
               break;
-            default:
-              break;
+            }
           }
         }
       });

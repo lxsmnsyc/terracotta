@@ -7,18 +7,14 @@ import {
   untrack,
   onMount,
 } from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -26,9 +22,7 @@ import {
   createHasActiveState,
   createHasSelectedState,
 } from '../../utils/state-props';
-import {
-  useListboxContext,
-} from './ListboxContext';
+import { useListboxContext } from './ListboxContext';
 import {
   createListboxOptionsFocusNavigator,
   ListboxOptionsContext,
@@ -48,12 +42,13 @@ import { createUnmountable } from '../../utils/create-unmountable';
 import useEventListener from '../../utils/use-event-listener';
 
 export type ListboxOptionsBaseProps<V> = Prettify<
-  & UnmountableProps
-  & SelectStateRenderProps<V>
+  UnmountableProps & SelectStateRenderProps<V>
 >;
 
-export type ListboxOptionsProps<V, T extends ValidConstructor = 'ul'> =
-  HeadlessPropsWithRef<T, ListboxOptionsBaseProps<V>>;
+export type ListboxOptionsProps<
+  V,
+  T extends ValidConstructor = 'ul',
+> = HeadlessPropsWithRef<T, ListboxOptionsBaseProps<V>>;
 
 export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
   props: ListboxOptionsProps<V, T>,
@@ -66,7 +61,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
 
   const controller = createListboxOptionsFocusNavigator(context.optionsID);
 
-  const pushCharacter = createTypeAhead((value) => {
+  const pushCharacter = createTypeAhead(value => {
     controller.setFirstMatch(value);
   });
 
@@ -83,71 +78,80 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
           controller.clearRef();
         });
 
-        if (!untrack(() => selectState.hasSelected())) {
-          controller.setFirstChecked();
-        } else {
+        if (untrack(() => selectState.hasSelected())) {
           controller.setFirstChecked(SELECTED_NODE);
+        } else {
+          controller.setFirstChecked();
         }
 
-        useEventListener(current, 'keydown', (e) => {
+        useEventListener(current, 'keydown', e => {
           if (!selectState.disabled()) {
             switch (e.key) {
-              case 'Escape':
+              case 'Escape': {
                 disclosureState.close();
                 break;
-              case 'ArrowLeft':
+              }
+              case 'ArrowLeft': {
                 if (context.horizontal) {
                   e.preventDefault();
                   controller.setPrevChecked(true);
                 }
                 break;
-              case 'ArrowUp':
+              }
+              case 'ArrowUp': {
                 if (!context.horizontal) {
                   e.preventDefault();
                   controller.setPrevChecked(true);
                 }
                 break;
-              case 'ArrowRight':
+              }
+              case 'ArrowRight': {
                 if (context.horizontal) {
                   e.preventDefault();
                   controller.setNextChecked(true);
                 }
                 break;
-              case 'ArrowDown':
+              }
+              case 'ArrowDown': {
                 if (!context.horizontal) {
                   e.preventDefault();
                   controller.setNextChecked(true);
                 }
                 break;
-              case 'Home':
+              }
+              case 'Home': {
                 e.preventDefault();
                 controller.setFirstChecked();
                 break;
-              case 'End':
+              }
+              case 'End': {
                 e.preventDefault();
                 controller.setLastChecked();
                 break;
+              }
               case ' ':
-              case 'Enter':
+              case 'Enter': {
                 e.preventDefault();
                 break;
-              default:
+              }
+              default: {
                 if (e.key.length === 1) {
                   pushCharacter(e.key);
                 }
                 break;
+              }
             }
           }
         });
-        useEventListener(current, 'focusout', (e) => {
+        useEventListener(current, 'focusout', e => {
           if (context.buttonHovering || context.optionsHovering) {
             return;
           }
-          if (!e.relatedTarget || !current.contains(e.relatedTarget as Node)) {
+          if (!(e.relatedTarget && current.contains(e.relatedTarget as Node))) {
             disclosureState.close();
           }
         });
-        useEventListener(current, 'focusin', (e) => {
+        useEventListener(current, 'focusin', e => {
           if (e.target && e.target !== current) {
             controller.setCurrent(e.target as HTMLElement);
           }
@@ -165,49 +169,46 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
   return createUnmountable(
     props,
     () => disclosureState.isOpen(),
-    () => createComponent(ListboxOptionsContext.Provider, {
-      value: controller,
-      get children() {
-        return createDynamic(
-          () => props.as || ('ul' as T),
-          mergeProps(
-            omitProps(props, [
-              'as',
-              'children',
-              'ref',
-            ]),
-            LISTBOX_OPTIONS_TAG,
-            {
-              id: context.optionsID,
-              role: 'listbox',
-              'aria-multiselectable': context.multiple,
-              'aria-labelledby': context.buttonID,
-              ref: setInternalRef,
-              get 'aria-orientation'() {
-                return context.horizontal ? 'horizontal' : 'vertical';
+    () =>
+      createComponent(ListboxOptionsContext.Provider, {
+        value: controller,
+        get children() {
+          return createDynamic(
+            () => props.as || ('ul' as T),
+            mergeProps(
+              omitProps(props, ['as', 'children', 'ref']),
+              LISTBOX_OPTIONS_TAG,
+              {
+                id: context.optionsID,
+                role: 'listbox',
+                'aria-multiselectable': context.multiple,
+                'aria-labelledby': context.buttonID,
+                ref: setInternalRef,
+                get 'aria-orientation'() {
+                  return context.horizontal ? 'horizontal' : 'vertical';
+                },
+                get tabindex() {
+                  return selectState.disabled() ? -1 : 0;
+                },
               },
-              get tabindex() {
-                return selectState.disabled() ? -1 : 0;
+              createDisabledState(() => selectState.disabled()),
+              createARIADisabledState(() => selectState.disabled()),
+              createExpandedState(() => disclosureState.isOpen()),
+              createHasSelectedState(() => selectState.hasSelected()),
+              createHasActiveState(() => selectState.hasActive()),
+              {
+                get children() {
+                  return createComponent(SelectStateProvider, {
+                    state: selectState,
+                    get children() {
+                      return props.children;
+                    },
+                  });
+                },
               },
-            },
-            createDisabledState(() => selectState.disabled()),
-            createARIADisabledState(() => selectState.disabled()),
-            createExpandedState(() => disclosureState.isOpen()),
-            createHasSelectedState(() => selectState.hasSelected()),
-            createHasActiveState(() => selectState.hasActive()),
-            {
-              get children() {
-                return createComponent(SelectStateProvider, {
-                  state: selectState,
-                  get children() {
-                    return props.children;
-                  },
-                });
-              },
-            },
-          ) as DynamicProps<T>,
-        );
-      },
-    }),
+            ) as DynamicProps<T>,
+          );
+        },
+      }),
   );
 }

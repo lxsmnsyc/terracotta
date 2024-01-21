@@ -1,11 +1,6 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createComponent, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   ValidConstructor,
@@ -37,10 +32,7 @@ export function AccordionHeader<T extends ValidConstructor = 'h3'>(
   return createDynamic<T>(
     () => props.as || ('h3' as T),
     mergeProps(
-      omitProps(props, [
-        'as',
-        'children',
-      ]),
+      omitProps(props, ['as', 'children']),
       ACCORDION_HEADER_TAG,
       createDisabledState(() => state.disabled()),
       createSelectedState(() => state.isSelected()),

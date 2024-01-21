@@ -1,7 +1,4 @@
-import type {
-  Accessor,
-  JSX,
-} from 'solid-js';
+import type { Accessor, JSX } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -108,19 +105,19 @@ export interface ToggleStateProviderProps extends ToggleStateRenderProps {
 
 const ToggleStateContext = createContext<ToggleStateProperties>();
 
-export function ToggleStateProvider(props: ToggleStateProviderProps): JSX.Element {
-  return (
-    createComponent(ToggleStateContext.Provider, {
-      value: props.state,
-      get children() {
-        const current = props.children;
-        if (typeof current === 'function') {
-          return current(props.state);
-        }
-        return current;
-      },
-    })
-  );
+export function ToggleStateProvider(
+  props: ToggleStateProviderProps,
+): JSX.Element {
+  return createComponent(ToggleStateContext.Provider, {
+    value: props.state,
+    get children() {
+      const current = props.children;
+      if (typeof current === 'function') {
+        return current(props.state);
+      }
+      return current;
+    },
+  });
 }
 
 export function useToggleState(): ToggleStateProperties {
@@ -129,9 +126,7 @@ export function useToggleState(): ToggleStateProperties {
   return ctx;
 }
 
-export function ToggleStateChild(
-  props: ToggleStateRenderProps,
-): JSX.Element {
+export function ToggleStateChild(props: ToggleStateRenderProps): JSX.Element {
   const state = useToggleState();
   return createMemo(() => {
     const current = props.children;

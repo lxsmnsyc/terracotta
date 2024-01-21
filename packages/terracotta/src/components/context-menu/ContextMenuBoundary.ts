@@ -1,30 +1,20 @@
 import type { JSX } from 'solid-js';
-import {
-  createEffect,
-  mergeProps,
-  createComponent,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createEffect, mergeProps, createComponent } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createARIAExpandedState,
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
-import {
-  useContextMenuContext,
-} from './ContextMenuContext';
+import { useContextMenuContext } from './ContextMenuContext';
 import { CONTEXT_MENU_BOUNDARY_TAG } from './tags';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
@@ -48,7 +38,7 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
     const current = internalRef();
     if (current instanceof HTMLElement) {
       context.anchor = current;
-      useEventListener(current, 'contextmenu', (e) => {
+      useEventListener(current, 'contextmenu', e => {
         if (!state.disabled()) {
           e.preventDefault();
           state.open();
@@ -60,11 +50,7 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
   return createDynamic(
     () => props.as || ('div' as T),
     mergeProps(
-      omitProps(props, [
-        'as',
-        'children',
-        'ref',
-      ]),
+      omitProps(props, ['as', 'children', 'ref']),
       CONTEXT_MENU_BOUNDARY_TAG,
       {
         id: context.boundaryID,

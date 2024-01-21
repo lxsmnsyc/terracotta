@@ -35,18 +35,18 @@ import {
 import useEventListener from '../../utils/use-event-listener';
 
 export type CommandBarControlledBaseProps = Prettify<
-  & DisclosureStateControlledOptions
-  & DisclosureStateRenderProps
-  & UnmountableProps
+  DisclosureStateControlledOptions &
+    DisclosureStateRenderProps &
+    UnmountableProps
 >;
 
 export type CommandBarControlledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, CommandBarControlledBaseProps>;
 
 export type CommandBarUncontrolledBaseProps = Prettify<
-  & DisclosureStateUncontrolledOptions
-  & DisclosureStateRenderProps
-  & UnmountableProps
+  DisclosureStateUncontrolledOptions &
+    DisclosureStateRenderProps &
+    UnmountableProps
 >;
 
 export type CommandBarUncontrolledProps<T extends ValidConstructor = 'div'> =
@@ -82,7 +82,7 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
   });
 
   createEffect(() => {
-    useEventListener(window, 'keydown', (e) => {
+    useEventListener(window, 'keydown', e => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k' && !e.defaultPrevented) {
         e.preventDefault();
         state.open();
@@ -101,53 +101,54 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
       return createUnmountable(
         props,
         () => state.isOpen(),
-        () => createDynamic(
-          () => props.as || ('div' as T),
-          mergeProps(
-            isCommandBarUncontrolled(props)
-              ? omitProps(props, [
-                'as',
-                'children',
-                'defaultOpen',
-                'disabled',
-                'onChange',
-                'onClose',
-                'onOpen',
-                'unmount',
-              ])
-              : omitProps(props, [
-                'as',
-                'children',
-                'isOpen',
-                'disabled',
-                'onChange',
-                'onClose',
-                'onOpen',
-                'unmount',
-              ]),
-            {
-              id: ownerID,
-              role: 'dialog',
-              'aria-modal': true,
-              'aria-labelledby': titleID,
-              'aria-describedby': descriptionID,
-            },
-            COMMAND_BAR_TAG,
-            createDisabledState(() => state.disabled()),
-            createARIADisabledState(() => state.disabled()),
-            createExpandedState(() => state.isOpen()),
-            {
-              get children() {
-                return createComponent(DisclosureStateProvider, {
-                  state,
-                  get children() {
-                    return props.children;
-                  },
-                });
+        () =>
+          createDynamic(
+            () => props.as || ('div' as T),
+            mergeProps(
+              isCommandBarUncontrolled(props)
+                ? omitProps(props, [
+                    'as',
+                    'children',
+                    'defaultOpen',
+                    'disabled',
+                    'onChange',
+                    'onClose',
+                    'onOpen',
+                    'unmount',
+                  ])
+                : omitProps(props, [
+                    'as',
+                    'children',
+                    'isOpen',
+                    'disabled',
+                    'onChange',
+                    'onClose',
+                    'onOpen',
+                    'unmount',
+                  ]),
+              {
+                id: ownerID,
+                role: 'dialog',
+                'aria-modal': true,
+                'aria-labelledby': titleID,
+                'aria-describedby': descriptionID,
               },
-            },
-          ) as DynamicProps<T>,
-        ),
+              COMMAND_BAR_TAG,
+              createDisabledState(() => state.disabled()),
+              createARIADisabledState(() => state.disabled()),
+              createExpandedState(() => state.isOpen()),
+              {
+                get children() {
+                  return createComponent(DisclosureStateProvider, {
+                    state,
+                    get children() {
+                      return props.children;
+                    },
+                  });
+                },
+              },
+            ) as DynamicProps<T>,
+          ),
       );
     },
   });

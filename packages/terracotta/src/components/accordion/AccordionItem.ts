@@ -1,12 +1,6 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createComponent, createUniqueId, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   ValidConstructor,
@@ -16,12 +10,12 @@ import type {
 import {
   createActiveState,
   createARIADisabledState,
-  createDisabledState, createExpandedState, createSelectedState,
+  createDisabledState,
+  createExpandedState,
+  createSelectedState,
 } from '../../utils/state-props';
 import { useAccordionContext } from './AccordionContext';
-import {
-  AccordionItemContext,
-} from './AccordionItemContext';
+import { AccordionItemContext } from './AccordionItemContext';
 import { ACCORDION_ITEM_TAG } from './tags';
 import type {
   SelectOptionStateOptions,
@@ -34,12 +28,13 @@ import {
 import type { Prettify } from '../../utils/types';
 
 export type AccordionItemprops<V> = Prettify<
-  & SelectOptionStateOptions<V>
-  & SelectOptionStateRenderProps
+  SelectOptionStateOptions<V> & SelectOptionStateRenderProps
 >;
 
-export type AccordionItemProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, AccordionItemprops<V>>;
+export type AccordionItemProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, AccordionItemprops<V>>;
 
 export function AccordionItem<V, T extends ValidConstructor = 'div'>(
   props: AccordionItemProps<V, T>,
@@ -55,12 +50,7 @@ export function AccordionItem<V, T extends ValidConstructor = 'div'>(
       return createDynamic(
         () => props.as || ('div' as T),
         mergeProps(
-          omitProps(props, [
-            'as',
-            'children',
-            'value',
-            'disabled',
-          ]),
+          omitProps(props, ['as', 'children', 'value', 'disabled']),
           ACCORDION_ITEM_TAG,
           createDisabledState(() => state.disabled()),
           createARIADisabledState(() => state.disabled()),

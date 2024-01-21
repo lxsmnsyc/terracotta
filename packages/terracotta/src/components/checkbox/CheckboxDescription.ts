@@ -1,23 +1,19 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createComponent, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  useCheckboxContext,
-} from './CheckboxContext';
+import { useCheckboxContext } from './CheckboxContext';
 import { CHECKBOX_DESCRIPTION } from './tags';
 import type { CheckStateRenderProps } from '../../states/create-check-state';
-import { CheckStateChild, useCheckState } from '../../states/create-check-state';
+import {
+  CheckStateChild,
+  useCheckState,
+} from '../../states/create-check-state';
 import {
   createCheckedState,
   createDisabledState,
@@ -34,10 +30,7 @@ export function CheckboxDescription<T extends ValidConstructor = 'p'>(
   return createDynamic(
     () => props.as || ('p' as T),
     mergeProps(
-      omitProps(props, [
-        'as',
-        'children',
-      ]),
+      omitProps(props, ['as', 'children']),
       CHECKBOX_DESCRIPTION,
       {
         id: context.descriptionID,

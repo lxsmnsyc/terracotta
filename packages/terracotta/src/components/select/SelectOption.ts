@@ -1,12 +1,6 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createComponent, createEffect, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import type {
   SelectOptionStateOptions,
   SelectOptionStateRenderProps,
@@ -19,9 +13,7 @@ import type {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
   createActiveState,
@@ -32,22 +24,22 @@ import {
 } from '../../utils/state-props';
 import type { OmitAndMerge, Prettify } from '../../utils/types';
 import type { ButtonProps } from '../button';
-import {
-  Button,
-} from '../button';
-import {
-  useSelectContext,
-} from './SelectContext';
+import { Button } from '../button';
+import { useSelectContext } from './SelectContext';
 import { SELECT_OPTION_TAG } from './tags';
 import useEventListener from '../../utils/use-event-listener';
 
 export type SelectOptionBaseProps<V> = Prettify<
-  & SelectOptionStateOptions<V>
-  & SelectOptionStateRenderProps
+  SelectOptionStateOptions<V> & SelectOptionStateRenderProps
 >;
 
-export type SelectOptionProps<V, T extends ValidConstructor = 'li'> =
-  HeadlessPropsWithRef<T, OmitAndMerge<SelectOptionBaseProps<V>, ButtonProps<T>>>;
+export type SelectOptionProps<
+  V,
+  T extends ValidConstructor = 'li',
+> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<SelectOptionBaseProps<V>, ButtonProps<T>>
+>;
 
 export function SelectOption<V, T extends ValidConstructor = 'li'>(
   props: SelectOptionProps<V, T>,
@@ -81,39 +73,37 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
     }
   });
 
-  return createComponent(Button, mergeProps(
-    omitProps(props, [
-      'as',
-      'children',
-      'value',
-      'ref',
-    ]),
-    SELECT_OPTION_TAG,
-    createOwnerAttribute(context.controller.getId()),
-    {
-      get as() {
-        return props.as || ('li' as T);
+  return createComponent(
+    Button,
+    mergeProps(
+      omitProps(props, ['as', 'children', 'value', 'ref']),
+      SELECT_OPTION_TAG,
+      createOwnerAttribute(context.controller.getId()),
+      {
+        get as() {
+          return props.as || ('li' as T);
+        },
+        role: 'option',
+        get tabindex() {
+          return state.isActive() ? 0 : -1;
+        },
+        ref: setInternalRef,
       },
-      role: 'option',
-      get tabindex() {
-        return state.isActive() ? 0 : -1;
+      createDisabledState(() => state.disabled()),
+      createARIADisabledState(() => state.disabled()),
+      createSelectedState(() => state.isSelected()),
+      createARIASelectedState(() => state.isSelected()),
+      createActiveState(() => state.isActive()),
+      {
+        get children() {
+          return createComponent(SelectOptionStateProvider, {
+            state,
+            get children() {
+              return props.children;
+            },
+          });
+        },
       },
-      ref: setInternalRef,
-    },
-    createDisabledState(() => state.disabled()),
-    createARIADisabledState(() => state.disabled()),
-    createSelectedState(() => state.isSelected()),
-    createARIASelectedState(() => state.isSelected()),
-    createActiveState(() => state.isActive()),
-    {
-      get children() {
-        return createComponent(SelectOptionStateProvider, {
-          state,
-          get children() {
-            return props.children;
-          },
-        });
-      },
-    },
-  ) as ButtonProps<T>);
+    ) as ButtonProps<T>,
+  );
 }

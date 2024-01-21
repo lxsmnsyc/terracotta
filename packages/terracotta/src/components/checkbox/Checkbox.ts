@@ -1,9 +1,5 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
+import { createComponent, createUniqueId, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   DynamicProps,
@@ -23,19 +19,21 @@ import {
 import { CheckboxContext } from './CheckboxContext';
 import createDynamic from '../../utils/create-dynamic';
 import { CHECKBOX_TAG } from './tags';
-import { createARIADisabledState, createCheckedState, createDisabledState } from '../../utils/state-props';
+import {
+  createARIADisabledState,
+  createCheckedState,
+  createDisabledState,
+} from '../../utils/state-props';
 
 export type CheckboxControlledBaseProps = Prettify<
-  & CheckStateControlledOptions
-  & CheckStateRenderProps
+  CheckStateControlledOptions & CheckStateRenderProps
 >;
 
 export type CheckboxControlledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, CheckboxControlledBaseProps>;
 
 export type CheckboxUncontrolledBaseProps = Prettify<
-  & CheckStateUncontrolledOptions
-  & CheckStateRenderProps
+  CheckStateUncontrolledOptions & CheckStateRenderProps
 >;
 
 export type CheckboxUncontrolledProps<T extends ValidConstructor = 'div'> =
@@ -74,19 +72,19 @@ export function Checkbox<T extends ValidConstructor = 'div'>(
         mergeProps(
           isCheckboxUncontrolled(props)
             ? omitProps(props, [
-              'as',
-              'children',
-              'defaultChecked',
-              'disabled',
-              'onChange',
-            ])
+                'as',
+                'children',
+                'defaultChecked',
+                'disabled',
+                'onChange',
+              ])
             : omitProps(props, [
-              'as',
-              'children',
-              'checked',
-              'disabled',
-              'onChange',
-            ]),
+                'as',
+                'children',
+                'checked',
+                'disabled',
+                'onChange',
+              ]),
           CHECKBOX_TAG,
           createDisabledState(() => state.disabled()),
           createARIADisabledState(() => state.disabled()),

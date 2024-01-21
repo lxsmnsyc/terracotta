@@ -53,30 +53,32 @@ export function createAutocompleteOptionState<T>(
 }
 
 export interface AutocompleteOptionStateRenderProps {
-  children?: JSX.Element | ((state: AutocompleteOptionStateProperties) => JSX.Element);
+  children?:
+    | JSX.Element
+    | ((state: AutocompleteOptionStateProperties) => JSX.Element);
 }
 
-export interface AutocompleteOptionStateProviderProps extends AutocompleteOptionStateRenderProps {
+export interface AutocompleteOptionStateProviderProps
+  extends AutocompleteOptionStateRenderProps {
   state: AutocompleteOptionStateProperties;
 }
 
-const AutocompleteOptionStateContext = createContext<AutocompleteOptionStateProperties>();
+const AutocompleteOptionStateContext =
+  createContext<AutocompleteOptionStateProperties>();
 
 export function AutocompleteOptionStateProvider(
   props: AutocompleteOptionStateProviderProps,
 ): JSX.Element {
-  return (
-    createComponent(AutocompleteOptionStateContext.Provider, {
-      value: props.state,
-      get children() {
-        const current = props.children;
-        if (typeof current === 'function') {
-          return current(props.state);
-        }
-        return current;
-      },
-    })
-  );
+  return createComponent(AutocompleteOptionStateContext.Provider, {
+    value: props.state,
+    get children() {
+      const current = props.children;
+      if (typeof current === 'function') {
+        return current(props.state);
+      }
+      return current;
+    },
+  });
 }
 
 export function useAutocompleteOptionState(): AutocompleteOptionStateProperties {

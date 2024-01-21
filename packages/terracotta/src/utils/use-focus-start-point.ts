@@ -1,11 +1,6 @@
-import {
-  onCleanup,
-} from 'solid-js';
+import { onCleanup } from 'solid-js';
 import { isServer } from 'solid-js/web';
-import {
-  getFocusStartPoint,
-  setFocusStartPoint,
-} from './focus-start-point';
+import { getFocusStartPoint, setFocusStartPoint } from './focus-start-point';
 
 class FocusStartPoint {
   private returnElement: Element | null | undefined;

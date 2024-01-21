@@ -132,9 +132,7 @@ interface SelectedProps {
   'tc-selected': Booleanish;
 }
 
-export function createSelectedState(
-  isSelected: () => boolean,
-): SelectedProps {
+export function createSelectedState(isSelected: () => boolean): SelectedProps {
   return {
     get 'tc-selected'(): Booleanish {
       return toBooleanish(isSelected());
@@ -146,9 +144,7 @@ interface ActiveProps {
   'tc-active': Booleanish;
 }
 
-export function createActiveState(
-  isActive: () => boolean,
-): ActiveProps {
+export function createActiveState(isActive: () => boolean): ActiveProps {
   return {
     get 'tc-active'(): Booleanish {
       return toBooleanish(isActive());
@@ -160,9 +156,7 @@ interface MatchesProps {
   'tc-matches': Booleanish;
 }
 
-export function createMatchesState(
-  matches: () => boolean,
-): MatchesProps {
+export function createMatchesState(matches: () => boolean): MatchesProps {
   return {
     get 'tc-matches'(): Booleanish {
       return toBooleanish(matches());
@@ -188,9 +182,7 @@ interface HasActiveProps {
   'tc-has-active': Booleanish;
 }
 
-export function createHasActiveState(
-  hasActive: () => boolean,
-): HasActiveProps {
+export function createHasActiveState(hasActive: () => boolean): HasActiveProps {
   return {
     get 'tc-has-active'(): Booleanish {
       return toBooleanish(hasActive());
@@ -202,9 +194,7 @@ interface HasQueryProps {
   'tc-has-query': Booleanish;
 }
 
-export function createHasQueryState(
-  hasQuery: () => boolean,
-): HasQueryProps {
+export function createHasQueryState(hasQuery: () => boolean): HasQueryProps {
   return {
     get 'tc-has-query'(): Booleanish {
       return toBooleanish(hasQuery());
@@ -216,9 +206,7 @@ interface PressedProps {
   'tc-pressed': Booleanish;
 }
 
-export function createPressedState(
-  pressed: () => boolean,
-): PressedProps {
+export function createPressedState(pressed: () => boolean): PressedProps {
   return {
     get 'tc-pressed'(): Booleanish {
       return toBooleanish(pressed());

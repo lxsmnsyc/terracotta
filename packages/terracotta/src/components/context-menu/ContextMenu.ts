@@ -32,16 +32,14 @@ import createDynamic from '../../utils/create-dynamic';
 import { CONTEXT_MENU_TAG } from './tags';
 
 export type ContextMenuControlledBaseProps = Prettify<
-  & DisclosureStateControlledOptions
-  & DisclosureStateRenderProps
+  DisclosureStateControlledOptions & DisclosureStateRenderProps
 >;
 
 export type ContextMenuControlledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, ContextMenuControlledBaseProps>;
 
 export type ContextMenuUncontrolledBaseProps = Prettify<
-  & DisclosureStateUncontrolledOptions
-  & DisclosureStateRenderProps
+  DisclosureStateUncontrolledOptions & DisclosureStateRenderProps
 >;
 
 export type ContextMenuUncontrolledProps<T extends ValidConstructor = 'div'> =
@@ -88,23 +86,23 @@ export function ContextMenu<T extends ValidConstructor = 'div'>(
         mergeProps(
           isContextMenuUncontrolled(props)
             ? omitProps(props, [
-              'as',
-              'children',
-              'defaultOpen',
-              'disabled',
-              'onChange',
-              'onClose',
-              'onOpen',
-            ])
+                'as',
+                'children',
+                'defaultOpen',
+                'disabled',
+                'onChange',
+                'onClose',
+                'onOpen',
+              ])
             : omitProps(props, [
-              'as',
-              'children',
-              'isOpen',
-              'disabled',
-              'onChange',
-              'onClose',
-              'onOpen',
-            ]),
+                'as',
+                'children',
+                'isOpen',
+                'disabled',
+                'onChange',
+                'onClose',
+                'onOpen',
+              ]),
           CONTEXT_MENU_TAG,
           createDisabledState(() => state.disabled()),
           createARIADisabledState(() => state.disabled()),

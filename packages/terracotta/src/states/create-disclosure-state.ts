@@ -1,7 +1,4 @@
-import type {
-  Accessor,
-  JSX,
-} from 'solid-js';
+import type { Accessor, JSX } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -110,29 +107,26 @@ export interface DisclosureStateRenderProps {
   children?: JSX.Element | ((state: DisclosureStateProperties) => JSX.Element);
 }
 
-export interface DisclosureStateProviderProps extends DisclosureStateRenderProps {
+export interface DisclosureStateProviderProps
+  extends DisclosureStateRenderProps {
   state: DisclosureStateProperties;
 }
 
-const DisclosureStateContext = (
-  createContext<DisclosureStateProperties>()
-);
+const DisclosureStateContext = createContext<DisclosureStateProperties>();
 
 export function DisclosureStateProvider(
   props: DisclosureStateProviderProps,
 ): JSX.Element {
-  return (
-    createComponent(DisclosureStateContext.Provider, {
-      value: props.state,
-      get children() {
-        const current = props.children;
-        if (typeof current === 'function') {
-          return current(props.state);
-        }
-        return current;
-      },
-    })
-  );
+  return createComponent(DisclosureStateContext.Provider, {
+    value: props.state,
+    get children() {
+      const current = props.children;
+      if (typeof current === 'function') {
+        return current(props.state);
+      }
+      return current;
+    },
+  });
 }
 
 export function useDisclosureState(): DisclosureStateProperties {

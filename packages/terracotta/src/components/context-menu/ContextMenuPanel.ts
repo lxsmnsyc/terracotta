@@ -1,30 +1,18 @@
 import type { JSX } from 'solid-js';
-import {
-  createEffect,
-  mergeProps,
-  createComponent,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createEffect, mergeProps, createComponent } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
 import type { UnmountableProps } from '../../utils/create-unmountable';
-import {
-  createUnmountable,
-} from '../../utils/create-unmountable';
-import {
-  useContextMenuContext,
-} from './ContextMenuContext';
+import { createUnmountable } from '../../utils/create-unmountable';
+import { useContextMenuContext } from './ContextMenuContext';
 import { CONTEXT_MENU_PANEL_TAG } from './tags';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
@@ -39,8 +27,7 @@ import {
 import useEventListener from '../../utils/use-event-listener';
 
 export type ContextMenuPanelBaseProps = Prettify<
-  & DisclosureStateRenderProps
-  & UnmountableProps
+  DisclosureStateRenderProps & UnmountableProps
 >;
 
 export type ContextMenuPanelProps<T extends ValidConstructor = 'div'> =
@@ -59,22 +46,24 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
     if (current instanceof HTMLElement) {
       if (state.isOpen()) {
         focusFirst(getFocusableElements(current), false);
-        useEventListener(current, 'keydown', (e) => {
+        useEventListener(current, 'keydown', e => {
           if (!props.disabled) {
             switch (e.key) {
-              case 'Tab':
+              case 'Tab': {
                 e.preventDefault();
                 lockFocus(current, e.shiftKey, false);
                 break;
-              case 'Escape':
+              }
+              case 'Escape': {
                 state.close();
                 break;
+              }
               default:
                 break;
             }
           }
         });
-        useEventListener(document, 'click', (e) => {
+        useEventListener(document, 'click', e => {
           if (!current.contains(e.target as Node)) {
             state.close();
           }
@@ -86,30 +75,26 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
   return createUnmountable(
     props,
     () => state.isOpen(),
-    () => createDynamic(
-      () => props.as || ('div' as T),
-      mergeProps(
-        omitProps(props, [
-          'as',
-          'unmount',
-          'children',
-          'ref',
-        ]),
-        CONTEXT_MENU_PANEL_TAG,
-        {
-          id: context.panelID,
-          ref: setInternalRef,
-          get children() {
-            return createComponent(DisclosureStateChild, {
-              get children() {
-                return props.children;
-              },
-            });
+    () =>
+      createDynamic(
+        () => props.as || ('div' as T),
+        mergeProps(
+          omitProps(props, ['as', 'unmount', 'children', 'ref']),
+          CONTEXT_MENU_PANEL_TAG,
+          {
+            id: context.panelID,
+            ref: setInternalRef,
+            get children() {
+              return createComponent(DisclosureStateChild, {
+                get children() {
+                  return props.children;
+                },
+              });
+            },
           },
-        },
-        createDisabledState(() => state.disabled()),
-        createExpandedState(() => state.isOpen()),
-      ) as DynamicProps<T>,
-    ),
+          createDisabledState(() => state.disabled()),
+          createExpandedState(() => state.isOpen()),
+        ) as DynamicProps<T>,
+      ),
   );
 }

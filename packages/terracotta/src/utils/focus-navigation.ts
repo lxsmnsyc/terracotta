@@ -71,7 +71,10 @@ export function focusNext(
 ): HTMLElement | undefined {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i] || nodes[i].contains(targetNode)) {
-      return focusNode(getNextFocusable(nodes, i, Direction.Next, loop), virtual);
+      return focusNode(
+        getNextFocusable(nodes, i, Direction.Next, loop),
+        virtual,
+      );
     }
   }
   return undefined;
@@ -85,7 +88,10 @@ export function focusPrev(
 ): HTMLElement | undefined {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (nodes[i].contains(targetNode)) {
-      return focusNode(getNextFocusable(nodes, i, Direction.Prev, loop), virtual);
+      return focusNode(
+        getNextFocusable(nodes, i, Direction.Prev, loop),
+        virtual,
+      );
     }
   }
   return undefined;
@@ -96,7 +102,10 @@ export function focusFirst(
   virtual: boolean,
 ): HTMLElement | undefined {
   if (nodes.length) {
-    return focusNode(getNextFocusable(nodes, -1, Direction.Next, false), virtual);
+    return focusNode(
+      getNextFocusable(nodes, -1, Direction.Next, false),
+      virtual,
+    );
   }
   return undefined;
 }
@@ -106,7 +115,10 @@ export function focusLast(
   virtual: boolean,
 ): HTMLElement | undefined {
   if (nodes.length) {
-    return focusNode(getNextFocusable(nodes, nodes.length, Direction.Prev, false), virtual);
+    return focusNode(
+      getNextFocusable(nodes, nodes.length, Direction.Prev, false),
+      virtual,
+    );
   }
   return undefined;
 }
@@ -133,12 +145,17 @@ export function lockFocus(
 ): HTMLElement | undefined {
   const nodes = getFocusableElements(ref);
   if (reverse) {
-    if (!document.activeElement || !ref.contains(document.activeElement)) {
+    if (!(document.activeElement && ref.contains(document.activeElement))) {
       return focusLast(nodes, virtual);
     }
-    return focusPrev(nodes, document.activeElement as HTMLElement, true, virtual);
+    return focusPrev(
+      nodes,
+      document.activeElement as HTMLElement,
+      true,
+      virtual,
+    );
   }
-  if (!document.activeElement || !ref.contains(document.activeElement)) {
+  if (!(document.activeElement && ref.contains(document.activeElement))) {
     return focusFirst(nodes, virtual);
   }
   return focusNext(nodes, document.activeElement as HTMLElement, true, virtual);

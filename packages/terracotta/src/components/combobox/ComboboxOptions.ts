@@ -7,21 +7,15 @@ import {
   onMount,
   onCleanup,
 } from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
-import {
-  useComboboxContext,
-} from './ComboboxContext';
+import { createForwardRef } from '../../utils/dynamic-prop';
+import { useComboboxContext } from './ComboboxContext';
 import { COMBOBOX_OPTIONS_TAG } from './tags';
 import {
   createDisabledState,
@@ -44,12 +38,13 @@ import { SELECTED_NODE } from '../../utils/namespace';
 import useEventListener from '../../utils/use-event-listener';
 
 export type ComboboxOptionsBaseProps<V> = Prettify<
-  & UnmountableProps
-  & AutocompleteStateRenderProps<V>
+  UnmountableProps & AutocompleteStateRenderProps<V>
 >;
 
-export type ComboboxOptionsProps<V, T extends ValidConstructor = 'ul'> =
-  HeadlessPropsWithRef<T, ComboboxOptionsBaseProps<V>>;
+export type ComboboxOptionsProps<
+  V,
+  T extends ValidConstructor = 'ul',
+> = HeadlessPropsWithRef<T, ComboboxOptionsBaseProps<V>>;
 
 export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
   props: ComboboxOptionsProps<V, T>,
@@ -91,10 +86,10 @@ export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
   onMount(() => {
     createEffect(() => {
       if (disclosureState.isOpen()) {
-        if (!untrack(() => autocompleteState.hasSelected())) {
-          context.controller.setFirstChecked();
-        } else {
+        if (untrack(() => autocompleteState.hasSelected())) {
           context.controller.setFirstChecked(SELECTED_NODE);
+        } else {
+          context.controller.setFirstChecked();
         }
       }
     });
@@ -103,40 +98,37 @@ export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
   return createUnmountable(
     props,
     () => disclosureState.isOpen(),
-    () => createDynamic(
-      () => props.as || ('ul' as T),
-      mergeProps(
-        omitProps(props, [
-          'as',
-          'children',
-          'ref',
-        ]),
-        COMBOBOX_OPTIONS_TAG,
-        {
-          id: context.optionsID,
-          role: 'listbox',
-          'aria-multiselectable': context.multiple,
-          ref: setInternalRef,
-          // TODO should Combobox support "horizontal"?
-          'aria-orientation': 'vertical',
-          tabindex: -1,
-        },
-        createDisabledState(() => autocompleteState.disabled()),
-        createARIADisabledState(() => autocompleteState.disabled()),
-        createExpandedState(() => disclosureState.isOpen()),
-        createHasSelectedState(() => autocompleteState.hasSelected()),
-        createHasActiveState(() => autocompleteState.hasActive()),
-        createHasQueryState(() => autocompleteState.hasQuery()),
-        {
-          get children() {
-            return createComponent(AutocompleteStateChild, {
-              get children() {
-                return props.children;
-              },
-            });
+    () =>
+      createDynamic(
+        () => props.as || ('ul' as T),
+        mergeProps(
+          omitProps(props, ['as', 'children', 'ref']),
+          COMBOBOX_OPTIONS_TAG,
+          {
+            id: context.optionsID,
+            role: 'listbox',
+            'aria-multiselectable': context.multiple,
+            ref: setInternalRef,
+            // TODO should Combobox support "horizontal"?
+            'aria-orientation': 'vertical',
+            tabindex: -1,
           },
-        },
-      ) as DynamicProps<T>,
-    ),
+          createDisabledState(() => autocompleteState.disabled()),
+          createARIADisabledState(() => autocompleteState.disabled()),
+          createExpandedState(() => disclosureState.isOpen()),
+          createHasSelectedState(() => autocompleteState.hasSelected()),
+          createHasActiveState(() => autocompleteState.hasActive()),
+          createHasQueryState(() => autocompleteState.hasQuery()),
+          {
+            get children() {
+              return createComponent(AutocompleteStateChild, {
+                get children() {
+                  return props.children;
+                },
+              });
+            },
+          },
+        ) as DynamicProps<T>,
+      ),
   );
 }

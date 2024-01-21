@@ -9,9 +9,7 @@ import {
   onCleanup,
   useContext,
 } from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { omitProps } from 'solid-use/props';
 import assert from '../../utils/assert';
 import createDynamic from '../../utils/create-dynamic';
 import type {
@@ -32,12 +30,14 @@ const ToastContext = createContext<ToastContextData>();
 
 function useToastContext(componentName: string): ToastContextData {
   const context = useContext(ToastContext);
-  assert(context, new Error(`<${componentName}> must be used inside a <Toaster>`));
+  assert(
+    context,
+    new Error(`<${componentName}> must be used inside a <Toaster>`),
+  );
   return context;
 }
 
-export type ToastProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T>;
+export type ToastProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
 
 export function Toast<T extends ValidConstructor = 'div'>(
   props: ToastProps<T>,
@@ -46,21 +46,14 @@ export function Toast<T extends ValidConstructor = 'div'>(
 
   return createDynamic(
     () => props.as || ('div' as T),
-    mergeProps(
-      omitProps(props, [
-        'as',
-      ]),
-      TOAST_TAG,
-      {
-        role: 'status',
-        'aria-live': 'polite',
-      },
-    ) as DynamicProps<T>,
+    mergeProps(omitProps(props, ['as']), TOAST_TAG, {
+      role: 'status',
+      'aria-live': 'polite',
+    }) as DynamicProps<T>,
   );
 }
 
-export type ToasterProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T>;
+export type ToasterProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
 
 export function Toaster<T extends ValidConstructor = 'div'>(
   props: ToasterProps<T>,
@@ -74,12 +67,7 @@ export function Toaster<T extends ValidConstructor = 'div'>(
     get children() {
       return createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(
-          omitProps(props, [
-            'as',
-          ]),
-          TOASTER_TAG,
-        ) as DynamicProps<T>,
+        mergeProps(omitProps(props, ['as']), TOASTER_TAG) as DynamicProps<T>,
       );
     },
   });
@@ -133,7 +121,7 @@ export class ToasterStore<T> {
   }
 
   remove(id: string): void {
-    this.queue = this.queue.filter((item) => item.id !== id);
+    this.queue = this.queue.filter(item => item.id !== id);
     this.notify();
   }
 

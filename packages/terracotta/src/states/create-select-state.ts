@@ -1,7 +1,4 @@
-import type {
-  Accessor,
-  JSX,
-} from 'solid-js';
+import type { Accessor, JSX } from 'solid-js';
 import {
   createSignal,
   untrack,
@@ -58,7 +55,9 @@ export function createSingleSelectState<T>(
   const equals = options.by || isEqual;
 
   if ('defaultValue' in options) {
-    const [selected, setSelected] = createSignal<T | undefined>(options.defaultValue);
+    const [selected, setSelected] = createSignal<T | undefined>(
+      options.defaultValue,
+    );
     selectedValue = selected;
     setSelectedValue = (value): void => {
       setSelected(() => value);
@@ -239,25 +238,21 @@ export interface SelectStateProviderProps<T> extends SelectStateRenderProps<T> {
   state: SelectStateProperties<T>;
 }
 
-const SelectStateContext = (
-  createContext<SelectStateProperties<unknown>>()
-);
+const SelectStateContext = createContext<SelectStateProperties<unknown>>();
 
 export function SelectStateProvider<T>(
   props: SelectStateProviderProps<T>,
 ): JSX.Element {
-  return (
-    createComponent(SelectStateContext.Provider, {
-      value: props.state,
-      get children() {
-        const current = props.children;
-        if (typeof current === 'function') {
-          return current(props.state);
-        }
-        return current;
-      },
-    })
-  );
+  return createComponent(SelectStateContext.Provider, {
+    value: props.state,
+    get children() {
+      const current = props.children;
+      if (typeof current === 'function') {
+        return current(props.state);
+      }
+      return current;
+    },
+  });
 }
 
 export function useSelectState<T>(): SelectStateProperties<T> {

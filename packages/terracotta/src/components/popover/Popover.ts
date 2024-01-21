@@ -32,17 +32,15 @@ import {
 } from '../../utils/state-props';
 
 export type PopoverControlledBaseProps = Prettify<
-  & DisclosureStateRenderProps
-  & DisclosureStateControlledOptions
->
+  DisclosureStateRenderProps & DisclosureStateControlledOptions
+>;
 
 export type PopoverControlledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, PopoverControlledBaseProps>;
 
 export type PopoverUncontrolledBaseProps = Prettify<
-  & DisclosureStateRenderProps
-  & DisclosureStateUncontrolledOptions
->
+  DisclosureStateRenderProps & DisclosureStateUncontrolledOptions
+>;
 
 export type PopoverUncontrolledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, PopoverUncontrolledBaseProps>;
@@ -89,23 +87,23 @@ export function Popover<T extends ValidConstructor = 'div'>(
         mergeProps(
           isPopoverUncontrolled(props)
             ? omitProps(props, [
-              'as',
-              'children',
-              'defaultOpen',
-              'disabled',
-              'onChange',
-              'onClose',
-              'onOpen',
-            ])
+                'as',
+                'children',
+                'defaultOpen',
+                'disabled',
+                'onChange',
+                'onClose',
+                'onOpen',
+              ])
             : omitProps(props, [
-              'as',
-              'children',
-              'isOpen',
-              'disabled',
-              'onChange',
-              'onClose',
-              'onOpen',
-            ]),
+                'as',
+                'children',
+                'isOpen',
+                'disabled',
+                'onChange',
+                'onClose',
+                'onOpen',
+              ]),
           POPOVER_TAG,
           createDisabledState(() => state.disabled()),
           createARIADisabledState(() => state.disabled()),

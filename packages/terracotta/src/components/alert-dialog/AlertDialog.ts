@@ -5,9 +5,7 @@ import {
   createComponent,
   createEffect,
 } from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   ValidConstructor,
@@ -15,13 +13,9 @@ import type {
   DynamicProps,
 } from '../../utils/dynamic-prop';
 import type { UnmountableProps } from '../../utils/create-unmountable';
-import {
-  createUnmountable,
-} from '../../utils/create-unmountable';
+import { createUnmountable } from '../../utils/create-unmountable';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
-import {
-  AlertDialogContext,
-} from './AlertDialogContext';
+import { AlertDialogContext } from './AlertDialogContext';
 import { ALERT_DIALOG_TAG } from './tags';
 import type { Prettify } from '../../utils/types';
 import type {
@@ -40,18 +34,18 @@ import {
 } from '../../utils/state-props';
 
 export type AlertDialogControlledBaseProps = Prettify<
-  & DisclosureStateControlledOptions
-  & DisclosureStateRenderProps
-  & UnmountableProps
+  DisclosureStateControlledOptions &
+    DisclosureStateRenderProps &
+    UnmountableProps
 >;
 
 export type AlertDialogControlledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, AlertDialogControlledBaseProps>;
 
 export type AlertDialogUncontrolledBaseProps = Prettify<
-  & DisclosureStateUncontrolledOptions
-  & DisclosureStateRenderProps
-  & UnmountableProps
+  DisclosureStateUncontrolledOptions &
+    DisclosureStateRenderProps &
+    UnmountableProps
 >;
 
 export type AlertDialogUncontrolledProps<T extends ValidConstructor = 'div'> =
@@ -98,51 +92,52 @@ export function AlertDialog<T extends ValidConstructor = 'div'>(
       return createUnmountable(
         props,
         () => state.isOpen(),
-        () => createDynamic(
-          () => props.as || ('div' as T),
-          mergeProps(
-            isAlertDialogUncontrolled(props)
-              ? omitProps(props, [
-                'as',
-                'children',
-                'defaultOpen',
-                'disabled',
-                'onChange',
-                'onClose',
-                'onOpen',
-                'unmount',
-              ])
-              : omitProps(props, [
-                'as',
-                'children',
-                'isOpen',
-                'disabled',
-                'onChange',
-                'onClose',
-                'onOpen',
-                'unmount',
-              ]),
-            ALERT_DIALOG_TAG,
-            {
-              id: ownerID,
-              role: 'alertdialog',
-              'aria-modal': true,
-              'aria-labelledby': titleID,
-              'aria-describedby': descriptionID,
-              get children() {
-                return createComponent(DisclosureStateProvider, {
-                  state,
-                  get children() {
-                    return props.children;
-                  },
-                });
+        () =>
+          createDynamic(
+            () => props.as || ('div' as T),
+            mergeProps(
+              isAlertDialogUncontrolled(props)
+                ? omitProps(props, [
+                    'as',
+                    'children',
+                    'defaultOpen',
+                    'disabled',
+                    'onChange',
+                    'onClose',
+                    'onOpen',
+                    'unmount',
+                  ])
+                : omitProps(props, [
+                    'as',
+                    'children',
+                    'isOpen',
+                    'disabled',
+                    'onChange',
+                    'onClose',
+                    'onOpen',
+                    'unmount',
+                  ]),
+              ALERT_DIALOG_TAG,
+              {
+                id: ownerID,
+                role: 'alertdialog',
+                'aria-modal': true,
+                'aria-labelledby': titleID,
+                'aria-describedby': descriptionID,
+                get children() {
+                  return createComponent(DisclosureStateProvider, {
+                    state,
+                    get children() {
+                      return props.children;
+                    },
+                  });
+                },
               },
-            },
-            createDisabledState(() => state.disabled()),
-            createARIADisabledState(() => state.disabled()),
-            createExpandedState(() => state.isOpen()),
-          ) as DynamicProps<T>,
-        ),
+              createDisabledState(() => state.disabled()),
+              createARIADisabledState(() => state.disabled()),
+              createExpandedState(() => state.isOpen()),
+            ) as DynamicProps<T>,
+          ),
       );
     },
   });

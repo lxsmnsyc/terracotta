@@ -1,25 +1,14 @@
 import type { JSX } from 'solid-js';
-import {
-  createEffect,
-  createComponent,
-  mergeProps,
-  onCleanup,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createEffect, createComponent, mergeProps, onCleanup } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
-import {
-  useCommandContext,
-} from './CommandContext';
+import { createForwardRef } from '../../utils/dynamic-prop';
+import { useCommandContext } from './CommandContext';
 import { COMMAND_OPTIONS_TAG } from './tags';
 import {
   createARIADisabledState,
@@ -35,8 +24,10 @@ import {
 } from '../../states/create-autocomplete-state';
 import useEventListener from '../../utils/use-event-listener';
 
-export type CommandOptionsProps<V, T extends ValidConstructor = 'ul'> =
-  HeadlessPropsWithRef<T, AutocompleteStateRenderProps<V>>;
+export type CommandOptionsProps<
+  V,
+  T extends ValidConstructor = 'ul',
+> = HeadlessPropsWithRef<T, AutocompleteStateRenderProps<V>>;
 
 export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
   props: CommandOptionsProps<V, T>,
@@ -70,11 +61,7 @@ export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
   return createDynamic(
     () => props.as || ('ul' as T),
     mergeProps(
-      omitProps(props, [
-        'as',
-        'children',
-        'ref',
-      ]),
+      omitProps(props, ['as', 'children', 'ref']),
       COMMAND_OPTIONS_TAG,
       {
         id: context.optionsID,

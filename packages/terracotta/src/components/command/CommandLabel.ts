@@ -1,19 +1,13 @@
 import type { JSX } from 'solid-js';
-import {
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   ValidConstructor,
   HeadlessProps,
   DynamicProps,
 } from '../../utils/dynamic-prop';
-import {
-  useCommandContext,
-} from './CommandContext';
+import { useCommandContext } from './CommandContext';
 import { COMMAND_LABEL_TAG } from './tags';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import {
@@ -35,9 +29,7 @@ export function CommandLabel<T extends ValidConstructor = 'label'>(
   return createDynamic(
     () => props.as || ('label' as T),
     mergeProps(
-      omitProps(props, [
-        'as',
-      ]),
+      omitProps(props, ['as']),
       COMMAND_LABEL_TAG,
       {
         id: context.labelID,

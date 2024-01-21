@@ -1,26 +1,16 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createComponent, createUniqueId, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusNext, focusPrev } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
-import {
-  FeedContext,
-} from './FeedContext';
+import { FeedContext } from './FeedContext';
 import { FEED_TAG } from './tags';
 
 export interface FeedBaseProps {
@@ -77,18 +67,10 @@ export function Feed<T extends ValidConstructor = 'div'>(
     get children() {
       return createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(
-          omitProps(props, [
-            'as',
-            'busy',
-            'size',
-          ]),
-          FEED_TAG,
-          {
-            id: ownerID,
-            ref: setRef,
-          },
-        ) as DynamicProps<T>,
+        mergeProps(omitProps(props, ['as', 'busy', 'size']), FEED_TAG, {
+          id: ownerID,
+          ref: setRef,
+        }) as DynamicProps<T>,
       );
     },
   });

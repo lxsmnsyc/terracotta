@@ -1,26 +1,16 @@
 import type { JSX } from 'solid-js';
-import {
-  createEffect,
-  mergeProps,
-  createComponent,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createEffect, mergeProps, createComponent } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
-import {
-  useDialogContext,
-} from './DialogContext';
+import { useDialogContext } from './DialogContext';
 import { DIALOG_PANEL_TAG } from './tags';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
@@ -48,16 +38,18 @@ export function DialogPanel<T extends ValidConstructor = 'div'>(
     const current = internalRef();
     if (current instanceof HTMLElement && state.isOpen()) {
       focusFirst(getFocusableElements(current), false);
-      useEventListener(current, 'keydown', (e) => {
+      useEventListener(current, 'keydown', e => {
         if (!props.disabled) {
           switch (e.key) {
-            case 'Tab':
+            case 'Tab': {
               e.preventDefault();
               lockFocus(current, e.shiftKey, false);
               break;
-            case 'Escape':
+            }
+            case 'Escape': {
               state.close();
               break;
+            }
             default:
               break;
           }
@@ -69,11 +61,7 @@ export function DialogPanel<T extends ValidConstructor = 'div'>(
   return createDynamic(
     () => props.as || ('div' as T),
     mergeProps(
-      omitProps(props, [
-        'as',
-        'children',
-        'ref',
-      ]),
+      omitProps(props, ['as', 'children', 'ref']),
       DIALOG_PANEL_TAG,
       {
         id: context.panelID,

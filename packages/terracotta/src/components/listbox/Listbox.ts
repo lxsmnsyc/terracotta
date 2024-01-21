@@ -6,9 +6,7 @@ import {
   createUniqueId,
   mergeProps,
 } from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
@@ -23,9 +21,7 @@ import {
   createHasSelectedState,
 } from '../../utils/state-props';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
-import {
-  ListboxContext,
-} from './ListboxContext';
+import { ListboxContext } from './ListboxContext';
 import { LISTBOX_TAG } from './tags';
 import type {
   MultipleSelectStateControlledOptions,
@@ -63,51 +59,63 @@ export interface ListboxSingleBaseProps<V> {
 
 // SCSCD = Single, Controlled Select, Controlled Disclosure
 export type ListboxSCSCDBaseProps<V> = Prettify<
-  & ListboxBaseProps
-  & ListboxSingleBaseProps<V>
-  & Omit<SingleSelectStateControlledOptions<V>, 'onChange'>
-  & Omit<DisclosureStateControlledOptions, 'onChange'>
-  & { children?: JSX.Element }
+  ListboxBaseProps &
+    ListboxSingleBaseProps<V> &
+    Omit<SingleSelectStateControlledOptions<V>, 'onChange'> &
+    Omit<DisclosureStateControlledOptions, 'onChange'> & {
+      children?: JSX.Element;
+    }
 >;
 
-export type ListboxSCSCDProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, ListboxSCSCDBaseProps<V>>;
+export type ListboxSCSCDProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, ListboxSCSCDBaseProps<V>>;
 
 // SCSCD = Single, Controlled Select, Uncontrolled Disclosure
 export type ListboxSCSUDBaseProps<V> = Prettify<
-  & ListboxBaseProps
-  & ListboxSingleBaseProps<V>
-  & Omit<SingleSelectStateControlledOptions<V>, 'onChange'>
-  & Omit<DisclosureStateUncontrolledOptions, 'onChange'>
-  & { children?: JSX.Element }
+  ListboxBaseProps &
+    ListboxSingleBaseProps<V> &
+    Omit<SingleSelectStateControlledOptions<V>, 'onChange'> &
+    Omit<DisclosureStateUncontrolledOptions, 'onChange'> & {
+      children?: JSX.Element;
+    }
 >;
 
-export type ListboxSCSUDProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, ListboxSCSUDBaseProps<V>>;
+export type ListboxSCSUDProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, ListboxSCSUDBaseProps<V>>;
 
 // SCSCD = Single, Uncontrolled Select, Controlled Disclosure
 export type ListboxSUSCDBaseProps<V> = Prettify<
-  & ListboxBaseProps
-  & ListboxSingleBaseProps<V>
-  & Omit<SingleSelectStateUncontrolledOptions<V>, 'onChange'>
-  & Omit<DisclosureStateControlledOptions, 'onChange'>
-  & { children?: JSX.Element }
+  ListboxBaseProps &
+    ListboxSingleBaseProps<V> &
+    Omit<SingleSelectStateUncontrolledOptions<V>, 'onChange'> &
+    Omit<DisclosureStateControlledOptions, 'onChange'> & {
+      children?: JSX.Element;
+    }
 >;
 
-export type ListboxSUSCDProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, ListboxSUSCDBaseProps<V>>;
+export type ListboxSUSCDProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, ListboxSUSCDBaseProps<V>>;
 
 // SCSCD = Single, Uncontrolled Select, Uncontrolled Disclosure
 export type ListboxSUSUDBaseProps<V> = Prettify<
-  & ListboxBaseProps
-  & ListboxSingleBaseProps<V>
-  & Omit<SingleSelectStateUncontrolledOptions<V>, 'onChange'>
-  & Omit<DisclosureStateUncontrolledOptions, 'onChange'>
-  & { children?: JSX.Element }
+  ListboxBaseProps &
+    ListboxSingleBaseProps<V> &
+    Omit<SingleSelectStateUncontrolledOptions<V>, 'onChange'> &
+    Omit<DisclosureStateUncontrolledOptions, 'onChange'> & {
+      children?: JSX.Element;
+    }
 >;
 
-export type ListboxSUSUDProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, ListboxSUSUDBaseProps<V>>;
+export type ListboxSUSUDProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, ListboxSUSUDBaseProps<V>>;
 
 export type ListboxSingleProps<V, T extends ValidConstructor = 'div'> =
   | ListboxSCSCDProps<V, T>
@@ -117,51 +125,63 @@ export type ListboxSingleProps<V, T extends ValidConstructor = 'div'> =
 
 // MCSCD = Multiple, Controlled Select, Controlled Disclosure
 export type ListboxMCSCDBaseProps<V> = Prettify<
-  & ListboxBaseProps
-  & ListboxMultipleBaseProps<V>
-  & Omit<MultipleSelectStateControlledOptions<V>, 'onChange'>
-  & Omit<DisclosureStateControlledOptions, 'onChange'>
-  & { children?: JSX.Element }
+  ListboxBaseProps &
+    ListboxMultipleBaseProps<V> &
+    Omit<MultipleSelectStateControlledOptions<V>, 'onChange'> &
+    Omit<DisclosureStateControlledOptions, 'onChange'> & {
+      children?: JSX.Element;
+    }
 >;
 
-export type ListboxMCSCDProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, ListboxMCSCDBaseProps<V>>;
+export type ListboxMCSCDProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, ListboxMCSCDBaseProps<V>>;
 
 // MCSCD = Multiple, Controlled Select, Uncontrolled Disclosure
 export type ListboxMCSUDBaseProps<V> = Prettify<
-  & ListboxBaseProps
-  & ListboxMultipleBaseProps<V>
-  & Omit<MultipleSelectStateControlledOptions<V>, 'onChange'>
-  & Omit<DisclosureStateUncontrolledOptions, 'onChange'>
-  & { children?: JSX.Element }
+  ListboxBaseProps &
+    ListboxMultipleBaseProps<V> &
+    Omit<MultipleSelectStateControlledOptions<V>, 'onChange'> &
+    Omit<DisclosureStateUncontrolledOptions, 'onChange'> & {
+      children?: JSX.Element;
+    }
 >;
 
-export type ListboxMCSUDProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, ListboxMCSUDBaseProps<V>>;
+export type ListboxMCSUDProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, ListboxMCSUDBaseProps<V>>;
 
 // MCSCD = Multiple, Uncontrolled Select, Controlled Disclosure
 export type ListboxMUSCDBaseProps<V> = Prettify<
-  & ListboxBaseProps
-  & ListboxMultipleBaseProps<V>
-  & Omit<MultipleSelectStateUncontrolledOptions<V>, 'onChange'>
-  & Omit<DisclosureStateControlledOptions, 'onChange'>
-  & { children?: JSX.Element }
+  ListboxBaseProps &
+    ListboxMultipleBaseProps<V> &
+    Omit<MultipleSelectStateUncontrolledOptions<V>, 'onChange'> &
+    Omit<DisclosureStateControlledOptions, 'onChange'> & {
+      children?: JSX.Element;
+    }
 >;
 
-export type ListboxMUSCDProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, ListboxMUSCDBaseProps<V>>;
+export type ListboxMUSCDProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, ListboxMUSCDBaseProps<V>>;
 
 // MCSCD = Multiple, Uncontrolled Select, Uncontrolled Disclosure
 export type ListboxMUSUDBaseProps<V> = Prettify<
-  & ListboxBaseProps
-  & ListboxMultipleBaseProps<V>
-  & Omit<MultipleSelectStateUncontrolledOptions<V>, 'onChange'>
-  & Omit<DisclosureStateUncontrolledOptions, 'onChange'>
-  & { children?: JSX.Element }
+  ListboxBaseProps &
+    ListboxMultipleBaseProps<V> &
+    Omit<MultipleSelectStateUncontrolledOptions<V>, 'onChange'> &
+    Omit<DisclosureStateUncontrolledOptions, 'onChange'> & {
+      children?: JSX.Element;
+    }
 >;
 
-export type ListboxMUSUDProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, ListboxMUSUDBaseProps<V>>;
+export type ListboxMUSUDProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, ListboxMUSUDBaseProps<V>>;
 
 export type ListboxMultipleProps<V, T extends ValidConstructor = 'div'> =
   | ListboxMCSCDProps<V, T>
@@ -284,45 +304,34 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
     const optionsID = createUniqueId();
 
     const disclosureState = createDisclosureState(
-      mergeProps(
-        props,
-        {
-          onChange(value: boolean) {
-            if (props.onDisclosureChange) {
-              props.onDisclosureChange(value);
-            }
-          },
+      mergeProps(props, {
+        onChange(value: boolean) {
+          if (props.onDisclosureChange) {
+            props.onDisclosureChange(value);
+          }
         },
-      ),
+      }),
     );
 
-    const selectState = (
-      isListboxMultiple(props)
-        ? createMultipleSelectState(
-          mergeProps(
-            props,
-            {
-              onChange(value: V[]) {
-                if (props.onSelectChange) {
-                  props.onSelectChange(value);
-                }
-              },
+    const selectState = isListboxMultiple(props)
+      ? createMultipleSelectState(
+          mergeProps(props, {
+            onChange(value: V[]) {
+              if (props.onSelectChange) {
+                props.onSelectChange(value);
+              }
             },
-          ),
+          }),
         )
-        : createSingleSelectState(
-          mergeProps(
-            props,
-            {
-              onChange(value?: V) {
-                if (props.onSelectChange) {
-                  props.onSelectChange(value);
-                }
-              },
+      : createSingleSelectState(
+          mergeProps(props, {
+            onChange(value?: V) {
+              if (props.onSelectChange) {
+                props.onSelectChange(value);
+              }
             },
-          ),
-        )
-    );
+          }),
+        );
 
     const fsp = useFocusStartPoint();
 

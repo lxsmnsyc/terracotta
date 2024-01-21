@@ -1,7 +1,4 @@
-import {
-  createContext,
-  useContext,
-} from 'solid-js';
+import { createContext, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 
 interface AccordionItemContextData {
@@ -11,8 +8,13 @@ interface AccordionItemContextData {
 
 export const AccordionItemContext = createContext<AccordionItemContextData>();
 
-export function useAccordionItemContext(componentName: string): AccordionItemContextData {
+export function useAccordionItemContext(
+  componentName: string,
+): AccordionItemContextData {
   const context = useContext(AccordionItemContext);
-  assert(context, new Error(`<${componentName}> must be used inside a <AccordionItem>`));
+  assert(
+    context,
+    new Error(`<${componentName}> must be used inside a <AccordionItem>`),
+  );
   return context;
 }

@@ -1,33 +1,23 @@
 import type { JSX } from 'solid-js';
-import {
-  createEffect,
-  onCleanup,
-  createComponent,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createEffect, onCleanup, createComponent, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createFeedArticleFocusNavigator,
   FeedContentContext,
 } from './FeedContentContext';
-import {
-  useFeedContext,
-} from './FeedContext';
+import { useFeedContext } from './FeedContext';
 import { FEED_CONTENT_TAG } from './tags';
 import useEventListener from '../../utils/use-event-listener';
 
-export type FeedContentProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<T>;
+export type FeedContentProps<T extends ValidConstructor = 'div'> =
+  HeadlessPropsWithRef<T>;
 
 export function FeedContent<T extends ValidConstructor = 'div'>(
   props: FeedContentProps<T>,
@@ -44,35 +34,39 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
       onCleanup(() => {
         controller.clearRef();
       });
-      useEventListener(current, 'keydown', (e) => {
+      useEventListener(current, 'keydown', e => {
         if (e.ctrlKey) {
           switch (e.key) {
-            case 'Home':
+            case 'Home': {
               e.preventDefault();
               context.focusPrev();
               break;
-            case 'End':
+            }
+            case 'End': {
               e.preventDefault();
               context.focusNext();
               break;
+            }
             default:
               break;
           }
         }
         switch (e.key) {
-          case 'PageUp':
+          case 'PageUp': {
             e.preventDefault();
             controller.setPrevChecked(false);
             break;
-          case 'PageDown':
+          }
+          case 'PageDown': {
             e.preventDefault();
             controller.setNextChecked(false);
             break;
+          }
           default:
             break;
         }
       });
-      useEventListener(current, 'focusin', (e) => {
+      useEventListener(current, 'focusin', e => {
         if (e.target && e.target !== current) {
           controller.setCurrent(e.target as HTMLElement);
         }
@@ -85,19 +79,15 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
     get children() {
       return createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(
-          omitProps(props, ['as']),
-          FEED_CONTENT_TAG,
-          {
-            id: context.contentID,
-            role: 'feed',
-            'aria-labelledby': context.labelID,
-            get 'aria-busy'() {
-              return context.busy;
-            },
-            ref: setInternalRef,
+        mergeProps(omitProps(props, ['as']), FEED_CONTENT_TAG, {
+          id: context.contentID,
+          role: 'feed',
+          'aria-labelledby': context.labelID,
+          get 'aria-busy'() {
+            return context.busy;
           },
-        ) as DynamicProps<T>,
+          ref: setInternalRef,
+        }) as DynamicProps<T>,
       );
     },
   });

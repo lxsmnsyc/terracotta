@@ -1,11 +1,6 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createComponent, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
@@ -13,12 +8,8 @@ import type {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import type { UnmountableProps } from '../../utils/create-unmountable';
-import {
-  createUnmountable,
-} from '../../utils/create-unmountable';
-import {
-  useDisclosureContext,
-} from './DisclosureContext';
+import { createUnmountable } from '../../utils/create-unmountable';
+import { useDisclosureContext } from './DisclosureContext';
 import { DISCLOSURE_PANEL_TAG } from './tags';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
@@ -32,8 +23,7 @@ import {
 } from '../../utils/state-props';
 
 export type DisclosurePanelBaseProps = Prettify<
-  & DisclosureStateRenderProps
-  & UnmountableProps
+  DisclosureStateRenderProps & UnmountableProps
 >;
 
 export type DisclosurePanelProps<T extends ValidConstructor = 'div'> =
@@ -48,28 +38,25 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
   return createUnmountable(
     props,
     () => state.isOpen(),
-    () => createDynamic(
-      () => props.as || ('div' as T),
-      mergeProps(
-        omitProps(props, [
-          'as',
-          'unmount',
-          'children',
-        ]),
-        DISCLOSURE_PANEL_TAG,
-        {
-          id: context.panelID,
-          get children() {
-            return createComponent(DisclosureStateChild, {
-              get children() {
-                return props.children;
-              },
-            });
+    () =>
+      createDynamic(
+        () => props.as || ('div' as T),
+        mergeProps(
+          omitProps(props, ['as', 'unmount', 'children']),
+          DISCLOSURE_PANEL_TAG,
+          {
+            id: context.panelID,
+            get children() {
+              return createComponent(DisclosureStateChild, {
+                get children() {
+                  return props.children;
+                },
+              });
+            },
           },
-        },
-        createDisabledState(() => state.disabled()),
-        createExpandedState(() => state.isOpen()),
-      ) as DynamicProps<T>,
-    ),
+          createDisabledState(() => state.disabled()),
+          createExpandedState(() => state.isOpen()),
+        ) as DynamicProps<T>,
+      ),
   );
 }

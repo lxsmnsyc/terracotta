@@ -7,9 +7,7 @@ import {
   createUniqueId,
   mergeProps,
 } from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { omitProps } from 'solid-use/props';
 import type {
   DynamicProps,
   HeadlessProps,
@@ -36,7 +34,10 @@ import {
   createMultipleAutocompleteState,
 } from '../../states/create-autocomplete-state';
 import type { Prettify } from '../../utils/types';
-import { CommandContext, createCommandOptionFocusNavigator } from './CommandContext';
+import {
+  CommandContext,
+  createCommandOptionFocusNavigator,
+} from './CommandContext';
 import { COMMAND_TAG } from './tags';
 
 export interface CommandBaseProps {
@@ -44,44 +45,52 @@ export interface CommandBaseProps {
 }
 
 export type SingleCommandControlledBaseProps<V> = Prettify<
-  & CommandBaseProps
-  & SingleAutocompleteStateControlledOptions<V>
-  & AutocompleteStateRenderProps<V>
+  CommandBaseProps &
+    SingleAutocompleteStateControlledOptions<V> &
+    AutocompleteStateRenderProps<V>
 >;
 
-export type SingleCommandControlledProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, SingleCommandControlledBaseProps<V>>;
+export type SingleCommandControlledProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, SingleCommandControlledBaseProps<V>>;
 
 export type SingleCommandUncontrolledBaseProps<V> = Prettify<
-  & CommandBaseProps
-  & SingleAutocompleteStateUncontrolledOptions<V>
-  & AutocompleteStateRenderProps<V>
+  CommandBaseProps &
+    SingleAutocompleteStateUncontrolledOptions<V> &
+    AutocompleteStateRenderProps<V>
 >;
 
-export type SingleCommandUncontrolledProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, SingleCommandUncontrolledBaseProps<V>>;
+export type SingleCommandUncontrolledProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, SingleCommandUncontrolledBaseProps<V>>;
 
 export type SingleCommandProps<V, T extends ValidConstructor = 'div'> =
   | SingleCommandControlledProps<V, T>
-  | SingleCommandUncontrolledProps<V, T>
+  | SingleCommandUncontrolledProps<V, T>;
 
 export type MultipleCommandControlledBaseProps<V> = Prettify<
-  & CommandBaseProps
-  & MultipleAutocompleteStateControlledOptions<V>
-  & AutocompleteStateRenderProps<V>
+  CommandBaseProps &
+    MultipleAutocompleteStateControlledOptions<V> &
+    AutocompleteStateRenderProps<V>
 >;
 
-export type MultipleCommandControlledProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, MultipleCommandControlledBaseProps<V>>;
+export type MultipleCommandControlledProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, MultipleCommandControlledBaseProps<V>>;
 
 export type MultipleCommandUncontrolledBaseProps<V> = Prettify<
-  & CommandBaseProps
-  & MultipleAutocompleteStateUncontrolledOptions<V>
-  & AutocompleteStateRenderProps<V>
+  CommandBaseProps &
+    MultipleAutocompleteStateUncontrolledOptions<V> &
+    AutocompleteStateRenderProps<V>
 >;
 
-export type MultipleCommandUncontrolledProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, MultipleCommandUncontrolledBaseProps<V>>;
+export type MultipleCommandUncontrolledProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, MultipleCommandUncontrolledBaseProps<V>>;
 
 export type MultipleCommandProps<V, T extends ValidConstructor = 'div'> =
   | MultipleCommandControlledProps<V, T>
@@ -99,7 +108,9 @@ function isCommandMultiple<V, T extends ValidConstructor = 'div'>(
 
 function isCommandUncontrolled<V, T extends ValidConstructor = 'div'>(
   props: CommandProps<V, T>,
-): props is SingleCommandUncontrolledProps<V, T> | MultipleCommandUncontrolledProps<V, T> {
+): props is
+  | SingleCommandUncontrolledProps<V, T>
+  | MultipleCommandUncontrolledProps<V, T> {
   return 'defaultValue' in props;
 }
 
@@ -112,12 +123,11 @@ export function Command<V, T extends ValidConstructor = 'div'>(
       ? createMultipleAutocompleteState(props)
       : createSingleAutocompleteState(props);
     const [activeDescendant, setActiveDescendant] = createSignal<string>();
-    const [selectedDescendant, setSelectedDescendant] = createSignal<string | undefined>(
-      undefined,
-      {
-        equals: false,
-      },
-    );
+    const [selectedDescendant, setSelectedDescendant] = createSignal<
+      string | undefined
+    >(undefined, {
+      equals: false,
+    });
 
     const inputID = createUniqueId();
     const optionsID = createUniqueId();
@@ -156,27 +166,27 @@ export function Command<V, T extends ValidConstructor = 'div'>(
           mergeProps(
             isCommandUncontrolled(props)
               ? omitProps(props, [
-                'as',
-                'by',
-                'children',
-                'defaultValue',
-                'disabled',
-                'horizontal',
-                'multiple',
-                'onChange',
-                'toggleable',
-              ])
+                  'as',
+                  'by',
+                  'children',
+                  'defaultValue',
+                  'disabled',
+                  'horizontal',
+                  'multiple',
+                  'onChange',
+                  'toggleable',
+                ])
               : omitProps(props, [
-                'as',
-                'by',
-                'children',
-                'value',
-                'disabled',
-                'horizontal',
-                'multiple',
-                'onChange',
-                'toggleable',
-              ]),
+                  'as',
+                  'by',
+                  'children',
+                  'value',
+                  'disabled',
+                  'horizontal',
+                  'multiple',
+                  'onChange',
+                  'toggleable',
+                ]),
             COMMAND_TAG,
             {
               id: controller.getId(),

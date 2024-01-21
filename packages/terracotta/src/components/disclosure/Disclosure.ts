@@ -1,12 +1,6 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createComponent, createUniqueId, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
@@ -18,9 +12,7 @@ import {
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
-import {
-  DisclosureContext,
-} from './DisclosureContext';
+import { DisclosureContext } from './DisclosureContext';
 import { DISCLOSURE_TAG } from './tags';
 import type { Prettify } from '../../utils/types';
 import type {
@@ -34,16 +26,14 @@ import {
 } from '../../states/create-disclosure-state';
 
 export type DisclosureControlledBaseProps = Prettify<
-  & DisclosureStateControlledOptions
-  & DisclosureStateRenderProps
+  DisclosureStateControlledOptions & DisclosureStateRenderProps
 >;
 
 export type DisclosureControlledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, DisclosureControlledBaseProps>;
 
 export type DisclosureUncontrolledBaseProps = Prettify<
-  & DisclosureStateUncontrolledOptions
-  & DisclosureStateRenderProps
+  DisclosureStateUncontrolledOptions & DisclosureStateRenderProps
 >;
 
 export type DisclosureUncontrolledProps<T extends ValidConstructor = 'div'> =
@@ -79,23 +69,23 @@ export function Disclosure<T extends ValidConstructor = 'div'>(
         mergeProps(
           isDisclosureUncontrolled(props)
             ? omitProps(props, [
-              'as',
-              'children',
-              'defaultOpen',
-              'disabled',
-              'onChange',
-              'onClose',
-              'onOpen',
-            ])
+                'as',
+                'children',
+                'defaultOpen',
+                'disabled',
+                'onChange',
+                'onClose',
+                'onOpen',
+              ])
             : omitProps(props, [
-              'as',
-              'children',
-              'isOpen',
-              'disabled',
-              'onChange',
-              'onClose',
-              'onOpen',
-            ]),
+                'as',
+                'children',
+                'isOpen',
+                'disabled',
+                'onChange',
+                'onClose',
+                'onOpen',
+              ]),
           DISCLOSURE_TAG,
           createDisabledState(() => state.disabled()),
           createARIADisabledState(() => state.disabled()),

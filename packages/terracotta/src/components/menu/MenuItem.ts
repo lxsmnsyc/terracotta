@@ -1,11 +1,6 @@
 import type { JSX } from 'solid-js';
-import {
-  mergeProps,
-  createComponent,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { mergeProps, createComponent } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
@@ -17,12 +12,8 @@ import {
   createDisabledState,
 } from '../../utils/state-props';
 import type { MenuChildProps } from './MenuChild';
-import {
-  MenuChild,
-} from './MenuChild';
-import {
-  useMenuContext,
-} from './MenuContext';
+import { MenuChild } from './MenuChild';
+import { useMenuContext } from './MenuContext';
 import { MENU_ITEM_TAG } from './tags';
 import { Button } from '../button';
 
@@ -34,35 +25,33 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
 ): JSX.Element {
   const context = useMenuContext('MenuItem');
 
-  return createComponent(Button, mergeProps(
-    omitProps(props, [
-      'as',
-      'disabled',
-      'ref',
-      'children',
-    ]),
-    MENU_ITEM_TAG,
-    createOwnerAttribute(context.getId()),
-    {
-      get as() {
-        return props.as || ('li' as T);
+  return createComponent(
+    Button,
+    mergeProps(
+      omitProps(props, ['as', 'disabled', 'ref', 'children']),
+      MENU_ITEM_TAG,
+      createOwnerAttribute(context.getId()),
+      {
+        get as() {
+          return props.as || ('li' as T);
+        },
+        role: 'menuitem',
+        tabindex: -1,
       },
-      role: 'menuitem',
-      tabindex: -1,
-    },
-    createDisabledState(() => props.disabled),
-    createARIADisabledState(() => props.disabled),
-    {
-      get children() {
-        return createComponent(MenuChild, {
-          get disabled() {
-            return props.disabled;
-          },
-          get children() {
-            return props.children;
-          },
-        });
+      createDisabledState(() => props.disabled),
+      createARIADisabledState(() => props.disabled),
+      {
+        get children() {
+          return createComponent(MenuChild, {
+            get disabled() {
+              return props.disabled;
+            },
+            get children() {
+              return props.children;
+            },
+          });
+        },
       },
-    },
-  ) as DynamicProps<T>);
+    ) as DynamicProps<T>,
+  );
 }

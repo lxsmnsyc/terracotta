@@ -27,7 +27,7 @@ function queryNodes<T extends Element>(
 
 type OwnerAttribute = {
   [key in typeof OWNER]: string;
-}
+};
 
 export function createOwnerAttribute(ownerID: string): OwnerAttribute {
   return {

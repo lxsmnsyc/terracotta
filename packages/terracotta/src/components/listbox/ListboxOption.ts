@@ -1,19 +1,11 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  mergeProps,
-  createRenderEffect,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createComponent, mergeProps, createRenderEffect } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import type {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
   createARIADisabledState,
@@ -24,15 +16,9 @@ import {
 } from '../../utils/state-props';
 import type { OmitAndMerge, Prettify } from '../../utils/types';
 import type { ButtonProps } from '../button';
-import {
-  Button,
-} from '../button';
-import {
-  useListboxContext,
-} from './ListboxContext';
-import {
-  useListboxOptionsContext,
-} from './ListboxOptionsContext';
+import { Button } from '../button';
+import { useListboxContext } from './ListboxContext';
+import { useListboxOptionsContext } from './ListboxOptionsContext';
 import { LISTBOX_OPTION_TAG } from './tags';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import type {
@@ -46,12 +32,16 @@ import {
 import useEventListener from '../../utils/use-event-listener';
 
 export type ListboxOptionBaseProps<V> = Prettify<
-  & SelectOptionStateOptions<V>
-  & SelectOptionStateRenderProps
+  SelectOptionStateOptions<V> & SelectOptionStateRenderProps
 >;
 
-export type ListboxOptionProps<V, T extends ValidConstructor = 'li'> =
-  HeadlessPropsWithRef<T, OmitAndMerge<ListboxOptionBaseProps<V>, ButtonProps<T>>>;
+export type ListboxOptionProps<
+  V,
+  T extends ValidConstructor = 'li',
+> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<ListboxOptionBaseProps<V>, ButtonProps<T>>
+>;
 
 export function ListboxOption<V, T extends ValidConstructor = 'li'>(
   props: ListboxOptionProps<V, T>,
@@ -96,38 +86,35 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
     }
   });
 
-  return createComponent(Button, mergeProps(
-    omitProps(props, [
-      'as',
-      'children',
-      'disabled',
-      'value',
-      'ref',
-    ]),
-    LISTBOX_OPTION_TAG,
-    createOwnerAttribute(context.getId()),
-    {
-      get as() {
-        return props.as || ('li' as T);
+  return createComponent(
+    Button,
+    mergeProps(
+      omitProps(props, ['as', 'children', 'disabled', 'value', 'ref']),
+      LISTBOX_OPTION_TAG,
+      createOwnerAttribute(context.getId()),
+      {
+        get as() {
+          return props.as || ('li' as T);
+        },
+        role: 'option',
+        tabindex: -1,
+        ref: setInternalRef,
       },
-      role: 'option',
-      tabindex: -1,
-      ref: setInternalRef,
-    },
-    createDisabledState(() => state.disabled()),
-    createARIADisabledState(() => state.disabled()),
-    createSelectedState(() => state.isSelected()),
-    createARIASelectedState(() => state.isSelected()),
-    createActiveState(() => state.isActive()),
-    {
-      get children() {
-        return createComponent(SelectOptionStateProvider, {
-          state,
-          get children() {
-            return props.children;
-          },
-        });
+      createDisabledState(() => state.disabled()),
+      createARIADisabledState(() => state.disabled()),
+      createSelectedState(() => state.isSelected()),
+      createARIASelectedState(() => state.isSelected()),
+      createActiveState(() => state.isActive()),
+      {
+        get children() {
+          return createComponent(SelectOptionStateProvider, {
+            state,
+            get children() {
+              return props.children;
+            },
+          });
+        },
       },
-    },
-  ) as ButtonProps<T>);
+    ) as ButtonProps<T>,
+  );
 }

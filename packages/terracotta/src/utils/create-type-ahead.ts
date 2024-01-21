@@ -15,7 +15,7 @@ export default function createTypeAhead(
     }
   });
 
-  return (value) => {
+  return value => {
     characters += value;
     if (timeout) {
       clearTimeout(timeout);

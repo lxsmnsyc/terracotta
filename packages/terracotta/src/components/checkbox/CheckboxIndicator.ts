@@ -1,31 +1,19 @@
 import type { JSX } from 'solid-js';
-import {
-  createEffect,
-  createComponent,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createEffect, createComponent, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import type {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createCheckedState,
   createDisabledState,
 } from '../../utils/state-props';
 import type { ButtonProps } from '../button';
-import {
-  Button,
-} from '../button';
-import {
-  useCheckboxContext,
-} from './CheckboxContext';
+import { Button } from '../button';
+import { useCheckboxContext } from './CheckboxContext';
 import { CHECKBOX_INDICATOR } from './tags';
 import type { CheckStateRenderProps } from '../../states/create-check-state';
 import {
@@ -54,30 +42,30 @@ export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
     }
   });
 
-  return createComponent(Button, mergeProps(
-    omitProps(props, [
-      'children',
-      'ref',
-    ]),
-    CHECKBOX_INDICATOR,
-    {
-      id: context.indicatorID,
-      role: 'checkbox',
-      'aria-labelledby': context.labelID,
-      'aria-describedby': context.descriptionID,
-      ref: setInternalRef,
-    },
-    createDisabledState(() => state.disabled()),
-    createARIADisabledState(() => state.disabled()),
-    createCheckedState(() => state.checked()),
-    {
-      get children() {
-        return createComponent(CheckStateChild, {
-          get children() {
-            return props.children;
-          },
-        });
+  return createComponent(
+    Button,
+    mergeProps(
+      omitProps(props, ['children', 'ref']),
+      CHECKBOX_INDICATOR,
+      {
+        id: context.indicatorID,
+        role: 'checkbox',
+        'aria-labelledby': context.labelID,
+        'aria-describedby': context.descriptionID,
+        ref: setInternalRef,
       },
-    },
-  ) as ButtonProps<T>);
+      createDisabledState(() => state.disabled()),
+      createARIADisabledState(() => state.disabled()),
+      createCheckedState(() => state.checked()),
+      {
+        get children() {
+          return createComponent(CheckStateChild, {
+            get children() {
+              return props.children;
+            },
+          });
+        },
+      },
+    ) as ButtonProps<T>,
+  );
 }

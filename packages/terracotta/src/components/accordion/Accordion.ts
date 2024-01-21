@@ -12,9 +12,7 @@ import type {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import type { Prettify } from '../../utils/types';
 import type {
   MultipleSelectStateControlledOptions,
@@ -28,7 +26,10 @@ import {
   createSingleSelectState,
   SelectStateProvider,
 } from '../../states/create-select-state';
-import { AccordionContext, createAccordionFocusNavigator } from './AccordionContext';
+import {
+  AccordionContext,
+  createAccordionFocusNavigator,
+} from './AccordionContext';
 import createDynamic from '../../utils/create-dynamic';
 import { ACCORDION_TAG } from './tags';
 import {
@@ -40,36 +41,40 @@ import {
 import useEventListener from '../../utils/use-event-listener';
 
 export type AccordionSingleControlledBaseProps<V> = Prettify<
-  & SingleSelectStateControlledOptions<V>
-  & SelectStateRenderProps<V>
+  SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type AccordionSingleControlledProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, AccordionSingleControlledBaseProps<V>>;
+export type AccordionSingleControlledProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessPropsWithRef<T, AccordionSingleControlledBaseProps<V>>;
 
 export type AccordionSingleUncontrolledBaseProps<V> = Prettify<
-  & SingleSelectStateUncontrolledOptions<V>
-  & SelectStateRenderProps<V>
+  SingleSelectStateUncontrolledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type AccordionSingleUncontrolledProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, AccordionSingleUncontrolledBaseProps<V>>;
+export type AccordionSingleUncontrolledProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessPropsWithRef<T, AccordionSingleUncontrolledBaseProps<V>>;
 
 export type AccordionMultipleControlledBaseProps<V> = Prettify<
-  & MultipleSelectStateControlledOptions<V>
-  & SelectStateRenderProps<V>
+  MultipleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type AccordionMultipleControlledProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, AccordionMultipleControlledBaseProps<V>>;
+export type AccordionMultipleControlledProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessPropsWithRef<T, AccordionMultipleControlledBaseProps<V>>;
 
 export type AccordionMultipleUncontrolledBaseProps<V> = Prettify<
-  & MultipleSelectStateUncontrolledOptions<V>
-  & SelectStateRenderProps<V>
+  MultipleSelectStateUncontrolledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type AccordionMultipleUncontrolledProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, AccordionMultipleUncontrolledBaseProps<V>>;
+export type AccordionMultipleUncontrolledProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessPropsWithRef<T, AccordionMultipleUncontrolledBaseProps<V>>;
 
 export type AccordionProps<V, T extends ValidConstructor = 'div'> =
   | AccordionSingleControlledProps<V, T>
@@ -79,13 +84,17 @@ export type AccordionProps<V, T extends ValidConstructor = 'div'> =
 
 function isAccordionUncontrolled<V, T extends ValidConstructor = 'div'>(
   props: AccordionProps<V, T>,
-): props is AccordionSingleUncontrolledProps<V, T> | AccordionMultipleUncontrolledProps<V, T> {
+): props is
+  | AccordionSingleUncontrolledProps<V, T>
+  | AccordionMultipleUncontrolledProps<V, T> {
   return 'defaultValue' in props;
 }
 
 function isAccordionMultiple<V, T extends ValidConstructor = 'div'>(
   props: AccordionProps<V, T>,
-): props is AccordionMultipleUncontrolledProps<V, T> | AccordionMultipleControlledProps<V, T> {
+): props is
+  | AccordionMultipleUncontrolledProps<V, T>
+  | AccordionMultipleControlledProps<V, T> {
   return !!props.multiple;
 }
 
@@ -106,31 +115,35 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
         onCleanup(() => {
           controller.clearRef();
         });
-        useEventListener(current, 'keydown', (e) => {
+        useEventListener(current, 'keydown', e => {
           if (!state.disabled()) {
             switch (e.key) {
-              case 'ArrowUp':
+              case 'ArrowUp': {
                 e.preventDefault();
                 controller.setPrevChecked(true);
                 break;
-              case 'ArrowDown':
+              }
+              case 'ArrowDown': {
                 e.preventDefault();
                 controller.setNextChecked(true);
                 break;
-              case 'Home':
+              }
+              case 'Home': {
                 e.preventDefault();
                 controller.setFirstChecked();
                 break;
-              case 'End':
+              }
+              case 'End': {
                 e.preventDefault();
                 controller.setLastChecked();
                 break;
+              }
               default:
                 break;
             }
           }
         });
-        useEventListener(current, 'focusin', (e) => {
+        useEventListener(current, 'focusin', e => {
           if (e.target && e.target !== current) {
             controller.setCurrent(e.target as HTMLElement);
           }
@@ -146,27 +159,27 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
           mergeProps(
             isAccordionUncontrolled(props)
               ? omitProps(props, [
-                'as',
-                'by',
-                'children',
-                'defaultValue',
-                'disabled',
-                'multiple',
-                'onChange',
-                'ref',
-                'toggleable',
-              ])
+                  'as',
+                  'by',
+                  'children',
+                  'defaultValue',
+                  'disabled',
+                  'multiple',
+                  'onChange',
+                  'ref',
+                  'toggleable',
+                ])
               : omitProps(props, [
-                'as',
-                'by',
-                'children',
-                'value',
-                'disabled',
-                'multiple',
-                'onChange',
-                'ref',
-                'toggleable',
-              ]),
+                  'as',
+                  'by',
+                  'children',
+                  'value',
+                  'disabled',
+                  'multiple',
+                  'onChange',
+                  'ref',
+                  'toggleable',
+                ]),
             ACCORDION_TAG,
             {
               ref: setRef,

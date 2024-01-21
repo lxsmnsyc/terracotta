@@ -1,8 +1,4 @@
-import {
-  createContext,
-  createUniqueId,
-  useContext,
-} from 'solid-js';
+import { createContext, createUniqueId, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 import FocusNavigator from '../../utils/focus-navigator';
 import { MATCHES_NODE } from '../../utils/namespace';
@@ -21,11 +17,12 @@ interface CommandContextData {
 
 export const CommandContext = createContext<CommandContextData>();
 
-export function useCommandContext(
-  componentName: string,
-): CommandContextData {
+export function useCommandContext(componentName: string): CommandContextData {
   const context = useContext(CommandContext);
-  assert(context, new Error(`<${componentName}> must be used inside a <Command>`));
+  assert(
+    context,
+    new Error(`<${componentName}> must be used inside a <Command>`),
+  );
   return context;
 }
 

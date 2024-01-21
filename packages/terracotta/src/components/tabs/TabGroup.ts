@@ -36,22 +36,26 @@ export interface TabGroupBaseProps {
 }
 
 export type TabGroupControlledBaseProps<V> = Prettify<
-  & TabGroupBaseProps
-  & SingleSelectStateControlledOptions<V>
-  & SelectStateRenderProps<V>
+  TabGroupBaseProps &
+    SingleSelectStateControlledOptions<V> &
+    SelectStateRenderProps<V>
 >;
 
-export type TabGroupControlledProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, TabGroupControlledBaseProps<V>>;
+export type TabGroupControlledProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessPropsWithRef<T, TabGroupControlledBaseProps<V>>;
 
 export type TabGroupUncontrolledBaseProps<V> = Prettify<
-  & TabGroupBaseProps
-  & SingleSelectStateUncontrolledOptions<V>
-  & SelectStateRenderProps<V>
+  TabGroupBaseProps &
+    SingleSelectStateUncontrolledOptions<V> &
+    SelectStateRenderProps<V>
 >;
 
-export type TabGroupUncontrolledProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, TabGroupUncontrolledBaseProps<V>>;
+export type TabGroupUncontrolledProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessPropsWithRef<T, TabGroupUncontrolledBaseProps<V>>;
 
 export type TabGroupProps<V, T extends ValidConstructor = 'div'> =
   | TabGroupControlledProps<V, T>
@@ -92,27 +96,27 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
           mergeProps(
             isTabGroupUncontrolled(props)
               ? omitProps(props, [
-                'as',
-                'children',
-                'defaultValue',
-                'disabled',
-                'onChange',
-                'by',
-                'ref',
-                'toggleable',
-                'horizontal',
-              ])
+                  'as',
+                  'children',
+                  'defaultValue',
+                  'disabled',
+                  'onChange',
+                  'by',
+                  'ref',
+                  'toggleable',
+                  'horizontal',
+                ])
               : omitProps(props, [
-                'as',
-                'children',
-                'value',
-                'disabled',
-                'onChange',
-                'by',
-                'ref',
-                'toggleable',
-                'horizontal',
-              ]),
+                  'as',
+                  'children',
+                  'value',
+                  'disabled',
+                  'onChange',
+                  'by',
+                  'ref',
+                  'toggleable',
+                  'horizontal',
+                ]),
             TAB_GROUP_TAG,
             createDisabledState(() => state.disabled()),
             createARIADisabledState(() => state.disabled()),

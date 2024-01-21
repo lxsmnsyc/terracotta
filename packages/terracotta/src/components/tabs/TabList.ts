@@ -1,13 +1,6 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  mergeProps,
-  onCleanup,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createComponent, createEffect, mergeProps, onCleanup } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
 import {
   SelectStateChild,
@@ -19,14 +12,9 @@ import type {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import { useTabGroupContext } from './TabGroupContext';
-import {
-  createTabFocusNavigator,
-  TabListContext,
-} from './TabListContext';
+import { createTabFocusNavigator, TabListContext } from './TabListContext';
 import { TAB_LIST_TAG } from './tags';
 import {
   createHasSelectedState,
@@ -34,8 +22,10 @@ import {
 } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
 
-export type TabListProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, SelectStateRenderProps<V>>;
+export type TabListProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessPropsWithRef<T, SelectStateRenderProps<V>>;
 
 export function TabList<V, T extends ValidConstructor = 'div'>(
   props: TabListProps<V, T>,
@@ -52,47 +42,51 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
       onCleanup(() => {
         controller.clearRef();
       });
-      useEventListener(current, 'keydown', (e) => {
+      useEventListener(current, 'keydown', e => {
         if (!state.disabled()) {
           switch (e.key) {
-            case 'ArrowUp':
+            case 'ArrowUp': {
               if (!rootContext.horizontal) {
                 e.preventDefault();
                 controller.setPrevChecked(true);
               }
               break;
-            case 'ArrowLeft':
+            }
+            case 'ArrowLeft': {
               if (rootContext.horizontal) {
                 e.preventDefault();
                 controller.setPrevChecked(true);
               }
               break;
-            case 'ArrowDown':
+            }
+            case 'ArrowDown': {
               if (!rootContext.horizontal) {
                 e.preventDefault();
                 controller.setNextChecked(true);
               }
               break;
-            case 'ArrowRight':
+            }
+            case 'ArrowRight': {
               if (rootContext.horizontal) {
                 e.preventDefault();
                 controller.setNextChecked(true);
               }
               break;
-            case 'Home':
+            }
+            case 'Home': {
               e.preventDefault();
               controller.setFirstChecked();
               break;
-            case 'End':
+            }
+            case 'End': {
               e.preventDefault();
               controller.setLastChecked();
               break;
-            default:
-              break;
+            }
           }
         }
       });
-      useEventListener(current, 'focusin', (e) => {
+      useEventListener(current, 'focusin', e => {
         if (e.target && e.target !== current) {
           controller.setCurrent(e.target as HTMLElement);
         }
