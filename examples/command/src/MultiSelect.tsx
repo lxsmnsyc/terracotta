@@ -25,9 +25,9 @@ export default function MultipleSelect(): JSX.Element {
     // split queries
     const queries = query.split(',');
 
-    return queries.some((text) => (
-      item.name.toLowerCase().includes(text.trim().toLowerCase())
-    ));
+    return queries.some(text =>
+      item.name.toLowerCase().includes(text.trim().toLowerCase()),
+    );
   }
 
   return (
@@ -40,9 +40,14 @@ export default function MultipleSelect(): JSX.Element {
         onChange={setSelected}
         matchBy={matchBy}
       >
-        <CommandLabel class="text-xl font-semibold">Multi Selection</CommandLabel>
+        <CommandLabel class="text-xl font-semibold">
+          Multi Selection
+        </CommandLabel>
         <div class="p-2 bg-gray-50 bg-opacity-50 rounded-lg flex flex-wrap gap-1">
-          <For each={selected()} fallback={<span class="block truncate">No selected.</span>}>
+          <For
+            each={selected()}
+            fallback={<span class="block truncate">No selected.</span>}
+          >
             {(item): JSX.Element => (
               <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
                 {item.name}
@@ -61,7 +66,9 @@ export default function MultipleSelect(): JSX.Element {
                 {({ isActive, isSelected, matches }): JSX.Element => (
                   <div
                     class={classNames(
-                      isActive() ? 'text-amber-900 bg-amber-100' : 'text-gray-900',
+                      isActive()
+                        ? 'text-amber-900 bg-amber-100'
+                        : 'text-gray-900',
                       'group-hover:text-amber-900 group-hover:bg-amber-100',
                       'cursor-default select-none relative py-2 pl-10 pr-4',
                       matches() ? 'visible' : 'hidden',
