@@ -13,7 +13,6 @@ export type ValidComponent<P> = (props: P) => JSX.Element;
 export type ValidConstructor =
   | ValidElements
   | ValidComponent<any>
-  // eslint-disable-next-line @typescript-eslint/ban-types
   | (string & {});
 
 export type DynamicProps<T extends ValidConstructor> =
@@ -59,11 +58,9 @@ export interface DynamicComponentWithRef<T extends ValidConstructor> extends Wit
   as?: T;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type HeadlessProps<T extends ValidConstructor, V = {}> =
   OmitAndMerge<V & DynamicComponent<T>, DynamicProps<T>>;
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type HeadlessPropsWithRef<T extends ValidConstructor, V = {}> =
   OmitAndMerge<V & DynamicComponentWithRef<T>, DynamicProps<T>>;
 
