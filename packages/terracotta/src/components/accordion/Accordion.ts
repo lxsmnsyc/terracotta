@@ -8,13 +8,6 @@ import {
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
-import { createForwardRef } from '../../utils/dynamic-prop';
-import type { Prettify } from '../../utils/types';
-import type {
   MultipleSelectStateControlledOptions,
   MultipleSelectStateUncontrolledOptions,
   SelectStateRenderProps,
@@ -22,23 +15,30 @@ import type {
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
 import {
+  SelectStateProvider,
   createMultipleSelectState,
   createSingleSelectState,
-  SelectStateProvider,
 } from '../../states/create-select-state';
-import {
-  AccordionContext,
-  createAccordionFocusNavigator,
-} from './AccordionContext';
 import createDynamic from '../../utils/create-dynamic';
-import { ACCORDION_TAG } from './tags';
+import type {
+  DynamicProps,
+  HeadlessPropsWithRef,
+  ValidConstructor,
+} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
   createHasActiveState,
   createHasSelectedState,
 } from '../../utils/state-props';
+import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
+import {
+  AccordionContext,
+  createAccordionFocusNavigator,
+} from './AccordionContext';
+import { ACCORDION_TAG } from './tags';
 
 export type AccordionSingleControlledBaseProps<V> = Prettify<
   SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>

@@ -1,31 +1,31 @@
 import type { JSX } from 'solid-js';
 import { createComponent, createUniqueId, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import createDynamic from '../../utils/create-dynamic';
-import type {
-  ValidConstructor,
-  HeadlessProps,
-  DynamicProps,
-} from '../../utils/dynamic-prop';
-import {
-  createActiveState,
-  createARIADisabledState,
-  createDisabledState,
-  createExpandedState,
-  createSelectedState,
-} from '../../utils/state-props';
-import { useAccordionContext } from './AccordionContext';
-import { AccordionItemContext } from './AccordionItemContext';
-import { ACCORDION_ITEM_TAG } from './tags';
 import type {
   SelectOptionStateOptions,
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
 import {
-  createSelectOptionState,
   SelectOptionStateProvider,
+  createSelectOptionState,
 } from '../../states/create-select-option-state';
+import createDynamic from '../../utils/create-dynamic';
+import type {
+  DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createARIADisabledState,
+  createActiveState,
+  createDisabledState,
+  createExpandedState,
+  createSelectedState,
+} from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
+import { useAccordionContext } from './AccordionContext';
+import { AccordionItemContext } from './AccordionItemContext';
+import { ACCORDION_ITEM_TAG } from './tags';
 
 export type AccordionItemprops<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps

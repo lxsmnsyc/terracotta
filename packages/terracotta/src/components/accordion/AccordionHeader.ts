@@ -1,25 +1,25 @@
 import type { JSX } from 'solid-js';
 import { createComponent, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import createDynamic from '../../utils/create-dynamic';
-import type {
-  ValidConstructor,
-  HeadlessProps,
-  DynamicProps,
-} from '../../utils/dynamic-prop';
-import { useAccordionItemContext } from './AccordionItemContext';
-import { ACCORDION_HEADER_TAG } from './tags';
 import type { SelectOptionStateRenderProps } from '../../states/create-select-option-state';
 import {
   SelectOptionStateChild,
   useSelectOptionState,
 } from '../../states/create-select-option-state';
+import createDynamic from '../../utils/create-dynamic';
+import type {
+  DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
+} from '../../utils/dynamic-prop';
 import {
-  createDisabledState,
-  createSelectedState,
-  createExpandedState,
   createActiveState,
+  createDisabledState,
+  createExpandedState,
+  createSelectedState,
 } from '../../utils/state-props';
+import { useAccordionItemContext } from './AccordionItemContext';
+import { ACCORDION_HEADER_TAG } from './tags';
 
 export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> =
   HeadlessProps<T, SelectOptionStateRenderProps>;

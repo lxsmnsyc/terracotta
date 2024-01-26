@@ -1,9 +1,14 @@
 import type { JSX } from 'solid-js';
-import { createEffect, createComponent, mergeProps } from 'solid-js';
+import { createComponent, createEffect, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import type { SelectOptionStateRenderProps } from '../../states/create-select-option-state';
+import {
+  SelectOptionStateChild,
+  useSelectOptionState,
+} from '../../states/create-select-option-state';
 import type {
-  ValidConstructor,
   HeadlessPropsWithRef,
+  ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
@@ -16,17 +21,12 @@ import {
   createSelectedState,
 } from '../../utils/state-props';
 import type { OmitAndMerge } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
 import type { ButtonProps } from '../button';
 import { Button } from '../button';
 import { useAccordionContext } from './AccordionContext';
 import { useAccordionItemContext } from './AccordionItemContext';
 import { ACCORDION_BUTTON_TAG } from './tags';
-import type { SelectOptionStateRenderProps } from '../../states/create-select-option-state';
-import {
-  SelectOptionStateChild,
-  useSelectOptionState,
-} from '../../states/create-select-option-state';
-import useEventListener from '../../utils/use-event-listener';
 
 export type AccordionButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<
