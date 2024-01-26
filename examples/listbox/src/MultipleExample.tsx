@@ -1,3 +1,5 @@
+import type { JSX } from 'solid-js';
+import { For, createSignal } from 'solid-js';
 import {
   DisclosureStateChild,
   Listbox,
@@ -6,8 +8,6 @@ import {
   ListboxOptions,
   Transition,
 } from 'terracotta';
-import type { JSX } from 'solid-js';
-import { createSignal, For } from 'solid-js';
 import { CheckIcon, SelectorIcon, classNames } from './utils';
 
 const people = [

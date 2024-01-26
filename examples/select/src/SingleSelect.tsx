@@ -1,6 +1,6 @@
-import { Select, SelectOption } from 'terracotta';
 import type { JSX } from 'solid-js';
-import { createSignal, For } from 'solid-js';
+import { For, createSignal } from 'solid-js';
+import { Select, SelectOption } from 'terracotta';
 import { CheckIcon, classNames } from './utils';
 
 const people = [

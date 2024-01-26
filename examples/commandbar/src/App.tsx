@@ -1,13 +1,13 @@
+import type { JSX } from 'solid-js';
+import { createSignal } from 'solid-js';
 import {
   CommandBar,
+  CommandBarOverlay,
   CommandBarPanel,
   CommandBarTitle,
-  CommandBarOverlay,
   Transition,
   TransitionChild,
 } from 'terracotta';
-import type { JSX } from 'solid-js';
-import { createSignal } from 'solid-js';
 
 export default function App(): JSX.Element {
   const [isOpen, setIsOpen] = createSignal(false);

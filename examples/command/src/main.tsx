@@ -1,8 +1,8 @@
-import { render } from 'solid-js/web';
-import './style.css';
 import type { JSX } from 'solid-js';
-import SingleSelect from './SingleSelect';
+import { render } from 'solid-js/web';
 import MultiSelect from './MultiSelect';
+import SingleSelect from './SingleSelect';
+import './style.css';
 
 function Root(): JSX.Element {
   return (

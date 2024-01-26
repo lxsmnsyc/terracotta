@@ -1,6 +1,6 @@
-import { Popover, PopoverButton, PopoverPanel, Transition } from 'terracotta';
 import type { JSX } from 'solid-js';
 import { For } from 'solid-js';
+import { Popover, PopoverButton, PopoverPanel, Transition } from 'terracotta';
 
 function IconOne(): JSX.Element {
   return (

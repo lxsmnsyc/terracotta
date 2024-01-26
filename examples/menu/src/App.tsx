@@ -1,5 +1,5 @@
-import { Menu, MenuItem } from 'terracotta';
 import type { JSX } from 'solid-js';
+import { Menu, MenuItem } from 'terracotta';
 
 function Separator(): JSX.Element {
   return (

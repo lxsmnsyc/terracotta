@@ -1,11 +1,11 @@
+import type { JSX } from 'solid-js';
+import { Match, Switch, createSignal } from 'solid-js';
 import {
   Checkbox,
+  CheckboxDescription,
   CheckboxIndicator,
   CheckboxLabel,
-  CheckboxDescription,
 } from 'terracotta';
-import type { JSX } from 'solid-js';
-import { createSignal, Switch, Match } from 'solid-js';
 
 function CheckIcon(
   props: JSX.IntrinsicElements['svg'] & { title: string },

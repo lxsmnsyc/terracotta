@@ -1,3 +1,5 @@
+import type { JSX } from 'solid-js';
+import { For, Show, createSignal } from 'solid-js';
 import {
   Feed,
   FeedArticle,
@@ -7,8 +9,6 @@ import {
   FeedLabel,
   Transition,
 } from 'terracotta';
-import type { JSX } from 'solid-js';
-import { createSignal, For, Show } from 'solid-js';
 
 function SpinnerIcon(
   props: JSX.IntrinsicElements['svg'] & { title: string },

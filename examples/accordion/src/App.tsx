@@ -1,3 +1,5 @@
+import type { JSX } from 'solid-js';
+import { For } from 'solid-js';
 import {
   Accordion,
   AccordionButton,
@@ -5,8 +7,6 @@ import {
   AccordionItem,
   AccordionPanel,
 } from 'terracotta';
-import type { JSX } from 'solid-js';
-import { For } from 'solid-js';
 
 function ChevronUpIcon(
   props: JSX.IntrinsicElements['svg'] & { title: string },
