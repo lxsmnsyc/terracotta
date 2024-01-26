@@ -3,9 +3,9 @@ import { createUniqueId, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
-  ValidConstructor,
-  HeadlessProps,
   DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 

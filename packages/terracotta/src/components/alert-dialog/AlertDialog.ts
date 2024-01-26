@@ -1,23 +1,11 @@
 import type { JSX } from 'solid-js';
 import {
-  createUniqueId,
-  mergeProps,
   createComponent,
   createEffect,
+  createUniqueId,
+  mergeProps,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import createDynamic from '../../utils/create-dynamic';
-import type {
-  ValidConstructor,
-  HeadlessProps,
-  DynamicProps,
-} from '../../utils/dynamic-prop';
-import type { UnmountableProps } from '../../utils/create-unmountable';
-import { createUnmountable } from '../../utils/create-unmountable';
-import useFocusStartPoint from '../../utils/use-focus-start-point';
-import { AlertDialogContext } from './AlertDialogContext';
-import { ALERT_DIALOG_TAG } from './tags';
-import type { Prettify } from '../../utils/types';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
@@ -27,11 +15,23 @@ import {
   DisclosureStateProvider,
   createDisclosureState,
 } from '../../states/create-disclosure-state';
+import createDynamic from '../../utils/create-dynamic';
+import type { UnmountableProps } from '../../utils/create-unmountable';
+import { createUnmountable } from '../../utils/create-unmountable';
+import type {
+  DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
+} from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
+import type { Prettify } from '../../utils/types';
+import useFocusStartPoint from '../../utils/use-focus-start-point';
+import { AlertDialogContext } from './AlertDialogContext';
+import { ALERT_DIALOG_TAG } from './tags';
 
 export type AlertDialogControlledBaseProps = Prettify<
   DisclosureStateControlledOptions &
