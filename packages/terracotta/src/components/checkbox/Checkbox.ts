@@ -2,12 +2,6 @@ import type { JSX } from 'solid-js';
 import { createComponent, createUniqueId, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
-import type { Prettify } from '../../utils/types';
-import type {
   CheckStateControlledOptions,
   CheckStateRenderProps,
   CheckStateUncontrolledOptions,
@@ -16,14 +10,20 @@ import {
   CheckStateProvider,
   createCheckState,
 } from '../../states/create-check-state';
-import { CheckboxContext } from './CheckboxContext';
 import createDynamic from '../../utils/create-dynamic';
-import { CHECKBOX_TAG } from './tags';
+import type {
+  DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
+} from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createCheckedState,
   createDisabledState,
 } from '../../utils/state-props';
+import type { Prettify } from '../../utils/types';
+import { CheckboxContext } from './CheckboxContext';
+import { CHECKBOX_TAG } from './tags';
 
 export type CheckboxControlledBaseProps = Prettify<
   CheckStateControlledOptions & CheckStateRenderProps

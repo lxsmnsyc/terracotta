@@ -1,16 +1,16 @@
 import type { Accessor, JSX } from 'solid-js';
 import {
+  createComponent,
+  createContext,
+  createMemo,
   createSignal,
   untrack,
-  createContext,
-  createComponent,
   useContext,
-  createMemo,
 } from 'solid-js';
 import assert from '../utils/assert';
+import createInputReader from '../utils/create-input-reader';
 import isEqual from '../utils/is-equal';
 import type { Ref } from '../utils/types';
-import createInputReader from '../utils/create-input-reader';
 
 export interface AutocompleteStateProperties<T> {
   isSelected(value: T): boolean;

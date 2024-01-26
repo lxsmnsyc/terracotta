@@ -1,12 +1,21 @@
 import type { JSX } from 'solid-js';
 import {
   createComponent,
-  mergeProps,
+  createEffect,
   createRenderEffect,
   createUniqueId,
-  createEffect,
+  mergeProps,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import type {
+  AutocompleteOptionStateOptions,
+  AutocompleteOptionStateRenderProps,
+} from '../../states/create-autocomplete-option-state';
+import {
+  AutocompleteOptionStateProvider,
+  createAutocompleteOptionState,
+} from '../../states/create-autocomplete-option-state';
+import { useDisclosureState } from '../../states/create-disclosure-state';
 import type {
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -22,21 +31,12 @@ import {
   createSelectedState,
 } from '../../utils/state-props';
 import type { OmitAndMerge, Prettify } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
+import { useVirtualFocus } from '../../utils/virtual-focus';
 import type { ButtonProps } from '../button';
 import { Button } from '../button';
 import { useComboboxContext } from './ComboboxContext';
 import { COMBOBOX_OPTION_TAG } from './tags';
-import { useDisclosureState } from '../../states/create-disclosure-state';
-import type {
-  AutocompleteOptionStateOptions,
-  AutocompleteOptionStateRenderProps,
-} from '../../states/create-autocomplete-option-state';
-import {
-  AutocompleteOptionStateProvider,
-  createAutocompleteOptionState,
-} from '../../states/create-autocomplete-option-state';
-import { useVirtualFocus } from '../../utils/virtual-focus';
-import useEventListener from '../../utils/use-event-listener';
 
 export type ComboboxOptionBaseProps<V> = Prettify<
   AutocompleteOptionStateOptions<V> & AutocompleteOptionStateRenderProps

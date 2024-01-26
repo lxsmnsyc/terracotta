@@ -1,6 +1,15 @@
 import type { JSX } from 'solid-js';
-import { createComponent, mergeProps, createRenderEffect } from 'solid-js';
+import { createComponent, createRenderEffect, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import { useDisclosureState } from '../../states/create-disclosure-state';
+import type {
+  SelectOptionStateOptions,
+  SelectOptionStateRenderProps,
+} from '../../states/create-select-option-state';
+import {
+  SelectOptionStateProvider,
+  createSelectOptionState,
+} from '../../states/create-select-option-state';
 import type {
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -15,21 +24,12 @@ import {
   createSelectedState,
 } from '../../utils/state-props';
 import type { OmitAndMerge, Prettify } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
 import type { ButtonProps } from '../button';
 import { Button } from '../button';
 import { useListboxContext } from './ListboxContext';
 import { useListboxOptionsContext } from './ListboxOptionsContext';
 import { LISTBOX_OPTION_TAG } from './tags';
-import { useDisclosureState } from '../../states/create-disclosure-state';
-import type {
-  SelectOptionStateOptions,
-  SelectOptionStateRenderProps,
-} from '../../states/create-select-option-state';
-import {
-  SelectOptionStateProvider,
-  createSelectOptionState,
-} from '../../states/create-select-option-state';
-import useEventListener from '../../utils/use-event-listener';
 
 export type ListboxOptionBaseProps<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps

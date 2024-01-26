@@ -1,11 +1,11 @@
 import assert from './assert';
 import {
-  focusNode,
-  focusNext,
-  focusPrev,
   focusFirst,
   focusLast,
   focusMatch,
+  focusNext,
+  focusNode,
+  focusPrev,
 } from './focus-navigation';
 import { DATA_SET_NAMESPACE, DISABLED_NODE } from './namespace';
 

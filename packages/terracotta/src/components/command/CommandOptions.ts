@@ -1,6 +1,11 @@
 import type { JSX } from 'solid-js';
-import { createEffect, createComponent, mergeProps, onCleanup } from 'solid-js';
+import { createComponent, createEffect, mergeProps, onCleanup } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
+import {
+  AutocompleteStateChild,
+  useAutocompleteState,
+} from '../../states/create-autocomplete-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
@@ -8,21 +13,16 @@ import type {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
-import { useCommandContext } from './CommandContext';
-import { COMMAND_OPTIONS_TAG } from './tags';
 import {
   createARIADisabledState,
   createDisabledState,
-  createHasSelectedState,
   createHasActiveState,
   createHasQueryState,
+  createHasSelectedState,
 } from '../../utils/state-props';
-import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
-import {
-  AutocompleteStateChild,
-  useAutocompleteState,
-} from '../../states/create-autocomplete-state';
 import useEventListener from '../../utils/use-event-listener';
+import { useCommandContext } from './CommandContext';
+import { COMMAND_OPTIONS_TAG } from './tags';
 
 export type CommandOptionsProps<
   V,

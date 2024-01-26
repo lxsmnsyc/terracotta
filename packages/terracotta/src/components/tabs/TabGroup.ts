@@ -12,8 +12,8 @@ import type {
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
 import {
-  createSingleSelectState,
   SelectStateProvider,
+  createSingleSelectState,
 } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {

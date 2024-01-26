@@ -1,41 +1,41 @@
 import type { JSX } from 'solid-js';
 import {
-  createEffect,
   createComponent,
+  createEffect,
   mergeProps,
-  untrack,
-  onMount,
   onCleanup,
+  onMount,
+  untrack,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
+import {
+  AutocompleteStateChild,
+  useAutocompleteState,
+} from '../../states/create-autocomplete-state';
+import { useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
+import type { UnmountableProps } from '../../utils/create-unmountable';
+import { createUnmountable } from '../../utils/create-unmountable';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
-import { useComboboxContext } from './ComboboxContext';
-import { COMBOBOX_OPTIONS_TAG } from './tags';
+import { SELECTED_NODE } from '../../utils/namespace';
 import {
+  createARIADisabledState,
   createDisabledState,
-  createHasSelectedState,
+  createExpandedState,
   createHasActiveState,
   createHasQueryState,
-  createExpandedState,
-  createARIADisabledState,
+  createHasSelectedState,
 } from '../../utils/state-props';
-import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
-import {
-  AutocompleteStateChild,
-  useAutocompleteState,
-} from '../../states/create-autocomplete-state';
-import type { UnmountableProps } from '../../utils/create-unmountable';
-import { createUnmountable } from '../../utils/create-unmountable';
 import type { Prettify } from '../../utils/types';
-import { useDisclosureState } from '../../states/create-disclosure-state';
-import { SELECTED_NODE } from '../../utils/namespace';
 import useEventListener from '../../utils/use-event-listener';
+import { useComboboxContext } from './ComboboxContext';
+import { COMBOBOX_OPTIONS_TAG } from './tags';
 
 export type ComboboxOptionsBaseProps<V> = Prettify<
   UnmountableProps & AutocompleteStateRenderProps<V>

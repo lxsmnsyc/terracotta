@@ -2,6 +2,11 @@ import type { JSX } from 'solid-js';
 import { createEffect, mergeProps } from 'solid-js';
 import { createComponent } from 'solid-js/web';
 import { omitProps } from 'solid-use/props';
+import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
+import {
+  DisclosureStateChild,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
 import type {
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -14,16 +19,11 @@ import {
   createExpandedState,
 } from '../../utils/state-props';
 import type { OmitAndMerge } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
 import type { ButtonProps } from '../button';
 import { Button } from '../button';
 import { useDisclosureContext } from './DisclosureContext';
 import { DISCLOSURE_BUTTON_TAG } from './tags';
-import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
-import useEventListener from '../../utils/use-event-listener';
 
 export type DisclosureButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<

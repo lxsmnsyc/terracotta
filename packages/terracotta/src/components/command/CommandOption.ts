@@ -11,8 +11,8 @@ import type {
   AutocompleteOptionStateRenderProps,
 } from '../../states/create-autocomplete-option-state';
 import {
-  createAutocompleteOptionState,
   AutocompleteOptionStateProvider,
+  createAutocompleteOptionState,
 } from '../../states/create-autocomplete-option-state';
 import type {
   HeadlessPropsWithRef,
@@ -21,20 +21,20 @@ import type {
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
-  createActiveState,
   createARIADisabledState,
   createARIASelectedState,
+  createActiveState,
   createDisabledState,
   createMatchesState,
   createSelectedState,
 } from '../../utils/state-props';
 import type { OmitAndMerge, Prettify } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
+import { useVirtualFocus } from '../../utils/virtual-focus';
 import type { ButtonProps } from '../button';
 import { Button } from '../button';
-import { COMMAND_OPTION_TAG } from './tags';
 import { useCommandContext } from './CommandContext';
-import { useVirtualFocus } from '../../utils/virtual-focus';
-import useEventListener from '../../utils/use-event-listener';
+import { COMMAND_OPTION_TAG } from './tags';
 
 export type CommandOptionBaseProps<V> = Prettify<
   AutocompleteOptionStateOptions<V> & AutocompleteOptionStateRenderProps

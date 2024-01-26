@@ -1,15 +1,15 @@
 import type { JSX } from 'solid-js';
 import { createEffect, mergeProps, untrack } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import { useAutocompleteState } from '../../states/create-autocomplete-state';
+import { useDisclosureState } from '../../states/create-disclosure-state';
+import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
-import { useComboboxContext } from './ComboboxContext';
-import createDynamic from '../../utils/create-dynamic';
-import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import {
   createARIADisabledState,
   createARIAExpandedState,
@@ -19,9 +19,9 @@ import {
   createHasQueryState,
   createHasSelectedState,
 } from '../../utils/state-props';
-import { COMMAND_INPUT_TAG } from '../command/tags';
-import { useDisclosureState } from '../../states/create-disclosure-state';
 import useEventListener from '../../utils/use-event-listener';
+import { COMMAND_INPUT_TAG } from '../command/tags';
+import { useComboboxContext } from './ComboboxContext';
 
 export type ComboboxInputProps<T extends ValidConstructor = 'input'> =
   HeadlessPropsWithRef<T>;

@@ -1,11 +1,11 @@
 import type { Accessor, JSX } from 'solid-js';
 import {
+  createComponent,
+  createContext,
+  createMemo,
   createSignal,
   untrack,
-  createContext,
-  createComponent,
   useContext,
-  createMemo,
 } from 'solid-js';
 import assert from '../utils/assert';
 import isEqual from '../utils/is-equal';

@@ -6,8 +6,8 @@ import type {
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
 import {
-  createSelectOptionState,
   SelectOptionStateProvider,
+  createSelectOptionState,
 } from '../../states/create-select-option-state';
 import type {
   HeadlessPropsWithRef,
@@ -16,18 +16,18 @@ import type {
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
-  createActiveState,
   createARIADisabledState,
   createARIASelectedState,
+  createActiveState,
   createDisabledState,
   createSelectedState,
 } from '../../utils/state-props';
 import type { OmitAndMerge, Prettify } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
 import type { ButtonProps } from '../button';
 import { Button } from '../button';
 import { useSelectContext } from './SelectContext';
 import { SELECT_OPTION_TAG } from './tags';
-import useEventListener from '../../utils/use-event-listener';
 
 export type SelectOptionBaseProps<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps

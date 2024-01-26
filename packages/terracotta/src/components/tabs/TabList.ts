@@ -13,14 +13,14 @@ import type {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
-import { useTabGroupContext } from './TabGroupContext';
-import { createTabFocusNavigator, TabListContext } from './TabListContext';
-import { TAB_LIST_TAG } from './tags';
 import {
-  createHasSelectedState,
   createHasActiveState,
+  createHasSelectedState,
 } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
+import { useTabGroupContext } from './TabGroupContext';
+import { TabListContext, createTabFocusNavigator } from './TabListContext';
+import { TAB_LIST_TAG } from './tags';
 
 export type TabListProps<
   V,

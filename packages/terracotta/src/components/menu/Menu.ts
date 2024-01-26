@@ -1,17 +1,17 @@
 import type { JSX } from 'solid-js';
-import { createComponent, mergeProps, createEffect, onCleanup } from 'solid-js';
+import { createComponent, createEffect, mergeProps, onCleanup } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
+import createTypeAhead from '../../utils/create-type-ahead';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
-import { createMenuItemFocusNavigator, MenuContext } from './MenuContext';
-import { MENU_TAG } from './tags';
-import createTypeAhead from '../../utils/create-type-ahead';
 import useEventListener from '../../utils/use-event-listener';
+import { MenuContext, createMenuItemFocusNavigator } from './MenuContext';
+import { MENU_TAG } from './tags';
 
 export type MenuProps<T extends ValidConstructor = 'ul'> =
   HeadlessPropsWithRef<T>;

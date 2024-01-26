@@ -13,8 +13,8 @@ import type {
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
 import {
-  createSingleSelectState,
   SelectStateProvider,
+  createSingleSelectState,
 } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
@@ -30,13 +30,13 @@ import {
   createHasSelectedState,
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
 import { RadioGroupContext } from './RadioGroupContext';
 import {
-  createRadioGroupOptionFocusNavigator,
   RadioGroupRootContext,
+  createRadioGroupOptionFocusNavigator,
 } from './RadioGroupRootContext';
 import { RADIO_GROUP_TAG } from './tags';
-import useEventListener from '../../utils/use-event-listener';
 
 export type RadioGroupControlledBaseProps<V> = Prettify<
   SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>

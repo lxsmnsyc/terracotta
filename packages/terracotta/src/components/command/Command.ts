@@ -9,11 +9,23 @@ import {
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
+  AutocompleteStateRenderProps,
+  MultipleAutocompleteStateControlledOptions,
+  MultipleAutocompleteStateUncontrolledOptions,
+  SingleAutocompleteStateControlledOptions,
+  SingleAutocompleteStateUncontrolledOptions,
+} from '../../states/create-autocomplete-state';
+import {
+  AutocompleteStateProvider,
+  createMultipleAutocompleteState,
+  createSingleAutocompleteState,
+} from '../../states/create-autocomplete-state';
+import createDynamic from '../../utils/create-dynamic';
+import type {
   DynamicProps,
   HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import createDynamic from '../../utils/create-dynamic';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -21,18 +33,6 @@ import {
   createHasQueryState,
   createHasSelectedState,
 } from '../../utils/state-props';
-import type {
-  SingleAutocompleteStateControlledOptions,
-  SingleAutocompleteStateUncontrolledOptions,
-  AutocompleteStateRenderProps,
-  MultipleAutocompleteStateUncontrolledOptions,
-  MultipleAutocompleteStateControlledOptions,
-} from '../../states/create-autocomplete-state';
-import {
-  createSingleAutocompleteState,
-  AutocompleteStateProvider,
-  createMultipleAutocompleteState,
-} from '../../states/create-autocomplete-state';
 import type { Prettify } from '../../utils/types';
 import {
   CommandContext,

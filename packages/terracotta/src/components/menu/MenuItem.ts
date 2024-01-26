@@ -1,5 +1,5 @@
 import type { JSX } from 'solid-js';
-import { mergeProps, createComponent } from 'solid-js';
+import { createComponent, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   DynamicProps,
@@ -11,11 +11,11 @@ import {
   createARIADisabledState,
   createDisabledState,
 } from '../../utils/state-props';
+import { Button } from '../button';
 import type { MenuChildProps } from './MenuChild';
 import { MenuChild } from './MenuChild';
 import { useMenuContext } from './MenuContext';
 import { MENU_ITEM_TAG } from './tags';
-import { Button } from '../button';
 
 export type MenuItemProps<T extends ValidConstructor = 'li'> =
   HeadlessPropsWithRef<T, MenuChildProps>;

@@ -10,14 +10,14 @@ import {
 import { omitProps } from 'solid-use/props';
 import assert from '../../utils/assert';
 import createDynamic from '../../utils/create-dynamic';
+import type { UnmountableProps } from '../../utils/create-unmountable';
+import { createUnmountable } from '../../utils/create-unmountable';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
-import type { UnmountableProps } from '../../utils/create-unmountable';
-import { createUnmountable } from '../../utils/create-unmountable';
 import type { Prettify } from '../../utils/types';
 
 export interface TransitionRootBaseProps {

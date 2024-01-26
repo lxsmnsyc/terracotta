@@ -1,21 +1,21 @@
 import type { JSX } from 'solid-js';
 import { mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
-  ValidConstructor,
-  HeadlessProps,
   DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { useCommandContext } from './CommandContext';
-import { COMMAND_LABEL_TAG } from './tags';
-import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import {
   createDisabledState,
-  createHasSelectedState,
   createHasActiveState,
   createHasQueryState,
+  createHasSelectedState,
 } from '../../utils/state-props';
+import { useCommandContext } from './CommandContext';
+import { COMMAND_LABEL_TAG } from './tags';
 
 export type CommandLabelProps<T extends ValidConstructor = 'label'> =
   HeadlessProps<T>;

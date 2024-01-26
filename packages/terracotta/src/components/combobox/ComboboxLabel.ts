@@ -1,23 +1,23 @@
 import type { JSX } from 'solid-js';
 import { mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import { useAutocompleteState } from '../../states/create-autocomplete-state';
+import { useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
-  ValidConstructor,
-  HeadlessProps,
   DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { useComboboxContext } from './ComboboxContext';
-import { COMBOBOX_LABEL_TAG } from './tags';
-import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import {
   createDisabledState,
-  createHasSelectedState,
+  createExpandedState,
   createHasActiveState,
   createHasQueryState,
-  createExpandedState,
+  createHasSelectedState,
 } from '../../utils/state-props';
-import { useDisclosureState } from '../../states/create-disclosure-state';
+import { useComboboxContext } from './ComboboxContext';
+import { COMBOBOX_LABEL_TAG } from './tags';
 
 export type ComboboxLabelProps<T extends ValidConstructor = 'label'> =
   HeadlessProps<T>;

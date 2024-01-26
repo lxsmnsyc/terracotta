@@ -3,22 +3,22 @@ import { createComponent, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { SelectOptionStateOptions } from '../../states/create-select-option-state';
 import {
-  createSelectOptionState,
   SelectOptionStateProvider,
+  createSelectOptionState,
 } from '../../states/create-select-option-state';
 import createDynamic from '../../utils/create-dynamic';
+import { createUnmountable } from '../../utils/create-unmountable';
 import type {
-  ValidConstructor,
   DynamicProps,
   HeadlessProps,
+  ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { createUnmountable } from '../../utils/create-unmountable';
-import { useTabGroupContext } from './TabGroupContext';
-import { TAB_PANEL_TAG } from './tags';
 import {
   createActiveState,
   createSelectedState,
 } from '../../utils/state-props';
+import { useTabGroupContext } from './TabGroupContext';
+import { TAB_PANEL_TAG } from './tags';
 
 export interface TabPanelBaseProps<V>
   extends Exclude<SelectOptionStateOptions<V>, 'disabled'> {

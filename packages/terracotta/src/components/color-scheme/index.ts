@@ -1,11 +1,11 @@
-import type { JSX, Accessor } from 'solid-js';
+import type { Accessor, JSX } from 'solid-js';
 import {
+  createComponent,
   createContext,
   createEffect,
   createMemo,
-  useContext,
   createSignal,
-  createComponent,
+  useContext,
 } from 'solid-js';
 import { usePrefersDark } from 'solid-use/media-query';
 import usePageVisibility from 'solid-use/page-visibility';

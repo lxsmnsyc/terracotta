@@ -1,20 +1,30 @@
 import type { JSX } from 'solid-js';
 import {
-  createEffect,
-  onCleanup,
   createComponent,
+  createEffect,
   mergeProps,
-  untrack,
+  onCleanup,
   onMount,
+  untrack,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import { useDisclosureState } from '../../states/create-disclosure-state';
+import type { SelectStateRenderProps } from '../../states/create-select-state';
+import {
+  SelectStateProvider,
+  useSelectState,
+} from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
+import createTypeAhead from '../../utils/create-type-ahead';
+import type { UnmountableProps } from '../../utils/create-unmountable';
+import { createUnmountable } from '../../utils/create-unmountable';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { SELECTED_NODE } from '../../utils/namespace';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -22,24 +32,14 @@ import {
   createHasActiveState,
   createHasSelectedState,
 } from '../../utils/state-props';
+import type { Prettify } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
 import { useListboxContext } from './ListboxContext';
 import {
-  createListboxOptionsFocusNavigator,
   ListboxOptionsContext,
+  createListboxOptionsFocusNavigator,
 } from './ListboxOptionsContext';
 import { LISTBOX_OPTIONS_TAG } from './tags';
-import type { SelectStateRenderProps } from '../../states/create-select-state';
-import {
-  SelectStateProvider,
-  useSelectState,
-} from '../../states/create-select-state';
-import { useDisclosureState } from '../../states/create-disclosure-state';
-import { SELECTED_NODE } from '../../utils/namespace';
-import createTypeAhead from '../../utils/create-type-ahead';
-import type { Prettify } from '../../utils/types';
-import type { UnmountableProps } from '../../utils/create-unmountable';
-import { createUnmountable } from '../../utils/create-unmountable';
-import useEventListener from '../../utils/use-event-listener';
 
 export type ListboxOptionsBaseProps<V> = Prettify<
   UnmountableProps & SelectStateRenderProps<V>

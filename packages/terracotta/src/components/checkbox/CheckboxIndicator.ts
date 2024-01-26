@@ -1,6 +1,11 @@
 import type { JSX } from 'solid-js';
-import { createEffect, createComponent, mergeProps } from 'solid-js';
+import { createComponent, createEffect, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import type { CheckStateRenderProps } from '../../states/create-check-state';
+import {
+  CheckStateChild,
+  useCheckState,
+} from '../../states/create-check-state';
 import type {
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -11,16 +16,11 @@ import {
   createCheckedState,
   createDisabledState,
 } from '../../utils/state-props';
+import useEventListener from '../../utils/use-event-listener';
 import type { ButtonProps } from '../button';
 import { Button } from '../button';
 import { useCheckboxContext } from './CheckboxContext';
 import { CHECKBOX_INDICATOR } from './tags';
-import type { CheckStateRenderProps } from '../../states/create-check-state';
-import {
-  CheckStateChild,
-  useCheckState,
-} from '../../states/create-check-state';
-import useEventListener from '../../utils/use-event-listener';
 
 export type CheckboxIndicatorProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<T, CheckStateRenderProps>;

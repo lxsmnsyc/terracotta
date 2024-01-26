@@ -1,5 +1,5 @@
 import type { JSX } from 'solid-js';
-import { createEffect, onCleanup, createComponent, mergeProps } from 'solid-js';
+import { createComponent, createEffect, mergeProps, onCleanup } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
@@ -8,13 +8,13 @@ import type {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import useEventListener from '../../utils/use-event-listener';
 import {
-  createFeedArticleFocusNavigator,
   FeedContentContext,
+  createFeedArticleFocusNavigator,
 } from './FeedContentContext';
 import { useFeedContext } from './FeedContext';
 import { FEED_CONTENT_TAG } from './tags';
-import useEventListener from '../../utils/use-event-listener';
 
 export type FeedContentProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T>;

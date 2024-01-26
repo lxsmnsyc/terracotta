@@ -1,6 +1,12 @@
 import type { JSX } from 'solid-js';
-import { createEffect, createComponent, mergeProps } from 'solid-js';
+import { createComponent, createEffect, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
+import {
+  DisclosureStateChild,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
+import { useSelectState } from '../../states/create-select-state';
 import type {
   HeadlessPropsWithRef,
   ValidConstructor,
@@ -15,17 +21,11 @@ import {
   createHasSelectedState,
 } from '../../utils/state-props';
 import type { OmitAndMerge } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
 import type { ButtonProps } from '../button';
 import { Button } from '../button';
 import { useListboxContext } from './ListboxContext';
 import { LISTBOX_BUTTON_TAG } from './tags';
-import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
-import { useSelectState } from '../../states/create-select-state';
-import useEventListener from '../../utils/use-event-listener';
 
 export type ListboxButtonProps<T extends ValidConstructor = 'button'> =
   HeadlessPropsWithRef<

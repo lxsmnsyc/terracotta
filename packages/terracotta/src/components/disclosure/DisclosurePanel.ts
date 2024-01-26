@@ -1,26 +1,26 @@
 import type { JSX } from 'solid-js';
 import { createComponent, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
-import type { UnmountableProps } from '../../utils/create-unmountable';
-import { createUnmountable } from '../../utils/create-unmountable';
-import { useDisclosureContext } from './DisclosureContext';
-import { DISCLOSURE_PANEL_TAG } from './tags';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
-import type { Prettify } from '../../utils/types';
+import createDynamic from '../../utils/create-dynamic';
+import type { UnmountableProps } from '../../utils/create-unmountable';
+import { createUnmountable } from '../../utils/create-unmountable';
+import type {
+  DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
+} from '../../utils/dynamic-prop';
 import {
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
+import type { Prettify } from '../../utils/types';
+import { useDisclosureContext } from './DisclosureContext';
+import { DISCLOSURE_PANEL_TAG } from './tags';
 
 export type DisclosurePanelBaseProps = Prettify<
   DisclosureStateRenderProps & UnmountableProps

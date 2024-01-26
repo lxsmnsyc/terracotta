@@ -7,32 +7,32 @@ import {
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
-import type { Prettify } from '../../utils/types';
-import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
 import {
-  createDisclosureState,
   DisclosureStateProvider,
+  createDisclosureState,
 } from '../../states/create-disclosure-state';
-import useFocusStartPoint from '../../utils/use-focus-start-point';
-import { CommandBarContext } from './CommandBarContext';
+import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import createDynamic from '../../utils/create-dynamic';
-import { COMMAND_BAR_TAG } from './tags';
+import type {
+  DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
+} from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
+import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
+import useFocusStartPoint from '../../utils/use-focus-start-point';
+import { CommandBarContext } from './CommandBarContext';
+import { COMMAND_BAR_TAG } from './tags';
 
 export type CommandBarControlledBaseProps = Prettify<
   DisclosureStateControlledOptions &

@@ -11,8 +11,8 @@ import type {
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
 import {
-  createSelectOptionState,
   SelectOptionStateProvider,
+  createSelectOptionState,
 } from '../../states/create-select-option-state';
 import type {
   DynamicProps,
@@ -22,18 +22,18 @@ import type {
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
-  createActiveState,
   createARIACheckedState,
   createARIADisabledState,
+  createActiveState,
   createCheckedState,
   createDisabledState,
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
+import { Button } from '../button';
 import { RadioGroupContext } from './RadioGroupContext';
 import { useRadioGroupRootContext } from './RadioGroupRootContext';
 import { RADIO_GROUP_OPTION_TAG } from './tags';
-import { Button } from '../button';
-import useEventListener from '../../utils/use-event-listener';
 
 export type RadioGroupOptionBaseProps<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps

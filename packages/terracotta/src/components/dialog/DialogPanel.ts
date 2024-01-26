@@ -1,6 +1,11 @@
 import type { JSX } from 'solid-js';
-import { createEffect, mergeProps, createComponent } from 'solid-js';
+import { createComponent, createEffect, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
+import {
+  DisclosureStateChild,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
@@ -10,18 +15,13 @@ import type {
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
-import { useDialogContext } from './DialogContext';
-import { DIALOG_PANEL_TAG } from './tags';
-import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
 import {
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
+import { useDialogContext } from './DialogContext';
+import { DIALOG_PANEL_TAG } from './tags';
 
 export type DialogPanelProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;

@@ -1,23 +1,23 @@
 import type { JSX } from 'solid-js';
 import { createComponent, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
+import {
+  DisclosureStateChild,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessProps,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import { useDialogContext } from './DialogContext';
-import { DIALOG_DESCRIPTION_TAG } from './tags';
-import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
 import {
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
+import { useDialogContext } from './DialogContext';
+import { DIALOG_DESCRIPTION_TAG } from './tags';
 
 export type DialogDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, DisclosureStateRenderProps>;

@@ -1,5 +1,5 @@
 import type { JSX } from 'solid-js';
-import { createEffect, createComponent, mergeProps } from 'solid-js';
+import { createComponent, createEffect, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   ToggleStateControlledOptions,
@@ -7,8 +7,8 @@ import type {
   ToggleStateUncontrolledOptions,
 } from '../../states/create-toggle-state';
 import {
-  createToggleState,
   ToggleStateProvider,
+  createToggleState,
 } from '../../states/create-toggle-state';
 import type {
   DynamicProps,
@@ -16,6 +16,7 @@ import type {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { createTag } from '../../utils/namespace';
 import {
   createARIADisabledState,
   createARIAPressedState,
@@ -23,10 +24,9 @@ import {
   createPressedState,
 } from '../../utils/state-props';
 import type { OmitAndMerge, Prettify } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
 import type { ButtonProps } from '../button';
 import { Button } from '../button';
-import { createTag } from '../../utils/namespace';
-import useEventListener from '../../utils/use-event-listener';
 
 const TOGGLE_TAG = createTag('toggle');
 
