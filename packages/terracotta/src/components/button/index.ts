@@ -1,20 +1,13 @@
 import type { JSX } from 'solid-js';
-import {
-  createEffect,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createEffect, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 import {
   createARIADisabledState,
@@ -41,14 +34,13 @@ export function Button<T extends ValidConstructor = 'button'>(
     if (current instanceof HTMLElement) {
       // This behavior is redundant for buttons
       if (current.tagName !== 'BUTTON') {
-        useEventListener(current, 'keydown', (e) => {
+        useEventListener(current, 'keydown', e => {
           switch (e.key) {
             case 'Enter':
-            case ' ':
+            case ' ': {
               current.click();
               break;
-            default:
-              break;
+            }
           }
         });
       }
@@ -66,10 +58,7 @@ export function Button<T extends ValidConstructor = 'button'>(
       },
       createDisabledState(() => props.disabled),
       createARIADisabledState(() => props.disabled),
-      omitProps(props, [
-        'as',
-        'ref',
-      ]),
+      omitProps(props, ['as', 'ref']),
       BUTTON_TAG,
       {
         ref: setInternalRef,

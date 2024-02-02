@@ -1,3 +1,5 @@
+import type { JSX } from 'solid-js';
+import { For } from 'solid-js';
 import {
   Accordion,
   AccordionButton,
@@ -5,10 +7,10 @@ import {
   AccordionItem,
   AccordionPanel,
 } from 'terracotta';
-import type { JSX } from 'solid-js';
-import { For } from 'solid-js';
 
-function ChevronUpIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
+function ChevronUpIcon(
+  props: JSX.IntrinsicElements['svg'] & { title: string },
+): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -17,6 +19,7 @@ function ChevronUpIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
       stroke="currentColor"
       {...props}
     >
+      <title>{props.title}</title>
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -38,16 +41,18 @@ const FAQS: FAQ[] = [
     answer: 'Maybe someday.',
   },
   {
-    question: 'Oh, Magic Conch Shell, what do we need to do to get out of the Kelp Forest?',
+    question:
+      'Oh, Magic Conch Shell, what do we need to do to get out of the Kelp Forest?',
     answer: 'Nothing.',
   },
   {
-    question: 'Uh, hello there. Magic Conch, uh, I was wondering... uh, should I have the spaghetti or the turkey?',
+    question:
+      'Uh, hello there. Magic Conch, uh, I was wondering... uh, should I have the spaghetti or the turkey?',
     answer: 'Neither.',
   },
   {
     question: 'Oh, then how about the soup?',
-    answer: 'I don\'t think so.',
+    answer: "I don't think so.",
   },
   {
     question: 'Could I have anything to eat?',
@@ -73,7 +78,10 @@ export default function App(): JSX.Element {
                         <span>{faq.question}</span>
                         <div>
                           <ChevronUpIcon
-                            class={`flex-0 ${isSelected() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
+                            class={`flex-0 ${
+                              isSelected() ? 'transform rotate-180' : ''
+                            } w-5 h-5 text-purple-500`}
+                            title={isSelected() ? 'Collapse' : 'Expand'}
                           />
                         </div>
                       </>

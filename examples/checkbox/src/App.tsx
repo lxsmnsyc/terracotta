@@ -1,17 +1,15 @@
+import type { JSX } from 'solid-js';
+import { Match, Switch, createSignal } from 'solid-js';
 import {
   Checkbox,
+  CheckboxDescription,
   CheckboxIndicator,
   CheckboxLabel,
-  CheckboxDescription,
 } from 'terracotta';
-import type { JSX } from 'solid-js';
-import {
-  createSignal,
-  Switch,
-  Match,
-} from 'solid-js';
 
-function CheckIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
+function CheckIcon(
+  props: JSX.IntrinsicElements['svg'] & { title: string },
+): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -20,6 +18,7 @@ function CheckIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
       stroke="currentColor"
       {...props}
     >
+      <title>{props.title}</title>
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -30,7 +29,9 @@ function CheckIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
   );
 }
 
-function CloseIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
+function CloseIcon(
+  props: JSX.IntrinsicElements['svg'] & { title: string },
+): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -39,6 +40,7 @@ function CloseIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
       stroke="currentColor"
       {...props}
     >
+      <title>{props.title}</title>
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -49,7 +51,9 @@ function CloseIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
   );
 }
 
-function UndefinedIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
+function UndefinedIcon(
+  props: JSX.IntrinsicElements['svg'] & { title: string },
+): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -58,6 +62,7 @@ function UndefinedIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
       stroke="currentColor"
       {...props}
     >
+      <title>{props.title}</title>
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -79,21 +84,19 @@ export default function App(): JSX.Element {
         as="div"
         class="flex flex-row justify-between items-center space-x-4"
       >
-        <CheckboxIndicator
-          class="flex-none w-6 h-6 p-1 text-white bg-opacity-25 bg-fuchsia-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-        >
+        <CheckboxIndicator class="flex-none w-6 h-6 p-1 text-white bg-opacity-25 bg-fuchsia-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
           <Switch>
             <Match when={checked() === undefined}>
               <span class="sr-only">Mixed</span>
-              <UndefinedIcon />
+              <UndefinedIcon title="Indeterminate" />
             </Match>
             <Match when={checked() === true}>
               <span class="sr-only">Checked</span>
-              <CheckIcon />
+              <CheckIcon title="Checked" />
             </Match>
             <Match when={checked() === false}>
               <span class="sr-only">Unchecked</span>
-              <CloseIcon />
+              <CloseIcon title="Unchecked" />
             </Match>
           </Switch>
         </CheckboxIndicator>

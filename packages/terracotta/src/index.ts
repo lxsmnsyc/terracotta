@@ -69,9 +69,21 @@ export type {
   InputStateRenderProps,
   InputStateUncontrolledOptions,
 } from './states/create-input-state';
-export { InputStateChild, useInputState, createInputState } from './states/create-input-state';
-export type { SelectOptionStateOptions, SelectOptionStateProperties, SelectOptionStateRenderProps } from './states/create-select-option-state';
-export { SelectOptionStateChild, useSelectOptionState, createSelectOptionState } from './states/create-select-option-state';
+export {
+  InputStateChild,
+  useInputState,
+  createInputState,
+} from './states/create-input-state';
+export type {
+  SelectOptionStateOptions,
+  SelectOptionStateProperties,
+  SelectOptionStateRenderProps,
+} from './states/create-select-option-state';
+export {
+  SelectOptionStateChild,
+  useSelectOptionState,
+  createSelectOptionState,
+} from './states/create-select-option-state';
 export type {
   SelectStateProperties,
   SelectStateRenderProps,

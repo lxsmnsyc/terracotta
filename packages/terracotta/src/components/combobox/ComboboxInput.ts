@@ -1,21 +1,15 @@
 import type { JSX } from 'solid-js';
-import {
-  createEffect,
-  mergeProps,
-  untrack,
-} from 'solid-js';
+import { createEffect, mergeProps, untrack } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import { useAutocompleteState } from '../../states/create-autocomplete-state';
+import { useDisclosureState } from '../../states/create-disclosure-state';
+import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
-import { useComboboxContext } from './ComboboxContext';
-import createDynamic from '../../utils/create-dynamic';
-import { useAutocompleteState } from '../../states/create-autocomplete-state';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createARIAExpandedState,
@@ -25,9 +19,9 @@ import {
   createHasQueryState,
   createHasSelectedState,
 } from '../../utils/state-props';
-import { COMMAND_INPUT_TAG } from '../command/tags';
-import { useDisclosureState } from '../../states/create-disclosure-state';
 import useEventListener from '../../utils/use-event-listener';
+import { COMMAND_INPUT_TAG } from '../command/tags';
+import { useComboboxContext } from './ComboboxContext';
 
 export type ComboboxInputProps<T extends ValidConstructor = 'input'> =
   HeadlessPropsWithRef<T>;
@@ -40,7 +34,8 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
   const disclosureState = useDisclosureState();
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined => autocompleteState.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined =>
+    autocompleteState.disabled() || props.disabled;
 
   createEffect(() => {
     const current = internalRef();
@@ -55,13 +50,14 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
         });
       }
 
-      useEventListener(current, 'keydown', (e) => {
+      useEventListener(current, 'keydown', e => {
         if (!isDisabled()) {
           switch (e.key) {
-            case 'Escape':
+            case 'Escape': {
               disclosureState.close();
               break;
-            case 'ArrowUp':
+            }
+            case 'ArrowUp': {
               e.preventDefault();
               if (disclosureState.isOpen()) {
                 context.controller.setPrevChecked(true);
@@ -69,7 +65,8 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
                 disclosureState.open();
               }
               break;
-            case 'ArrowDown':
+            }
+            case 'ArrowDown': {
               e.preventDefault();
               if (disclosureState.isOpen()) {
                 context.controller.setNextChecked(true);
@@ -77,12 +74,14 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
                 disclosureState.open();
               }
               break;
-            case 'Enter':
+            }
+            case 'Enter': {
               e.preventDefault();
               if (disclosureState.isOpen()) {
                 context.selectedDescendant = context.activeDescendant;
               }
               break;
+            }
             default:
               break;
           }
@@ -93,12 +92,12 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
           disclosureState.toggle();
         }
       });
-      useEventListener(current, 'blur', (e) => {
+      useEventListener(current, 'blur', e => {
         if (context.optionsHovering) {
           return;
         }
         autocompleteState.blur();
-        if (!e.relatedTarget || !current.contains(e.relatedTarget as Node)) {
+        if (!(e.relatedTarget && current.contains(e.relatedTarget as Node))) {
           disclosureState.close();
         }
       });

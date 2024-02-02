@@ -51,28 +51,31 @@ export function createSelectOptionState<T>(
 }
 
 export interface SelectOptionStateRenderProps {
-  children?: JSX.Element | ((state: SelectOptionStateProperties) => JSX.Element);
+  children?:
+    | JSX.Element
+    | ((state: SelectOptionStateProperties) => JSX.Element);
 }
 
-export interface SelectOptionStateProviderProps extends SelectOptionStateRenderProps {
+export interface SelectOptionStateProviderProps
+  extends SelectOptionStateRenderProps {
   state: SelectOptionStateProperties;
 }
 
 const SelectOptionStateContext = createContext<SelectOptionStateProperties>();
 
-export function SelectOptionStateProvider(props: SelectOptionStateProviderProps): JSX.Element {
-  return (
-    createComponent(SelectOptionStateContext.Provider, {
-      value: props.state,
-      get children() {
-        const current = props.children;
-        if (typeof current === 'function') {
-          return current(props.state);
-        }
-        return current;
-      },
-    })
-  );
+export function SelectOptionStateProvider(
+  props: SelectOptionStateProviderProps,
+): JSX.Element {
+  return createComponent(SelectOptionStateContext.Provider, {
+    value: props.state,
+    get children() {
+      const current = props.children;
+      if (typeof current === 'function') {
+        return current(props.state);
+      }
+      return current;
+    },
+  });
 }
 
 export function useSelectOptionState(): SelectOptionStateProperties {

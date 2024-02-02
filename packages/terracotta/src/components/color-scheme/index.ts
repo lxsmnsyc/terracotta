@@ -1,14 +1,11 @@
-import type {
-  JSX,
-  Accessor,
-} from 'solid-js';
+import type { Accessor, JSX } from 'solid-js';
 import {
+  createComponent,
   createContext,
   createEffect,
   createMemo,
-  useContext,
   createSignal,
-  createComponent,
+  useContext,
 } from 'solid-js';
 import { usePrefersDark } from 'solid-use/media-query';
 import usePageVisibility from 'solid-use/page-visibility';
@@ -44,7 +41,9 @@ const ColorSchemeContext = createContext<ColorSchemeContextData>();
 
 const STORAGE_KEY = 'theme-preference';
 
-export function ColorSchemeProvider(props: ColorSchemeProviderProps): JSX.Element {
+export function ColorSchemeProvider(
+  props: ColorSchemeProviderProps,
+): JSX.Element {
   let get: Accessor<ColorScheme>;
   let set: (scheme: ColorScheme) => void;
 
@@ -69,9 +68,9 @@ export function ColorSchemeProvider(props: ColorSchemeProviderProps): JSX.Elemen
   const prefersDark = usePrefersDark();
   const isVisible = usePageVisibility();
 
-  const shouldToggle = createMemo(() => (
-    (get() === 'system' && prefersDark()) || (get() === 'dark')
-  ));
+  const shouldToggle = createMemo(
+    () => (get() === 'system' && prefersDark()) || get() === 'dark',
+  );
 
   // Since storage events only work for other windows
   // we need to make the main window sync
@@ -98,10 +97,7 @@ export function ColorSchemeProvider(props: ColorSchemeProviderProps): JSX.Elemen
 
   // Sync document class
   createEffect(() => {
-    document.documentElement.classList.toggle(
-      'dark',
-      shouldToggle(),
-    );
+    document.documentElement.classList.toggle('dark', shouldToggle());
   });
 
   return createComponent(ColorSchemeContext.Provider, {
@@ -131,12 +127,12 @@ function useColorSchemeContext(): ColorSchemeContextData {
   return ctx;
 }
 
-export function useColorScheme(): [() => ColorScheme, (newScheme: ColorScheme) => void] {
+export function useColorScheme(): [
+  () => ColorScheme,
+  (newScheme: ColorScheme) => void,
+] {
   const ctx = useColorSchemeContext();
-  return [
-    (): ColorScheme => ctx.value,
-    ctx.setValue,
-  ];
+  return [(): ColorScheme => ctx.value, ctx.setValue];
 }
 
 export function useNativeColorScheme(): () => NativeColorScheme {

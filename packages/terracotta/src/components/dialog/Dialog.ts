@@ -1,29 +1,11 @@
 import type { JSX } from 'solid-js';
 import {
-  createUniqueId,
-  mergeProps,
   createComponent,
   createEffect,
+  createUniqueId,
+  mergeProps,
 } from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
-import createDynamic from '../../utils/create-dynamic';
-import type {
-  ValidConstructor,
-  HeadlessProps,
-  DynamicProps,
-} from '../../utils/dynamic-prop';
-import type { UnmountableProps } from '../../utils/create-unmountable';
-import {
-  createUnmountable,
-} from '../../utils/create-unmountable';
-import useFocusStartPoint from '../../utils/use-focus-start-point';
-import {
-  DialogContext,
-} from './DialogContext';
-import { DIALOG_TAG } from './tags';
-import type { Prettify } from '../../utils/types';
+import { omitProps } from 'solid-use/props';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
@@ -33,25 +15,37 @@ import {
   DisclosureStateProvider,
   createDisclosureState,
 } from '../../states/create-disclosure-state';
+import createDynamic from '../../utils/create-dynamic';
+import type { UnmountableProps } from '../../utils/create-unmountable';
+import { createUnmountable } from '../../utils/create-unmountable';
+import type {
+  DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
+} from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
+import type { Prettify } from '../../utils/types';
+import useFocusStartPoint from '../../utils/use-focus-start-point';
+import { DialogContext } from './DialogContext';
+import { DIALOG_TAG } from './tags';
 
 export type DialogControlledBaseProps = Prettify<
-  & DisclosureStateControlledOptions
-  & DisclosureStateRenderProps
-  & UnmountableProps
+  DisclosureStateControlledOptions &
+    DisclosureStateRenderProps &
+    UnmountableProps
 >;
 
 export type DialogControlledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, DialogControlledBaseProps>;
 
 export type DialogUncontrolledBaseProps = Prettify<
-  & DisclosureStateUncontrolledOptions
-  & DisclosureStateRenderProps
-  & UnmountableProps
+  DisclosureStateUncontrolledOptions &
+    DisclosureStateRenderProps &
+    UnmountableProps
 >;
 
 export type DialogUncontrolledProps<T extends ValidConstructor = 'div'> =
@@ -98,51 +92,52 @@ export function Dialog<T extends ValidConstructor = 'div'>(
       return createUnmountable(
         props,
         () => state.isOpen(),
-        () => createDynamic(
-          () => props.as || ('div' as T),
-          mergeProps(
-            isDialogUncontrolled(props)
-              ? omitProps(props, [
-                'as',
-                'children',
-                'defaultOpen',
-                'disabled',
-                'onChange',
-                'onClose',
-                'onOpen',
-                'unmount',
-              ])
-              : omitProps(props, [
-                'as',
-                'children',
-                'isOpen',
-                'disabled',
-                'onChange',
-                'onClose',
-                'onOpen',
-                'unmount',
-              ]),
-            DIALOG_TAG,
-            {
-              id: ownerID,
-              role: 'dialog',
-              'aria-modal': true,
-              'aria-labelledby': titleID,
-              'aria-describedby': descriptionID,
-              get children() {
-                return createComponent(DisclosureStateProvider, {
-                  state,
-                  get children() {
-                    return props.children;
-                  },
-                });
+        () =>
+          createDynamic(
+            () => props.as || ('div' as T),
+            mergeProps(
+              isDialogUncontrolled(props)
+                ? omitProps(props, [
+                    'as',
+                    'children',
+                    'defaultOpen',
+                    'disabled',
+                    'onChange',
+                    'onClose',
+                    'onOpen',
+                    'unmount',
+                  ])
+                : omitProps(props, [
+                    'as',
+                    'children',
+                    'isOpen',
+                    'disabled',
+                    'onChange',
+                    'onClose',
+                    'onOpen',
+                    'unmount',
+                  ]),
+              DIALOG_TAG,
+              {
+                id: ownerID,
+                role: 'dialog',
+                'aria-modal': true,
+                'aria-labelledby': titleID,
+                'aria-describedby': descriptionID,
+                get children() {
+                  return createComponent(DisclosureStateProvider, {
+                    state,
+                    get children() {
+                      return props.children;
+                    },
+                  });
+                },
               },
-            },
-            createDisabledState(() => state.disabled()),
-            createARIADisabledState(() => state.disabled()),
-            createExpandedState(() => state.isOpen()),
-          ) as DynamicProps<T>,
-        ),
+              createDisabledState(() => state.disabled()),
+              createARIADisabledState(() => state.disabled()),
+              createExpandedState(() => state.isOpen()),
+            ) as DynamicProps<T>,
+          ),
       );
     },
   });

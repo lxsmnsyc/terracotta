@@ -17,7 +17,7 @@ export default function createInputReader(
 
   return [
     signal,
-    (value) => {
+    value => {
       if (timeout) {
         clearTimeout(timeout);
       }

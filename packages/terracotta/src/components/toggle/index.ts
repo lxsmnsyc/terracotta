@@ -1,29 +1,22 @@
 import type { JSX } from 'solid-js';
-import {
-  createEffect,
-  createComponent,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createComponent, createEffect, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import type {
   ToggleStateControlledOptions,
   ToggleStateRenderProps,
   ToggleStateUncontrolledOptions,
 } from '../../states/create-toggle-state';
 import {
-  createToggleState,
   ToggleStateProvider,
+  createToggleState,
 } from '../../states/create-toggle-state';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
+import { createTag } from '../../utils/namespace';
 import {
   createARIADisabledState,
   createARIAPressedState,
@@ -31,30 +24,31 @@ import {
   createPressedState,
 } from '../../utils/state-props';
 import type { OmitAndMerge, Prettify } from '../../utils/types';
-import type { ButtonProps } from '../button';
-import {
-  Button,
-} from '../button';
-import { createTag } from '../../utils/namespace';
 import useEventListener from '../../utils/use-event-listener';
+import type { ButtonProps } from '../button';
+import { Button } from '../button';
 
 const TOGGLE_TAG = createTag('toggle');
 
 export type ToggleControlledBaseProps = Prettify<
-  & ToggleStateControlledOptions
-  & ToggleStateRenderProps
+  ToggleStateControlledOptions & ToggleStateRenderProps
 >;
 
 export type ToggleControlledProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<T, OmitAndMerge<ToggleControlledBaseProps, ButtonProps<T>>>;
+  HeadlessPropsWithRef<
+    T,
+    OmitAndMerge<ToggleControlledBaseProps, ButtonProps<T>>
+  >;
 
 export type ToggleUncontrolledBaseProps = Prettify<
-  & ToggleStateUncontrolledOptions
-  & ToggleStateRenderProps
+  ToggleStateUncontrolledOptions & ToggleStateRenderProps
 >;
 
 export type ToggleUncontrolledProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<T, OmitAndMerge<ToggleUncontrolledBaseProps, ButtonProps<T>>>;
+  HeadlessPropsWithRef<
+    T,
+    OmitAndMerge<ToggleUncontrolledBaseProps, ButtonProps<T>>
+  >;
 
 export type ToggleProps<T extends ValidConstructor = 'button'> =
   | ToggleControlledProps<T>
@@ -81,37 +75,40 @@ export function Toggle<T extends ValidConstructor = 'button'>(
     }
   });
 
-  return createComponent(Button, mergeProps(
-    isToggleUncontrolled(props)
-      ? omitProps(props, [
-        'onChange',
-        'defaultPressed',
-        'ref',
-        'disabled',
-        'children',
-      ])
-      : omitProps(props, [
-        'onChange',
-        'pressed',
-        'ref',
-        'disabled',
-        'children',
-      ]),
-    TOGGLE_TAG,
-    {
-      ref: setRef,
-      get children() {
-        return createComponent(ToggleStateProvider, {
-          state,
-          get children() {
-            return props.children;
-          },
-        });
+  return createComponent(
+    Button,
+    mergeProps(
+      isToggleUncontrolled(props)
+        ? omitProps(props, [
+            'onChange',
+            'defaultPressed',
+            'ref',
+            'disabled',
+            'children',
+          ])
+        : omitProps(props, [
+            'onChange',
+            'pressed',
+            'ref',
+            'disabled',
+            'children',
+          ]),
+      TOGGLE_TAG,
+      {
+        ref: setRef,
+        get children() {
+          return createComponent(ToggleStateProvider, {
+            state,
+            get children() {
+              return props.children;
+            },
+          });
+        },
       },
-    },
-    createPressedState(() => state.pressed()),
-    createARIAPressedState(() => state.pressed()),
-    createDisabledState(() => state.disabled()),
-    createARIADisabledState(() => state.disabled()),
-  ) as DynamicProps<T>);
+      createPressedState(() => state.pressed()),
+      createARIAPressedState(() => state.pressed()),
+      createDisabledState(() => state.disabled()),
+      createARIADisabledState(() => state.disabled()),
+    ) as DynamicProps<T>,
+  );
 }

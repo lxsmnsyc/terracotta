@@ -7,21 +7,17 @@ import {
   mergeProps,
   useContext,
 } from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { omitProps } from 'solid-use/props';
 import assert from '../../utils/assert';
 import createDynamic from '../../utils/create-dynamic';
+import type { UnmountableProps } from '../../utils/create-unmountable';
+import { createUnmountable } from '../../utils/create-unmountable';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
-import type { UnmountableProps } from '../../utils/create-unmountable';
-import { createUnmountable } from '../../utils/create-unmountable';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import type { Prettify } from '../../utils/types';
 
 export interface TransitionRootBaseProps {
@@ -37,9 +33,14 @@ interface TransitionCounter {
 const TransitionRootContext = createContext<TransitionRootBaseProps>();
 const TransitionCounterContext = createContext<TransitionCounter>();
 
-function useTransitionRootContext(componentName: string): TransitionRootBaseProps {
+function useTransitionRootContext(
+  componentName: string,
+): TransitionRootBaseProps {
   const context = useContext(TransitionRootContext);
-  assert(context, new Error(`<${componentName}> must be used inside a <Transition>`));
+  assert(
+    context,
+    new Error(`<${componentName}> must be used inside a <Transition>`),
+  );
   return context;
 }
 
@@ -50,10 +51,10 @@ function createTransitionCounter(): TransitionCounter {
   return {
     // Reactive set
     register(): void {
-      setSize((c) => c + 1);
+      setSize(c => c + 1);
     },
     unregister(): void {
-      setSize((c) => c - 1);
+      setSize(c => c - 1);
     },
     done(): boolean {
       return size() === 0;
@@ -81,13 +82,13 @@ function getClassList(classes?: string): string[] {
 }
 
 function addClassList(ref: HTMLElement, classes: string[]): void {
-  const filtered = classes.filter((value) => value);
+  const filtered = classes.filter(value => value);
   if (filtered.length) {
     ref.classList.add(...filtered);
   }
 }
 function removeClassList(ref: HTMLElement, classes: string[]): void {
-  const filtered = classes.filter((value) => value);
+  const filtered = classes.filter(value => value);
   if (filtered.length) {
     ref.classList.remove(...filtered);
   }
@@ -146,8 +147,12 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
           removeClassList(element, enterFrom);
           setState('enter-to');
           addClassList(element, enterTo);
-          element.addEventListener('transitionend', endTransition, { once: true });
-          element.addEventListener('animationend', endTransition, { once: true });
+          element.addEventListener('transitionend', endTransition, {
+            once: true,
+          });
+          element.addEventListener('animationend', endTransition, {
+            once: true,
+          });
         });
       }
     } else {
@@ -207,10 +212,8 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
   return createComponent(TransitionCounterContext.Provider, {
     value: transitionChildren,
     get children() {
-      return createUnmountable(
-        props,
-        visible,
-        () => createDynamic(
+      return createUnmountable(props, visible, () =>
+        createDynamic(
           () => props.as || ('div' as T),
           mergeProps(
             omitProps(props, [
@@ -244,8 +247,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
 }
 
 export type TransitionProps<T extends ValidConstructor = 'div'> = Prettify<
-  & TransitionRootBaseProps
-  & TransitionChildProps<T>
+  TransitionRootBaseProps & TransitionChildProps<T>
 >;
 
 export function Transition<T extends ValidConstructor = 'div'>(

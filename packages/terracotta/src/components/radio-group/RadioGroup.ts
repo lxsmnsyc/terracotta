@@ -13,8 +13,8 @@ import type {
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
 import {
-  createSingleSelectState,
   SelectStateProvider,
+  createSingleSelectState,
 } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
@@ -22,9 +22,7 @@ import type {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -32,26 +30,31 @@ import {
   createHasSelectedState,
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
-import { RadioGroupContext } from './RadioGroupContext';
-import { createRadioGroupOptionFocusNavigator, RadioGroupRootContext } from './RadioGroupRootContext';
-import { RADIO_GROUP_TAG } from './tags';
 import useEventListener from '../../utils/use-event-listener';
+import { RadioGroupContext } from './RadioGroupContext';
+import {
+  RadioGroupRootContext,
+  createRadioGroupOptionFocusNavigator,
+} from './RadioGroupRootContext';
+import { RADIO_GROUP_TAG } from './tags';
 
 export type RadioGroupControlledBaseProps<V> = Prettify<
-  & SingleSelectStateControlledOptions<V>
-  & SelectStateRenderProps<V>
+  SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type RadioGroupControlledProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, RadioGroupControlledBaseProps<V>>;
+export type RadioGroupControlledProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessPropsWithRef<T, RadioGroupControlledBaseProps<V>>;
 
 export type RadioGroupUncontrolledBaseProps<V> = Prettify<
-  & SingleSelectStateUncontrolledOptions<V>
-  & SelectStateRenderProps<V>
+  SingleSelectStateUncontrolledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type RadioGroupUncontrolledProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, RadioGroupUncontrolledBaseProps<V>>;
+export type RadioGroupUncontrolledProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessPropsWithRef<T, RadioGroupUncontrolledBaseProps<V>>;
 
 export type RadioGroupProps<V, T extends ValidConstructor = 'div'> =
   | RadioGroupControlledProps<V, T>
@@ -80,25 +83,25 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
       onCleanup(() => {
         controller.clearRef();
       });
-      useEventListener(current, 'keydown', (e) => {
+      useEventListener(current, 'keydown', e => {
         if (!state.disabled()) {
           switch (e.key) {
             case 'ArrowLeft':
-            case 'ArrowUp':
+            case 'ArrowUp': {
               e.preventDefault();
               controller.setPrevChecked(true);
               break;
+            }
             case 'ArrowRight':
-            case 'ArrowDown':
+            case 'ArrowDown': {
               e.preventDefault();
               controller.setNextChecked(true);
               break;
-            default:
-              break;
+            }
           }
         }
       });
-      useEventListener(current, 'focusin', (e) => {
+      useEventListener(current, 'focusin', e => {
         if (e.target && e.target !== current) {
           controller.setCurrent(e.target as HTMLElement);
         }
@@ -120,27 +123,27 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
             mergeProps(
               isRadioGroupUncontrolled(props)
                 ? omitProps(props, [
-                  'as',
-                  'by',
-                  'children',
-                  'defaultValue',
-                  'disabled',
-                  'multiple',
-                  'onChange',
-                  'ref',
-                  'toggleable',
-                ])
+                    'as',
+                    'by',
+                    'children',
+                    'defaultValue',
+                    'disabled',
+                    'multiple',
+                    'onChange',
+                    'ref',
+                    'toggleable',
+                  ])
                 : omitProps(props, [
-                  'as',
-                  'by',
-                  'children',
-                  'value',
-                  'disabled',
-                  'multiple',
-                  'onChange',
-                  'ref',
-                  'toggleable',
-                ]),
+                    'as',
+                    'by',
+                    'children',
+                    'value',
+                    'disabled',
+                    'multiple',
+                    'onChange',
+                    'ref',
+                    'toggleable',
+                  ]),
               RADIO_GROUP_TAG,
               {
                 role: 'radiogroup',

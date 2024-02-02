@@ -1,45 +1,40 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
-import createDynamic from '../../utils/create-dynamic';
-import type {
-  ValidConstructor,
-  HeadlessProps,
-  DynamicProps,
-} from '../../utils/dynamic-prop';
-import {
-  createActiveState,
-  createARIADisabledState,
-  createDisabledState, createExpandedState, createSelectedState,
-} from '../../utils/state-props';
-import { useAccordionContext } from './AccordionContext';
-import {
-  AccordionItemContext,
-} from './AccordionItemContext';
-import { ACCORDION_ITEM_TAG } from './tags';
+import { createComponent, createUniqueId, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import type {
   SelectOptionStateOptions,
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
 import {
-  createSelectOptionState,
   SelectOptionStateProvider,
+  createSelectOptionState,
 } from '../../states/create-select-option-state';
+import createDynamic from '../../utils/create-dynamic';
+import type {
+  DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
+} from '../../utils/dynamic-prop';
+import {
+  createARIADisabledState,
+  createActiveState,
+  createDisabledState,
+  createExpandedState,
+  createSelectedState,
+} from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
+import { useAccordionContext } from './AccordionContext';
+import { AccordionItemContext } from './AccordionItemContext';
+import { ACCORDION_ITEM_TAG } from './tags';
 
 export type AccordionItemprops<V> = Prettify<
-  & SelectOptionStateOptions<V>
-  & SelectOptionStateRenderProps
+  SelectOptionStateOptions<V> & SelectOptionStateRenderProps
 >;
 
-export type AccordionItemProps<V, T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, AccordionItemprops<V>>;
+export type AccordionItemProps<
+  V,
+  T extends ValidConstructor = 'div',
+> = HeadlessProps<T, AccordionItemprops<V>>;
 
 export function AccordionItem<V, T extends ValidConstructor = 'div'>(
   props: AccordionItemProps<V, T>,
@@ -55,12 +50,7 @@ export function AccordionItem<V, T extends ValidConstructor = 'div'>(
       return createDynamic(
         () => props.as || ('div' as T),
         mergeProps(
-          omitProps(props, [
-            'as',
-            'children',
-            'value',
-            'disabled',
-          ]),
+          omitProps(props, ['as', 'children', 'value', 'disabled']),
           ACCORDION_ITEM_TAG,
           createDisabledState(() => state.disabled()),
           createARIADisabledState(() => state.disabled()),

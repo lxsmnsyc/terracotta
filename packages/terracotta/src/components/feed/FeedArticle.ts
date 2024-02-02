@@ -1,12 +1,6 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+import { createComponent, createUniqueId, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
@@ -14,12 +8,8 @@ import type {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
-import {
-  FeedArticleContext,
-} from './FeedArticleContext';
-import {
-  useFeedContext,
-} from './FeedContext';
+import { FeedArticleContext } from './FeedArticleContext';
+import { useFeedContext } from './FeedContext';
 import { FEED_ARTICLE_TAG } from './tags';
 
 export type FeedArticleProps<T extends ValidConstructor = 'article'> =

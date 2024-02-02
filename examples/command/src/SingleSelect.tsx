@@ -1,12 +1,12 @@
+import type { JSX } from 'solid-js';
+import { For, createSignal } from 'solid-js';
 import {
   Command,
   CommandInput,
-  CommandOptions,
-  CommandOption,
   CommandLabel,
+  CommandOption,
+  CommandOptions,
 } from 'terracotta';
-import type { JSX } from 'solid-js';
-import { createSignal, For } from 'solid-js';
 import { CheckIcon, classNames } from './utils';
 
 const people = [
@@ -28,9 +28,13 @@ export default function SingleSelect(): JSX.Element {
         toggleable
         value={selected()}
         onChange={setSelected}
-        matchBy={(item, query): boolean => item.name.toLowerCase().includes(query.toLowerCase())}
+        matchBy={(item, query): boolean =>
+          item.name.toLowerCase().includes(query.toLowerCase())
+        }
       >
-        <CommandLabel class="text-xl font-semibold">Single Selection</CommandLabel>
+        <CommandLabel class="text-xl font-semibold">
+          Single Selection
+        </CommandLabel>
         <CommandInput
           class="w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
           placeholder="Select an item"
@@ -43,7 +47,9 @@ export default function SingleSelect(): JSX.Element {
                 {({ isActive, isSelected, matches }): JSX.Element => (
                   <div
                     class={classNames(
-                      isActive() ? 'text-amber-900 bg-amber-100' : 'text-gray-900',
+                      isActive()
+                        ? 'text-amber-900 bg-amber-100'
+                        : 'text-gray-900',
                       'group-hover:text-amber-900 group-hover:bg-amber-100',
                       'cursor-default select-none relative py-2 pl-10 pr-4',
                       matches() ? 'visible' : 'hidden',

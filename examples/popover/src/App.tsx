@@ -1,11 +1,6 @@
-import {
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-  Transition,
-} from 'terracotta';
 import type { JSX } from 'solid-js';
 import { For } from 'solid-js';
+import { Popover, PopoverButton, PopoverPanel, Transition } from 'terracotta';
 
 function IconOne(): JSX.Element {
   return (
@@ -16,6 +11,7 @@ function IconOne(): JSX.Element {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>Icon One</title>
       <rect width="48" height="48" rx="8" fill="#FFEDD5" />
       <path
         d="M24 11L35.2583 17.5V30.5L24 37L12.7417 30.5V17.5L24 11Z"
@@ -49,6 +45,7 @@ function IconTwo(): JSX.Element {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>Icon Two</title>
       <rect width="48" height="48" rx="8" fill="#FFEDD5" />
       <path
         d="M28.0413 20L23.9998 13L19.9585 20M32.0828 27.0001L36.1242 34H28.0415M19.9585 34H11.8755L15.9171 27"
@@ -75,6 +72,7 @@ function IconThree(): JSX.Element {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>Icon Three</title>
       <rect width="48" height="48" rx="8" fill="#FFEDD5" />
       <rect x="13" y="32" width="2" height="4" fill="#FDBA74" />
       <rect x="17" y="28" width="2" height="8" fill="#FDBA74" />
@@ -107,7 +105,9 @@ const solutions = [
   },
 ];
 
-function ChevronDownIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
+function ChevronDownIcon(
+  props: JSX.IntrinsicElements['svg'] & { title: string },
+): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -116,6 +116,7 @@ function ChevronDownIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
       stroke="currentColor"
       {...props}
     >
+      <title>{props.title}</title>
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -149,6 +150,7 @@ export default function App(): JSX.Element {
                   'ml-2 h-5 w-5 text-orange-300 group-hover:text-opacity-80 transition ease-in-out duration-150',
                 )}
                 aria-hidden="true"
+                title={isOpen() ? 'Close' : 'Open'}
               />
             </PopoverButton>
             <Transition
@@ -160,7 +162,10 @@ export default function App(): JSX.Element {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <PopoverPanel unmount={false} class="absolute z-10 w-screen max-w-sm px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl">
+              <PopoverPanel
+                unmount={false}
+                class="absolute z-10 w-screen max-w-sm px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl"
+              >
                 <div class="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                   <div class="relative grid gap-8 bg-white p-7 lg:grid-cols-2">
                     <For each={solutions}>

@@ -1,8 +1,8 @@
-import { render } from 'solid-js/web';
 import type { JSX } from 'solid-js';
-import './style.css';
-import SingleExample from './SingleExample';
+import { render } from 'solid-js/web';
 import MultipleExample from './MultipleExample';
+import SingleExample from './SingleExample';
+import './style.css';
 
 function Root(): JSX.Element {
   return (

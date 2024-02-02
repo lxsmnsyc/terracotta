@@ -1,7 +1,4 @@
-import type {
-  Accessor,
-  JSX,
-} from 'solid-js';
+import type { Accessor, JSX } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -40,7 +37,9 @@ export function createInputState(
   let setSignal: (value: string | undefined) => void;
 
   if ('defaultValue' in options) {
-    const [input, setInput] = createSignal<string | undefined>(options.defaultValue);
+    const [input, setInput] = createSignal<string | undefined>(
+      options.defaultValue,
+    );
     signal = input;
     setSignal = (value): void => {
       setInput(value);
@@ -80,25 +79,21 @@ export interface InputStateProviderProps extends InputStateRenderProps {
   state: InputStateProperties;
 }
 
-const InputStateContext = (
-  createContext<InputStateProperties>()
-);
+const InputStateContext = createContext<InputStateProperties>();
 
 export function InputStateProvider(
   props: InputStateProviderProps,
 ): JSX.Element {
-  return (
-    createComponent(InputStateContext.Provider, {
-      value: props.state,
-      get children() {
-        const current = props.children;
-        if (typeof current === 'function') {
-          return current(props.state);
-        }
-        return current;
-      },
-    })
-  );
+  return createComponent(InputStateContext.Provider, {
+    value: props.state,
+    get children() {
+      const current = props.children;
+      if (typeof current === 'function') {
+        return current(props.state);
+      }
+      return current;
+    },
+  });
 }
 
 export function useInputState(): InputStateProperties {
@@ -107,9 +102,7 @@ export function useInputState(): InputStateProperties {
   return ctx;
 }
 
-export function InputStateChild(
-  props: InputStateRenderProps,
-): JSX.Element {
+export function InputStateChild(props: InputStateRenderProps): JSX.Element {
   const state = useInputState();
   return createMemo(() => {
     const current = props.children;

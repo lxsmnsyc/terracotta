@@ -3,7 +3,7 @@ export interface Ref<T> {
 }
 
 export type Prettify<T> = {
-  [K in keyof T]: T[K]
+  [K in keyof T]: T[K];
 } & {};
 
 export type OmitAndMerge<A, B> = A & Omit<B, keyof A>;

@@ -1,3 +1,5 @@
+import type { JSX } from 'solid-js';
+import { For, Show, createSignal } from 'solid-js';
 import {
   Feed,
   FeedArticle,
@@ -7,14 +9,10 @@ import {
   FeedLabel,
   Transition,
 } from 'terracotta';
-import type { JSX } from 'solid-js';
-import {
-  createSignal,
-  For,
-  Show,
-} from 'solid-js';
 
-function SpinnerIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
+function SpinnerIcon(
+  props: JSX.IntrinsicElements['svg'] & { title: string },
+): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -22,8 +20,20 @@ function SpinnerIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
       viewBox="0 0 24 24"
       {...props}
     >
-      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+      <title>{props.title}</title>
+      <circle
+        class="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        stroke-width="4"
+      />
+      <path
+        class="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+      />
     </svg>
   );
 }
@@ -33,9 +43,61 @@ interface Article {
   description: string;
 }
 
-const adjectives = ['pretty', 'large', 'big', 'small', 'tall', 'short', 'long', 'handsome', 'plain', 'quaint', 'clean', 'elegant', 'easy', 'angry', 'crazy', 'helpful', 'mushy', 'odd', 'unsightly', 'adorable', 'important', 'inexpensive', 'cheap', 'expensive', 'fancy'];
-const colours = ['red', 'yellow', 'blue', 'green', 'pink', 'brown', 'purple', 'brown', 'white', 'black', 'orange'];
-const nouns = ['table', 'chair', 'house', 'bbq', 'desk', 'car', 'pony', 'cookie', 'sandwich', 'burger', 'pizza', 'mouse', 'keyboard'];
+const adjectives = [
+  'pretty',
+  'large',
+  'big',
+  'small',
+  'tall',
+  'short',
+  'long',
+  'handsome',
+  'plain',
+  'quaint',
+  'clean',
+  'elegant',
+  'easy',
+  'angry',
+  'crazy',
+  'helpful',
+  'mushy',
+  'odd',
+  'unsightly',
+  'adorable',
+  'important',
+  'inexpensive',
+  'cheap',
+  'expensive',
+  'fancy',
+];
+const colours = [
+  'red',
+  'yellow',
+  'blue',
+  'green',
+  'pink',
+  'brown',
+  'purple',
+  'brown',
+  'white',
+  'black',
+  'orange',
+];
+const nouns = [
+  'table',
+  'chair',
+  'house',
+  'bbq',
+  'desk',
+  'car',
+  'pony',
+  'cookie',
+  'sandwich',
+  'burger',
+  'pizza',
+  'mouse',
+  'keyboard',
+];
 
 function random(max: number): number {
   return Math.round(Math.random() * 1000) % max;
@@ -45,8 +107,12 @@ function loadData(count: number): { title: string; description: string }[] {
   const data = new Array<Article>(count);
   for (let i = 0; i < count; i += 1) {
     data[i] = {
-      title: `${adjectives[random(adjectives.length)]} ${colours[random(colours.length)]} ${nouns[random(nouns.length)]}`,
-      description: `${adjectives[random(adjectives.length)]} ${colours[random(colours.length)]} ${nouns[random(nouns.length)]}`,
+      title: `${adjectives[random(adjectives.length)]} ${
+        colours[random(colours.length)]
+      } ${nouns[random(nouns.length)]}`,
+      description: `${adjectives[random(adjectives.length)]} ${
+        colours[random(colours.length)]
+      } ${nouns[random(nouns.length)]}`,
     };
   }
   return data;
@@ -65,7 +131,7 @@ export default function App(): JSX.Element {
   const [articles, setArticles] = createSignal<Article[]>(loadData(10));
 
   async function sleep(timeout: number): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
+    return new Promise<boolean>(resolve => {
       setTimeout(resolve, timeout, true);
     });
   }
@@ -73,16 +139,17 @@ export default function App(): JSX.Element {
   async function loadMore(): Promise<void> {
     setBusy(true);
     await sleep(1000);
-    setArticles((current) => [
-      ...current,
-      ...loadData(5),
-    ]);
+    setArticles(current => [...current, ...loadData(5)]);
     setBusy(false);
   }
 
   return (
     <div class="w-full flex items-center justify-center">
-      <Feed class="max-h-96 w-96 flex flex-col" busy={busy()} size={articles().length}>
+      <Feed
+        class="max-h-96 w-96 flex flex-col"
+        busy={busy()}
+        size={articles().length}
+      >
         <div class="flex-none my-2 flex justify-between items-center">
           <FeedLabel class="text-xl text-white font-bold">Feed</FeedLabel>
           <Transition
@@ -94,7 +161,10 @@ export default function App(): JSX.Element {
             leaveTo="opacity-0 scale-50"
             leave="transform transition duration-200 ease-out"
           >
-            <SpinnerIcon class="animate-spin w-5 h-5 text-white" />
+            <SpinnerIcon
+              title="Loading"
+              class="animate-spin w-5 h-5 text-white"
+            />
           </Transition>
         </div>
         <FeedContent
@@ -102,10 +172,9 @@ export default function App(): JSX.Element {
           onScroll={(e: Event): void => {
             const el = e.target as HTMLElement;
             if (
-              !busy()
-              && (
-                (el.offsetHeight + el.scrollTop)
-                >= el.scrollHeight - el.getBoundingClientRect().height)
+              !busy() &&
+              el.offsetHeight + el.scrollTop >=
+                el.scrollHeight - el.getBoundingClientRect().height
             ) {
               loadMore().catch(() => {
                 //
@@ -115,7 +184,10 @@ export default function App(): JSX.Element {
         >
           <For each={articles()}>
             {(article, index): JSX.Element => (
-              <FeedArticle index={index()} class="p-2 m-2 flex flex-col space-y-1 bg-indigo-900 transition bg-opacity-25 rounded focus:outline-none focus-visible:ring focus:bg-indigo-700 focus-visible:ring-indigo-500 focus-visible:ring-opacity-75">
+              <FeedArticle
+                index={index()}
+                class="p-2 m-2 flex flex-col space-y-1 bg-indigo-900 transition bg-opacity-25 rounded focus:outline-none focus-visible:ring focus:bg-indigo-700 focus-visible:ring-indigo-500 focus-visible:ring-opacity-75"
+              >
                 <FeedArticleLabel class="text-lg text-white font-bold">
                   {article.title}
                 </FeedArticleLabel>
@@ -128,7 +200,10 @@ export default function App(): JSX.Element {
           </For>
           <Show when={busy()}>
             <div class="w-full flex items-center justify-center">
-              <SpinnerIcon class="animate-spin w-5 h-5 text-white" />
+              <SpinnerIcon
+                title="Loading"
+                class="animate-spin w-5 h-5 text-white"
+              />
             </div>
           </Show>
         </FeedContent>

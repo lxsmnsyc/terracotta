@@ -1,11 +1,11 @@
 import type { JSX } from 'solid-js';
+import { createComponent, mergeProps } from 'solid-js';
+import { omitProps } from 'solid-use/props';
+import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
-  createComponent,
-  mergeProps,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+  DisclosureStateChild,
+  useDisclosureState,
+} from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
@@ -13,18 +13,11 @@ import type {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
-  useAlertDialogContext,
-} from './AlertDialogContext';
-import { ALERT_DIALOG_TITLE_TAG } from './tags';
-import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
-import {
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
+import { useAlertDialogContext } from './AlertDialogContext';
+import { ALERT_DIALOG_TITLE_TAG } from './tags';
 
 export type AlertDialogTitleProps<T extends ValidConstructor = 'h2'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -38,10 +31,7 @@ export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
   return createDynamic(
     () => props.as || ('h2' as T),
     mergeProps(
-      omitProps(props, [
-        'as',
-        'children',
-      ]),
+      omitProps(props, ['as', 'children']),
       ALERT_DIALOG_TITLE_TAG,
       {
         id: context.titleID,

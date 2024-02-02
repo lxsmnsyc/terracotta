@@ -1,9 +1,4 @@
-import {
-  Tab,
-  TabGroup,
-  TabList,
-  TabPanel,
-} from 'terracotta';
+import { Tab, TabGroup, TabList, TabPanel } from 'terracotta';
 import type { JSX } from 'solid-js';
 import { For } from 'solid-js';
 
@@ -16,9 +11,61 @@ interface Article {
   description: string;
 }
 
-const adjectives = ['pretty', 'large', 'big', 'small', 'tall', 'short', 'long', 'handsome', 'plain', 'quaint', 'clean', 'elegant', 'easy', 'angry', 'crazy', 'helpful', 'mushy', 'odd', 'unsightly', 'adorable', 'important', 'inexpensive', 'cheap', 'expensive', 'fancy'];
-const colours = ['red', 'yellow', 'blue', 'green', 'pink', 'brown', 'purple', 'brown', 'white', 'black', 'orange'];
-const nouns = ['table', 'chair', 'house', 'bbq', 'desk', 'car', 'pony', 'cookie', 'sandwich', 'burger', 'pizza', 'mouse', 'keyboard'];
+const adjectives = [
+  'pretty',
+  'large',
+  'big',
+  'small',
+  'tall',
+  'short',
+  'long',
+  'handsome',
+  'plain',
+  'quaint',
+  'clean',
+  'elegant',
+  'easy',
+  'angry',
+  'crazy',
+  'helpful',
+  'mushy',
+  'odd',
+  'unsightly',
+  'adorable',
+  'important',
+  'inexpensive',
+  'cheap',
+  'expensive',
+  'fancy',
+];
+const colours = [
+  'red',
+  'yellow',
+  'blue',
+  'green',
+  'pink',
+  'brown',
+  'purple',
+  'brown',
+  'white',
+  'black',
+  'orange',
+];
+const nouns = [
+  'table',
+  'chair',
+  'house',
+  'bbq',
+  'desk',
+  'car',
+  'pony',
+  'cookie',
+  'sandwich',
+  'burger',
+  'pizza',
+  'mouse',
+  'keyboard',
+];
 
 function random(max: number): number {
   return Math.round(Math.random() * 1000) % max;
@@ -28,23 +75,23 @@ function loadData(count: number): { title: string; description: string }[] {
   const data = new Array<Article>(count);
   for (let i = 0; i < count; i += 1) {
     data[i] = {
-      title: `${adjectives[random(adjectives.length)]} ${colours[random(colours.length)]} ${nouns[random(nouns.length)]}`,
-      description: `${adjectives[random(adjectives.length)]} ${colours[random(colours.length)]} ${nouns[random(nouns.length)]}`,
+      title: `${adjectives[random(adjectives.length)]} ${
+        colours[random(colours.length)]
+      } ${nouns[random(nouns.length)]}`,
+      description: `${adjectives[random(adjectives.length)]} ${
+        colours[random(colours.length)]
+      } ${nouns[random(nouns.length)]}`,
     };
   }
   return data;
 }
 
-const CATEGORIES = [
-  'Best',
-  'Top',
-  'New',
-];
+const CATEGORIES = ['Best', 'Top', 'New'];
 
-const FEED: Record<string, Article[]> = CATEGORIES.reduce((acc, current) => ({
-  ...acc,
-  [current]: loadData(10),
-}), {});
+const FEED = CATEGORIES.reduce<Record<string, Article[]>>((acc, current) => {
+  acc[current] = loadData(10);
+  return acc;
+}, {});
 
 function Separator(): JSX.Element {
   return (
@@ -65,15 +112,16 @@ export default function App(): JSX.Element {
         >
           {({ isSelected, isActive }): JSX.Element => (
             <>
-              <TabList
-                class="w-full flex items-stretch justify-between space-x-2"
-              >
+              <TabList class="w-full flex items-stretch justify-between space-x-2">
                 <For each={CATEGORIES}>
                   {(category): JSX.Element => (
                     <Tab
                       class={classNames(
-                        isSelected(category) ? 'bg-rose-900 bg-opacity-75 text-white' : 'bg-white',
-                        isActive(category) && 'ring-2 ring-offset-2 ring-offset-rose-300 ring-white ring-opacity-60',
+                        isSelected(category)
+                          ? 'bg-rose-900 bg-opacity-75 text-white'
+                          : 'bg-white',
+                        isActive(category) &&
+                          'ring-2 ring-offset-2 ring-offset-rose-300 ring-white ring-opacity-60',
                         'w-full flex items-center justify-center rounded-lg shadow-md px-4 py-2 cursor-pointer focus:outline-none font-semibold',
                       )}
                       value={category}
@@ -95,7 +143,10 @@ export default function App(): JSX.Element {
                     >
                       <For each={FEED[category]}>
                         {(item): JSX.Element => (
-                          <div tabindex={0} class="p-2 m-2 flex flex-col space-y-1 bg-opacity-25 rounded focus:outline-none focus-visible:ring focus-visible:ring-rose-500 focus-visible:ring-opacity-75">
+                          <div
+                            tabindex={0}
+                            class="p-2 m-2 flex flex-col space-y-1 bg-opacity-25 rounded focus:outline-none focus-visible:ring focus-visible:ring-rose-500 focus-visible:ring-opacity-75"
+                          >
                             <div class="text-lg text-gray-900 font-bold">
                               {item.title}
                             </div>

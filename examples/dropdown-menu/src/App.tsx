@@ -8,7 +8,9 @@ import {
 } from 'terracotta';
 import type { JSX } from 'solid-js';
 
-function ChevronDownIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
+function ChevronDownIcon(
+  props: JSX.IntrinsicElements['svg'] & { title: string },
+): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -17,6 +19,7 @@ function ChevronDownIcon(props: JSX.IntrinsicElements['svg']): JSX.Element {
       stroke="currentColor"
       {...props}
     >
+      <title>{props.title}</title>
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -58,6 +61,7 @@ export default function App(): JSX.Element {
                   'ml-2 h-5 w-5 text-purple-300 group-hover:text-opacity-80 transition ease-in-out duration-150',
                 )}
                 aria-hidden="true"
+                title={isOpen() ? 'Close' : 'Open'}
               />
             </PopoverButton>
             <Transition
@@ -69,26 +73,47 @@ export default function App(): JSX.Element {
               leaveFrom="opacity-100 translate-y-0 scale-100"
               leaveTo="opacity-0 -translate-y-1 scale-50"
             >
-              <PopoverPanel unmount={false} class="absolute z-10 px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl">
+              <PopoverPanel
+                unmount={false}
+                class="absolute z-10 px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl"
+              >
                 <Menu class="overflow-hidden w-64 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white flex flex-col space-y-1 p-1">
-                  <MenuItem as="button" class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white">
+                  <MenuItem
+                    as="button"
+                    class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white"
+                  >
                     Open Link in New Tab
                   </MenuItem>
-                  <MenuItem as="button" class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white">
+                  <MenuItem
+                    as="button"
+                    class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white"
+                  >
                     Open Link in New Window
                   </MenuItem>
-                  <MenuItem as="button" class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white">
+                  <MenuItem
+                    as="button"
+                    class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white"
+                  >
                     Open Link in New Incognito Window
                   </MenuItem>
                   <Separator />
-                  <MenuItem as="button" class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white">
+                  <MenuItem
+                    as="button"
+                    class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white"
+                  >
                     Save Link As...
                   </MenuItem>
-                  <MenuItem as="button" class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white">
+                  <MenuItem
+                    as="button"
+                    class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white"
+                  >
                     Copy Link Address
                   </MenuItem>
                   <Separator />
-                  <MenuItem as="button" class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white">
+                  <MenuItem
+                    as="button"
+                    class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white"
+                  >
                     Inspect
                   </MenuItem>
                 </Menu>

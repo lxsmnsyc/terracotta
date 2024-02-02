@@ -9,7 +9,7 @@ export const MATCHES_NODE = `[${DATA_SET_NAMESPACE}-matches]`;
 
 type TerracottaTag = {
   [key in typeof TYPE_ATTRIBUTE]: string;
-}
+};
 
 export function createTag(tag: string): TerracottaTag {
   return {

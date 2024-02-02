@@ -1,42 +1,33 @@
 import type { JSX } from 'solid-js';
+import { createComponent, createEffect, mergeProps, onCleanup } from 'solid-js';
+import { omitProps } from 'solid-use/props';
+import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
 import {
-  createEffect,
-  createComponent,
-  mergeProps,
-  onCleanup,
-} from 'solid-js';
-import {
-  omitProps,
-} from 'solid-use/props';
+  AutocompleteStateChild,
+  useAutocompleteState,
+} from '../../states/create-autocomplete-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createForwardRef,
-} from '../../utils/dynamic-prop';
-import {
-  useCommandContext,
-} from './CommandContext';
-import { COMMAND_OPTIONS_TAG } from './tags';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
-  createHasSelectedState,
   createHasActiveState,
   createHasQueryState,
+  createHasSelectedState,
 } from '../../utils/state-props';
-import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
-import {
-  AutocompleteStateChild,
-  useAutocompleteState,
-} from '../../states/create-autocomplete-state';
 import useEventListener from '../../utils/use-event-listener';
+import { useCommandContext } from './CommandContext';
+import { COMMAND_OPTIONS_TAG } from './tags';
 
-export type CommandOptionsProps<V, T extends ValidConstructor = 'ul'> =
-  HeadlessPropsWithRef<T, AutocompleteStateRenderProps<V>>;
+export type CommandOptionsProps<
+  V,
+  T extends ValidConstructor = 'ul',
+> = HeadlessPropsWithRef<T, AutocompleteStateRenderProps<V>>;
 
 export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
   props: CommandOptionsProps<V, T>,
@@ -70,11 +61,7 @@ export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
   return createDynamic(
     () => props.as || ('ul' as T),
     mergeProps(
-      omitProps(props, [
-        'as',
-        'children',
-        'ref',
-      ]),
+      omitProps(props, ['as', 'children', 'ref']),
       COMMAND_OPTIONS_TAG,
       {
         id: context.optionsID,

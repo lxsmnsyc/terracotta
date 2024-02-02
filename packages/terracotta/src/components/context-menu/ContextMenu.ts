@@ -7,41 +7,39 @@ import {
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
-import type { Prettify } from '../../utils/types';
-import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
 import {
-  createDisclosureState,
   DisclosureStateProvider,
+  createDisclosureState,
 } from '../../states/create-disclosure-state';
-import useFocusStartPoint from '../../utils/use-focus-start-point';
-import { ContextMenuContext } from './ContextMenuContext';
+import createDynamic from '../../utils/create-dynamic';
+import type {
+  DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
+} from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
-import createDynamic from '../../utils/create-dynamic';
+import type { Prettify } from '../../utils/types';
+import useFocusStartPoint from '../../utils/use-focus-start-point';
+import { ContextMenuContext } from './ContextMenuContext';
 import { CONTEXT_MENU_TAG } from './tags';
 
 export type ContextMenuControlledBaseProps = Prettify<
-  & DisclosureStateControlledOptions
-  & DisclosureStateRenderProps
+  DisclosureStateControlledOptions & DisclosureStateRenderProps
 >;
 
 export type ContextMenuControlledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, ContextMenuControlledBaseProps>;
 
 export type ContextMenuUncontrolledBaseProps = Prettify<
-  & DisclosureStateUncontrolledOptions
-  & DisclosureStateRenderProps
+  DisclosureStateUncontrolledOptions & DisclosureStateRenderProps
 >;
 
 export type ContextMenuUncontrolledProps<T extends ValidConstructor = 'div'> =
@@ -88,23 +86,23 @@ export function ContextMenu<T extends ValidConstructor = 'div'>(
         mergeProps(
           isContextMenuUncontrolled(props)
             ? omitProps(props, [
-              'as',
-              'children',
-              'defaultOpen',
-              'disabled',
-              'onChange',
-              'onClose',
-              'onOpen',
-            ])
+                'as',
+                'children',
+                'defaultOpen',
+                'disabled',
+                'onChange',
+                'onClose',
+                'onOpen',
+              ])
             : omitProps(props, [
-              'as',
-              'children',
-              'isOpen',
-              'disabled',
-              'onChange',
-              'onClose',
-              'onOpen',
-            ]),
+                'as',
+                'children',
+                'isOpen',
+                'disabled',
+                'onChange',
+                'onClose',
+                'onOpen',
+              ]),
           CONTEXT_MENU_TAG,
           createDisabledState(() => state.disabled()),
           createARIADisabledState(() => state.disabled()),

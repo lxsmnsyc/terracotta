@@ -7,42 +7,40 @@ import {
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
-import type { Prettify } from '../../utils/types';
-import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
 import {
-  createDisclosureState,
   DisclosureStateProvider,
+  createDisclosureState,
 } from '../../states/create-disclosure-state';
-import useFocusStartPoint from '../../utils/use-focus-start-point';
-import { PopoverContext } from './PopoverContext';
 import createDynamic from '../../utils/create-dynamic';
-import { POPOVER_TAG } from './tags';
+import type {
+  DynamicProps,
+  HeadlessProps,
+  ValidConstructor,
+} from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
+import type { Prettify } from '../../utils/types';
+import useFocusStartPoint from '../../utils/use-focus-start-point';
+import { PopoverContext } from './PopoverContext';
+import { POPOVER_TAG } from './tags';
 
 export type PopoverControlledBaseProps = Prettify<
-  & DisclosureStateRenderProps
-  & DisclosureStateControlledOptions
->
+  DisclosureStateRenderProps & DisclosureStateControlledOptions
+>;
 
 export type PopoverControlledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, PopoverControlledBaseProps>;
 
 export type PopoverUncontrolledBaseProps = Prettify<
-  & DisclosureStateRenderProps
-  & DisclosureStateUncontrolledOptions
->
+  DisclosureStateRenderProps & DisclosureStateUncontrolledOptions
+>;
 
 export type PopoverUncontrolledProps<T extends ValidConstructor = 'div'> =
   HeadlessProps<T, PopoverUncontrolledBaseProps>;
@@ -89,23 +87,23 @@ export function Popover<T extends ValidConstructor = 'div'>(
         mergeProps(
           isPopoverUncontrolled(props)
             ? omitProps(props, [
-              'as',
-              'children',
-              'defaultOpen',
-              'disabled',
-              'onChange',
-              'onClose',
-              'onOpen',
-            ])
+                'as',
+                'children',
+                'defaultOpen',
+                'disabled',
+                'onChange',
+                'onClose',
+                'onOpen',
+              ])
             : omitProps(props, [
-              'as',
-              'children',
-              'isOpen',
-              'disabled',
-              'onChange',
-              'onClose',
-              'onOpen',
-            ]),
+                'as',
+                'children',
+                'isOpen',
+                'disabled',
+                'onChange',
+                'onClose',
+                'onOpen',
+              ]),
           POPOVER_TAG,
           createDisabledState(() => state.disabled()),
           createARIADisabledState(() => state.disabled()),
