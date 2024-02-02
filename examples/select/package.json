@@ -1,7 +1,7 @@
 {
   "name": "select-example",
   "type": "module",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,7 +17,7 @@
   "dependencies": {
     "solid-js": "^1.8.11",
     "tailwindcss": "^3.4.1",
-    "terracotta": "1.0.4"
+    "terracotta": "1.0.5"
   },
   "private": true,
   "publishConfig": {
