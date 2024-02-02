@@ -2,20 +2,20 @@
   "name": "terracotta",
   "version": "1.0.4",
   "type": "module",
-  "types": "./dist/types/index.d.ts",
-  "main": "./dist/cjs/production/index.cjs",
-  "module": "./dist/esm/production/index.mjs",
-  "exports": {
-    ".": {
-      "development": {
-        "require": "./dist/cjs/development/index.cjs",
-        "import": "./dist/esm/development/index.mjs"
-      },
-      "require": "./dist/cjs/production/index.cjs",
-      "import": "./dist/esm/production/index.mjs",
-      "types": "./dist/types/index.d.ts"
-    }
+  "description": "Headless UI for SolidJS",
+  "repository": {
+    "url": "https://github.com/lxsmnsyc/terracotta.git",
+    "type": "git"
   },
+  "homepage": "https://github.com/lxsmnsyc/terracotta/tree/main/packages/terracotta",
+  "bugs": {
+    "url": "https://github.com/lxsmnsyc/terracotta/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Alexis Munsayac",
+  "private": false,
   "files": ["dist", "src"],
   "engines": {
     "node": ">=10"
@@ -42,20 +42,20 @@
     "clean": "pridepack clean",
     "watch": "pridepack watch"
   },
-  "description": "Headless UI for SolidJS",
-  "repository": {
-    "url": "https://github.com/lxsmnsyc/terracotta.git",
-    "type": "git"
+  "types": "./dist/types/index.d.ts",
+  "main": "./dist/cjs/production/index.cjs",
+  "module": "./dist/esm/production/index.mjs",
+  "exports": {
+    ".": {
+      "development": {
+        "require": "./dist/cjs/development/index.cjs",
+        "import": "./dist/esm/development/index.mjs"
+      },
+      "require": "./dist/cjs/production/index.cjs",
+      "import": "./dist/esm/production/index.mjs",
+      "types": "./dist/types/index.d.ts"
+    }
   },
-  "homepage": "https://github.com/lxsmnsyc/terracotta/tree/main/packages/terracotta",
-  "bugs": {
-    "url": "https://github.com/lxsmnsyc/terracotta/issues"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "author": "Alexis Munsayac",
-  "private": false,
   "typesVersions": {
     "*": {}
   }
