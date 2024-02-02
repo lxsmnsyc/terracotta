@@ -16,19 +16,12 @@
       "types": "./dist/types/index.d.ts"
     }
   },
-  "files": [
-    "dist",
-    "src"
-  ],
+  "files": ["dist", "src"],
   "engines": {
     "node": ">=10"
   },
   "license": "MIT",
-  "keywords": [
-    "pridepack",
-    "solid-js",
-    "headless-ui"
-  ],
+  "keywords": ["pridepack", "solid-js", "headless-ui"],
   "devDependencies": {
     "@types/node": "^20.11.5",
     "pridepack": "2.6.0",
@@ -46,8 +39,6 @@
     "prepublishOnly": "pridepack clean && pridepack build",
     "build": "pridepack build",
     "type-check": "pridepack check",
-    "lint": "pridepack lint",
-    "test": "pridepack test --passWithNoTests",
     "clean": "pridepack clean",
     "watch": "pridepack watch"
   },
