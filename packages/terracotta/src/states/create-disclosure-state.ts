@@ -17,7 +17,7 @@ export interface DisclosureStateControlledOptions {
   onOpen?: () => void;
 }
 export interface DisclosureStateUncontrolledOptions {
-  defaultOpen: boolean;
+  defaultOpen?: boolean;
   disabled?: boolean;
   onChange?: (state: boolean) => void;
   onClose?: () => void;
