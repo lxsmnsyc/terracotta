@@ -1,7 +1,7 @@
 {
   "name": "toolbar-example",
   "type": "module",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,7 +17,7 @@
   "dependencies": {
     "solid-js": "^1.8.22",
     "tailwindcss": "^3.4.11",
-    "terracotta": "1.0.5"
+    "terracotta": "1.0.6"
   },
   "private": true,
   "publishConfig": {
