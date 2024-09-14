@@ -16,12 +16,19 @@
   },
   "author": "Alexis Munsayac",
   "private": false,
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "engines": {
     "node": ">=10"
   },
   "license": "MIT",
-  "keywords": ["pridepack", "solid-js", "headless-ui"],
+  "keywords": [
+    "pridepack",
+    "solid-js",
+    "headless-ui"
+  ],
   "devDependencies": {
     "@types/node": "^22.5.5",
     "pridepack": "2.6.1",
