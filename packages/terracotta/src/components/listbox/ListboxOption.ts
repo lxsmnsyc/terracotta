@@ -75,7 +75,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
       });
       useEventListener(current, 'mouseenter', () => {
         if (!state.disabled()) {
-          current.focus();
+          current.focus({ preventScroll: true });
         }
       });
       useEventListener(current, 'mouseleave', () => {
