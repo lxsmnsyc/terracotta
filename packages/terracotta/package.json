@@ -16,31 +16,24 @@
   },
   "author": "Alexis Munsayac",
   "private": false,
-  "files": [
-    "dist",
-    "src"
-  ],
+  "files": ["dist", "src"],
   "engines": {
     "node": ">=10"
   },
   "license": "MIT",
-  "keywords": [
-    "pridepack",
-    "solid-js",
-    "headless-ui"
-  ],
+  "keywords": ["pridepack", "solid-js", "headless-ui"],
   "devDependencies": {
-    "@types/node": "^20.11.5",
-    "pridepack": "2.6.0",
-    "solid-js": "^1.8.11",
-    "tslib": "^2.6.2",
-    "typescript": "^5.3.3"
+    "@types/node": "^22.5.5",
+    "pridepack": "2.6.1",
+    "solid-js": "^1.8.22",
+    "tslib": "^2.7.0",
+    "typescript": "^5.6.2"
   },
   "peerDependencies": {
     "solid-js": "^1.8"
   },
   "dependencies": {
-    "solid-use": "^0.8.0"
+    "solid-use": "^0.9.0"
   },
   "scripts": {
     "prepublishOnly": "pridepack clean && pridepack build",

@@ -1,21 +1,15 @@
 {
-  "npmClient": "pnpm",
-  "packages": [
-    "packages/*",
-    "examples/*",
-    "docs"
-  ],
+  "npmClient": "npm",
+  "packages": ["packages/*", "examples/*", "docs"],
   "command": {
     "version": {
       "exact": true
     },
     "publish": {
-      "allowBranch": [
-        "main",
-        "next"
-      ],
+      "allowBranch": ["main", "next"],
       "registry": "https://registry.npmjs.org/"
     }
   },
-  "version": "1.0.5"
+  "version": "1.0.5",
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }
