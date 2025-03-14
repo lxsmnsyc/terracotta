@@ -162,6 +162,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
         useEventListener(current, 'mouseleave', () => {
           context.optionsHovering = false;
         });
+        
       }
     });
   });
