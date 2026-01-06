@@ -32,7 +32,6 @@ export function ComboboxLabel<T extends ValidConstructor = 'label'>(
   return createDynamic(
     () => props.as || ('label' as T),
     mergeProps(
-      omitProps(props, ['as']),
       COMBOBOX_LABEL_TAG,
       {
         id: context.labelID,
@@ -42,6 +41,7 @@ export function ComboboxLabel<T extends ValidConstructor = 'label'>(
       createHasSelectedState(() => autocompleteState.hasSelected()),
       createHasActiveState(() => autocompleteState.hasActive()),
       createHasQueryState(() => autocompleteState.hasQuery()),
+      omitProps(props, ['as']),
     ) as DynamicProps<T>,
   );
 }

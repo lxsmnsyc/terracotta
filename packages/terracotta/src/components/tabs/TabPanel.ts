@@ -43,7 +43,6 @@ export function TabPanel<V, T extends ValidConstructor = 'div'>(
       createDynamic(
         () => props.as || ('div' as T),
         mergeProps(
-          omitProps(props, ['as', 'disabled', 'unmount', 'value']),
           TAB_PANEL_TAG,
           {
             role: 'tabpanel',
@@ -67,6 +66,7 @@ export function TabPanel<V, T extends ValidConstructor = 'div'>(
           },
           createSelectedState(() => state.isSelected()),
           createActiveState(() => state.isActive()),
+          omitProps(props, ['as', 'disabled', 'unmount', 'value']),
         ) as DynamicProps<T>,
       ),
   );

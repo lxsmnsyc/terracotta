@@ -79,7 +79,6 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
       createDynamic(
         () => props.as || ('div' as T),
         mergeProps(
-          omitProps(props, ['as', 'unmount', 'children', 'ref']),
           CONTEXT_MENU_PANEL_TAG,
           {
             id: context.panelID,
@@ -94,6 +93,7 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
           },
           createDisabledState(() => state.disabled()),
           createExpandedState(() => state.isOpen()),
+          omitProps(props, ['as', 'unmount', 'children', 'ref']),
         ) as DynamicProps<T>,
       ),
   );

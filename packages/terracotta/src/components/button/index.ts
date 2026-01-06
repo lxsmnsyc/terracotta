@@ -50,6 +50,7 @@ export function Button<T extends ValidConstructor = 'button'>(
   return createDynamic(
     () => props.as || ('button' as T),
     mergeProps(
+      BUTTON_TAG,
       {
         get tabindex() {
           return props.disabled ? -1 : 0;
@@ -59,7 +60,6 @@ export function Button<T extends ValidConstructor = 'button'>(
       createDisabledState(() => props.disabled),
       createARIADisabledState(() => props.disabled),
       omitProps(props, ['as', 'ref']),
-      BUTTON_TAG,
       {
         ref: setInternalRef,
       },

@@ -67,6 +67,10 @@ export function Disclosure<T extends ValidConstructor = 'div'>(
       return createDynamic(
         () => props.as || 'div',
         mergeProps(
+          DISCLOSURE_TAG,
+          createDisabledState(() => state.disabled()),
+          createARIADisabledState(() => state.disabled()),
+          createExpandedState(() => state.isOpen()),
           isDisclosureUncontrolled(props)
             ? omitProps(props, [
                 'as',
@@ -86,10 +90,6 @@ export function Disclosure<T extends ValidConstructor = 'div'>(
                 'onClose',
                 'onOpen',
               ]),
-          DISCLOSURE_TAG,
-          createDisabledState(() => state.disabled()),
-          createARIADisabledState(() => state.disabled()),
-          createExpandedState(() => state.isOpen()),
           {
             get children() {
               return createComponent(DisclosureStateProvider, {

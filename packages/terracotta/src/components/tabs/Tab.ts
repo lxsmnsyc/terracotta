@@ -67,7 +67,6 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
   return createComponent(
     Button,
     mergeProps(
-      omitProps(props, ['as', 'children', 'value', 'disabled', 'ref']),
       TAB_TAG,
       createOwnerAttribute(listContext.getId()),
       {
@@ -100,6 +99,7 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
       createSelectedState(() => state.isSelected()),
       createARIASelectedState(() => state.isSelected()),
       createActiveState(() => state.isActive()),
+      omitProps(props, ['as', 'children', 'value', 'disabled', 'ref']),
     ) as DynamicProps<T>,
   );
 }

@@ -50,7 +50,6 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
   return createDynamic(
     () => props.as || ('div' as T),
     mergeProps(
-      omitProps(props, ['as', 'children', 'ref']),
       CONTEXT_MENU_BOUNDARY_TAG,
       {
         id: context.boundaryID,
@@ -63,6 +62,7 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
       createARIADisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
       createARIAExpandedState(() => state.isOpen()),
+      omitProps(props, ['as', 'children', 'ref']),
       {
         get children() {
           return createComponent(DisclosureStateChild, {

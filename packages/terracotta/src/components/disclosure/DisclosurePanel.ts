@@ -42,7 +42,6 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
       createDynamic(
         () => props.as || ('div' as T),
         mergeProps(
-          omitProps(props, ['as', 'unmount', 'children']),
           DISCLOSURE_PANEL_TAG,
           {
             id: context.panelID,
@@ -56,6 +55,7 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
           },
           createDisabledState(() => state.disabled()),
           createExpandedState(() => state.isOpen()),
+          omitProps(props, ['as', 'unmount', 'children']),
         ) as DynamicProps<T>,
       ),
   );

@@ -20,8 +20,12 @@ export function RadioGroupLabel<T extends ValidConstructor = 'label'>(
 
   return createDynamic(
     () => props.as || ('label' as T),
-    mergeProps(omitProps(props, ['as']), RADIO_GROUP_LABEL_TAG, {
-      id: context.labelID,
-    }) as DynamicProps<T>,
+    mergeProps(
+      RADIO_GROUP_LABEL_TAG,
+      {
+        id: context.labelID,
+      },
+      omitProps(props, ['as']),
+    ) as DynamicProps<T>,
   );
 }

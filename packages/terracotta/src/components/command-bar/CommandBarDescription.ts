@@ -30,7 +30,6 @@ export function CommandBarDescription<T extends ValidConstructor = 'p'>(
   return createDynamic(
     () => props.as || ('p' as T),
     mergeProps(
-      omitProps(props, ['as', 'children']),
       COMMAND_BAR_DESCRIPTION_TAG,
       {
         id: context.descriptionID,
@@ -43,6 +42,7 @@ export function CommandBarDescription<T extends ValidConstructor = 'p'>(
         },
       },
       createDisabledState(() => state.disabled()),
+      omitProps(props, ['as', 'children']),
       createExpandedState(() => state.isOpen()),
     ) as DynamicProps<T>,
   );

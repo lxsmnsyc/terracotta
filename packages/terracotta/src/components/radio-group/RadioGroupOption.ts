@@ -77,7 +77,6 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
       return createComponent(
         Button,
         mergeProps(
-          omitProps(props, ['as', 'children', 'value', 'disabled', 'ref']),
           RADIO_GROUP_OPTION_TAG,
           createOwnerAttribute(context.getId()),
           {
@@ -98,6 +97,7 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
           createCheckedState(() => state.isSelected()),
           createARIACheckedState(() => state.isSelected()),
           createActiveState(() => state.isActive()),
+          omitProps(props, ['as', 'children', 'value', 'disabled', 'ref']),
           {
             get children() {
               return createComponent(SelectOptionStateProvider, {

@@ -62,7 +62,6 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
   return createComponent(
     Button,
     mergeProps(
-      omitProps(props, ['children', 'ref']),
       POPOVER_BUTTON_TAG,
       {
         id: context.buttonID,
@@ -75,6 +74,7 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
       createARIADisabledState(isDisabled),
       createExpandedState(() => state.isOpen()),
       createARIAExpandedState(() => state.isOpen()),
+      omitProps(props, ['children', 'ref']),
       {
         get children() {
           return createComponent(DisclosureStateChild, {

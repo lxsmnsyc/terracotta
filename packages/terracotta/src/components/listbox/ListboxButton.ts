@@ -78,7 +78,6 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
   return createComponent(
     Button,
     mergeProps(
-      omitProps(props, ['children', 'ref']),
       LISTBOX_BUTTON_TAG,
       {
         id: context.buttonID,
@@ -92,6 +91,7 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
       createARIAExpandedState(() => disclosureState.isOpen()),
       createHasSelectedState(() => selectState.hasSelected()),
       createHasActiveState(() => selectState.hasActive()),
+      omitProps(props, ['children', 'ref']),
       {
         get children() {
           return createComponent(DisclosureStateChild, {

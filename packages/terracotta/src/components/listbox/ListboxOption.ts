@@ -89,7 +89,6 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
   return createComponent(
     Button,
     mergeProps(
-      omitProps(props, ['as', 'children', 'disabled', 'value', 'ref']),
       LISTBOX_OPTION_TAG,
       createOwnerAttribute(context.getId()),
       {
@@ -105,6 +104,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
       createSelectedState(() => state.isSelected()),
       createARIASelectedState(() => state.isSelected()),
       createActiveState(() => state.isActive()),
+      omitProps(props, ['as', 'children', 'disabled', 'value', 'ref']),
       {
         get children() {
           return createComponent(SelectOptionStateProvider, {

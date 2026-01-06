@@ -105,7 +105,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
   return createDynamic(
     () => props.as || ('input' as T),
     mergeProps(
-      omitProps(props, ['as', 'ref']),
+      COMMAND_INPUT_TAG,
       {
         id: context.inputID,
         ref: setInternalRef,
@@ -125,12 +125,12 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
           return context.activeDescendant;
         },
       },
-      COMMAND_INPUT_TAG,
       createDisabledState(isDisabled),
       createARIADisabledState(isDisabled),
       createHasSelectedState(() => state.hasSelected()),
       createHasActiveState(() => state.hasActive()),
       createHasQueryState(() => state.hasQuery()),
+      omitProps(props, ['as', 'ref']),
     ) as DynamicProps<T>,
   );
 }

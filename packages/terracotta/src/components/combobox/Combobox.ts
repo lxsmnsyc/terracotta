@@ -388,7 +388,6 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
                 return createDynamic(
                   () => props.as || 'div',
                   mergeProps(
-                    getProps(props),
                     COMBOBOX_TAG,
                     {
                       'aria-labelledby': labelID,
@@ -403,6 +402,7 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
                     ),
                     createHasActiveState(() => autocompleteState.hasActive()),
                     createExpandedState(() => disclosureState.isOpen()),
+                    getProps(props),
                   ) as DynamicProps<T>,
                 );
               },

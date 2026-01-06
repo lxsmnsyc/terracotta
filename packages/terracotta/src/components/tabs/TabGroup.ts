@@ -94,6 +94,21 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
         return createDynamic(
           () => props.as || ('div' as T),
           mergeProps(
+            TAB_GROUP_TAG,
+            createDisabledState(() => state.disabled()),
+            createARIADisabledState(() => state.disabled()),
+            createHasSelectedState(() => state.hasSelected()),
+            createHasActiveState(() => state.hasActive()),
+            {
+              get children() {
+                return createComponent(SelectStateProvider, {
+                  state,
+                  get children() {
+                    return props.children;
+                  },
+                });
+              },
+            },
             isTabGroupUncontrolled(props)
               ? omitProps(props, [
                   'as',
@@ -117,21 +132,6 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
                   'toggleable',
                   'horizontal',
                 ]),
-            TAB_GROUP_TAG,
-            createDisabledState(() => state.disabled()),
-            createARIADisabledState(() => state.disabled()),
-            createHasSelectedState(() => state.hasSelected()),
-            createHasActiveState(() => state.hasActive()),
-            {
-              get children() {
-                return createComponent(SelectStateProvider, {
-                  state,
-                  get children() {
-                    return props.children;
-                  },
-                });
-              },
-            },
           ) as DynamicProps<T>,
         );
       },

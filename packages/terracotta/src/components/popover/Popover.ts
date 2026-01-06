@@ -85,6 +85,10 @@ export function Popover<T extends ValidConstructor = 'div'>(
       return createDynamic(
         () => props.as || ('div' as T),
         mergeProps(
+          POPOVER_TAG,
+          createDisabledState(() => state.disabled()),
+          createARIADisabledState(() => state.disabled()),
+          createExpandedState(() => state.isOpen()),
           isPopoverUncontrolled(props)
             ? omitProps(props, [
                 'as',
@@ -104,10 +108,6 @@ export function Popover<T extends ValidConstructor = 'div'>(
                 'onClose',
                 'onOpen',
               ]),
-          POPOVER_TAG,
-          createDisabledState(() => state.disabled()),
-          createARIADisabledState(() => state.disabled()),
-          createExpandedState(() => state.isOpen()),
           {
             get children() {
               return createComponent(DisclosureStateProvider, {

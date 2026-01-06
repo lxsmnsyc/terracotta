@@ -20,8 +20,12 @@ export function RadioGroupDescription<T extends ValidConstructor = 'div'>(
 
   return createDynamic(
     () => props.as || ('div' as T),
-    mergeProps(omitProps(props, ['as']), RADIO_GROUP_DESCRIPTION_TAG, {
-      id: context.descriptionID,
-    }) as DynamicProps<T>,
+    mergeProps(
+      RADIO_GROUP_DESCRIPTION_TAG,
+      {
+        id: context.descriptionID,
+      },
+      omitProps(props, ['as']),
+    ) as DynamicProps<T>,
   );
 }

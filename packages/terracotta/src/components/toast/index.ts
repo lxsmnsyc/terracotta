@@ -46,10 +46,14 @@ export function Toast<T extends ValidConstructor = 'div'>(
 
   return createDynamic(
     () => props.as || ('div' as T),
-    mergeProps(omitProps(props, ['as']), TOAST_TAG, {
-      role: 'status',
-      'aria-live': 'polite',
-    }) as DynamicProps<T>,
+    mergeProps(
+      TOAST_TAG,
+      {
+        role: 'status',
+        'aria-live': 'polite',
+      },
+      omitProps(props, ['as']),
+    ) as DynamicProps<T>,
   );
 }
 
@@ -67,7 +71,7 @@ export function Toaster<T extends ValidConstructor = 'div'>(
     get children() {
       return createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(omitProps(props, ['as']), TOASTER_TAG) as DynamicProps<T>,
+        mergeProps(TOASTER_TAG, omitProps(props, ['as'])) as DynamicProps<T>,
       );
     },
   });

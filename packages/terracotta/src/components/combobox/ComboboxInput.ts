@@ -132,7 +132,7 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
   return createDynamic(
     () => props.as || ('input' as T),
     mergeProps(
-      omitProps(props, ['as', 'ref']),
+      COMMAND_INPUT_TAG,
       {
         id: context.inputID,
         ref: setInternalRef,
@@ -154,7 +154,6 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
           return context.activeDescendant;
         },
       },
-      COMMAND_INPUT_TAG,
       createDisabledState(isDisabled),
       createARIADisabledState(isDisabled),
       createExpandedState(() => disclosureState.isOpen()),
@@ -162,6 +161,7 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
       createHasSelectedState(() => autocompleteState.hasSelected()),
       createHasActiveState(() => autocompleteState.hasActive()),
       createHasQueryState(() => autocompleteState.hasQuery()),
+      omitProps(props, ['as', 'ref']),
     ) as DynamicProps<T>,
   );
 }

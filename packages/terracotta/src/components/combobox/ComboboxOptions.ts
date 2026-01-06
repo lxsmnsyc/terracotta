@@ -102,7 +102,6 @@ export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
       createDynamic(
         () => props.as || ('ul' as T),
         mergeProps(
-          omitProps(props, ['as', 'children', 'ref']),
           COMBOBOX_OPTIONS_TAG,
           {
             id: context.optionsID,
@@ -119,6 +118,7 @@ export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
           createHasSelectedState(() => autocompleteState.hasSelected()),
           createHasActiveState(() => autocompleteState.hasActive()),
           createHasQueryState(() => autocompleteState.hasQuery()),
+          omitProps(props, ['as', 'children', 'ref']),
           {
             get children() {
               return createComponent(AutocompleteStateChild, {

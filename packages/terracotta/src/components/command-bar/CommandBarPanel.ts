@@ -64,7 +64,6 @@ export function CommandBarPanel<T extends ValidConstructor = 'div'>(
   return createDynamic(
     () => props.as || ('div' as T),
     mergeProps(
-      omitProps(props, ['as', 'children', 'ref']),
       COMMAND_BAR_PANEL_TAG,
       {
         id: context.panelID,
@@ -79,6 +78,7 @@ export function CommandBarPanel<T extends ValidConstructor = 'div'>(
       },
       createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
+      omitProps(props, ['as', 'children', 'ref']),
     ) as DynamicProps<T>,
   );
 }

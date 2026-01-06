@@ -78,7 +78,6 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
       createDynamic(
         () => props.as || ('div' as T),
         mergeProps(
-          omitProps(props, ['as', 'unmount', 'children', 'ref']),
           POPOVER_PANEL_TAG,
           {
             id: context.panelID,
@@ -93,6 +92,7 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
           },
           createDisabledState(() => state.disabled()),
           createExpandedState(() => state.isOpen()),
+          omitProps(props, ['as', 'unmount', 'children', 'ref']),
         ) as DynamicProps<T>,
       ),
   );

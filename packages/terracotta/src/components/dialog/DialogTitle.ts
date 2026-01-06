@@ -30,7 +30,6 @@ export function DialogTitle<T extends ValidConstructor = 'h2'>(
   return createDynamic(
     () => props.as || ('h2' as T),
     mergeProps(
-      omitProps(props, ['as', 'children']),
       DIALOG_TITLE_TAG,
       {
         id: context.titleID,
@@ -44,6 +43,7 @@ export function DialogTitle<T extends ValidConstructor = 'h2'>(
       },
       createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
+      omitProps(props, ['as', 'children']),
     ) as DynamicProps<T>,
   );
 }
