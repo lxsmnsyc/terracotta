@@ -78,21 +78,6 @@ export function Toggle<T extends ValidConstructor = 'button'>(
   return createComponent(
     Button,
     mergeProps(
-      isToggleUncontrolled(props)
-        ? omitProps(props, [
-            'onChange',
-            'defaultPressed',
-            'ref',
-            'disabled',
-            'children',
-          ])
-        : omitProps(props, [
-            'onChange',
-            'pressed',
-            'ref',
-            'disabled',
-            'children',
-          ]),
       TOGGLE_TAG,
       {
         ref: setRef,
@@ -109,6 +94,21 @@ export function Toggle<T extends ValidConstructor = 'button'>(
       createARIAPressedState(() => state.pressed()),
       createDisabledState(() => state.disabled()),
       createARIADisabledState(() => state.disabled()),
+      isToggleUncontrolled(props)
+        ? omitProps(props, [
+            'onChange',
+            'defaultPressed',
+            'ref',
+            'disabled',
+            'children',
+          ])
+        : omitProps(props, [
+            'onChange',
+            'pressed',
+            'ref',
+            'disabled',
+            'children',
+          ]),
     ) as DynamicProps<T>,
   );
 }

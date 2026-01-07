@@ -19,8 +19,12 @@ export function FeedArticleDescription<T extends ValidConstructor = 'p'>(
   const context = useFeedArticleContext('FeedArticleDescription');
   return createDynamic(
     () => props.as || ('p' as T),
-    mergeProps(omitProps(props, ['as']), FEED_ARTICLE_DESCRIPTION_TAG, {
-      id: context.descriptionID,
-    }) as DynamicProps<T>,
+    mergeProps(
+      FEED_ARTICLE_DESCRIPTION_TAG,
+      {
+        id: context.descriptionID,
+      },
+      omitProps(props, ['as']),
+    ) as DynamicProps<T>,
   );
 }

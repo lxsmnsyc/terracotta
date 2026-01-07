@@ -162,7 +162,6 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
         useEventListener(current, 'mouseleave', () => {
           context.optionsHovering = false;
         });
-        
       }
     });
   });
@@ -177,7 +176,6 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
           return createDynamic(
             () => props.as || ('ul' as T),
             mergeProps(
-              omitProps(props, ['as', 'children', 'ref']),
               LISTBOX_OPTIONS_TAG,
               {
                 id: context.optionsID,
@@ -197,6 +195,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
               createExpandedState(() => disclosureState.isOpen()),
               createHasSelectedState(() => selectState.hasSelected()),
               createHasActiveState(() => selectState.hasActive()),
+              omitProps(props, ['as', 'children', 'ref']),
               {
                 get children() {
                   return createComponent(SelectStateProvider, {

@@ -129,13 +129,17 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
 
   return createDynamic(
     () => props.as || ('div' as T),
-    mergeProps(omitProps(props, ['as', 'horizontal', 'ref']), TOOLBAR_TAG, {
-      role: 'toolbar',
-      tabindex: 0,
-      ref: setInternalRef,
-      get 'aria-orientation'() {
-        return isHorizontal() ? 'horizontal' : 'vertical';
+    mergeProps(
+      TOOLBAR_TAG,
+      {
+        role: 'toolbar',
+        tabindex: 0,
+        ref: setInternalRef,
+        get 'aria-orientation'() {
+          return isHorizontal() ? 'horizontal' : 'vertical';
+        },
       },
-    }) as DynamicProps<T>,
+      omitProps(props, ['as', 'horizontal', 'ref']),
+    ) as DynamicProps<T>,
   );
 }

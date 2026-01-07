@@ -367,7 +367,6 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
                 return createDynamic(
                   () => props.as || 'div',
                   mergeProps(
-                    getProps(props),
                     LISTBOX_TAG,
                     {
                       id: ownerID,
@@ -378,6 +377,7 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
                     createHasSelectedState(() => selectState.hasSelected()),
                     createHasActiveState(() => selectState.hasActive()),
                     createExpandedState(() => disclosureState.isOpen()),
+                    getProps(props),
                     {
                       get children() {
                         return props.children;

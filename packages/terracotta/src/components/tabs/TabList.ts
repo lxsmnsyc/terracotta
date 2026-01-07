@@ -100,7 +100,6 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
       return createDynamic(
         () => props.as || ('div' as T),
         mergeProps(
-          omitProps(props, ['as', 'ref', 'children']),
           TAB_LIST_TAG,
           {
             role: 'tablist',
@@ -118,6 +117,7 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
           },
           createHasSelectedState(() => state.hasSelected()),
           createHasActiveState(() => state.hasActive()),
+          omitProps(props, ['as', 'ref', 'children']),
         ) as DynamicProps<T>,
       );
     },

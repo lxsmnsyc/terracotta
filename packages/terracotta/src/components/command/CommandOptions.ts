@@ -61,7 +61,6 @@ export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
   return createDynamic(
     () => props.as || ('ul' as T),
     mergeProps(
-      omitProps(props, ['as', 'children', 'ref']),
       COMMAND_OPTIONS_TAG,
       {
         id: context.optionsID,
@@ -77,6 +76,7 @@ export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
       createHasSelectedState(() => state.hasSelected()),
       createHasActiveState(() => state.hasActive()),
       createHasQueryState(() => state.hasQuery()),
+      omitProps(props, ['as', 'children', 'ref']),
       {
         get children() {
           return createComponent(AutocompleteStateChild, {

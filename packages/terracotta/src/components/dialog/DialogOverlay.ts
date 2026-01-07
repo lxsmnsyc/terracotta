@@ -45,7 +45,6 @@ export function DialogOverlay<T extends ValidConstructor = 'div'>(
   return createDynamic(
     () => props.as || ('div' as T),
     mergeProps(
-      omitProps(props, ['as', 'children', 'ref']),
       DIALOG_OVERLAY_TAG,
       {
         ref: setInternalRef,
@@ -59,6 +58,7 @@ export function DialogOverlay<T extends ValidConstructor = 'div'>(
       },
       createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
+      omitProps(props, ['as', 'children', 'ref']),
     ) as DynamicProps<T>,
   );
 }

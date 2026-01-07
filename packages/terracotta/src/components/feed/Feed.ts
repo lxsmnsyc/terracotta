@@ -67,10 +67,14 @@ export function Feed<T extends ValidConstructor = 'div'>(
     get children() {
       return createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(omitProps(props, ['as', 'busy', 'size']), FEED_TAG, {
-          id: ownerID,
-          ref: setRef,
-        }) as DynamicProps<T>,
+        mergeProps(
+          FEED_TAG,
+          {
+            id: ownerID,
+            ref: setRef,
+          },
+          omitProps(props, ['as', 'busy', 'size']),
+        ) as DynamicProps<T>,
       );
     },
   });

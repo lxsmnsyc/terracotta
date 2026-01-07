@@ -19,8 +19,12 @@ export function FeedArticleLabel<T extends ValidConstructor = 'span'>(
   const context = useFeedArticleContext('FeedArticleLabel');
   return createDynamic(
     () => props.as || ('span' as T),
-    mergeProps(omitProps(props, ['as']), FEED_ARTICLE_LABEL_TAG, {
-      id: context.labelID,
-    }) as DynamicProps<T>,
+    mergeProps(
+      FEED_ARTICLE_LABEL_TAG,
+      {
+        id: context.labelID,
+      },
+      omitProps(props, ['as']),
+    ) as DynamicProps<T>,
   );
 }

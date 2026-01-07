@@ -30,7 +30,6 @@ export function DialogDescription<T extends ValidConstructor = 'p'>(
   return createDynamic(
     () => props.as || ('p' as T),
     mergeProps(
-      omitProps(props, ['as', 'children']),
       DIALOG_DESCRIPTION_TAG,
       {
         id: context.descriptionID,
@@ -44,6 +43,7 @@ export function DialogDescription<T extends ValidConstructor = 'p'>(
       },
       createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
+      omitProps(props, ['as', 'children']),
     ) as DynamicProps<T>,
   );
 }

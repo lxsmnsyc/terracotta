@@ -28,7 +28,6 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
   return createComponent(
     Button,
     mergeProps(
-      omitProps(props, ['as', 'disabled', 'ref', 'children']),
       MENU_ITEM_TAG,
       createOwnerAttribute(context.getId()),
       {
@@ -40,6 +39,7 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
       },
       createDisabledState(() => props.disabled),
       createARIADisabledState(() => props.disabled),
+      omitProps(props, ['as', 'disabled', 'ref', 'children']),
       {
         get children() {
           return createComponent(MenuChild, {

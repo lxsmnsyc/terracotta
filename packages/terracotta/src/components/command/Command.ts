@@ -164,6 +164,16 @@ export function Command<V, T extends ValidConstructor = 'div'>(
         return createDynamic(
           () => props.as || 'div',
           mergeProps(
+            COMMAND_TAG,
+            {
+              id: controller.getId(),
+              'aria-labelledby': labelID,
+            },
+            createDisabledState(() => state.disabled()),
+            createARIADisabledState(() => state.disabled()),
+            createHasSelectedState(() => state.hasSelected()),
+            createHasActiveState(() => state.hasActive()),
+            createHasQueryState(() => state.hasQuery()),
             isCommandUncontrolled(props)
               ? omitProps(props, [
                   'as',
@@ -187,16 +197,6 @@ export function Command<V, T extends ValidConstructor = 'div'>(
                   'onChange',
                   'toggleable',
                 ]),
-            COMMAND_TAG,
-            {
-              id: controller.getId(),
-              'aria-labelledby': labelID,
-            },
-            createDisabledState(() => state.disabled()),
-            createARIADisabledState(() => state.disabled()),
-            createHasSelectedState(() => state.hasSelected()),
-            createHasActiveState(() => state.hasActive()),
-            createHasQueryState(() => state.hasQuery()),
             {
               get children() {
                 return createComponent(AutocompleteStateProvider, {

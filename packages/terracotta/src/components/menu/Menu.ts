@@ -85,11 +85,15 @@ export function Menu<T extends ValidConstructor = 'ul'>(
     get children() {
       return createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(omitProps(props, ['as', 'ref']), MENU_TAG, {
-          id: controller.getId(),
-          role: 'menu',
-          ref: setRef,
-        }) as DynamicProps<T>,
+        mergeProps(
+          MENU_TAG,
+          {
+            id: controller.getId(),
+            role: 'menu',
+            ref: setRef,
+          },
+          omitProps(props, ['as', 'ref']),
+        ) as DynamicProps<T>,
       );
     },
   });

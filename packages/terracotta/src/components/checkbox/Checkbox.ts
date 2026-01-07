@@ -70,6 +70,10 @@ export function Checkbox<T extends ValidConstructor = 'div'>(
       return createDynamic(
         () => props.as || 'div',
         mergeProps(
+          CHECKBOX_TAG,
+          createDisabledState(() => state.disabled()),
+          createARIADisabledState(() => state.disabled()),
+          createCheckedState(() => state.checked()),
           isCheckboxUncontrolled(props)
             ? omitProps(props, [
                 'as',
@@ -85,10 +89,6 @@ export function Checkbox<T extends ValidConstructor = 'div'>(
                 'disabled',
                 'onChange',
               ]),
-          CHECKBOX_TAG,
-          createDisabledState(() => state.disabled()),
-          createARIADisabledState(() => state.disabled()),
-          createCheckedState(() => state.checked()),
           {
             get children() {
               return createComponent(CheckStateProvider, {

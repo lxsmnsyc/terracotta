@@ -105,6 +105,25 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
           createDynamic(
             () => props.as || ('div' as T),
             mergeProps(
+              COMMAND_BAR_TAG,
+              createDisabledState(() => state.disabled()),
+              createARIADisabledState(() => state.disabled()),
+              createExpandedState(() => state.isOpen()),
+              {
+                id: ownerID,
+                role: 'dialog',
+                'aria-modal': true,
+                'aria-labelledby': titleID,
+                'aria-describedby': descriptionID,
+                get children() {
+                  return createComponent(DisclosureStateProvider, {
+                    state,
+                    get children() {
+                      return props.children;
+                    },
+                  });
+                },
+              },
               isCommandBarUncontrolled(props)
                 ? omitProps(props, [
                     'as',
@@ -126,27 +145,6 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
                     'onOpen',
                     'unmount',
                   ]),
-              {
-                id: ownerID,
-                role: 'dialog',
-                'aria-modal': true,
-                'aria-labelledby': titleID,
-                'aria-describedby': descriptionID,
-              },
-              COMMAND_BAR_TAG,
-              createDisabledState(() => state.disabled()),
-              createARIADisabledState(() => state.disabled()),
-              createExpandedState(() => state.isOpen()),
-              {
-                get children() {
-                  return createComponent(DisclosureStateProvider, {
-                    state,
-                    get children() {
-                      return props.children;
-                    },
-                  });
-                },
-              },
             ) as DynamicProps<T>,
           ),
       );

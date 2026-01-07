@@ -44,7 +44,6 @@ export function CommandBarOverlay<T extends ValidConstructor = 'p'>(
   return createDynamic(
     () => props.as || ('div' as T),
     mergeProps(
-      omitProps(props, ['as', 'children', 'ref']),
       COMMAND_BAR_OVERLAY_TAG,
       {
         ref: setInternalRef,
@@ -58,6 +57,7 @@ export function CommandBarOverlay<T extends ValidConstructor = 'p'>(
       },
       createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
+      omitProps(props, ['as', 'children', 'ref']),
     ) as DynamicProps<T>,
   );
 }

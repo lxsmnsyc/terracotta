@@ -121,6 +121,17 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
           return createDynamic(
             () => props.as || ('div' as T),
             mergeProps(
+              RADIO_GROUP_TAG,
+              {
+                role: 'radiogroup',
+                'aria-labelledby': labelID,
+                'aria-describedby': descriptionID,
+                ref: setRef,
+              },
+              createDisabledState(() => state.disabled()),
+              createARIADisabledState(() => state.disabled()),
+              createHasActiveState(() => state.hasActive()),
+              createHasSelectedState(() => state.hasSelected()),
               isRadioGroupUncontrolled(props)
                 ? omitProps(props, [
                     'as',
@@ -144,17 +155,6 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
                     'ref',
                     'toggleable',
                   ]),
-              RADIO_GROUP_TAG,
-              {
-                role: 'radiogroup',
-                'aria-labelledby': labelID,
-                'aria-describedby': descriptionID,
-                ref: setRef,
-              },
-              createDisabledState(() => state.disabled()),
-              createARIADisabledState(() => state.disabled()),
-              createHasActiveState(() => state.hasActive()),
-              createHasSelectedState(() => state.hasSelected()),
               {
                 get children() {
                   return createComponent(SelectStateProvider, {

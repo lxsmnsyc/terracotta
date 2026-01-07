@@ -108,7 +108,6 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
   return createComponent(
     Button,
     mergeProps(
-      omitProps(props, ['as', 'children', 'disabled', 'value', 'ref']),
       COMBOBOX_OPTION_TAG,
       createOwnerAttribute(context.controller.getId()),
       {
@@ -126,6 +125,7 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
       createARIASelectedState(() => state.isSelected()),
       createActiveState(() => state.isActive()),
       createMatchesState(() => state.matches()),
+      omitProps(props, ['as', 'children', 'disabled', 'value', 'ref']),
       {
         get children() {
           return createComponent(AutocompleteOptionStateProvider, {

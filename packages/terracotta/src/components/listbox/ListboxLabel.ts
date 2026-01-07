@@ -35,7 +35,6 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
   return createDynamic(
     () => props.as || ('label' as T),
     mergeProps(
-      omitProps(props, ['as', 'children']),
       LISTBOX_LABEL_TAG,
       {
         id: context.labelID,
@@ -51,6 +50,7 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
       createExpandedState(() => disclosureState.isOpen()),
       createHasSelectedState(() => selectState.hasSelected()),
       createHasActiveState(() => selectState.hasActive()),
+      omitProps(props, ['as', 'children']),
     ) as DynamicProps<T>,
   );
 }

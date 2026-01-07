@@ -96,6 +96,25 @@ export function Dialog<T extends ValidConstructor = 'div'>(
           createDynamic(
             () => props.as || ('div' as T),
             mergeProps(
+              DIALOG_TAG,
+              {
+                id: ownerID,
+                role: 'dialog',
+                'aria-modal': true,
+                'aria-labelledby': titleID,
+                'aria-describedby': descriptionID,
+                get children() {
+                  return createComponent(DisclosureStateProvider, {
+                    state,
+                    get children() {
+                      return props.children;
+                    },
+                  });
+                },
+              },
+              createDisabledState(() => state.disabled()),
+              createARIADisabledState(() => state.disabled()),
+              createExpandedState(() => state.isOpen()),
               isDialogUncontrolled(props)
                 ? omitProps(props, [
                     'as',
@@ -117,25 +136,6 @@ export function Dialog<T extends ValidConstructor = 'div'>(
                     'onOpen',
                     'unmount',
                   ]),
-              DIALOG_TAG,
-              {
-                id: ownerID,
-                role: 'dialog',
-                'aria-modal': true,
-                'aria-labelledby': titleID,
-                'aria-describedby': descriptionID,
-                get children() {
-                  return createComponent(DisclosureStateProvider, {
-                    state,
-                    get children() {
-                      return props.children;
-                    },
-                  });
-                },
-              },
-              createDisabledState(() => state.disabled()),
-              createARIADisabledState(() => state.disabled()),
-              createExpandedState(() => state.isOpen()),
             ) as DynamicProps<T>,
           ),
       );

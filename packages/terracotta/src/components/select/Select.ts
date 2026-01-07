@@ -218,6 +218,25 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
         return createDynamic(
           () => props.as || ('ul' as T),
           mergeProps(
+            SELECT_TAG,
+            {
+              id: controller.getId(),
+              role: 'listbox',
+              get 'aria-multiselectable'() {
+                return props.multiple;
+              },
+              ref: setRef,
+              get 'aria-orientation'() {
+                return props.horizontal ? 'horizontal' : 'vertical';
+              },
+              get tabindex() {
+                return state.hasActive() ? -1 : 0;
+              },
+            },
+            createDisabledState(() => state.disabled()),
+            createARIADisabledState(() => state.disabled()),
+            createHasSelectedState(() => state.hasSelected()),
+            createHasActiveState(() => state.hasActive()),
             isSelectUncontrolled(props)
               ? omitProps(props, [
                   'as',
@@ -243,25 +262,6 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
                   'ref',
                   'toggleable',
                 ]),
-            SELECT_TAG,
-            {
-              id: controller.getId(),
-              role: 'listbox',
-              get 'aria-multiselectable'() {
-                return props.multiple;
-              },
-              ref: setRef,
-              get 'aria-orientation'() {
-                return props.horizontal ? 'horizontal' : 'vertical';
-              },
-              get tabindex() {
-                return state.hasActive() ? -1 : 0;
-              },
-            },
-            createDisabledState(() => state.disabled()),
-            createARIADisabledState(() => state.disabled()),
-            createHasSelectedState(() => state.hasSelected()),
-            createHasActiveState(() => state.hasActive()),
             {
               get children() {
                 return createComponent(SelectStateProvider, {

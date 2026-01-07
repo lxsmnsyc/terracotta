@@ -34,7 +34,6 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
       return createDynamic(
         () => props.as || ('article' as T),
         mergeProps(
-          omitProps(props, ['as']),
           FEED_ARTICLE_TAG,
           createOwnerAttribute(rootContext.ownerID),
           {
@@ -49,6 +48,7 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
               return rootContext.size;
             },
           },
+          omitProps(props, ['as']),
         ) as DynamicProps<T>,
       );
     },

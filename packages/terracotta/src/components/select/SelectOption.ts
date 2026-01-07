@@ -76,7 +76,6 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
   return createComponent(
     Button,
     mergeProps(
-      omitProps(props, ['as', 'children', 'value', 'ref']),
       SELECT_OPTION_TAG,
       createOwnerAttribute(context.controller.getId()),
       {
@@ -94,6 +93,7 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
       createSelectedState(() => state.isSelected()),
       createARIASelectedState(() => state.isSelected()),
       createActiveState(() => state.isActive()),
+      omitProps(props, ['as', 'children', 'value', 'ref']),
       {
         get children() {
           return createComponent(SelectOptionStateProvider, {

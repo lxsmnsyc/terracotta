@@ -79,15 +79,19 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
     get children() {
       return createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(omitProps(props, ['as']), FEED_CONTENT_TAG, {
-          id: context.contentID,
-          role: 'feed',
-          'aria-labelledby': context.labelID,
-          get 'aria-busy'() {
-            return context.busy;
+        mergeProps(
+          FEED_CONTENT_TAG,
+          {
+            id: context.contentID,
+            role: 'feed',
+            'aria-labelledby': context.labelID,
+            get 'aria-busy'() {
+              return context.busy;
+            },
+            ref: setInternalRef,
           },
-          ref: setInternalRef,
-        }) as DynamicProps<T>,
+          omitProps(props, ['as']),
+        ) as DynamicProps<T>,
       );
     },
   });
