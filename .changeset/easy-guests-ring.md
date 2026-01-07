@@ -1,5 +1,0 @@
----
-"terracotta": minor
----
-
-migration

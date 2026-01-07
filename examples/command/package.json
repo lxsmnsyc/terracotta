@@ -1,7 +1,7 @@
 {
   "name": "command-example",
   "type": "module",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,7 +17,7 @@
   "dependencies": {
     "solid-js": "^1.9.10",
     "tailwindcss": "^4.1.18",
-    "terracotta": "1.0.6"
+    "terracotta": "1.1.0"
   },
   "private": true,
   "publishConfig": {
