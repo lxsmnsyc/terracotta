@@ -1,5 +1,5 @@
-import type { JSX } from 'solid-js';
-import { createEffect, mergeProps, untrack } from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import { useDisclosureState } from '../../states/create-disclosure-state';
@@ -7,9 +7,9 @@ import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
-  ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
 import {
   createARIADisabledState,
   createARIAExpandedState,
@@ -23,10 +23,10 @@ import useEventListener from '../../utils/use-event-listener';
 import { COMMAND_INPUT_TAG } from '../command/tags';
 import { useComboboxContext } from './ComboboxContext';
 
-export type ComboboxInputProps<T extends ValidConstructor = 'input'> =
+export type ComboboxInputProps<T extends ValidComponent = 'input'> =
   HeadlessPropsWithRef<T>;
 
-export function ComboboxInput<T extends ValidConstructor = 'input'>(
+export function ComboboxInput<T extends ValidComponent = 'input'>(
   props: ComboboxInputProps<T>,
 ): JSX.Element {
   const context = useComboboxContext('ComboboxInput');
@@ -37,101 +37,107 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
   const isDisabled = (): boolean | undefined =>
     autocompleteState.disabled() || props.disabled;
 
-  createEffect(() => {
-    const current = internalRef();
+  createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
       context.anchor = current;
 
-      if (current instanceof HTMLInputElement) {
-        useEventListener(current, 'input', () => {
+      return mergeFunc(
+        current instanceof HTMLInputElement &&
+          useEventListener(current, 'input', () => {
+            if (!isDisabled()) {
+              autocompleteState.setQuery(current.value);
+            }
+          }),
+        useEventListener(current, 'keydown', e => {
           if (!isDisabled()) {
-            autocompleteState.setQuery(current.value);
+            switch (e.key) {
+              case 'Escape': {
+                disclosureState.close();
+                break;
+              }
+              case 'ArrowUp': {
+                e.preventDefault();
+                if (disclosureState.isOpen()) {
+                  context.controller.setPrevChecked(true);
+                } else {
+                  disclosureState.open();
+                }
+                break;
+              }
+              case 'ArrowDown': {
+                e.preventDefault();
+                if (disclosureState.isOpen()) {
+                  context.controller.setNextChecked(true);
+                } else {
+                  disclosureState.open();
+                }
+                break;
+              }
+              case 'Enter': {
+                e.preventDefault();
+                if (disclosureState.isOpen()) {
+                  context.selectedDescendant = context.activeDescendant;
+                }
+                break;
+              }
+              default:
+                break;
+            }
           }
-        });
-      }
-
-      useEventListener(current, 'keydown', e => {
-        if (!isDisabled()) {
-          switch (e.key) {
-            case 'Escape': {
-              disclosureState.close();
-              break;
-            }
-            case 'ArrowUp': {
-              e.preventDefault();
-              if (disclosureState.isOpen()) {
-                context.controller.setPrevChecked(true);
-              } else {
-                disclosureState.open();
-              }
-              break;
-            }
-            case 'ArrowDown': {
-              e.preventDefault();
-              if (disclosureState.isOpen()) {
-                context.controller.setNextChecked(true);
-              } else {
-                disclosureState.open();
-              }
-              break;
-            }
-            case 'Enter': {
-              e.preventDefault();
-              if (disclosureState.isOpen()) {
-                context.selectedDescendant = context.activeDescendant;
-              }
-              break;
-            }
-            default:
-              break;
+        }),
+        useEventListener(current, 'click', () => {
+          if (!isDisabled()) {
+            disclosureState.toggle();
           }
-        }
-      });
-      useEventListener(current, 'click', () => {
-        if (!isDisabled()) {
-          disclosureState.toggle();
-        }
-      });
-      useEventListener(current, 'blur', e => {
-        if (context.optionsHovering) {
-          return;
-        }
-        autocompleteState.blur();
-        if (!(e.relatedTarget && current.contains(e.relatedTarget as Node))) {
-          disclosureState.close();
-        }
-      });
-      useEventListener(current, 'mouseenter', () => {
-        context.inputHovering = true;
-      });
-      useEventListener(current, 'mouseleave', () => {
-        context.inputHovering = false;
-      });
+        }),
+        useEventListener(current, 'blur', e => {
+          if (context.optionsHovering) {
+            return;
+          }
+          autocompleteState.blur();
+          if (!(e.relatedTarget && current.contains(e.relatedTarget as Node))) {
+            disclosureState.close();
+          }
+        }),
+        useEventListener(current, 'mouseenter', () => {
+          context.inputHovering = true;
+        }),
+        useEventListener(current, 'mouseleave', () => {
+          context.inputHovering = false;
+        }),
+      );
     }
+    return undefined;
   });
 
-  createEffect(() => {
-    if (autocompleteState.query() !== '') {
-      if (untrack(() => disclosureState.isOpen())) {
-        context.controller.setFirstChecked();
-      } else {
-        disclosureState.open();
+  createEffect(
+    () => autocompleteState.query(),
+    query => {
+      if (query !== '') {
+        if (disclosureState.isOpen()) {
+          context.controller.setFirstChecked();
+        } else {
+          disclosureState.open();
+        }
       }
-    }
-  });
+    },
+  );
 
-  createEffect(() => {
-    if (context.activeDescendant) {
-      const current = document.getElementById(context.activeDescendant);
-      if (current) {
-        context.controller.setCurrent(current);
+  createEffect(
+    () => context.activeDescendant,
+    activeDescendant => {
+      if (activeDescendant) {
+        const current = document.getElementById(activeDescendant);
+        if (current) {
+          context.controller.setCurrent(current);
+        }
       }
-    }
-  });
+    },
+  );
 
   return createDynamic(
     () => props.as || ('input' as T),
-    mergeProps(
+    merge(
       COMMAND_INPUT_TAG,
       {
         id: context.inputID,

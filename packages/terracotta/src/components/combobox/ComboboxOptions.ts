@@ -1,12 +1,5 @@
-import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  mergeProps,
-  onCleanup,
-  onMount,
-  untrack,
-} from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createComponent, createEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
 import {
@@ -20,9 +13,9 @@ import { createUnmountable } from '../../utils/create-unmountable';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
-  ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
 import { SELECTED_NODE } from '../../utils/namespace';
 import {
   createARIADisabledState,
@@ -43,10 +36,10 @@ export type ComboboxOptionsBaseProps<V> = Prettify<
 
 export type ComboboxOptionsProps<
   V,
-  T extends ValidConstructor = 'ul',
+  T extends ValidComponent = 'ul',
 > = HeadlessPropsWithRef<T, ComboboxOptionsBaseProps<V>>;
 
-export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
+export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
   props: ComboboxOptionsProps<V, T>,
 ): JSX.Element {
   const context = useComboboxContext('ComboboxOptions');
@@ -55,45 +48,51 @@ export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(() => {
-    const current = internalRef();
+  createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
       context.controller.setRef(current);
-      onCleanup(() => {
-        context.controller.clearRef();
-      });
-
-      useEventListener(current, 'focusin', () => {
-        if (context.anchor) {
-          context.anchor.focus();
-        }
-      });
-      useEventListener(current, 'mouseenter', () => {
-        context.optionsHovering = true;
-      });
-      useEventListener(current, 'mouseleave', () => {
-        context.optionsHovering = false;
-      });
+      return mergeFunc(
+        () => {
+          context.controller.clearRef();
+        },
+        useEventListener(current, 'focusin', () => {
+          if (context.anchor) {
+            context.anchor.focus();
+          }
+        }),
+        useEventListener(current, 'mouseenter', () => {
+          context.optionsHovering = true;
+        }),
+        useEventListener(current, 'mouseleave', () => {
+          context.optionsHovering = false;
+        }),
+      );
     }
+    return undefined;
   });
 
-  createEffect(() => {
-    if (!disclosureState.isOpen()) {
-      setInternalRef(undefined);
-    }
-  });
+  createEffect(
+    () => !disclosureState.isOpen(),
+    value => {
+      if (value) {
+        setInternalRef(undefined);
+      }
+    },
+  );
 
-  onMount(() => {
-    createEffect(() => {
-      if (disclosureState.isOpen()) {
-        if (untrack(() => autocompleteState.hasSelected())) {
+  // TODO check timing
+  createEffect(
+    () => disclosureState.isOpen(),
+    value => {
+      if (value) {
+        if (autocompleteState.hasSelected()) {
           context.controller.setFirstChecked(SELECTED_NODE);
         } else {
           context.controller.setFirstChecked();
         }
       }
-    });
-  });
+    },
+  );
 
   return createUnmountable(
     props,
@@ -101,7 +100,7 @@ export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
     () =>
       createDynamic(
         () => props.as || ('ul' as T),
-        mergeProps(
+        merge(
           COMBOBOX_OPTIONS_TAG,
           {
             id: context.optionsID,
