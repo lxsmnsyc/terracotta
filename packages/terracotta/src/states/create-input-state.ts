@@ -84,7 +84,7 @@ const InputStateContext = createContext<InputStateProperties>();
 export function InputStateProvider(
   props: InputStateProviderProps,
 ): JSX.Element {
-  return createComponent(InputStateContext.Provider, {
+  return createComponent(InputStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

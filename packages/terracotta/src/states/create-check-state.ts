@@ -116,7 +116,7 @@ const CheckStateContext = createContext<CheckStateProperties>();
 export function CheckStateProvider(
   props: CheckStateProviderProps,
 ): JSX.Element {
-  return createComponent(CheckStateContext.Provider, {
+  return createComponent(CheckStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

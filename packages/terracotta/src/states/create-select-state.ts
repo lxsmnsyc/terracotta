@@ -56,7 +56,7 @@ export function createSingleSelectState<T>(
 
   if ('defaultValue' in options) {
     const [selected, setSelected] = createSignal<T | undefined>(
-      options.defaultValue,
+      () => options.defaultValue,
     );
     selectedValue = selected;
     setSelectedValue = (value): void => {
@@ -243,7 +243,7 @@ const SelectStateContext = createContext<SelectStateProperties<unknown>>();
 export function SelectStateProvider<T>(
   props: SelectStateProviderProps<T>,
 ): JSX.Element {
-  return createComponent(SelectStateContext.Provider, {
+  return createComponent(SelectStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

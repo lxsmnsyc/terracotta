@@ -108,7 +108,7 @@ const ToggleStateContext = createContext<ToggleStateProperties>();
 export function ToggleStateProvider(
   props: ToggleStateProviderProps,
 ): JSX.Element {
-  return createComponent(ToggleStateContext.Provider, {
+  return createComponent(ToggleStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

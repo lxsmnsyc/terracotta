@@ -63,7 +63,7 @@ export function createSingleAutocompleteState<T>(
 
   if ('defaultValue' in options) {
     const [selected, setSelected] = createSignal<T | undefined>(
-      options.defaultValue,
+      () => options.defaultValue,
     );
     selectedValue = selected;
     setSelectedValue = (value): void => {
@@ -282,7 +282,7 @@ const AutocompleteStateContext =
 export function AutocompleteStateProvider<T>(
   props: AutocompleteStateProviderProps<T>,
 ): JSX.Element {
-  return createComponent(AutocompleteStateContext.Provider, {
+  return createComponent(AutocompleteStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

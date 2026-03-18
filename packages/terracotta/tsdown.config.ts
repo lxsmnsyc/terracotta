@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsdown';
 
-const entries = Object.fromEntries(
-  [
+const entries = Object.fromEntries([
+  ...[
     'accordion',
     'alert',
     'alert-dialog',
@@ -26,7 +26,8 @@ const entries = Object.fromEntries(
     'toolbar',
     'transition',
   ].map(value => [value, `./src/components/${value}`]),
-);
+  ['states', './src/states/index.ts'],
+]);
 
 export default defineConfig({
   entry: entries,

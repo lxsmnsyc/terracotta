@@ -66,7 +66,7 @@ const SelectOptionStateContext = createContext<SelectOptionStateProperties>();
 export function SelectOptionStateProvider(
   props: SelectOptionStateProviderProps,
 ): JSX.Element {
-  return createComponent(SelectOptionStateContext.Provider, {
+  return createComponent(SelectOptionStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

@@ -117,7 +117,7 @@ const DisclosureStateContext = createContext<DisclosureStateProperties>();
 export function DisclosureStateProvider(
   props: DisclosureStateProviderProps,
 ): JSX.Element {
-  return createComponent(DisclosureStateContext.Provider, {
+  return createComponent(DisclosureStateContext, {
     value: props.state,
     get children() {
       const current = props.children;
