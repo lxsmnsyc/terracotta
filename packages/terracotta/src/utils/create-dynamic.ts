@@ -1,16 +1,16 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
-import { Dynamic } from 'solid-js/web';
-import type { DynamicProps, ValidConstructor } from './dynamic-prop';
+import { Dynamic } from '@solidjs/web';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createComponent, merge } from 'solid-js';
+import type { DynamicProps } from './dynamic-prop';
 
 // This is just a shorthand for creating dynamic components
-export default function createDynamic<T extends ValidConstructor>(
+export default function createDynamic<T extends ValidComponent>(
   source: () => T,
   props: DynamicProps<T>,
 ): JSX.Element {
   return createComponent(
     Dynamic,
-    mergeProps(
+    merge(
       {
         get component() {
           return source();
