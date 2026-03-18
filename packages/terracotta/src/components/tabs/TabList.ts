@@ -1,5 +1,5 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, mergeProps, onCleanup } from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createComponent, createEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
 import {
@@ -10,24 +10,24 @@ import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
-  ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
 import {
   createHasActiveState,
   createHasSelectedState,
 } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
 import { useTabGroupContext } from './TabGroupContext';
-import { TabListContext, createTabFocusNavigator } from './TabListContext';
+import { createTabFocusNavigator, TabListContext } from './TabListContext';
 import { TAB_LIST_TAG } from './tags';
 
 export type TabListProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessPropsWithRef<T, SelectStateRenderProps<V>>;
 
-export function TabList<V, T extends ValidConstructor = 'div'>(
+export function TabList<V, T extends ValidComponent = 'div'>(
   props: TabListProps<V, T>,
 ): JSX.Element {
   const rootContext = useTabGroupContext('TabList');
@@ -35,71 +35,73 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
   const state = useSelectState();
   const [ref, setRef] = createForwardRef(props);
 
-  createEffect(() => {
-    const current = ref();
+  createEffect(ref, current => {
     if (current instanceof HTMLElement) {
       controller.setRef(current);
-      onCleanup(() => {
-        controller.clearRef();
-      });
-      useEventListener(current, 'keydown', e => {
-        if (!state.disabled()) {
-          switch (e.key) {
-            case 'ArrowUp': {
-              if (!rootContext.horizontal) {
-                e.preventDefault();
-                controller.setPrevChecked(true);
+      return mergeFunc(
+        () => {
+          controller.clearRef();
+        },
+        useEventListener(current, 'keydown', e => {
+          if (!state.disabled()) {
+            switch (e.key) {
+              case 'ArrowUp': {
+                if (!rootContext.horizontal) {
+                  e.preventDefault();
+                  controller.setPrevChecked(true);
+                }
+                break;
               }
-              break;
-            }
-            case 'ArrowLeft': {
-              if (rootContext.horizontal) {
-                e.preventDefault();
-                controller.setPrevChecked(true);
+              case 'ArrowLeft': {
+                if (rootContext.horizontal) {
+                  e.preventDefault();
+                  controller.setPrevChecked(true);
+                }
+                break;
               }
-              break;
-            }
-            case 'ArrowDown': {
-              if (!rootContext.horizontal) {
-                e.preventDefault();
-                controller.setNextChecked(true);
+              case 'ArrowDown': {
+                if (!rootContext.horizontal) {
+                  e.preventDefault();
+                  controller.setNextChecked(true);
+                }
+                break;
               }
-              break;
-            }
-            case 'ArrowRight': {
-              if (rootContext.horizontal) {
-                e.preventDefault();
-                controller.setNextChecked(true);
+              case 'ArrowRight': {
+                if (rootContext.horizontal) {
+                  e.preventDefault();
+                  controller.setNextChecked(true);
+                }
+                break;
               }
-              break;
-            }
-            case 'Home': {
-              e.preventDefault();
-              controller.setFirstChecked();
-              break;
-            }
-            case 'End': {
-              e.preventDefault();
-              controller.setLastChecked();
-              break;
+              case 'Home': {
+                e.preventDefault();
+                controller.setFirstChecked();
+                break;
+              }
+              case 'End': {
+                e.preventDefault();
+                controller.setLastChecked();
+                break;
+              }
             }
           }
-        }
-      });
-      useEventListener(current, 'focusin', e => {
-        if (e.target && e.target !== current) {
-          controller.setCurrent(e.target as HTMLElement);
-        }
-      });
+        }),
+        useEventListener(current, 'focusin', e => {
+          if (e.target && e.target !== current) {
+            controller.setCurrent(e.target as HTMLElement);
+          }
+        }),
+      );
     }
+    return undefined;
   });
 
-  return createComponent(TabListContext.Provider, {
+  return createComponent(TabListContext, {
     value: controller,
     get children() {
       return createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(
+        merge(
           TAB_LIST_TAG,
           {
             role: 'tablist',

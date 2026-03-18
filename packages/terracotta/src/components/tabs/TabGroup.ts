@@ -1,10 +1,5 @@
-import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createMemo,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createComponent, createMemo, createUniqueId, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   SelectStateRenderProps,
@@ -12,14 +7,13 @@ import type {
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
 import {
-  SelectStateProvider,
   createSingleSelectState,
+  SelectStateProvider,
 } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
-  ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
@@ -43,7 +37,7 @@ export type TabGroupControlledBaseProps<V> = Prettify<
 
 export type TabGroupControlledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessPropsWithRef<T, TabGroupControlledBaseProps<V>>;
 
 export type TabGroupUncontrolledBaseProps<V> = Prettify<
@@ -54,20 +48,20 @@ export type TabGroupUncontrolledBaseProps<V> = Prettify<
 
 export type TabGroupUncontrolledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessPropsWithRef<T, TabGroupUncontrolledBaseProps<V>>;
 
-export type TabGroupProps<V, T extends ValidConstructor = 'div'> =
+export type TabGroupProps<V, T extends ValidComponent = 'div'> =
   | TabGroupControlledProps<V, T>
   | TabGroupUncontrolledProps<V, T>;
 
-function isTabGroupUncontrolled<V, T extends ValidConstructor = 'div'>(
+function isTabGroupUncontrolled<V, T extends ValidComponent = 'div'>(
   props: TabGroupProps<V, T>,
 ): props is TabGroupUncontrolledProps<V, T> {
   return 'defaultValue' in props;
 }
 
-export function TabGroup<V, T extends ValidConstructor = 'div'>(
+export function TabGroup<V, T extends ValidComponent = 'div'>(
   props: TabGroupProps<V, T>,
 ): JSX.Element {
   return createMemo(() => {
@@ -76,7 +70,7 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
 
     const ids = new Map<V, number>();
 
-    return createComponent(TabGroupContext.Provider, {
+    return createComponent(TabGroupContext, {
       value: {
         get horizontal() {
           return props.horizontal;
@@ -93,7 +87,7 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
       get children() {
         return createDynamic(
           () => props.as || ('div' as T),
-          mergeProps(
+          merge(
             TAB_GROUP_TAG,
             createDisabledState(() => state.disabled()),
             createARIADisabledState(() => state.disabled()),
