@@ -1,5 +1,5 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createComponent, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
@@ -7,11 +7,7 @@ import {
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createDisabledState,
   createExpandedState,
@@ -19,17 +15,17 @@ import {
 import { useAlertDialogContext } from './AlertDialogContext';
 import { ALERT_DIALOG_DESCRIPTION_TAG } from './tags';
 
-export type AlertDialogDescriptionProps<T extends ValidConstructor = 'p'> =
+export type AlertDialogDescriptionProps<T extends ValidComponent = 'p'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
 
-export function AlertDialogDescription<T extends ValidConstructor = 'p'>(
+export function AlertDialogDescription<T extends ValidComponent = 'p'>(
   props: AlertDialogDescriptionProps<T>,
 ): JSX.Element {
   const context = useAlertDialogContext('AlertDialogDescription');
   const state = useDisclosureState();
   return createDynamic(
     () => props.as || ('p' as T),
-    mergeProps(
+    merge(
       omitProps(props, ['as', 'children']),
       ALERT_DIALOG_DESCRIPTION_TAG,
       {

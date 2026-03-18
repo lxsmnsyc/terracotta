@@ -1,5 +1,5 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, mergeProps } from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createComponent, createEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
@@ -10,7 +10,6 @@ import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
-  ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
@@ -23,10 +22,10 @@ import useEventListener from '../../utils/use-event-listener';
 import { useAlertDialogContext } from './AlertDialogContext';
 import { ALERT_DIALOG_PANEL_TAG } from './tags';
 
-export type AlertDialogPanelProps<T extends ValidConstructor = 'div'> =
+export type AlertDialogPanelProps<T extends ValidComponent = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
-export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
+export function AlertDialogPanel<T extends ValidComponent = 'div'>(
   props: AlertDialogPanelProps<T>,
 ): JSX.Element {
   const context = useAlertDialogContext('AlertDialogPanel');
@@ -34,13 +33,12 @@ export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(() => {
-    const current = internalRef();
+  createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
       if (state.isOpen()) {
         focusFirst(getFocusableElements(current), false);
 
-        useEventListener(current, 'keydown', e => {
+        return useEventListener(current, 'keydown', e => {
           if (!props.disabled) {
             switch (e.key) {
               case 'Tab': {
@@ -59,11 +57,12 @@ export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
         });
       }
     }
+    return undefined;
   });
 
   return createDynamic(
     () => props.as || ('div' as T),
-    mergeProps(
+    merge(
       omitProps(props, ['as', 'children', 'ref']),
       ALERT_DIALOG_PANEL_TAG,
       {

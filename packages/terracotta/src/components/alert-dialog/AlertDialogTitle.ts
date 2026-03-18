@@ -1,5 +1,5 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createComponent, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
@@ -10,7 +10,6 @@ import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
-  ValidConstructor,
 } from '../../utils/dynamic-prop';
 import {
   createDisabledState,
@@ -19,10 +18,10 @@ import {
 import { useAlertDialogContext } from './AlertDialogContext';
 import { ALERT_DIALOG_TITLE_TAG } from './tags';
 
-export type AlertDialogTitleProps<T extends ValidConstructor = 'h2'> =
+export type AlertDialogTitleProps<T extends ValidComponent = 'h2'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
-export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
+export function AlertDialogTitle<T extends ValidComponent = 'h2'>(
   props: AlertDialogTitleProps<T>,
 ): JSX.Element {
   const context = useAlertDialogContext('AlertDialogTitle');
@@ -30,7 +29,7 @@ export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
 
   return createDynamic(
     () => props.as || ('h2' as T),
-    mergeProps(
+    merge(
       omitProps(props, ['as', 'children']),
       ALERT_DIALOG_TITLE_TAG,
       {
