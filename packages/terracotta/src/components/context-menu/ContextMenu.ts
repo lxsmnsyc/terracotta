@@ -1,10 +1,5 @@
-import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createComponent, createEffect, createUniqueId, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   DisclosureStateControlledOptions,
@@ -12,15 +7,11 @@ import type {
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
 import {
-  DisclosureStateProvider,
   createDisclosureState,
+  DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -35,27 +26,27 @@ export type ContextMenuControlledBaseProps = Prettify<
   DisclosureStateControlledOptions & DisclosureStateRenderProps
 >;
 
-export type ContextMenuControlledProps<T extends ValidConstructor = 'div'> =
+export type ContextMenuControlledProps<T extends ValidComponent = 'div'> =
   HeadlessProps<T, ContextMenuControlledBaseProps>;
 
 export type ContextMenuUncontrolledBaseProps = Prettify<
   DisclosureStateUncontrolledOptions & DisclosureStateRenderProps
 >;
 
-export type ContextMenuUncontrolledProps<T extends ValidConstructor = 'div'> =
+export type ContextMenuUncontrolledProps<T extends ValidComponent = 'div'> =
   HeadlessProps<T, ContextMenuUncontrolledBaseProps>;
 
-export type ContextMenuProps<T extends ValidConstructor = 'div'> =
+export type ContextMenuProps<T extends ValidComponent = 'div'> =
   | ContextMenuControlledProps<T>
   | ContextMenuUncontrolledProps<T>;
 
-function isContextMenuUncontrolled<T extends ValidConstructor = 'div'>(
+function isContextMenuUncontrolled<T extends ValidComponent = 'div'>(
   props: ContextMenuProps<T>,
 ): props is ContextMenuUncontrolledProps<T> {
   return 'defaultOpen' in props;
 }
 
-export function ContextMenu<T extends ValidConstructor = 'div'>(
+export function ContextMenu<T extends ValidComponent = 'div'>(
   props: ContextMenuProps<T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
@@ -66,15 +57,18 @@ export function ContextMenu<T extends ValidConstructor = 'div'>(
 
   const state = createDisclosureState(props);
 
-  createEffect(() => {
-    if (state.isOpen()) {
-      fsp.save();
-    } else {
-      fsp.load();
-    }
-  });
+  createEffect(
+    () => state.isOpen(),
+    flag => {
+      if (flag) {
+        fsp.save();
+      } else {
+        fsp.load();
+      }
+    },
+  );
 
-  return createComponent(ContextMenuContext.Provider, {
+  return createComponent(ContextMenuContext, {
     value: {
       ownerID,
       boundaryID,
@@ -83,7 +77,7 @@ export function ContextMenu<T extends ValidConstructor = 'div'>(
     get children() {
       return createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(
+        merge(
           CONTEXT_MENU_TAG,
           createDisabledState(() => state.disabled()),
           createARIADisabledState(() => state.disabled()),

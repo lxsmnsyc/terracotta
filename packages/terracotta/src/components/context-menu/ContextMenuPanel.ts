@@ -1,5 +1,5 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, mergeProps } from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createComponent, createEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
@@ -12,11 +12,11 @@ import { createUnmountable } from '../../utils/create-unmountable';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
-  ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
+import { mergeFunc } from '../../utils/merge-func';
 import {
   createDisabledState,
   createExpandedState,
@@ -30,10 +30,10 @@ export type ContextMenuPanelBaseProps = Prettify<
   DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type ContextMenuPanelProps<T extends ValidConstructor = 'div'> =
+export type ContextMenuPanelProps<T extends ValidComponent = 'div'> =
   HeadlessPropsWithRef<T, ContextMenuPanelBaseProps>;
 
-export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
+export function ContextMenuPanel<T extends ValidComponent = 'div'>(
   props: ContextMenuPanelProps<T>,
 ): JSX.Element {
   const context = useContextMenuContext('ContextMenuPanel');
@@ -41,36 +41,42 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(() => {
-    const current = internalRef();
-    if (current instanceof HTMLElement) {
-      if (state.isOpen()) {
-        focusFirst(getFocusableElements(current), false);
-        useEventListener(current, 'keydown', e => {
-          if (!props.disabled) {
-            switch (e.key) {
-              case 'Tab': {
-                e.preventDefault();
-                lockFocus(current, e.shiftKey, false);
-                break;
+  createEffect(
+    () => [internalRef(), state.isOpen()],
+    ([current, isOpen]) => {
+      if (current instanceof HTMLElement) {
+        if (isOpen) {
+          focusFirst(getFocusableElements(current), false);
+
+          return mergeFunc(
+            useEventListener(current, 'keydown', e => {
+              if (!props.disabled) {
+                switch (e.key) {
+                  case 'Tab': {
+                    e.preventDefault();
+                    lockFocus(current, e.shiftKey, false);
+                    break;
+                  }
+                  case 'Escape': {
+                    state.close();
+                    break;
+                  }
+                  default:
+                    break;
+                }
               }
-              case 'Escape': {
+            }),
+            useEventListener(document, 'click', e => {
+              if (!current.contains(e.target as Node)) {
                 state.close();
-                break;
               }
-              default:
-                break;
-            }
-          }
-        });
-        useEventListener(document, 'click', e => {
-          if (!current.contains(e.target as Node)) {
-            state.close();
-          }
-        });
+            }),
+          );
+        }
       }
-    }
-  });
+      return undefined;
+    },
+  );
 
   return createUnmountable(
     props,
@@ -78,7 +84,7 @@ export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
     () =>
       createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(
+        merge(
           CONTEXT_MENU_PANEL_TAG,
           {
             id: context.panelID,
