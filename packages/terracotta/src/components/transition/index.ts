@@ -1,10 +1,10 @@
-import type { JSX } from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
 import {
   createComponent,
   createContext,
   createEffect,
   createSignal,
-  mergeProps,
+  merge,
   useContext,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
@@ -15,7 +15,6 @@ import { createUnmountable } from '../../utils/create-unmountable';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
-  ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import type { Prettify } from '../../utils/types';
@@ -94,7 +93,7 @@ function removeClassList(ref: HTMLElement, classes: string[]): void {
   }
 }
 
-export type TransitionChildProps<T extends ValidConstructor = 'div'> =
+export type TransitionChildProps<T extends ValidComponent = 'div'> =
   HeadlessPropsWithRef<T, TransitionBaseChildProps>;
 
 type TransitionStates =
@@ -104,7 +103,7 @@ type TransitionStates =
   | 'leave-from'
   | 'leave-to';
 
-export function TransitionChild<T extends ValidConstructor = 'div'>(
+export function TransitionChild<T extends ValidComponent = 'div'>(
   props: TransitionChildProps<T>,
 ): JSX.Element {
   const values = useTransitionRootContext('TransitionChild');
@@ -191,31 +190,32 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
     }
   }
 
-  createEffect(() => {
-    const shouldShow = values.show;
-    if (shouldShow) {
-      setVisible(true);
-    }
-    const internalRef = ref();
-    if (internalRef instanceof HTMLElement) {
+  createEffect(
+    () => [values.show, ref()],
+    ([shouldShow, internalRef]) => {
       if (shouldShow) {
-        transition(internalRef, true);
-      } else if (transitionChildren.done()) {
-        transition(internalRef, false);
+        setVisible(true);
       }
-    } else {
-      // Ref is missing, reset initial
-      initial = true;
-    }
-  });
+      if (internalRef instanceof HTMLElement) {
+        if (shouldShow) {
+          transition(internalRef, true);
+        } else if (transitionChildren.done()) {
+          transition(internalRef, false);
+        }
+      } else {
+        // Ref is missing, reset initial
+        initial = true;
+      }
+    },
+  );
 
-  return createComponent(TransitionCounterContext.Provider, {
+  return createComponent(TransitionCounterContext, {
     value: transitionChildren,
     get children() {
       return createUnmountable(props, visible, () =>
         createDynamic(
           () => props.as || ('div' as T),
-          mergeProps(
+          merge(
             omitProps(props, [
               'as',
               'enter',
@@ -246,14 +246,14 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
   });
 }
 
-export type TransitionProps<T extends ValidConstructor = 'div'> = Prettify<
+export type TransitionProps<T extends ValidComponent = 'div'> = Prettify<
   TransitionRootBaseProps & TransitionChildProps<T>
 >;
 
-export function Transition<T extends ValidConstructor = 'div'>(
+export function Transition<T extends ValidComponent = 'div'>(
   props: TransitionProps<T>,
 ): JSX.Element {
-  return createComponent(TransitionRootContext.Provider, {
+  return createComponent(TransitionRootContext, {
     value: props,
     get children() {
       return createComponent(
