@@ -1,30 +1,25 @@
-import type { JSX } from 'solid-js';
-import { createUniqueId, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createUniqueId, merge, omit } from 'solid-js';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 
 const ALERT_TAG = createTag('alert');
 
-export type AlertProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
+export type AlertProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
 
-export function Alert<T extends ValidConstructor = 'div'>(
+export function Alert<T extends ValidComponent = 'div'>(
   props: AlertProps<T>,
 ): JSX.Element {
   const alertID = createUniqueId();
 
   return createDynamic(
     () => props.as || ('div' as T),
-    mergeProps(
+    merge(
       {
         id: alertID,
       },
-      omitProps(props, ['as']),
+      omit(props, 'as'),
       ALERT_TAG,
       {
         role: 'alert',
