@@ -1,11 +1,11 @@
-import type { JSX } from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
 import {
   createComponent,
   createEffect,
   createMemo,
   createSignal,
   createUniqueId,
-  mergeProps,
+  merge,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
@@ -21,11 +21,7 @@ import {
   createSingleAutocompleteState,
 } from '../../states/create-autocomplete-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -52,7 +48,7 @@ export type SingleCommandControlledBaseProps<V> = Prettify<
 
 export type SingleCommandControlledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, SingleCommandControlledBaseProps<V>>;
 
 export type SingleCommandUncontrolledBaseProps<V> = Prettify<
@@ -63,10 +59,10 @@ export type SingleCommandUncontrolledBaseProps<V> = Prettify<
 
 export type SingleCommandUncontrolledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, SingleCommandUncontrolledBaseProps<V>>;
 
-export type SingleCommandProps<V, T extends ValidConstructor = 'div'> =
+export type SingleCommandProps<V, T extends ValidComponent = 'div'> =
   | SingleCommandControlledProps<V, T>
   | SingleCommandUncontrolledProps<V, T>;
 
@@ -78,7 +74,7 @@ export type MultipleCommandControlledBaseProps<V> = Prettify<
 
 export type MultipleCommandControlledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, MultipleCommandControlledBaseProps<V>>;
 
 export type MultipleCommandUncontrolledBaseProps<V> = Prettify<
@@ -89,24 +85,24 @@ export type MultipleCommandUncontrolledBaseProps<V> = Prettify<
 
 export type MultipleCommandUncontrolledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, MultipleCommandUncontrolledBaseProps<V>>;
 
-export type MultipleCommandProps<V, T extends ValidConstructor = 'div'> =
+export type MultipleCommandProps<V, T extends ValidComponent = 'div'> =
   | MultipleCommandControlledProps<V, T>
   | MultipleCommandUncontrolledProps<V, T>;
 
-export type CommandProps<V, T extends ValidConstructor = 'div'> =
+export type CommandProps<V, T extends ValidComponent = 'div'> =
   | SingleCommandProps<V, T>
   | MultipleCommandProps<V, T>;
 
-function isCommandMultiple<V, T extends ValidConstructor = 'div'>(
+function isCommandMultiple<V, T extends ValidComponent = 'div'>(
   props: CommandProps<V, T>,
 ): props is MultipleCommandProps<V, T> {
   return !!props.multiple;
 }
 
-function isCommandUncontrolled<V, T extends ValidConstructor = 'div'>(
+function isCommandUncontrolled<V, T extends ValidComponent = 'div'>(
   props: CommandProps<V, T>,
 ): props is
   | SingleCommandUncontrolledProps<V, T>
@@ -114,7 +110,7 @@ function isCommandUncontrolled<V, T extends ValidConstructor = 'div'>(
   return 'defaultValue' in props;
 }
 
-export function Command<V, T extends ValidConstructor = 'div'>(
+export function Command<V, T extends ValidComponent = 'div'>(
   props: CommandProps<V, T>,
 ): JSX.Element {
   return createMemo(() => {
@@ -133,13 +129,16 @@ export function Command<V, T extends ValidConstructor = 'div'>(
     const optionsID = createUniqueId();
     const labelID = createUniqueId();
 
-    createEffect(() => {
-      if (!state.hasActive()) {
-        setActiveDescendant(undefined);
-      }
-    });
+    createEffect(
+      () => !state.hasActive(),
+      flag => {
+        if (flag) {
+          setActiveDescendant(undefined);
+        }
+      },
+    );
 
-    return createComponent(CommandContext.Provider, {
+    return createComponent(CommandContext, {
       value: {
         multiple: !!props.multiple,
         controller,
@@ -163,7 +162,7 @@ export function Command<V, T extends ValidConstructor = 'div'>(
       get children() {
         return createDynamic(
           () => props.as || 'div',
-          mergeProps(
+          merge(
             COMMAND_TAG,
             {
               id: controller.getId(),
