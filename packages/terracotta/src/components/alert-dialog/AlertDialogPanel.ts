@@ -33,32 +33,35 @@ export function AlertDialogPanel<T extends ValidComponent = 'div'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(internalRef, current => {
-    if (current instanceof HTMLElement) {
-      if (state.isOpen()) {
-        focusFirst(getFocusableElements(current), false);
+  createEffect(
+    () => [internalRef(), state.isOpen()],
+    ([current, isOpen]) => {
+      if (current instanceof HTMLElement) {
+        if (isOpen) {
+          focusFirst(getFocusableElements(current), false);
 
-        return useEventListener(current, 'keydown', e => {
-          if (!props.disabled) {
-            switch (e.key) {
-              case 'Tab': {
-                e.preventDefault();
-                lockFocus(current, e.shiftKey, false);
-                break;
+          return useEventListener(current, 'keydown', e => {
+            if (!props.disabled) {
+              switch (e.key) {
+                case 'Tab': {
+                  e.preventDefault();
+                  lockFocus(current, e.shiftKey, false);
+                  break;
+                }
+                case 'Escape': {
+                  state.close();
+                  break;
+                }
+                default:
+                  break;
               }
-              case 'Escape': {
-                state.close();
-                break;
-              }
-              default:
-                break;
             }
-          }
-        });
+          });
+        }
       }
-    }
-    return undefined;
-  });
+      return undefined;
+    },
+  );
 
   return createDynamic(
     () => props.as || ('div' as T),

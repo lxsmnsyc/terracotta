@@ -34,7 +34,7 @@ export function CommandBarPanel<T extends ValidComponent = 'div'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(
-    () => [internalRef, state.isOpen()],
+    () => [internalRef(), state.isOpen()],
     ([current, isOpen]) => {
       if (current instanceof HTMLElement) {
         if (isOpen) {

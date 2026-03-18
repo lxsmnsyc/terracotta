@@ -24,6 +24,7 @@ import type {
   HeadlessPropsWithRef,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -110,46 +111,42 @@ export function Accordion<V, T extends ValidComponent = 'div'>(
       if (current instanceof HTMLElement) {
         controller.setRef(current);
 
-        const cleanupKeydown = useEventListener(current, 'keydown', e => {
-          if (!state.disabled()) {
-            switch (e.key) {
-              case 'ArrowUp': {
-                e.preventDefault();
-                controller.setPrevChecked(true);
-                break;
+        return mergeFunc(
+          () => controller.clearRef(),
+          useEventListener(current, 'keydown', e => {
+            if (!state.disabled()) {
+              switch (e.key) {
+                case 'ArrowUp': {
+                  e.preventDefault();
+                  controller.setPrevChecked(true);
+                  break;
+                }
+                case 'ArrowDown': {
+                  e.preventDefault();
+                  controller.setNextChecked(true);
+                  break;
+                }
+                case 'Home': {
+                  e.preventDefault();
+                  controller.setFirstChecked();
+                  break;
+                }
+                case 'End': {
+                  e.preventDefault();
+                  controller.setLastChecked();
+                  break;
+                }
+                default:
+                  break;
               }
-              case 'ArrowDown': {
-                e.preventDefault();
-                controller.setNextChecked(true);
-                break;
-              }
-              case 'Home': {
-                e.preventDefault();
-                controller.setFirstChecked();
-                break;
-              }
-              case 'End': {
-                e.preventDefault();
-                controller.setLastChecked();
-                break;
-              }
-              default:
-                break;
             }
-          }
-        });
-
-        const cleanupFocusIn = useEventListener(current, 'focusin', e => {
-          if (e.target && e.target !== current) {
-            controller.setCurrent(e.target as HTMLElement);
-          }
-        });
-
-        return () => {
-          controller.clearRef();
-          cleanupKeydown();
-          cleanupFocusIn();
-        };
+          }),
+          useEventListener(current, 'focusin', e => {
+            if (e.target && e.target !== current) {
+              controller.setCurrent(e.target as HTMLElement);
+            }
+          }),
+        );
       }
       return undefined;
     });
