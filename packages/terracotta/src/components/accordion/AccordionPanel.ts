@@ -1,6 +1,5 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createComponent, merge, omit } from 'solid-js';
 import type { SelectOptionStateRenderProps } from '../../states/create-select-option-state';
 import {
   SelectOptionStateChild,
@@ -9,11 +8,7 @@ import {
 import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createActiveState,
   createDisabledState,
@@ -28,10 +23,10 @@ export type AccordionPanelBaseProps = Prettify<
   SelectOptionStateRenderProps & UnmountableProps
 >;
 
-export type AccordionPanelProps<T extends ValidConstructor = 'div'> =
+export type AccordionPanelProps<T extends ValidComponent = 'div'> =
   HeadlessProps<T, AccordionPanelBaseProps>;
 
-export function AccordionPanel<T extends ValidConstructor = 'div'>(
+export function AccordionPanel<T extends ValidComponent = 'div'>(
   props: AccordionPanelProps<T>,
 ): JSX.Element {
   const context = useAccordionItemContext('AccordionPanel');
@@ -43,8 +38,8 @@ export function AccordionPanel<T extends ValidConstructor = 'div'>(
     () =>
       createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(
-          omitProps(props, ['as', 'children', 'unmount']),
+        merge(
+          omit(props, 'as', 'children', 'unmount'),
           ACCORDION_PANEL_TAG,
           {
             id: context.panelID,

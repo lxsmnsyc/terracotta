@@ -1,12 +1,11 @@
-import type { JSX } from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
 import {
   createComponent,
   createEffect,
   createMemo,
-  mergeProps,
-  onCleanup,
+  merge,
+  omit,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import type {
   MultipleSelectStateControlledOptions,
   MultipleSelectStateUncontrolledOptions,
@@ -15,15 +14,14 @@ import type {
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
 import {
-  SelectStateProvider,
   createMultipleSelectState,
   createSingleSelectState,
+  SelectStateProvider,
 } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
-  ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import {
@@ -46,7 +44,7 @@ export type AccordionSingleControlledBaseProps<V> = Prettify<
 
 export type AccordionSingleControlledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessPropsWithRef<T, AccordionSingleControlledBaseProps<V>>;
 
 export type AccordionSingleUncontrolledBaseProps<V> = Prettify<
@@ -55,7 +53,7 @@ export type AccordionSingleUncontrolledBaseProps<V> = Prettify<
 
 export type AccordionSingleUncontrolledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessPropsWithRef<T, AccordionSingleUncontrolledBaseProps<V>>;
 
 export type AccordionMultipleControlledBaseProps<V> = Prettify<
@@ -64,7 +62,7 @@ export type AccordionMultipleControlledBaseProps<V> = Prettify<
 
 export type AccordionMultipleControlledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessPropsWithRef<T, AccordionMultipleControlledBaseProps<V>>;
 
 export type AccordionMultipleUncontrolledBaseProps<V> = Prettify<
@@ -73,16 +71,16 @@ export type AccordionMultipleUncontrolledBaseProps<V> = Prettify<
 
 export type AccordionMultipleUncontrolledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessPropsWithRef<T, AccordionMultipleUncontrolledBaseProps<V>>;
 
-export type AccordionProps<V, T extends ValidConstructor = 'div'> =
+export type AccordionProps<V, T extends ValidComponent = 'div'> =
   | AccordionSingleControlledProps<V, T>
   | AccordionSingleUncontrolledProps<V, T>
   | AccordionMultipleControlledProps<V, T>
   | AccordionMultipleUncontrolledProps<V, T>;
 
-function isAccordionUncontrolled<V, T extends ValidConstructor = 'div'>(
+function isAccordionUncontrolled<V, T extends ValidComponent = 'div'>(
   props: AccordionProps<V, T>,
 ): props is
   | AccordionSingleUncontrolledProps<V, T>
@@ -90,7 +88,7 @@ function isAccordionUncontrolled<V, T extends ValidConstructor = 'div'>(
   return 'defaultValue' in props;
 }
 
-function isAccordionMultiple<V, T extends ValidConstructor = 'div'>(
+function isAccordionMultiple<V, T extends ValidComponent = 'div'>(
   props: AccordionProps<V, T>,
 ): props is
   | AccordionMultipleUncontrolledProps<V, T>
@@ -98,7 +96,7 @@ function isAccordionMultiple<V, T extends ValidConstructor = 'div'>(
   return !!props.multiple;
 }
 
-export function Accordion<V, T extends ValidConstructor = 'div'>(
+export function Accordion<V, T extends ValidComponent = 'div'>(
   props: AccordionProps<V, T>,
 ): JSX.Element {
   return createMemo(() => {
@@ -108,14 +106,11 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
     const controller = createAccordionFocusNavigator();
     const [ref, setRef] = createForwardRef(props);
 
-    createEffect(() => {
-      const current = ref();
+    createEffect(ref, current => {
       if (current instanceof HTMLElement) {
         controller.setRef(current);
-        onCleanup(() => {
-          controller.clearRef();
-        });
-        useEventListener(current, 'keydown', e => {
+
+        const cleanupKeydown = useEventListener(current, 'keydown', e => {
           if (!state.disabled()) {
             switch (e.key) {
               case 'ArrowUp': {
@@ -143,22 +138,31 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
             }
           }
         });
-        useEventListener(current, 'focusin', e => {
+
+        const cleanupFocusIn = useEventListener(current, 'focusin', e => {
           if (e.target && e.target !== current) {
             controller.setCurrent(e.target as HTMLElement);
           }
         });
+
+        return () => {
+          controller.clearRef();
+          cleanupKeydown();
+          cleanupFocusIn();
+        };
       }
+      return undefined;
     });
 
-    return createComponent(AccordionContext.Provider, {
+    return createComponent(AccordionContext, {
       value: controller,
       get children() {
         return createDynamic(
           () => props.as || ('div' as T),
-          mergeProps(
+          merge(
             isAccordionUncontrolled(props)
-              ? omitProps(props, [
+              ? omit(
+                  props,
                   'as',
                   'by',
                   'children',
@@ -168,8 +172,9 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
                   'onChange',
                   'ref',
                   'toggleable',
-                ])
-              : omitProps(props, [
+                )
+              : omit(
+                  props,
                   'as',
                   'by',
                   'children',
@@ -179,7 +184,7 @@ export function Accordion<V, T extends ValidConstructor = 'div'>(
                   'onChange',
                   'ref',
                   'toggleable',
-                ]),
+                ),
             ACCORDION_TAG,
             {
               ref: setRef,
