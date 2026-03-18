@@ -1,11 +1,5 @@
-import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  createMemo,
-  mergeProps,
-  onCleanup,
-} from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createComponent, createEffect, createMemo, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   MultipleSelectStateControlledOptions,
@@ -15,18 +9,18 @@ import type {
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
 import {
-  SelectStateProvider,
   createMultipleSelectState,
   createSingleSelectState,
+  SelectStateProvider,
 } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import createTypeAhead from '../../utils/create-type-ahead';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
-  ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
 import { SELECTED_NODE } from '../../utils/namespace';
 import {
   createARIADisabledState,
@@ -37,8 +31,8 @@ import {
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
 import {
-  SelectContext,
   createSelectOptionFocusNavigator,
+  SelectContext,
 } from './SelectContext';
 import { SELECT_TAG } from './tags';
 
@@ -54,7 +48,7 @@ export type SingleSelectControlledBaseProps<V> = Prettify<
 
 export type SingleSelectControlledProps<
   V,
-  T extends ValidConstructor = 'ul',
+  T extends ValidComponent = 'ul',
 > = HeadlessPropsWithRef<T, SingleSelectControlledBaseProps<V>>;
 
 export type SingleSelectUncontrolledBaseProps<V> = Prettify<
@@ -65,10 +59,10 @@ export type SingleSelectUncontrolledBaseProps<V> = Prettify<
 
 export type SingleSelectUncontrolledProps<
   V,
-  T extends ValidConstructor = 'ul',
+  T extends ValidComponent = 'ul',
 > = HeadlessPropsWithRef<T, SingleSelectUncontrolledBaseProps<V>>;
 
-export type SingleSelectProps<V, T extends ValidConstructor = 'ul'> =
+export type SingleSelectProps<V, T extends ValidComponent = 'ul'> =
   | SingleSelectControlledProps<V, T>
   | SingleSelectUncontrolledProps<V, T>;
 
@@ -80,7 +74,7 @@ export type MultipleSelectControlledBaseProps<V> = Prettify<
 
 export type MultipleSelectControlledProps<
   V,
-  T extends ValidConstructor = 'ul',
+  T extends ValidComponent = 'ul',
 > = HeadlessPropsWithRef<T, MultipleSelectControlledBaseProps<V>>;
 
 export type MultipleSelectUncontrolledBaseProps<V> = Prettify<
@@ -91,24 +85,24 @@ export type MultipleSelectUncontrolledBaseProps<V> = Prettify<
 
 export type MultipleSelectUncontrolledProps<
   V,
-  T extends ValidConstructor = 'ul',
+  T extends ValidComponent = 'ul',
 > = HeadlessPropsWithRef<T, MultipleSelectUncontrolledBaseProps<V>>;
 
-export type MultipleSelectProps<V, T extends ValidConstructor = 'ul'> =
+export type MultipleSelectProps<V, T extends ValidComponent = 'ul'> =
   | MultipleSelectControlledProps<V, T>
   | MultipleSelectUncontrolledProps<V, T>;
 
-export type SelectProps<V, T extends ValidConstructor = 'ul'> =
+export type SelectProps<V, T extends ValidComponent = 'ul'> =
   | SingleSelectProps<V, T>
   | MultipleSelectProps<V, T>;
 
-function isSelectMultiple<V, T extends ValidConstructor = 'ul'>(
+function isSelectMultiple<V, T extends ValidComponent = 'ul'>(
   props: SelectProps<V, T>,
 ): props is MultipleSelectProps<V, T> {
   return !!props.multiple;
 }
 
-function isSelectUncontrolled<V, T extends ValidConstructor = 'ul'>(
+function isSelectUncontrolled<V, T extends ValidComponent = 'ul'>(
   props: SelectProps<V, T>,
 ): props is
   | SingleSelectUncontrolledProps<V, T>
@@ -116,7 +110,7 @@ function isSelectUncontrolled<V, T extends ValidConstructor = 'ul'>(
   return 'defaultValue' in props;
 }
 
-export function Select<V, T extends ValidConstructor = 'ul'>(
+export function Select<V, T extends ValidComponent = 'ul'>(
   props: SelectProps<V, T>,
 ): JSX.Element {
   return createMemo(() => {
@@ -130,84 +124,86 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
       controller.setFirstMatch(value);
     });
 
-    createEffect(() => {
-      const current = ref();
+    createEffect(ref, current => {
       if (current instanceof HTMLElement) {
         controller.setRef(current);
-        onCleanup(() => {
-          controller.clearRef();
-        });
-        useEventListener(current, 'keydown', e => {
-          if (!state.disabled()) {
-            switch (e.key) {
-              case 'ArrowUp': {
-                if (!props.horizontal) {
+        return mergeFunc(
+          () => {
+            controller.clearRef();
+          },
+          useEventListener(current, 'keydown', e => {
+            if (!state.disabled()) {
+              switch (e.key) {
+                case 'ArrowUp': {
+                  if (!props.horizontal) {
+                    e.preventDefault();
+                    controller.setPrevChecked(true);
+                  }
+                  break;
+                }
+                case 'ArrowLeft': {
+                  if (props.horizontal) {
+                    e.preventDefault();
+                    controller.setPrevChecked(true);
+                  }
+                  break;
+                }
+                case 'ArrowDown': {
+                  if (!props.horizontal) {
+                    e.preventDefault();
+                    controller.setNextChecked(true);
+                  }
+                  break;
+                }
+                case 'ArrowRight': {
+                  if (props.horizontal) {
+                    e.preventDefault();
+                    controller.setNextChecked(true);
+                  }
+                  break;
+                }
+                case 'Home': {
                   e.preventDefault();
-                  controller.setPrevChecked(true);
+                  controller.setFirstChecked();
+                  break;
                 }
-                break;
-              }
-              case 'ArrowLeft': {
-                if (props.horizontal) {
+                case 'End': {
                   e.preventDefault();
-                  controller.setPrevChecked(true);
+                  controller.setLastChecked();
+                  break;
                 }
-                break;
-              }
-              case 'ArrowDown': {
-                if (!props.horizontal) {
+                case ' ':
+                case 'Enter': {
                   e.preventDefault();
-                  controller.setNextChecked(true);
+                  break;
                 }
-                break;
-              }
-              case 'ArrowRight': {
-                if (props.horizontal) {
-                  e.preventDefault();
-                  controller.setNextChecked(true);
+                default: {
+                  if (e.key.length === 1) {
+                    pushCharacter(e.key);
+                  }
+                  break;
                 }
-                break;
-              }
-              case 'Home': {
-                e.preventDefault();
-                controller.setFirstChecked();
-                break;
-              }
-              case 'End': {
-                e.preventDefault();
-                controller.setLastChecked();
-                break;
-              }
-              case ' ':
-              case 'Enter': {
-                e.preventDefault();
-                break;
-              }
-              default: {
-                if (e.key.length === 1) {
-                  pushCharacter(e.key);
-                }
-                break;
               }
             }
-          }
-        });
-        useEventListener(current, 'focus', () => {
-          if (state.hasSelected()) {
-            controller.setFirstChecked(SELECTED_NODE);
-          } else {
-            controller.setFirstChecked();
-          }
-        });
-        useEventListener(current, 'focusin', e => {
-          if (e.target && e.target !== current) {
-            controller.setCurrent(e.target as HTMLElement);
-          }
-        });
+          }),
+          useEventListener(current, 'focus', () => {
+            if (state.hasSelected()) {
+              controller.setFirstChecked(SELECTED_NODE);
+            } else {
+              controller.setFirstChecked();
+            }
+          }),
+          useEventListener(current, 'focusin', e => {
+            if (e.target && e.target !== current) {
+              controller.setCurrent(e.target as HTMLElement);
+            }
+          }),
+        );
       }
+      return undefined;
     });
 
-    return createComponent(SelectContext.Provider, {
+    return createComponent(SelectContext, {
       value: {
         controller,
         get horizontal() {
@@ -217,7 +213,7 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
       get children() {
         return createDynamic(
           () => props.as || ('ul' as T),
-          mergeProps(
+          merge(
             SELECT_TAG,
             {
               id: controller.getId(),
