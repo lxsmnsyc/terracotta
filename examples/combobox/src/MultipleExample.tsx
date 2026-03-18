@@ -6,9 +6,9 @@ import {
   ComboboxLabel,
   ComboboxOption,
   ComboboxOptions,
-  DisclosureStateChild,
-  Transition,
-} from 'terracotta';
+} from 'terracotta/combobox';
+import { DisclosureStateChild } from 'terracotta/states';
+import { Transition } from 'terracotta/transition';
 import { CheckIcon, classNames } from './utils';
 
 const people = [

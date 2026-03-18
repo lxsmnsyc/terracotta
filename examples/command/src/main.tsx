@@ -1,5 +1,5 @@
+import { render } from '@solidjs/web';
 import type { JSX } from 'solid-js';
-import { render } from 'solid-js/web';
 import MultiSelect from './MultiSelect';
 import SingleSelect from './SingleSelect';
 import './style.css';

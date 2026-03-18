@@ -22,10 +22,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2(@solidjs/signals@0.12.0)(solid-js@2.0.0-beta.2)
+        version: 2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -47,16 +47,16 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/checkbox:
     dependencies:
       '@solidjs/web':
         specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2(@solidjs/signals@0.12.0)(solid-js@2.0.0-beta.2)
+        version: 2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -78,13 +78,16 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/combobox:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -106,13 +109,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/command:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -134,13 +137,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/commandbar:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -162,13 +165,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/context-menu:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -190,13 +193,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/dialog:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -218,13 +221,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/disclosure:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -246,13 +249,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/dropdown-menu:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -274,13 +277,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/feed:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -302,13 +305,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/listbox:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -330,13 +333,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/menu:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -358,13 +361,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/popover:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -386,13 +389,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/radiogroup:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -414,13 +417,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/select:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -442,13 +445,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/tabs:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -470,13 +473,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/toaster:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -498,13 +501,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/toolbar:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -526,13 +529,13 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   examples/transitions:
     dependencies:
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -554,23 +557,23 @@ importers:
         version: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
+        version: 3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
 
   packages/terracotta:
     dependencies:
       solid-use:
         specifier: 1.0.0-next.0
-        version: 1.0.0-next.0(@solidjs/web@2.0.0-beta.2(@solidjs/signals@0.12.0)(solid-js@2.0.0-beta.2))(solid-js@2.0.0-beta.2)
+        version: 1.0.0-next.0(@solidjs/web@2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3))(solid-js@2.0.0-beta.3)
     devDependencies:
       '@solidjs/web':
         specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2(@solidjs/signals@0.12.0)(solid-js@2.0.0-beta.2)
+        version: 2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       '@types/node':
         specifier: ^25.5.0
         version: 25.5.0
       solid-js:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       tsdown:
         specifier: ^0.21.2
         version: 0.21.2(typescript@5.9.3)
@@ -1258,14 +1261,20 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@solidjs/signals@0.12.0':
-    resolution: {integrity: sha512-4yeBvMCTCCPZZ1G/x0XUVg82tgC/gLikPhl91cSdGvZXMLQUEHO9Ugbca0MfICcHHJXySieFyZrMNlQ5rWcGyQ==}
+  '@solidjs/signals@0.13.3':
+    resolution: {integrity: sha512-Rlq8Kc0WtuhPv8SDNT1ANh45OUIbFKnY7AOiNmCSeOaGKlFaaYPPDxXN8qJtojykwGGwWXV6ZmHwCb1ZeY0b/A==}
 
   '@solidjs/web@2.0.0-beta.2':
     resolution: {integrity: sha512-2nYMBWaNjitUdfrTZRKGk9GUJq/egE6u+ziPVdUuoIzYuu5qIMDxdYlo1C1VIajR0Kw2qMtzipt7kMZEd1rJKg==}
     peerDependencies:
       '@solidjs/signals': ^0.12.0
       solid-js: ^2.0.0-beta.2
+
+  '@solidjs/web@2.0.0-beta.3':
+    resolution: {integrity: sha512-DpTIbba7pLTKIXxUblok4n1rQscBLbjhJKhk+eUoODOnAS4TVDV4OmZ6qhC+VEuyPAbIbqzfoZsectFNEhak3w==}
+    peerDependencies:
+      '@solidjs/signals': ^0.13.3
+      solid-js: ^2.0.0-beta.3
 
   '@tailwindcss/node@4.1.18':
     resolution: {integrity: sha512-DoR7U1P7iYhw16qJ49fgXUlry1t4CpXeErJHnQ44JgTSKMaZUdf17cfn5mHchfJ4KRBZRFA/Coo+MUF5+gOaCQ==}
@@ -1958,8 +1967,8 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
 
-  solid-js@2.0.0-beta.2:
-    resolution: {integrity: sha512-vbU2KAKXUcyjFi85CVJBmrct680fDfALl1sb7W4dQSm4Ls6XOVIDWJMUvrFeBo13X+ov/18ZpwPWv4nSzgVcww==}
+  solid-js@2.0.0-beta.3:
+    resolution: {integrity: sha512-s2UT66v1UpmM1QybhNrQlJUiSG1HYl2TM7ah2d0TETy5U4fLxIYbyVECB3YOw7GwOTzaGjjJjlg4A7hkYqCQ+g==}
 
   solid-refresh@0.8.0-next.4:
     resolution: {integrity: sha512-0naYXreCaX0yyyzRnwcpje8shioMQc3aOeH0hnT+DMAOnhRtJ5tACpG62yB4jRsLlZLVP7MmQ0GH+9ZdAizmJg==}
@@ -2752,14 +2761,21 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.55.1':
     optional: true
 
-  '@solidjs/signals@0.12.0': {}
+  '@solidjs/signals@0.13.3': {}
 
-  '@solidjs/web@2.0.0-beta.2(@solidjs/signals@0.12.0)(solid-js@2.0.0-beta.2)':
+  '@solidjs/web@2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)':
     dependencies:
-      '@solidjs/signals': 0.12.0
+      '@solidjs/signals': 0.13.3
       seroval: 1.5.1
       seroval-plugins: 1.5.1(seroval@1.5.1)
-      solid-js: 2.0.0-beta.2
+      solid-js: 2.0.0-beta.3
+
+  '@solidjs/web@2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)':
+    dependencies:
+      '@solidjs/signals': 0.13.3
+      seroval: 1.5.1
+      seroval-plugins: 1.5.1(seroval@1.5.1)
+      solid-js: 2.0.0-beta.3
 
   '@tailwindcss/node@4.1.18':
     dependencies:
@@ -2896,12 +2912,12 @@ snapshots:
       parse5: 7.3.0
       validate-html-nesting: 1.2.4
 
-  babel-preset-solid@2.0.0-experimental.16(@babel/core@7.28.5)(solid-js@2.0.0-beta.2):
+  babel-preset-solid@2.0.0-experimental.16(@babel/core@7.28.5)(solid-js@2.0.0-beta.3):
     dependencies:
       '@babel/core': 7.28.5
       babel-plugin-jsx-dom-expressions: 0.41.0-next.11(@babel/core@7.28.5)
     optionalDependencies:
-      solid-js: 2.0.0-beta.2
+      solid-js: 2.0.0-beta.3
 
   baseline-browser-mapping@2.9.11: {}
 
@@ -3376,23 +3392,23 @@ snapshots:
 
   slash@3.0.0: {}
 
-  solid-js@2.0.0-beta.2:
+  solid-js@2.0.0-beta.3:
     dependencies:
-      '@solidjs/signals': 0.12.0
+      '@solidjs/signals': 0.13.3
       csstype: 3.2.3
       seroval: 1.5.1
       seroval-plugins: 1.5.1(seroval@1.5.1)
 
-  solid-refresh@0.8.0-next.4(solid-js@2.0.0-beta.2):
+  solid-refresh@0.8.0-next.4(solid-js@2.0.0-beta.3):
     dependencies:
       '@babel/generator': 7.29.1
       '@babel/types': 7.29.0
-      solid-js: 2.0.0-beta.2
+      solid-js: 2.0.0-beta.3
 
-  solid-use@1.0.0-next.0(@solidjs/web@2.0.0-beta.2(@solidjs/signals@0.12.0)(solid-js@2.0.0-beta.2))(solid-js@2.0.0-beta.2):
+  solid-use@1.0.0-next.0(@solidjs/web@2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3))(solid-js@2.0.0-beta.3):
     dependencies:
-      '@solidjs/web': 2.0.0-beta.2(@solidjs/signals@0.12.0)(solid-js@2.0.0-beta.2)
-      solid-js: 2.0.0-beta.2
+      '@solidjs/web': 2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
+      solid-js: 2.0.0-beta.3
 
   source-map-js@1.2.1: {}
 
@@ -3480,14 +3496,14 @@ snapshots:
 
   validate-html-nesting@1.2.4: {}
 
-  vite-plugin-solid@3.0.0-next.2(solid-js@2.0.0-beta.2)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)):
+  vite-plugin-solid@3.0.0-next.2(solid-js@2.0.0-beta.3)(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)):
     dependencies:
       '@babel/core': 7.28.5
       '@types/babel__core': 7.20.5
-      babel-preset-solid: 2.0.0-experimental.16(@babel/core@7.28.5)(solid-js@2.0.0-beta.2)
+      babel-preset-solid: 2.0.0-experimental.16(@babel/core@7.28.5)(solid-js@2.0.0-beta.3)
       merge-anything: 5.1.7
-      solid-js: 2.0.0-beta.2
-      solid-refresh: 0.8.0-next.4(solid-js@2.0.0-beta.2)
+      solid-js: 2.0.0-beta.3
+      solid-refresh: 0.8.0-next.4(solid-js@2.0.0-beta.3)
       vite: 7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)
       vitefu: 1.1.1(vite@7.3.0(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2))
     transitivePeerDependencies:
