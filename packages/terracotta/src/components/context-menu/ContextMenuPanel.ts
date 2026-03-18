@@ -42,7 +42,7 @@ export function ContextMenuPanel<T extends ValidComponent = 'div'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(
-    () => [internalRef(), state.isOpen()],
+    () => [internalRef(), state.isOpen()] as const,
     ([current, isOpen]) => {
       if (current instanceof HTMLElement) {
         if (isOpen) {
