@@ -1,16 +1,14 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, mergeProps } from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createComponent, createEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
 import {
   createARIADisabledState,
   createARIAExpandedState,
@@ -24,13 +22,13 @@ import { Button } from '../button';
 import { usePopoverContext } from './PopoverContext';
 import { POPOVER_BUTTON_TAG } from './tags';
 
-export type PopoverButtonProps<T extends ValidConstructor = 'button'> =
+export type PopoverButtonProps<T extends ValidComponent = 'button'> =
   HeadlessPropsWithRef<
     T,
     OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
   >;
 
-export function PopoverButton<T extends ValidConstructor = 'button'>(
+export function PopoverButton<T extends ValidComponent = 'button'>(
   props: PopoverButtonProps<T>,
 ): JSX.Element {
   const context = usePopoverContext('PopoverButton');
@@ -41,27 +39,29 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
   const isDisabled = (): boolean | undefined =>
     state.disabled() || props.disabled;
 
-  createEffect(() => {
-    const current = internalRef();
+  createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
       context.anchor = current;
-      useEventListener(current, 'click', () => {
-        if (!isDisabled()) {
-          state.toggle();
-        }
-      });
-      useEventListener(current, 'mouseenter', () => {
-        context.hovering = true;
-      });
-      useEventListener(current, 'mouseleave', () => {
-        context.hovering = false;
-      });
+      return mergeFunc(
+        useEventListener(current, 'click', () => {
+          if (!isDisabled()) {
+            state.toggle();
+          }
+        }),
+        useEventListener(current, 'mouseenter', () => {
+          context.hovering = true;
+        }),
+        useEventListener(current, 'mouseleave', () => {
+          context.hovering = false;
+        }),
+      );
     }
+    return undefined;
   });
 
   return createComponent(
     Button,
-    mergeProps(
+    merge(
       POPOVER_BUTTON_TAG,
       {
         id: context.buttonID,

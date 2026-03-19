@@ -1,19 +1,15 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, mergeProps } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import { createComponent, createEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
-import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
@@ -30,10 +26,10 @@ export type PopoverPanelBaseProps = Prettify<
   DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type PopoverPanelProps<T extends ValidConstructor = 'div'> =
+export type PopoverPanelProps<T extends ValidComponent = 'div'> =
   HeadlessPropsWithRef<T, PopoverPanelBaseProps>;
 
-export function PopoverPanel<T extends ValidConstructor = 'div'>(
+export function PopoverPanel<T extends ValidComponent = 'div'>(
   props: PopoverPanelProps<T>,
 ): JSX.Element {
   const context = usePopoverContext('PopoverPanel');
@@ -41,35 +37,37 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(() => {
-    const current = internalRef();
-    if (current instanceof HTMLElement && state.isOpen()) {
-      focusFirst(getFocusableElements(current), false);
-      useEventListener(current, 'keydown', e => {
-        if (!state.disabled()) {
-          switch (e.key) {
-            case 'Tab': {
-              e.preventDefault();
-              lockFocus(current, e.shiftKey, false);
-              break;
-            }
-            case 'Escape': {
-              state.close();
-              break;
+  createEffect(
+    () => [internalRef(), state.isOpen()] as const,
+    ([current, isOpen]) => {
+      if (current instanceof HTMLElement && isOpen) {
+        focusFirst(getFocusableElements(current), false);
+        useEventListener(current, 'keydown', e => {
+          if (!state.disabled()) {
+            switch (e.key) {
+              case 'Tab': {
+                e.preventDefault();
+                lockFocus(current, e.shiftKey, false);
+                break;
+              }
+              case 'Escape': {
+                state.close();
+                break;
+              }
             }
           }
-        }
-      });
-      useEventListener(current, 'focusout', e => {
-        if (context.hovering) {
-          return;
-        }
-        if (!(e.relatedTarget && current.contains(e.relatedTarget as Node))) {
-          state.close();
-        }
-      });
-    }
-  });
+        });
+        useEventListener(current, 'focusout', e => {
+          if (context.hovering) {
+            return;
+          }
+          if (!(e.relatedTarget && current.contains(e.relatedTarget as Node))) {
+            state.close();
+          }
+        });
+      }
+    },
+  );
 
   return createUnmountable(
     props,
@@ -77,7 +75,7 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
     () =>
       createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(
+        merge(
           POPOVER_PANEL_TAG,
           {
             id: context.panelID,
@@ -93,7 +91,7 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
           createDisabledState(() => state.disabled()),
           createExpandedState(() => state.isOpen()),
           omitProps(props, ['as', 'unmount', 'children', 'ref']),
-        ) as DynamicProps<T>,
+        ) as ComponentProps<T>,
       ),
   );
 }
