@@ -1,13 +1,12 @@
+import type { JSX } from 'solid-js';
+import { createSignal } from 'solid-js';
 import {
   ContextMenu,
   ContextMenuBoundary,
   ContextMenuPanel,
-  Transition,
-  Menu,
-  MenuItem,
-} from 'terracotta';
-import type { JSX } from 'solid-js';
-import { createSignal } from 'solid-js';
+} from 'terracotta/context-menu';
+import { Menu, MenuItem } from 'terracotta/menu';
+import { Transition } from 'terracotta/transition';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -39,6 +38,7 @@ export default function App(): JSX.Element {
                   const rect = (
                     e.currentTarget as HTMLElement
                   ).getBoundingClientRect();
+                  console.log(e.currentTarget, e, rect);
                   setX(e.clientX - rect.left);
                   setY(e.clientY - rect.top);
                 }
