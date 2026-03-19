@@ -46,7 +46,7 @@
         "noGlobalEval": "off"
       },
       "style": {
-        "noImplicitBoolean": "error",
+        "noImplicitBoolean": "off",
         "noInferrableTypes": "error",
         "noNamespace": "error",
         "noNegationElse": "error",

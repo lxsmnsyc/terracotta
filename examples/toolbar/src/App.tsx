@@ -1,6 +1,7 @@
-import { Toggle, Toolbar } from 'terracotta';
 import type { JSX } from 'solid-js';
 import { For, createSignal } from 'solid-js';
+import { Toggle } from 'terracotta/toggle';
+import { Toolbar } from 'terracotta/toolbar';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -37,7 +38,7 @@ export default function App(): JSX.Element {
                   )}
                   onChange={setChecked}
                 >
-                  <span class={item.class}>{item.label}</span>
+                  <span class={item().class}>{item().label}</span>
                 </Toggle>
               );
             }}
