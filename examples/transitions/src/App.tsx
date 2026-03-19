@@ -1,23 +1,34 @@
-import { Transition } from 'terracotta';
 import type { JSX } from 'solid-js';
 import { createSignal } from 'solid-js';
+import { Transition } from 'terracotta/transition';
 
 export default function App(): JSX.Element {
-  const [isShowing, setIsShowing] = createSignal(true);
+  const [isShowing, setIsShowing] = createSignal(false);
 
   return (
     <div class="flex flex-col items-center py-16">
       <div class="w-32 h-32">
         <Transition
           show={isShowing()}
-          class="w-full h-full bg-white rounded-md shadow-lg"
+          class="w-full h-full bg-white rounded-md shadow-lg flex items-center justify-center"
           enter="transform transition duration-[400ms]"
           enterFrom="opacity-0 rotate-[-120deg] scale-50"
           enterTo="opacity-100 rotate-0 scale-100"
           leave="transform duration-200 transition ease-in-out"
           leaveFrom="opacity-100 rotate-0 scale-100 "
           leaveTo="opacity-0 scale-95 "
-        />
+        >
+          <Transition
+            show={isShowing()}
+            class="w-[50%] h-[50%] bg-blue-500 rounded-md shadow-lg"
+            enter="transform transition duration-[400ms]"
+            enterFrom="opacity-0 rotate-[-120deg] scale-50"
+            enterTo="opacity-100 rotate-0 scale-100"
+            leave="transform duration-200 transition ease-in-out"
+            leaveFrom="opacity-100 rotate-0 scale-100 "
+            leaveTo="opacity-0 scale-95 "
+          />
+        </Transition>
       </div>
 
       <button
@@ -25,6 +36,7 @@ export default function App(): JSX.Element {
         onClick={(): void => {
           setIsShowing(!isShowing());
         }}
+        title={isShowing() ? 'Hide' : 'Show'}
         class="flex items-center px-3 py-2 mt-8 text-sm font-medium text-white transition transform bg-black rounded-full backface-visibility-hidden active:bg-opacity-40 hover:scale-105 hover:bg-opacity-30 focus:outline-none bg-opacity-20"
       >
         <svg viewBox="0 0 20 20" fill="none" class="w-5 h-5 opacity-70">
