@@ -1,14 +1,14 @@
-import type { Component, JSX, Signal, ValidComponent } from 'solid-js';
+import type {
+  Component,
+  ComponentProps,
+  JSX,
+  Signal,
+  ValidComponent,
+} from 'solid-js';
 import { createEffect, createSignal } from 'solid-js';
 import type { OmitAndMerge } from './types';
 
 export type ValidElements = keyof JSX.IntrinsicElements;
-
-export type DynamicProps<T extends ValidComponent> = T extends ValidElements
-  ? JSX.IntrinsicElements[T]
-  : T extends Component<infer U>
-    ? U
-    : Record<string, unknown>;
 
 type UnboxIntrinsicElements<T> =
   T extends JSX.HTMLAttributes<infer U> ? U : never;
@@ -41,13 +41,13 @@ export interface DynamicComponentWithRef<T extends ValidComponent>
 
 export type HeadlessProps<T extends ValidComponent, V = {}> = OmitAndMerge<
   V & DynamicComponent<T>,
-  DynamicProps<T>
+  ComponentProps<T>
 >;
 
 export type HeadlessPropsWithRef<
   T extends ValidComponent,
   V = {},
-> = OmitAndMerge<V & DynamicComponentWithRef<T>, DynamicProps<T>>;
+> = OmitAndMerge<V & DynamicComponentWithRef<T>, ComponentProps<T>>;
 
 function isRefFunction<U extends ValidComponent>(
   callback?: RefField<DynamicNode<U>>,
