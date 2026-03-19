@@ -7,8 +7,8 @@ import {
   FeedArticleLabel,
   FeedContent,
   FeedLabel,
-  Transition,
-} from 'terracotta';
+} from 'terracotta/feed';
+import { Transition } from 'terracotta/transition';
 
 function SpinnerIcon(
   props: JSX.IntrinsicElements['svg'] & { title: string },
@@ -130,7 +130,7 @@ export default function App(): JSX.Element {
   const [busy, setBusy] = createSignal(false);
   const [articles, setArticles] = createSignal<Article[]>(loadData(10));
 
-  async function sleep(timeout: number): Promise<boolean> {
+  function sleep(timeout: number): Promise<boolean> {
     return new Promise<boolean>(resolve => {
       setTimeout(resolve, timeout, true);
     });
@@ -189,11 +189,11 @@ export default function App(): JSX.Element {
                 class="p-2 m-2 flex flex-col space-y-1 bg-indigo-900 transition bg-opacity-25 rounded focus:outline-none focus-visible:ring focus:bg-indigo-700 focus-visible:ring-indigo-500 focus-visible:ring-opacity-75"
               >
                 <FeedArticleLabel class="text-lg text-white font-bold">
-                  {article.title}
+                  {article().title}
                 </FeedArticleLabel>
                 <Separator />
                 <FeedArticleDescription class="text-sm text-white">
-                  {article.description}
+                  {article().description}
                 </FeedArticleDescription>
               </FeedArticle>
             )}
