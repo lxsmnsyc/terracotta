@@ -1,6 +1,6 @@
-import { Tab, TabGroup, TabList, TabPanel } from 'terracotta';
 import type { JSX } from 'solid-js';
 import { For } from 'solid-js';
+import { Tab, TabGroup, TabList, TabPanel } from 'terracotta/tabs';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -106,7 +106,7 @@ export default function App(): JSX.Element {
     <div class="w-full">
       <div class="w-full max-w-md mx-auto">
         <TabGroup
-          class="w-full flex flex-col items-stretch justify-center p-4 space-y-2 rounded-lg bg-rose-900 bg-opacity-25"
+          class="w-full flex flex-col items-stretch justify-center p-4 space-y-2 rounded-lg bg-rose-900/25"
           defaultValue={CATEGORIES[0]}
           horizontal
         >
@@ -117,16 +117,16 @@ export default function App(): JSX.Element {
                   {(category): JSX.Element => (
                     <Tab
                       class={classNames(
-                        isSelected(category)
-                          ? 'bg-rose-900 bg-opacity-75 text-white'
+                        isSelected(category())
+                          ? 'bg-rose-900/75 text-white'
                           : 'bg-white',
-                        isActive(category) &&
-                          'ring-2 ring-offset-2 ring-offset-rose-300 ring-white ring-opacity-60',
+                        isActive(category()) &&
+                          'ring-2 ring-offset-2 ring-offset-rose-300 ring-white/60',
                         'w-full flex items-center justify-center rounded-lg shadow-md px-4 py-2 cursor-pointer focus:outline-none font-semibold',
                       )}
-                      value={category}
+                      value={category()}
                     >
-                      {category}
+                      {category()}
                     </Tab>
                   )}
                 </For>
@@ -135,24 +135,24 @@ export default function App(): JSX.Element {
                 <For each={CATEGORIES}>
                   {(category): JSX.Element => (
                     <TabPanel
-                      value={category}
+                      value={category()}
                       class={classNames(
                         'w-full h-96 p-2 rounded-lg bg-white overflow-y-auto focus:outline-none',
                         'focus:ring-2 focus:ring-offset-2 focus:ring-offset-rose-300 focus:ring-white focus:ring-opacity-60',
                       )}
                     >
-                      <For each={FEED[category]}>
+                      <For each={FEED[category()]}>
                         {(item): JSX.Element => (
                           <div
                             tabindex={0}
-                            class="p-2 m-2 flex flex-col space-y-1 bg-opacity-25 rounded focus:outline-none focus-visible:ring focus-visible:ring-rose-500 focus-visible:ring-opacity-75"
+                            class="p-2 m-2 flex flex-col space-y-1 rounded focus:outline-none focus-visible:ring focus-visible:ring-rose-500 focus-visible:ring-opacity-75"
                           >
                             <div class="text-lg text-gray-900 font-bold">
-                              {item.title}
+                              {item().title}
                             </div>
                             <Separator />
                             <div class="text-sm text-gray-900">
-                              {item.description}
+                              {item().description}
                             </div>
                           </div>
                         )}
