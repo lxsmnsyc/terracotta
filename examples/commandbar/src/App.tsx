@@ -44,7 +44,7 @@ export default function App(): JSX.Element {
         <Transition
           appear
           show={isOpen()}
-          class="min-h-screen px-4 flex items-center justify-center"
+          class="min-h-screen px-4 flex items-center justify-center relative"
         >
           <TransitionChild
             enter="ease-out duration-300"
@@ -56,12 +56,8 @@ export default function App(): JSX.Element {
           >
             <CommandBarOverlay class="fixed inset-0 bg-gray-900/50" />
           </TransitionChild>
-
-          {/* This element is to trick the browser into centering the modal contents. */}
-          <span class="inline-block h-screen align-middle" aria-hidden="true">
-            &#8203;
-          </span>
           <TransitionChild
+            class="absolute"
             enter="ease-out duration-300"
             enterFrom="opacity-0 scale-95"
             enterTo="opacity-100 scale-100"
@@ -85,13 +81,13 @@ export default function App(): JSX.Element {
               </div>
 
               <div class="mt-2 flex flex-col space-y-1">
-                <div class="p-2 bg-blue-600/200 rounded-lg text-white">
+                <div class="p-2 bg-blue-600/20 rounded-lg text-white">
                   What is your favorite color?
                 </div>
-                <div class="p-2 bg-blue-600/200 rounded-lg text-white">
+                <div class="p-2 bg-blue-600/20 rounded-lg text-white">
                   What is the capital of Assyria?
                 </div>
-                <div class="p-2 bg-blue-600/200 rounded-lg text-white">
+                <div class="p-2 bg-blue-600/20 rounded-lg text-white">
                   What is the air-speed velocity of an unladen swallow?
                 </div>
               </div>
