@@ -1,12 +1,7 @@
-import {
-  Toast,
-  Toaster,
-  Transition,
-  ToasterStore,
-  useToaster,
-} from 'terracotta';
 import type { JSX } from 'solid-js';
-import { createSignal, For, createEffect, onCleanup } from 'solid-js';
+import { createEffect, createSignal, For } from 'solid-js';
+import { Toast, Toaster, ToasterStore, useToaster } from 'terracotta/toast';
+import { Transition } from 'terracotta/transition';
 
 const notifications = new ToasterStore<string>();
 
@@ -47,7 +42,7 @@ function CustomToast(props: ToastProps): JSX.Element {
   return (
     <Transition
       show={isOpen()}
-      class="relative transition rounded-lg p-4 bg-opacity-25 bg-rose-900"
+      class="relative transition rounded-lg p-4 bg-rose-900/25"
       enter="ease-out duration-300"
       enterFrom="opacity-0 scale-50"
       enterTo="opacity-100 scale-100"
@@ -64,7 +59,7 @@ function CustomToast(props: ToastProps): JSX.Element {
         </span>
         <button
           type="button"
-          class="flex-none w-6 h-6 p-1 text-white bg-opacity-25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          class="flex-none w-6 h-6 p-1 text-white bg-rose-900/25 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
           onClick={dismiss}
         >
           <CloseIcon title="Close" />
@@ -93,19 +88,22 @@ export default function App(): JSX.Element {
     notifications.clear();
   }
 
-  createEffect(() => {
-    if (notifs().length > 0) {
-      setIsOpen(true);
-    }
+  createEffect(
+    () => notifs().length > 0,
+    flag => {
+      if (flag) {
+        setIsOpen(true);
+      }
 
-    const timeout = setTimeout(() => {
-      closeNotifs();
-    }, 5000);
+      // const timeout = setTimeout(() => {
+      //   closeNotifs();
+      // }, 5000);
 
-    onCleanup(() => {
-      clearTimeout(timeout);
-    });
-  });
+      // return () => {
+      //   clearTimeout(timeout);
+      // };
+    },
+  );
 
   return (
     <>
@@ -113,14 +111,14 @@ export default function App(): JSX.Element {
         <button
           type="button"
           onClick={createToast}
-          class="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          class="px-4 py-2 text-sm font-medium text-white bg-black/20 rounded-md hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
         >
           Create toast
         </button>
         <button
           type="button"
           onClick={closeNotifs}
-          class="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          class="px-4 py-2 text-sm font-medium text-white bg-black/20 rounded-md hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
         >
           Clear toasts
         </button>
@@ -137,13 +135,13 @@ export default function App(): JSX.Element {
           leaveTo="opacity-0 scale-50  translate-y-full"
           afterLeave={clearNotifs}
         >
-          <div class="flex flex-col w-80 max-h-96 overflow-hidden rounded-xl shadow-xl bg-opacity-25 bg-rose-900 p-4 space-y-2">
+          <div class="flex flex-col w-80 max-h-96 overflow-hidden rounded-xl shadow-xl bg-rose-900/25 p-4 space-y-2">
             <div class="flex-none flex items-center justify-between">
               <span class="text-xl font-bold text-white">Notifications</span>
               <button
                 type="button"
                 onClick={closeNotifs}
-                class="w-6 h-6 p-1 text-white bg-opacity-25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                class="w-6 h-6 p-1 text-white bg-rose-900/25 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
               >
                 <CloseIcon title="Close" />
               </button>
@@ -152,13 +150,13 @@ export default function App(): JSX.Element {
               <For
                 each={notifs().slice(0).reverse()}
                 fallback={
-                  <div class="bg-rose-900 bg-opacity-20 flex items-center justify-center text-bold text-white p-4">
+                  <div class="bg-rose-900/20 flex items-center justify-center text-bold text-white p-4">
                     There are no notifications.
                   </div>
                 }
               >
                 {(item): JSX.Element => (
-                  <CustomToast id={item.id} message={item.data} />
+                  <CustomToast id={item().id} message={item().data} />
                 )}
               </For>
             </div>
