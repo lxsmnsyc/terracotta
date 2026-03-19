@@ -168,7 +168,7 @@ export default function App(): JSX.Element {
           </Transition>
         </div>
         <FeedContent
-          class="flex-1 overflow-y-auto flex flex-col rounded-lg bg-indigo-900 bg-opacity-25 p-2"
+          class="flex-1 overflow-y-auto flex flex-col rounded-lg bg-indigo-900/25 p-2"
           onScroll={(e: Event): void => {
             const el = e.target as HTMLElement;
             if (
@@ -186,7 +186,7 @@ export default function App(): JSX.Element {
             {(article, index): JSX.Element => (
               <FeedArticle
                 index={index()}
-                class="p-2 m-2 flex flex-col space-y-1 bg-indigo-900 transition bg-opacity-25 rounded focus:outline-none focus-visible:ring focus:bg-indigo-700 focus-visible:ring-indigo-500 focus-visible:ring-opacity-75"
+                class="p-2 m-2 flex flex-col space-y-1 bg-indigo-900/25 transition rounded focus:outline-none focus-visible:ring focus:bg-indigo-700 focus-visible:ring-indigo-500 focus-visible:ring-opacity-75"
               >
                 <FeedArticleLabel class="text-lg text-white font-bold">
                   {article().title}
