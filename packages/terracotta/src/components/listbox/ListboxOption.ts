@@ -1,5 +1,5 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createRenderEffect, mergeProps } from 'solid-js';
+import type { JSX, ValidComponent } from 'solid-js';
+import { createComponent, createRenderEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import type {
@@ -7,19 +7,17 @@ import type {
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
 import {
-  SelectOptionStateProvider,
   createSelectOptionState,
+  SelectOptionStateProvider,
 } from '../../states/create-select-option-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
+import { mergeFunc } from '../../utils/merge-func';
 import {
+  createActiveState,
   createARIADisabledState,
   createARIASelectedState,
-  createActiveState,
   createDisabledState,
   createSelectedState,
 } from '../../utils/state-props';
@@ -37,13 +35,13 @@ export type ListboxOptionBaseProps<V> = Prettify<
 
 export type ListboxOptionProps<
   V,
-  T extends ValidConstructor = 'li',
+  T extends ValidComponent = 'li',
 > = HeadlessPropsWithRef<
   T,
   OmitAndMerge<ListboxOptionBaseProps<V>, ButtonProps<T>>
 >;
 
-export function ListboxOption<V, T extends ValidConstructor = 'li'>(
+export function ListboxOption<V, T extends ValidComponent = 'li'>(
   props: ListboxOptionProps<V, T>,
 ): JSX.Element {
   const rootContext = useListboxContext('ListboxOptions');
@@ -55,40 +53,41 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
 
   // I would really love to use createEffect but for some reason
   // the timing is never accurate
-  createRenderEffect(() => {
-    const current = internalRef();
-
+  createRenderEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
-      useEventListener(current, 'click', () => {
-        if (!state.disabled()) {
-          state.select();
-          if (!rootContext.multiple) {
-            disclosure.close();
+      return mergeFunc(
+        useEventListener(current, 'click', () => {
+          if (!state.disabled()) {
+            state.select();
+            if (!rootContext.multiple) {
+              disclosure.close();
+            }
           }
-        }
-      });
-      useEventListener(current, 'focus', () => {
-        state.focus();
-      });
-      useEventListener(current, 'blur', () => {
-        state.blur();
-      });
-      useEventListener(current, 'mouseenter', () => {
-        if (!state.disabled()) {
-          current.focus({ preventScroll: true });
-        }
-      });
-      useEventListener(current, 'mouseleave', () => {
-        if (!state.disabled()) {
+        }),
+        useEventListener(current, 'focus', () => {
+          state.focus();
+        }),
+        useEventListener(current, 'blur', () => {
           state.blur();
-        }
-      });
+        }),
+        useEventListener(current, 'mouseenter', () => {
+          if (!state.disabled()) {
+            current.focus({ preventScroll: true });
+          }
+        }),
+        useEventListener(current, 'mouseleave', () => {
+          if (!state.disabled()) {
+            state.blur();
+          }
+        }),
+      );
     }
+    return undefined;
   });
 
   return createComponent(
     Button,
-    mergeProps(
+    merge(
       LISTBOX_OPTION_TAG,
       createOwnerAttribute(context.getId()),
       {

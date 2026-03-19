@@ -1,5 +1,6 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import { createComponent, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
@@ -7,12 +8,7 @@ import {
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 import { useSelectState } from '../../states/create-select-state';
-import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createDisabledState,
   createExpandedState,
@@ -22,10 +18,10 @@ import {
 import { useListboxContext } from './ListboxContext';
 import { LISTBOX_LABEL_TAG } from './tags';
 
-export type ListboxLabelProps<T extends ValidConstructor = 'label'> =
+export type ListboxLabelProps<T extends ValidComponent = 'label'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
 
-export function ListboxLabel<T extends ValidConstructor = 'label'>(
+export function ListboxLabel<T extends ValidComponent = 'label'>(
   props: ListboxLabelProps<T>,
 ): JSX.Element {
   const context = useListboxContext('ListboxLabel');
@@ -34,7 +30,7 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
 
   return createDynamic(
     () => props.as || ('label' as T),
-    mergeProps(
+    merge(
       LISTBOX_LABEL_TAG,
       {
         id: context.labelID,
@@ -51,6 +47,6 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
       createHasSelectedState(() => selectState.hasSelected()),
       createHasActiveState(() => selectState.hasActive()),
       omitProps(props, ['as', 'children']),
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }
