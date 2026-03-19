@@ -13,12 +13,14 @@ import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
+import { mergeFunc } from '../../utils/merge-func';
 import {
   createDisabledState,
   createExpandedState,
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
+import { waitForTransition } from '../../utils/wait-for-transition';
 import { usePopoverContext } from './PopoverContext';
 import { POPOVER_PANEL_TAG } from './tags';
 
@@ -41,31 +43,39 @@ export function PopoverPanel<T extends ValidComponent = 'div'>(
     () => [internalRef(), state.isOpen()] as const,
     ([current, isOpen]) => {
       if (current instanceof HTMLElement && isOpen) {
-        focusFirst(getFocusableElements(current), false);
-        useEventListener(current, 'keydown', e => {
-          if (!state.disabled()) {
-            switch (e.key) {
-              case 'Tab': {
-                e.preventDefault();
-                lockFocus(current, e.shiftKey, false);
-                break;
-              }
-              case 'Escape': {
-                state.close();
-                break;
+        waitForTransition(current).then(() => {
+          focusFirst(getFocusableElements(current), false);
+        });
+
+        return mergeFunc(
+          useEventListener(current, 'keydown', e => {
+            if (!state.disabled()) {
+              switch (e.key) {
+                case 'Tab': {
+                  e.preventDefault();
+                  lockFocus(current, e.shiftKey, false);
+                  break;
+                }
+                case 'Escape': {
+                  state.close();
+                  break;
+                }
               }
             }
-          }
-        });
-        useEventListener(current, 'focusout', e => {
-          if (context.hovering) {
-            return;
-          }
-          if (!(e.relatedTarget && current.contains(e.relatedTarget as Node))) {
-            state.close();
-          }
-        });
+          }),
+          useEventListener(current, 'focusout', e => {
+            if (context.hovering) {
+              return;
+            }
+            if (
+              !(e.relatedTarget && current.contains(e.relatedTarget as Node))
+            ) {
+              state.close();
+            }
+          }),
+        );
       }
+      return undefined;
     },
   );
 

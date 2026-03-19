@@ -1,12 +1,7 @@
-import {
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-  Transition,
-  Menu,
-  MenuItem,
-} from 'terracotta';
 import type { JSX } from 'solid-js';
+import { Menu, MenuItem } from 'terracotta/menu';
+import { Popover, PopoverButton, PopoverPanel } from 'terracotta/popover';
+import { Transition } from 'terracotta/transition';
 
 function ChevronDownIcon(
   props: JSX.IntrinsicElements['svg'] & { title: string },
