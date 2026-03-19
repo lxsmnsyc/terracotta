@@ -1,5 +1,5 @@
 import { createDynamic } from '@solidjs/web';
-import type { JSX, ValidComponent } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { createEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
@@ -165,6 +165,6 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
       createHasActiveState(() => autocompleteState.hasActive()),
       createHasQueryState(() => autocompleteState.hasQuery()),
       omitProps(props, ['as', 'ref']),
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }
