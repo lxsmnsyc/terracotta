@@ -37,7 +37,7 @@ export default function App(): JSX.Element {
           setIsShowing(!isShowing());
         }}
         title={isShowing() ? 'Hide' : 'Show'}
-        class="flex items-center px-3 py-2 mt-8 text-sm font-medium text-white transition transform bg-black rounded-full backface-visibility-hidden active:bg-opacity-40 hover:scale-105 hover:bg-opacity-30 focus:outline-none bg-opacity-20"
+        class="flex items-center px-3 py-2 mt-8 text-sm font-medium text-white transition transformrounded-full backface-visibility-hidden active:bg-black/40 hover:scale-105 hover:bg-black/30 focus:outline-none bg-black/20"
       >
         <svg viewBox="0 0 20 20" fill="none" class="w-5 h-5 opacity-70">
           <title>Re-run</title>

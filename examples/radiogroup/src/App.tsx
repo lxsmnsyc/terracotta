@@ -67,10 +67,10 @@ export default function App(): JSX.Element {
                       value={plan()}
                       class={classNames(
                         isSelected(plan())
-                          ? 'bg-sky-900 bg-opacity-75 text-white'
+                          ? 'bg-sky-900/75 text-white'
                           : 'bg-white',
                         isActive(plan()) &&
-                          'ring-2 ring-offset-2 ring-offset-sky-300 ring-white ring-opacity-60',
+                          'ring-2 ring-offset-2 ring-offset-sky-300 ring-white/60',
                         'relative rounded-lg shadow-md px-5 py-4 cursor-pointer flex focus:outline-none',
                       )}
                     >

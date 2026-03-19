@@ -1,6 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, merge, untrack } from 'solid-js';
+import { createComponent, createEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
@@ -24,6 +24,7 @@ import {
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
+import { waitForTransition } from '../../utils/wait-for-transition';
 import { useListboxContext } from './ListboxContext';
 import {
   createListboxOptionsFocusNavigator,
@@ -65,11 +66,13 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
       if (current instanceof HTMLElement && isOpen) {
         controller.setRef(current);
 
-        if (untrack(() => selectState.hasSelected())) {
-          controller.setFirstChecked(SELECTED_NODE);
-        } else {
-          controller.setFirstChecked();
-        }
+        waitForTransition(current).then(() => {
+          if (selectState.hasSelected()) {
+            controller.setFirstChecked(SELECTED_NODE);
+          } else {
+            controller.setFirstChecked();
+          }
+        });
 
         return mergeFunc(
           () => {

@@ -1,6 +1,5 @@
 import type { JSX, ValidComponent } from 'solid-js';
-import { createComponent, createRenderEffect, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import type {
   SelectOptionStateOptions,
@@ -53,7 +52,7 @@ export function ListboxOption<V, T extends ValidComponent = 'li'>(
 
   // I would really love to use createEffect but for some reason
   // the timing is never accurate
-  createRenderEffect(internalRef, current => {
+  createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
       return mergeFunc(
         useEventListener(current, 'click', () => {
@@ -103,7 +102,7 @@ export function ListboxOption<V, T extends ValidComponent = 'li'>(
       createSelectedState(() => state.isSelected()),
       createARIASelectedState(() => state.isSelected()),
       createActiveState(() => state.isActive()),
-      omitProps(props, ['as', 'children', 'disabled', 'value', 'ref']),
+      omit(props, 'as', 'children', 'disabled', 'value', 'ref'),
       {
         get children() {
           return createComponent(SelectOptionStateProvider, {

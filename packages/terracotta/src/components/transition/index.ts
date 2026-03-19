@@ -16,6 +16,7 @@ import { createUnmountable } from '../../utils/create-unmountable';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import type { Prettify } from '../../utils/types';
+import { waitForTransition } from '../../utils/wait-for-transition';
 
 export interface TransitionRootBaseProps {
   show: boolean;
@@ -102,20 +103,6 @@ type TransitionStates =
   | 'entered'
   | 'leave-from'
   | 'leave-to';
-
-async function waitForTransition(el: Element): Promise<void> {
-  try {
-    const animations = el.getAnimations();
-    const length = animations.length;
-
-    if (length > 0) {
-      console.log(animations);
-      await Promise.all(animations.map(animation => animation.finished));
-    }
-  } catch {
-    // do nothing
-  }
-}
 
 export function TransitionChild<T extends ValidComponent = 'div'>(
   props: TransitionChildProps<T>,
@@ -214,7 +201,6 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
             removeClassList(element, leave);
             removeClassList(element, leaveTo);
             setVisible(false);
-            console.log('unmounted');
             if ('unregister' in transitionParent) {
               transitionParent.unregister();
             }

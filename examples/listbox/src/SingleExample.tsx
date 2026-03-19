@@ -1,13 +1,13 @@
 import type { JSX } from 'solid-js';
 import { For, createSignal } from 'solid-js';
 import {
-  DisclosureStateChild,
   Listbox,
   ListboxButton,
   ListboxOption,
   ListboxOptions,
-  Transition,
-} from 'terracotta';
+} from 'terracotta/listbox';
+import { DisclosureStateChild } from 'terracotta/states';
+import { Transition } from 'terracotta/transition';
 import { CheckIcon, SelectorIcon, classNames } from './utils';
 
 const people = [
@@ -52,7 +52,7 @@ export default function SingleExample(): JSX.Element {
                     {(person): JSX.Element => (
                       <ListboxOption
                         class="focus:outline-none group"
-                        value={person}
+                        value={person()}
                       >
                         {({ isActive, isSelected }): JSX.Element => (
                           <div
@@ -70,7 +70,7 @@ export default function SingleExample(): JSX.Element {
                                 'block truncate',
                               )}
                             >
-                              {person.name}
+                              {person().name}
                             </span>
                             {isSelected() ? (
                               <span
