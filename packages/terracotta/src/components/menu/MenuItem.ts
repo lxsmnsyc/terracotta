@@ -1,11 +1,7 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import { createComponent, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
   createARIADisabledState,
@@ -17,17 +13,17 @@ import { MenuChild } from './MenuChild';
 import { useMenuContext } from './MenuContext';
 import { MENU_ITEM_TAG } from './tags';
 
-export type MenuItemProps<T extends ValidConstructor = 'li'> =
+export type MenuItemProps<T extends ValidComponent = 'li'> =
   HeadlessPropsWithRef<T, MenuChildProps>;
 
-export function MenuItem<T extends ValidConstructor = 'li'>(
+export function MenuItem<T extends ValidComponent = 'li'>(
   props: MenuItemProps<T>,
 ): JSX.Element {
   const context = useMenuContext('MenuItem');
 
   return createComponent(
     Button,
-    mergeProps(
+    merge(
       MENU_ITEM_TAG,
       createOwnerAttribute(context.getId()),
       {
@@ -52,6 +48,6 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
           });
         },
       },
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }
