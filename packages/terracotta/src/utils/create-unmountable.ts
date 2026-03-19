@@ -1,6 +1,4 @@
-import type { JSX } from 'solid-js';
-import { children, createMemo } from 'solid-js';
-
+import { children, createMemo, type JSX } from 'solid-js';
 // An `unmountable` is a kind of component
 // where one can decide if it should conditionally
 // render or not.
@@ -17,16 +15,15 @@ export function createUnmountable(
   render: () => JSX.Element,
 ): JSX.Element {
   const mode = createMemo(() => (props.unmount == null ? true : props.unmount));
+  const condition = createMemo(() => shouldMount());
   return createMemo(() => {
     const currentMode = mode();
 
     if (currentMode === 'offscreen') {
-      const condition = createMemo(() => shouldMount());
-      const current = children(() => render());
-      return createMemo(() => condition() && current);
+      const orphan = children(() => render());
+      return createMemo(() => condition() && orphan);
     }
     if (currentMode) {
-      const condition = createMemo(() => shouldMount());
       return createMemo(() => condition() && render);
     }
     return render;
