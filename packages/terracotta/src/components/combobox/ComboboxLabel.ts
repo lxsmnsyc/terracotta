@@ -1,10 +1,10 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import { useDisclosureState } from '../../states/create-disclosure-state';
-import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createDisabledState,
   createExpandedState,
@@ -38,6 +38,6 @@ export function ComboboxLabel<T extends ValidComponent = 'label'>(
       createHasActiveState(() => autocompleteState.hasActive()),
       createHasQueryState(() => autocompleteState.hasQuery()),
       omitProps(props, ['as']),
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

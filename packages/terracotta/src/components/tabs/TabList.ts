@@ -1,4 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { createComponent, createEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
@@ -6,11 +7,7 @@ import {
   SelectStateChild,
   useSelectState,
 } from '../../states/create-select-state';
-import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
 import {
@@ -120,7 +117,7 @@ export function TabList<V, T extends ValidComponent = 'div'>(
           createHasSelectedState(() => state.hasSelected()),
           createHasActiveState(() => state.hasActive()),
           omitProps(props, ['as', 'ref', 'children']),
-        ) as DynamicProps<T>,
+        ) as ComponentProps<T>,
       );
     },
   });

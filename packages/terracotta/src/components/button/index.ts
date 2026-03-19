@@ -1,11 +1,8 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { createEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
-import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 import {
@@ -62,6 +59,6 @@ export function Button<T extends ValidComponent = 'button'>(
       {
         ref: setInternalRef,
       },
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

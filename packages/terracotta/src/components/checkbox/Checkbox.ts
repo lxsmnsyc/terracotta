@@ -1,4 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { createComponent, createUniqueId, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
@@ -10,8 +11,7 @@ import {
   CheckStateProvider,
   createCheckState,
 } from '../../states/create-check-state';
-import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createCheckedState,
@@ -95,7 +95,7 @@ export function Checkbox<T extends ValidComponent = 'div'>(
               });
             },
           },
-        ) as DynamicProps<T>,
+        ) as ComponentProps<T>,
       );
     },
   });

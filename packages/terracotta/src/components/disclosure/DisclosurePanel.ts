@@ -1,4 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { createComponent, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
@@ -6,10 +7,9 @@ import {
   DisclosureStateChild,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
-import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createDisabledState,
   createExpandedState,
@@ -52,7 +52,7 @@ export function DisclosurePanel<T extends ValidComponent = 'div'>(
           createDisabledState(() => state.disabled()),
           createExpandedState(() => state.isOpen()),
           omitProps(props, ['as', 'unmount', 'children']),
-        ) as DynamicProps<T>,
+        ) as ComponentProps<T>,
       ),
   );
 }

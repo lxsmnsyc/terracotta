@@ -1,4 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import {
   createComponent,
   createEffect,
@@ -18,11 +19,7 @@ import {
   createSingleSelectState,
   SelectStateProvider,
 } from '../../states/create-select-state';
-import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
 import {
@@ -201,7 +198,7 @@ export function Accordion<V, T extends ValidComponent = 'div'>(
                 });
               },
             },
-          ) as DynamicProps<T>,
+          ) as ComponentProps<T>,
         );
       },
     });

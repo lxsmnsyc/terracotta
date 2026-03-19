@@ -1,4 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -9,13 +10,9 @@ import {
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import assert from '../../utils/assert';
-import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import type { Prettify } from '../../utils/types';
 
@@ -239,7 +236,7 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
                 return state();
               },
             },
-          ) as DynamicProps<T>,
+          ) as ComponentProps<T>,
         ),
       );
     },

@@ -1,12 +1,9 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
-import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-} from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createDisabledState,
   createHasActiveState,
@@ -37,6 +34,6 @@ export function CommandLabel<T extends ValidComponent = 'label'>(
       createHasSelectedState(() => state.hasSelected()),
       createHasActiveState(() => state.hasActive()),
       createHasQueryState(() => state.hasQuery()),
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

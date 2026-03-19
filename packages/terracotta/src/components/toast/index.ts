@@ -1,3 +1,5 @@
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -6,13 +8,10 @@ import {
   merge,
   onSettled,
   useContext,
-  type JSX,
-  type ValidComponent,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import assert from '../../utils/assert';
-import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 
 const TOAST_TAG = createTag('toast');
@@ -49,7 +48,7 @@ export function Toast<T extends ValidComponent = 'div'>(
         'aria-live': 'polite',
       },
       omitProps(props, ['as']),
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }
 
@@ -67,7 +66,7 @@ export function Toaster<T extends ValidComponent = 'div'>(
     get children() {
       return createDynamic(
         () => props.as || ('div' as T),
-        merge(TOASTER_TAG, omitProps(props, ['as'])) as DynamicProps<T>,
+        merge(TOASTER_TAG, omitProps(props, ['as'])) as ComponentProps<T>,
       );
     },
   });

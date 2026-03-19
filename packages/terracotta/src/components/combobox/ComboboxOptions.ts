@@ -1,4 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { createComponent, createEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
@@ -7,13 +8,9 @@ import {
   useAutocompleteState,
 } from '../../states/create-autocomplete-state';
 import { useDisclosureState } from '../../states/create-disclosure-state';
-import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
 import { SELECTED_NODE } from '../../utils/namespace';
@@ -127,7 +124,7 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
               });
             },
           },
-        ) as DynamicProps<T>,
+        ) as ComponentProps<T>,
       ),
   );
 }

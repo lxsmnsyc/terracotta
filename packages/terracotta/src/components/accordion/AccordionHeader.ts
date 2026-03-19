@@ -1,12 +1,12 @@
-import type { JSX, ValidComponent } from 'solid-js';
-import { createComponent, merge, omit  } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import { createComponent, merge, omit } from 'solid-js';
 import type { SelectOptionStateRenderProps } from '../../states/create-select-option-state';
 import {
   SelectOptionStateChild,
   useSelectOptionState,
 } from '../../states/create-select-option-state';
-import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createActiveState,
   createDisabledState,
@@ -42,6 +42,6 @@ export function AccordionHeader<T extends ValidComponent = 'h3'>(
           });
         },
       },
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

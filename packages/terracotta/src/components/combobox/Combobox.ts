@@ -1,4 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import {
   createComponent,
   createEffect,
@@ -27,8 +28,7 @@ import {
   createDisclosureState,
   DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
-import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -223,7 +223,7 @@ function isComboboxDisclosureUncontrolled<V, T extends ValidComponent = 'div'>(
 
 function getProps<V, T extends ValidComponent = 'div'>(
   props: ComboboxProps<V, T>,
-): DynamicProps<T> {
+): ComponentProps<T> {
   if (isComboboxSelectUncontrolled(props)) {
     if (isComboboxDisclosureUncontrolled(props)) {
       return omitProps(props, [
@@ -240,7 +240,7 @@ function getProps<V, T extends ValidComponent = 'div'>(
         'onOpen',
         'onSelectChange',
         'toggleable',
-      ]) as DynamicProps<T>;
+      ]) as ComponentProps<T>;
     }
     return omitProps(props, [
       'as',
@@ -256,7 +256,7 @@ function getProps<V, T extends ValidComponent = 'div'>(
       'onOpen',
       'onSelectChange',
       'toggleable',
-    ]) as DynamicProps<T>;
+    ]) as ComponentProps<T>;
   }
   if (isComboboxDisclosureUncontrolled(props)) {
     return omitProps(props, [
@@ -273,7 +273,7 @@ function getProps<V, T extends ValidComponent = 'div'>(
       'onSelectChange',
       'toggleable',
       'value',
-    ]) as DynamicProps<T>;
+    ]) as ComponentProps<T>;
   }
   return omitProps(props, [
     'as',
@@ -289,7 +289,7 @@ function getProps<V, T extends ValidComponent = 'div'>(
     'onSelectChange',
     'toggleable',
     'value',
-  ]) as DynamicProps<T>;
+  ]) as ComponentProps<T>;
 }
 
 export function Combobox<V, T extends ValidComponent = 'div'>(
@@ -396,7 +396,7 @@ export function Combobox<V, T extends ValidComponent = 'div'>(
                     createHasActiveState(() => autocompleteState.hasActive()),
                     createExpandedState(() => disclosureState.isOpen()),
                     getProps(props),
-                  ) as DynamicProps<T>,
+                  ) as ComponentProps<T>,
                 );
               },
             });

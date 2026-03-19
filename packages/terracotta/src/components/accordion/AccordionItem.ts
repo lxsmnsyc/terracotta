@@ -1,4 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { createComponent, createUniqueId, merge, omit } from 'solid-js';
 import type {
   SelectOptionStateOptions,
@@ -8,8 +9,7 @@ import {
   createSelectOptionState,
   SelectOptionStateProvider,
 } from '../../states/create-select-option-state';
-import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createActiveState,
   createARIADisabledState,
@@ -62,7 +62,7 @@ export function AccordionItem<V, T extends ValidComponent = 'div'>(
               });
             },
           },
-        ) as DynamicProps<T>,
+        ) as ComponentProps<T>,
       );
     },
   });

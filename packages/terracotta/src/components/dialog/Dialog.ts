@@ -1,4 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { createComponent, createEffect, createUniqueId, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
@@ -10,10 +11,9 @@ import {
   createDisclosureState,
   DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
-import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -130,7 +130,7 @@ export function Dialog<T extends ValidComponent = 'div'>(
                     'onOpen',
                     'unmount',
                   ]),
-            ) as DynamicProps<T>,
+            ) as ComponentProps<T>,
           ),
       );
     },

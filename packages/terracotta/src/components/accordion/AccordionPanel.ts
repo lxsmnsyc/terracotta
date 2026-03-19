@@ -1,14 +1,14 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { createComponent, merge, omit } from 'solid-js';
 import type { SelectOptionStateRenderProps } from '../../states/create-select-option-state';
 import {
   SelectOptionStateChild,
   useSelectOptionState,
 } from '../../states/create-select-option-state';
-import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createActiveState,
   createDisabledState,
@@ -58,7 +58,7 @@ export function AccordionPanel<T extends ValidComponent = 'div'>(
               });
             },
           },
-        ) as DynamicProps<T>,
+        ) as ComponentProps<T>,
       ),
   );
 }

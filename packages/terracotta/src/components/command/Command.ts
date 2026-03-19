@@ -1,4 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import {
   createComponent,
   createEffect,
@@ -20,8 +21,7 @@ import {
   createMultipleAutocompleteState,
   createSingleAutocompleteState,
 } from '../../states/create-autocomplete-state';
-import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -206,7 +206,7 @@ export function Command<V, T extends ValidComponent = 'div'>(
                 });
               },
             },
-          ) as DynamicProps<T>,
+          ) as ComponentProps<T>,
         );
       },
     });

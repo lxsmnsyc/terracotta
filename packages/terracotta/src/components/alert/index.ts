@@ -1,7 +1,7 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { createUniqueId, merge, omit } from 'solid-js';
-import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 
 const ALERT_TAG = createTag('alert');
@@ -24,6 +24,6 @@ export function Alert<T extends ValidComponent = 'div'>(
       {
         role: 'alert',
       },
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

@@ -1,4 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { createComponent, createEffect, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
@@ -6,11 +7,7 @@ import {
   AutocompleteStateChild,
   useAutocompleteState,
 } from '../../states/create-autocomplete-state';
-import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
 import {
@@ -88,6 +85,6 @@ export function CommandOptions<V, T extends ValidComponent = 'ul'>(
           });
         },
       },
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

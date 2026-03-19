@@ -1,4 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import { createDynamic } from '@solidjs/web';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { createComponent, createMemo, createUniqueId, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
@@ -10,11 +11,7 @@ import {
   createSingleSelectState,
   SelectStateProvider,
 } from '../../states/create-select-state';
-import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -126,7 +123,7 @@ export function TabGroup<V, T extends ValidComponent = 'div'>(
                   'toggleable',
                   'horizontal',
                 ]),
-          ) as DynamicProps<T>,
+          ) as ComponentProps<T>,
         );
       },
     });

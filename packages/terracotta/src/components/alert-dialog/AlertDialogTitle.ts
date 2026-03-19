@@ -1,4 +1,4 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import { createComponent, merge } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
@@ -6,9 +6,7 @@ import {
   DisclosureStateChild,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
-import createDynamic from '../../utils/create-dynamic';
 import type {
-  DynamicProps,
   HeadlessPropsWithRef,
 } from '../../utils/dynamic-prop';
 import {
@@ -17,6 +15,7 @@ import {
 } from '../../utils/state-props';
 import { useAlertDialogContext } from './AlertDialogContext';
 import { ALERT_DIALOG_TITLE_TAG } from './tags';
+import { createDynamic } from '@solidjs/web';
 
 export type AlertDialogTitleProps<T extends ValidComponent = 'h2'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
@@ -44,6 +43,6 @@ export function AlertDialogTitle<T extends ValidComponent = 'h2'>(
       },
       createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }
