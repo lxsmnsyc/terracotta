@@ -16,6 +16,7 @@ import {
   createExpandedState,
 } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
+import { waitForTransition } from '../../utils/wait-for-transition';
 import { useCommandBarContext } from './CommandBarContext';
 import { COMMAND_BAR_PANEL_TAG } from './tags';
 
@@ -35,7 +36,9 @@ export function CommandBarPanel<T extends ValidComponent = 'div'>(
     ([current, isOpen]) => {
       if (current instanceof HTMLElement) {
         if (isOpen) {
-          focusFirst(getFocusableElements(current), false);
+          waitForTransition(current).then(() => {
+            focusFirst(getFocusableElements(current), false);
+          });
 
           return useEventListener(current, 'keydown', e => {
             if (!props.disabled) {

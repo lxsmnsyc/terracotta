@@ -6,7 +6,7 @@ import {
   CommandLabel,
   CommandOption,
   CommandOptions,
-} from 'terracotta';
+} from 'terracotta/command';
 import { CheckIcon, classNames } from './utils';
 
 const people = [
@@ -40,10 +40,10 @@ export default function SingleSelect(): JSX.Element {
           placeholder="Select an item"
           value={selected()?.name ?? ''}
         />
-        <CommandOptions class="bg-gray-50 bg-opacity-50 rounded-lg overflow-hidden">
+        <CommandOptions class="bg-gray-50/50 rounded-lg overflow-hidden">
           <For each={people}>
             {(person): JSX.Element => (
-              <CommandOption class="focus:outline-none group" value={person}>
+              <CommandOption class="focus:outline-none group" value={person()}>
                 {({ isActive, isSelected, matches }): JSX.Element => (
                   <div
                     class={classNames(
@@ -61,7 +61,7 @@ export default function SingleSelect(): JSX.Element {
                         'block truncate',
                       )}
                     >
-                      {person.name}
+                      {person().name}
                     </span>
                     {isSelected() ? (
                       <span
