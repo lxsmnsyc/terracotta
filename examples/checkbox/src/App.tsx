@@ -5,7 +5,7 @@ import {
   CheckboxDescription,
   CheckboxIndicator,
   CheckboxLabel,
-} from 'terracotta';
+} from 'terracotta/checkbox';
 
 function CheckIcon(
   props: JSX.IntrinsicElements['svg'] & { title: string },

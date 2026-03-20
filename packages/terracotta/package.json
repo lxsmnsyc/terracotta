@@ -30,19 +30,19 @@
     "headless-ui"
   ],
   "devDependencies": {
-    "@solidjs/web": "2.0.0-beta.2",
+    "@solidjs/web": "2.0.0-beta.3",
     "@types/node": "^25.5.0",
-    "solid-js": "2.0.0-beta.2",
+    "solid-js": "2.0.0-beta.3",
     "tsdown": "^0.21.2",
     "tslib": "^2.8.1",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
-    "@solidjs/web": "2.0.0-beta.2",
-    "solid-js": "2.0.0-beta.2"
+    "@solidjs/web": "2.0.0-beta.3",
+    "solid-js": "2.0.0-beta.3"
   },
   "dependencies": {
-    "solid-use": "1.0.0-next.0"
+    "solid-use": "1.0.0-next.2"
   },
   "scripts": {
     "prepublishOnly": "tsdown",
@@ -69,11 +69,13 @@
     "./popover": "./dist/popover.js",
     "./radio-group": "./dist/radio-group.js",
     "./select": "./dist/select.js",
+    "./states": "./dist/states.js",
     "./tabs": "./dist/tabs.js",
     "./toast": "./dist/toast.js",
     "./toggle": "./dist/toggle.js",
     "./toolbar": "./dist/toolbar.js",
     "./transition": "./dist/transition.js",
+    "./utils": "./dist/utils.js",
     "./package.json": "./package.json"
   },
   "typesVersions": {

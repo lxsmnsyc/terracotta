@@ -21,8 +21,8 @@ importers:
   examples/accordion:
     dependencies:
       '@solidjs/web':
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -52,8 +52,8 @@ importers:
   examples/checkbox:
     dependencies:
       '@solidjs/web':
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -113,6 +113,9 @@ importers:
 
   examples/command:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -141,6 +144,9 @@ importers:
 
   examples/commandbar:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -169,6 +175,9 @@ importers:
 
   examples/context-menu:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -197,6 +206,9 @@ importers:
 
   examples/dialog:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -225,6 +237,9 @@ importers:
 
   examples/disclosure:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -253,6 +268,9 @@ importers:
 
   examples/dropdown-menu:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -281,6 +299,9 @@ importers:
 
   examples/feed:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -309,6 +330,9 @@ importers:
 
   examples/listbox:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -337,6 +361,9 @@ importers:
 
   examples/menu:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -365,6 +392,9 @@ importers:
 
   examples/popover:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -393,6 +423,9 @@ importers:
 
   examples/radiogroup:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -421,6 +454,9 @@ importers:
 
   examples/select:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -449,6 +485,9 @@ importers:
 
   examples/tabs:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -477,6 +516,9 @@ importers:
 
   examples/toaster:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -505,6 +547,9 @@ importers:
 
   examples/toolbar:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -533,6 +578,9 @@ importers:
 
   examples/transitions:
     dependencies:
+      '@solidjs/web':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -562,12 +610,12 @@ importers:
   packages/terracotta:
     dependencies:
       solid-use:
-        specifier: 1.0.0-next.0
-        version: 1.0.0-next.0(@solidjs/web@2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3))(solid-js@2.0.0-beta.3)
+        specifier: 1.0.0-next.2
+        version: 1.0.0-next.2(@solidjs/web@2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3))(solid-js@2.0.0-beta.3)
     devDependencies:
       '@solidjs/web':
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       '@types/node':
         specifier: ^25.5.0
         version: 25.5.0
@@ -1263,12 +1311,6 @@ packages:
 
   '@solidjs/signals@0.13.3':
     resolution: {integrity: sha512-Rlq8Kc0WtuhPv8SDNT1ANh45OUIbFKnY7AOiNmCSeOaGKlFaaYPPDxXN8qJtojykwGGwWXV6ZmHwCb1ZeY0b/A==}
-
-  '@solidjs/web@2.0.0-beta.2':
-    resolution: {integrity: sha512-2nYMBWaNjitUdfrTZRKGk9GUJq/egE6u+ziPVdUuoIzYuu5qIMDxdYlo1C1VIajR0Kw2qMtzipt7kMZEd1rJKg==}
-    peerDependencies:
-      '@solidjs/signals': ^0.12.0
-      solid-js: ^2.0.0-beta.2
 
   '@solidjs/web@2.0.0-beta.3':
     resolution: {integrity: sha512-DpTIbba7pLTKIXxUblok4n1rQscBLbjhJKhk+eUoODOnAS4TVDV4OmZ6qhC+VEuyPAbIbqzfoZsectFNEhak3w==}
@@ -1975,12 +2017,12 @@ packages:
     peerDependencies:
       solid-js: '>=2.0.0-beta.0 <2.0.0'
 
-  solid-use@1.0.0-next.0:
-    resolution: {integrity: sha512-SndFSRoapt4jdk4NDVLWx3iuRCvEGSXFAQK9bbw1vy60j2OMMyRYRswwjTDvBYbaI+TOZGbWLAbBgJvkZzxgHA==}
+  solid-use@1.0.0-next.2:
+    resolution: {integrity: sha512-B5Li4cnaO/4XHCVkqjZX/JjFWq0h1ECmGHEUFKTQG1O7p4lLPB5533fYPD6kD8yhkeegE31yDDGZL4B7xpmjVA==}
     engines: {node: '>=20'}
     peerDependencies:
-      '@solidjs/web': 2.0.0-beta.2
-      solid-js: 2.0.0-beta.2
+      '@solidjs/web': ^2.0.0-beta.3
+      solid-js: ^2.0.0-beta.3
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -2763,13 +2805,6 @@ snapshots:
 
   '@solidjs/signals@0.13.3': {}
 
-  '@solidjs/web@2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)':
-    dependencies:
-      '@solidjs/signals': 0.13.3
-      seroval: 1.5.1
-      seroval-plugins: 1.5.1(seroval@1.5.1)
-      solid-js: 2.0.0-beta.3
-
   '@solidjs/web@2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)':
     dependencies:
       '@solidjs/signals': 0.13.3
@@ -3405,9 +3440,9 @@ snapshots:
       '@babel/types': 7.29.0
       solid-js: 2.0.0-beta.3
 
-  solid-use@1.0.0-next.0(@solidjs/web@2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3))(solid-js@2.0.0-beta.3):
+  solid-use@1.0.0-next.2(@solidjs/web@2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3))(solid-js@2.0.0-beta.3):
     dependencies:
-      '@solidjs/web': 2.0.0-beta.2(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
+      '@solidjs/web': 2.0.0-beta.3(@solidjs/signals@0.13.3)(solid-js@2.0.0-beta.3)
       solid-js: 2.0.0-beta.3
 
   source-map-js@1.2.1: {}
