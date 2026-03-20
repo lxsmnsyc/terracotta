@@ -44,73 +44,76 @@ export default function SingleExample(): JSX.Element {
           placeholder="Select an item"
           value={selected()?.name ?? ''}
         />
-        <DisclosureStateChild>
-          {({ isOpen }): JSX.Element => (
-            <Transition
-              show={isOpen()}
-              class="relative"
-              enter="transition ease-in duration-100"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="transition ease-out duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <ComboboxOptions
-                unmount={false}
-                class="absolute w-full bg-gray-50 bg-opacity-50 rounded-lg overflow-hidden"
+        {/* TODO remove div */}
+        <div>
+          <DisclosureStateChild>
+            {({ isOpen }): JSX.Element => (
+              <Transition
+                show={isOpen()}
+                class="relative"
+                enter="transition ease-in duration-100"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="transition ease-out duration-100"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
               >
-                <For each={people}>
-                  {(person): JSX.Element => (
-                    <ComboboxOption
-                      class="focus:outline-none group"
-                      value={person}
-                    >
-                      {({ isActive, isSelected, matches }): JSX.Element => (
-                        <div
-                          class={classNames(
-                            isActive()
-                              ? 'text-amber-900 bg-amber-100'
-                              : 'text-gray-900',
-                            'group-hover:text-amber-900 group-hover:bg-amber-100',
-                            'cursor-default select-none relative py-2 pl-10 pr-4',
-                            matches() ? 'visible' : 'hidden',
-                          )}
-                        >
-                          <span
+                <ComboboxOptions
+                  unmount={false}
+                  class="absolute w-full bg-gray-50 bg-opacity-50 rounded-lg overflow-hidden"
+                >
+                  <For each={people}>
+                    {(person): JSX.Element => (
+                      <ComboboxOption
+                        class="focus:outline-none group"
+                        value={person()}
+                      >
+                        {({ isActive, isSelected, matches }): JSX.Element => (
+                          <div
                             class={classNames(
-                              isSelected() ? 'font-medium' : 'font-normal',
-                              'block truncate',
+                              isActive()
+                                ? 'text-amber-900 bg-amber-100'
+                                : 'text-gray-900',
+                              'group-hover:text-amber-900 group-hover:bg-amber-100',
+                              'cursor-default select-none relative py-2 pl-10 pr-4',
+                              matches() ? 'visible' : 'hidden',
                             )}
                           >
-                            {person.name}
-                          </span>
-                          {isSelected() ? (
                             <span
                               class={classNames(
-                                isActive()
-                                  ? 'text-amber-600'
-                                  : 'text-amber-600',
-                                'group-hover:text-amber-600',
-                                'absolute inset-y-0 left-0 flex items-center pl-3',
+                                isSelected() ? 'font-medium' : 'font-normal',
+                                'block truncate',
                               )}
                             >
-                              <CheckIcon
-                                title="Selected"
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                              />
+                              {person().name}
                             </span>
-                          ) : null}
-                        </div>
-                      )}
-                    </ComboboxOption>
-                  )}
-                </For>
-              </ComboboxOptions>
-            </Transition>
-          )}
-        </DisclosureStateChild>
+                            {isSelected() ? (
+                              <span
+                                class={classNames(
+                                  isActive()
+                                    ? 'text-amber-600'
+                                    : 'text-amber-600',
+                                  'group-hover:text-amber-600',
+                                  'absolute inset-y-0 left-0 flex items-center pl-3',
+                                )}
+                              >
+                                <CheckIcon
+                                  title="Selected"
+                                  class="w-5 h-5"
+                                  aria-hidden="true"
+                                />
+                              </span>
+                            ) : null}
+                          </div>
+                        )}
+                      </ComboboxOption>
+                    )}
+                  </For>
+                </ComboboxOptions>
+              </Transition>
+            )}
+          </DisclosureStateChild>
+        </div>
       </Combobox>
     </div>
   );

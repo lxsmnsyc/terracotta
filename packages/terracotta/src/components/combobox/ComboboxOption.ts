@@ -2,7 +2,6 @@ import type { JSX, ValidComponent } from 'solid-js';
 import {
   createComponent,
   createEffect,
-  createRenderEffect,
   createUniqueId,
   merge,
 } from 'solid-js';
@@ -77,7 +76,7 @@ export function ComboboxOption<V, T extends ValidComponent = 'li'>(
 
   // I would really love to use createEffect but for some reason
   // the timing is never accurate
-  createRenderEffect(internalRef, current => {
+  createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
       return mergeFunc(
         useEventListener(current, 'click', () => {

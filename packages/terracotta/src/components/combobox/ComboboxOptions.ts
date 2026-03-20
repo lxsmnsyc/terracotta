@@ -24,6 +24,7 @@ import {
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
+import { waitForTransition } from '../../utils/wait-for-transition';
 import { useComboboxContext } from './ComboboxContext';
 import { COMBOBOX_OPTIONS_TAG } from './tags';
 
@@ -79,14 +80,16 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
 
   // TODO check timing
   createEffect(
-    () => disclosureState.isOpen(),
-    value => {
-      if (value) {
-        if (autocompleteState.hasSelected()) {
-          context.controller.setFirstChecked(SELECTED_NODE);
-        } else {
-          context.controller.setFirstChecked();
-        }
+    () => [internalRef(), disclosureState.isOpen()],
+    ([current, flag]) => {
+      if (current instanceof HTMLElement && flag) {
+        waitForTransition(current).then(() => {
+          if (autocompleteState.hasSelected()) {
+            context.controller.setFirstChecked(SELECTED_NODE);
+          } else {
+            context.controller.setFirstChecked();
+          }
+        });
       }
     },
   );

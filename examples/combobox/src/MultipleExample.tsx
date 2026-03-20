@@ -53,7 +53,7 @@ export default function SingleExample(): JSX.Element {
           >
             {(item): JSX.Element => (
               <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
-                {item.name}
+                {item().name}
               </span>
             )}
           </For>
@@ -62,6 +62,7 @@ export default function SingleExample(): JSX.Element {
           class="w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
           placeholder="Select an item"
         />
+        {/* TODO remove div */}
         <div>
           <DisclosureStateChild>
             {({ isOpen }): JSX.Element => (
@@ -83,7 +84,7 @@ export default function SingleExample(): JSX.Element {
                     {(person): JSX.Element => (
                       <ComboboxOption
                         class="focus:outline-none group"
-                        value={person}
+                        value={person()}
                       >
                         {({ isActive, isSelected, matches }): JSX.Element => (
                           <div
@@ -102,7 +103,7 @@ export default function SingleExample(): JSX.Element {
                                 'block truncate',
                               )}
                             >
-                              {person.name}
+                              {person().name}
                             </span>
                             {isSelected() ? (
                               <span
