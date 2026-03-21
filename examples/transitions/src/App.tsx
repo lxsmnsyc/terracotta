@@ -1,6 +1,6 @@
 import type { JSX } from 'solid-js';
 import { createSignal } from 'solid-js';
-import { Transition } from 'terracotta/transition';
+import { Transition, TransitionChild } from 'terracotta/transition';
 
 export default function App(): JSX.Element {
   const [isShowing, setIsShowing] = createSignal(false);
@@ -10,7 +10,7 @@ export default function App(): JSX.Element {
       <div class="w-32 h-32">
         <Transition
           show={isShowing()}
-          class="w-full h-full bg-white rounded-md shadow-lg flex items-center justify-center"
+          class="w-full h-full bg-white/25 rounded-md shadow-lg flex items-center justify-center"
           enter="transform transition duration-[400ms]"
           enterFrom="opacity-0 rotate-[-120deg] scale-50"
           enterTo="opacity-100 rotate-0 scale-100"
@@ -18,16 +18,35 @@ export default function App(): JSX.Element {
           leaveFrom="opacity-100 rotate-0 scale-100 "
           leaveTo="opacity-0 scale-95 "
         >
-          <Transition
-            show={isShowing()}
-            class="w-[50%] h-[50%] bg-blue-500 rounded-md shadow-lg"
+          <TransitionChild
+            class="w-[80%] h-[80%] bg-white/25 rounded-md shadow-lg flex items-center justify-center"
             enter="transform transition duration-[400ms]"
             enterFrom="opacity-0 rotate-[-120deg] scale-50"
             enterTo="opacity-100 rotate-0 scale-100"
             leave="transform duration-200 transition ease-in-out"
             leaveFrom="opacity-100 rotate-0 scale-100 "
             leaveTo="opacity-0 scale-95 "
-          />
+          >
+            <TransitionChild
+              class="w-[80%] h-[80%] bg-white/25 rounded-md shadow-lg flex items-center justify-center"
+              enter="transform transition duration-[400ms]"
+              enterFrom="opacity-0 rotate-[-120deg] scale-50"
+              enterTo="opacity-100 rotate-0 scale-100"
+              leave="transform duration-200 transition ease-in-out"
+              leaveFrom="opacity-100 rotate-0 scale-100 "
+              leaveTo="opacity-0 scale-95 "
+            >
+              <TransitionChild
+                class="w-[80%] h-[80%] bg-white/25 rounded-md shadow-lg"
+                enter="transform transition duration-[400ms]"
+                enterFrom="opacity-0 rotate-[-120deg] scale-50"
+                enterTo="opacity-100 rotate-0 scale-100"
+                leave="transform duration-200 transition ease-in-out"
+                leaveFrom="opacity-100 rotate-0 scale-100 "
+                leaveTo="opacity-0 scale-95 "
+              />
+            </TransitionChild>
+          </TransitionChild>
         </Transition>
       </div>
 
@@ -37,7 +56,7 @@ export default function App(): JSX.Element {
           setIsShowing(!isShowing());
         }}
         title={isShowing() ? 'Hide' : 'Show'}
-        class="flex items-center px-3 py-2 mt-8 text-sm font-medium text-white transition transformrounded-full backface-visibility-hidden active:bg-black/40 hover:scale-105 hover:bg-black/30 focus:outline-none bg-black/20"
+        class="flex items-center px-3 py-2 mt-8 text-sm font-medium text-white transition transform rounded-full backface-visibility-hidden active:bg-black/40 hover:scale-105 hover:bg-black/30 focus:outline-none bg-black/20"
       >
         <svg viewBox="0 0 20 20" fill="none" class="w-5 h-5 opacity-70">
           <title>Re-run</title>

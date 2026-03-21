@@ -6,6 +6,7 @@ import {
   DisclosureStateChild,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
+import { createDependencyList } from '../../utils/create-dependency-list';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
@@ -31,7 +32,7 @@ export function DialogPanel<T extends ValidComponent = 'div'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(
-    () => [internalRef(), state.isOpen()] as const,
+    createDependencyList(() => [internalRef(), state.isOpen()] as const),
     ([current, isOpen]) => {
       if (current instanceof HTMLElement && isOpen) {
         waitForTransition(current).then(() => {

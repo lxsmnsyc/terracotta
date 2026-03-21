@@ -7,6 +7,7 @@ import {
   SelectStateProvider,
   useSelectState,
 } from '../../states/create-select-state';
+import { createDependencyList } from '../../utils/create-dependency-list';
 import createTypeAhead from '../../utils/create-type-ahead';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
@@ -60,7 +61,7 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
   // a way that the ListboxOption has yet to register
   // the focus event
   createEffect(
-    () => [internalRef(), disclosureState.isOpen()],
+    createDependencyList(() => [internalRef(), disclosureState.isOpen()]),
     ([current, isOpen]) => {
       if (current instanceof HTMLElement && isOpen) {
         controller.setRef(current);

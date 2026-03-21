@@ -7,6 +7,7 @@ import {
   useAutocompleteState,
 } from '../../states/create-autocomplete-state';
 import { useDisclosureState } from '../../states/create-disclosure-state';
+import { createDependencyList } from '../../utils/create-dependency-list';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
@@ -83,7 +84,9 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
 
   // TODO check timing
   createEffect(
-    () => [internalRef(), disclosureState.isOpen()],
+    createDependencyList(
+      () => [internalRef(), disclosureState.isOpen()] as const,
+    ),
     ([current, flag]) => {
       if (current instanceof HTMLElement && flag) {
         waitForTransition(current).then(() => {

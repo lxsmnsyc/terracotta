@@ -11,6 +11,7 @@ import {
   useContext,
 } from 'solid-js';
 import assert from '../../utils/assert';
+import { createDependencyList } from '../../utils/create-dependency-list';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
@@ -23,6 +24,7 @@ export interface TransitionRootBaseProps {
 }
 
 interface TransitionCounter {
+  isReady(): boolean;
   register(): void;
   unregister(): void;
   done(): boolean;
@@ -44,11 +46,12 @@ function useTransitionRootContext(
   return context;
 }
 
-function createTransitionCounter(): TransitionCounter {
+function createTransitionCounter(isReady: () => boolean): TransitionCounter {
   // Set of currently transitioning TransitionChilds nested within a TransitionChild
   const [size, setSize] = createSignal(0);
 
   return {
+    isReady,
     // Reactive set
     register(): void {
       setSize(c => c + 1);
@@ -111,15 +114,16 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
   // Transitions pending on parent
   const transitionParent = useContext(TransitionCounterContext).value;
   // Transitions pending underneath element
-  const transitionChildren = createTransitionCounter();
+  const [ready, setReady] = createSignal(false);
+  const transitionChildren = createTransitionCounter(ready);
 
   const [state, setState] = createSignal<TransitionStates>();
-  const [visible, setVisible] = createSignal(untrack(() => values.show));
   const [internalRef, setInternalRef] = createForwardRef(props);
+  const [visible, setVisible] = createSignal(untrack(() => values.show));
 
   // Step 1: write through internal visibility state based on `show`
   createEffect(
-    () => values.show,
+    () => values.show && (transitionParent?.isReady() ?? true),
     shouldShow => {
       if (shouldShow) {
         setVisible(true);
@@ -129,7 +133,7 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
 
   // Step 2: transition-in when visible
   createEffect(
-    () => [internalRef(), visible()],
+    createDependencyList(() => [internalRef(), visible()] as const),
     ([element, flag]) => {
       if (element instanceof HTMLElement && flag) {
         const enter = getClassList(props.enter);
@@ -137,6 +141,7 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
         const enterTo = getClassList(props.enterTo);
         const entered = getClassList(props.entered);
 
+        setReady(false);
         if (props.beforeEnter) {
           props.beforeEnter();
         }
@@ -157,6 +162,8 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
             if (props.afterEnter) {
               props.afterEnter();
             }
+            setReady(true);
+            transitionParent?.register();
           });
         });
 
@@ -174,7 +181,9 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
 
   // Step 3: when `show` becomes false, and no children is transitioning, transition out
   createEffect(
-    () => [internalRef(), !values.show, transitionChildren.done()],
+    createDependencyList(
+      () => [internalRef(), !values.show, transitionChildren.done()] as const,
+    ),
     ([element, flag, done]) => {
       if (element instanceof HTMLElement && flag && done) {
         const leave = getClassList(props.leave);
@@ -184,7 +193,6 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
         if (props.beforeLeave) {
           props.beforeLeave();
         }
-        transitionParent?.register();
         removeClassList(element, entered);
         setState('leave-from');
         addClassList(element, leave);
@@ -199,10 +207,10 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
             removeClassList(element, leave);
             removeClassList(element, leaveTo);
             setVisible(false);
-            transitionParent?.unregister();
             if (props.afterLeave) {
               props.afterLeave();
             }
+            transitionParent?.unregister();
           });
         });
 
@@ -265,10 +273,15 @@ export function Transition<T extends ValidComponent = 'div'>(
   return createComponent(TransitionRootContext, {
     value: props,
     get children() {
-      return createComponent(
-        TransitionChild,
-        omit(props, 'show') as unknown as TransitionChildProps<T>,
-      );
+      return createComponent(TransitionCounterContext, {
+        value: { value: undefined },
+        get children() {
+          return createComponent(
+            TransitionChild,
+            omit(props, 'show') as unknown as TransitionChildProps<T>,
+          );
+        },
+      });
     },
   });
 }

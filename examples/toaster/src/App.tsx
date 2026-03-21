@@ -95,13 +95,13 @@ export default function App(): JSX.Element {
         setIsOpen(true);
       }
 
-      // const timeout = setTimeout(() => {
-      //   closeNotifs();
-      // }, 5000);
+      const timeout = setTimeout(() => {
+        closeNotifs();
+      }, 5000);
 
-      // return () => {
-      //   clearTimeout(timeout);
-      // };
+      return () => {
+        clearTimeout(timeout);
+      };
     },
   );
 
