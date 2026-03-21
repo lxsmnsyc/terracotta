@@ -1,5 +1,11 @@
 # terracotta
 
+## 2.0.0-next.2
+
+### Patch Changes
+
+- ea215d4: fix dependencies
+
 ## 2.0.0-next.1
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # commandbar-example
 
+## 1.0.8-next.2
+
+### Patch Changes
+
+- Updated dependencies [ea215d4]
+  - terracotta@2.0.0-next.2
+
 ## 1.0.8-next.1
 
 ### Patch Changes
