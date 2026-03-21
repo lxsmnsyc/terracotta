@@ -1,7 +1,7 @@
 {
   "name": "combobox-example",
   "type": "module",
-  "version": "1.0.8-next.0",
+  "version": "1.0.8-next.1",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -18,7 +18,7 @@
     "@solidjs/web": "2.0.0-beta.3",
     "solid-js": "2.0.0-beta.3",
     "tailwindcss": "^4.1.18",
-    "terracotta": "2.0.0-next.0"
+    "terracotta": "2.0.0-next.1"
   },
   "private": true,
   "publishConfig": {
