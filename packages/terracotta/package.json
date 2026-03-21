@@ -30,16 +30,16 @@
     "headless-ui"
   ],
   "devDependencies": {
-    "@solidjs/web": "2.0.0-beta.3",
+    "@solidjs/web": "2.0.0-beta.4",
     "@types/node": "^25.5.0",
-    "solid-js": "2.0.0-beta.3",
+    "solid-js": "2.0.0-beta.4",
     "tsdown": "^0.21.2",
     "tslib": "^2.8.1",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
-    "@solidjs/web": "2.0.0-beta.3",
-    "solid-js": "2.0.0-beta.3"
+    "@solidjs/web": "^2.0.0-beta.4",
+    "solid-js": "^2.0.0-beta.4"
   },
   "dependencies": {
     "solid-use": "1.0.0-next.2"
