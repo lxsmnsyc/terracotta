@@ -44,6 +44,7 @@ export function ListboxButton<T extends ValidComponent = 'button'>(
   createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
       context.anchor = current;
+      context.buttonHovering = false;
 
       return mergeFunc(
         useEventListener(current, 'click', () => {
@@ -69,6 +70,9 @@ export function ListboxButton<T extends ValidComponent = 'button'>(
         useEventListener(current, 'mouseleave', () => {
           context.buttonHovering = false;
         }),
+        () => {
+          context.buttonHovering = false;
+        },
       );
     }
     return undefined;

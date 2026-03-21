@@ -23,9 +23,5 @@
     "transitions-example": "1.0.7",
     "terracotta": "1.1.0"
   },
-  "changesets": [
-    "eager-emus-notice",
-    "open-boxes-try",
-    "warm-glasses-stare"
-  ]
+  "changesets": ["eager-emus-notice", "open-boxes-try", "warm-glasses-stare"]
 }

@@ -36,6 +36,7 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
   createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
       context.anchor = current;
+      context.inputHovering = false;
 
       return mergeFunc(
         current instanceof HTMLInputElement &&
@@ -87,7 +88,8 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
           }
         }),
         useEventListener(current, 'blur', e => {
-          if (context.optionsHovering) {
+          console.log(context.inputHovering, context.optionsHovering);
+          if (context.inputHovering || context.optionsHovering) {
             return;
           }
           autocompleteState.blur();
@@ -101,6 +103,9 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
         useEventListener(current, 'mouseleave', () => {
           context.inputHovering = false;
         }),
+        () => {
+          context.inputHovering = false;
+        },
       );
     }
     return undefined;

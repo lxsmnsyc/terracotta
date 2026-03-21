@@ -41,6 +41,7 @@ export function PopoverButton<T extends ValidComponent = 'button'>(
   createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
       context.anchor = current;
+      context.hovering = false;
       return mergeFunc(
         useEventListener(current, 'click', () => {
           if (!isDisabled()) {
@@ -53,6 +54,9 @@ export function PopoverButton<T extends ValidComponent = 'button'>(
         useEventListener(current, 'mouseleave', () => {
           context.hovering = false;
         }),
+        () => {
+          context.hovering = false;
+        },
       );
     }
     return undefined;

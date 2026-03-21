@@ -48,6 +48,7 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
   createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
       context.controller.setRef(current);
+      context.optionsHovering = false;
       return mergeFunc(
         () => {
           context.controller.clearRef();
@@ -63,6 +64,9 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
         useEventListener(current, 'mouseleave', () => {
           context.optionsHovering = false;
         }),
+        () => {
+          context.optionsHovering = false;
+        },
       );
     }
     return undefined;
