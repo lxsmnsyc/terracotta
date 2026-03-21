@@ -11,7 +11,7 @@ export default function App(): JSX.Element {
         <Transition
           show={isShowing()}
           class="w-full h-full bg-white/25 rounded-md shadow-lg flex items-center justify-center"
-          enter="transform transition duration-[400ms]"
+          enter="transform transition duration-200"
           enterFrom="opacity-0 rotate-[-120deg] scale-50"
           enterTo="opacity-100 rotate-0 scale-100"
           leave="transform duration-200 transition ease-in-out"
@@ -20,7 +20,7 @@ export default function App(): JSX.Element {
         >
           <TransitionChild
             class="w-[80%] h-[80%] bg-white/25 rounded-md shadow-lg flex items-center justify-center"
-            enter="transform transition duration-[400ms]"
+            enter="transform transition duration-200"
             enterFrom="opacity-0 rotate-[-120deg] scale-50"
             enterTo="opacity-100 rotate-0 scale-100"
             leave="transform duration-200 transition ease-in-out"
@@ -29,7 +29,7 @@ export default function App(): JSX.Element {
           >
             <TransitionChild
               class="w-[80%] h-[80%] bg-white/25 rounded-md shadow-lg flex items-center justify-center"
-              enter="transform transition duration-[400ms]"
+              enter="transform transition duration-200"
               enterFrom="opacity-0 rotate-[-120deg] scale-50"
               enterTo="opacity-100 rotate-0 scale-100"
               leave="transform duration-200 transition ease-in-out"
@@ -38,7 +38,7 @@ export default function App(): JSX.Element {
             >
               <TransitionChild
                 class="w-[80%] h-[80%] bg-white/25 rounded-md shadow-lg"
-                enter="transform transition duration-[400ms]"
+                enter="transform transition duration-200"
                 enterFrom="opacity-0 rotate-[-120deg] scale-50"
                 enterTo="opacity-100 rotate-0 scale-100"
                 leave="transform duration-200 transition ease-in-out"

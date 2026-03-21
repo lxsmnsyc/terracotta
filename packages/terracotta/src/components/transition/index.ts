@@ -4,11 +4,13 @@ import {
   createComponent,
   createContext,
   createEffect,
+  createMemo,
   createSignal,
+  createUniqueId,
   merge,
   omit,
-  untrack,
-  useContext,
+  onCleanup,
+  useContext
 } from 'solid-js';
 import assert from '../../utils/assert';
 import { createDependencyList } from '../../utils/create-dependency-list';
@@ -25,8 +27,8 @@ export interface TransitionRootBaseProps {
 
 interface TransitionCounter {
   isReady(): boolean;
-  register(): void;
-  unregister(): void;
+  register(id: string): void;
+  unregister(id: string): void;
   done(): boolean;
 }
 
@@ -49,18 +51,22 @@ function useTransitionRootContext(
 function createTransitionCounter(isReady: () => boolean): TransitionCounter {
   // Set of currently transitioning TransitionChilds nested within a TransitionChild
   const [size, setSize] = createSignal(0);
+  const ids = new Set<string>();
 
   return {
     isReady,
     // Reactive set
-    register(): void {
+    register(id: string): void {
+      ids.add(id);
       setSize(c => c + 1);
     },
-    unregister(): void {
+    unregister(id: string): void {
+      ids.delete(id);
       setSize(c => c - 1);
     },
     done(): boolean {
-      return size() === 0;
+      size();
+      return ids.size === 0;
     },
   };
 }
@@ -119,14 +125,31 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
 
   const [state, setState] = createSignal<TransitionStates>();
   const [internalRef, setInternalRef] = createForwardRef(props);
-  const [visible, setVisible] = createSignal(untrack(() => values.show));
+  const [visible, setVisible] = createSignal(false);
+  const [leaving, setLeaving] = createSignal(false);
+
+  const id = createUniqueId();
 
   // Step 1: write through internal visibility state based on `show`
   createEffect(
-    () => values.show && (transitionParent?.isReady() ?? true),
+    createMemo(() => values.show && (transitionParent?.isReady() ?? true) && transitionChildren.done()),
     shouldShow => {
       if (shouldShow) {
         setVisible(true);
+      }
+    },
+  );
+
+  let initial = true;
+  createEffect(
+    () => !values.show && transitionChildren.done(),
+    shouldLeave => {
+      if (shouldLeave && !initial) {
+        setLeaving(true);
+      }
+
+      if (initial) {
+        initial = false;
       }
     },
   );
@@ -163,12 +186,13 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
               props.afterEnter();
             }
             setReady(true);
-            transitionParent?.register();
+            transitionParent?.register(id);
           });
         });
 
         return () => {
           cancelAnimationFrame(raf);
+          setReady(true);
           // removeClassList(element, enter);
           // removeClassList(element, enterTo);
           // removeClassList(element, enterFrom);
@@ -182,14 +206,16 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
   // Step 3: when `show` becomes false, and no children is transitioning, transition out
   createEffect(
     createDependencyList(
-      () => [internalRef(), !values.show, transitionChildren.done()] as const,
+      () => [internalRef(), leaving()] as const,
     ),
-    ([element, flag, done]) => {
-      if (element instanceof HTMLElement && flag && done) {
+    ([element, flag]) => {
+      if (element instanceof HTMLElement && flag) {
         const leave = getClassList(props.leave);
         const leaveFrom = getClassList(props.leaveFrom);
         const leaveTo = getClassList(props.leaveTo);
         const entered = getClassList(props.entered);
+
+        setReady(false);
         if (props.beforeLeave) {
           props.beforeLeave();
         }
@@ -207,10 +233,12 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
             removeClassList(element, leave);
             removeClassList(element, leaveTo);
             setVisible(false);
+            setLeaving(false);
+            setReady(true);
             if (props.afterLeave) {
               props.afterLeave();
             }
-            transitionParent?.unregister();
+            transitionParent?.unregister(id);
           });
         });
 
@@ -224,6 +252,10 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
       return undefined;
     },
   );
+
+  onCleanup(() => {
+    transitionParent?.unregister(id);
+  });
 
   return createComponent(TransitionCounterContext, {
     value: { value: transitionChildren },
