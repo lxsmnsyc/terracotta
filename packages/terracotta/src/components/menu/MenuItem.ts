@@ -1,6 +1,5 @@
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, merge, omit } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
@@ -35,7 +34,7 @@ export function MenuItem<T extends ValidComponent = 'li'>(
       },
       createDisabledState(() => props.disabled),
       createARIADisabledState(() => props.disabled),
-      omitProps(props, ['as', 'disabled', 'ref', 'children']),
+      omit(props, 'as', 'disabled', 'ref', 'children'),
       {
         get children() {
           return createComponent(MenuChild, {

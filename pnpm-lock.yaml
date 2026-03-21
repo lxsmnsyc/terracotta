@@ -30,7 +30,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -61,7 +61,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -92,7 +92,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -123,7 +123,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -154,7 +154,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -185,7 +185,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -216,7 +216,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -247,7 +247,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -278,7 +278,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -309,7 +309,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -340,7 +340,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -371,7 +371,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -402,7 +402,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -433,7 +433,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -464,7 +464,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -495,7 +495,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -526,7 +526,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -557,7 +557,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':
@@ -588,7 +588,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       terracotta:
-        specifier: 1.1.0
+        specifier: 2.0.0-next.0
         version: link:../../packages/terracotta
     devDependencies:
       '@tailwindcss/postcss':

@@ -1,7 +1,12 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, createUniqueId, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import {
+  createComponent,
+  createEffect,
+  createUniqueId,
+  merge,
+  omit,
+} from 'solid-js';
 import type {
   SelectStateRenderProps,
   SingleSelectStateControlledOptions,
@@ -126,7 +131,8 @@ export function RadioGroup<V, T extends ValidComponent = 'div'>(
               createHasActiveState(() => state.hasActive()),
               createHasSelectedState(() => state.hasSelected()),
               isRadioGroupUncontrolled(props)
-                ? omitProps(props, [
+                ? omit(
+                    props,
                     'as',
                     'by',
                     'children',
@@ -136,8 +142,9 @@ export function RadioGroup<V, T extends ValidComponent = 'div'>(
                     'onChange',
                     'ref',
                     'toggleable',
-                  ])
-                : omitProps(props, [
+                  )
+                : omit(
+                    props,
                     'as',
                     'by',
                     'children',
@@ -147,7 +154,7 @@ export function RadioGroup<V, T extends ValidComponent = 'div'>(
                     'onChange',
                     'ref',
                     'toggleable',
-                  ]),
+                  ),
               {
                 get children() {
                   return createComponent(SelectStateProvider, {

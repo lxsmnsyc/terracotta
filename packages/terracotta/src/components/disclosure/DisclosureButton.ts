@@ -1,6 +1,5 @@
 import type { JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
@@ -64,7 +63,7 @@ export function DisclosureButton<T extends ValidComponent = 'button'>(
       createARIADisabledState(isDisabled),
       createExpandedState(() => state.isOpen()),
       createARIAExpandedState(() => state.isOpen()),
-      omitProps(props, ['children', 'ref']),
+      omit(props, 'children', 'ref'),
       {
         get children() {
           return createComponent(DisclosureStateChild, {

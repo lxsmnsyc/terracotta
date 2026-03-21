@@ -23,7 +23,5 @@
     "transitions-example": "1.0.7",
     "terracotta": "1.1.0"
   },
-  "changesets": [
-    "open-boxes-try"
-  ]
+  "changesets": ["open-boxes-try"]
 }

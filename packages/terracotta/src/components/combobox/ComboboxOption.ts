@@ -4,8 +4,8 @@ import {
   createEffect,
   createUniqueId,
   merge,
+  omit,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import type {
   AutocompleteOptionStateOptions,
   AutocompleteOptionStateRenderProps,
@@ -126,7 +126,7 @@ export function ComboboxOption<V, T extends ValidComponent = 'li'>(
       createARIASelectedState(() => state.isSelected()),
       createActiveState(() => state.isActive()),
       createMatchesState(() => state.matches()),
-      omitProps(props, ['as', 'children', 'disabled', 'value', 'ref']),
+      omit(props, 'as', 'children', 'disabled', 'value', 'ref'),
       {
         get children() {
           return createComponent(AutocompleteOptionStateProvider, {

@@ -6,8 +6,8 @@ import {
   createMemo,
   createUniqueId,
   merge,
+  omit,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateUncontrolledOptions,
@@ -224,7 +224,8 @@ function getProps<V, T extends ValidComponent = 'div'>(
 ): ComponentProps<T> {
   if (isListboxSelectUncontrolled(props)) {
     if (isListboxDisclosureUncontrolled(props)) {
-      return omitProps(props, [
+      return omit(
+        props,
         'as',
         'by',
         'children',
@@ -238,9 +239,10 @@ function getProps<V, T extends ValidComponent = 'div'>(
         'onOpen',
         'onSelectChange',
         'toggleable',
-      ]) as ComponentProps<T>;
+      ) as ComponentProps<T>;
     }
-    return omitProps(props, [
+    return omit(
+      props,
       'as',
       'by',
       'children',
@@ -254,10 +256,11 @@ function getProps<V, T extends ValidComponent = 'div'>(
       'onOpen',
       'onSelectChange',
       'toggleable',
-    ]) as ComponentProps<T>;
+    ) as ComponentProps<T>;
   }
   if (isListboxDisclosureUncontrolled(props)) {
-    return omitProps(props, [
+    return omit(
+      props,
       'as',
       'by',
       'children',
@@ -271,9 +274,10 @@ function getProps<V, T extends ValidComponent = 'div'>(
       'onOpen',
       'onSelectChange',
       'toggleable',
-    ]) as ComponentProps<T>;
+    ) as ComponentProps<T>;
   }
-  return omitProps(props, [
+  return omit(
+    props,
     'as',
     'by',
     'children',
@@ -287,7 +291,7 @@ function getProps<V, T extends ValidComponent = 'div'>(
     'onOpen',
     'onSelectChange',
     'toggleable',
-  ]) as ComponentProps<T>;
+  ) as ComponentProps<T>;
 }
 
 export function Listbox<V, T extends ValidComponent = 'div'>(

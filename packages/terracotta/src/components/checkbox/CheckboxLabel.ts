@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, merge, omit } from 'solid-js';
 import type { CheckStateRenderProps } from '../../states/create-check-state';
 import {
   CheckStateChild,
@@ -26,7 +25,7 @@ export function CheckboxLabel<T extends ValidComponent = 'label'>(
   return createDynamic(
     () => props.as || ('label' as T),
     merge(
-      omitProps(props, ['as', 'children']),
+      omit(props, 'as', 'children'),
       CHECKBOX_LABEL,
       {
         id: context.labelID,

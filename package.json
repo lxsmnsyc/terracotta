@@ -1,7 +1,11 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": ["packages/*", "examples/*", "docs"],
+  "workspaces": [
+    "packages/*",
+    "examples/*",
+    "docs"
+  ],
   "devDependencies": {
     "@biomejs/biome": "^2.3.2",
     "@changesets/cli": "^2.29.7",

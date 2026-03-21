@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
@@ -90,7 +89,7 @@ export function FeedContent<T extends ValidComponent = 'div'>(
             },
             ref: setInternalRef,
           },
-          omitProps(props, ['as']),
+          omit(props, 'as'),
         ) as ComponentProps<T>,
       );
     },

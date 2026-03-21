@@ -1,7 +1,12 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, createMemo, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import {
+  createComponent,
+  createEffect,
+  createMemo,
+  merge,
+  omit,
+} from 'solid-js';
 import type {
   MultipleSelectStateControlledOptions,
   MultipleSelectStateUncontrolledOptions,
@@ -231,7 +236,8 @@ export function Select<V, T extends ValidComponent = 'ul'>(
             createHasSelectedState(() => state.hasSelected()),
             createHasActiveState(() => state.hasActive()),
             isSelectUncontrolled(props)
-              ? omitProps(props, [
+              ? omit(
+                  props,
                   'as',
                   'by',
                   'children',
@@ -242,8 +248,9 @@ export function Select<V, T extends ValidComponent = 'ul'>(
                   'onChange',
                   'ref',
                   'toggleable',
-                ])
-              : omitProps(props, [
+                )
+              : omit(
+                  props,
                   'as',
                   'by',
                   'children',
@@ -254,7 +261,7 @@ export function Select<V, T extends ValidComponent = 'ul'>(
                   'onChange',
                   'ref',
                   'toggleable',
-                ]),
+                ),
             {
               get children() {
                 return createComponent(SelectStateProvider, {

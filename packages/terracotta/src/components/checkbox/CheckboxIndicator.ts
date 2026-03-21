@@ -1,6 +1,5 @@
 import type { JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { CheckStateRenderProps } from '../../states/create-check-state';
 import {
   CheckStateChild,
@@ -42,7 +41,7 @@ export function CheckboxIndicator<T extends ValidComponent = 'button'>(
   return createComponent(
     Button,
     merge(
-      omitProps(props, ['children', 'ref']),
+      omit(props, 'children', 'ref'),
       CHECKBOX_INDICATOR,
       {
         id: context.indicatorID,

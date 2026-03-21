@@ -1,6 +1,11 @@
 import type { JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, createUniqueId, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import {
+  createComponent,
+  createEffect,
+  createUniqueId,
+  merge,
+  omit,
+} from 'solid-js';
 import type {
   AutocompleteOptionStateOptions,
   AutocompleteOptionStateRenderProps,
@@ -110,7 +115,7 @@ export function CommandOption<V, T extends ValidComponent = 'li'>(
       createARIASelectedState(() => state.isSelected()),
       createActiveState(() => state.isActive()),
       createMatchesState(() => state.matches()),
-      omitProps(props, ['as', 'children', 'value', 'ref']),
+      omit(props, 'as', 'children', 'value', 'ref'),
       {
         get children() {
           return createComponent(AutocompleteOptionStateProvider, {

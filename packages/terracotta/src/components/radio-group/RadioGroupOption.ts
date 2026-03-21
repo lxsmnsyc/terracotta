@@ -1,6 +1,11 @@
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, createUniqueId, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import {
+  createComponent,
+  createEffect,
+  createUniqueId,
+  merge,
+  omit,
+} from 'solid-js';
 import type {
   SelectOptionStateOptions,
   SelectOptionStateRenderProps,
@@ -90,7 +95,7 @@ export function RadioGroupOption<V, T extends ValidComponent = 'div'>(
           createCheckedState(() => state.isSelected()),
           createARIACheckedState(() => state.isSelected()),
           createActiveState(() => state.isActive()),
-          omitProps(props, ['as', 'children', 'value', 'disabled', 'ref']),
+          omit(props, 'as', 'children', 'value', 'disabled', 'ref'),
           {
             get children() {
               return createComponent(SelectOptionStateProvider, {

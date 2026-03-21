@@ -7,8 +7,8 @@ import {
   createSignal,
   createUniqueId,
   merge,
+  omit,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import type {
   MultipleAutocompleteStateControlledOptions,
   MultipleAutocompleteStateUncontrolledOptions,
@@ -226,7 +226,8 @@ function getProps<V, T extends ValidComponent = 'div'>(
 ): ComponentProps<T> {
   if (isComboboxSelectUncontrolled(props)) {
     if (isComboboxDisclosureUncontrolled(props)) {
-      return omitProps(props, [
+      return omit(
+        props,
         'as',
         'by',
         'children',
@@ -240,9 +241,10 @@ function getProps<V, T extends ValidComponent = 'div'>(
         'onOpen',
         'onSelectChange',
         'toggleable',
-      ]) as ComponentProps<T>;
+      ) as ComponentProps<T>;
     }
-    return omitProps(props, [
+    return omit(
+      props,
       'as',
       'by',
       'children',
@@ -256,10 +258,11 @@ function getProps<V, T extends ValidComponent = 'div'>(
       'onOpen',
       'onSelectChange',
       'toggleable',
-    ]) as ComponentProps<T>;
+    ) as ComponentProps<T>;
   }
   if (isComboboxDisclosureUncontrolled(props)) {
-    return omitProps(props, [
+    return omit(
+      props,
       'as',
       'by',
       'children',
@@ -273,9 +276,10 @@ function getProps<V, T extends ValidComponent = 'div'>(
       'onSelectChange',
       'toggleable',
       'value',
-    ]) as ComponentProps<T>;
+    ) as ComponentProps<T>;
   }
-  return omitProps(props, [
+  return omit(
+    props,
     'as',
     'by',
     'children',
@@ -289,7 +293,7 @@ function getProps<V, T extends ValidComponent = 'div'>(
     'onSelectChange',
     'toggleable',
     'value',
-  ]) as ComponentProps<T>;
+  ) as ComponentProps<T>;
 }
 
 export function Combobox<V, T extends ValidComponent = 'div'>(

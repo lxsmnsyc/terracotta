@@ -1,6 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type {
   SelectOptionStateOptions,
   SelectOptionStateRenderProps,
@@ -9,10 +8,7 @@ import {
   createSelectOptionState,
   SelectOptionStateProvider,
 } from '../../states/create-select-option-state';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import { mergeFunc } from '../../utils/merge-func';
@@ -101,7 +97,7 @@ export function Tab<V, T extends ValidComponent = 'div'>(
       createSelectedState(() => state.isSelected()),
       createARIASelectedState(() => state.isSelected()),
       createActiveState(() => state.isActive()),
-      omitProps(props, ['as', 'children', 'value', 'disabled', 'ref']),
-    ) as DynamicProps<T>,
+      omit(props, 'as', 'children', 'value', 'disabled', 'ref'),
+    ) as ComponentProps<T>,
   );
 }

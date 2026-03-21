@@ -1,7 +1,12 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createMemo, createUniqueId, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import {
+  createComponent,
+  createMemo,
+  createUniqueId,
+  merge,
+  omit,
+} from 'solid-js';
 import type {
   SelectStateRenderProps,
   SingleSelectStateControlledOptions,
@@ -101,7 +106,8 @@ export function TabGroup<V, T extends ValidComponent = 'div'>(
               },
             },
             isTabGroupUncontrolled(props)
-              ? omitProps(props, [
+              ? omit(
+                  props,
                   'as',
                   'children',
                   'defaultValue',
@@ -111,8 +117,9 @@ export function TabGroup<V, T extends ValidComponent = 'div'>(
                   'ref',
                   'toggleable',
                   'horizontal',
-                ])
-              : omitProps(props, [
+                )
+              : omit(
+                  props,
                   'as',
                   'children',
                   'value',
@@ -122,7 +129,7 @@ export function TabGroup<V, T extends ValidComponent = 'div'>(
                   'ref',
                   'toggleable',
                   'horizontal',
-                ]),
+                ),
           ) as ComponentProps<T>,
         );
       },

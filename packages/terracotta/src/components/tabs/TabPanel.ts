@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, merge, omit } from 'solid-js';
 import type { SelectOptionStateOptions } from '../../states/create-select-option-state';
 import {
   createSelectOptionState,
@@ -62,7 +61,7 @@ export function TabPanel<V, T extends ValidComponent = 'div'>(
           },
           createSelectedState(() => state.isSelected()),
           createActiveState(() => state.isActive()),
-          omitProps(props, ['as', 'disabled', 'unmount', 'value']),
+          omit(props, 'as', 'disabled', 'unmount', 'value'),
         ) as ComponentProps<T>,
       ),
   );

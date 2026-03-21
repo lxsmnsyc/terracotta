@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createUniqueId, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, createUniqueId, merge, omit } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusNext, focusPrev } from '../../utils/focus-navigation';
@@ -71,7 +70,7 @@ export function Feed<T extends ValidComponent = 'div'>(
             id: ownerID,
             ref: setRef,
           },
-          omitProps(props, ['as', 'busy', 'size']),
+          omit(props, 'as', 'busy', 'size'),
         ) as ComponentProps<T>,
       );
     },

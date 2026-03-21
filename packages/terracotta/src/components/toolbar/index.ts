@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createEffect, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createEffect, merge, omit } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import {
@@ -138,7 +137,7 @@ export function Toolbar<T extends ValidComponent = 'div'>(
           return isHorizontal() ? 'horizontal' : 'vertical';
         },
       },
-      omitProps(props, ['as', 'horizontal', 'ref']),
+      omit(props, 'as', 'horizontal', 'ref'),
     ) as ComponentProps<T>,
   );
 }

@@ -7,8 +7,8 @@ import {
   createSignal,
   createUniqueId,
   merge,
+  omit,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import type {
   AutocompleteStateRenderProps,
   MultipleAutocompleteStateControlledOptions,
@@ -174,7 +174,8 @@ export function Command<V, T extends ValidComponent = 'div'>(
             createHasActiveState(() => state.hasActive()),
             createHasQueryState(() => state.hasQuery()),
             isCommandUncontrolled(props)
-              ? omitProps(props, [
+              ? omit(
+                  props,
                   'as',
                   'by',
                   'children',
@@ -184,8 +185,9 @@ export function Command<V, T extends ValidComponent = 'div'>(
                   'multiple',
                   'onChange',
                   'toggleable',
-                ])
-              : omitProps(props, [
+                )
+              : omit(
+                  props,
                   'as',
                   'by',
                   'children',
@@ -195,7 +197,7 @@ export function Command<V, T extends ValidComponent = 'div'>(
                   'multiple',
                   'onChange',
                   'toggleable',
-                ]),
+                ),
             {
               get children() {
                 return createComponent(AutocompleteStateProvider, {

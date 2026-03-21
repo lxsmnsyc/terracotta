@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
@@ -46,7 +45,7 @@ export function ListboxLabel<T extends ValidComponent = 'label'>(
       createExpandedState(() => disclosureState.isOpen()),
       createHasSelectedState(() => selectState.hasSelected()),
       createHasActiveState(() => selectState.hasActive()),
-      omitProps(props, ['as', 'children']),
+      omit(props, 'as', 'children'),
     ) as ComponentProps<T>,
   );
 }

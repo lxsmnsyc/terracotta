@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
 import {
   SelectStateChild,
@@ -116,7 +115,7 @@ export function TabList<V, T extends ValidComponent = 'div'>(
           },
           createHasSelectedState(() => state.hasSelected()),
           createHasActiveState(() => state.hasActive()),
-          omitProps(props, ['as', 'ref', 'children']),
+          omit(props, 'as', 'ref', 'children'),
         ) as ComponentProps<T>,
       );
     },

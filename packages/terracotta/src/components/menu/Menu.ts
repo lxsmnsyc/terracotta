@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import createTypeAhead from '../../utils/create-type-ahead';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
@@ -91,7 +90,7 @@ export function Menu<T extends ValidComponent = 'ul'>(
             role: 'menu',
             ref: setRef,
           },
-          omitProps(props, ['as', 'ref']),
+          omit(props, 'as', 'ref'),
         ) as ComponentProps<T>,
       );
     },

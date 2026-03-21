@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
@@ -39,7 +38,7 @@ export function AlertDialogOverlay<T extends ValidComponent = 'div'>(
   return createDynamic(
     () => props.as || ('div' as T),
     merge(
-      omitProps(props, ['as', 'children', 'ref']),
+      omit(props, 'as', 'children', 'ref'),
       ALERT_DIALOG_OVERLAY_TAG,
       {
         ref: setInternalRef,

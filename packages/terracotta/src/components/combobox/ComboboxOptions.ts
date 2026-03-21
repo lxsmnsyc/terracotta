@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
 import {
   AutocompleteStateChild,
@@ -117,7 +116,7 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
           createHasSelectedState(() => autocompleteState.hasSelected()),
           createHasActiveState(() => autocompleteState.hasActive()),
           createHasQueryState(() => autocompleteState.hasQuery()),
-          omitProps(props, ['as', 'children', 'ref']),
+          omit(props, 'as', 'children', 'ref'),
           {
             get children() {
               return createComponent(AutocompleteStateChild, {

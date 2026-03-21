@@ -6,10 +6,10 @@ import {
   createSignal,
   createUniqueId,
   merge,
+  omit,
   onSettled,
   useContext,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import assert from '../../utils/assert';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
@@ -47,7 +47,7 @@ export function Toast<T extends ValidComponent = 'div'>(
         role: 'status',
         'aria-live': 'polite',
       },
-      omitProps(props, ['as']),
+      omit(props, 'as'),
     ) as ComponentProps<T>,
   );
 }
@@ -66,7 +66,7 @@ export function Toaster<T extends ValidComponent = 'div'>(
     get children() {
       return createDynamic(
         () => props.as || ('div' as T),
-        merge(TOASTER_TAG, omitProps(props, ['as'])) as ComponentProps<T>,
+        merge(TOASTER_TAG, omit(props, 'as')) as ComponentProps<T>,
       );
     },
   });

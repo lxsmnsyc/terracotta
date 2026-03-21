@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createEffect, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createEffect, merge, omit } from 'solid-js';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
@@ -133,7 +132,7 @@ export function CommandInput<T extends ValidComponent = 'input'>(
       createHasSelectedState(() => state.hasSelected()),
       createHasActiveState(() => state.hasActive()),
       createHasQueryState(() => state.hasQuery()),
-      omitProps(props, ['as', 'ref']),
+      omit(props, 'as', 'ref'),
     ) as ComponentProps<T>,
   );
 }

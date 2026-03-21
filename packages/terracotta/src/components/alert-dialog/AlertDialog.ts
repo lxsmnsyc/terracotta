@@ -5,8 +5,8 @@ import {
   createTrackedEffect,
   createUniqueId,
   merge,
+  omit,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
@@ -93,7 +93,8 @@ export function AlertDialog<T extends ValidComponent = 'div'>(
             () => props.as || ('div' as T),
             merge(
               isAlertDialogUncontrolled(props)
-                ? omitProps(props, [
+                ? omit(
+                    props,
                     'as',
                     'children',
                     'defaultOpen',
@@ -102,8 +103,9 @@ export function AlertDialog<T extends ValidComponent = 'div'>(
                     'onClose',
                     'onOpen',
                     'unmount',
-                  ])
-                : omitProps(props, [
+                  )
+                : omit(
+                    props,
                     'as',
                     'children',
                     'isOpen',
@@ -112,7 +114,7 @@ export function AlertDialog<T extends ValidComponent = 'div'>(
                     'onClose',
                     'onOpen',
                     'unmount',
-                  ]),
+                  ),
               ALERT_DIALOG_TAG,
               {
                 id: ownerID,

@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
@@ -51,7 +50,7 @@ export function DisclosurePanel<T extends ValidComponent = 'div'>(
           },
           createDisabledState(() => state.disabled()),
           createExpandedState(() => state.isOpen()),
-          omitProps(props, ['as', 'unmount', 'children']),
+          omit(props, 'as', 'unmount', 'children'),
         ) as ComponentProps<T>,
       ),
   );

@@ -1,6 +1,5 @@
-import type { JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type {
   ToggleStateControlledOptions,
   ToggleStateRenderProps,
@@ -10,10 +9,7 @@ import {
   createToggleState,
   ToggleStateProvider,
 } from '../../states/create-toggle-state';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 import {
@@ -94,20 +90,15 @@ export function Toggle<T extends ValidComponent = 'button'>(
       createDisabledState(() => state.disabled()),
       createARIADisabledState(() => state.disabled()),
       isToggleUncontrolled(props)
-        ? omitProps(props, [
+        ? omit(
+            props,
             'onChange',
             'defaultPressed',
             'ref',
             'disabled',
             'children',
-          ])
-        : omitProps(props, [
-            'onChange',
-            'pressed',
-            'ref',
-            'disabled',
-            'children',
-          ]),
-    ) as DynamicProps<T>,
+          )
+        : omit(props, 'onChange', 'pressed', 'ref', 'disabled', 'children'),
+    ) as ComponentProps<T>,
   );
 }

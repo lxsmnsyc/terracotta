@@ -1,7 +1,12 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, createUniqueId, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import {
+  createComponent,
+  createEffect,
+  createUniqueId,
+  merge,
+  omit,
+} from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
@@ -83,7 +88,8 @@ export function ContextMenu<T extends ValidComponent = 'div'>(
           createARIADisabledState(() => state.disabled()),
           createExpandedState(() => state.isOpen()),
           isContextMenuUncontrolled(props)
-            ? omitProps(props, [
+            ? omit(
+                props,
                 'as',
                 'children',
                 'defaultOpen',
@@ -91,8 +97,9 @@ export function ContextMenu<T extends ValidComponent = 'div'>(
                 'onChange',
                 'onClose',
                 'onOpen',
-              ])
-            : omitProps(props, [
+              )
+            : omit(
+                props,
                 'as',
                 'children',
                 'isOpen',
@@ -100,7 +107,7 @@ export function ContextMenu<T extends ValidComponent = 'div'>(
                 'onChange',
                 'onClose',
                 'onOpen',
-              ]),
+              ),
           {
             get children() {
               return createComponent(DisclosureStateProvider, {

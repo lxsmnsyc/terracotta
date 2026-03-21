@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { merge, omit } from 'solid-js';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { useFeedArticleContext } from './FeedArticleContext';
 import { FEED_ARTICLE_DESCRIPTION_TAG } from './tags';
@@ -20,7 +19,7 @@ export function FeedArticleDescription<T extends ValidComponent = 'p'>(
       {
         id: context.descriptionID,
       },
-      omitProps(props, ['as']),
+      omit(props, 'as'),
     ) as ComponentProps<T>,
   );
 }

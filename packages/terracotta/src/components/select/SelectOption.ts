@@ -1,6 +1,5 @@
 import type { JSX, ValidComponent } from 'solid-js';
-import { createComponent, createEffect, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type {
   SelectOptionStateOptions,
   SelectOptionStateRenderProps,
@@ -93,7 +92,7 @@ export function SelectOption<V, T extends ValidComponent = 'li'>(
       createSelectedState(() => state.isSelected()),
       createARIASelectedState(() => state.isSelected()),
       createActiveState(() => state.isActive()),
-      omitProps(props, ['as', 'children', 'value', 'ref']),
+      omit(props, 'as', 'children', 'value', 'ref'),
       {
         get children() {
           return createComponent(SelectOptionStateProvider, {

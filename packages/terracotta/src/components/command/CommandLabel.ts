@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { merge, omit } from 'solid-js';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
@@ -25,7 +24,7 @@ export function CommandLabel<T extends ValidComponent = 'label'>(
   return createDynamic(
     () => props.as || ('label' as T),
     merge(
-      omitProps(props, ['as']),
+      omit(props, 'as'),
       COMMAND_LABEL_TAG,
       {
         id: context.labelID,

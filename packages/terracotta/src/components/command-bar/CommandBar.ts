@@ -6,8 +6,8 @@ import {
   createUniqueId,
   merge,
   onSettled,
+  omit,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
@@ -124,7 +124,8 @@ export function CommandBar<T extends ValidComponent = 'div'>(
                 },
               },
               isCommandBarUncontrolled(props)
-                ? omitProps(props, [
+                ? omit(
+                    props,
                     'as',
                     'children',
                     'defaultOpen',
@@ -133,8 +134,9 @@ export function CommandBar<T extends ValidComponent = 'div'>(
                     'onClose',
                     'onOpen',
                     'unmount',
-                  ])
-                : omitProps(props, [
+                  )
+                : omit(
+                    props,
                     'as',
                     'children',
                     'isOpen',
@@ -143,7 +145,7 @@ export function CommandBar<T extends ValidComponent = 'div'>(
                     'onClose',
                     'onOpen',
                     'unmount',
-                  ]),
+                  ),
             ) as ComponentProps<T>,
           ),
       );

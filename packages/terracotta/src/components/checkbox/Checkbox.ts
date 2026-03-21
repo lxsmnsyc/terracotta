@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createUniqueId, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, createUniqueId, merge, omit } from 'solid-js';
 import type {
   CheckStateControlledOptions,
   CheckStateRenderProps,
@@ -71,20 +70,15 @@ export function Checkbox<T extends ValidComponent = 'div'>(
           createARIADisabledState(() => state.disabled()),
           createCheckedState(() => state.checked()),
           isCheckboxUncontrolled(props)
-            ? omitProps(props, [
+            ? omit(
+                props,
                 'as',
                 'children',
                 'defaultChecked',
                 'disabled',
                 'onChange',
-              ])
-            : omitProps(props, [
-                'as',
-                'children',
-                'checked',
-                'disabled',
-                'onChange',
-              ]),
+              )
+            : omit(props, 'as', 'children', 'checked', 'disabled', 'onChange'),
           {
             get children() {
               return createComponent(CheckStateProvider, {

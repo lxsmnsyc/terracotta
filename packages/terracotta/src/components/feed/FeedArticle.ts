@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, createUniqueId, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, createUniqueId, merge, omit } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import { FeedArticleContext } from './FeedArticleContext';
@@ -44,7 +43,7 @@ export function FeedArticle<T extends ValidComponent = 'article'>(
               return rootContext.size;
             },
           },
-          omitProps(props, ['as']),
+          omit(props, 'as'),
         ) as ComponentProps<T>,
       );
     },

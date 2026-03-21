@@ -1,7 +1,6 @@
 import { createDynamic } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
-import { createComponent, merge } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import { createComponent, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
@@ -39,7 +38,7 @@ export function CommandBarTitle<T extends ValidComponent = 'h2'>(
       },
       createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
-      omitProps(props, ['as', 'children']),
+      omit(props, 'as', 'children'),
     ) as ComponentProps<T>,
   );
 }
