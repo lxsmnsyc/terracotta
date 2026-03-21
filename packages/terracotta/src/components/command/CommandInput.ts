@@ -55,15 +55,16 @@ export function CommandInput<T extends ValidComponent = 'input'>(
               }
               case 'Enter': {
                 e.preventDefault();
-                context.selectedDescendant = context.activeDescendant;
+                context.setSelectedDescendant(context.getActiveDescendant());
                 break;
               }
             }
           }
         }),
         useEventListener(current, 'focus', () => {
-          if (context.activeDescendant) {
-            const ref = document.getElementById(context.activeDescendant);
+          const activeDescendant = context.getActiveDescendant();
+          if (activeDescendant) {
+            const ref = document.getElementById(activeDescendant);
             if (ref) {
               context.controller.setCurrent(ref);
             }
@@ -93,7 +94,7 @@ export function CommandInput<T extends ValidComponent = 'input'>(
   );
 
   createEffect(
-    () => context.activeDescendant,
+    () => context.getActiveDescendant(),
     activeDescendant => {
       if (activeDescendant) {
         const ref = document.getElementById(activeDescendant);
@@ -124,7 +125,7 @@ export function CommandInput<T extends ValidComponent = 'input'>(
         // we set this to true
         'aria-expanded': true,
         get 'aria-activedescendant'() {
-          return context.activeDescendant;
+          return context.getActiveDescendant();
         },
       },
       createDisabledState(isDisabled),

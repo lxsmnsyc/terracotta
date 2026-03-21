@@ -58,7 +58,7 @@ export function ComboboxOption<V, T extends ValidComponent = 'li'>(
   const id = createUniqueId();
 
   createEffect(
-    () => !state.disabled() && context.selectedDescendant === id,
+    () => !state.disabled() && context.getSelectedDescendant() === id,
     value => {
       if (value) {
         state.select();
@@ -70,7 +70,7 @@ export function ComboboxOption<V, T extends ValidComponent = 'li'>(
   );
 
   function focusOption(): void {
-    context.activeDescendant = id;
+    context.setActiveDescendant(id);
     state.focus();
   }
 

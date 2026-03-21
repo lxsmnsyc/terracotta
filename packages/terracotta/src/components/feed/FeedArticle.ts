@@ -40,7 +40,7 @@ export function FeedArticle<T extends ValidComponent = 'article'>(
               return props.index + 1;
             },
             get 'aria-setsize'() {
-              return rootContext.size;
+              return rootContext.getSize();
             },
           },
           omit(props, 'as'),

@@ -142,22 +142,14 @@ export function Command<V, T extends ValidComponent = 'div'>(
       value: {
         multiple: !!props.multiple,
         controller,
-        get activeDescendant() {
-          return activeDescendant();
-        },
-        set activeDescendant(value: string | undefined) {
-          setActiveDescendant(value);
-        },
-        get selectedDescendant() {
-          return selectedDescendant();
-        },
-        set selectedDescendant(value: string | undefined) {
-          setSelectedDescendant(value);
-        },
         inputID,
         optionsID,
         labelID,
         optionsHovering: false,
+        getActiveDescendant: activeDescendant,
+        setActiveDescendant,
+        getSelectedDescendant: selectedDescendant,
+        setSelectedDescendant,
       },
       get children() {
         return createDynamic(

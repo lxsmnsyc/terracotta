@@ -86,28 +86,28 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
                   break;
                 }
                 case 'ArrowLeft': {
-                  if (context.horizontal) {
+                  if (context.isHorizontal()) {
                     e.preventDefault();
                     controller.setPrevChecked(true);
                   }
                   break;
                 }
                 case 'ArrowUp': {
-                  if (!context.horizontal) {
+                  if (!context.isHorizontal()) {
                     e.preventDefault();
                     controller.setPrevChecked(true);
                   }
                   break;
                 }
                 case 'ArrowRight': {
-                  if (context.horizontal) {
+                  if (context.isHorizontal()) {
                     e.preventDefault();
                     controller.setNextChecked(true);
                   }
                   break;
                 }
                 case 'ArrowDown': {
-                  if (!context.horizontal) {
+                  if (!context.isHorizontal()) {
                     e.preventDefault();
                     controller.setNextChecked(true);
                   }
@@ -182,7 +182,7 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
                 'aria-labelledby': context.buttonID,
                 ref: setInternalRef,
                 get 'aria-orientation'() {
-                  return context.horizontal ? 'horizontal' : 'vertical';
+                  return context.isHorizontal() ? 'horizontal' : 'vertical';
                 },
                 get tabindex() {
                   return selectState.disabled() ? -1 : 0;

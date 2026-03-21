@@ -55,7 +55,7 @@ export function CommandOption<V, T extends ValidComponent = 'li'>(
   const id = createUniqueId();
 
   createEffect(
-    () => !state.disabled() && context.selectedDescendant === id,
+    () => !state.disabled() && context.getSelectedDescendant() === id,
     flag => {
       if (flag) {
         state.select();
@@ -64,7 +64,7 @@ export function CommandOption<V, T extends ValidComponent = 'li'>(
   );
 
   function focusOption(): void {
-    context.activeDescendant = id;
+    context.setActiveDescendant(id);
     state.focus();
   }
 

@@ -206,12 +206,7 @@ export function Select<V, T extends ValidComponent = 'ul'>(
     });
 
     return createComponent(SelectContext, {
-      value: {
-        controller,
-        get horizontal() {
-          return !!props.horizontal;
-        },
-      },
+      value: controller,
       get children() {
         return createDynamic(
           () => props.as || ('ul' as T),

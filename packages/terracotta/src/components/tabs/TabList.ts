@@ -42,28 +42,28 @@ export function TabList<V, T extends ValidComponent = 'div'>(
           if (!state.disabled()) {
             switch (e.key) {
               case 'ArrowUp': {
-                if (!rootContext.horizontal) {
+                if (!rootContext.isHorizontal()) {
                   e.preventDefault();
                   controller.setPrevChecked(true);
                 }
                 break;
               }
               case 'ArrowLeft': {
-                if (rootContext.horizontal) {
+                if (rootContext.isHorizontal()) {
                   e.preventDefault();
                   controller.setPrevChecked(true);
                 }
                 break;
               }
               case 'ArrowDown': {
-                if (!rootContext.horizontal) {
+                if (!rootContext.isHorizontal()) {
                   e.preventDefault();
                   controller.setNextChecked(true);
                 }
                 break;
               }
               case 'ArrowRight': {
-                if (rootContext.horizontal) {
+                if (rootContext.isHorizontal()) {
                   e.preventDefault();
                   controller.setNextChecked(true);
                 }
@@ -102,7 +102,7 @@ export function TabList<V, T extends ValidComponent = 'div'>(
           {
             role: 'tablist',
             get 'aria-orientation'() {
-              return rootContext.horizontal ? 'horizontal' : 'vertical';
+              return rootContext.isHorizontal() ? 'horizontal' : 'vertical';
             },
             ref: setRef,
             get children() {

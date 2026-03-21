@@ -2,7 +2,7 @@ import { createContext, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 
 interface TabGroupContextData<V> {
-  horizontal: boolean;
+  isHorizontal(): boolean;
   getId(kind: string, value: V): string;
 }
 

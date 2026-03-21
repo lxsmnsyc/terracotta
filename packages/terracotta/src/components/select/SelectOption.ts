@@ -76,7 +76,7 @@ export function SelectOption<V, T extends ValidComponent = 'li'>(
     Button,
     merge(
       SELECT_OPTION_TAG,
-      createOwnerAttribute(context.controller.getId()),
+      createOwnerAttribute(context.getId()),
       {
         get as() {
           return props.as || ('li' as T);

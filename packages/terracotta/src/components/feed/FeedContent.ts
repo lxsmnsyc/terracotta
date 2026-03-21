@@ -85,7 +85,7 @@ export function FeedContent<T extends ValidComponent = 'div'>(
             role: 'feed',
             'aria-labelledby': context.labelID,
             get 'aria-busy'() {
-              return context.busy;
+              return context.isBusy();
             },
             ref: setInternalRef,
           },

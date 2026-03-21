@@ -74,7 +74,7 @@ export function TabGroup<V, T extends ValidComponent = 'div'>(
 
     return createComponent(TabGroupContext, {
       value: {
-        get horizontal() {
+        isHorizontal() {
           return props.horizontal;
         },
         getId(kind: string, value: V): string {

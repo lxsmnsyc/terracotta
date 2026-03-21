@@ -29,8 +29,8 @@ interface TransitionCounter {
 }
 
 const TransitionRootContext = createContext<TransitionRootBaseProps>();
-const TransitionCounterContext = createContext<TransitionCounter>(
-  {} as TransitionCounter,
+const TransitionCounterContext = createContext<{ value?: TransitionCounter }>(
+  {},
 );
 
 function useTransitionRootContext(
@@ -109,7 +109,7 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
 ): JSX.Element {
   const values = useTransitionRootContext('TransitionChild');
   // Transitions pending on parent
-  const transitionParent = useContext(TransitionCounterContext);
+  const transitionParent = useContext(TransitionCounterContext).value;
   // Transitions pending underneath element
   const transitionChildren = createTransitionCounter();
 
@@ -184,9 +184,7 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
         if (props.beforeLeave) {
           props.beforeLeave();
         }
-        if ('register' in transitionParent) {
-          transitionParent.register();
-        }
+        transitionParent?.register();
         removeClassList(element, entered);
         setState('leave-from');
         addClassList(element, leave);
@@ -201,9 +199,7 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
             removeClassList(element, leave);
             removeClassList(element, leaveTo);
             setVisible(false);
-            if ('unregister' in transitionParent) {
-              transitionParent.unregister();
-            }
+            transitionParent?.unregister();
             if (props.afterLeave) {
               props.afterLeave();
             }
@@ -222,7 +218,7 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
   );
 
   return createComponent(TransitionCounterContext, {
-    value: transitionChildren,
+    value: { value: transitionChildren },
     get children() {
       return createUnmountable(props, visible, () =>
         createDynamic(

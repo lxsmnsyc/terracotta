@@ -347,18 +347,16 @@ export function Listbox<V, T extends ValidComponent = 'div'>(
     );
     return createComponent(ListboxContext, {
       value: {
-        get multiple() {
-          return props.multiple;
-        },
         ownerID,
         labelID,
         buttonID,
         optionsID,
-        get horizontal() {
-          return props.horizontal;
-        },
         buttonHovering: false,
         optionsHovering: false,
+        multiple: props.multiple,
+        isHorizontal() {
+          return props.horizontal;
+        },
       },
       get children() {
         return createComponent(SelectStateProvider, {

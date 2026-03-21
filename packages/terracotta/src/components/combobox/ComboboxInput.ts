@@ -72,7 +72,7 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
               case 'Enter': {
                 e.preventDefault();
                 if (disclosureState.isOpen()) {
-                  context.selectedDescendant = context.activeDescendant;
+                  context.setSelectedDescendant(context.getActiveDescendant());
                 }
                 break;
               }
@@ -120,7 +120,7 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
   );
 
   createEffect(
-    () => context.activeDescendant,
+    () => context.getActiveDescendant(),
     activeDescendant => {
       if (activeDescendant) {
         const current = document.getElementById(activeDescendant);
@@ -153,7 +153,7 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
           return disclosureState.isOpen();
         },
         get 'aria-activedescendant'() {
-          return context.activeDescendant;
+          return context.getActiveDescendant();
         },
       },
       createDisabledState(isDisabled),

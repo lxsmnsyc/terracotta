@@ -32,10 +32,10 @@ export function Feed<T extends ValidComponent = 'div'>(
       ownerID,
       labelID,
       contentID,
-      get size() {
+      getSize() {
         return props.size;
       },
-      get busy() {
+      isBusy() {
         return !!props.busy;
       },
       focusNext() {

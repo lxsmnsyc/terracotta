@@ -362,18 +362,10 @@ export function Combobox<V, T extends ValidComponent = 'div'>(
         controller,
         inputHovering: false,
         optionsHovering: false,
-        get activeDescendant() {
-          return activeDescendant();
-        },
-        set activeDescendant(value: string | undefined) {
-          setActiveDescendant(value);
-        },
-        get selectedDescendant() {
-          return selectedDescendant();
-        },
-        set selectedDescendant(value: string | undefined) {
-          setSelectedDescendant(value);
-        },
+        getActiveDescendant: activeDescendant,
+        setActiveDescendant,
+        getSelectedDescendant: selectedDescendant,
+        setSelectedDescendant,
       },
       get children() {
         return createComponent(AutocompleteStateProvider, {
