@@ -84,7 +84,7 @@ export default function App(): JSX.Element {
         as="div"
         class="flex flex-row justify-between items-center space-x-4"
       >
-        <CheckboxIndicator class="flex-none w-6 h-6 p-1 text-white bg-opacity-25 bg-fuchsia-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+        <CheckboxIndicator class="flex-none w-6 h-6 p-1 text-white bg-fuchsia-900/25 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
           <Switch>
             <Match when={checked() === undefined}>
               <span class="sr-only">Mixed</span>

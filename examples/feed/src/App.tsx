@@ -186,7 +186,7 @@ export default function App(): JSX.Element {
             {(article, index): JSX.Element => (
               <FeedArticle
                 index={index()}
-                class="p-2 m-2 flex flex-col space-y-1 bg-indigo-900/25 transition rounded focus:outline-none focus-visible:ring focus:bg-indigo-700 focus-visible:ring-indigo-500 focus-visible:ring-opacity-75"
+                class="p-2 m-2 flex flex-col space-y-1 bg-indigo-900/25 transition rounded focus:outline-none focus-visible:ring focus:bg-indigo-700 focus-visible:ring-indigo-500/75"
               >
                 <FeedArticleLabel class="text-lg text-white font-bold">
                   {article().title}

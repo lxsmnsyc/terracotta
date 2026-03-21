@@ -138,14 +138,14 @@ export default function App(): JSX.Element {
                       value={category()}
                       class={classNames(
                         'w-full h-96 p-2 rounded-lg bg-white overflow-y-auto focus:outline-none',
-                        'focus:ring-2 focus:ring-offset-2 focus:ring-offset-rose-300 focus:ring-white focus:ring-opacity-60',
+                        'focus:ring-2 focus:ring-offset-2 focus:ring-offset-rose-300 focus:ring-white/60',
                       )}
                     >
                       <For each={FEED[category()]}>
                         {(item): JSX.Element => (
                           <div
                             tabindex={0}
-                            class="p-2 m-2 flex flex-col space-y-1 rounded focus:outline-none focus-visible:ring focus-visible:ring-rose-500 focus-visible:ring-opacity-75"
+                            class="p-2 m-2 flex flex-col space-y-1 rounded focus:outline-none focus-visible:ring focus-visible:ring-rose-500/75"
                           >
                             <div class="text-lg text-gray-900 font-bold">
                               {item().title}

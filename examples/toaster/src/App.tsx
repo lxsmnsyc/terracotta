@@ -59,7 +59,7 @@ function CustomToast(props: ToastProps): JSX.Element {
         </span>
         <button
           type="button"
-          class="flex-none w-6 h-6 p-1 text-white bg-rose-900/25 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          class="flex-none w-6 h-6 p-1 text-white bg-rose-900/25 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
           onClick={dismiss}
         >
           <CloseIcon title="Close" />
@@ -111,14 +111,14 @@ export default function App(): JSX.Element {
         <button
           type="button"
           onClick={createToast}
-          class="px-4 py-2 text-sm font-medium text-white bg-black/20 rounded-md hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          class="px-4 py-2 text-sm font-medium text-white bg-black/20 rounded-md hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
         >
           Create toast
         </button>
         <button
           type="button"
           onClick={closeNotifs}
-          class="px-4 py-2 text-sm font-medium text-white bg-black/20 rounded-md hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          class="px-4 py-2 text-sm font-medium text-white bg-black/20 rounded-md hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
         >
           Clear toasts
         </button>
@@ -141,7 +141,7 @@ export default function App(): JSX.Element {
               <button
                 type="button"
                 onClick={closeNotifs}
-                class="w-6 h-6 p-1 text-white bg-rose-900/25 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                class="w-6 h-6 p-1 text-white bg-rose-900/25 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
               >
                 <CloseIcon title="Close" />
               </button>

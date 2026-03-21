@@ -25,7 +25,7 @@ export default function App(): JSX.Element {
         <button
           type="button"
           onClick={openModal}
-          class="px-4 py-2 text-sm font-medium text-white bg-black/2 rounded-md hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          class="px-4 py-2 text-sm font-medium text-white bg-black/2 rounded-md hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
         >
           Open dialog
         </button>
