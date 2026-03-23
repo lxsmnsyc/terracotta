@@ -6,7 +6,7 @@ import './style.css';
 
 function Root(): JSX.Element {
   return (
-    <div class="bg-gradient-to-r from-orange-400 to-pink-600 w-screen h-screen flex overflow-hidden">
+    <div class="bg-linear-to-r from-orange-400 to-pink-600 w-screen h-screen flex overflow-hidden">
       <div class="flex flex-col items-center justify-center w-full">
         <App />
       </div>
