@@ -1,41 +1,37 @@
-import { createDynamic } from '@solidjs/web';
+import { createDynamic, untrack } from '@solidjs/web';
 import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
 import {
   createComponent,
   createContext,
   createEffect,
-  createMemo,
   createSignal,
   createUniqueId,
   merge,
   omit,
   onCleanup,
-  useContext
+  useContext,
 } from 'solid-js';
+import {
+  TransitionHooks,
+  TransitionState,
+  TransitionStates,
+} from '../../states/create-transition-state';
 import assert from '../../utils/assert';
 import { createDependencyList } from '../../utils/create-dependency-list';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
-import { createForwardRef } from '../../utils/dynamic-prop';
+import {
+  createForwardRef,
+  type HeadlessPropsWithRef,
+} from '../../utils/dynamic-prop';
 import type { Prettify } from '../../utils/types';
-import { waitForTransition } from '../../utils/wait-for-transition';
 
 export interface TransitionRootBaseProps {
   show: boolean;
 }
 
-interface TransitionCounter {
-  isReady(): boolean;
-  register(id: string): void;
-  unregister(id: string): void;
-  done(): boolean;
-}
-
 const TransitionRootContext = createContext<TransitionRootBaseProps>();
-const TransitionCounterContext = createContext<{ value?: TransitionCounter }>(
-  {},
-);
+const TransitionStateContext = createContext<{ value?: TransitionState }>({});
 
 function useTransitionRootContext(
   componentName: string,
@@ -48,30 +44,9 @@ function useTransitionRootContext(
   return context;
 }
 
-function createTransitionCounter(isReady: () => boolean): TransitionCounter {
-  // Set of currently transitioning TransitionChilds nested within a TransitionChild
-  const [size, setSize] = createSignal(0);
-  const ids = new Set<string>();
-
-  return {
-    isReady,
-    // Reactive set
-    register(id: string): void {
-      ids.add(id);
-      setSize(c => c + 1);
-    },
-    unregister(id: string): void {
-      ids.delete(id);
-      setSize(c => c - 1);
-    },
-    done(): boolean {
-      size();
-      return ids.size === 0;
-    },
-  };
-}
-
-export interface TransitionBaseChildProps extends UnmountableProps {
+export interface TransitionBaseChildProps
+  extends UnmountableProps,
+    TransitionHooks {
   appear?: boolean;
   enter?: string;
   enterFrom?: string;
@@ -80,190 +55,136 @@ export interface TransitionBaseChildProps extends UnmountableProps {
   leave?: string;
   leaveFrom?: string;
   leaveTo?: string;
-  beforeEnter?: () => void;
-  afterEnter?: () => void;
-  beforeLeave?: () => void;
-  afterLeave?: () => void;
-}
-
-function getClassList(classes?: string): string[] {
-  return classes ? classes.split(' ') : [];
-}
-
-function addClassList(ref: HTMLElement, classes: string[]): void {
-  const filtered = classes.filter(value => value);
-  if (filtered.length) {
-    ref.classList.add(...filtered);
-  }
-}
-function removeClassList(ref: HTMLElement, classes: string[]): void {
-  const filtered = classes.filter(value => value);
-  if (filtered.length) {
-    ref.classList.remove(...filtered);
-  }
 }
 
 export type TransitionChildProps<T extends ValidComponent = 'div'> =
   HeadlessPropsWithRef<T, TransitionBaseChildProps>;
 
-type TransitionStates =
-  | 'enter-from'
-  | 'enter-to'
-  | 'entered'
-  | 'leave-from'
-  | 'leave-to';
+function getClassList(classes?: string): string[] {
+  return classes ? classes.split(' ') : [];
+}
 
 export function TransitionChild<T extends ValidComponent = 'div'>(
   props: TransitionChildProps<T>,
 ): JSX.Element {
-  const values = useTransitionRootContext('TransitionChild');
-  // Transitions pending on parent
-  const transitionParent = useContext(TransitionCounterContext).value;
-  // Transitions pending underneath element
-  const [ready, setReady] = createSignal(false);
-  const transitionChildren = createTransitionCounter(ready);
+  const root = useTransitionRootContext('TransitionChild');
+  const parent = useContext(TransitionStateContext).value;
 
-  const [state, setState] = createSignal<TransitionStates>();
+  const [current, setCurrent] = createSignal<TransitionStates>();
   const [internalRef, setInternalRef] = createForwardRef(props);
-  const [visible, setVisible] = createSignal(false);
-  const [leaving, setLeaving] = createSignal(false);
+  const [visible, setVisible] = createSignal<boolean>(
+    untrack(() => {
+      if (props.appear) {
+        return root.show;
+      }
+      return false;
+    }),
+  );
+
+  const [ready, setReady] = createSignal(false);
+
+  const state = new TransitionState(ready, {
+    onTransition(state) {
+      props.onTransition?.(state);
+      setCurrent(state);
+    },
+    beforeEnter() {
+      props.beforeEnter?.();
+      setReady(false);
+    },
+    beforeLeave() {
+      props.beforeLeave?.();
+    },
+    afterEnter() {
+      props.afterEnter?.();
+      setReady(true);
+    },
+    afterLeave() {
+      props.afterLeave?.();
+      setVisible(false);
+    },
+  });
+
+  createEffect(
+    createDependencyList(() => [
+      props.enter,
+      props.enterFrom,
+      props.enterTo,
+      props.entered,
+      props.leave,
+      props.leaveFrom,
+      props.leaveTo,
+    ]),
+    ([enter, enterFrom, enterTo, entered, leave, leaveFrom, leaveTo]) => {
+      state.setClasses({
+        enter: getClassList(enter),
+        enterFrom: getClassList(enterFrom),
+        enterTo: getClassList(enterTo),
+        entered: getClassList(entered),
+        leave: getClassList(leave),
+        leaveFrom: getClassList(leaveFrom),
+        leaveTo: getClassList(leaveTo),
+      });
+    },
+  );
+
+  if (parent) {
+    parent.register(state);
+
+    onCleanup(() => {
+      parent.unregister(state);
+    });
+    createEffect(
+      () => root.show && parent.visible(),
+      flag => {
+        if (flag) {
+          setVisible(true);
+        }
+      },
+    );
+    createEffect(internalRef, element => {
+      if (element instanceof HTMLElement) {
+        state.setElement(element);
+      }
+    });
+  } else {
+    createEffect(
+      () => root.show,
+      flag => {
+        if (flag) {
+          setVisible(true);
+        }
+      },
+    );
+  }
+
+  createEffect(
+    createDependencyList(() => [internalRef(), root.show]),
+    ([element, flag]) => {
+      if (element instanceof HTMLElement) {
+        state.setElement(element);
+
+        if (flag) {
+          state.show();
+        } else {
+          state.hide();
+        }
+      }
+    },
+  );
 
   const id = createUniqueId();
 
-  // Step 1: write through internal visibility state based on `show`
-  createEffect(
-    createMemo(() => values.show && (transitionParent?.isReady() ?? true) && transitionChildren.done()),
-    shouldShow => {
-      if (shouldShow) {
-        setVisible(true);
-      }
-    },
-  );
-
-  let initial = true;
-  createEffect(
-    () => !values.show && transitionChildren.done(),
-    shouldLeave => {
-      if (shouldLeave && !initial) {
-        setLeaving(true);
-      }
-
-      if (initial) {
-        initial = false;
-      }
-    },
-  );
-
-  // Step 2: transition-in when visible
-  createEffect(
-    createDependencyList(() => [internalRef(), visible()] as const),
-    ([element, flag]) => {
-      if (element instanceof HTMLElement && flag) {
-        const enter = getClassList(props.enter);
-        const enterFrom = getClassList(props.enterFrom);
-        const enterTo = getClassList(props.enterTo);
-        const entered = getClassList(props.entered);
-
-        setReady(false);
-        if (props.beforeEnter) {
-          props.beforeEnter();
-        }
-        setState('enter-from');
-        addClassList(element, enter);
-        addClassList(element, enterFrom);
-
-        const raf = requestAnimationFrame(() => {
-          removeClassList(element, enterFrom);
-          setState('enter-to');
-          addClassList(element, enterTo);
-
-          waitForTransition(element).then(() => {
-            removeClassList(element, enter);
-            removeClassList(element, enterTo);
-            setState('entered');
-            addClassList(element, entered);
-            if (props.afterEnter) {
-              props.afterEnter();
-            }
-            setReady(true);
-            transitionParent?.register(id);
-          });
-        });
-
-        return () => {
-          cancelAnimationFrame(raf);
-          setReady(true);
-          // removeClassList(element, enter);
-          // removeClassList(element, enterTo);
-          // removeClassList(element, enterFrom);
-          // removeClassList(element, entered);
-        };
-      }
-      return undefined;
-    },
-  );
-
-  // Step 3: when `show` becomes false, and no children is transitioning, transition out
-  createEffect(
-    createDependencyList(
-      () => [internalRef(), leaving()] as const,
-    ),
-    ([element, flag]) => {
-      if (element instanceof HTMLElement && flag) {
-        const leave = getClassList(props.leave);
-        const leaveFrom = getClassList(props.leaveFrom);
-        const leaveTo = getClassList(props.leaveTo);
-        const entered = getClassList(props.entered);
-
-        setReady(false);
-        if (props.beforeLeave) {
-          props.beforeLeave();
-        }
-        removeClassList(element, entered);
-        setState('leave-from');
-        addClassList(element, leave);
-        addClassList(element, leaveFrom);
-
-        const raf = requestAnimationFrame(() => {
-          removeClassList(element, leaveFrom);
-          setState('leave-to');
-          addClassList(element, leaveTo);
-
-          waitForTransition(element).then(() => {
-            removeClassList(element, leave);
-            removeClassList(element, leaveTo);
-            setVisible(false);
-            setLeaving(false);
-            setReady(true);
-            if (props.afterLeave) {
-              props.afterLeave();
-            }
-            transitionParent?.unregister(id);
-          });
-        });
-
-        return () => {
-          cancelAnimationFrame(raf);
-          // removeClassList(element, leave);
-          // removeClassList(element, leaveTo);
-          // removeClassList(element, leaveFrom);
-        };
-      }
-      return undefined;
-    },
-  );
-
-  onCleanup(() => {
-    transitionParent?.unregister(id);
-  });
-
-  return createComponent(TransitionCounterContext, {
-    value: { value: transitionChildren },
+  return createComponent(TransitionStateContext, {
+    value: { value: state },
     get children() {
       return createUnmountable(props, visible, () =>
         createDynamic(
           () => props.as || ('div' as T),
           merge(
+            {
+              id,
+            },
             omit(
               props,
               'as',
@@ -285,7 +206,7 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
             {
               ref: setInternalRef,
               get 'tc-transition'() {
-                return state();
+                return current();
               },
             },
           ) as ComponentProps<T>,
@@ -305,7 +226,7 @@ export function Transition<T extends ValidComponent = 'div'>(
   return createComponent(TransitionRootContext, {
     value: props,
     get children() {
-      return createComponent(TransitionCounterContext, {
+      return createComponent(TransitionStateContext, {
         value: { value: undefined },
         get children() {
           return createComponent(

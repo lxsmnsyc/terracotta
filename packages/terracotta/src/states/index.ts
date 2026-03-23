@@ -88,3 +88,9 @@ export type {
   ToggleStateRenderProps,
   ToggleStateUncontrolledOptions,
 } from './create-toggle-state';
+export { TransitionState } from './create-transition-state';
+export type {
+  TransitionClasses,
+  TransitionHooks,
+  TransitionStates,
+} from './create-transition-state';

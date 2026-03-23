@@ -11,39 +11,39 @@ export default function App(): JSX.Element {
         <Transition
           show={isShowing()}
           class="w-full h-full bg-white/25 rounded-md shadow-lg flex items-center justify-center"
-          enter="transform transition duration-200"
+          enter="transform transition duration-100"
           enterFrom="opacity-0 rotate-[-120deg] scale-50"
           enterTo="opacity-100 rotate-0 scale-100"
-          leave="transform duration-200 transition ease-in-out"
+          leave="transform duration-100 transition ease-in-out"
           leaveFrom="opacity-100 rotate-0 scale-100 "
-          leaveTo="opacity-0 scale-95 "
+          leaveTo="opacity-0 scale-95 rotate-[-120deg]"
         >
           <TransitionChild
             class="w-[80%] h-[80%] bg-white/25 rounded-md shadow-lg flex items-center justify-center"
-            enter="transform transition duration-200"
+            enter="transform transition duration-100"
             enterFrom="opacity-0 rotate-[-120deg] scale-50"
             enterTo="opacity-100 rotate-0 scale-100"
-            leave="transform duration-200 transition ease-in-out"
+            leave="transform duration-100 transition ease-in-out"
             leaveFrom="opacity-100 rotate-0 scale-100 "
-            leaveTo="opacity-0 scale-95 "
+            leaveTo="opacity-0 scale-95 rotate-[-120deg]"
           >
             <TransitionChild
               class="w-[80%] h-[80%] bg-white/25 rounded-md shadow-lg flex items-center justify-center"
-              enter="transform transition duration-200"
+              enter="transform transition duration-100"
               enterFrom="opacity-0 rotate-[-120deg] scale-50"
               enterTo="opacity-100 rotate-0 scale-100"
-              leave="transform duration-200 transition ease-in-out"
+              leave="transform duration-100 transition ease-in-out"
               leaveFrom="opacity-100 rotate-0 scale-100 "
-              leaveTo="opacity-0 scale-95 "
+              leaveTo="opacity-0 scale-95 rotate-[-120deg]"
             >
               <TransitionChild
                 class="w-[80%] h-[80%] bg-white/25 rounded-md shadow-lg"
-                enter="transform transition duration-200"
+                enter="transform transition duration-100"
                 enterFrom="opacity-0 rotate-[-120deg] scale-50"
                 enterTo="opacity-100 rotate-0 scale-100"
-                leave="transform duration-200 transition ease-in-out"
+                leave="transform duration-100 transition ease-in-out"
                 leaveFrom="opacity-100 rotate-0 scale-100 "
-                leaveTo="opacity-0 scale-95 "
+                leaveTo="opacity-0 scale-95 rotate-[-120deg]"
               />
             </TransitionChild>
           </TransitionChild>
