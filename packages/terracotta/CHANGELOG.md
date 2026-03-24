@@ -1,5 +1,11 @@
 # terracotta
 
+## 2.0.0-next.4
+
+### Patch Changes
+
+- e0ed99d: Fix transition orchestration
+
 ## 2.0.0-next.3
 
 ### Patch Changes

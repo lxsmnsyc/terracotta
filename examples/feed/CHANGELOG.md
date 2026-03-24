@@ -1,5 +1,12 @@
 # feed-example
 
+## 1.0.8-next.4
+
+### Patch Changes
+
+- Updated dependencies [e0ed99d]
+  - terracotta@2.0.0-next.4
+
 ## 1.0.8-next.3
 
 ### Patch Changes
