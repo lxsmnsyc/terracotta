@@ -1,7 +1,7 @@
 {
   "name": "checkbox-example",
   "type": "module",
-  "version": "1.0.8-next.5",
+  "version": "1.0.8-next.6",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -18,7 +18,7 @@
     "@solidjs/web": "2.0.0-beta.15",
     "solid-js": "2.0.0-beta.15",
     "tailwindcss": "^4.1.18",
-    "terracotta": "2.0.0-next.5"
+    "terracotta": "2.0.0-next.6"
   },
   "private": true,
   "publishConfig": {

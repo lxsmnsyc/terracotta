@@ -1,5 +1,12 @@
 # listbox-example
 
+## 1.0.8-next.6
+
+### Patch Changes
+
+- Updated dependencies
+  - terracotta@2.0.0-next.6
+
 ## 1.0.8-next.5
 
 ### Patch Changes

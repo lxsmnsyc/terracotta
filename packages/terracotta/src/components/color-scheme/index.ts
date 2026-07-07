@@ -1,4 +1,4 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import {
   createComponent,
   createContext,
@@ -6,6 +6,7 @@ import {
   createMemo,
   createSignal,
   useContext,
+  type Accessor,
 } from 'solid-js';
 import { usePrefersDark } from 'solid-use/media-query';
 import usePageVisibility from 'solid-use/page-visibility';
