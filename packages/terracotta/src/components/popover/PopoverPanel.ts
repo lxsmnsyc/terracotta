@@ -64,7 +64,10 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
         if (context.hovering) {
           return;
         }
-        if (!(e.relatedTarget && current.contains(e.relatedTarget as Node))) {
+        if (
+          (e.relatedTarget && !current.contains(e.relatedTarget as Node)) ||
+          (e.target && !current.contains(e.target as Node))
+        ) {
           state.close();
         }
       });

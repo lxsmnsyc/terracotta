@@ -147,7 +147,10 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
           if (context.buttonHovering || context.optionsHovering) {
             return;
           }
-          if (!(e.relatedTarget && current.contains(e.relatedTarget as Node))) {
+          if (
+            (e.relatedTarget && !current.contains(e.relatedTarget as Node)) ||
+            (e.target && !current.contains(e.target as Node))
+          ) {
             disclosureState.close();
           }
         });
