@@ -1,4 +1,4 @@
-import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, merge, omit } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';

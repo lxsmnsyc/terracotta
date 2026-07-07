@@ -1,5 +1,4 @@
-import { createDynamic } from '@solidjs/web';
-import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import {
   createComponent,
   createEffect,
@@ -35,6 +34,7 @@ import {
   createAccordionFocusNavigator,
 } from './AccordionContext';
 import { ACCORDION_TAG } from './tags';
+import createDynamic from '../../utils/create-dynamic';
 
 export type AccordionSingleControlledBaseProps<V> = Prettify<
   SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>

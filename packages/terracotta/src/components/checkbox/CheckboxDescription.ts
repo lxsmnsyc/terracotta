@@ -1,11 +1,11 @@
-import { createDynamic } from '@solidjs/web';
-import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, merge, omit } from 'solid-js';
 import type { CheckStateRenderProps } from '../../states/create-check-state';
 import {
   CheckStateChild,
   useCheckState,
 } from '../../states/create-check-state';
+import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createCheckedState,

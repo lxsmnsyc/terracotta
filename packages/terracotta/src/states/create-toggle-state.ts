@@ -1,4 +1,4 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { Accessor } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -7,6 +7,7 @@ import {
   untrack,
   useContext,
 } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import assert from '../utils/assert';
 
 export interface ToggleStateControlledOptions {

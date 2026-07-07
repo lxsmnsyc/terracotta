@@ -1,4 +1,4 @@
-import type { JSX, ValidComponent } from 'solid-js';
+import type { JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { SelectOptionStateRenderProps } from '../../states/create-select-option-state';
 import {

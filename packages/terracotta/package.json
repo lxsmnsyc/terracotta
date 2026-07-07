@@ -30,7 +30,7 @@
     "headless-ui"
   ],
   "devDependencies": {
-    "@solidjs/web": "^2.0.0-beta.15",
+    "@solidjs/web": "2.0.0-beta.15",
     "@types/node": "^25.5.0",
     "solid-js": "2.0.0-beta.15",
     "tsdown": "^0.21.2",

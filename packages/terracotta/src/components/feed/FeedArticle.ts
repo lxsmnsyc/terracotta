@@ -1,6 +1,6 @@
-import { createDynamic } from '@solidjs/web';
-import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, createUniqueId, merge, omit } from 'solid-js';
+import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import { FeedArticleContext } from './FeedArticleContext';

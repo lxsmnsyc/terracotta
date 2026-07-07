@@ -1,4 +1,4 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { For, createSignal } from 'solid-js';
 import { Select, SelectOption } from 'terracotta/select';
 import { CheckIcon, classNames } from './utils';

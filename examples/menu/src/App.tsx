@@ -1,4 +1,4 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { Menu, MenuItem } from 'terracotta/menu';
 
 function Separator(): JSX.Element {

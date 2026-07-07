@@ -1,5 +1,5 @@
-import { createDynamic, untrack } from '@solidjs/web';
-import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { untrack } from '@solidjs/web';
 import {
   createComponent,
   createContext,
@@ -12,12 +12,13 @@ import {
   useContext,
 } from 'solid-js';
 import {
-  TransitionHooks,
+  type TransitionHooks,
   TransitionState,
-  TransitionStates,
+  type TransitionStates,
 } from '../../states/create-transition-state';
 import assert from '../../utils/assert';
 import { createDependencyList } from '../../utils/create-dependency-list';
+import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
 import {
@@ -25,7 +26,6 @@ import {
   type HeadlessPropsWithRef,
 } from '../../utils/dynamic-prop';
 import type { Prettify } from '../../utils/types';
-
 export interface TransitionRootBaseProps {
   show: boolean;
 }
@@ -216,11 +216,11 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
   });
 }
 
-export type TransitionProps<T extends ValidComponent = 'div'> = Prettify<
+export type TransitionProps<T extends ValidConstructor = 'div'> = Prettify<
   TransitionRootBaseProps & TransitionChildProps<T>
 >;
 
-export function Transition<T extends ValidComponent = 'div'>(
+export function Transition<T extends ValidConstructor = 'div'>(
   props: TransitionProps<T>,
 ): JSX.Element {
   return createComponent(TransitionRootContext, {

@@ -1,4 +1,6 @@
-import { children, createMemo, type JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import { children, createMemo } from 'solid-js';
+
 // An `unmountable` is a kind of component
 // where one can decide if it should conditionally
 // render or not.

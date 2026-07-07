@@ -1,11 +1,11 @@
-import { createDynamic } from '@solidjs/web';
-import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, merge, omit } from 'solid-js';
 import type { SelectOptionStateOptions } from '../../states/create-select-option-state';
 import {
   createSelectOptionState,
   SelectOptionStateProvider,
 } from '../../states/create-select-option-state';
+import createDynamic from '../../utils/create-dynamic';
 import { createUnmountable } from '../../utils/create-unmountable';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {

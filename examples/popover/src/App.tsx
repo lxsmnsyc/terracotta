@@ -1,5 +1,5 @@
+import type { JSX } from '@solidjs/web';
 import { Dynamic } from '@solidjs/web';
-import type { JSX } from 'solid-js';
 import { For } from 'solid-js';
 import { Popover, PopoverButton, PopoverPanel } from 'terracotta/popover';
 import { Transition } from 'terracotta/transition';

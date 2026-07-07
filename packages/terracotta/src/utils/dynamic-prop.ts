@@ -1,10 +1,5 @@
-import type {
-  Component,
-  ComponentProps,
-  JSX,
-  Signal,
-  ValidComponent,
-} from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import type { Component, Signal } from 'solid-js';
 import { createEffect, createSignal } from 'solid-js';
 import type { OmitAndMerge } from './types';
 

@@ -611,11 +611,11 @@ importers:
     dependencies:
       solid-use:
         specifier: 1.0.0-next.2
-        version: 1.0.0-next.2(@solidjs/web@2.0.0-experimental.0(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)
+        version: 1.0.0-next.2(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)
     devDependencies:
       '@solidjs/web':
-        specifier: ^2.0.0-beta.15
-        version: 2.0.0-experimental.0(solid-js@2.0.0-beta.15)
+        specifier: 2.0.0-beta.15
+        version: 2.0.0-beta.15(solid-js@2.0.0-beta.15)
       '@types/node':
         specifier: ^25.5.0
         version: 25.5.0
@@ -1316,11 +1316,6 @@ packages:
     resolution: {integrity: sha512-+LvmzzN5CHxQ+TeCGgA8DKuB8S4t0EHVlmDUlAp4hkLnh7My3ZGuKYHKWsFMd8w08nPgF6LdBZkH+c5iNcmcSA==}
     peerDependencies:
       solid-js: ^2.0.0-beta.15
-
-  '@solidjs/web@2.0.0-experimental.0':
-    resolution: {integrity: sha512-bGtCTQr0mHxK11c+g/XmdSIIoHYagdRxK6yzbOoURblTsKiBrFGPtoqR7lDJ+dWcvP96KzW8R/r4k3nVNgLdpQ==}
-    peerDependencies:
-      solid-js: ^2.0.0-experimental.0
 
   '@tailwindcss/node@4.1.18':
     resolution: {integrity: sha512-DoR7U1P7iYhw16qJ49fgXUlry1t4CpXeErJHnQ44JgTSKMaZUdf17cfn5mHchfJ4KRBZRFA/Coo+MUF5+gOaCQ==}
@@ -2815,12 +2810,6 @@ snapshots:
       seroval-plugins: 1.5.1(seroval@1.5.1)
       solid-js: 2.0.0-beta.15
 
-  '@solidjs/web@2.0.0-experimental.0(solid-js@2.0.0-beta.15)':
-    dependencies:
-      seroval: 1.5.1
-      seroval-plugins: 1.5.1(seroval@1.5.1)
-      solid-js: 2.0.0-beta.15
-
   '@tailwindcss/node@4.1.18':
     dependencies:
       '@jridgewell/remapping': 2.3.5
@@ -3449,9 +3438,9 @@ snapshots:
       '@babel/types': 7.29.0
       solid-js: 2.0.0-beta.15
 
-  solid-use@1.0.0-next.2(@solidjs/web@2.0.0-experimental.0(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15):
+  solid-use@1.0.0-next.2(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15):
     dependencies:
-      '@solidjs/web': 2.0.0-experimental.0(solid-js@2.0.0-beta.15)
+      '@solidjs/web': 2.0.0-beta.15(solid-js@2.0.0-beta.15)
       solid-js: 2.0.0-beta.15
 
   source-map-js@1.2.1: {}

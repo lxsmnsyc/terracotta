@@ -1,6 +1,6 @@
-import { createDynamic } from '@solidjs/web';
-import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createUniqueId, merge, omit } from 'solid-js';
+import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 

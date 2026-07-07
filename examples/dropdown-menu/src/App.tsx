@@ -1,4 +1,4 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { Menu, MenuItem } from 'terracotta/menu';
 import { Popover, PopoverButton, PopoverPanel } from 'terracotta/popover';
 import { Transition } from 'terracotta/transition';

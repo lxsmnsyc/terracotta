@@ -1,5 +1,4 @@
-import { createDynamic } from '@solidjs/web';
-import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, createEffect, merge, omit } from 'solid-js';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
@@ -8,6 +7,7 @@ import {
   useSelectState,
 } from '../../states/create-select-state';
 import { createDependencyList } from '../../utils/create-dependency-list';
+import createDynamic from '../../utils/create-dynamic';
 import createTypeAhead from '../../utils/create-type-ahead';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';

@@ -1,5 +1,5 @@
+import type { JSX } from '@solidjs/web';
 import { render } from '@solidjs/web';
-import type { JSX } from 'solid-js';
 import MultipleExample from './MultipleExample';
 import SingleExample from './SingleExample';
 import './style.css';

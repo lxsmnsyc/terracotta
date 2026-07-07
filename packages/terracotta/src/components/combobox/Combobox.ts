@@ -1,5 +1,4 @@
-import { createDynamic } from '@solidjs/web';
-import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import {
   createComponent,
   createEffect,
@@ -28,6 +27,7 @@ import {
   createDisclosureState,
   DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
+import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,

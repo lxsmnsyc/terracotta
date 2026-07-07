@@ -1,4 +1,4 @@
-import type { ComponentProps, JSX, ValidComponent } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type {
   ToggleStateControlledOptions,
