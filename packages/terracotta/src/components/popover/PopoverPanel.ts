@@ -68,7 +68,8 @@ export function PopoverPanel<T extends ValidComponent = 'div'>(
               return;
             }
             if (
-              !(e.relatedTarget && current.contains(e.relatedTarget as Node))
+              (e.relatedTarget && !current.contains(e.relatedTarget as Node)) ||
+              (e.target && !current.contains(e.target as Node))
             ) {
               state.close();
             }

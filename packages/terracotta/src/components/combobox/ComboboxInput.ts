@@ -93,7 +93,10 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
             return;
           }
           autocompleteState.blur();
-          if (!(e.relatedTarget && current.contains(e.relatedTarget as Node))) {
+          if (
+            (e.relatedTarget && !current.contains(e.relatedTarget as Node)) ||
+            (e.target && !current.contains(e.target as Node))
+          ) {
             disclosureState.close();
           }
         }),

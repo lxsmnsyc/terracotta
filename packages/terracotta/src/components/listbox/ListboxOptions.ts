@@ -143,7 +143,8 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
               return;
             }
             if (
-              !(e.relatedTarget && current.contains(e.relatedTarget as Node))
+              (e.relatedTarget && !current.contains(e.relatedTarget as Node)) ||
+              (e.target && !current.contains(e.target as Node))
             ) {
               disclosureState.close();
             }
