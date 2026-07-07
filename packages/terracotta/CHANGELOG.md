@@ -1,5 +1,11 @@
 # terracotta
 
+## 2.0.0-next.5
+
+### Patch Changes
+
+- beta.15 compat
+
 ## 2.0.0-next.4
 
 ### Patch Changes

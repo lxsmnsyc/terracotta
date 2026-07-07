@@ -1,5 +1,12 @@
 # transitions-example
 
+## 1.0.8-next.5
+
+### Patch Changes
+
+- Updated dependencies
+  - terracotta@2.0.0-next.5
+
 ## 1.0.8-next.4
 
 ### Patch Changes
