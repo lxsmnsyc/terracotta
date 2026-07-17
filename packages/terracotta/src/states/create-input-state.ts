@@ -1,4 +1,5 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import type { Accessor } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -84,7 +85,7 @@ const InputStateContext = createContext<InputStateProperties>();
 export function InputStateProvider(
   props: InputStateProviderProps,
 ): JSX.Element {
-  return createComponent(InputStateContext.Provider, {
+  return createComponent(InputStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

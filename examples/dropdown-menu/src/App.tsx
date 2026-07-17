@@ -1,12 +1,7 @@
-import {
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-  Transition,
-  Menu,
-  MenuItem,
-} from 'terracotta';
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import { Menu, MenuItem } from 'terracotta/menu';
+import { Popover, PopoverButton, PopoverPanel } from 'terracotta/popover';
+import { Transition } from 'terracotta/transition';
 
 function ChevronDownIcon(
   props: JSX.IntrinsicElements['svg'] & { title: string },
@@ -51,7 +46,7 @@ export default function App(): JSX.Element {
             <PopoverButton
               class={classNames(
                 isOpen() && 'text-opacity-90',
-                'text-white group bg-purple-700 px-3 py-2 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75',
+                'text-white group bg-purple-700 px-3 py-2 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75',
               )}
             >
               <span>Action</span>
@@ -77,7 +72,7 @@ export default function App(): JSX.Element {
                 unmount={false}
                 class="absolute z-10 px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl"
               >
-                <Menu class="overflow-hidden w-64 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white flex flex-col space-y-1 p-1">
+                <Menu class="overflow-hidden w-64 rounded-lg shadow-lg ring-1 ring-black/5 bg-white flex flex-col space-y-1 p-1">
                   <MenuItem
                     as="button"
                     class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white"

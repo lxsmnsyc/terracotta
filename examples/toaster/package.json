@@ -1,23 +1,24 @@
 {
   "name": "toaster-example",
   "type": "module",
-  "version": "1.0.7",
+  "version": "1.0.8-next.6",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.18",
-    "postcss": "^8.5.3",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.0",
-    "vite-plugin-solid": "^2.11.10"
+    "@tailwindcss/postcss": "catalog:",
+    "postcss": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-solid": "catalog:"
   },
   "dependencies": {
-    "solid-js": "^1.9.10",
-    "tailwindcss": "^4.1.18",
-    "terracotta": "1.1.0"
+    "@solidjs/web": "catalog:",
+    "solid-js": "catalog:",
+    "tailwindcss": "catalog:",
+    "terracotta": "catalog:"
   },
   "private": true,
   "publishConfig": {

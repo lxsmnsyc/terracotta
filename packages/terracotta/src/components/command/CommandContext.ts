@@ -6,13 +6,16 @@ import { MATCHES_NODE } from '../../utils/namespace';
 interface CommandContextData {
   multiple: boolean;
   controller: FocusNavigator;
-  activeDescendant: string | undefined;
-  selectedDescendant: string | undefined;
   inputID: string;
   labelID: string;
   optionsID: string;
   anchor?: HTMLElement | null;
   optionsHovering: boolean;
+
+  getActiveDescendant(): string | undefined;
+  setActiveDescendant(current: string | undefined): void;
+  getSelectedDescendant(): string | undefined;
+  setSelectedDescendant(current: string | undefined): void;
 }
 
 export const CommandContext = createContext<CommandContextData>();

@@ -1,13 +1,12 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { createSignal } from 'solid-js';
 import {
   CommandBar,
   CommandBarOverlay,
   CommandBarPanel,
   CommandBarTitle,
-  Transition,
-  TransitionChild,
-} from 'terracotta';
+} from 'terracotta/command-bar';
+import { Transition, TransitionChild } from 'terracotta/transition';
 
 export default function App(): JSX.Element {
   const [isOpen, setIsOpen] = createSignal(false);
@@ -23,7 +22,7 @@ export default function App(): JSX.Element {
   return (
     <>
       <div class="fixed inset-0 flex items-center justify-center">
-        <span class="text-white text-sm bg-blue-900 bg-opacity-50 p-4 rounded-lg">
+        <span class="text-white text-sm bg-blue-900/50 p-4 rounded-lg">
           {'Press '}
           <span class="font-mono px-2 py-1 border border-white m-1 rounded">
             ⌘ + K
@@ -45,7 +44,7 @@ export default function App(): JSX.Element {
         <Transition
           appear
           show={isOpen()}
-          class="min-h-screen px-4 flex items-center justify-center"
+          class="min-h-screen px-4 flex items-center justify-center relative"
         >
           <TransitionChild
             enter="ease-out duration-300"
@@ -55,14 +54,10 @@ export default function App(): JSX.Element {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <CommandBarOverlay class="fixed inset-0 bg-gray-900 bg-opacity-50" />
+            <CommandBarOverlay class="fixed inset-0 bg-gray-900/50" />
           </TransitionChild>
-
-          {/* This element is to trick the browser into centering the modal contents. */}
-          <span class="inline-block h-screen align-middle" aria-hidden="true">
-            &#8203;
-          </span>
           <TransitionChild
+            class="absolute"
             enter="ease-out duration-300"
             enterFrom="opacity-0 scale-95"
             enterTo="opacity-100 scale-100"
@@ -86,13 +81,13 @@ export default function App(): JSX.Element {
               </div>
 
               <div class="mt-2 flex flex-col space-y-1">
-                <div class="p-2 bg-blue-600 bg-opacity-200 rounded-lg text-white">
+                <div class="p-2 bg-blue-600/20 rounded-lg text-white">
                   What is your favorite color?
                 </div>
-                <div class="p-2 bg-blue-600 bg-opacity-200 rounded-lg text-white">
+                <div class="p-2 bg-blue-600/20 rounded-lg text-white">
                   What is the capital of Assyria?
                 </div>
-                <div class="p-2 bg-blue-600 bg-opacity-200 rounded-lg text-white">
+                <div class="p-2 bg-blue-600/20 rounded-lg text-white">
                   What is the air-speed velocity of an unladen swallow?
                 </div>
               </div>

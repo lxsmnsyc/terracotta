@@ -1,13 +1,8 @@
-import type { JSX } from 'solid-js';
-import { mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { merge, omit } from 'solid-js';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createDisabledState,
   createHasActiveState,
@@ -17,10 +12,10 @@ import {
 import { useCommandContext } from './CommandContext';
 import { COMMAND_LABEL_TAG } from './tags';
 
-export type CommandLabelProps<T extends ValidConstructor = 'label'> =
+export type CommandLabelProps<T extends ValidComponent = 'label'> =
   HeadlessProps<T>;
 
-export function CommandLabel<T extends ValidConstructor = 'label'>(
+export function CommandLabel<T extends ValidComponent = 'label'>(
   props: CommandLabelProps<T>,
 ): JSX.Element {
   const context = useCommandContext('CommandLabel');
@@ -28,8 +23,8 @@ export function CommandLabel<T extends ValidConstructor = 'label'>(
 
   return createDynamic(
     () => props.as || ('label' as T),
-    mergeProps(
-      omitProps(props, ['as']),
+    merge(
+      omit(props, 'as'),
       COMMAND_LABEL_TAG,
       {
         id: context.labelID,
@@ -38,6 +33,6 @@ export function CommandLabel<T extends ValidConstructor = 'label'>(
       createHasSelectedState(() => state.hasSelected()),
       createHasActiveState(() => state.hasActive()),
       createHasQueryState(() => state.hasQuery()),
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

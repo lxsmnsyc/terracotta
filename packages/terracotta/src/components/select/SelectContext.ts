@@ -2,14 +2,9 @@ import { createContext, createUniqueId, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 import FocusNavigator from '../../utils/focus-navigator';
 
-interface SelectContextData {
-  horizontal: boolean;
-  controller: FocusNavigator;
-}
+export const SelectContext = createContext<FocusNavigator>();
 
-export const SelectContext = createContext<SelectContextData>();
-
-export function useSelectContext(componentName: string): SelectContextData {
+export function useSelectContext(componentName: string): FocusNavigator {
   const context = useContext(SelectContext);
   assert(
     context,

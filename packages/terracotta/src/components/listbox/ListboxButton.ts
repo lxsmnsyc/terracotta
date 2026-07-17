@@ -1,17 +1,14 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
 import { useSelectState } from '../../states/create-select-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
 import {
   createARIADisabledState,
   createARIAExpandedState,
@@ -27,13 +24,13 @@ import { Button } from '../button';
 import { useListboxContext } from './ListboxContext';
 import { LISTBOX_BUTTON_TAG } from './tags';
 
-export type ListboxButtonProps<T extends ValidConstructor = 'button'> =
+export type ListboxButtonProps<T extends ValidComponent = 'button'> =
   HeadlessPropsWithRef<
     T,
     OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
   >;
 
-export function ListboxButton<T extends ValidConstructor = 'button'>(
+export function ListboxButton<T extends ValidComponent = 'button'>(
   props: ListboxButtonProps<T>,
 ): JSX.Element {
   const context = useListboxContext('ListboxButton');
@@ -44,40 +41,46 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
   const isDisabled = (): boolean | undefined =>
     disclosureState.disabled() || props.disabled;
 
-  createEffect(() => {
-    const current = internalRef();
+  createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
       context.anchor = current;
+      context.buttonHovering = false;
 
-      useEventListener(current, 'click', () => {
-        if (!isDisabled()) {
-          disclosureState.toggle();
-        }
-      });
-      useEventListener(current, 'keydown', e => {
-        if (!isDisabled()) {
-          switch (e.key) {
-            case 'ArrowUp':
-            case 'ArrowDown': {
-              e.preventDefault();
-              disclosureState.toggle();
-              break;
+      return mergeFunc(
+        useEventListener(current, 'click', () => {
+          if (!isDisabled()) {
+            disclosureState.toggle();
+          }
+        }),
+        useEventListener(current, 'keydown', e => {
+          if (!isDisabled()) {
+            switch (e.key) {
+              case 'ArrowUp':
+              case 'ArrowDown': {
+                e.preventDefault();
+                disclosureState.toggle();
+                break;
+              }
             }
           }
-        }
-      });
-      useEventListener(current, 'mouseenter', () => {
-        context.buttonHovering = true;
-      });
-      useEventListener(current, 'mouseleave', () => {
-        context.buttonHovering = false;
-      });
+        }),
+        useEventListener(current, 'mouseenter', () => {
+          context.buttonHovering = true;
+        }),
+        useEventListener(current, 'mouseleave', () => {
+          context.buttonHovering = false;
+        }),
+        () => {
+          context.buttonHovering = false;
+        },
+      );
     }
+    return undefined;
   });
 
   return createComponent(
     Button,
-    mergeProps(
+    merge(
       LISTBOX_BUTTON_TAG,
       {
         id: context.buttonID,
@@ -91,7 +94,7 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
       createARIAExpandedState(() => disclosureState.isOpen()),
       createHasSelectedState(() => selectState.hasSelected()),
       createHasActiveState(() => selectState.hasActive()),
-      omitProps(props, ['children', 'ref']),
+      omit(props, 'children', 'ref'),
       {
         get children() {
           return createComponent(DisclosureStateChild, {

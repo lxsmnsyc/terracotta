@@ -1,28 +1,24 @@
-import type { JSX } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import {
   createComponent,
   createEffect,
   createUniqueId,
-  mergeProps,
+  merge,
+  omit,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
 import {
-  DisclosureStateProvider,
   createDisclosureState,
+  DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -39,7 +35,7 @@ export type DialogControlledBaseProps = Prettify<
     UnmountableProps
 >;
 
-export type DialogControlledProps<T extends ValidConstructor = 'div'> =
+export type DialogControlledProps<T extends ValidComponent = 'div'> =
   HeadlessProps<T, DialogControlledBaseProps>;
 
 export type DialogUncontrolledBaseProps = Prettify<
@@ -48,20 +44,20 @@ export type DialogUncontrolledBaseProps = Prettify<
     UnmountableProps
 >;
 
-export type DialogUncontrolledProps<T extends ValidConstructor = 'div'> =
+export type DialogUncontrolledProps<T extends ValidComponent = 'div'> =
   HeadlessProps<T, DialogUncontrolledBaseProps>;
 
-export type DialogProps<T extends ValidConstructor = 'div'> =
+export type DialogProps<T extends ValidComponent = 'div'> =
   | DialogControlledProps<T>
   | DialogUncontrolledProps<T>;
 
-function isDialogUncontrolled<T extends ValidConstructor = 'div'>(
+function isDialogUncontrolled<T extends ValidComponent = 'div'>(
   props: DialogProps<T>,
 ): props is DialogUncontrolledProps<T> {
   return 'defaultOpen' in props;
 }
 
-export function Dialog<T extends ValidConstructor = 'div'>(
+export function Dialog<T extends ValidComponent = 'div'>(
   props: DialogProps<T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
@@ -73,15 +69,18 @@ export function Dialog<T extends ValidConstructor = 'div'>(
 
   const state = createDisclosureState(props);
 
-  createEffect(() => {
-    if (state.isOpen()) {
-      fsp.save();
-    } else {
-      fsp.load();
-    }
-  });
+  createEffect(
+    () => state.isOpen(),
+    flag => {
+      if (flag) {
+        fsp.save();
+      } else {
+        fsp.load();
+      }
+    },
+  );
 
-  return createComponent(DialogContext.Provider, {
+  return createComponent(DialogContext, {
     value: {
       ownerID,
       panelID,
@@ -95,7 +94,7 @@ export function Dialog<T extends ValidConstructor = 'div'>(
         () =>
           createDynamic(
             () => props.as || ('div' as T),
-            mergeProps(
+            merge(
               DIALOG_TAG,
               {
                 id: ownerID,
@@ -116,7 +115,8 @@ export function Dialog<T extends ValidConstructor = 'div'>(
               createARIADisabledState(() => state.disabled()),
               createExpandedState(() => state.isOpen()),
               isDialogUncontrolled(props)
-                ? omitProps(props, [
+                ? omit(
+                    props,
                     'as',
                     'children',
                     'defaultOpen',
@@ -125,8 +125,9 @@ export function Dialog<T extends ValidConstructor = 'div'>(
                     'onClose',
                     'onOpen',
                     'unmount',
-                  ])
-                : omitProps(props, [
+                  )
+                : omit(
+                    props,
                     'as',
                     'children',
                     'isOpen',
@@ -135,8 +136,8 @@ export function Dialog<T extends ValidConstructor = 'div'>(
                     'onClose',
                     'onOpen',
                     'unmount',
-                  ]),
-            ) as DynamicProps<T>,
+                  ),
+            ) as ComponentProps<T>,
           ),
       );
     },

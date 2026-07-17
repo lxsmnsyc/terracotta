@@ -1,13 +1,13 @@
-import type { JSX } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import {
   createComponent,
   createEffect,
   createMemo,
   createSignal,
   createUniqueId,
-  mergeProps,
+  merge,
+  omit,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import type {
   AutocompleteStateRenderProps,
   MultipleAutocompleteStateControlledOptions,
@@ -21,11 +21,7 @@ import {
   createSingleAutocompleteState,
 } from '../../states/create-autocomplete-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -52,7 +48,7 @@ export type SingleCommandControlledBaseProps<V> = Prettify<
 
 export type SingleCommandControlledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, SingleCommandControlledBaseProps<V>>;
 
 export type SingleCommandUncontrolledBaseProps<V> = Prettify<
@@ -63,10 +59,10 @@ export type SingleCommandUncontrolledBaseProps<V> = Prettify<
 
 export type SingleCommandUncontrolledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, SingleCommandUncontrolledBaseProps<V>>;
 
-export type SingleCommandProps<V, T extends ValidConstructor = 'div'> =
+export type SingleCommandProps<V, T extends ValidComponent = 'div'> =
   | SingleCommandControlledProps<V, T>
   | SingleCommandUncontrolledProps<V, T>;
 
@@ -78,7 +74,7 @@ export type MultipleCommandControlledBaseProps<V> = Prettify<
 
 export type MultipleCommandControlledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, MultipleCommandControlledBaseProps<V>>;
 
 export type MultipleCommandUncontrolledBaseProps<V> = Prettify<
@@ -89,24 +85,24 @@ export type MultipleCommandUncontrolledBaseProps<V> = Prettify<
 
 export type MultipleCommandUncontrolledProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, MultipleCommandUncontrolledBaseProps<V>>;
 
-export type MultipleCommandProps<V, T extends ValidConstructor = 'div'> =
+export type MultipleCommandProps<V, T extends ValidComponent = 'div'> =
   | MultipleCommandControlledProps<V, T>
   | MultipleCommandUncontrolledProps<V, T>;
 
-export type CommandProps<V, T extends ValidConstructor = 'div'> =
+export type CommandProps<V, T extends ValidComponent = 'div'> =
   | SingleCommandProps<V, T>
   | MultipleCommandProps<V, T>;
 
-function isCommandMultiple<V, T extends ValidConstructor = 'div'>(
+function isCommandMultiple<V, T extends ValidComponent = 'div'>(
   props: CommandProps<V, T>,
 ): props is MultipleCommandProps<V, T> {
   return !!props.multiple;
 }
 
-function isCommandUncontrolled<V, T extends ValidConstructor = 'div'>(
+function isCommandUncontrolled<V, T extends ValidComponent = 'div'>(
   props: CommandProps<V, T>,
 ): props is
   | SingleCommandUncontrolledProps<V, T>
@@ -114,7 +110,7 @@ function isCommandUncontrolled<V, T extends ValidConstructor = 'div'>(
   return 'defaultValue' in props;
 }
 
-export function Command<V, T extends ValidConstructor = 'div'>(
+export function Command<V, T extends ValidComponent = 'div'>(
   props: CommandProps<V, T>,
 ): JSX.Element {
   return createMemo(() => {
@@ -133,37 +129,32 @@ export function Command<V, T extends ValidConstructor = 'div'>(
     const optionsID = createUniqueId();
     const labelID = createUniqueId();
 
-    createEffect(() => {
-      if (!state.hasActive()) {
-        setActiveDescendant(undefined);
-      }
-    });
+    createEffect(
+      () => !state.hasActive(),
+      flag => {
+        if (flag) {
+          setActiveDescendant(undefined);
+        }
+      },
+    );
 
-    return createComponent(CommandContext.Provider, {
+    return createComponent(CommandContext, {
       value: {
         multiple: !!props.multiple,
         controller,
-        get activeDescendant() {
-          return activeDescendant();
-        },
-        set activeDescendant(value: string | undefined) {
-          setActiveDescendant(value);
-        },
-        get selectedDescendant() {
-          return selectedDescendant();
-        },
-        set selectedDescendant(value: string | undefined) {
-          setSelectedDescendant(value);
-        },
         inputID,
         optionsID,
         labelID,
         optionsHovering: false,
+        getActiveDescendant: activeDescendant,
+        setActiveDescendant,
+        getSelectedDescendant: selectedDescendant,
+        setSelectedDescendant,
       },
       get children() {
         return createDynamic(
           () => props.as || 'div',
-          mergeProps(
+          merge(
             COMMAND_TAG,
             {
               id: controller.getId(),
@@ -175,7 +166,8 @@ export function Command<V, T extends ValidConstructor = 'div'>(
             createHasActiveState(() => state.hasActive()),
             createHasQueryState(() => state.hasQuery()),
             isCommandUncontrolled(props)
-              ? omitProps(props, [
+              ? omit(
+                  props,
                   'as',
                   'by',
                   'children',
@@ -185,8 +177,9 @@ export function Command<V, T extends ValidConstructor = 'div'>(
                   'multiple',
                   'onChange',
                   'toggleable',
-                ])
-              : omitProps(props, [
+                )
+              : omit(
+                  props,
                   'as',
                   'by',
                   'children',
@@ -196,7 +189,7 @@ export function Command<V, T extends ValidConstructor = 'div'>(
                   'multiple',
                   'onChange',
                   'toggleable',
-                ]),
+                ),
             {
               get children() {
                 return createComponent(AutocompleteStateProvider, {
@@ -207,7 +200,7 @@ export function Command<V, T extends ValidConstructor = 'div'>(
                 });
               },
             },
-          ) as DynamicProps<T>,
+          ) as ComponentProps<T>,
         );
       },
     });

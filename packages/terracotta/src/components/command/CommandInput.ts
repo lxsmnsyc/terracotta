@@ -1,14 +1,10 @@
-import type { JSX } from 'solid-js';
-import { createEffect, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createEffect, merge, omit } from 'solid-js';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
 import { SELECTED_NODE } from '../../utils/namespace';
 import {
   createARIADisabledState,
@@ -21,10 +17,10 @@ import useEventListener from '../../utils/use-event-listener';
 import { useCommandContext } from './CommandContext';
 import { COMMAND_INPUT_TAG } from './tags';
 
-export type CommandInputProps<T extends ValidConstructor = 'input'> =
+export type CommandInputProps<T extends ValidComponent = 'input'> =
   HeadlessPropsWithRef<T>;
 
-export function CommandInput<T extends ValidConstructor = 'input'>(
+export function CommandInput<T extends ValidComponent = 'input'>(
   props: CommandInputProps<T>,
 ): JSX.Element {
   const context = useCommandContext('CommandInput');
@@ -34,77 +30,84 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
   const isDisabled = (): boolean | undefined =>
     state.disabled() || props.disabled;
 
-  createEffect(() => {
-    const current = internalRef();
+  createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
       context.anchor = current;
-
-      if (current instanceof HTMLInputElement) {
-        useEventListener(current, 'input', () => {
+      return mergeFunc(
+        current instanceof HTMLInputElement &&
+          useEventListener(current, 'input', () => {
+            if (!isDisabled()) {
+              state.setQuery(current.value);
+            }
+          }),
+        useEventListener(current, 'keydown', e => {
           if (!isDisabled()) {
-            state.setQuery(current.value);
-          }
-        });
-      }
-      useEventListener(current, 'keydown', e => {
-        if (!isDisabled()) {
-          switch (e.key) {
-            case 'ArrowUp': {
-              e.preventDefault();
-              context.controller.setPrevChecked(true);
-              break;
-            }
-            case 'ArrowDown': {
-              e.preventDefault();
-              context.controller.setNextChecked(true);
-              break;
-            }
-            case 'Enter': {
-              e.preventDefault();
-              context.selectedDescendant = context.activeDescendant;
-              break;
+            switch (e.key) {
+              case 'ArrowUp': {
+                e.preventDefault();
+                context.controller.setPrevChecked(true);
+                break;
+              }
+              case 'ArrowDown': {
+                e.preventDefault();
+                context.controller.setNextChecked(true);
+                break;
+              }
+              case 'Enter': {
+                e.preventDefault();
+                context.setSelectedDescendant(context.getActiveDescendant());
+                break;
+              }
             }
           }
-        }
-      });
-      useEventListener(current, 'focus', () => {
-        if (context.activeDescendant) {
-          const ref = document.getElementById(context.activeDescendant);
-          if (ref) {
-            context.controller.setCurrent(ref);
+        }),
+        useEventListener(current, 'focus', () => {
+          const activeDescendant = context.getActiveDescendant();
+          if (activeDescendant) {
+            const ref = document.getElementById(activeDescendant);
+            if (ref) {
+              context.controller.setCurrent(ref);
+            }
+          } else if (state.hasSelected()) {
+            context.controller.setFirstChecked(SELECTED_NODE);
+          } else {
+            context.controller.setFirstChecked();
           }
-        } else if (state.hasSelected()) {
-          context.controller.setFirstChecked(SELECTED_NODE);
-        } else {
-          context.controller.setFirstChecked();
-        }
-      });
-      useEventListener(current, 'blur', () => {
-        if (!context.optionsHovering) {
-          state.blur();
-        }
-      });
+        }),
+        useEventListener(current, 'blur', () => {
+          if (!context.optionsHovering) {
+            state.blur();
+          }
+        }),
+      );
     }
+    return undefined;
   });
 
-  createEffect(() => {
-    if (state.query() !== '') {
-      context.controller.setFirstChecked();
-    }
-  });
-
-  createEffect(() => {
-    if (context.activeDescendant) {
-      const ref = document.getElementById(context.activeDescendant);
-      if (ref) {
-        context.controller.setCurrent(ref);
+  createEffect(
+    () => state.query() !== '',
+    flag => {
+      if (flag) {
+        context.controller.setFirstChecked();
       }
-    }
-  });
+    },
+  );
+
+  createEffect(
+    () => context.getActiveDescendant(),
+    activeDescendant => {
+      if (activeDescendant) {
+        const ref = document.getElementById(activeDescendant);
+        if (ref) {
+          context.controller.setCurrent(ref);
+        }
+      }
+    },
+  );
 
   return createDynamic(
     () => props.as || ('input' as T),
-    mergeProps(
+    merge(
       COMMAND_INPUT_TAG,
       {
         id: context.inputID,
@@ -122,7 +125,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
         // we set this to true
         'aria-expanded': true,
         get 'aria-activedescendant'() {
-          return context.activeDescendant;
+          return context.getActiveDescendant();
         },
       },
       createDisabledState(isDisabled),
@@ -130,7 +133,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
       createHasSelectedState(() => state.hasSelected()),
       createHasActiveState(() => state.hasActive()),
       createHasQueryState(() => state.hasQuery()),
-      omitProps(props, ['as', 'ref']),
-    ) as DynamicProps<T>,
+      omit(props, 'as', 'ref'),
+    ) as ComponentProps<T>,
   );
 }

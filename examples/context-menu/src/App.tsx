@@ -1,13 +1,12 @@
+import type { JSX } from '@solidjs/web';
+import { createSignal } from 'solid-js';
 import {
   ContextMenu,
   ContextMenuBoundary,
   ContextMenuPanel,
-  Transition,
-  Menu,
-  MenuItem,
-} from 'terracotta';
-import type { JSX } from 'solid-js';
-import { createSignal } from 'solid-js';
+} from 'terracotta/context-menu';
+import { Menu, MenuItem } from 'terracotta/menu';
+import { Transition } from 'terracotta/transition';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -32,13 +31,14 @@ export default function App(): JSX.Element {
             <ContextMenuBoundary
               class={classNames(
                 isOpen() && 'text-opacity-90',
-                'text-white group border border-dashed border-white p-32 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75',
+                'text-white group border border-dashed border-white p-32 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75',
               )}
               onContextMenu={(e: MouseEvent): void => {
                 if (e.currentTarget) {
                   const rect = (
                     e.currentTarget as HTMLElement
                   ).getBoundingClientRect();
+                  console.log(e.currentTarget, e, rect);
                   setX(e.clientX - rect.left);
                   setY(e.clientY - rect.top);
                 }
@@ -63,7 +63,7 @@ export default function App(): JSX.Element {
                   transform: `translateX(${x()}px) translateY(${y()}px)`,
                 }}
               >
-                <Menu class="overflow-hidden w-64 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white flex flex-col space-y-1 p-1">
+                <Menu class="overflow-hidden w-64 rounded-lg shadow-lg ring-1 ring-black/5 bg-white flex flex-col space-y-1 p-1">
                   <MenuItem
                     as="button"
                     class="text-sm p-1 text-left rounded hover:bg-violet-600 hover:text-white focus:outline-none focus:bg-violet-600 focus:text-white"

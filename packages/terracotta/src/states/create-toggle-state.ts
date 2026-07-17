@@ -1,4 +1,4 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { Accessor } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -7,6 +7,7 @@ import {
   untrack,
   useContext,
 } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import assert from '../utils/assert';
 
 export interface ToggleStateControlledOptions {
@@ -108,7 +109,7 @@ const ToggleStateContext = createContext<ToggleStateProperties>();
 export function ToggleStateProvider(
   props: ToggleStateProviderProps,
 ): JSX.Element {
-  return createComponent(ToggleStateContext.Provider, {
+  return createComponent(ToggleStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

@@ -1,17 +1,12 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, merge, omit } from 'solid-js';
 import type { CheckStateRenderProps } from '../../states/create-check-state';
 import {
   CheckStateChild,
   useCheckState,
 } from '../../states/create-check-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createCheckedState,
   createDisabledState,
@@ -19,18 +14,18 @@ import {
 import { useCheckboxContext } from './CheckboxContext';
 import { CHECKBOX_LABEL } from './tags';
 
-export type CheckboxLabelProps<T extends ValidConstructor = 'label'> =
+export type CheckboxLabelProps<T extends ValidComponent = 'label'> =
   HeadlessProps<T, CheckStateRenderProps>;
 
-export function CheckboxLabel<T extends ValidConstructor = 'label'>(
+export function CheckboxLabel<T extends ValidComponent = 'label'>(
   props: CheckboxLabelProps<T>,
 ): JSX.Element {
   const context = useCheckboxContext('CheckboxLabel');
   const state = useCheckState();
   return createDynamic(
     () => props.as || ('label' as T),
-    mergeProps(
-      omitProps(props, ['as', 'children']),
+    merge(
+      omit(props, 'as', 'children'),
       CHECKBOX_LABEL,
       {
         id: context.labelID,
@@ -45,6 +40,6 @@ export function CheckboxLabel<T extends ValidConstructor = 'label'>(
       },
       createDisabledState(() => state.disabled()),
       createCheckedState(() => state.checked()),
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

@@ -1,18 +1,13 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, merge, omit } from 'solid-js';
 import type { SelectOptionStateOptions } from '../../states/create-select-option-state';
 import {
-  SelectOptionStateProvider,
   createSelectOptionState,
+  SelectOptionStateProvider,
 } from '../../states/create-select-option-state';
 import createDynamic from '../../utils/create-dynamic';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createActiveState,
   createSelectedState,
@@ -25,12 +20,12 @@ export interface TabPanelBaseProps<V>
   unmount?: boolean;
 }
 
-export type TabPanelProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessProps<T, TabPanelBaseProps<V>>;
+export type TabPanelProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  TabPanelBaseProps<V>
+>;
 
-export function TabPanel<V, T extends ValidConstructor = 'div'>(
+export function TabPanel<V, T extends ValidComponent = 'div'>(
   props: TabPanelProps<V, T>,
 ): JSX.Element {
   const rootContext = useTabGroupContext('TabPanel');
@@ -42,7 +37,7 @@ export function TabPanel<V, T extends ValidConstructor = 'div'>(
     () =>
       createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(
+        merge(
           TAB_PANEL_TAG,
           {
             role: 'tabpanel',
@@ -66,8 +61,8 @@ export function TabPanel<V, T extends ValidConstructor = 'div'>(
           },
           createSelectedState(() => state.isSelected()),
           createActiveState(() => state.isActive()),
-          omitProps(props, ['as', 'disabled', 'unmount', 'value']),
-        ) as DynamicProps<T>,
+          omit(props, 'as', 'disabled', 'unmount', 'value'),
+        ) as ComponentProps<T>,
       ),
   );
 }

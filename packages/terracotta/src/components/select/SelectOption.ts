@@ -1,24 +1,21 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type {
   SelectOptionStateOptions,
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
 import {
-  SelectOptionStateProvider,
   createSelectOptionState,
+  SelectOptionStateProvider,
 } from '../../states/create-select-option-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
+import { mergeFunc } from '../../utils/merge-func';
 import {
+  createActiveState,
   createARIADisabledState,
   createARIASelectedState,
-  createActiveState,
   createDisabledState,
   createSelectedState,
 } from '../../utils/state-props';
@@ -35,49 +32,51 @@ export type SelectOptionBaseProps<V> = Prettify<
 
 export type SelectOptionProps<
   V,
-  T extends ValidConstructor = 'li',
+  T extends ValidComponent = 'li',
 > = HeadlessPropsWithRef<
   T,
   OmitAndMerge<SelectOptionBaseProps<V>, ButtonProps<T>>
 >;
 
-export function SelectOption<V, T extends ValidConstructor = 'li'>(
+export function SelectOption<V, T extends ValidComponent = 'li'>(
   props: SelectOptionProps<V, T>,
 ): JSX.Element {
   const context = useSelectContext('SelectOption');
   const [internalRef, setInternalRef] = createForwardRef(props);
   const state = createSelectOptionState(props);
 
-  createEffect(() => {
-    const current = internalRef();
+  createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
-      useEventListener(current, 'click', () => {
-        state.select();
-      });
-      useEventListener(current, 'focus', () => {
-        state.focus();
-      });
-      useEventListener(current, 'blur', () => {
-        state.blur();
-      });
-      useEventListener(current, 'mouseenter', () => {
-        if (!state.disabled()) {
-          current.focus();
-        }
-      });
-      useEventListener(current, 'mouseleave', () => {
-        if (!state.disabled()) {
-          current.blur();
-        }
-      });
+      return mergeFunc(
+        useEventListener(current, 'click', () => {
+          state.select();
+        }),
+        useEventListener(current, 'focus', () => {
+          state.focus();
+        }),
+        useEventListener(current, 'blur', () => {
+          state.blur();
+        }),
+        useEventListener(current, 'mouseenter', () => {
+          if (!state.disabled()) {
+            current.focus();
+          }
+        }),
+        useEventListener(current, 'mouseleave', () => {
+          if (!state.disabled()) {
+            current.blur();
+          }
+        }),
+      );
     }
+    return undefined;
   });
 
   return createComponent(
     Button,
-    mergeProps(
+    merge(
       SELECT_OPTION_TAG,
-      createOwnerAttribute(context.controller.getId()),
+      createOwnerAttribute(context.getId()),
       {
         get as() {
           return props.as || ('li' as T);
@@ -93,7 +92,7 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
       createSelectedState(() => state.isSelected()),
       createARIASelectedState(() => state.isSelected()),
       createActiveState(() => state.isActive()),
-      omitProps(props, ['as', 'children', 'value', 'ref']),
+      omit(props, 'as', 'children', 'value', 'ref'),
       {
         get children() {
           return createComponent(SelectOptionStateProvider, {

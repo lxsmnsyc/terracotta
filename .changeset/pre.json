@@ -1,0 +1,35 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "accordion-example": "1.0.7",
+    "checkbox-example": "1.0.7",
+    "combobox-example": "1.0.7",
+    "command-example": "1.0.7",
+    "commandbar-example": "1.0.7",
+    "context-menu-example": "1.0.7",
+    "dialog-example": "1.0.7",
+    "disclosure-example": "1.0.7",
+    "dropdown-menu-example": "1.0.7",
+    "feed-example": "1.0.7",
+    "listbox-example": "1.0.7",
+    "menu-example": "1.0.7",
+    "popover-example": "1.0.7",
+    "radiogroup-example": "1.0.7",
+    "select-example": "1.0.7",
+    "tabs-example": "1.0.7",
+    "toaster-example": "1.0.7",
+    "toolbar-example": "1.0.7",
+    "transitions-example": "1.0.7",
+    "terracotta": "1.1.0"
+  },
+  "changesets": [
+    "eager-emus-notice",
+    "fuzzy-doors-tie",
+    "open-boxes-try",
+    "sweet-crews-cross",
+    "thirty-beans-refuse",
+    "upset-stamps-dream",
+    "warm-glasses-stare"
+  ]
+}

@@ -1,4 +1,5 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { Accessor } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import {
   createComponent,
   createContext,
@@ -56,7 +57,7 @@ export function createSingleSelectState<T>(
 
   if ('defaultValue' in options) {
     const [selected, setSelected] = createSignal<T | undefined>(
-      options.defaultValue,
+      () => options.defaultValue,
     );
     selectedValue = selected;
     setSelectedValue = (value): void => {
@@ -243,7 +244,7 @@ const SelectStateContext = createContext<SelectStateProperties<unknown>>();
 export function SelectStateProvider<T>(
   props: SelectStateProviderProps<T>,
 ): JSX.Element {
-  return createComponent(SelectStateContext.Provider, {
+  return createComponent(SelectStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

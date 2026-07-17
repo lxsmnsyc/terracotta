@@ -8,7 +8,7 @@
   },
   "linter": {
     "enabled": true,
-    "includes": ["**", "!**/node_modules/**/*"],
+    "includes": ["**", "!**/node_modules/**/*", "!**/dist"],
     "rules": {
       "recommended": true,
       "a11y": {
@@ -46,7 +46,7 @@
         "noGlobalEval": "off"
       },
       "style": {
-        "noImplicitBoolean": "error",
+        "noImplicitBoolean": "off",
         "noInferrableTypes": "error",
         "noNamespace": "error",
         "noNegationElse": "error",

@@ -1,4 +1,5 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import type { Accessor } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -116,7 +117,7 @@ const CheckStateContext = createContext<CheckStateProperties>();
 export function CheckStateProvider(
   props: CheckStateProviderProps,
 ): JSX.Element {
-  return createComponent(CheckStateContext.Provider, {
+  return createComponent(CheckStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

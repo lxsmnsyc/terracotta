@@ -1,6 +1,6 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { For, createSignal } from 'solid-js';
-import { Select, SelectOption } from 'terracotta';
+import { Select, SelectOption } from 'terracotta/select';
 import { CheckIcon, classNames } from './utils';
 
 const people = [
@@ -19,10 +19,10 @@ export default function SingleSelect(): JSX.Element {
     <div class="flex flex-col gap-2">
       <span class="text-xl font-semibold">Single Selection</span>
       <Select toggleable value={selected()} onChange={setSelected}>
-        <div class="relative mt-1 bg-gray-50 bg-opacity-50 rounded-lg overflow-hidden">
+        <div class="relative mt-1 bg-gray-50/50 rounded-lg overflow-hidden">
           <For each={people}>
             {(person): JSX.Element => (
-              <SelectOption class="focus:outline-none group" value={person}>
+              <SelectOption class="focus:outline-none group" value={person()}>
                 {({ isActive, isSelected }): JSX.Element => (
                   <div
                     class={classNames(
@@ -39,7 +39,7 @@ export default function SingleSelect(): JSX.Element {
                         'block truncate',
                       )}
                     >
-                      {person.name}
+                      {person().name}
                     </span>
                     {isSelected() ? (
                       <span

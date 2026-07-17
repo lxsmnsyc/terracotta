@@ -1,4 +1,4 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { For } from 'solid-js';
 import {
   Accordion,
@@ -6,7 +6,7 @@ import {
   AccordionHeader,
   AccordionItem,
   AccordionPanel,
-} from 'terracotta';
+} from 'terracotta/accordion';
 
 function ChevronUpIcon(
   props: JSX.IntrinsicElements['svg'] & { title: string },
@@ -67,15 +67,15 @@ export default function App(): JSX.Element {
         <Accordion class="space-y-2" defaultValue={FAQS[0]} toggleable>
           <For each={FAQS}>
             {(faq): JSX.Element => (
-              <AccordionItem value={faq}>
+              <AccordionItem value={faq()}>
                 <AccordionHeader>
                   <AccordionButton
                     as="div"
-                    class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
+                    class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
                   >
                     {({ isSelected }): JSX.Element => (
                       <>
-                        <span>{faq.question}</span>
+                        <span>{faq().question}</span>
                         <div>
                           <ChevronUpIcon
                             class={`flex-0 ${
@@ -89,7 +89,7 @@ export default function App(): JSX.Element {
                   </AccordionButton>
                 </AccordionHeader>
                 <AccordionPanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
-                  {faq.answer}
+                  {faq().answer}
                 </AccordionPanel>
               </AccordionItem>
             )}

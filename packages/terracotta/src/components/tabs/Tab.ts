@@ -1,25 +1,21 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type {
   SelectOptionStateOptions,
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
 import {
-  SelectOptionStateProvider,
   createSelectOptionState,
+  SelectOptionStateProvider,
 } from '../../states/create-select-option-state';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
+import { mergeFunc } from '../../utils/merge-func';
 import {
+  createActiveState,
   createARIADisabledState,
   createARIASelectedState,
-  createActiveState,
   createDisabledState,
   createSelectedState,
 } from '../../utils/state-props';
@@ -36,10 +32,10 @@ export type TabBaseProps<V> = Prettify<
 
 export type TabProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessPropsWithRef<T, TabBaseProps<V>>;
 
-export function Tab<V, T extends ValidConstructor = 'div'>(
+export function Tab<V, T extends ValidComponent = 'div'>(
   props: TabProps<V, T>,
 ): JSX.Element {
   const rootContext = useTabGroupContext('Tab');
@@ -48,25 +44,27 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
   const state = createSelectOptionState(props);
 
-  createEffect(() => {
-    const current = internalRef();
+  createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
-      useEventListener(current, 'click', () => {
-        state.select();
-      });
-      useEventListener(current, 'focus', () => {
-        state.focus();
-        state.select();
-      });
-      useEventListener(current, 'blur', () => {
-        state.blur();
-        state.select();
-      });
+      return mergeFunc(
+        useEventListener(current, 'click', () => {
+          state.select();
+        }),
+        useEventListener(current, 'focus', () => {
+          state.focus();
+          state.select();
+        }),
+        useEventListener(current, 'blur', () => {
+          state.blur();
+          state.select();
+        }),
+      );
     }
+    return undefined;
   });
   return createComponent(
     Button,
-    mergeProps(
+    merge(
       TAB_TAG,
       createOwnerAttribute(listContext.getId()),
       {
@@ -99,7 +97,7 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
       createSelectedState(() => state.isSelected()),
       createARIASelectedState(() => state.isSelected()),
       createActiveState(() => state.isActive()),
-      omitProps(props, ['as', 'children', 'value', 'disabled', 'ref']),
-    ) as DynamicProps<T>,
+      omit(props, 'as', 'children', 'value', 'disabled', 'ref'),
+    ) as ComponentProps<T>,
   );
 }

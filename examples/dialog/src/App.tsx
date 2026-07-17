@@ -1,13 +1,12 @@
+import type { JSX } from '@solidjs/web';
+import { createSignal } from 'solid-js';
 import {
   Dialog,
+  DialogOverlay,
   DialogPanel,
   DialogTitle,
-  Transition,
-  TransitionChild,
-  DialogOverlay,
-} from 'terracotta';
-import type { JSX } from 'solid-js';
-import { createSignal } from 'solid-js';
+} from 'terracotta/dialog';
+import { Transition, TransitionChild } from 'terracotta/transition';
 
 export default function App(): JSX.Element {
   const [isOpen, setIsOpen] = createSignal(false);
@@ -26,7 +25,7 @@ export default function App(): JSX.Element {
         <button
           type="button"
           onClick={openModal}
-          class="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          class="px-4 py-2 text-sm font-medium text-white bg-black/2 rounded-md hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
         >
           Open dialog
         </button>
@@ -38,7 +37,7 @@ export default function App(): JSX.Element {
           class="fixed inset-0 z-10 overflow-y-auto"
           onClose={closeModal}
         >
-          <div class="min-h-screen px-4 flex items-center justify-center">
+          <div class="min-h-screen px-4 flex items-center justify-center relative">
             <TransitionChild
               enter="ease-out duration-300"
               enterFrom="opacity-0"
@@ -47,14 +46,10 @@ export default function App(): JSX.Element {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <DialogOverlay class="fixed inset-0 bg-gray-900 bg-opacity-50" />
+              <DialogOverlay class="fixed inset-0 bg-gray-900/50" />
             </TransitionChild>
-
-            {/* This element is to trick the browser into centering the modal contents. */}
-            <span class="inline-block h-screen align-middle" aria-hidden="true">
-              &#8203;
-            </span>
             <TransitionChild
+              class="absolute"
               enter="ease-out duration-300"
               enterFrom="opacity-0 scale-95"
               enterTo="opacity-100 scale-100"

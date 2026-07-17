@@ -1,6 +1,8 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import { Dynamic } from '@solidjs/web';
 import { For } from 'solid-js';
-import { Popover, PopoverButton, PopoverPanel, Transition } from 'terracotta';
+import { Popover, PopoverButton, PopoverPanel } from 'terracotta/popover';
+import { Transition } from 'terracotta/transition';
 
 function IconOne(): JSX.Element {
   return (
@@ -140,7 +142,7 @@ export default function App(): JSX.Element {
             <PopoverButton
               class={classNames(
                 isOpen() && 'text-opacity-90',
-                'text-white group bg-orange-700 px-3 py-2 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75',
+                'text-white group bg-orange-700 px-3 py-2 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75',
               )}
             >
               <span>Solutions</span>
@@ -166,23 +168,26 @@ export default function App(): JSX.Element {
                 unmount={false}
                 class="absolute z-10 w-screen max-w-sm px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl"
               >
-                <div class="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                <div class="overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
                   <div class="relative grid gap-8 bg-white p-7 lg:grid-cols-2">
                     <For each={solutions}>
                       {(item): JSX.Element => (
                         <a
-                          href={item.href}
-                          class="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                          href={item().href}
+                          class="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
                         >
-                          <div class="flex items-center justify-center flex-shrink-0 w-10 h-10 text-white sm:h-12 sm:w-12">
-                            <item.icon aria-hidden="true" />
+                          <div class="flex items-center justify-center shrink-0 w-10 h-10 text-white sm:h-12 sm:w-12">
+                            <Dynamic
+                              component={item().icon}
+                              aria-hidden="true"
+                            />
                           </div>
                           <div class="ml-4">
                             <p class="text-sm font-medium text-gray-900">
-                              {item.name}
+                              {item().name}
                             </p>
                             <p class="text-sm text-gray-500">
-                              {item.description}
+                              {item().description}
                             </p>
                           </div>
                         </a>
@@ -192,7 +197,7 @@ export default function App(): JSX.Element {
                   <div class="p-4 bg-gray-50">
                     <a
                       href="##"
-                      class="flow-root px-2 py-2 transition duration-150 ease-in-out rounded-md hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                      class="flow-root px-2 py-2 transition duration-150 ease-in-out rounded-md hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
                     >
                       <span class="flex items-center">
                         <span class="text-sm font-medium text-gray-900">

@@ -1,4 +1,4 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import {
   createComponent,
   createContext,
@@ -69,7 +69,7 @@ const AutocompleteOptionStateContext =
 export function AutocompleteOptionStateProvider(
   props: AutocompleteOptionStateProviderProps,
 ): JSX.Element {
-  return createComponent(AutocompleteOptionStateContext.Provider, {
+  return createComponent(AutocompleteOptionStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

@@ -1,13 +1,13 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { For, createSignal } from 'solid-js';
 import {
-  DisclosureStateChild,
   Listbox,
   ListboxButton,
   ListboxOption,
   ListboxOptions,
-  Transition,
-} from 'terracotta';
+} from 'terracotta/listbox';
+import { DisclosureStateChild } from 'terracotta/states';
+import { Transition } from 'terracotta/transition';
 import { CheckIcon, SelectorIcon, classNames } from './utils';
 
 const people = [
@@ -33,7 +33,7 @@ export default function MultipleExample(): JSX.Element {
         onSelectChange={setSelected}
       >
         <div class="relative mt-1">
-          <ListboxButton class="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm">
+          <ListboxButton class="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm">
             <div class="flex flex-wrap gap-1">
               <For
                 each={selected()}
@@ -41,7 +41,7 @@ export default function MultipleExample(): JSX.Element {
               >
                 {(item): JSX.Element => (
                   <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
-                    {item.name}
+                    {item().name}
                   </span>
                 )}
               </For>
@@ -63,13 +63,13 @@ export default function MultipleExample(): JSX.Element {
               >
                 <ListboxOptions
                   unmount={false}
-                  class="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                  class="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black/5 focus:outline-none sm:text-sm"
                 >
                   <For each={people}>
                     {(person): JSX.Element => (
                       <ListboxOption
                         class="focus:outline-none group"
-                        value={person}
+                        value={person()}
                       >
                         {({ isActive, isSelected }): JSX.Element => (
                           <div
@@ -87,7 +87,7 @@ export default function MultipleExample(): JSX.Element {
                                 'block truncate',
                               )}
                             >
-                              {person.name}
+                              {person().name}
                             </span>
                             {isSelected() ? (
                               <span

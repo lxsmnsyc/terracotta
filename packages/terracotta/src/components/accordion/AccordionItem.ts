@@ -1,23 +1,18 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createUniqueId, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createUniqueId, merge, omit } from 'solid-js';
 import type {
   SelectOptionStateOptions,
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
 import {
-  SelectOptionStateProvider,
   createSelectOptionState,
+  SelectOptionStateProvider,
 } from '../../states/create-select-option-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
-  createARIADisabledState,
   createActiveState,
+  createARIADisabledState,
   createDisabledState,
   createExpandedState,
   createSelectedState,
@@ -33,10 +28,10 @@ export type AccordionItemprops<V> = Prettify<
 
 export type AccordionItemProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, AccordionItemprops<V>>;
 
-export function AccordionItem<V, T extends ValidConstructor = 'div'>(
+export function AccordionItem<V, T extends ValidComponent = 'div'>(
   props: AccordionItemProps<V, T>,
 ): JSX.Element {
   useAccordionContext('AccordionItem');
@@ -44,13 +39,13 @@ export function AccordionItem<V, T extends ValidConstructor = 'div'>(
   const panelID = createUniqueId();
   const state = createSelectOptionState(props);
 
-  return createComponent(AccordionItemContext.Provider, {
+  return createComponent(AccordionItemContext, {
     value: { buttonID, panelID },
     get children() {
       return createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(
-          omitProps(props, ['as', 'children', 'value', 'disabled']),
+        merge(
+          omit(props, 'as', 'children', 'value', 'disabled'),
           ACCORDION_ITEM_TAG,
           createDisabledState(() => state.disabled()),
           createARIADisabledState(() => state.disabled()),
@@ -67,7 +62,7 @@ export function AccordionItem<V, T extends ValidConstructor = 'div'>(
               });
             },
           },
-        ) as DynamicProps<T>,
+        ) as ComponentProps<T>,
       );
     },
   });

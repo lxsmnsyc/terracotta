@@ -1,11 +1,11 @@
-import type { JSX } from 'solid-js';
+import type { JSX, ValidComponent } from '@solidjs/web';
 import {
   createComponent,
   createEffect,
   createUniqueId,
-  mergeProps,
+  merge,
+  omit,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import type {
   AutocompleteOptionStateOptions,
   AutocompleteOptionStateRenderProps,
@@ -14,16 +14,14 @@ import {
   AutocompleteOptionStateProvider,
   createAutocompleteOptionState,
 } from '../../states/create-autocomplete-option-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
+import { mergeFunc } from '../../utils/merge-func';
 import {
+  createActiveState,
   createARIADisabledState,
   createARIASelectedState,
-  createActiveState,
   createDisabledState,
   createMatchesState,
   createSelectedState,
@@ -42,13 +40,13 @@ export type CommandOptionBaseProps<V> = Prettify<
 
 export type CommandOptionProps<
   V,
-  T extends ValidConstructor = 'li',
+  T extends ValidComponent = 'li',
 > = HeadlessPropsWithRef<
   T,
   OmitAndMerge<CommandOptionBaseProps<V>, ButtonProps<T>>
 >;
 
-export function CommandOption<V, T extends ValidConstructor = 'li'>(
+export function CommandOption<V, T extends ValidComponent = 'li'>(
   props: CommandOptionProps<V, T>,
 ): JSX.Element {
   const context = useCommandContext('CommandOption');
@@ -56,45 +54,50 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
   const state = createAutocompleteOptionState(props);
   const id = createUniqueId();
 
-  createEffect(() => {
-    if (!state.disabled() && context.selectedDescendant === id) {
-      state.select();
-    }
-  });
+  createEffect(
+    () => !state.disabled() && context.getSelectedDescendant() === id,
+    flag => {
+      if (flag) {
+        state.select();
+      }
+    },
+  );
 
   function focusOption(): void {
-    context.activeDescendant = id;
+    context.setActiveDescendant(id);
     state.focus();
   }
 
-  createEffect(() => {
-    const current = internalRef();
+  createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
-      useEventListener(current, 'click', () => {
-        if (!state.disabled()) {
-          state.select();
-          focusOption();
-        }
-      });
-      useEventListener(current, 'mouseenter', () => {
-        if (!state.disabled()) {
-          focusOption();
-        }
-      });
-      useEventListener(current, 'mouseleave', () => {
-        state.blur();
-      });
-      useVirtualFocus(el => {
-        if (el === current) {
-          focusOption();
-        }
-      });
+      return mergeFunc(
+        useEventListener(current, 'click', () => {
+          if (!state.disabled()) {
+            state.select();
+            focusOption();
+          }
+        }),
+        useEventListener(current, 'mouseenter', () => {
+          if (!state.disabled()) {
+            focusOption();
+          }
+        }),
+        useEventListener(current, 'mouseleave', () => {
+          state.blur();
+        }),
+        useVirtualFocus(el => {
+          if (el === current) {
+            focusOption();
+          }
+        }),
+      );
     }
+    return undefined;
   });
 
   return createComponent(
     Button,
-    mergeProps(
+    merge(
       COMMAND_OPTION_TAG,
       createOwnerAttribute(context.controller.getId()),
       {
@@ -112,7 +115,7 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
       createARIASelectedState(() => state.isSelected()),
       createActiveState(() => state.isActive()),
       createMatchesState(() => state.matches()),
-      omitProps(props, ['as', 'children', 'value', 'ref']),
+      omit(props, 'as', 'children', 'value', 'ref'),
       {
         get children() {
           return createComponent(AutocompleteOptionStateProvider, {

@@ -1,4 +1,5 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import type { Accessor } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -117,7 +118,7 @@ const DisclosureStateContext = createContext<DisclosureStateProperties>();
 export function DisclosureStateProvider(
   props: DisclosureStateProviderProps,
 ): JSX.Element {
-  return createComponent(DisclosureStateContext.Provider, {
+  return createComponent(DisclosureStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

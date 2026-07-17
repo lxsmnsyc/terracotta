@@ -1,14 +1,9 @@
-import type { JSX } from 'solid-js';
-import { mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { merge, omit } from 'solid-js';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createDisabledState,
   createExpandedState,
@@ -19,10 +14,10 @@ import {
 import { useComboboxContext } from './ComboboxContext';
 import { COMBOBOX_LABEL_TAG } from './tags';
 
-export type ComboboxLabelProps<T extends ValidConstructor = 'label'> =
+export type ComboboxLabelProps<T extends ValidComponent = 'label'> =
   HeadlessProps<T>;
 
-export function ComboboxLabel<T extends ValidConstructor = 'label'>(
+export function ComboboxLabel<T extends ValidComponent = 'label'>(
   props: ComboboxLabelProps<T>,
 ): JSX.Element {
   const context = useComboboxContext('ComboboxLabel');
@@ -31,7 +26,7 @@ export function ComboboxLabel<T extends ValidConstructor = 'label'>(
 
   return createDynamic(
     () => props.as || ('label' as T),
-    mergeProps(
+    merge(
       COMBOBOX_LABEL_TAG,
       {
         id: context.labelID,
@@ -41,7 +36,7 @@ export function ComboboxLabel<T extends ValidConstructor = 'label'>(
       createHasSelectedState(() => autocompleteState.hasSelected()),
       createHasActiveState(() => autocompleteState.hasActive()),
       createHasQueryState(() => autocompleteState.hasQuery()),
-      omitProps(props, ['as']),
-    ) as DynamicProps<T>,
+      omit(props, 'as'),
+    ) as ComponentProps<T>,
   );
 }

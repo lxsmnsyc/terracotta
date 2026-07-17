@@ -1,6 +1,5 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
@@ -9,11 +8,7 @@ import {
 import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createDisabledState,
   createExpandedState,
@@ -26,10 +21,10 @@ export type DisclosurePanelBaseProps = Prettify<
   DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type DisclosurePanelProps<T extends ValidConstructor = 'div'> =
+export type DisclosurePanelProps<T extends ValidComponent = 'div'> =
   HeadlessProps<T, DisclosurePanelBaseProps>;
 
-export function DisclosurePanel<T extends ValidConstructor = 'div'>(
+export function DisclosurePanel<T extends ValidComponent = 'div'>(
   props: DisclosurePanelProps<T>,
 ): JSX.Element {
   const context = useDisclosureContext('DisclosurePanel');
@@ -41,7 +36,7 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
     () =>
       createDynamic(
         () => props.as || ('div' as T),
-        mergeProps(
+        merge(
           DISCLOSURE_PANEL_TAG,
           {
             id: context.panelID,
@@ -55,8 +50,8 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
           },
           createDisabledState(() => state.disabled()),
           createExpandedState(() => state.isOpen()),
-          omitProps(props, ['as', 'unmount', 'children']),
-        ) as DynamicProps<T>,
+          omit(props, 'as', 'unmount', 'children'),
+        ) as ComponentProps<T>,
       ),
   );
 }

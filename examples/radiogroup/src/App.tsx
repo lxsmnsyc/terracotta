@@ -1,11 +1,11 @@
+import type { JSX } from '@solidjs/web';
+import { createSignal, For } from 'solid-js';
 import {
   RadioGroup,
   RadioGroupDescription,
   RadioGroupLabel,
   RadioGroupOption,
-} from 'terracotta';
-import type { JSX } from 'solid-js';
-import { createSignal, For } from 'solid-js';
+} from 'terracotta/radio-group';
 
 const plans = [
   {
@@ -64,13 +64,13 @@ export default function App(): JSX.Element {
                 <For each={plans}>
                   {(plan): JSX.Element => (
                     <RadioGroupOption
-                      value={plan}
+                      value={plan()}
                       class={classNames(
-                        isSelected(plan)
-                          ? 'bg-sky-900 bg-opacity-75 text-white'
+                        isSelected(plan())
+                          ? 'bg-sky-900/75 text-white'
                           : 'bg-white',
-                        isActive(plan) &&
-                          'ring-2 ring-offset-2 ring-offset-sky-300 ring-white ring-opacity-60',
+                        isActive(plan()) &&
+                          'ring-2 ring-offset-2 ring-offset-sky-300 ring-white/60',
                         'relative rounded-lg shadow-md px-5 py-4 cursor-pointer flex focus:outline-none',
                       )}
                     >
@@ -84,7 +84,7 @@ export default function App(): JSX.Element {
                                   checked() ? 'text-white' : 'text-gray-900'
                                 }`}
                               >
-                                {plan.name}
+                                {plan().name}
                               </RadioGroupLabel>
                               <RadioGroupDescription
                                 as="span"
@@ -92,9 +92,9 @@ export default function App(): JSX.Element {
                                   checked() ? 'text-sky-100' : 'text-gray-500'
                                 }`}
                               >
-                                <span>{`${plan.ram}/${plan.cpus}`}</span>{' '}
+                                <span>{`${plan().ram}/${plan().cpus}`}</span>{' '}
                                 <span aria-hidden="true">&middot;</span>{' '}
-                                <span>{plan.disk}</span>
+                                <span>{plan().disk}</span>
                               </RadioGroupDescription>
                             </div>
                           </div>

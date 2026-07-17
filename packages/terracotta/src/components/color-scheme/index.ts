@@ -1,4 +1,4 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import {
   createComponent,
   createContext,
@@ -6,6 +6,7 @@ import {
   createMemo,
   createSignal,
   useContext,
+  type Accessor,
 } from 'solid-js';
 import { usePrefersDark } from 'solid-use/media-query';
 import usePageVisibility from 'solid-use/page-visibility';
@@ -74,9 +75,7 @@ export function ColorSchemeProvider(
 
   // Since storage events only work for other windows
   // we need to make the main window sync
-  createEffect(() => {
-    isVisible();
-
+  createEffect(isVisible, () => {
     const onChange = (): void => {
       const value = localStorage.getItem(STORAGE_KEY);
 
@@ -87,20 +86,20 @@ export function ColorSchemeProvider(
       }
     };
     onChange();
-    useEventListener(window, 'storage', onChange, false);
+    return useEventListener(window, 'storage', onChange, false);
   });
 
   // Sync storage when signal changes
-  createEffect(() => {
-    localStorage.setItem(STORAGE_KEY, get());
+  createEffect(get, value => {
+    localStorage.setItem(STORAGE_KEY, value);
   });
 
   // Sync document class
-  createEffect(() => {
-    document.documentElement.classList.toggle('dark', shouldToggle());
+  createEffect(shouldToggle, value => {
+    document.documentElement.classList.toggle('dark', value);
   });
 
-  return createComponent(ColorSchemeContext.Provider, {
+  return createComponent(ColorSchemeContext, {
     value: {
       get value() {
         return get();

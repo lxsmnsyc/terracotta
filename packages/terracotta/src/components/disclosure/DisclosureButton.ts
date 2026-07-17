@@ -1,16 +1,11 @@
-import type { JSX } from 'solid-js';
-import { createEffect, mergeProps } from 'solid-js';
-import { createComponent } from 'solid-js/web';
-import { omitProps } from 'solid-use/props';
+import type { JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import {
   DisclosureStateChild,
   useDisclosureState,
 } from '../../states/create-disclosure-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
@@ -25,13 +20,13 @@ import { Button } from '../button';
 import { useDisclosureContext } from './DisclosureContext';
 import { DISCLOSURE_BUTTON_TAG } from './tags';
 
-export type DisclosureButtonProps<T extends ValidConstructor = 'button'> =
+export type DisclosureButtonProps<T extends ValidComponent = 'button'> =
   HeadlessPropsWithRef<
     T,
     OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
   >;
 
-export function DisclosureButton<T extends ValidConstructor = 'button'>(
+export function DisclosureButton<T extends ValidComponent = 'button'>(
   props: DisclosureButtonProps<T>,
 ): JSX.Element {
   const context = useDisclosureContext('DisclosureButton');
@@ -42,20 +37,20 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
   const isDisabled = (): boolean | undefined =>
     state.disabled() || props.disabled;
 
-  createEffect(() => {
-    const current = internalRef();
+  createEffect(internalRef, current => {
     if (current instanceof HTMLElement) {
-      useEventListener(current, 'click', () => {
+      return useEventListener(current, 'click', () => {
         if (!isDisabled()) {
           state.toggle();
         }
       });
     }
+    return undefined;
   });
 
   return createComponent(
     Button,
-    mergeProps(
+    merge(
       DISCLOSURE_BUTTON_TAG,
       {
         id: context.buttonID,
@@ -68,7 +63,7 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
       createARIADisabledState(isDisabled),
       createExpandedState(() => state.isOpen()),
       createARIAExpandedState(() => state.isOpen()),
-      omitProps(props, ['children', 'ref']),
+      omit(props, 'children', 'ref'),
       {
         get children() {
           return createComponent(DisclosureStateChild, {

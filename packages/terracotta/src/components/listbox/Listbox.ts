@@ -1,19 +1,19 @@
-import type { JSX } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import {
   createComponent,
   createEffect,
   createMemo,
   createUniqueId,
-  mergeProps,
+  merge,
+  omit,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
 import {
-  DisclosureStateProvider,
   createDisclosureState,
+  DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
 import type {
   MultipleSelectStateControlledOptions,
@@ -22,16 +22,12 @@ import type {
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
 import {
-  SelectStateProvider,
   createMultipleSelectState,
   createSingleSelectState,
+  SelectStateProvider,
 } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -69,7 +65,7 @@ export type ListboxSCSCDBaseProps<V> = Prettify<
 
 export type ListboxSCSCDProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, ListboxSCSCDBaseProps<V>>;
 
 // SCSCD = Single, Controlled Select, Uncontrolled Disclosure
@@ -84,7 +80,7 @@ export type ListboxSCSUDBaseProps<V> = Prettify<
 
 export type ListboxSCSUDProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, ListboxSCSUDBaseProps<V>>;
 
 // SCSCD = Single, Uncontrolled Select, Controlled Disclosure
@@ -99,7 +95,7 @@ export type ListboxSUSCDBaseProps<V> = Prettify<
 
 export type ListboxSUSCDProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, ListboxSUSCDBaseProps<V>>;
 
 // SCSCD = Single, Uncontrolled Select, Uncontrolled Disclosure
@@ -114,10 +110,10 @@ export type ListboxSUSUDBaseProps<V> = Prettify<
 
 export type ListboxSUSUDProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, ListboxSUSUDBaseProps<V>>;
 
-export type ListboxSingleProps<V, T extends ValidConstructor = 'div'> =
+export type ListboxSingleProps<V, T extends ValidComponent = 'div'> =
   | ListboxSCSCDProps<V, T>
   | ListboxSCSUDProps<V, T>
   | ListboxSUSCDProps<V, T>
@@ -135,7 +131,7 @@ export type ListboxMCSCDBaseProps<V> = Prettify<
 
 export type ListboxMCSCDProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, ListboxMCSCDBaseProps<V>>;
 
 // MCSCD = Multiple, Controlled Select, Uncontrolled Disclosure
@@ -150,7 +146,7 @@ export type ListboxMCSUDBaseProps<V> = Prettify<
 
 export type ListboxMCSUDProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, ListboxMCSUDBaseProps<V>>;
 
 // MCSCD = Multiple, Uncontrolled Select, Controlled Disclosure
@@ -165,7 +161,7 @@ export type ListboxMUSCDBaseProps<V> = Prettify<
 
 export type ListboxMUSCDProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, ListboxMUSCDBaseProps<V>>;
 
 // MCSCD = Multiple, Uncontrolled Select, Uncontrolled Disclosure
@@ -180,55 +176,56 @@ export type ListboxMUSUDBaseProps<V> = Prettify<
 
 export type ListboxMUSUDProps<
   V,
-  T extends ValidConstructor = 'div',
+  T extends ValidComponent = 'div',
 > = HeadlessProps<T, ListboxMUSUDBaseProps<V>>;
 
-export type ListboxMultipleProps<V, T extends ValidConstructor = 'div'> =
+export type ListboxMultipleProps<V, T extends ValidComponent = 'div'> =
   | ListboxMCSCDProps<V, T>
   | ListboxMCSUDProps<V, T>
   | ListboxMUSCDProps<V, T>
   | ListboxMUSUDProps<V, T>;
 
-type ListboxSelectUncontrolledProps<V, T extends ValidConstructor = 'div'> =
+type ListboxSelectUncontrolledProps<V, T extends ValidComponent = 'div'> =
   | ListboxMUSCDProps<V, T>
   | ListboxMUSUDProps<V, T>
   | ListboxSUSCDProps<V, T>
   | ListboxSUSUDProps<V, T>;
 
-type ListboxDisclosureUncontrolledProps<V, T extends ValidConstructor = 'div'> =
+type ListboxDisclosureUncontrolledProps<V, T extends ValidComponent = 'div'> =
   | ListboxMCSUDProps<V, T>
   | ListboxMUSUDProps<V, T>
   | ListboxSCSUDProps<V, T>
   | ListboxSUSUDProps<V, T>;
 
-export type ListboxProps<V, T extends ValidConstructor = 'div'> =
+export type ListboxProps<V, T extends ValidComponent = 'div'> =
   | ListboxMultipleProps<V, T>
   | ListboxSingleProps<V, T>;
 
-function isListboxMultiple<V, T extends ValidConstructor = 'div'>(
+function isListboxMultiple<V, T extends ValidComponent = 'div'>(
   props: ListboxProps<V, T>,
 ): props is ListboxMultipleProps<V, T> {
   return !!props.multiple;
 }
 
-function isListboxSelectUncontrolled<V, T extends ValidConstructor = 'div'>(
+function isListboxSelectUncontrolled<V, T extends ValidComponent = 'div'>(
   props: ListboxProps<V, T>,
 ): props is ListboxSelectUncontrolledProps<V, T> {
   return 'defaultValue' in props;
 }
 
-function isListboxDisclosureUncontrolled<V, T extends ValidConstructor = 'div'>(
+function isListboxDisclosureUncontrolled<V, T extends ValidComponent = 'div'>(
   props: ListboxProps<V, T>,
 ): props is ListboxDisclosureUncontrolledProps<V, T> {
   return 'defaultOpen' in props;
 }
 
-function getProps<V, T extends ValidConstructor = 'div'>(
+function getProps<V, T extends ValidComponent = 'div'>(
   props: ListboxProps<V, T>,
-): DynamicProps<T> {
+): ComponentProps<T> {
   if (isListboxSelectUncontrolled(props)) {
     if (isListboxDisclosureUncontrolled(props)) {
-      return omitProps(props, [
+      return omit(
+        props,
         'as',
         'by',
         'children',
@@ -242,9 +239,10 @@ function getProps<V, T extends ValidConstructor = 'div'>(
         'onOpen',
         'onSelectChange',
         'toggleable',
-      ]) as DynamicProps<T>;
+      ) as ComponentProps<T>;
     }
-    return omitProps(props, [
+    return omit(
+      props,
       'as',
       'by',
       'children',
@@ -258,10 +256,11 @@ function getProps<V, T extends ValidConstructor = 'div'>(
       'onOpen',
       'onSelectChange',
       'toggleable',
-    ]) as DynamicProps<T>;
+    ) as ComponentProps<T>;
   }
   if (isListboxDisclosureUncontrolled(props)) {
-    return omitProps(props, [
+    return omit(
+      props,
       'as',
       'by',
       'children',
@@ -275,9 +274,10 @@ function getProps<V, T extends ValidConstructor = 'div'>(
       'onOpen',
       'onSelectChange',
       'toggleable',
-    ]) as DynamicProps<T>;
+    ) as ComponentProps<T>;
   }
-  return omitProps(props, [
+  return omit(
+    props,
     'as',
     'by',
     'children',
@@ -291,10 +291,10 @@ function getProps<V, T extends ValidConstructor = 'div'>(
     'onOpen',
     'onSelectChange',
     'toggleable',
-  ]) as DynamicProps<T>;
+  ) as ComponentProps<T>;
 }
 
-export function Listbox<V, T extends ValidConstructor = 'div'>(
+export function Listbox<V, T extends ValidComponent = 'div'>(
   props: ListboxProps<V, T>,
 ): JSX.Element {
   return createMemo(() => {
@@ -304,7 +304,7 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
     const optionsID = createUniqueId();
 
     const disclosureState = createDisclosureState(
-      mergeProps(props, {
+      merge(props, {
         onChange(value: boolean) {
           if (props.onDisclosureChange) {
             props.onDisclosureChange(value);
@@ -315,7 +315,7 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
 
     const selectState = isListboxMultiple(props)
       ? createMultipleSelectState(
-          mergeProps(props, {
+          merge(props, {
             onChange(value: V[]) {
               if (props.onSelectChange) {
                 props.onSelectChange(value);
@@ -324,7 +324,7 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
           }),
         )
       : createSingleSelectState(
-          mergeProps(props, {
+          merge(props, {
             onChange(value?: V) {
               if (props.onSelectChange) {
                 props.onSelectChange(value);
@@ -335,27 +335,28 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
 
     const fsp = useFocusStartPoint();
 
-    createEffect(() => {
-      if (disclosureState.isOpen()) {
-        fsp.save();
-      } else {
-        fsp.load();
-      }
-    });
-    return createComponent(ListboxContext.Provider, {
+    createEffect(
+      () => disclosureState.isOpen(),
+      flag => {
+        if (flag) {
+          fsp.save();
+        } else {
+          fsp.load();
+        }
+      },
+    );
+    return createComponent(ListboxContext, {
       value: {
-        get multiple() {
-          return props.multiple;
-        },
         ownerID,
         labelID,
         buttonID,
         optionsID,
-        get horizontal() {
-          return props.horizontal;
-        },
         buttonHovering: false,
         optionsHovering: false,
+        multiple: props.multiple,
+        isHorizontal() {
+          return props.horizontal;
+        },
       },
       get children() {
         return createComponent(SelectStateProvider, {
@@ -366,7 +367,7 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
               get children() {
                 return createDynamic(
                   () => props.as || 'div',
-                  mergeProps(
+                  merge(
                     LISTBOX_TAG,
                     {
                       id: ownerID,
@@ -383,7 +384,7 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
                         return props.children;
                       },
                     },
-                  ) as DynamicProps<T>,
+                  ) as ComponentProps<T>,
                 );
               },
             });

@@ -1,4 +1,4 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import {
   createComponent,
   createContext,
@@ -66,7 +66,7 @@ const SelectOptionStateContext = createContext<SelectOptionStateProperties>();
 export function SelectOptionStateProvider(
   props: SelectOptionStateProviderProps,
 ): JSX.Element {
-  return createComponent(SelectOptionStateContext.Provider, {
+  return createComponent(SelectOptionStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

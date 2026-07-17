@@ -2,15 +2,18 @@ import { createContext, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 
 interface ListboxContextData {
-  horizontal?: boolean;
-  multiple?: boolean;
   ownerID: string;
   labelID: string;
   buttonID: string;
   optionsID: string;
+  anchor?: HTMLElement | null;
+
+  // TODO use triangle algorithm
   buttonHovering: boolean;
   optionsHovering: boolean;
-  anchor?: HTMLElement | null;
+
+  multiple?: boolean;
+  isHorizontal(): boolean | undefined;
 }
 
 export const ListboxContext = createContext<ListboxContextData>();

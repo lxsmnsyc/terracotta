@@ -1,30 +1,25 @@
-import type { JSX } from 'solid-js';
-import { mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { merge, omit } from 'solid-js';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { useFeedArticleContext } from './FeedArticleContext';
 import { FEED_ARTICLE_LABEL_TAG } from './tags';
 
-export type FeedArticleLabelProps<T extends ValidConstructor = 'span'> =
+export type FeedArticleLabelProps<T extends ValidComponent = 'span'> =
   HeadlessProps<T>;
 
-export function FeedArticleLabel<T extends ValidConstructor = 'span'>(
+export function FeedArticleLabel<T extends ValidComponent = 'span'>(
   props: FeedArticleLabelProps<T>,
 ): JSX.Element {
   const context = useFeedArticleContext('FeedArticleLabel');
   return createDynamic(
     () => props.as || ('span' as T),
-    mergeProps(
+    merge(
       FEED_ARTICLE_LABEL_TAG,
       {
         id: context.labelID,
       },
-      omitProps(props, ['as']),
-    ) as DynamicProps<T>,
+      omit(props, 'as'),
+    ) as ComponentProps<T>,
   );
 }
