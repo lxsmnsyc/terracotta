@@ -30,12 +30,18 @@
     "headless-ui"
   ],
   "devDependencies": {
+    "@playwright/test": "catalog:",
+    "@solidjs/testing-library": "catalog:",
     "@solidjs/web": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
     "@types/node": "catalog:",
+    "jsdom": "catalog:",
     "solid-js": "catalog:",
     "tsdown": "catalog:",
     "tslib": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "@solidjs/web": "^2.0.0-beta.15",
@@ -47,7 +53,12 @@
   "scripts": {
     "prepublishOnly": "tsdown",
     "build": "tsdown",
-    "watch": "tsdown --watch"
+    "watch": "tsdown --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "e2e:dev": "vite --config e2e/vite.config.ts"
   },
   "types": "./dist/types/index.d.ts",
   "exports": {
