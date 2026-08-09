@@ -2,14 +2,8 @@ import type { JSX } from 'solid-js';
 import { createComponent, createEffect, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { CheckStateRenderProps } from '../../states/create-check-state';
-import {
-  CheckStateChild,
-  useCheckState,
-} from '../../states/create-check-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import { CheckStateChild, useCheckState } from '../../states/create-check-state';
+import type { HeadlessPropsWithRef, ValidConstructor } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIACheckedState,
@@ -23,8 +17,10 @@ import { Button } from '../button';
 import { useCheckboxContext } from './CheckboxContext';
 import { CHECKBOX_INDICATOR } from './tags';
 
-export type CheckboxIndicatorProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<T, CheckStateRenderProps>;
+export type CheckboxIndicatorProps<T extends ValidConstructor = 'button'> = HeadlessPropsWithRef<
+  T,
+  CheckStateRenderProps
+>;
 
 /**
  * The control the user actually clicks. Carries `role="checkbox"` and `aria-

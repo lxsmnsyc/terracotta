@@ -1,34 +1,60 @@
 {
   "name": "terracotta",
   "version": "1.1.1",
-  "type": "module",
+  "private": false,
   "description": "Headless UI for SolidJS",
-  "repository": {
-    "url": "https://github.com/lxsmnsyc/terracotta.git",
-    "type": "git"
-  },
+  "keywords": [
+    "headless-ui",
+    "pridepack",
+    "solid-js"
+  ],
   "homepage": "https://github.com/lxsmnsyc/terracotta/tree/main/packages/terracotta",
   "bugs": {
     "url": "https://github.com/lxsmnsyc/terracotta/issues"
   },
-  "publishConfig": {
-    "access": "public"
-  },
+  "license": "MIT",
   "author": "Alexis Munsayac",
-  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lxsmnsyc/terracotta.git"
+  },
   "files": [
     "dist",
     "src"
   ],
-  "engines": {
-    "node": ">=10"
+  "type": "module",
+  "main": "./dist/cjs/production/index.cjs",
+  "module": "./dist/esm/production/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "typesVersions": {
+    "*": {}
   },
-  "license": "MIT",
-  "keywords": [
-    "pridepack",
-    "solid-js",
-    "headless-ui"
-  ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "development": {
+        "require": "./dist/cjs/development/index.cjs",
+        "import": "./dist/esm/development/index.mjs"
+      },
+      "require": "./dist/cjs/production/index.cjs",
+      "import": "./dist/esm/production/index.mjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "pridepack clean && pridepack build",
+    "build": "pridepack build",
+    "type-check": "pridepack check",
+    "clean": "pridepack clean",
+    "watch": "pridepack watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "solid-use": "^0.9.1"
+  },
   "devDependencies": {
     "@solidjs/testing-library": "^0.8.10",
     "@testing-library/jest-dom": "^7.0.0",
@@ -44,33 +70,7 @@
   "peerDependencies": {
     "solid-js": "^1.8"
   },
-  "dependencies": {
-    "solid-use": "^0.9.1"
-  },
-  "scripts": {
-    "prepublishOnly": "pridepack clean && pridepack build",
-    "build": "pridepack build",
-    "type-check": "pridepack check",
-    "clean": "pridepack clean",
-    "watch": "pridepack watch",
-    "test": "vitest run",
-    "test:watch": "vitest"
-  },
-  "types": "./dist/types/index.d.ts",
-  "main": "./dist/cjs/production/index.cjs",
-  "module": "./dist/esm/production/index.mjs",
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "development": {
-        "require": "./dist/cjs/development/index.cjs",
-        "import": "./dist/esm/development/index.mjs"
-      },
-      "require": "./dist/cjs/production/index.cjs",
-      "import": "./dist/esm/production/index.mjs"
-    }
-  },
-  "typesVersions": {
-    "*": {}
+  "engines": {
+    "node": ">=10"
   }
 }

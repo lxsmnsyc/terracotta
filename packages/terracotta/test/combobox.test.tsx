@@ -1,28 +1,21 @@
 import { fireEvent, render, screen, waitFor } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxLabel,
-  ComboboxOption,
-  ComboboxOptions,
-} from '../src';
+import { labelledBy } from './aria';
+import { Combobox, ComboboxInput, ComboboxLabel, ComboboxOption, ComboboxOptions } from '../src';
 
 const PEOPLE = ['ada', 'grace', 'katherine'];
 
-function renderCombobox(props: { open?: boolean; value?: string } = {}) {
+function renderCombobox(props: { open?: boolean; value?: string } = {}): ReturnType<typeof render> {
   return render(() => (
     <Combobox
       defaultOpen={props.open ?? false}
       defaultValue={props.value}
-      matchBy={(value: string, query) =>
-        value.toLowerCase().includes(query.toLowerCase())
-      }
+      matchBy={(value: string, query) => value.toLowerCase().includes(query.toLowerCase())}
     >
       <ComboboxLabel>Assignee</ComboboxLabel>
       <ComboboxInput />
       <ComboboxOptions>
-        {PEOPLE.map(person => (
+        {PEOPLE.map((person) => (
           <ComboboxOption value={person}>{person}</ComboboxOption>
         ))}
       </ComboboxOptions>
@@ -51,11 +44,7 @@ describe('Combobox accessibility', () => {
   it('names the input from the label', () => {
     renderCombobox();
 
-    expect(
-      document.getElementById(
-        getInput().getAttribute('aria-labelledby') as string,
-      ),
-    ).toHaveTextContent('Assignee');
+    expect(labelledBy(getInput())).toHaveTextContent('Assignee');
   });
 
   it('does not render the option list while collapsed', () => {

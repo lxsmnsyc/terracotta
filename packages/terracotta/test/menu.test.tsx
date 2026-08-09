@@ -1,13 +1,14 @@
 import { fireEvent, render, screen, waitFor } from '@solidjs/testing-library';
 import { describe, expect, it, vi } from 'vitest';
+import { pressKeyOnFocused } from './aria';
 import { Menu, MenuItem } from '../src';
 
 const ITEMS = ['Cut', 'Copy', 'Paste'];
 
-function renderMenu(props: { disabled?: string[] } = {}) {
+function renderMenu(props: { disabled?: string[] } = {}): ReturnType<typeof render> {
   return render(() => (
     <Menu>
-      {ITEMS.map(item => (
+      {ITEMS.map((item) => (
         <MenuItem disabled={props.disabled?.includes(item)}>{item}</MenuItem>
       ))}
     </Menu>
@@ -38,14 +39,10 @@ describe('Menu accessibility', () => {
     renderMenu();
     getItem('Cut').focus();
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, {
-      key: 'ArrowDown',
-    });
+    pressKeyOnFocused('ArrowDown');
     expect(document.activeElement).toBe(getItem('Copy'));
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, {
-      key: 'ArrowUp',
-    });
+    pressKeyOnFocused('ArrowUp');
     expect(document.activeElement).toBe(getItem('Cut'));
   });
 
@@ -53,10 +50,10 @@ describe('Menu accessibility', () => {
     renderMenu();
     getItem('Copy').focus();
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, { key: 'End' });
+    pressKeyOnFocused('End');
     expect(document.activeElement).toBe(getItem('Paste'));
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, { key: 'Home' });
+    pressKeyOnFocused('Home');
     expect(document.activeElement).toBe(getItem('Cut'));
   });
 
@@ -64,7 +61,7 @@ describe('Menu accessibility', () => {
     renderMenu();
     getItem('Cut').focus();
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, { key: 'p' });
+    pressKeyOnFocused('p');
 
     // Type-ahead is debounced so that multi-character searches work.
     await waitFor(() => {
@@ -79,9 +76,7 @@ describe('Menu accessibility', () => {
     expect(disabled).toHaveAttribute('aria-disabled', 'true');
 
     getItem('Cut').focus();
-    fireEvent.keyDown(document.activeElement as HTMLElement, {
-      key: 'ArrowDown',
-    });
+    pressKeyOnFocused('ArrowDown');
 
     expect(document.activeElement).toBe(getItem('Paste'));
   });
@@ -90,7 +85,13 @@ describe('Menu accessibility', () => {
     const onClick = vi.fn();
     render(() => (
       <Menu>
-        <MenuItem onClick={onClick}>Cut</MenuItem>
+        <MenuItem
+          onClick={() => {
+            onClick();
+          }}
+        >
+          Cut
+        </MenuItem>
       </Menu>
     ));
 

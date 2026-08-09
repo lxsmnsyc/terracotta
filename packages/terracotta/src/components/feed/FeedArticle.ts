@@ -12,8 +12,10 @@ import { FeedArticleContext } from './FeedArticleContext';
 import { useFeedContext } from './FeedContext';
 import { FEED_ARTICLE_TAG } from './tags';
 
-export type FeedArticleProps<T extends ValidConstructor = 'article'> =
-  HeadlessPropsWithRef<T, { index: number }>;
+export type FeedArticleProps<T extends ValidConstructor = 'article'> = HeadlessPropsWithRef<
+  T,
+  { index: number }
+>;
 
 /**
  * One entry in a `Feed`. The required `index` prop is its zero-based position,
@@ -40,7 +42,7 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
     },
     get children() {
       return createDynamic(
-        () => props.as || ('article' as T),
+        () => props.as ?? ('article' as T),
         mergeProps(
           FEED_ARTICLE_TAG,
           createOwnerAttribute(rootContext.ownerID),

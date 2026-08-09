@@ -1,11 +1,5 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createContext,
-  createMemo,
-  untrack,
-  useContext,
-} from 'solid-js';
+import { createComponent, createContext, createMemo, untrack, useContext } from 'solid-js';
 import assert from '../utils/assert';
 import { useSelectState } from './create-select-state';
 
@@ -15,12 +9,12 @@ export interface SelectOptionStateOptions<T> {
 }
 
 export interface SelectOptionStateProperties {
-  isSelected(): boolean;
-  select(): void;
-  isActive(): boolean;
-  focus(): void;
-  blur(): void;
-  disabled(): boolean;
+  isSelected: () => boolean;
+  select: () => void;
+  isActive: () => boolean;
+  focus: () => void;
+  blur: () => void;
+  disabled: () => boolean;
 }
 
 /**
@@ -33,10 +27,13 @@ export function createSelectOptionState<T>(
   options: SelectOptionStateOptions<T>,
 ): SelectOptionStateProperties {
   const state = useSelectState<T>();
-  const isDisabled = createMemo(() => options.disabled || state.disabled());
+  // `disabled` is optional, so it is coerced before the logical OR: `??` would
+  // wrongly stop at an explicit `false` instead of falling back to the parent.
+  const isDisabled = createMemo(() => !!options.disabled || state.disabled());
+  const isActive = createMemo(() => state.isActive(options.value));
   return {
     isSelected: createMemo(() => state.isSelected(options.value)),
-    isActive: createMemo(() => state.isActive(options.value)),
+    isActive,
     select(): void {
       if (!untrack(isDisabled)) {
         state.select(options.value);
@@ -48,7 +45,7 @@ export function createSelectOptionState<T>(
       }
     },
     blur(): void {
-      if (!untrack(isDisabled) && this.isActive()) {
+      if (!untrack(isDisabled) && isActive()) {
         state.blur();
       }
     },
@@ -57,21 +54,16 @@ export function createSelectOptionState<T>(
 }
 
 export interface SelectOptionStateRenderProps {
-  children?:
-    | JSX.Element
-    | ((state: SelectOptionStateProperties) => JSX.Element);
+  children?: JSX.Element | ((state: SelectOptionStateProperties) => JSX.Element);
 }
 
-export interface SelectOptionStateProviderProps
-  extends SelectOptionStateRenderProps {
+export interface SelectOptionStateProviderProps extends SelectOptionStateRenderProps {
   state: SelectOptionStateProperties;
 }
 
 const SelectOptionStateContext = createContext<SelectOptionStateProperties>();
 
-export function SelectOptionStateProvider(
-  props: SelectOptionStateProviderProps,
-): JSX.Element {
+export function SelectOptionStateProvider(props: SelectOptionStateProviderProps): JSX.Element {
   return createComponent(SelectOptionStateContext.Provider, {
     value: props.state,
     get children() {
@@ -102,9 +94,7 @@ export function useSelectOptionState(): SelectOptionStateProperties {
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-option-state}
  */
-export function SelectOptionStateChild(
-  props: SelectOptionStateRenderProps,
-): JSX.Element {
+export function SelectOptionStateChild(props: SelectOptionStateRenderProps): JSX.Element {
   const state = useSelectOptionState();
   return createMemo(() => {
     const current = props.children;

@@ -1,16 +1,7 @@
-import {
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-  Transition,
-  Menu,
-  MenuItem,
-} from 'terracotta';
+import { Menu, MenuItem, Popover, PopoverButton, PopoverPanel, Transition } from 'terracotta';
 import type { JSX } from 'solid-js';
 
-function ChevronDownIcon(
-  props: JSX.IntrinsicElements['svg'] & { title: string },
-): JSX.Element {
+function ChevronDownIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -20,12 +11,7 @@ function ChevronDownIcon(
       {...props}
     >
       <title>{props.title}</title>
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width={2}
-        d="M19 9l-7 7-7-7"
-      />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M19 9l-7 7-7-7" />
     </svg>
   );
 }

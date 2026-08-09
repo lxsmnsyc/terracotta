@@ -72,7 +72,7 @@ function random(max: number): number {
 }
 
 function loadData(count: number): { title: string; description: string }[] {
-  const data = new Array<Article>(count);
+  const data: Article[] = Array.from({ length: count });
   for (let i = 0; i < count; i += 1) {
     data[i] = {
       title: `${adjectives[random(adjectives.length)]} ${
@@ -117,9 +117,7 @@ export default function App(): JSX.Element {
                   {(category): JSX.Element => (
                     <Tab
                       class={classNames(
-                        isSelected(category)
-                          ? 'bg-rose-900 bg-opacity-75 text-white'
-                          : 'bg-white',
+                        isSelected(category) ? 'bg-rose-900 bg-opacity-75 text-white' : 'bg-white',
                         isActive(category) &&
                           'ring-2 ring-offset-2 ring-offset-rose-300 ring-white ring-opacity-60',
                         'w-full flex items-center justify-center rounded-lg shadow-md px-4 py-2 cursor-pointer focus:outline-none font-semibold',
@@ -147,13 +145,9 @@ export default function App(): JSX.Element {
                             tabindex={0}
                             class="p-2 m-2 flex flex-col space-y-1 bg-opacity-25 rounded focus:outline-none focus-visible:ring focus-visible:ring-rose-500 focus-visible:ring-opacity-75"
                           >
-                            <div class="text-lg text-gray-900 font-bold">
-                              {item.title}
-                            </div>
+                            <div class="text-lg text-gray-900 font-bold">{item.title}</div>
                             <Separator />
-                            <div class="text-sm text-gray-900">
-                              {item.description}
-                            </div>
+                            <div class="text-sm text-gray-900">{item.description}</div>
                           </div>
                         )}
                       </For>

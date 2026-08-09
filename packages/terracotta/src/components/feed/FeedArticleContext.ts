@@ -16,13 +16,8 @@ export const FeedArticleContext = createContext<FeedArticleContextData>();
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
  */
-export function useFeedArticleContext(
-  componentName: string,
-): FeedArticleContextData {
+export function useFeedArticleContext(componentName: string): FeedArticleContextData {
   const context = useContext(FeedArticleContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <FeedArticle>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <FeedArticle>`));
   return context;
 }

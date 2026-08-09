@@ -10,10 +10,7 @@ import {
   SelectOptionStateProvider,
   createSelectOptionState,
 } from '../../states/create-select-option-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef, ValidConstructor } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
@@ -35,10 +32,7 @@ export type ListboxOptionBaseProps<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps
 >;
 
-export type ListboxOptionProps<
-  V,
-  T extends ValidConstructor = 'li',
-> = HeadlessPropsWithRef<
+export type ListboxOptionProps<V, T extends ValidConstructor = 'li'> = HeadlessPropsWithRef<
   T,
   OmitAndMerge<ListboxOptionBaseProps<V>, ButtonProps<T>>
 >;
@@ -101,7 +95,7 @@ export function ListboxOption<V, T extends ValidConstructor = 'li'>(
       createOwnerAttribute(context.getId()),
       {
         get as() {
-          return props.as || ('li' as T);
+          return props.as ?? ('li' as T);
         },
         role: 'option',
         tabindex: -1,

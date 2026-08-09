@@ -15,15 +15,11 @@ export const RadioGroupContext = createContext<RadioGroupContextData>();
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
  */
-export function useRadioGroupContext(
-  componentName: string,
-): RadioGroupContextData {
+export function useRadioGroupContext(componentName: string): RadioGroupContextData {
   const context = useContext(RadioGroupContext);
   assert(
     context,
-    new Error(
-      `<${componentName}> must be used inside a <RadioGroup> or <RadioGroupOption>`,
-    ),
+    new Error(`<${componentName}> must be used inside a <RadioGroup> or <RadioGroupOption>`),
   );
   return context;
 }

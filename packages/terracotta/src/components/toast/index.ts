@@ -12,11 +12,7 @@ import {
 import { omitProps } from 'solid-use/props';
 import assert from '../../utils/assert';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 
 const TOAST_TAG = createTag('toast');
@@ -30,10 +26,7 @@ const ToastContext = createContext<ToastContextData>();
 
 function useToastContext(componentName: string): ToastContextData {
   const context = useContext(ToastContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <Toaster>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <Toaster>`));
   return context;
 }
 
@@ -47,13 +40,11 @@ export type ToastProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
  */
-export function Toast<T extends ValidConstructor = 'div'>(
-  props: ToastProps<T>,
-): JSX.Element {
+export function Toast<T extends ValidConstructor = 'div'>(props: ToastProps<T>): JSX.Element {
   useToastContext('Toast');
 
   return createDynamic(
-    () => props.as || ('div' as T),
+    () => props.as ?? ('div' as T),
     mergeProps(
       TOAST_TAG,
       {
@@ -75,9 +66,7 @@ export type ToasterProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
  */
-export function Toaster<T extends ValidConstructor = 'div'>(
-  props: ToasterProps<T>,
-): JSX.Element {
+export function Toaster<T extends ValidConstructor = 'div'>(props: ToasterProps<T>): JSX.Element {
   const ownerID = createUniqueId();
 
   return createComponent(ToastContext.Provider, {
@@ -86,7 +75,7 @@ export function Toaster<T extends ValidConstructor = 'div'>(
     },
     get children() {
       return createDynamic(
-        () => props.as || ('div' as T),
+        () => props.as ?? ('div' as T),
         mergeProps(TOASTER_TAG, omitProps(props, ['as'])) as DynamicProps<T>,
       );
     },
@@ -109,11 +98,11 @@ export type ToasterListener<T> = (queue: ToastData<T>[]) => void;
 export class ToasterStore<T> {
   private static toasterID = 0;
 
-  private id: number;
+  private readonly id: number;
 
   private queue: ToastData<T>[] = [];
 
-  private listeners = new Set<ToasterListener<T>>();
+  private readonly listeners = new Set<ToasterListener<T>>();
 
   private toastID = 0;
 
@@ -148,7 +137,7 @@ export class ToasterStore<T> {
   }
 
   remove(id: string): void {
-    this.queue = this.queue.filter(item => item.id !== id);
+    this.queue = this.queue.filter((item) => item.id !== id);
     this.notify();
   }
 
@@ -173,7 +162,11 @@ export function useToaster<T>(toaster: ToasterStore<T>): () => ToastData<T>[] {
   const [signal, setSignal] = createSignal(toaster.getQueue());
 
   createEffect(() => {
-    onCleanup(toaster.subscribe(setSignal));
+    onCleanup(
+      toaster.subscribe((queue) => {
+        setSignal(queue);
+      }),
+    );
   });
 
   return signal;

@@ -50,16 +50,11 @@ export default function SingleExample(): JSX.Element {
                 >
                   <For each={people}>
                     {(person): JSX.Element => (
-                      <ListboxOption
-                        class="focus:outline-none group"
-                        value={person}
-                      >
+                      <ListboxOption class="focus:outline-none group" value={person}>
                         {({ isActive, isSelected }): JSX.Element => (
                           <div
                             class={classNames(
-                              isActive()
-                                ? 'text-amber-900 bg-amber-100'
-                                : 'text-gray-900',
+                              isActive() ? 'text-amber-900 bg-amber-100' : 'text-gray-900',
                               'group-hover:text-amber-900 group-hover:bg-amber-100',
                               'cursor-default select-none relative py-2 pl-10 pr-4',
                             )}
@@ -75,9 +70,7 @@ export default function SingleExample(): JSX.Element {
                             {isSelected() ? (
                               <span
                                 class={classNames(
-                                  isActive()
-                                    ? 'text-amber-600'
-                                    : 'text-amber-600',
+                                  isActive() ? 'text-amber-600' : 'text-amber-600',
                                   'group-hover:text-amber-600',
                                   'absolute inset-y-0 left-0 flex items-center pl-3',
                                 )}

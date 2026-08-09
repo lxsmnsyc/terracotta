@@ -1,12 +1,7 @@
-import { fireEvent, render, screen } from '@solidjs/testing-library';
+import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import {
-  Accordion,
-  AccordionButton,
-  AccordionHeader,
-  AccordionItem,
-  AccordionPanel,
-} from '../src';
+import { pressKeyOnFocused } from './aria';
+import { Accordion, AccordionButton, AccordionHeader, AccordionItem, AccordionPanel } from '../src';
 
 const ITEMS = ['first', 'second', 'third'];
 
@@ -15,7 +10,7 @@ function renderAccordion(
 ): ReturnType<typeof render> {
   return render(() => (
     <Accordion defaultValue={props.value} toggleable={true}>
-      {ITEMS.map(item => (
+      {ITEMS.map((item) => (
         <AccordionItem value={item} disabled={props.disabled?.includes(item)}>
           <AccordionHeader>
             <AccordionButton>{item} header</AccordionButton>
@@ -113,14 +108,10 @@ describe('Accordion accessibility', () => {
     renderAccordion();
     getButton('first').focus();
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, {
-      key: 'ArrowDown',
-    });
+    pressKeyOnFocused('ArrowDown');
     expect(document.activeElement).toBe(getButton('second'));
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, {
-      key: 'ArrowUp',
-    });
+    pressKeyOnFocused('ArrowUp');
     expect(document.activeElement).toBe(getButton('first'));
   });
 
@@ -128,10 +119,10 @@ describe('Accordion accessibility', () => {
     renderAccordion();
     getButton('second').focus();
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, { key: 'End' });
+    pressKeyOnFocused('End');
     expect(document.activeElement).toBe(getButton('third'));
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, { key: 'Home' });
+    pressKeyOnFocused('Home');
     expect(document.activeElement).toBe(getButton('first'));
   });
 
@@ -139,9 +130,7 @@ describe('Accordion accessibility', () => {
     renderAccordion({ disabled: ['second'] });
     getButton('first').focus();
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, {
-      key: 'ArrowDown',
-    });
+    pressKeyOnFocused('ArrowDown');
 
     expect(document.activeElement).toBe(getButton('third'));
   });
@@ -149,7 +138,7 @@ describe('Accordion accessibility', () => {
   it('supports multiple expanded items in multiple mode', () => {
     render(() => (
       <Accordion multiple={true} defaultValue={['first', 'second']}>
-        {ITEMS.map(item => (
+        {ITEMS.map((item) => (
           <AccordionItem value={item}>
             <AccordionHeader>
               <AccordionButton>{item} header</AccordionButton>

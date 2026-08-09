@@ -55,11 +55,7 @@ export type {
   CheckStateRenderProps,
   CheckStateUncontrolledOptions,
 } from './states/create-check-state';
-export {
-  CheckStateChild,
-  createCheckState,
-  useCheckState,
-} from './states/create-check-state';
+export { CheckStateChild, createCheckState, useCheckState } from './states/create-check-state';
 export type {
   DisclosureStateControlledOptions,
   DisclosureStateOptions,
@@ -79,11 +75,7 @@ export type {
   InputStateRenderProps,
   InputStateUncontrolledOptions,
 } from './states/create-input-state';
-export {
-  InputStateChild,
-  useInputState,
-  createInputState,
-} from './states/create-input-state';
+export { InputStateChild, useInputState, createInputState } from './states/create-input-state';
 export type {
   SelectOptionStateOptions,
   SelectOptionStateProperties,
@@ -117,11 +109,7 @@ export type {
   ToggleStateRenderProps,
   ToggleStateUncontrolledOptions,
 } from './states/create-toggle-state';
-export {
-  ToggleStateChild,
-  useToggleState,
-  createToggleState,
-} from './states/create-toggle-state';
+export { ToggleStateChild, useToggleState, createToggleState } from './states/create-toggle-state';
 
 export type { FragmentProps } from './utils/Fragment';
 export { default as Fragment } from './utils/Fragment';

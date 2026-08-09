@@ -30,14 +30,12 @@ import { useTabGroupContext } from './TabGroupContext';
 import { useTabListContext } from './TabListContext';
 import { TAB_TAG } from './tags';
 
-export type TabBaseProps<V> = Prettify<
-  SelectOptionStateOptions<V> & SelectOptionStateRenderProps
->;
+export type TabBaseProps<V> = Prettify<SelectOptionStateOptions<V> & SelectOptionStateRenderProps>;
 
-export type TabProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessPropsWithRef<T, TabBaseProps<V>>;
+export type TabProps<V, T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+  T,
+  TabBaseProps<V>
+>;
 
 /**
  * One tab in a `TabList`. The required `value` prop links it to the `TabPanel`
@@ -47,9 +45,7 @@ export type TabProps<
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/tabs.md}
  */
-export function Tab<V, T extends ValidConstructor = 'div'>(
-  props: TabProps<V, T>,
-): JSX.Element {
+export function Tab<V, T extends ValidConstructor = 'div'>(props: TabProps<V, T>): JSX.Element {
   const rootContext = useTabGroupContext('Tab');
   const listContext = useTabListContext('Tab');
 
@@ -79,7 +75,7 @@ export function Tab<V, T extends ValidConstructor = 'div'>(
       createOwnerAttribute(listContext.getId()),
       {
         get as() {
-          return props.as || ('div' as T);
+          return props.as ?? ('div' as T);
         },
         role: 'tab',
         ref: setInternalRef,

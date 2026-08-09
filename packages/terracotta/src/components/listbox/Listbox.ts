@@ -1,11 +1,5 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  createMemo,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
+import { createComponent, createEffect, createMemo, createUniqueId, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   DisclosureStateControlledOptions,
@@ -27,11 +21,7 @@ import {
   createSingleSelectState,
 } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -67,10 +57,10 @@ export type ListboxSCSCDBaseProps<V> = Prettify<
     }
 >;
 
-export type ListboxSCSCDProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessProps<T, ListboxSCSCDBaseProps<V>>;
+export type ListboxSCSCDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  ListboxSCSCDBaseProps<V>
+>;
 
 // SCSCD = Single, Controlled Select, Uncontrolled Disclosure
 export type ListboxSCSUDBaseProps<V> = Prettify<
@@ -82,10 +72,10 @@ export type ListboxSCSUDBaseProps<V> = Prettify<
     }
 >;
 
-export type ListboxSCSUDProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessProps<T, ListboxSCSUDBaseProps<V>>;
+export type ListboxSCSUDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  ListboxSCSUDBaseProps<V>
+>;
 
 // SCSCD = Single, Uncontrolled Select, Controlled Disclosure
 export type ListboxSUSCDBaseProps<V> = Prettify<
@@ -97,10 +87,10 @@ export type ListboxSUSCDBaseProps<V> = Prettify<
     }
 >;
 
-export type ListboxSUSCDProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessProps<T, ListboxSUSCDBaseProps<V>>;
+export type ListboxSUSCDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  ListboxSUSCDBaseProps<V>
+>;
 
 // SCSCD = Single, Uncontrolled Select, Uncontrolled Disclosure
 export type ListboxSUSUDBaseProps<V> = Prettify<
@@ -112,10 +102,10 @@ export type ListboxSUSUDBaseProps<V> = Prettify<
     }
 >;
 
-export type ListboxSUSUDProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessProps<T, ListboxSUSUDBaseProps<V>>;
+export type ListboxSUSUDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  ListboxSUSUDBaseProps<V>
+>;
 
 export type ListboxSingleProps<V, T extends ValidConstructor = 'div'> =
   | ListboxSCSCDProps<V, T>
@@ -133,10 +123,10 @@ export type ListboxMCSCDBaseProps<V> = Prettify<
     }
 >;
 
-export type ListboxMCSCDProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessProps<T, ListboxMCSCDBaseProps<V>>;
+export type ListboxMCSCDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  ListboxMCSCDBaseProps<V>
+>;
 
 // MCSCD = Multiple, Controlled Select, Uncontrolled Disclosure
 export type ListboxMCSUDBaseProps<V> = Prettify<
@@ -148,10 +138,10 @@ export type ListboxMCSUDBaseProps<V> = Prettify<
     }
 >;
 
-export type ListboxMCSUDProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessProps<T, ListboxMCSUDBaseProps<V>>;
+export type ListboxMCSUDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  ListboxMCSUDBaseProps<V>
+>;
 
 // MCSCD = Multiple, Uncontrolled Select, Controlled Disclosure
 export type ListboxMUSCDBaseProps<V> = Prettify<
@@ -163,10 +153,10 @@ export type ListboxMUSCDBaseProps<V> = Prettify<
     }
 >;
 
-export type ListboxMUSCDProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessProps<T, ListboxMUSCDBaseProps<V>>;
+export type ListboxMUSCDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  ListboxMUSCDBaseProps<V>
+>;
 
 // MCSCD = Multiple, Uncontrolled Select, Uncontrolled Disclosure
 export type ListboxMUSUDBaseProps<V> = Prettify<
@@ -178,10 +168,10 @@ export type ListboxMUSUDBaseProps<V> = Prettify<
     }
 >;
 
-export type ListboxMUSUDProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessProps<T, ListboxMUSUDBaseProps<V>>;
+export type ListboxMUSUDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  ListboxMUSUDBaseProps<V>
+>;
 
 export type ListboxMultipleProps<V, T extends ValidConstructor = 'div'> =
   | ListboxMCSCDProps<V, T>
@@ -374,7 +364,7 @@ export function Listbox<V, T extends ValidConstructor = 'div'>(
               state: disclosureState,
               get children() {
                 return createDynamic(
-                  () => props.as || 'div',
+                  () => props.as ?? 'div',
                   mergeProps(
                     LISTBOX_TAG,
                     {

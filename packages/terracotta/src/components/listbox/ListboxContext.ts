@@ -24,9 +24,6 @@ export const ListboxContext = createContext<ListboxContextData>();
  */
 export function useListboxContext(componentName: string): ListboxContextData {
   const context = useContext(ListboxContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <Listbox>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <Listbox>`));
   return context;
 }

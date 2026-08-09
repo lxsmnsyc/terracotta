@@ -2,14 +2,8 @@ import type { JSX } from 'solid-js';
 import { createComponent, createEffect, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
+import type { HeadlessPropsWithRef, ValidConstructor } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
@@ -24,11 +18,10 @@ import { Button } from '../button';
 import { usePopoverContext } from './PopoverContext';
 import { POPOVER_BUTTON_TAG } from './tags';
 
-export type PopoverButtonProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<
-    T,
-    OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
-  >;
+export type PopoverButtonProps<T extends ValidConstructor = 'button'> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
+>;
 
 /**
  * The trigger of a `Popover`. Carries `aria-expanded`, and `aria-controls`
@@ -46,8 +39,7 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined =>
-    state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
   createEffect(() => {
     const current = internalRef();

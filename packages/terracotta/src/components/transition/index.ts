@@ -33,14 +33,9 @@ interface TransitionCounter {
 const TransitionRootContext = createContext<TransitionRootBaseProps>();
 const TransitionCounterContext = createContext<TransitionCounter>();
 
-function useTransitionRootContext(
-  componentName: string,
-): TransitionRootBaseProps {
+function useTransitionRootContext(componentName: string): TransitionRootBaseProps {
   const context = useContext(TransitionRootContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <Transition>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <Transition>`));
   return context;
 }
 
@@ -51,10 +46,10 @@ function createTransitionCounter(): TransitionCounter {
   return {
     // Reactive set
     register(): void {
-      setSize(c => c + 1);
+      setSize((c) => c + 1);
     },
     unregister(): void {
-      setSize(c => c - 1);
+      setSize((c) => c - 1);
     },
     done(): boolean {
       return size() === 0;
@@ -82,27 +77,24 @@ function getClassList(classes?: string): string[] {
 }
 
 function addClassList(ref: HTMLElement, classes: string[]): void {
-  const filtered = classes.filter(value => value);
+  const filtered = classes.filter((value) => value);
   if (filtered.length) {
     ref.classList.add(...filtered);
   }
 }
 function removeClassList(ref: HTMLElement, classes: string[]): void {
-  const filtered = classes.filter(value => value);
+  const filtered = classes.filter((value) => value);
   if (filtered.length) {
     ref.classList.remove(...filtered);
   }
 }
 
-export type TransitionChildProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, TransitionBaseChildProps>;
+export type TransitionChildProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+  T,
+  TransitionBaseChildProps
+>;
 
-type TransitionStates =
-  | 'enter-from'
-  | 'enter-to'
-  | 'entered'
-  | 'leave-from'
-  | 'leave-to';
+type TransitionStates = 'enter-from' | 'enter-to' | 'entered' | 'leave-from' | 'leave-to';
 
 /**
  * A {@link Transition} that follows its parent transition instead of its own
@@ -222,7 +214,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
     get children() {
       return createUnmountable(props, visible, () =>
         createDynamic(
-          () => props.as || ('div' as T),
+          () => props.as ?? ('div' as T),
           mergeProps(
             omitProps(props, [
               'as',

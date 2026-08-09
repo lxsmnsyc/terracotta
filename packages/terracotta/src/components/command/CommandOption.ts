@@ -1,10 +1,5 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   AutocompleteOptionStateOptions,
@@ -14,10 +9,7 @@ import {
   AutocompleteOptionStateProvider,
   createAutocompleteOptionState,
 } from '../../states/create-autocomplete-option-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef, ValidConstructor } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
@@ -40,10 +32,7 @@ export type CommandOptionBaseProps<V> = Prettify<
   AutocompleteOptionStateOptions<V> & AutocompleteOptionStateRenderProps
 >;
 
-export type CommandOptionProps<
-  V,
-  T extends ValidConstructor = 'li',
-> = HeadlessPropsWithRef<
+export type CommandOptionProps<V, T extends ValidConstructor = 'li'> = HeadlessPropsWithRef<
   T,
   OmitAndMerge<CommandOptionBaseProps<V>, ButtonProps<T>>
 >;
@@ -92,7 +81,7 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
       useEventListener(current, 'mouseleave', () => {
         state.blur();
       });
-      useVirtualFocus(el => {
+      useVirtualFocus((el) => {
         if (el === current) {
           focusOption();
         }
@@ -108,7 +97,7 @@ export function CommandOption<V, T extends ValidConstructor = 'li'>(
       {
         id,
         get as() {
-          return props.as || ('li' as T);
+          return props.as ?? ('li' as T);
         },
         role: 'option',
         tabindex: -1,

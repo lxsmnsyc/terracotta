@@ -21,8 +21,7 @@ import useEventListener from '../../utils/use-event-listener';
 import { useCommandContext } from './CommandContext';
 import { COMMAND_INPUT_TAG } from './tags';
 
-export type CommandInputProps<T extends ValidConstructor = 'input'> =
-  HeadlessPropsWithRef<T>;
+export type CommandInputProps<T extends ValidConstructor = 'input'> = HeadlessPropsWithRef<T>;
 
 /**
  * The query field of a `Command`. Typing sets the query, which is debounced by
@@ -40,8 +39,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
   const state = useAutocompleteState();
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined =>
-    state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
   createEffect(() => {
     const current = internalRef();
@@ -55,7 +53,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
           }
         });
       }
-      useEventListener(current, 'keydown', e => {
+      useEventListener(current, 'keydown', (e) => {
         if (!isDisabled()) {
           switch (e.key) {
             case 'ArrowUp': {
@@ -112,7 +110,7 @@ export function CommandInput<T extends ValidConstructor = 'input'>(
   });
 
   return createDynamic(
-    () => props.as || ('input' as T),
+    () => props.as ?? ('input' as T),
     mergeProps(
       COMMAND_INPUT_TAG,
       {

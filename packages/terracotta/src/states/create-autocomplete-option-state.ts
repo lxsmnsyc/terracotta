@@ -1,11 +1,5 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createContext,
-  createMemo,
-  untrack,
-  useContext,
-} from 'solid-js';
+import { createComponent, createContext, createMemo, untrack, useContext } from 'solid-js';
 import assert from '../utils/assert';
 import { useAutocompleteState } from './create-autocomplete-state';
 
@@ -15,13 +9,13 @@ export interface AutocompleteOptionStateOptions<T> {
 }
 
 export interface AutocompleteOptionStateProperties {
-  isSelected(): boolean;
-  select(): void;
-  isActive(): boolean;
-  focus(): void;
-  blur(): void;
-  disabled(): boolean;
-  matches(): boolean;
+  isSelected: () => boolean;
+  select: () => void;
+  isActive: () => boolean;
+  focus: () => void;
+  blur: () => void;
+  disabled: () => boolean;
+  matches: () => boolean;
 }
 
 /**
@@ -34,10 +28,13 @@ export function createAutocompleteOptionState<T>(
   options: AutocompleteOptionStateOptions<T>,
 ): AutocompleteOptionStateProperties {
   const state = useAutocompleteState<T>();
-  const isDisabled = createMemo(() => options.disabled || state.disabled());
+  // `disabled` is optional, so it is coerced before the logical OR: `??` would
+  // wrongly stop at an explicit `false` instead of falling back to the parent.
+  const isDisabled = createMemo(() => !!options.disabled || state.disabled());
+  const isActive = createMemo(() => state.isActive(options.value));
   return {
     isSelected: createMemo(() => state.isSelected(options.value)),
-    isActive: createMemo(() => state.isActive(options.value)),
+    isActive,
     select(): void {
       if (!untrack(isDisabled)) {
         state.select(options.value);
@@ -49,7 +46,7 @@ export function createAutocompleteOptionState<T>(
       }
     },
     blur(): void {
-      if (!untrack(isDisabled) && this.isActive()) {
+      if (!untrack(isDisabled) && isActive()) {
         state.blur();
       }
     },
@@ -59,18 +56,14 @@ export function createAutocompleteOptionState<T>(
 }
 
 export interface AutocompleteOptionStateRenderProps {
-  children?:
-    | JSX.Element
-    | ((state: AutocompleteOptionStateProperties) => JSX.Element);
+  children?: JSX.Element | ((state: AutocompleteOptionStateProperties) => JSX.Element);
 }
 
-export interface AutocompleteOptionStateProviderProps
-  extends AutocompleteOptionStateRenderProps {
+export interface AutocompleteOptionStateProviderProps extends AutocompleteOptionStateRenderProps {
   state: AutocompleteOptionStateProperties;
 }
 
-const AutocompleteOptionStateContext =
-  createContext<AutocompleteOptionStateProperties>();
+const AutocompleteOptionStateContext = createContext<AutocompleteOptionStateProperties>();
 
 export function AutocompleteOptionStateProvider(
   props: AutocompleteOptionStateProviderProps,

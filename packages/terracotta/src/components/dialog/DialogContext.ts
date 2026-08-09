@@ -18,9 +18,6 @@ export const DialogContext = createContext<DialogContextData>();
  */
 export function useDialogContext(componentName: string): DialogContextData {
   const context = useContext(DialogContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <Dialog>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <Dialog>`));
   return context;
 }

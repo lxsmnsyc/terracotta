@@ -2,10 +2,7 @@ import type { JSX } from 'solid-js';
 import { createComponent, createEffect, mergeProps, onCleanup } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
-import {
-  SelectStateChild,
-  useSelectState,
-} from '../../states/create-select-state';
+import { SelectStateChild, useSelectState } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
@@ -13,19 +10,16 @@ import type {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
-import {
-  createHasActiveState,
-  createHasSelectedState,
-} from '../../utils/state-props';
+import { createHasActiveState, createHasSelectedState } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
 import { useTabGroupContext } from './TabGroupContext';
 import { TabListContext, createTabFocusNavigator } from './TabListContext';
 import { TAB_LIST_TAG } from './tags';
 
-export type TabListProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessPropsWithRef<T, SelectStateRenderProps<V>>;
+export type TabListProps<V, T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+  T,
+  SelectStateRenderProps<V>
+>;
 
 /**
  * The row of tabs in a `TabGroup`, and the element that owns their arrow-key
@@ -50,7 +44,7 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
       onCleanup(() => {
         controller.clearRef();
       });
-      useEventListener(current, 'keydown', e => {
+      useEventListener(current, 'keydown', (e) => {
         if (!state.disabled()) {
           switch (e.key) {
             case 'ArrowUp': {
@@ -94,7 +88,7 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
           }
         }
       });
-      useEventListener(current, 'focusin', e => {
+      useEventListener(current, 'focusin', (e) => {
         if (e.target && e.target !== current) {
           controller.setCurrent(e.target as HTMLElement);
         }
@@ -106,7 +100,7 @@ export function TabList<V, T extends ValidConstructor = 'div'>(
     value: controller,
     get children() {
       return createDynamic(
-        () => props.as || ('div' as T),
+        () => props.as ?? ('div' as T),
         mergeProps(
           TAB_LIST_TAG,
           {

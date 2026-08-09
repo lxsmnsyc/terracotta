@@ -11,19 +11,12 @@ export const ListboxOptionsContext = createContext<FocusNavigator>();
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
  */
-export function useListboxOptionsContext(
-  componentName: string,
-): FocusNavigator {
+export function useListboxOptionsContext(componentName: string): FocusNavigator {
   const context = useContext(ListboxOptionsContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <ListboxOptions>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <ListboxOptions>`));
   return context;
 }
 
-export function createListboxOptionsFocusNavigator(
-  owner: string,
-): FocusNavigator {
+export function createListboxOptionsFocusNavigator(owner: string): FocusNavigator {
   return new FocusNavigator(owner);
 }

@@ -1,21 +1,12 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  mergeProps,
-  onCleanup,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, mergeProps, onCleanup } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   SelectStateRenderProps,
   SingleSelectStateControlledOptions,
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
-import {
-  SelectStateProvider,
-  createSingleSelectState,
-} from '../../states/create-select-state';
+import { SelectStateProvider, createSingleSelectState } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
@@ -42,10 +33,10 @@ export type RadioGroupControlledBaseProps<V> = Prettify<
   SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type RadioGroupControlledProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessPropsWithRef<T, RadioGroupControlledBaseProps<V>>;
+export type RadioGroupControlledProps<V, T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+  T,
+  RadioGroupControlledBaseProps<V>
+>;
 
 export type RadioGroupUncontrolledBaseProps<V> = Prettify<
   SingleSelectStateUncontrolledOptions<V> & SelectStateRenderProps<V>
@@ -91,7 +82,7 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
       onCleanup(() => {
         controller.clearRef();
       });
-      useEventListener(current, 'keydown', e => {
+      useEventListener(current, 'keydown', (e) => {
         if (!state.disabled()) {
           switch (e.key) {
             case 'ArrowLeft':
@@ -109,7 +100,7 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
           }
         }
       });
-      useEventListener(current, 'focusin', e => {
+      useEventListener(current, 'focusin', (e) => {
         if (e.target && e.target !== current) {
           controller.setCurrent(e.target as HTMLElement);
         }
@@ -127,7 +118,7 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
         },
         get children() {
           return createDynamic(
-            () => props.as || ('div' as T),
+            () => props.as ?? ('div' as T),
             mergeProps(
               RADIO_GROUP_TAG,
               {

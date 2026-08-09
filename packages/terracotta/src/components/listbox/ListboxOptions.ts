@@ -1,19 +1,9 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  mergeProps,
-  onCleanup,
-  onMount,
-  untrack,
-} from 'solid-js';
+import { createComponent, createEffect, mergeProps, onCleanup, onMount, untrack } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
-import {
-  SelectStateProvider,
-  useSelectState,
-} from '../../states/create-select-state';
+import { SelectStateProvider, useSelectState } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import createTypeAhead from '../../utils/create-type-ahead';
 import type { UnmountableProps } from '../../utils/create-unmountable';
@@ -35,20 +25,15 @@ import {
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
 import { useListboxContext } from './ListboxContext';
-import {
-  ListboxOptionsContext,
-  createListboxOptionsFocusNavigator,
-} from './ListboxOptionsContext';
+import { ListboxOptionsContext, createListboxOptionsFocusNavigator } from './ListboxOptionsContext';
 import { LISTBOX_OPTIONS_TAG } from './tags';
 
-export type ListboxOptionsBaseProps<V> = Prettify<
-  UnmountableProps & SelectStateRenderProps<V>
->;
+export type ListboxOptionsBaseProps<V> = Prettify<UnmountableProps & SelectStateRenderProps<V>>;
 
-export type ListboxOptionsProps<
-  V,
-  T extends ValidConstructor = 'ul',
-> = HeadlessPropsWithRef<T, ListboxOptionsBaseProps<V>>;
+export type ListboxOptionsProps<V, T extends ValidConstructor = 'ul'> = HeadlessPropsWithRef<
+  T,
+  ListboxOptionsBaseProps<V>
+>;
 
 /**
  * The popup list of a `Listbox`. Unmounts while closed unless
@@ -69,7 +54,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
 
   const controller = createListboxOptionsFocusNavigator(context.optionsID);
 
-  const pushCharacter = createTypeAhead(value => {
+  const pushCharacter = createTypeAhead((value) => {
     controller.setFirstMatch(value);
   });
 
@@ -92,7 +77,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
           controller.setFirstChecked();
         }
 
-        useEventListener(current, 'keydown', e => {
+        useEventListener(current, 'keydown', (e) => {
           if (!selectState.disabled()) {
             switch (e.key) {
               case 'Escape': {
@@ -151,7 +136,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
             }
           }
         });
-        useEventListener(current, 'focusout', e => {
+        useEventListener(current, 'focusout', (e) => {
           if (context.buttonHovering || context.optionsHovering) {
             return;
           }
@@ -162,7 +147,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
             disclosureState.close();
           }
         });
-        useEventListener(current, 'focusin', e => {
+        useEventListener(current, 'focusin', (e) => {
           if (e.target && e.target !== current) {
             controller.setCurrent(e.target as HTMLElement);
           }
@@ -185,7 +170,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
         value: controller,
         get children() {
           return createDynamic(
-            () => props.as || ('ul' as T),
+            () => props.as ?? ('ul' as T),
             mergeProps(
               LISTBOX_OPTIONS_TAG,
               {

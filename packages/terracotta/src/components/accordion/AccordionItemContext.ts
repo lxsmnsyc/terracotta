@@ -15,13 +15,8 @@ export const AccordionItemContext = createContext<AccordionItemContextData>();
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
  */
-export function useAccordionItemContext(
-  componentName: string,
-): AccordionItemContextData {
+export function useAccordionItemContext(componentName: string): AccordionItemContextData {
   const context = useContext(AccordionItemContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <AccordionItem>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <AccordionItem>`));
   return context;
 }

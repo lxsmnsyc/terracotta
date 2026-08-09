@@ -17,13 +17,8 @@ export const AlertDialogContext = createContext<AlertDialogContextData>();
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
  */
-export function useAlertDialogContext(
-  componentName: string,
-): AlertDialogContextData {
+export function useAlertDialogContext(componentName: string): AlertDialogContextData {
   const context = useContext(AlertDialogContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <AlertDialog>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <AlertDialog>`));
   return context;
 }

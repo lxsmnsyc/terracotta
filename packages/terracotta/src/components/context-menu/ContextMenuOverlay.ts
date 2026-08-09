@@ -2,10 +2,7 @@ import type { JSX } from 'solid-js';
 import { createComponent, createEffect, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
@@ -13,16 +10,15 @@ import type {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
-import {
-  createDisabledState,
-  createExpandedState,
-} from '../../utils/state-props';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
 import { useContextMenuContext } from './ContextMenuContext';
 import { CONTEXT_MENU_OVERLAY_TAG } from './tags';
 
-export type ContextMenuOverlayProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
+export type ContextMenuOverlayProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+  T,
+  DisclosureStateRenderProps
+>;
 
 /**
  * The backdrop behind a `ContextMenu`. Clicking it closes the menu, so give it
@@ -50,7 +46,7 @@ export function ContextMenuOverlay<T extends ValidConstructor = 'div'>(
   });
 
   return createDynamic(
-    () => props.as || ('div' as T),
+    () => props.as ?? ('div' as T),
     mergeProps(
       CONTEXT_MENU_OVERLAY_TAG,
       {

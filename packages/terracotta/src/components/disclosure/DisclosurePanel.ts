@@ -2,32 +2,22 @@ import type { JSX } from 'solid-js';
 import { createComponent, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
-import {
-  createDisabledState,
-  createExpandedState,
-} from '../../utils/state-props';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import { useDisclosureContext } from './DisclosureContext';
 import { DISCLOSURE_PANEL_TAG } from './tags';
 
-export type DisclosurePanelBaseProps = Prettify<
-  DisclosureStateRenderProps & UnmountableProps
->;
+export type DisclosurePanelBaseProps = Prettify<DisclosureStateRenderProps & UnmountableProps>;
 
-export type DisclosurePanelProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, DisclosurePanelBaseProps>;
+export type DisclosurePanelProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  DisclosurePanelBaseProps
+>;
 
 /**
  * The section a `Disclosure` shows and hides. Unmounts while closed unless
@@ -48,7 +38,7 @@ export function DisclosurePanel<T extends ValidConstructor = 'div'>(
     () => state.isOpen(),
     () =>
       createDynamic(
-        () => props.as || ('div' as T),
+        () => props.as ?? ('div' as T),
         mergeProps(
           DISCLOSURE_PANEL_TAG,
           {

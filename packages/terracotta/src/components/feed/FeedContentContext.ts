@@ -13,10 +13,7 @@ export const FeedContentContext = createContext<FocusNavigator>();
  */
 export function useFeedContentContext(componentName: string): FocusNavigator {
   const context = useContext(FeedContentContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <FeedContent>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <FeedContent>`));
   return context;
 }
 

@@ -9,7 +9,7 @@ function renderSelect(
 ): ReturnType<typeof render> {
   return render(() => (
     <Select defaultValue={props.value} horizontal={props.horizontal}>
-      {COLORS.map(color => (
+      {COLORS.map((color) => (
         <SelectOption value={color} disabled={props.disabled?.includes(color)}>
           {color}
         </SelectOption>
@@ -32,17 +32,11 @@ describe('Select accessibility', () => {
 
   it('reports its orientation', () => {
     renderSelect();
-    expect(screen.getByRole('listbox')).toHaveAttribute(
-      'aria-orientation',
-      'vertical',
-    );
+    expect(screen.getByRole('listbox')).toHaveAttribute('aria-orientation', 'vertical');
 
     screen.getByRole('listbox').remove();
     renderSelect({ horizontal: true });
-    expect(screen.getByRole('listbox')).toHaveAttribute(
-      'aria-orientation',
-      'horizontal',
-    );
+    expect(screen.getByRole('listbox')).toHaveAttribute('aria-orientation', 'horizontal');
   });
 
   it('marks the selected option', () => {
@@ -124,16 +118,13 @@ describe('Select accessibility', () => {
   it('advertises multi-select and keeps several options selected', () => {
     render(() => (
       <Select multiple={true} defaultValue={[]}>
-        {COLORS.map(color => (
+        {COLORS.map((color) => (
           <SelectOption value={color}>{color}</SelectOption>
         ))}
       </Select>
     ));
 
-    expect(screen.getByRole('listbox')).toHaveAttribute(
-      'aria-multiselectable',
-      'true',
-    );
+    expect(screen.getByRole('listbox')).toHaveAttribute('aria-multiselectable', 'true');
 
     getOption('red').click();
     getOption('blue').click();

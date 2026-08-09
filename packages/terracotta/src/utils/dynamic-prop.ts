@@ -4,10 +4,7 @@ import type { OmitAndMerge } from './types';
 
 export type ValidElements = keyof JSX.IntrinsicElements;
 export type ValidComponent<P> = (props: P) => JSX.Element;
-export type ValidConstructor =
-  | ValidElements
-  | ValidComponent<any>
-  | (string & {});
+export type ValidConstructor = ValidElements | ValidComponent<any> | (string & {});
 
 export type DynamicProps<T extends ValidConstructor> = T extends ValidElements
   ? JSX.IntrinsicElements[T]
@@ -15,9 +12,7 @@ export type DynamicProps<T extends ValidConstructor> = T extends ValidElements
     ? U
     : Record<string, unknown>;
 
-type UnboxIntrinsicElements<T> = T extends JSX.HTMLAttributes<infer U>
-  ? U
-  : never;
+type UnboxIntrinsicElements<T> = T extends JSX.HTMLAttributes<infer U> ? U : never;
 
 type RefCallback<T> = (el: T) => void;
 type RefField<T> = T | RefCallback<T>;
@@ -40,20 +35,19 @@ export interface DynamicComponent<T extends ValidConstructor> {
   as?: T;
 }
 
-export interface DynamicComponentWithRef<T extends ValidConstructor>
-  extends WithRef<T> {
+export interface DynamicComponentWithRef<T extends ValidConstructor> extends WithRef<T> {
   as?: T;
 }
 
-export type HeadlessProps<T extends ValidConstructor, V = {}> = OmitAndMerge<
+export type HeadlessProps<T extends ValidConstructor, V = unknown> = OmitAndMerge<
   V & DynamicComponent<T>,
   DynamicProps<T>
 >;
 
-export type HeadlessPropsWithRef<
-  T extends ValidConstructor,
-  V = {},
-> = OmitAndMerge<V & DynamicComponentWithRef<T>, DynamicProps<T>>;
+export type HeadlessPropsWithRef<T extends ValidConstructor, V = unknown> = OmitAndMerge<
+  V & DynamicComponentWithRef<T>,
+  DynamicProps<T>
+>;
 
 function isRefFunction<U extends ValidConstructor>(
   callback?: RefField<DynamicNode<U>>,

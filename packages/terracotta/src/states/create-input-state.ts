@@ -1,11 +1,5 @@
 import type { Accessor, JSX } from 'solid-js';
-import {
-  createComponent,
-  createContext,
-  createMemo,
-  createSignal,
-  useContext,
-} from 'solid-js';
+import { createComponent, createContext, createMemo, createSignal, useContext } from 'solid-js';
 import assert from '../utils/assert';
 
 export interface InputStateControlledOptions {
@@ -20,14 +14,12 @@ export interface InputStateUncontrolledOptions {
   onChange?: (state?: string) => void;
 }
 
-export type InputStateOptions =
-  | InputStateControlledOptions
-  | InputStateUncontrolledOptions;
+export type InputStateOptions = InputStateControlledOptions | InputStateUncontrolledOptions;
 
 export interface InputStateProperties {
-  value(): string | undefined;
-  setState(newState?: string): void;
-  disabled(): boolean;
+  value: () => string | undefined;
+  setState: (newState?: string) => void;
+  disabled: () => boolean;
 }
 
 /**
@@ -37,16 +29,12 @@ export interface InputStateProperties {
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#input-state}
  */
-export function createInputState(
-  options: InputStateOptions,
-): InputStateProperties {
+export function createInputState(options: InputStateOptions): InputStateProperties {
   let signal: Accessor<string | undefined>;
   let setSignal: (value: string | undefined) => void;
 
   if ('defaultValue' in options) {
-    const [input, setInput] = createSignal<string | undefined>(
-      options.defaultValue,
-    );
+    const [input, setInput] = createSignal<string | undefined>(options.defaultValue);
     signal = input;
     setSignal = (value): void => {
       setInput(value);
@@ -88,9 +76,7 @@ export interface InputStateProviderProps extends InputStateRenderProps {
 
 const InputStateContext = createContext<InputStateProperties>();
 
-export function InputStateProvider(
-  props: InputStateProviderProps,
-): JSX.Element {
+export function InputStateProvider(props: InputStateProviderProps): JSX.Element {
   return createComponent(InputStateContext.Provider, {
     value: props.state,
     get children() {

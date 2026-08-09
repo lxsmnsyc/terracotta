@@ -13,9 +13,7 @@ interface ARIADisabledProps {
   'aria-disabled'?: boolean;
 }
 
-export function createARIADisabledState(
-  disabled: () => boolean | undefined,
-): ARIADisabledProps {
+export function createARIADisabledState(disabled: () => boolean | undefined): ARIADisabledProps {
   return {
     get disabled(): boolean | undefined {
       return disabled();
@@ -30,9 +28,7 @@ interface ARIAExpandedProps {
   'aria-expanded'?: boolean;
 }
 
-export function createARIAExpandedState(
-  expanded: () => boolean | undefined,
-): ARIAExpandedProps {
+export function createARIAExpandedState(expanded: () => boolean | undefined): ARIAExpandedProps {
   return {
     get 'aria-expanded'(): boolean | undefined {
       return expanded();
@@ -44,9 +40,7 @@ interface ARIACheckedProps {
   'aria-checked': boolean | 'mixed';
 }
 
-export function createARIACheckedState(
-  checked: () => boolean | undefined,
-): ARIACheckedProps {
+export function createARIACheckedState(checked: () => boolean | undefined): ARIACheckedProps {
   return {
     get 'aria-checked'(): boolean | 'mixed' {
       return checked() ?? 'mixed';
@@ -57,9 +51,7 @@ interface ARIASelectedProps {
   'aria-selected': boolean;
 }
 
-export function createARIASelectedState(
-  selected: () => boolean,
-): ARIASelectedProps {
+export function createARIASelectedState(selected: () => boolean): ARIASelectedProps {
   return {
     get 'aria-selected'(): boolean {
       return selected();
@@ -71,9 +63,7 @@ interface ARIAPressedProps {
   'aria-pressed': boolean;
 }
 
-export function createARIAPressedState(
-  pressed: () => boolean,
-): ARIAPressedProps {
+export function createARIAPressedState(pressed: () => boolean): ARIAPressedProps {
   return {
     get 'aria-pressed'(): boolean {
       return pressed();
@@ -89,9 +79,7 @@ interface DisabledProps {
   'tc-disabled'?: Booleanish;
 }
 
-export function createDisabledState(
-  disabled: () => boolean | undefined,
-): DisabledProps {
+export function createDisabledState(disabled: () => boolean | undefined): DisabledProps {
   return {
     get 'tc-disabled'(): Booleanish {
       return toBooleanish(disabled());
@@ -103,9 +91,7 @@ interface ExpandedProps {
   'tc-expanded'?: Booleanish;
 }
 
-export function createExpandedState(
-  expanded: () => boolean | undefined,
-): ExpandedProps {
+export function createExpandedState(expanded: () => boolean | undefined): ExpandedProps {
   return {
     get 'tc-expanded'(): Booleanish {
       return toBooleanish(expanded());
@@ -117,9 +103,7 @@ interface CheckedProps {
   'tc-checked': Booleanish | 'mixed';
 }
 
-export function createCheckedState(
-  isChecked: () => boolean | undefined,
-): CheckedProps {
+export function createCheckedState(isChecked: () => boolean | undefined): CheckedProps {
   return {
     get 'tc-checked'(): Booleanish | 'mixed' {
       const result = isChecked();
@@ -168,9 +152,7 @@ interface HasSelectedProps {
   'tc-has-selected': Booleanish;
 }
 
-export function createHasSelectedState(
-  hasSelected: () => boolean,
-): HasSelectedProps {
+export function createHasSelectedState(hasSelected: () => boolean): HasSelectedProps {
   return {
     get 'tc-has-selected'(): Booleanish {
       return toBooleanish(hasSelected());

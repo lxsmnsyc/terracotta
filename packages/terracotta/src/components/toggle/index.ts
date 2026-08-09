@@ -6,10 +6,7 @@ import type {
   ToggleStateRenderProps,
   ToggleStateUncontrolledOptions,
 } from '../../states/create-toggle-state';
-import {
-  ToggleStateProvider,
-  createToggleState,
-} from '../../states/create-toggle-state';
+import { ToggleStateProvider, createToggleState } from '../../states/create-toggle-state';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
@@ -34,21 +31,19 @@ export type ToggleControlledBaseProps = Prettify<
   ToggleStateControlledOptions & ToggleStateRenderProps
 >;
 
-export type ToggleControlledProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<
-    T,
-    OmitAndMerge<ToggleControlledBaseProps, ButtonProps<T>>
-  >;
+export type ToggleControlledProps<T extends ValidConstructor = 'button'> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<ToggleControlledBaseProps, ButtonProps<T>>
+>;
 
 export type ToggleUncontrolledBaseProps = Prettify<
   ToggleStateUncontrolledOptions & ToggleStateRenderProps
 >;
 
-export type ToggleUncontrolledProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<
-    T,
-    OmitAndMerge<ToggleUncontrolledBaseProps, ButtonProps<T>>
-  >;
+export type ToggleUncontrolledProps<T extends ValidConstructor = 'button'> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<ToggleUncontrolledBaseProps, ButtonProps<T>>
+>;
 
 export type ToggleProps<T extends ValidConstructor = 'button'> =
   | ToggleControlledProps<T>
@@ -69,9 +64,7 @@ function isToggleUncontrolled<T extends ValidConstructor = 'button'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toggle.md}
  */
-export function Toggle<T extends ValidConstructor = 'button'>(
-  props: ToggleProps<T>,
-): JSX.Element {
+export function Toggle<T extends ValidConstructor = 'button'>(props: ToggleProps<T>): JSX.Element {
   const [ref, setRef] = createForwardRef(props);
   const state = createToggleState(props);
 
@@ -104,20 +97,8 @@ export function Toggle<T extends ValidConstructor = 'button'>(
       createDisabledState(() => state.disabled()),
       createARIADisabledState(() => state.disabled()),
       isToggleUncontrolled(props)
-        ? omitProps(props, [
-            'onChange',
-            'defaultPressed',
-            'ref',
-            'disabled',
-            'children',
-          ])
-        : omitProps(props, [
-            'onChange',
-            'pressed',
-            'ref',
-            'disabled',
-            'children',
-          ]),
+        ? omitProps(props, ['onChange', 'defaultPressed', 'ref', 'disabled', 'children'])
+        : omitProps(props, ['onChange', 'pressed', 'ref', 'disabled', 'children']),
     ) as DynamicProps<T>,
   );
 }

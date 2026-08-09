@@ -2,16 +2,11 @@ import type { JSX } from 'solid-js';
 import { mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
 import { useRadioGroupContext } from './RadioGroupContext';
 import { RADIO_GROUP_LABEL_TAG } from './tags';
 
-export type RadioGroupLabelProps<T extends ValidConstructor = 'label'> =
-  HeadlessProps<T>;
+export type RadioGroupLabelProps<T extends ValidConstructor = 'label'> = HeadlessProps<T>;
 
 /**
  * The accessible name of a `RadioGroup` or of one `RadioGroupOption`,
@@ -27,7 +22,7 @@ export function RadioGroupLabel<T extends ValidConstructor = 'label'>(
   const context = useRadioGroupContext('RadioGroupLabel');
 
   return createDynamic(
-    () => props.as || ('label' as T),
+    () => props.as ?? ('label' as T),
     mergeProps(
       RADIO_GROUP_LABEL_TAG,
       {

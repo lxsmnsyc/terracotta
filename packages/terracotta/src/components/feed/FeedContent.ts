@@ -9,15 +9,11 @@ import type {
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import useEventListener from '../../utils/use-event-listener';
-import {
-  FeedContentContext,
-  createFeedArticleFocusNavigator,
-} from './FeedContentContext';
+import { FeedContentContext, createFeedArticleFocusNavigator } from './FeedContentContext';
 import { useFeedContext } from './FeedContext';
 import { FEED_CONTENT_TAG } from './tags';
 
-export type FeedContentProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T>;
+export type FeedContentProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<T>;
 
 /**
  * The scrolling region that holds the articles of a `Feed`. Everything outside
@@ -42,7 +38,7 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
       onCleanup(() => {
         controller.clearRef();
       });
-      useEventListener(current, 'keydown', e => {
+      useEventListener(current, 'keydown', (e) => {
         if (e.ctrlKey) {
           switch (e.key) {
             case 'Home': {
@@ -74,7 +70,7 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
             break;
         }
       });
-      useEventListener(current, 'focusin', e => {
+      useEventListener(current, 'focusin', (e) => {
         if (e.target && e.target !== current) {
           controller.setCurrent(e.target as HTMLElement);
         }
@@ -86,7 +82,7 @@ export function FeedContent<T extends ValidConstructor = 'div'>(
     value: controller,
     get children() {
       return createDynamic(
-        () => props.as || ('div' as T),
+        () => props.as ?? ('div' as T),
         mergeProps(
           FEED_CONTENT_TAG,
           {

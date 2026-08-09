@@ -2,17 +2,10 @@ import type { JSX } from 'solid-js';
 import { createComponent, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import { useSelectState } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
 import {
   createDisabledState,
   createExpandedState,
@@ -22,8 +15,10 @@ import {
 import { useListboxContext } from './ListboxContext';
 import { LISTBOX_LABEL_TAG } from './tags';
 
-export type ListboxLabelProps<T extends ValidConstructor = 'label'> =
-  HeadlessProps<T, DisclosureStateRenderProps>;
+export type ListboxLabelProps<T extends ValidConstructor = 'label'> = HeadlessProps<
+  T,
+  DisclosureStateRenderProps
+>;
 
 /**
  * The accessible name of a `Listbox`, wired up through `aria-labelledby`.
@@ -40,7 +35,7 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
   const selectState = useSelectState();
 
   return createDynamic(
-    () => props.as || ('label' as T),
+    () => props.as ?? ('label' as T),
     mergeProps(
       LISTBOX_LABEL_TAG,
       {

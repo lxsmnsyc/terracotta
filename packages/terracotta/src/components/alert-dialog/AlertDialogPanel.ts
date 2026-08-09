@@ -2,10 +2,7 @@ import type { JSX } from 'solid-js';
 import { createComponent, createEffect, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
@@ -15,16 +12,15 @@ import type {
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
-import {
-  createDisabledState,
-  createExpandedState,
-} from '../../utils/state-props';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
 import { useAlertDialogContext } from './AlertDialogContext';
 import { ALERT_DIALOG_PANEL_TAG } from './tags';
 
-export type AlertDialogPanelProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
+export type AlertDialogPanelProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+  T,
+  DisclosureStateRenderProps
+>;
 
 /**
  * The content of an `AlertDialog`. Traps `Tab` while the dialog is open and
@@ -48,7 +44,7 @@ export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
       if (state.isOpen()) {
         focusFirst(getFocusableElements(current), false);
 
-        useEventListener(current, 'keydown', e => {
+        useEventListener(current, 'keydown', (e) => {
           if (!props.disabled) {
             switch (e.key) {
               case 'Tab': {
@@ -70,7 +66,7 @@ export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
   });
 
   return createDynamic(
-    () => props.as || ('div' as T),
+    () => props.as ?? ('div' as T),
     mergeProps(
       omitProps(props, ['as', 'children', 'ref']),
       ALERT_DIALOG_PANEL_TAG,

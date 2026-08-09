@@ -4,10 +4,10 @@ import { Button, Toolbar } from '../src';
 
 const ACTIONS = ['Bold', 'Italic', 'Underline'];
 
-function renderToolbar(props: { horizontal?: boolean } = {}) {
+function renderToolbar(props: { horizontal?: boolean } = {}): ReturnType<typeof render> {
   return render(() => (
     <Toolbar horizontal={props.horizontal}>
-      {ACTIONS.map(action => (
+      {ACTIONS.map((action) => (
         <Button>{action}</Button>
       ))}
     </Toolbar>
@@ -28,19 +28,13 @@ describe('Toolbar accessibility', () => {
   it('defaults to a horizontal orientation', () => {
     renderToolbar();
 
-    expect(screen.getByRole('toolbar')).toHaveAttribute(
-      'aria-orientation',
-      'horizontal',
-    );
+    expect(screen.getByRole('toolbar')).toHaveAttribute('aria-orientation', 'horizontal');
   });
 
   it('reports a vertical orientation when asked', () => {
     renderToolbar({ horizontal: false });
 
-    expect(screen.getByRole('toolbar')).toHaveAttribute(
-      'aria-orientation',
-      'vertical',
-    );
+    expect(screen.getByRole('toolbar')).toHaveAttribute('aria-orientation', 'vertical');
   });
 
   it('is a single tab stop', () => {

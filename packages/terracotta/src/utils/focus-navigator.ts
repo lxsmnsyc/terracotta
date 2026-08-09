@@ -11,11 +11,7 @@ import { DATA_SET_NAMESPACE, DISABLED_NODE } from './namespace';
 
 const OWNER = `${DATA_SET_NAMESPACE}-owner` as const;
 
-function queryNodes<T extends Element>(
-  el: T,
-  ownerID: string,
-  condition = '',
-): NodeListOf<HTMLElement> {
+function queryNodes(el: Element, ownerID: string, condition = ''): NodeListOf<HTMLElement> {
   // We only query nodes that are:
   // - owned by the root component via ownerID
   // - node isn't disabled
@@ -41,9 +37,9 @@ export interface FocusNavigatorOptions {
 }
 
 export default class FocusNavigator {
-  private ownerID: string;
+  private readonly ownerID: string;
 
-  private options: FocusNavigatorOptions;
+  private readonly options: FocusNavigatorOptions;
 
   private internalRef?: HTMLElement;
 
@@ -109,10 +105,7 @@ export default class FocusNavigator {
 
   setFirstChecked(condition = ''): void {
     if (this.internalRef instanceof HTMLElement) {
-      const current = focusFirst(
-        this.query(this.internalRef, condition),
-        this.options.virtual,
-      );
+      const current = focusFirst(this.query(this.internalRef, condition), this.options.virtual);
       if (current) {
         this.current = current;
       }
@@ -121,10 +114,7 @@ export default class FocusNavigator {
 
   setLastChecked(condition = ''): void {
     if (this.internalRef instanceof HTMLElement) {
-      const current = focusLast(
-        this.query(this.internalRef, condition),
-        this.options.virtual,
-      );
+      const current = focusLast(this.query(this.internalRef, condition), this.options.virtual);
       if (current) {
         this.current = current;
       }
@@ -133,11 +123,7 @@ export default class FocusNavigator {
 
   setFirstMatch(character: string): void {
     if (this.internalRef instanceof HTMLElement) {
-      const current = focusMatch(
-        this.query(this.internalRef),
-        character,
-        this.options.virtual,
-      );
+      const current = focusMatch(this.query(this.internalRef), character, this.options.virtual);
       if (current) {
         this.current = current;
       }

@@ -1,8 +1,6 @@
 import type { JSX } from 'solid-js';
 
-export function CheckIcon(
-  props: JSX.IntrinsicElements['svg'] & { title: string },
-): JSX.Element {
+export function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -12,19 +10,12 @@ export function CheckIcon(
       {...props}
     >
       <title>{props.title}</title>
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width={2}
-        d="M5 13l4 4L19 7"
-      />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M5 13l4 4L19 7" />
     </svg>
   );
 }
 
-export function SelectorIcon(
-  props: JSX.IntrinsicElements['svg'] & { title: string },
-): JSX.Element {
+export function SelectorIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -44,8 +35,6 @@ export function SelectorIcon(
   );
 }
 
-export function classNames(
-  ...classes: (string | boolean | undefined)[]
-): string {
+export function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
 }

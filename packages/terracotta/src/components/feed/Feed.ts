@@ -18,8 +18,7 @@ export interface FeedBaseProps {
   busy?: boolean;
 }
 
-export type FeedProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, FeedBaseProps>;
+export type FeedProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<T, FeedBaseProps>;
 
 /**
  * A stream of articles with the feed keyboard pattern: <kbd>Page Down</kbd>
@@ -32,9 +31,7 @@ export type FeedProps<T extends ValidConstructor = 'div'> =
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
  */
-export function Feed<T extends ValidConstructor = 'div'>(
-  props: FeedProps<T>,
-): JSX.Element {
+export function Feed<T extends ValidConstructor = 'div'>(props: FeedProps<T>): JSX.Element {
   const ownerID = createUniqueId();
   const labelID = createUniqueId();
   const contentID = createUniqueId();
@@ -55,29 +52,19 @@ export function Feed<T extends ValidConstructor = 'div'>(
       focusNext() {
         const current = ref();
         if (current instanceof HTMLElement) {
-          focusNext(
-            getFocusableElements(document.documentElement),
-            current,
-            false,
-            false,
-          );
+          focusNext(getFocusableElements(document.documentElement), current, false, false);
         }
       },
       focusPrev() {
         const current = ref();
         if (current instanceof HTMLElement) {
-          focusPrev(
-            getFocusableElements(document.documentElement),
-            current,
-            false,
-            false,
-          );
+          focusPrev(getFocusableElements(document.documentElement), current, false, false);
         }
       },
     },
     get children() {
       return createDynamic(
-        () => props.as || ('div' as T),
+        () => props.as ?? ('div' as T),
         mergeProps(
           FEED_TAG,
           {
