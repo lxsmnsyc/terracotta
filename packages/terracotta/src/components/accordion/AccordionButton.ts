@@ -84,7 +84,7 @@ export function AccordionButton<T extends ValidComponent = 'button'>(
         id: itemContext.buttonID,
         ref: setInternalRef,
         get 'aria-controls'() {
-          return state.isSelected() && itemContext.panelID;
+          return state.isSelected() ? itemContext.panelID : undefined;
         },
       },
       createOwnerAttribute(rootContext.getId()),
