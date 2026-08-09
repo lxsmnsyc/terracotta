@@ -75,7 +75,7 @@ export function PopoverButton<T extends ValidConstructor = 'button'>(
         id: context.buttonID,
         ref: setInternalRef,
         get 'aria-controls'() {
-          return state.isOpen() && context.panelID;
+          return state.isOpen() ? context.panelID : undefined;
         },
       },
       createDisabledState(isDisabled),
