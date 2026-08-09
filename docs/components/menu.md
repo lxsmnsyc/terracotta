@@ -1,0 +1,289 @@
+# Menu
+
+An [ARIA menu](https://www.w3.org/WAI/ARIA/apg/patterns/menu/) — a list of
+actions, navigated with the arrow keys and searchable by typing. `Menu` is
+stateless: it does not track a selection, because menu items *do* things rather
+than represent values. Wire an `onClick` to each item.
+
+`Menu` renders the list only. Pair it with [`Popover`](./popover.md) for a
+dropdown, or [`ContextMenu`](./context-menu.md) for a right-click menu.
+
+```tsx
+import { Menu, MenuItem, MenuChild } from 'terracotta';
+```
+
+## Anatomy
+
+```tsx
+<Menu>       {/* role="menu", arrow keys and type-ahead */}
+  <MenuItem/>{/* role="menuitem" */}
+</Menu>
+```
+
+## Examples
+
+### Standalone
+
+```tsx
+<Menu as="ul" class="menu">
+  <MenuItem class="menu-item" onClick={() => duplicate()}>Duplicate</MenuItem>
+  <MenuItem class="menu-item" onClick={() => archive()}>Archive</MenuItem>
+  <MenuItem class="menu-item" disabled onClick={() => remove()}>Delete</MenuItem>
+</Menu>
+```
+
+```css
+.menu {
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+  inline-size: 14rem;
+  border: 1px solid #e4e4e7;
+  border-radius: 0.5rem;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.12);
+}
+
+.menu-item {
+  border-radius: 0.375rem;
+  padding: 0.4375rem 0.625rem;
+  cursor: pointer;
+}
+
+.menu-item:hover { background: #f4f4f5; }
+
+.menu-item:focus-visible {
+  outline: none;
+  background: #eff6ff;
+}
+
+.menu-item[tc-disabled] {
+  color: #a1a1aa;
+  cursor: not-allowed;
+}
+
+.menu-item[tc-disabled]:hover { background: none; }
+```
+
+> `Menu` renders a `<div>` unless you pass `as`. Since `MenuItem` renders an
+> `<li>`, pass `as="ul"` as above so the markup is valid.
+
+### As a dropdown
+
+```tsx
+<Popover class="popover" defaultOpen={false}>
+  <PopoverButton class="popover-button">Actions</PopoverButton>
+  <PopoverPanel class="popover-panel popover-panel-flush">
+    <Menu as="ul" class="menu">
+      <MenuItem class="menu-item" onClick={rename}>Rename</MenuItem>
+      <MenuItem class="menu-item" onClick={duplicate}>Duplicate</MenuItem>
+      <MenuItem class="menu-item" onClick={remove}>Delete</MenuItem>
+    </Menu>
+  </PopoverPanel>
+</Popover>
+```
+
+### With separators and section labels
+
+Non-focusable elements are skipped by the arrow keys, so they need no special
+handling:
+
+```tsx
+<Menu as="ul" class="menu">
+  <li class="menu-section" role="presentation">Edit</li>
+  <MenuItem class="menu-item" onClick={cut}>Cut</MenuItem>
+  <MenuItem class="menu-item" onClick={copy}>Copy</MenuItem>
+  <li class="menu-separator" role="separator" />
+  <li class="menu-section" role="presentation">Danger</li>
+  <MenuItem class="menu-item menu-item-danger" onClick={remove}>Delete</MenuItem>
+</Menu>
+```
+
+```css
+.menu-section {
+  padding: 0.375rem 0.625rem 0.1875rem;
+  color: #71717a;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.menu-separator {
+  block-size: 1px;
+  margin: 0.25rem 0.375rem;
+  background: #e4e4e7;
+}
+
+.menu-item-danger { color: #b91c1c; }
+```
+
+### Items with icons and shortcut hints
+
+```tsx
+<MenuItem class="menu-item menu-item-rich" onClick={duplicate}>
+  <span class="menu-icon" aria-hidden="true">⧉</span>
+  <span class="menu-label">Duplicate</span>
+  <span class="menu-shortcut" aria-hidden="true">⌘D</span>
+</MenuItem>
+```
+
+```css
+.menu-item-rich {
+  display: grid;
+  grid-template-columns: 1rem 1fr auto;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.menu-shortcut { color: #a1a1aa; font-size: 0.8125rem; }
+```
+
+### Reading the disabled state inside an item
+
+```tsx
+<MenuItem class="menu-item" disabled={!canDelete()}>
+  {({ disabled }) => (
+    <>
+      <span>Delete</span>
+      <Show when={disabled()}>
+        <span class="menu-hint">Not available on shared files</span>
+      </Show>
+    </>
+  )}
+</MenuItem>
+```
+
+`MenuChild` is that render prop as a standalone component, for when the state is
+needed deeper in the tree:
+
+```tsx
+<MenuItem class="menu-item" disabled={!canDelete()}>
+  <MenuChild disabled={!canDelete()}>
+    {({ disabled }) => <TrashIcon muted={disabled()} />}
+  </MenuChild>
+  Delete
+</MenuItem>
+```
+
+Note that `MenuChild` takes its own `disabled` prop — it does not read the
+parent item's.
+
+### Anchoring rich items to the focus ring
+
+Because items are removed from the tab order, `:focus` on a `MenuItem` means "the
+arrow keys are on this item":
+
+```css
+.menu-item:focus {
+  outline: none;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+```
+
+## State attributes
+
+`Menu` is stateless, so only the item carries dynamic state.
+
+| Element | Attribute | Present when |
+| --- | --- | --- |
+| `Menu` | `tc-menu` | Always |
+| `MenuItem` | `tc-menu-item`, `tc-button` | Always |
+| `MenuItem` | `tc-owner` | Always — ties the item to its menu's keyboard navigation |
+| `MenuItem` | `tc-disabled` | The item is disabled |
+
+`tc-disabled` is what removes an item from arrow-key navigation and type-ahead,
+so it is behaviour as well as styling. There is no `tc-active` here: a menu moves
+real DOM focus, so use `:focus` for the highlighted item.
+
+### Styling
+
+```css
+[tc-menu] {
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+}
+
+[tc-menu-item] {
+  border-radius: 0.375rem;
+  padding: 0.4375rem 0.625rem;
+  cursor: pointer;
+}
+
+/* Arrow keys move focus, so :focus is the highlight */
+[tc-menu-item]:focus { outline: none; background: #eff6ff; }
+
+[tc-menu-item][tc-disabled] {
+  color: #a1a1aa;
+  cursor: not-allowed;
+}
+```
+
+### Reading the state in code
+
+`Menu` exposes no state object. `MenuItem` exposes only its own disabled flag,
+through its render prop or `<MenuChild>`:
+
+| Member | Type | Description |
+| --- | --- | --- |
+| `disabled()` | `boolean` | Whether the item is disabled. |
+
+## Keyboard
+
+Handled on the `Menu` root, across its `MenuItem` descendants:
+
+| Key | Action |
+| --- | --- |
+| <kbd>↓</kbd> / <kbd>→</kbd> | Next item, wrapping around |
+| <kbd>↑</kbd> / <kbd>←</kbd> | Previous item, wrapping around |
+| <kbd>Home</kbd> / <kbd>End</kbd> | First / last item |
+| Printable characters | Type-ahead: jumps to the first item whose text starts with what you typed. Keystrokes are collected for 250 ms, so typing several letters quickly matches a longer prefix. |
+| <kbd>Enter</kbd> / <kbd>Space</kbd> | Activates the focused item; the root suppresses the browser's default scroll or submit |
+
+Disabled items are skipped by both the arrow keys and type-ahead.
+
+## API
+
+### `<Menu>`
+
+The container. It has no state of its own, so there are no value or change props.
+
+> **Note:** the type default for `as` is `'ul'`, but the implementation falls
+> back to a `<div>` when `as` is not given. Pass `as="ul"` explicitly if you want
+> a list element — which also matches the `<li>` that `MenuItem` renders.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `as` | `ValidConstructor` | `'div'` at runtime (typed as `'ul'`) | Element or component to render as. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
+| `children` | `JSX.Element` | — | The items. Not a render prop. |
+| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+
+Rendered attributes: `role="menu"`, a generated `id`, `tc-menu`.
+
+### `<MenuItem>`
+
+A [`Button`](./button.md) with `role="menuitem"`. Renders an `<li>` by default,
+and is removed from the tab order (`tabindex="-1"`) so the menu is a single tab
+stop.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `as` | `ValidConstructor` | `'li'` | Element or component to render as. |
+| `disabled` | `boolean` | `false` | Disables the item and removes it from keyboard navigation. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: { disabled: () => boolean }) => JSX.Element` | — | Label, or a render prop receiving the item's disabled state. |
+| *…rest* | props of `as` | — | Forwarded to the rendered element — this is where `onClick` goes. |
+
+`MenuItem` throws if rendered outside a `<Menu>`.
+
+### `<MenuChild>`
+
+Exposes a disabled flag as a render prop. Renders nothing of its own, and does
+not read the parent `MenuItem` — pass it the same value.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `disabled` | `boolean` | `false` | The value reported to the render prop. |
+| `children` | `JSX.Element` \| `(state: { disabled: () => boolean }) => JSX.Element` | — | Contents, or a render prop. |

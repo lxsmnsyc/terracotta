@@ -1,0 +1,363 @@
+# Transition
+
+Class-driven enter and leave transitions. `Transition` adds and removes CSS
+classes around a visibility change and waits for `transitionend` or
+`animationend` before unmounting, so an element can actually animate out instead
+of vanishing.
+
+It pairs naturally with every disclosure-based component — give the panel
+`unmount={false}` and let the transition own the mounting.
+
+```tsx
+import { Transition, TransitionChild } from 'terracotta';
+```
+
+## Anatomy
+
+```tsx
+<Transition show>  {/* provides `show` and transitions itself */}
+  <TransitionChild/>{/* optional: extra elements sharing the same show flag */}
+</Transition>
+```
+
+`Transition` *is* a `TransitionChild` with a `show` prop, so the simple case
+needs only one component.
+
+## How the classes are applied
+
+On **enter**:
+
+1. `beforeEnter()` runs; `enter` and `enterFrom` classes are added.
+2. On the next animation frame, `enterFrom` is removed and `enterTo` added.
+3. When the transition or animation ends, `enter` and `enterTo` are removed,
+   `entered` is added, and `afterEnter()` runs.
+
+On **leave**:
+
+1. `beforeLeave()` runs; `entered` is removed, `leave` and `leaveFrom` added.
+2. On the next animation frame, `leaveFrom` is removed and `leaveTo` added.
+3. When it ends, `leave` and `leaveTo` are removed, the element is hidden (or
+   unmounted), and `afterLeave()` runs.
+
+Each prop takes a space-separated class string, so you can pass several class
+names to a single phase.
+
+## Examples
+
+### Fade
+
+```tsx
+const [show, setShow] = createSignal(true);
+
+<Transition
+  show={show()}
+  class="card"
+  enter="fade-enter"
+  enterFrom="fade-from"
+  enterTo="fade-to"
+  leave="fade-leave"
+  leaveFrom="fade-to"
+  leaveTo="fade-from"
+>
+  Hello
+</Transition>
+```
+
+```css
+.card {
+  border: 1px solid #e4e4e7;
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 1rem;
+}
+
+/* The transition itself lives on `enter` / `leave` */
+.fade-enter { transition: opacity 200ms ease-out; }
+.fade-leave { transition: opacity 150ms ease-in; }
+
+/* The two endpoints */
+.fade-from { opacity: 0; }
+.fade-to   { opacity: 1; }
+```
+
+Reusing `fade-to` as `leaveFrom` and `fade-from` as `leaveTo` keeps the leave a
+mirror of the enter, which is usually what you want.
+
+### Slide and fade
+
+```tsx
+<Transition
+  show={open()}
+  class="drawer"
+  enter="slide-enter" enterFrom="slide-from" enterTo="slide-to"
+  leave="slide-leave" leaveFrom="slide-to" leaveTo="slide-from"
+>
+  …
+</Transition>
+```
+
+```css
+.slide-enter { transition: opacity 220ms ease-out, translate 220ms ease-out; }
+.slide-leave { transition: opacity 160ms ease-in, translate 160ms ease-in; }
+.slide-from  { opacity: 0; translate: 1rem 0; }
+.slide-to    { opacity: 1; translate: none; }
+```
+
+### Keyframe animations
+
+`animationend` ends the transition just as `transitionend` does, so keyframes
+work without changes:
+
+```tsx
+<Transition
+  show={visible()}
+  class="toast"
+  enter="pop-in"
+  leave="pop-out"
+>
+  Saved
+</Transition>
+```
+
+```css
+.pop-in  { animation: pop-in 180ms ease-out; }
+.pop-out { animation: pop-out 140ms ease-in; }
+
+@keyframes pop-in {
+  from { opacity: 0; scale: 0.9; }
+  to   { opacity: 1; scale: 1; }
+}
+
+@keyframes pop-out {
+  from { opacity: 1; scale: 1; }
+  to   { opacity: 0; scale: 0.9; }
+}
+```
+
+### A resting state with `entered`
+
+`entered` is applied once the enter transition finishes and removed when leaving
+starts — useful for a state that should not be part of the animation itself:
+
+```tsx
+<Transition
+  show={open()}
+  class="panel"
+  enter="fade-enter" enterFrom="fade-from" enterTo="fade-to"
+  entered="panel-open"
+  leave="fade-leave" leaveFrom="fade-to" leaveTo="fade-from"
+>
+  …
+</Transition>
+```
+
+```css
+.panel-open { box-shadow: 0 8px 24px rgb(0 0 0 / 0.12); }
+```
+
+### Around a disclosure panel
+
+```tsx
+<Disclosure class="disclosure" defaultOpen={false}>
+  {({ isOpen }) => (
+    <>
+      <DisclosureButton class="disclosure-button">Toggle</DisclosureButton>
+      <Transition
+        show={isOpen()}
+        enter="fade-enter" enterFrom="fade-from" enterTo="fade-to"
+        leave="fade-leave" leaveFrom="fade-to" leaveTo="fade-from"
+      >
+        <DisclosurePanel class="disclosure-panel" unmount={false}>…</DisclosurePanel>
+      </Transition>
+    </>
+  )}
+</Disclosure>
+```
+
+`unmount={false}` on the panel is the important part: without it the panel
+removes itself the moment the disclosure closes, and the leave transition has
+nothing to animate.
+
+### Coordinating several elements
+
+`TransitionChild` reads `show` from the nearest `Transition`, so a group of
+elements can animate with different timings while leaving together. The parent
+waits for its children's leave transitions before finishing its own.
+
+```tsx
+<Transition show={open()}>
+  <TransitionChild
+    enter="fade-enter" enterFrom="fade-from" enterTo="fade-to"
+    leave="fade-leave" leaveFrom="fade-to" leaveTo="fade-from"
+  >
+    <DialogOverlay class="dialog-overlay" />
+  </TransitionChild>
+
+  <TransitionChild
+    enter="pop-enter" enterFrom="pop-from" enterTo="pop-to"
+    leave="pop-leave" leaveFrom="pop-to" leaveTo="pop-from"
+  >
+    <DialogPanel class="dialog-panel">…</DialogPanel>
+  </TransitionChild>
+</Transition>
+```
+
+```css
+.pop-enter { transition: opacity 200ms ease-out, scale 200ms ease-out; }
+.pop-leave { transition: opacity 150ms ease-in, scale 150ms ease-in; }
+.pop-from  { opacity: 0; scale: 0.95; }
+.pop-to    { opacity: 1; scale: 1; }
+```
+
+### Running work around a transition
+
+```tsx
+<Transition
+  show={open()}
+  enter="fade-enter" enterFrom="fade-from" enterTo="fade-to"
+  leave="fade-leave" leaveFrom="fade-to" leaveTo="fade-from"
+  beforeEnter={() => void preloadImages()}
+  afterEnter={() => inputRef?.focus()}
+  afterLeave={() => resetForm()}
+>
+  …
+</Transition>
+```
+
+`afterLeave` is the right place to discard state, since it runs once the element
+is actually gone.
+
+### Respecting reduced motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .fade-enter, .fade-leave, .pop-enter, .pop-leave {
+    transition-duration: 1ms;
+  }
+}
+```
+
+Keep a non-zero duration rather than removing the transition entirely — the
+`transitionend` event is what tells Terracotta the leave has finished.
+
+## State attributes
+
+| Element | Attribute | Present when |
+| --- | --- | --- |
+| `Transition` / `TransitionChild` | `tc-transition` | Always, carrying the current phase |
+
+The phase values, in order:
+
+| Value | Meaning |
+| --- | --- |
+| `enter-from` | The enter transition has just started; the element is at its starting state. |
+| `enter-to` | The enter transition is running towards its end state. |
+| `entered` | The enter transition has finished; the element is at rest and visible. |
+| `leave-from` | The leave transition has just started. |
+| `leave-to` | The leave transition is running towards its end state. |
+
+The attribute is absent until the first transition runs.
+
+### Styling
+
+You can drive the whole transition from the attribute and skip the class props
+entirely:
+
+```tsx
+<Transition show={open()} class="sheet">…</Transition>
+```
+
+```css
+.sheet {
+  transition: opacity 200ms ease, translate 200ms ease;
+}
+
+.sheet[tc-transition="enter-from"],
+.sheet[tc-transition="leave-to"] {
+  opacity: 0;
+  translate: 0 0.5rem;
+}
+
+.sheet[tc-transition="enter-to"],
+.sheet[tc-transition="entered"],
+.sheet[tc-transition="leave-from"] {
+  opacity: 1;
+  translate: none;
+}
+```
+
+This works because the attribute changes across an animation frame exactly as the
+classes do. Note that a leave transition still needs a real duration on the
+element for `transitionend` to fire.
+
+The attribute is also handy for debugging and for assertions:
+
+```css
+/* Temporarily surface the phase while developing */
+[tc-transition]::after {
+  content: attr(tc-transition);
+  position: absolute;
+  font-size: 0.625rem;
+  color: #dc2626;
+}
+```
+
+### Reading the state in code
+
+`Transition` exposes no state object and no render prop — `show` is a prop you
+already own. Use the lifecycle callbacks (`beforeEnter`, `afterEnter`,
+`beforeLeave`, `afterLeave`) when you need to react in JavaScript.
+
+## Keyboard
+
+Neither component handles keys. Whatever it wraps keeps its own keyboard
+behaviour.
+
+## API
+
+### `<Transition>`
+
+The root. Provides `show` to its descendants and renders a `TransitionChild` with
+the rest of its props — so it takes every `TransitionChild` prop as well.
+
+Renders a `<div>` by default.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `show` | `boolean` | *required* | Whether the content should be visible. Drives every `TransitionChild` beneath it. |
+| …plus all [`TransitionChild`](#transitionchild) props | | | |
+
+### `<TransitionChild>`
+
+One transitioning element. Renders a `<div>` by default.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
+| `enter` | `string` | — | Classes applied for the whole enter transition. Put the `transition` or `animation` declaration here. |
+| `enterFrom` | `string` | — | Starting state of the enter transition. |
+| `enterTo` | `string` | — | Ending state of the enter transition. |
+| `entered` | `string` | — | Classes applied once entering has finished, and removed when leaving starts. |
+| `leave` | `string` | — | Classes applied for the whole leave transition. |
+| `leaveFrom` | `string` | — | Starting state of the leave transition. |
+| `leaveTo` | `string` | — | Ending state of the leave transition. |
+| `beforeEnter` | `() => void` | — | Called just before entering starts. |
+| `afterEnter` | `() => void` | — | Called once entering has finished. |
+| `beforeLeave` | `() => void` | — | Called just before leaving starts. |
+| `afterLeave` | `() => void` | — | Called once leaving has finished and the element is hidden. |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the element behaves while hidden — see [`unmount`](../README.md#unmount). |
+| `appear` | `boolean` | `false` | Accepted, but currently has no effect: the implementation always runs the enter transition on first show. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
+| `children` | `JSX.Element` | — | The content. Not a render prop. |
+| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+
+`TransitionChild` throws if rendered outside a `<Transition>`.
+
+## Notes
+
+- The leave transition completes on the first `transitionend` **or**
+  `animationend` it sees. If an element is hidden with no transition or animation
+  at all, that event never fires and the element stays visible — always give
+  `leave` a real duration.
+- Nested `TransitionChild`s hold their parent back: a parent only starts its own
+  leave transition once every child beneath it has finished leaving.
