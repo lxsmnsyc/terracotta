@@ -24,14 +24,9 @@ export default function App(): JSX.Element {
       <div class="fixed inset-0 flex items-center justify-center">
         <span class="text-white text-sm bg-blue-900/50 p-4 rounded-lg">
           {'Press '}
-          <span class="font-mono px-2 py-1 border border-white m-1 rounded">
-            ⌘ + K
-          </span>
+          <span class="font-mono px-2 py-1 border border-white m-1 rounded">⌘ + K</span>
           {' or '}
-          <span class="font-mono px-2 py-1 border border-white m-1 rounded">
-            Ctrl + K
-          </span>
-          !
+          <span class="font-mono px-2 py-1 border border-white m-1 rounded">Ctrl + K</span>!
         </span>
       </div>
 
@@ -66,10 +61,7 @@ export default function App(): JSX.Element {
             leaveTo="opacity-0 scale-95"
           >
             <CommandBarPanel class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-              <CommandBarTitle
-                as="h3"
-                class="text-xl font-medium leading-6 text-gray-900"
-              >
+              <CommandBarTitle as="h3" class="text-xl font-medium leading-6 text-gray-900">
                 Search
               </CommandBarTitle>
               <div class="mt-2">

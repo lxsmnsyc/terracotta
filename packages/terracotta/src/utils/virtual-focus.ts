@@ -15,7 +15,7 @@ export function useVirtualFocus(listener: FocusListener): () => void {
 // References
 // https://www.w3.org/WAI/GL/wiki/Using_aria-activedescendant_to_allow_changes_in_focus_within_widgets_to_be_communicated_to_Assistive_Technology
 // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-activedescendant
-export function focusVirtually<T extends HTMLElement>(el: T): void {
+export function focusVirtually(el: HTMLElement): void {
   for (const listener of LISTENERS.keys()) {
     listener(el);
   }

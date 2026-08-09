@@ -26,9 +26,7 @@ export default function SingleSelect(): JSX.Element {
                 {({ isActive, isSelected }): JSX.Element => (
                   <div
                     class={classNames(
-                      isActive()
-                        ? 'text-amber-900 bg-amber-100'
-                        : 'text-gray-900',
+                      isActive() ? 'text-amber-900 bg-amber-100' : 'text-gray-900',
                       'group-hover:text-amber-900 group-hover:bg-amber-100',
                       'cursor-default select-none relative py-2 pl-10 pr-4',
                     )}

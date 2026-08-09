@@ -1,5 +1,6 @@
 import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
+import { describedBy, labelledBy } from './aria';
 import {
   Feed,
   FeedArticle,
@@ -11,7 +12,7 @@ import {
 
 const POSTS = ['first post', 'second post', 'third post'];
 
-function renderFeed(props: { busy?: boolean } = {}) {
+function renderFeed(props: { busy?: boolean } = {}): ReturnType<typeof render> {
   return render(() => (
     <Feed size={POSTS.length} busy={props.busy}>
       <FeedLabel>Recent activity</FeedLabel>
@@ -38,9 +39,7 @@ describe('Feed accessibility', () => {
     renderFeed();
     const feed = screen.getByRole('feed');
 
-    expect(
-      document.getElementById(feed.getAttribute('aria-labelledby') as string),
-    ).toHaveTextContent('Recent activity');
+    expect(labelledBy(feed)).toHaveTextContent('Recent activity');
   });
 
   it('reports the loading state through `aria-busy`', () => {
@@ -67,16 +66,8 @@ describe('Feed accessibility', () => {
     renderFeed();
     const article = screen.getAllByRole('article')[0];
 
-    expect(
-      document.getElementById(
-        article.getAttribute('aria-labelledby') as string,
-      ),
-    ).toHaveTextContent('first post');
-    expect(
-      document.getElementById(
-        article.getAttribute('aria-describedby') as string,
-      ),
-    ).toHaveTextContent('first post body');
+    expect(labelledBy(article)).toHaveTextContent('first post');
+    expect(describedBy(article)).toHaveTextContent('first post body');
   });
 
   it('makes every article a tab stop', () => {

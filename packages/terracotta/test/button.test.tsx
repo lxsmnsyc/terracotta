@@ -23,7 +23,12 @@ describe('Button accessibility', () => {
   it('keeps a non-button element operable with Enter and Space', () => {
     const onClick = vi.fn();
     render(() => (
-      <Button as="div" onClick={onClick}>
+      <Button
+        as="div"
+        onClick={() => {
+          onClick();
+        }}
+      >
         Save
       </Button>
     ));
@@ -42,7 +47,15 @@ describe('Button accessibility', () => {
     // Native buttons already turn Enter/Space into clicks, so the library must
     // not add a second listener that would fire the handler twice.
     const onClick = vi.fn();
-    render(() => <Button onClick={onClick}>Save</Button>);
+    render(() => (
+      <Button
+        onClick={() => {
+          onClick();
+        }}
+      >
+        Save
+      </Button>
+    ));
 
     fireEvent.keyDown(screen.getByRole('button'), { key: 'Enter' });
 

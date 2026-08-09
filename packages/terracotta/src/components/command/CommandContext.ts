@@ -29,10 +29,7 @@ export const CommandContext = createContext<CommandContextData>();
  */
 export function useCommandContext(componentName: string): CommandContextData {
   const context = useContext(CommandContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <Command>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <Command>`));
   return context;
 }
 

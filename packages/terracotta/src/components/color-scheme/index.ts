@@ -52,9 +52,7 @@ const STORAGE_KEY = 'theme-preference';
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/color-scheme.md}
  */
-export function ColorSchemeProvider(
-  props: ColorSchemeProviderProps,
-): JSX.Element {
+export function ColorSchemeProvider(props: ColorSchemeProviderProps): JSX.Element {
   let get: Accessor<ColorScheme>;
   let set: (scheme: ColorScheme) => void;
 
@@ -79,9 +77,7 @@ export function ColorSchemeProvider(
   const prefersDark = usePrefersDark();
   const isVisible = usePageVisibility();
 
-  const shouldToggle = createMemo(
-    () => (get() === 'system' && prefersDark()) || get() === 'dark',
-  );
+  const shouldToggle = createMemo(() => (get() === 'system' && prefersDark()) || get() === 'dark');
 
   // Since storage events only work for other windows
   // we need to make the main window sync
@@ -143,10 +139,7 @@ function useColorSchemeContext(): ColorSchemeContextData {
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/color-scheme.md}
  */
-export function useColorScheme(): [
-  () => ColorScheme,
-  (newScheme: ColorScheme) => void,
-] {
+export function useColorScheme(): [() => ColorScheme, (newScheme: ColorScheme) => void] {
   const ctx = useColorSchemeContext();
   return [(): ColorScheme => ctx.value, ctx.setValue];
 }

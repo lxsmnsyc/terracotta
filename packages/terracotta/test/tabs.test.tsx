@@ -1,5 +1,6 @@
-import { fireEvent, render, screen } from '@solidjs/testing-library';
+import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
+import { pressKeyOnFocused } from './aria';
 import { Tab, TabGroup, TabList, TabPanel } from '../src';
 
 const TABS = ['alpha', 'beta', 'gamma'];
@@ -8,18 +9,15 @@ function renderTabs(
   props: { value?: string; horizontal?: boolean; disabled?: string[] } = {},
 ): ReturnType<typeof render> {
   return render(() => (
-    <TabGroup
-      defaultValue={props.value ?? 'alpha'}
-      horizontal={props.horizontal ?? true}
-    >
+    <TabGroup defaultValue={props.value ?? 'alpha'} horizontal={props.horizontal ?? true}>
       <TabList>
-        {TABS.map(tab => (
+        {TABS.map((tab) => (
           <Tab value={tab} disabled={props.disabled?.includes(tab)}>
             {tab} tab
           </Tab>
         ))}
       </TabList>
-      {TABS.map(tab => (
+      {TABS.map((tab) => (
         <TabPanel value={tab}>{tab} panel</TabPanel>
       ))}
     </TabGroup>
@@ -41,17 +39,11 @@ describe('Tabs accessibility', () => {
 
   it('reports the list orientation', () => {
     renderTabs();
-    expect(screen.getByRole('tablist')).toHaveAttribute(
-      'aria-orientation',
-      'horizontal',
-    );
+    expect(screen.getByRole('tablist')).toHaveAttribute('aria-orientation', 'horizontal');
 
     screen.getByRole('tablist').remove();
     renderTabs({ horizontal: false });
-    expect(screen.getByRole('tablist')).toHaveAttribute(
-      'aria-orientation',
-      'vertical',
-    );
+    expect(screen.getByRole('tablist')).toHaveAttribute('aria-orientation', 'vertical');
   });
 
   it('marks only the active tab as selected', () => {
@@ -98,15 +90,11 @@ describe('Tabs accessibility', () => {
     renderTabs();
     getTab('alpha').focus();
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, {
-      key: 'ArrowRight',
-    });
+    pressKeyOnFocused('ArrowRight');
     expect(document.activeElement).toBe(getTab('beta'));
     expect(getTab('beta')).toHaveAttribute('aria-selected', 'true');
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, {
-      key: 'ArrowLeft',
-    });
+    pressKeyOnFocused('ArrowLeft');
     expect(document.activeElement).toBe(getTab('alpha'));
   });
 
@@ -114,9 +102,7 @@ describe('Tabs accessibility', () => {
     renderTabs();
     getTab('alpha').focus();
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, {
-      key: 'ArrowDown',
-    });
+    pressKeyOnFocused('ArrowDown');
 
     expect(document.activeElement).toBe(getTab('alpha'));
   });
@@ -125,10 +111,10 @@ describe('Tabs accessibility', () => {
     renderTabs();
     getTab('beta').focus();
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, { key: 'End' });
+    pressKeyOnFocused('End');
     expect(document.activeElement).toBe(getTab('gamma'));
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, { key: 'Home' });
+    pressKeyOnFocused('Home');
     expect(document.activeElement).toBe(getTab('alpha'));
   });
 
@@ -140,9 +126,7 @@ describe('Tabs accessibility', () => {
     expect(disabled).toHaveAttribute('tabindex', '-1');
 
     getTab('alpha').focus();
-    fireEvent.keyDown(document.activeElement as HTMLElement, {
-      key: 'ArrowRight',
-    });
+    pressKeyOnFocused('ArrowRight');
 
     expect(document.activeElement).toBe(getTab('gamma'));
   });

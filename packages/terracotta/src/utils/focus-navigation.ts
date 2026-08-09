@@ -71,10 +71,7 @@ export function focusNext(
 ): HTMLElement | undefined {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (targetNode === nodes[i] || nodes[i].contains(targetNode)) {
-      return focusNode(
-        getNextFocusable(nodes, i, Direction.Next, loop),
-        virtual,
-      );
+      return focusNode(getNextFocusable(nodes, i, Direction.Next, loop), virtual);
     }
   }
   return undefined;
@@ -88,10 +85,7 @@ export function focusPrev(
 ): HTMLElement | undefined {
   for (let i = 0, len = nodes.length; i < len; i += 1) {
     if (nodes[i].contains(targetNode)) {
-      return focusNode(
-        getNextFocusable(nodes, i, Direction.Prev, loop),
-        virtual,
-      );
+      return focusNode(getNextFocusable(nodes, i, Direction.Prev, loop), virtual);
     }
   }
   return undefined;
@@ -102,10 +96,7 @@ export function focusFirst(
   virtual: boolean,
 ): HTMLElement | undefined {
   if (nodes.length) {
-    return focusNode(
-      getNextFocusable(nodes, -1, Direction.Next, false),
-      virtual,
-    );
+    return focusNode(getNextFocusable(nodes, -1, Direction.Next, false), virtual);
   }
   return undefined;
 }
@@ -115,10 +106,7 @@ export function focusLast(
   virtual: boolean,
 ): HTMLElement | undefined {
   if (nodes.length) {
-    return focusNode(
-      getNextFocusable(nodes, nodes.length, Direction.Prev, false),
-      virtual,
-    );
+    return focusNode(getNextFocusable(nodes, nodes.length, Direction.Prev, false), virtual);
   }
   return undefined;
 }
@@ -131,7 +119,7 @@ export function focusMatch(
   const lower = character.toLowerCase();
   for (let i = 0, l = nodes.length; i < l; i += 1) {
     const content = nodes[i].textContent;
-    if (content != null && content.toLowerCase().startsWith(lower)) {
+    if (content.toLowerCase().startsWith(lower)) {
       return focusNode(nodes[i], virtual);
     }
   }
@@ -148,12 +136,7 @@ export function lockFocus(
     if (!(document.activeElement && ref.contains(document.activeElement))) {
       return focusLast(nodes, virtual);
     }
-    return focusPrev(
-      nodes,
-      document.activeElement as HTMLElement,
-      true,
-      virtual,
-    );
+    return focusPrev(nodes, document.activeElement as HTMLElement, true, virtual);
   }
   if (!(document.activeElement && ref.contains(document.activeElement))) {
     return focusFirst(nodes, virtual);

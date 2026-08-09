@@ -17,13 +17,8 @@ export const ContextMenuContext = createContext<ContextMenuContextData>();
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/context-menu.md}
  */
-export function useContextMenuContext(
-  componentName: string,
-): ContextMenuContextData {
+export function useContextMenuContext(componentName: string): ContextMenuContextData {
   const context = useContext(ContextMenuContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <ContextMenu>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <ContextMenu>`));
   return context;
 }

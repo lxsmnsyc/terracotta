@@ -1,12 +1,6 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import {
-  Listbox,
-  ListboxButton,
-  ListboxLabel,
-  ListboxOption,
-  ListboxOptions,
-} from '../src';
+import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '../src';
 
 const FRUITS = ['apple', 'banana', 'cherry'];
 
@@ -27,11 +21,8 @@ function renderListbox(
       <ListboxLabel>Fruit</ListboxLabel>
       <ListboxButton>Pick one</ListboxButton>
       <ListboxOptions>
-        {FRUITS.map(fruit => (
-          <ListboxOption
-            value={fruit}
-            disabled={props.disabled?.includes(fruit)}
-          >
+        {FRUITS.map((fruit) => (
+          <ListboxOption value={fruit} disabled={props.disabled?.includes(fruit)}>
             {fruit}
           </ListboxOption>
         ))}
@@ -93,10 +84,7 @@ describe('Listbox accessibility', () => {
   it('reports a horizontal option list when asked', () => {
     renderListbox({ open: true, horizontal: true });
 
-    expect(screen.getByRole('listbox')).toHaveAttribute(
-      'aria-orientation',
-      'horizontal',
-    );
+    expect(screen.getByRole('listbox')).toHaveAttribute('aria-orientation', 'horizontal');
   });
 
   it('exposes every option with a selection state', () => {
@@ -178,7 +166,7 @@ describe('Listbox accessibility', () => {
       <Listbox multiple={true} defaultOpen={true} defaultValue={[]}>
         <ListboxButton>Pick many</ListboxButton>
         <ListboxOptions>
-          {FRUITS.map(fruit => (
+          {FRUITS.map((fruit) => (
             <ListboxOption value={fruit}>{fruit}</ListboxOption>
           ))}
         </ListboxOptions>

@@ -1,13 +1,11 @@
 import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import {
-  Checkbox,
-  CheckboxDescription,
-  CheckboxIndicator,
-  CheckboxLabel,
-} from '../src';
+import { describedBy, labelledBy } from './aria';
+import { Checkbox, CheckboxDescription, CheckboxIndicator, CheckboxLabel } from '../src';
 
-function renderCheckbox(props: { disabled?: boolean; checked?: boolean } = {}) {
+function renderCheckbox(
+  props: { disabled?: boolean; checked?: boolean } = {},
+): ReturnType<typeof render> {
   return render(() => (
     <Checkbox defaultChecked={props.checked ?? false} disabled={props.disabled}>
       <CheckboxLabel>Notify me</CheckboxLabel>
@@ -26,23 +24,15 @@ describe('Checkbox accessibility', () => {
   it('names the indicator through `aria-labelledby`', () => {
     renderCheckbox();
     const indicator = screen.getByRole('checkbox');
-    const labelID = indicator.getAttribute('aria-labelledby');
 
-    expect(labelID).toBeTruthy();
-    expect(document.getElementById(labelID as string)).toHaveTextContent(
-      'Notify me',
-    );
+    expect(labelledBy(indicator)).toHaveTextContent('Notify me');
   });
 
   it('describes the indicator through `aria-describedby`', () => {
     renderCheckbox();
     const indicator = screen.getByRole('checkbox');
-    const descriptionID = indicator.getAttribute('aria-describedby');
 
-    expect(descriptionID).toBeTruthy();
-    expect(document.getElementById(descriptionID as string)).toHaveTextContent(
-      'Send an email on every reply',
-    );
+    expect(describedBy(indicator)).toHaveTextContent('Send an email on every reply');
   });
 
   it('points the label `for` at the indicator', () => {
@@ -69,17 +59,11 @@ describe('Checkbox accessibility', () => {
 
   it('announces the checked state through `aria-checked`', () => {
     renderCheckbox();
-    expect(screen.getByRole('checkbox')).toHaveAttribute(
-      'aria-checked',
-      'false',
-    );
+    expect(screen.getByRole('checkbox')).toHaveAttribute('aria-checked', 'false');
 
     screen.getByRole('checkbox').click();
 
-    expect(screen.getByRole('checkbox')).toHaveAttribute(
-      'aria-checked',
-      'true',
-    );
+    expect(screen.getByRole('checkbox')).toHaveAttribute('aria-checked', 'true');
   });
 
   it('reports an indeterminate checkbox as mixed', () => {
@@ -90,10 +74,7 @@ describe('Checkbox accessibility', () => {
       </Checkbox>
     ));
 
-    expect(screen.getByRole('checkbox')).toHaveAttribute(
-      'aria-checked',
-      'mixed',
-    );
+    expect(screen.getByRole('checkbox')).toHaveAttribute('aria-checked', 'mixed');
   });
 
   it('reflects the checked state on every part', () => {

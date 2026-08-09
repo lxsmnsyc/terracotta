@@ -2,7 +2,9 @@ import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '../src';
 
-function renderDisclosure(props: { open?: boolean; disabled?: boolean } = {}) {
+function renderDisclosure(
+  props: { open?: boolean; disabled?: boolean } = {},
+): ReturnType<typeof render> {
   return render(() => (
     <Disclosure defaultOpen={props.open ?? false} disabled={props.disabled}>
       <DisclosureButton>Details</DisclosureButton>
@@ -30,9 +32,7 @@ describe('Disclosure accessibility', () => {
   it('omits `aria-controls` while closed instead of pointing at a missing id', () => {
     renderDisclosure();
 
-    expect(screen.getByRole('button', { name: 'Details' })).not.toHaveAttribute(
-      'aria-controls',
-    );
+    expect(screen.getByRole('button', { name: 'Details' })).not.toHaveAttribute('aria-controls');
   });
 
   it('marks the trigger as expanded and links it to the panel once open', () => {

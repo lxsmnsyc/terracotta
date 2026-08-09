@@ -2,11 +2,13 @@ import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
 import { Button, Popover, PopoverButton, PopoverPanel } from '../src';
 
-function renderPopover(props: { open?: boolean; disabled?: boolean } = {}) {
+function renderPopover(
+  props: { open?: boolean; disabled?: boolean } = {},
+): ReturnType<typeof render> {
   return render(() => (
     <Popover defaultOpen={props.open ?? false} disabled={props.disabled}>
       <PopoverButton>Options</PopoverButton>
-      <PopoverPanel>
+      <PopoverPanel data-testid="panel">
         <Button>Rename</Button>
         <Button>Duplicate</Button>
       </PopoverPanel>
@@ -27,24 +29,19 @@ describe('Popover accessibility', () => {
   it('does not render the panel while closed', () => {
     renderPopover();
 
-    expect(
-      screen.queryByRole('button', { name: 'Rename' }),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Rename' })).not.toBeInTheDocument();
   });
 
   it('omits `aria-controls` while closed instead of pointing at a missing id', () => {
     renderPopover();
 
-    expect(screen.getByRole('button', { name: 'Options' })).not.toHaveAttribute(
-      'aria-controls',
-    );
+    expect(screen.getByRole('button', { name: 'Options' })).not.toHaveAttribute('aria-controls');
   });
 
   it('marks the trigger as expanded and links it to the panel once open', () => {
     renderPopover({ open: true });
     const button = screen.getByRole('button', { name: 'Options' });
-    const panel = screen.getByRole('button', { name: 'Rename' })
-      .parentElement as HTMLElement;
+    const panel = screen.getByTestId('panel');
 
     expect(button).toHaveAttribute('aria-expanded', 'true');
     expect(button).toHaveAttribute('aria-controls', panel.id);
@@ -53,9 +50,7 @@ describe('Popover accessibility', () => {
   it('moves focus into the panel when opened', () => {
     renderPopover({ open: true });
 
-    expect(document.activeElement).toBe(
-      screen.getByRole('button', { name: 'Rename' }),
-    );
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Rename' }));
   });
 
   it('keeps Tab inside the panel', () => {

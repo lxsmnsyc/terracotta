@@ -1,27 +1,21 @@
 import { fireEvent, render, screen, waitFor } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import {
-  Command,
-  CommandInput,
-  CommandLabel,
-  CommandOption,
-  CommandOptions,
-} from '../src';
+import { labelledBy } from './aria';
+import { Command, CommandInput, CommandLabel, CommandOption, CommandOptions } from '../src';
 
 const ACTIONS = ['open file', 'close file', 'rename file'];
 
-function renderCommand(props: { value?: string } = {}) {
+function renderCommand(props: { value?: string } = {}): ReturnType<typeof render> {
   return render(() => (
     <Command
+      data-testid="palette"
       defaultValue={props.value}
-      matchBy={(value: string, query) =>
-        value.toLowerCase().includes(query.toLowerCase())
-      }
+      matchBy={(value: string, query) => value.toLowerCase().includes(query.toLowerCase())}
     >
       <CommandLabel>Command palette</CommandLabel>
       <CommandInput />
       <CommandOptions>
-        {ACTIONS.map(action => (
+        {ACTIONS.map((action) => (
           <CommandOption value={action}>{action}</CommandOption>
         ))}
       </CommandOptions>
@@ -42,10 +36,7 @@ describe('Command accessibility', () => {
     renderCommand();
     const input = getInput();
 
-    expect(input).toHaveAttribute(
-      'aria-controls',
-      screen.getByRole('listbox').id,
-    );
+    expect(input).toHaveAttribute('aria-controls', screen.getByRole('listbox').id);
     // The list is always visible, so the combobox is permanently expanded.
     expect(input).toHaveAttribute('aria-expanded', 'true');
   });
@@ -61,12 +52,9 @@ describe('Command accessibility', () => {
   });
 
   it('names the palette from its label', () => {
-    const { container } = renderCommand();
-    const root = container.firstElementChild as HTMLElement;
+    renderCommand();
 
-    expect(
-      document.getElementById(root.getAttribute('aria-labelledby') as string),
-    ).toHaveTextContent('Command palette');
+    expect(labelledBy(screen.getByTestId('palette'))).toHaveTextContent('Command palette');
   });
 
   it('marks the selected option', () => {
@@ -81,10 +69,7 @@ describe('Command accessibility', () => {
 
     fireEvent.focus(getInput());
 
-    expect(getInput()).toHaveAttribute(
-      'aria-activedescendant',
-      getOption('open file').id,
-    );
+    expect(getInput()).toHaveAttribute('aria-activedescendant', getOption('open file').id);
   });
 
   it('moves the active option with the arrow keys without moving DOM focus', () => {
@@ -94,17 +79,11 @@ describe('Command accessibility', () => {
 
     fireEvent.keyDown(input, { key: 'ArrowDown' });
 
-    expect(input).toHaveAttribute(
-      'aria-activedescendant',
-      getOption('close file').id,
-    );
+    expect(input).toHaveAttribute('aria-activedescendant', getOption('close file').id);
 
     fireEvent.keyDown(input, { key: 'ArrowUp' });
 
-    expect(input).toHaveAttribute(
-      'aria-activedescendant',
-      getOption('open file').id,
-    );
+    expect(input).toHaveAttribute('aria-activedescendant', getOption('open file').id);
   });
 
   it('selects the active option with Enter', () => {
@@ -120,9 +99,8 @@ describe('Command accessibility', () => {
 
   it('flags which options match the current query', async () => {
     renderCommand();
-    const input = getInput() as HTMLInputElement;
 
-    fireEvent.input(input, { target: { value: 'rename' } });
+    fireEvent.input(getInput(), { target: { value: 'rename' } });
 
     // Query reads are debounced so that typing does not thrash the list.
     await waitFor(() => {

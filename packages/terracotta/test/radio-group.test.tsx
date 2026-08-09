@@ -1,11 +1,7 @@
-import { fireEvent, render, screen } from '@solidjs/testing-library';
+import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import {
-  RadioGroup,
-  RadioGroupDescription,
-  RadioGroupLabel,
-  RadioGroupOption,
-} from '../src';
+import { describedBy, labelledBy, pressKeyOnFocused } from './aria';
+import { RadioGroup, RadioGroupDescription, RadioGroupLabel, RadioGroupOption } from '../src';
 
 const OPTIONS = ['small', 'medium', 'large'];
 
@@ -16,11 +12,8 @@ function renderRadioGroup(
     <RadioGroup defaultValue={props.value}>
       <RadioGroupLabel>Size</RadioGroupLabel>
       <RadioGroupDescription>Pick a shirt size</RadioGroupDescription>
-      {OPTIONS.map(option => (
-        <RadioGroupOption
-          value={option}
-          disabled={props.disabled?.includes(option)}
-        >
+      {OPTIONS.map((option) => (
+        <RadioGroupOption value={option} disabled={props.disabled?.includes(option)}>
           <RadioGroupLabel>{option}</RadioGroupLabel>
         </RadioGroupOption>
       ))}
@@ -43,15 +36,9 @@ describe('RadioGroup accessibility', () => {
   it('names and describes the group', () => {
     renderRadioGroup();
     const group = screen.getByRole('radiogroup');
-    const labelID = group.getAttribute('aria-labelledby');
-    const descriptionID = group.getAttribute('aria-describedby');
 
-    expect(document.getElementById(labelID as string)).toHaveTextContent(
-      'Size',
-    );
-    expect(document.getElementById(descriptionID as string)).toHaveTextContent(
-      'Pick a shirt size',
-    );
+    expect(labelledBy(group)).toHaveTextContent('Size');
+    expect(describedBy(group)).toHaveTextContent('Pick a shirt size');
   });
 
   it('names every option from its own label', () => {
@@ -98,15 +85,11 @@ describe('RadioGroup accessibility', () => {
     renderRadioGroup({ value: 'small' });
     getOption('small').focus();
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, {
-      key: 'ArrowDown',
-    });
+    pressKeyOnFocused('ArrowDown');
     expect(document.activeElement).toBe(getOption('medium'));
     expect(getOption('medium')).toHaveAttribute('aria-checked', 'true');
 
-    fireEvent.keyDown(document.activeElement as HTMLElement, {
-      key: 'ArrowUp',
-    });
+    pressKeyOnFocused('ArrowUp');
     expect(document.activeElement).toBe(getOption('small'));
     expect(getOption('small')).toHaveAttribute('aria-checked', 'true');
   });
@@ -119,9 +102,7 @@ describe('RadioGroup accessibility', () => {
     expect(disabled).toHaveAttribute('tabindex', '-1');
 
     getOption('small').focus();
-    fireEvent.keyDown(document.activeElement as HTMLElement, {
-      key: 'ArrowRight',
-    });
+    pressKeyOnFocused('ArrowRight');
 
     expect(document.activeElement).toBe(getOption('large'));
   });
@@ -130,7 +111,7 @@ describe('RadioGroup accessibility', () => {
     render(() => (
       <RadioGroup defaultValue="small" disabled={true}>
         <RadioGroupLabel>Size</RadioGroupLabel>
-        {OPTIONS.map(option => (
+        {OPTIONS.map((option) => (
           <RadioGroupOption value={option}>
             <RadioGroupLabel>{option}</RadioGroupLabel>
           </RadioGroupOption>
@@ -138,10 +119,7 @@ describe('RadioGroup accessibility', () => {
       </RadioGroup>
     ));
 
-    expect(screen.getByRole('radiogroup')).toHaveAttribute(
-      'aria-disabled',
-      'true',
-    );
+    expect(screen.getByRole('radiogroup')).toHaveAttribute('aria-disabled', 'true');
     expect(getOption('large')).toHaveAttribute('aria-disabled', 'true');
 
     getOption('large').click();

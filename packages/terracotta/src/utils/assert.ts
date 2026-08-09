@@ -1,7 +1,4 @@
-export default function assert<T extends Error>(
-  cond: unknown,
-  error: T,
-): asserts cond {
+export default function assert(cond: unknown, error: Error): asserts cond {
   if (!cond) {
     throw error;
   }

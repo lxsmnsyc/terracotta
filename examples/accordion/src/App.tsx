@@ -8,9 +8,7 @@ import {
   AccordionPanel,
 } from 'terracotta/accordion';
 
-function ChevronUpIcon(
-  props: JSX.IntrinsicElements['svg'] & { title: string },
-): JSX.Element {
+function ChevronUpIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -20,12 +18,7 @@ function ChevronUpIcon(
       {...props}
     >
       <title>{props.title}</title>
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M5 15l7-7 7 7"
-      />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
     </svg>
   );
 }
@@ -41,8 +34,7 @@ const FAQS: FAQ[] = [
     answer: 'Maybe someday.',
   },
   {
-    question:
-      'Oh, Magic Conch Shell, what do we need to do to get out of the Kelp Forest?',
+    question: 'Oh, Magic Conch Shell, what do we need to do to get out of the Kelp Forest?',
     answer: 'Nothing.',
   },
   {

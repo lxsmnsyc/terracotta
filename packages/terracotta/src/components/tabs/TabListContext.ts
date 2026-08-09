@@ -12,10 +12,7 @@ export const TabListContext = createContext<FocusNavigator>();
  */
 export function useTabListContext(componentName: string): FocusNavigator {
   const context = useContext(TabListContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <TabList>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <TabList>`));
   return context;
 }
 

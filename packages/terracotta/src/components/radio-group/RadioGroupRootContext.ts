@@ -10,14 +10,9 @@ export const RadioGroupRootContext = createContext<FocusNavigator>();
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
  */
-export function useRadioGroupRootContext(
-  componentName: string,
-): FocusNavigator {
+export function useRadioGroupRootContext(componentName: string): FocusNavigator {
   const context = useContext(RadioGroupRootContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <RadioGroup>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <RadioGroup>`));
   return context;
 }
 

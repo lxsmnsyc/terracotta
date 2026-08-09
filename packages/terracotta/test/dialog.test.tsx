@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it, vi } from 'vitest';
+import { describedBy, labelledBy } from './aria';
 import {
   AlertDialog,
   AlertDialogDescription,
@@ -13,7 +14,9 @@ import {
   DialogTitle,
 } from '../src';
 
-function renderDialog(props: { open?: boolean; onClose?: () => void } = {}) {
+function renderDialog(
+  props: { open?: boolean; onClose?: () => void } = {},
+): ReturnType<typeof render> {
   return render(() => (
     <Dialog defaultOpen={props.open ?? true} onClose={props.onClose}>
       <DialogOverlay data-testid="overlay" />
@@ -39,14 +42,8 @@ describe('Dialog accessibility', () => {
     renderDialog();
     const dialog = screen.getByRole('dialog');
 
-    expect(
-      document.getElementById(dialog.getAttribute('aria-labelledby') as string),
-    ).toHaveTextContent('Delete file');
-    expect(
-      document.getElementById(
-        dialog.getAttribute('aria-describedby') as string,
-      ),
-    ).toHaveTextContent('This cannot be undone');
+    expect(labelledBy(dialog)).toHaveTextContent('Delete file');
+    expect(describedBy(dialog)).toHaveTextContent('This cannot be undone');
   });
 
   it('stays out of the accessibility tree while closed', () => {
@@ -58,9 +55,7 @@ describe('Dialog accessibility', () => {
   it('moves focus into the panel when opened', () => {
     renderDialog();
 
-    expect(document.activeElement).toBe(
-      screen.getByRole('button', { name: 'Cancel' }),
-    );
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Cancel' }));
   });
 
   it('keeps Tab inside the panel', () => {
@@ -88,7 +83,11 @@ describe('Dialog accessibility', () => {
 
   it('closes on Escape', () => {
     const onClose = vi.fn();
-    renderDialog({ onClose });
+    renderDialog({
+      onClose: () => {
+        onClose();
+      },
+    });
 
     fireEvent.keyDown(screen.getByRole('button', { name: 'Cancel' }), {
       key: 'Escape',
@@ -141,13 +140,7 @@ describe('AlertDialog accessibility', () => {
     const dialog = screen.getByRole('alertdialog');
 
     expect(dialog).toHaveAttribute('aria-modal', 'true');
-    expect(
-      document.getElementById(dialog.getAttribute('aria-labelledby') as string),
-    ).toHaveTextContent('Payment failed');
-    expect(
-      document.getElementById(
-        dialog.getAttribute('aria-describedby') as string,
-      ),
-    ).toHaveTextContent('Try another card');
+    expect(labelledBy(dialog)).toHaveTextContent('Payment failed');
+    expect(describedBy(dialog)).toHaveTextContent('Try another card');
   });
 });

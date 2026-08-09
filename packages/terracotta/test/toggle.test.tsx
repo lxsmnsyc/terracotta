@@ -23,10 +23,7 @@ describe('Toggle accessibility', () => {
   it('starts pressed when `defaultPressed` is true', () => {
     render(() => <Toggle defaultPressed={true}>Bold</Toggle>);
 
-    expect(screen.getByRole('button', { name: 'Bold' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
+    expect(screen.getByRole('button', { name: 'Bold' })).toHaveAttribute('aria-pressed', 'true');
   });
 
   it('does not change state while disabled', () => {
@@ -48,9 +45,6 @@ describe('Toggle accessibility', () => {
   it('reflects a controlled `pressed` prop', () => {
     render(() => <Toggle pressed={true}>Bold</Toggle>);
 
-    expect(screen.getByRole('button', { name: 'Bold' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
+    expect(screen.getByRole('button', { name: 'Bold' })).toHaveAttribute('aria-pressed', 'true');
   });
 });
