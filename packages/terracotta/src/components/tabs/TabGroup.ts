@@ -92,7 +92,7 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
         },
         getId(kind: string, value: V): string {
           let currentID = ids.get(value);
-          if (!currentID) {
+          if (currentID == null) {
             currentID = ids.size;
             ids.set(value, currentID);
           }
