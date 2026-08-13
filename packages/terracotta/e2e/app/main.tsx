@@ -1,0 +1,48 @@
+import type { JSX } from 'solid-js';
+import { render } from 'solid-js/web';
+import CheckboxCase from './cases/checkbox';
+import DialogCase from './cases/dialog';
+import ListboxCase from './cases/listbox';
+import MenuCase from './cases/menu';
+import PopoverCase from './cases/popover';
+import TabsCase from './cases/tabs';
+import ToolbarCase from './cases/toolbar';
+
+// Each spec navigates to `/?case=<name>`; keeping one bundle avoids a router
+// dependency and keeps the harness startup cheap.
+const CASES: Record<string, () => JSX.Element> = {
+  checkbox: CheckboxCase,
+  dialog: DialogCase,
+  listbox: ListboxCase,
+  menu: MenuCase,
+  popover: PopoverCase,
+  tabs: TabsCase,
+  toolbar: ToolbarCase,
+};
+
+function App(): JSX.Element {
+  const name = new URLSearchParams(window.location.search).get('case');
+  const Case = name === null ? undefined : CASES[name];
+
+  if (Case === undefined) {
+    return (
+      <ul>
+        {Object.keys(CASES).map((key) => (
+          <li>
+            <a href={`/?case=${key}`}>{key}</a>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  return <Case />;
+}
+
+const root = document.getElementById('root');
+
+if (root === null) {
+  throw new Error('Missing #root');
+}
+
+render(() => <App />, root);
