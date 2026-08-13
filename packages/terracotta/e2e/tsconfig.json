@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["."],
+  "compilerOptions": {
+    "rootDir": "..",
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "types": ["node"],
+    "paths": {
+      "terracotta": ["../src/index.ts"]
+    }
+  }
+}

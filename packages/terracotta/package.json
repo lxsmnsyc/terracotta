@@ -50,12 +50,16 @@
     "clean": "pridepack clean",
     "watch": "pridepack watch",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "e2e:dev": "vite --config e2e/vite.config.ts"
   },
   "dependencies": {
     "solid-use": "^0.9.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@solidjs/testing-library": "^0.8.10",
     "@testing-library/jest-dom": "^7.0.0",
     "@types/node": "^25.0.3",
@@ -64,6 +68,7 @@
     "solid-js": "^1.9.10",
     "tslib": "^2.8.1",
     "typescript": "^5.9.3",
+    "vite": "^7.3.0",
     "vite-plugin-solid": "^2.11.10",
     "vitest": "^4.1.10"
   },
