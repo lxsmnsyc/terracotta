@@ -1,15 +1,15 @@
 # Toast
 
-Toast notifications: short, non-blocking messages that appear in a corner of the
-screen and go away again. Terracotta splits this into three pieces:
+Toast notifications are short, non-blocking messages. They appear in a corner of
+the screen and go away again. Terracotta splits this into three pieces:
 
-- `ToasterStore` — a framework-agnostic queue you create outside your components
-  and push messages into from anywhere.
+- `ToasterStore` — a framework-agnostic queue. Create it outside your components
+  and push messages into it from anywhere.
 - `useToaster(store)` — subscribes to a store and returns a Solid accessor.
 - `<Toaster>` / `<Toast>` — the markup, with the right live-region roles.
 
-Because the queue lives outside the component tree, any code — a fetch handler, a
-router guard, a worker callback — can raise a toast without prop drilling.
+The queue lives outside the component tree, so any code can raise a toast
+without prop drilling: a fetch handler, a router guard, a worker callback.
 
 ```tsx
 import { Toast, Toaster, ToasterStore, useToaster } from 'terracotta';
@@ -111,7 +111,7 @@ notices.create({ title: 'Project saved', tone: 'success' });
 
 ### Auto-dismiss
 
-The store has no timing policy — add one where you create the toast:
+The store has no timing policy. Add one where you create the toast:
 
 ```tsx
 export function notify(data: Notice, ms = 4000): string {
@@ -123,8 +123,8 @@ export function notify(data: Notice, ms = 4000): string {
 
 ### Animating entry and exit
 
-The queue removes an item immediately, so wrap each toast in a
-[`Transition`](./transition.md) if you want it to animate out:
+The queue removes an item immediately. To animate a toast out, wrap it in a
+[`Transition`](./transition.md):
 
 ```tsx
 <For each={queue()}>
@@ -147,8 +147,8 @@ The queue removes an item immediately, so wrap each toast in a
 .toast-enter-to   { opacity: 1; translate: none; }
 ```
 
-For a leave animation, keep the item in the queue until the transition finishes —
-flip a local signal, then call `notices.remove(item.id)` from `afterLeave`.
+For a leave animation, keep the item in the queue until the transition finishes.
+Flip a local signal, then call `notices.remove(item.id)` from `afterLeave`.
 
 ### Clearing the queue
 
@@ -160,7 +160,7 @@ flip a local signal, then call `notices.remove(item.id)` from `afterLeave`.
 
 ### Several independent regions
 
-Each store is its own queue, so a page can have more than one:
+Each store is its own queue, so one page can have several:
 
 ```tsx
 export const systemNotices = new ToasterStore<Notice>();
@@ -182,21 +182,21 @@ const unsubscribe = notices.subscribe(queue => {
 });
 ```
 
-`useToaster` is the reactive equivalent, and unsubscribes with the component.
+`useToaster` is the reactive equivalent. It unsubscribes with the component.
 
 ## State attributes
 
-Neither component carries dynamic state — a toast is either in the queue or it is
-not — so only the markers are written.
+Neither component carries dynamic state. A toast is either in the queue or it is
+not, so only the markers are written.
 
 | Element | Attribute | Present when |
 | --- | --- | --- |
 | `Toaster` | `tc-toaster` | Always |
 | `Toast` | `tc-toast` | Always |
 
-Anything you want to vary per toast — severity, position, whether it has an
-action — is your own data, so pass a `data-*` attribute and select on it, as in
-the example above.
+Anything that varies per toast is your own data: severity, position, whether it
+has an action. Pass a `data-*` attribute and select on it, as in the example
+above.
 
 ### Styling
 
@@ -230,16 +230,16 @@ There is no component state. The queue is the state, and you read it with
 | --- | --- | --- |
 | `useToaster(store)` | `() => ToastData<T>[]` | Reactive accessor for the queue. |
 | `store.getQueue()` | `() => ToastData<T>[]` | Non-reactive snapshot. |
-| `store.subscribe(cb)` | `(cb) => () => void` | Manual subscription; returns an unsubscribe function. |
+| `store.subscribe(cb)` | `(cb) => () => void` | Manual subscription. Returns an unsubscribe function. |
 
 ## Keyboard
 
-Neither component handles keys. A toast is not a focus stop, which is the point —
-it must not interrupt what the user is typing. Put a real `<button>` inside the
-toast for a dismiss or undo action, and it will be reachable by <kbd>Tab</kbd> in
-the normal way.
+Neither component handles keys. A toast is not a focus stop, and that is the
+point: it must not interrupt what the user is typing. For a dismiss or undo
+action, put a real `<button>` inside the toast. <kbd>Tab</kbd> reaches it the
+normal way.
 
-If the message must be acted on, it is not a toast — use
+If the message must be acted on, it is not a toast. Use
 [`AlertDialog`](./alert-dialog.md).
 
 ## API
@@ -255,7 +255,7 @@ toast to carry.
 | `remove(id)` | `(id: string) => void` | Removes the toast with that id. |
 | `clear()` | `() => void` | Empties the queue. |
 | `getQueue()` | `() => ToastData<T>[]` | The current queue. Not reactive. |
-| `subscribe(callback)` | `(cb: (queue: ToastData<T>[]) => void) => () => void` | Subscribes to changes; returns an unsubscribe function. Each notification receives a fresh array. |
+| `subscribe(callback)` | `(cb: (queue: ToastData<T>[]) => void) => () => void` | Subscribes to changes and returns an unsubscribe function. Each notification receives a fresh array. |
 
 `ToastData<T>` is `{ id: string; data: T }`.
 
@@ -267,8 +267,8 @@ toast to carry.
 
 ### `<Toaster>`
 
-The container that owns the toast context. `<Toast>` must be rendered inside one,
-and throws if it is not. Renders a `<div>` by default. Does not take a `ref`.
+The container that owns the toast context. `<Toast>` must be rendered inside
+one, and throws otherwise. Renders a `<div>` by default. Does not take a `ref`.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

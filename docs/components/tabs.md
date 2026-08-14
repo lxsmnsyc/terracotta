@@ -1,7 +1,7 @@
 # Tabs
 
-A [tabbed interface](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/): a row of
-tabs, each revealing a panel. Tabs follow the *automatic activation* model — the
+A [tabbed interface](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/) is a row of
+tabs, each revealing a panel. Tabs follow the *automatic activation* model: the
 arrow keys move focus and select at the same time, so the visible panel always
 matches the focused tab.
 
@@ -27,9 +27,9 @@ import {
 </TabGroup>
 ```
 
-`Tab` and `TabPanel` are linked by their `value`, not by their position — the
-group derives a stable id pair from each value and wires `aria-controls` and
-`aria-labelledby` from it. Panels therefore do not have to sit inside the tab
+`Tab` and `TabPanel` are linked by their `value`, not by their position. The
+group derives a stable pair of ids from each value, then wires `aria-controls`
+and `aria-labelledby` from them. Panels therefore need not sit inside the tab
 list, or even in the same order.
 
 ## Examples
@@ -93,7 +93,7 @@ list, or even in the same order.
 .tabpanel { padding-block: 1rem; }
 ```
 
-`horizontal` is required — it decides both which arrow keys navigate and what
+`horizontal` is required. It decides which arrow keys navigate, and what
 `aria-orientation` reports.
 
 ### Vertical
@@ -137,7 +137,7 @@ list, or even in the same order.
 
 ### Controlled
 
-Useful when the active tab lives in the URL, or when another control switches
+Use this when the active tab lives in the URL, or when another control switches
 tabs:
 
 ```tsx
@@ -269,11 +269,11 @@ interface Section { id: string; title: string }
 | `TabPanel` | `tc-selected` | Its tab is selected |
 | `TabPanel` | `tc-active` | Its tab holds keyboard focus |
 
-Because focusing a tab also selects it, `tc-selected` and `tc-active` usually
-agree here — unlike in [`Select`](./select.md), where they diverge while
-browsing.
+Focusing a tab also selects it, so `tc-selected` and `tc-active` usually agree
+here. They diverge in [`Select`](./select.md), where browsing does not change
+the value.
 
-`TabList` reports orientation through `aria-orientation`, and `Tab` carries
+`TabList` reports orientation through `aria-orientation`. `Tab` carries
 `aria-selected`.
 
 ### Styling
@@ -373,7 +373,7 @@ default.
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
 
 Rendered attributes include `role="tab"`, `aria-selected`, `aria-controls`, a
-derived `id`, and `tabindex` — `0` while selected, `-1` otherwise.
+derived `id`, and `tabindex`, which is `0` while selected and `-1` otherwise.
 
 ### `<TabPanel>`
 
@@ -387,8 +387,8 @@ The content for one tab. Renders a `<div>` by default. Does not take a `ref`.
 | `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Contents, or a render prop. |
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
 
-Rendered attributes include `role="tabpanel"`, `aria-labelledby`, a derived `id`,
-and `tabindex` — `0` while selected, `-1` otherwise.
+Rendered attributes include `role="tabpanel"`, `aria-labelledby`, a derived
+`id`, and `tabindex`, which is `0` while selected and `-1` otherwise.
 
-`TabList`, `Tab` and `TabPanel` throw outside a `<TabGroup>`; `Tab` additionally
+`TabList`, `Tab` and `TabPanel` throw outside a `<TabGroup>`. `Tab` also
 requires a `<TabList>`.

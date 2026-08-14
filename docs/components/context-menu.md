@@ -1,13 +1,13 @@
 # ContextMenu
 
 A right-click menu. `ContextMenuBoundary` marks the region that responds to the
-`contextmenu` event; opening it suppresses the browser's own menu and shows
+`contextmenu` event. Opening it suppresses the browser's own menu and shows
 `ContextMenuPanel` instead. The panel traps <kbd>Tab</kbd>, closes on
 <kbd>Escape</kbd>, and closes on any click outside itself.
 
-The panel is a dialog-style container rather than an ARIA menu, so you are free
-to put whatever you want in it — including a [`Menu`](./menu.md) if you do want
-menu semantics.
+The panel is a dialog-style container, not an ARIA menu, so you can put anything
+you like in it. That includes a [`Menu`](./menu.md), when you do want menu
+semantics.
 
 ```tsx
 import {
@@ -114,8 +114,8 @@ import {
 </ContextMenu>
 ```
 
-Arrow-key navigation and type-ahead come from `Menu`; the trap and dismissal come
-from `ContextMenuPanel`.
+Arrow-key navigation and type-ahead come from `Menu`. The trap and the dismissal
+come from `ContextMenuPanel`.
 
 ### Positioning at the cursor
 
@@ -150,8 +150,8 @@ const [point, setPoint] = createSignal({ x: 0, y: 0 });
 }
 ```
 
-Your `onContextMenu` is forwarded and runs alongside Terracotta's own listener,
-which is what opens the menu.
+Your `onContextMenu` is forwarded. It runs alongside Terracotta's own listener,
+which is the one that opens the menu.
 
 ### Controlled
 
@@ -292,9 +292,9 @@ panel while open.
 | `toggle()` | `() => void` | Flips the state. |
 | `disabled()` | `boolean` | Whether the menu is disabled. |
 
-Available as the render-prop argument on `ContextMenu` and each of its parts,
-through `<DisclosureStateChild>`, or with `useDisclosureState()` in any
-descendant. Full reference in
+You can reach this state as the render-prop argument on `ContextMenu` and each
+of its parts, through `<DisclosureStateChild>`, or with `useDisclosureState()`
+in any descendant. Full reference in
 [disclosure state](../states.md#disclosure-state).
 
 ## Behaviour and keyboard
@@ -306,8 +306,8 @@ descendant. Full reference in
 | <kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> | Cycles focus within the panel |
 | Click outside the panel | Closes the menu |
 
-The panel focuses its first focusable child when it opens, and focus returns to
-where it was on close.
+The panel focuses its first focusable child when it opens. Focus returns to
+where it was when the menu closes.
 
 ## API
 
@@ -356,8 +356,8 @@ The menu content, with the focus trap and outside-click handling. Renders a
 ### `<ContextMenuOverlay>`
 
 An optional backdrop that closes the menu when clicked. Renders a `<div>` by
-default. **Not** conditionally mounted — hide it with CSS or wrap it in a
-`<Show>`.
+default. It is **not** conditionally mounted, so hide it with CSS or wrap it in
+a `<Show>`.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

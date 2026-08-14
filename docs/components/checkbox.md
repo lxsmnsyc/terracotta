@@ -1,9 +1,9 @@
 # Checkbox
 
 A [tri-state checkbox](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/):
-checked, unchecked, or indeterminate (`undefined`). The pieces are split apart so
-you can lay out the indicator, label and description however you like, and they
-are wired together with the right `id`s and `aria-*` relationships for you.
+checked, unchecked, or indeterminate (`undefined`). The pieces come apart, so
+you can lay out the indicator, label and description however you like.
+Terracotta wires them together with the right ids and `aria-*` relationships.
 
 ```tsx
 import {
@@ -26,8 +26,8 @@ import {
 </Checkbox>
 ```
 
-`CheckboxIndicator` carries `role="checkbox"` and is linked to the label and
-description through `aria-labelledby` / `aria-describedby`; `CheckboxLabel`
+`CheckboxIndicator` carries `role="checkbox"`. It links to the label and
+description through `aria-labelledby` and `aria-describedby`. `CheckboxLabel`
 renders a `<label for>` pointing back at it, so clicking the label toggles the
 box.
 
@@ -142,8 +142,7 @@ const parentState = (): boolean | undefined => {
 </Checkbox>
 ```
 
-Toggling from indeterminate produces `true`, which is the behaviour a
-"select all" needs.
+Toggling from indeterminate produces `true`, which is what a "select all" needs.
 
 ### Disabled
 
@@ -165,12 +164,12 @@ Toggling from indeterminate produces `true`, which is the behaviour a
 }
 ```
 
-Because `tc-disabled` and `tc-checked` are also mirrored onto the label and the
-description, you can dim just one part if you prefer.
+`tc-disabled` and `tc-checked` are mirrored onto the label and the description
+too, so you can dim a single part if you prefer.
 
 ### Drawing the mark in CSS
 
-The indicator's contents are yours, so the tick can be pure CSS:
+The indicator's contents are yours, so the tick can be plain CSS:
 
 ```tsx
 <CheckboxIndicator class="checkbox-box" />
@@ -201,7 +200,7 @@ The indicator's contents are yours, so the tick can be pure CSS:
 
 ### Switch layout
 
-The same state, laid out as a switch:
+The same state, laid out as a switch instead:
 
 ```tsx
 <Checkbox class="switch-row" defaultChecked={false}>
@@ -266,12 +265,12 @@ function CheckboxSummary(): JSX.Element {
 }
 ```
 
-`<CheckStateChild>` does the same inline, without a separate component.
+`<CheckStateChild>` does the same inline, with no separate component.
 
 ### In a form
 
-`Checkbox` renders no `<input>`, so add a hidden one if the value must be
-submitted natively:
+`Checkbox` renders no `<input>`. Add a hidden one if the value must be submitted
+natively:
 
 ```tsx
 <Checkbox class="checkbox" checked={subscribed()} onChange={v => setSubscribed(!!v)}>
@@ -295,12 +294,11 @@ submitted natively:
 | `CheckboxDescription` | `tc-checkbox-description` | Always |
 | `CheckboxDescription` | `tc-checked`, `tc-disabled` | As above |
 
-Every part carries the same state, so you can style from whichever element is
-most convenient — the root for whole-row effects, the indicator for the box
-itself.
+Every part carries the same state, so style from whichever element is most
+convenient: the root for whole-row effects, the indicator for the box itself.
 
-`aria-checked` on the indicator carries the same three states as `true`, `false`
-and `"mixed"`.
+`aria-checked` on the indicator carries the same three states, as `true`,
+`false` and `"mixed"`.
 
 ### Styling
 
@@ -329,9 +327,9 @@ and `"mixed"`.
 | `toggle()` | `() => void` | Flips the value; from indeterminate this yields `true`. |
 | `disabled()` | `boolean` | Whether the checkbox is disabled. |
 
-Available as the render-prop argument on `Checkbox` and each of its parts,
-through `<CheckStateChild>`, or with `useCheckState()` in any descendant. Full
-reference in [check state](../states.md#check-state).
+You can reach this state as the render-prop argument on `Checkbox` and each of
+its parts, through `<CheckStateChild>`, or with `useCheckState()` in any
+descendant. Full reference in [check state](../states.md#check-state).
 
 ## Keyboard
 
@@ -340,16 +338,16 @@ reference in [check state](../states.md#check-state).
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Toggles the checkbox, when the indicator has focus |
 | <kbd>Tab</kbd> | Focuses the indicator — the only focusable part |
 
-The label is not a focus stop, but clicking it toggles the box through the native
-`<label for>` relationship.
+The label is not a focus stop. Clicking it still toggles the box, through the
+native `<label for>` relationship.
 
 ## API
 
 ### `<Checkbox>`
 
 Owns the [check state](../states.md#check-state) and renders a `<div>` by
-default. Does not take a `ref`, and has no role of its own — the role lives on
-the indicator.
+default. It takes no `ref` and has no role of its own; the role lives on the
+indicator.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -389,7 +387,7 @@ take a `ref`.
 
 ### `<CheckboxDescription>`
 
-Supporting text, referenced by the indicator's `aria-describedby`. Renders a
+Supporting text. The indicator's `aria-describedby` points at it. Renders a
 `<p>` by default. Does not take a `ref`.
 
 | Prop | Type | Default | Description |
@@ -398,5 +396,5 @@ Supporting text, referenced by the indicator's `aria-describedby`. Renders a
 | `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | — | Description text, or a render prop. |
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
 
-All three descendants must be rendered inside a `<Checkbox>`; each throws with a
-message naming itself if it is not.
+All three descendants must be rendered inside a `<Checkbox>`. Each throws with a
+message naming itself when it is not.

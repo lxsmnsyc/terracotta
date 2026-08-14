@@ -1,8 +1,8 @@
 # State primitives
 
 Every stateful Terracotta component is a thin shell around one of these reactive
-stores. They are exported so you can read a component's state from anywhere in
-its subtree, or build your own component on the same behaviour.
+stores. The stores are exported, so you can read a component's state from
+anywhere in its subtree, or build your own component on the same behaviour.
 
 Three things are exported per state:
 
@@ -27,8 +27,8 @@ function CloseButton() {
 }
 ```
 
-A render-prop function on a `…StateChild` must declare exactly one parameter to
-be recognised as a render prop; a zero-parameter function is rendered as-is.
+A function passed to a `…StateChild` counts as a render prop only if it declares
+exactly one parameter. A zero-parameter function is rendered as-is.
 
 ---
 
@@ -146,9 +146,9 @@ A plain string value. Exported for building text-input components.
 
 ## Select state
 
-Selection over a set of values, in single or multiple mode, plus the notion of an
-*active* (focused) value. Backs `Accordion`, `Select`, `Listbox`, `RadioGroup`
-and `TabGroup`.
+Selection over a set of values, in single or multiple mode. It also tracks the
+*active* value, the one focus is on. Backs `Accordion`, `Select`, `Listbox`,
+`RadioGroup` and `TabGroup`.
 
 `createSingleSelectState(options)` · `createMultipleSelectState(options)` ·
 `useSelectState<T>()` · `<SelectStateChild>`
@@ -178,17 +178,17 @@ and `TabGroup`.
 | `blur()` | `() => void` | Clears the active value. |
 | `disabled()` | `boolean` | Whether the state is disabled. |
 
-> In single mode `isSelected` compares with the built-in equality rather than
-> `by`; `by` is applied by `select`, `isActive` and the multiple-mode lookups.
-> Pass values you can compare by reference (or use multiple mode) if that
-> distinction matters to you.
+> In single mode, `isSelected` compares with the built-in equality instead of
+> `by`. `by` is applied by `select`, `isActive` and the multiple-mode lookups.
+> If that distinction matters to you, pass values you can compare by reference,
+> or use multiple mode.
 
 ---
 
 ## Select option state
 
-The per-option view of a select state. Created by `SelectOption`, `ListboxOption`,
-`AccordionItem`, `Tab`, `TabPanel` and `RadioGroupOption`.
+The per-option view of a select state. Created by `SelectOption`,
+`ListboxOption`, `AccordionItem`, `Tab`, `TabPanel` and `RadioGroupOption`.
 
 `createSelectOptionState(options)` · `useSelectOptionState()` · `<SelectOptionStateChild>`
 
@@ -213,8 +213,8 @@ The per-option view of a select state. Created by `SelectOption`, `ListboxOption
 
 ## Autocomplete state
 
-Select state plus a debounced text query and per-value matching. Backs `Combobox`
-and `Command`.
+A select state, plus a debounced text query and per-value matching. Backs
+`Combobox` and `Command`.
 
 `createSingleAutocompleteState(options)` · `createMultipleAutocompleteState(options)` ·
 `useAutocompleteState<T>()` · `<AutocompleteStateChild>`
@@ -238,9 +238,9 @@ Everything from [select state](#select-state), plus:
 | `matches(value)` | `(T) => boolean` | Runs `matchBy` against the current query. |
 | `hasQuery()` | `boolean` | Whether the query is non-empty. |
 
-> `setQuery` is debounced, so `query()` lags typing by 250 ms. That debounce is
-> what keeps filtering off the keystroke path; it also means an assertion made
-> immediately after typing will still see the previous query.
+> `setQuery` is debounced, so `query()` lags typing by 250 ms. The debounce
+> keeps filtering off the keystroke path. It also means an assertion made
+> immediately after typing still sees the previous query.
 
 ---
 

@@ -1,9 +1,10 @@
 # Menu
 
-An [ARIA menu](https://www.w3.org/WAI/ARIA/apg/patterns/menu/) — a list of
-actions, navigated with the arrow keys and searchable by typing. `Menu` is
-stateless: it does not track a selection, because menu items *do* things rather
-than represent values. Wire an `onClick` to each item.
+An [ARIA menu](https://www.w3.org/WAI/ARIA/apg/patterns/menu/) is a list of
+actions. Arrow keys move through it, and typing jumps to an item.
+
+`Menu` is stateless. It tracks no selection, because menu items *do* things
+instead of representing values. Wire an `onClick` to each item.
 
 `Menu` renders the list only. Pair it with [`Popover`](./popover.md) for a
 dropdown, or [`ContextMenu`](./context-menu.md) for a right-click menu.
@@ -65,8 +66,8 @@ import { Menu, MenuItem, MenuChild } from 'terracotta';
 .menu-item[tc-disabled]:hover { background: none; }
 ```
 
-> `Menu` renders a `<div>` unless you pass `as`. Since `MenuItem` renders an
-> `<li>`, pass `as="ul"` as above so the markup is valid.
+> `Menu` renders a `<div>` unless you pass `as`. `MenuItem` renders an `<li>`,
+> so pass `as="ul"` as above to keep the markup valid.
 
 ### As a dropdown
 
@@ -85,8 +86,7 @@ import { Menu, MenuItem, MenuChild } from 'terracotta';
 
 ### With separators and section labels
 
-Non-focusable elements are skipped by the arrow keys, so they need no special
-handling:
+The arrow keys skip non-focusable elements, so these need no special handling:
 
 ```tsx
 <Menu as="ul" class="menu">
@@ -153,8 +153,8 @@ handling:
 </MenuItem>
 ```
 
-`MenuChild` is that render prop as a standalone component, for when the state is
-needed deeper in the tree:
+`MenuChild` is the same render prop as a standalone component. Use it when the
+state is needed deeper in the tree:
 
 ```tsx
 <MenuItem class="menu-item" disabled={!canDelete()}>
@@ -165,13 +165,13 @@ needed deeper in the tree:
 </MenuItem>
 ```
 
-Note that `MenuChild` takes its own `disabled` prop — it does not read the
-parent item's.
+`MenuChild` takes its own `disabled` prop. It does not read the parent item's,
+so pass the same value to both.
 
 ### Anchoring rich items to the focus ring
 
-Because items are removed from the tab order, `:focus` on a `MenuItem` means "the
-arrow keys are on this item":
+Items sit outside the tab order, so `:focus` on a `MenuItem` means "the arrow
+keys are on this item":
 
 ```css
 .menu-item:focus {
@@ -192,9 +192,9 @@ arrow keys are on this item":
 | `MenuItem` | `tc-owner` | Always — ties the item to its menu's keyboard navigation |
 | `MenuItem` | `tc-disabled` | The item is disabled |
 
-`tc-disabled` is what removes an item from arrow-key navigation and type-ahead,
-so it is behaviour as well as styling. There is no `tc-active` here: a menu moves
-real DOM focus, so use `:focus` for the highlighted item.
+`tc-disabled` removes an item from arrow-key navigation and type-ahead, so it is
+behaviour as well as styling. There is no `tc-active` here. A menu moves real
+DOM focus, so use `:focus` for the highlighted item.
 
 ### Styling
 
@@ -241,17 +241,17 @@ Handled on the `Menu` root, across its `MenuItem` descendants:
 | Printable characters | Type-ahead: jumps to the first item whose text starts with what you typed. Keystrokes are collected for 250 ms, so typing several letters quickly matches a longer prefix. |
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Activates the focused item; the root suppresses the browser's default scroll or submit |
 
-Disabled items are skipped by both the arrow keys and type-ahead.
+Both the arrow keys and type-ahead skip disabled items.
 
 ## API
 
 ### `<Menu>`
 
-The container. It has no state of its own, so there are no value or change props.
+The container. It holds no state, so it has no value or change props.
 
 > **Note:** the type default for `as` is `'ul'`, but the implementation falls
-> back to a `<div>` when `as` is not given. Pass `as="ul"` explicitly if you want
-> a list element — which also matches the `<li>` that `MenuItem` renders.
+> back to a `<div>` when `as` is not given. Pass `as="ul"` explicitly to get a
+> list element, which also matches the `<li>` that `MenuItem` renders.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -264,9 +264,9 @@ Rendered attributes: `role="menu"`, a generated `id`, `tc-menu`.
 
 ### `<MenuItem>`
 
-A [`Button`](./button.md) with `role="menuitem"`. Renders an `<li>` by default,
-and is removed from the tab order (`tabindex="-1"`) so the menu is a single tab
-stop.
+A [`Button`](./button.md) with `role="menuitem"`. Renders an `<li>` by default.
+It sits outside the tab order (`tabindex="-1"`), which is what makes the menu a
+single tab stop.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -274,14 +274,14 @@ stop.
 | `disabled` | `boolean` | `false` | Disables the item and removes it from keyboard navigation. |
 | `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
 | `children` | `JSX.Element` \| `(state: { disabled: () => boolean }) => JSX.Element` | — | Label, or a render prop receiving the item's disabled state. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element — this is where `onClick` goes. |
+| *…rest* | props of `as` | — | Forwarded to the rendered element. This is where `onClick` goes. |
 
 `MenuItem` throws if rendered outside a `<Menu>`.
 
 ### `<MenuChild>`
 
-Exposes a disabled flag as a render prop. Renders nothing of its own, and does
-not read the parent `MenuItem` — pass it the same value.
+Exposes a disabled flag as a render prop. It renders nothing of its own and does
+not read the parent `MenuItem`, so pass it the same value.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

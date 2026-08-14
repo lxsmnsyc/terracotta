@@ -1,9 +1,11 @@
 # AlertDialog
 
-An [alert dialog](https://www.w3.org/WAI/ARIA/apg/patterns/alertdialog/): a modal
-that interrupts to confirm a consequential action or report an error that needs a
-response. It behaves exactly like [`Dialog`](./dialog.md) — same focus trap, same
-<kbd>Escape</kbd> handling, same focus restoration — but carries
+An [alert dialog](https://www.w3.org/WAI/ARIA/apg/patterns/alertdialog/) is a
+modal that interrupts. Use it to confirm a consequential action, or to report an
+error that needs a response.
+
+It behaves exactly like [`Dialog`](./dialog.md): same focus trap, same
+<kbd>Escape</kbd> handling, same focus restoration. The difference is
 `role="alertdialog"`, which tells assistive technology to announce the dialog's
 description immediately.
 
@@ -34,8 +36,8 @@ import {
 </AlertDialog>
 ```
 
-An alert dialog should always have a description: it is the part screen readers
-announce, and it is what tells the user what they are agreeing to.
+An alert dialog should always have a description. Screen readers announce it,
+and it is what tells the user what they are agreeing to.
 
 ## Examples
 
@@ -112,8 +114,8 @@ const [open, setOpen] = createSignal(false);
 
 ### Putting the safe choice first
 
-The panel focuses its first focusable element, so ordering the buttons decides
-what <kbd>Enter</kbd> hits by default:
+The panel focuses its first focusable element. The order of the buttons
+therefore decides what <kbd>Enter</kbd> hits by default:
 
 ```tsx
 <div class="alertdialog-actions">
@@ -167,9 +169,9 @@ what <kbd>Enter</kbd> hits by default:
 
 ### Preventing dismissal
 
-An alert dialog that must be answered should not be dismissible by clicking away
-or pressing <kbd>Escape</kbd>. Leave out the overlay's close behaviour by using a
-plain element for the backdrop, and disable the panel's key handling:
+An alert dialog that must be answered should not close on a click away or on
+<kbd>Escape</kbd>. Use a plain element for the backdrop instead of the overlay,
+and disable the panel's key handling:
 
 ```tsx
 <AlertDialog class="alertdialog" isOpen={open()}>
@@ -184,8 +186,8 @@ plain element for the backdrop, and disable the panel's key handling:
 </AlertDialog>
 ```
 
-`disabled` on the panel stops both <kbd>Escape</kbd> and the <kbd>Tab</kbd> trap,
-so use it only when the dialog has few controls — otherwise focus can wander
+`disabled` on the panel stops both <kbd>Escape</kbd> and the <kbd>Tab</kbd>
+trap. Use it only when the dialog has few controls. Otherwise focus can wander
 behind the modal.
 
 ### With transitions
@@ -237,8 +239,8 @@ behind the modal.
 | `AlertDialogDescription` | `tc-alert-dialog-description` | Always |
 | `AlertDialogDescription` | `tc-expanded`, `tc-disabled` | Mirrors the dialog |
 
-With the default `unmount`, the dialog is only in the DOM while open, so
-`tc-expanded` matters most when you set `unmount={false}`.
+With the default `unmount`, the dialog is in the DOM only while open.
+`tc-expanded` therefore matters most when you set `unmount={false}`.
 
 ### Styling
 
@@ -261,7 +263,7 @@ With the default `unmount`, the dialog is only in the DOM while open, so
 
 ### Reading the state in code
 
-Identical to [`Dialog`](./dialog.md#reading-the-state-in-code) — the same
+Identical to [`Dialog`](./dialog.md#reading-the-state-in-code). It is the same
 [disclosure state](../states.md#disclosure-state):
 
 | Member | Type | Description |
@@ -315,7 +317,7 @@ The focus trap. Renders a `<div>` by default.
 
 ### `<AlertDialogOverlay>`
 
-The backdrop; closes the dialog when clicked. Renders a `<div>` by default.
+The backdrop. Closes the dialog when clicked. Renders a `<div>` by default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

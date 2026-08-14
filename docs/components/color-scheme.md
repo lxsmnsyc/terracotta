@@ -7,8 +7,8 @@ things in sync:
 - the `dark` class on `<html>`, toggled to match the resolved scheme
 - the OS preference, via a `prefers-color-scheme` media query
 
-It also listens for the `storage` event and for the page becoming visible again,
-so a change made in one tab is picked up by the others.
+It also listens for the `storage` event, and for the page becoming visible
+again. A change made in one tab therefore reaches the others.
 
 ```tsx
 import {
@@ -26,8 +26,8 @@ type NativeColorScheme = 'light' | 'dark';
 type ColorScheme = NativeColorScheme | 'system';
 ```
 
-`'system'` means "follow the OS"; it resolves to `'light'` or `'dark'` at read
-time.
+`'system'` means "follow the OS". It resolves to `'light'` or `'dark'` when
+read.
 
 ## Anatomy
 
@@ -77,8 +77,8 @@ export default function App(): JSX.Element {
 ### Theming with custom properties
 
 The provider toggles a single `dark` class on `<html>`. Define your palette as
-custom properties and swap them under that class — everything else in your CSS
-can then be written once:
+custom properties and swap them under that class. Everything else in your CSS is
+then written once:
 
 ```css
 :root {
@@ -110,9 +110,8 @@ can then be written once:
 }
 ```
 
-Every other component page in these docs uses colours directly for clarity;
-in a real project, route them through custom properties like this so dark mode
-comes for free.
+The other component pages use colours directly, for clarity. In a real project,
+route them through custom properties like this, and dark mode comes for free.
 
 ### A three-way segmented control
 
@@ -166,7 +165,7 @@ function SchemeButtons(): JSX.Element {
 ### Showing the resolved scheme
 
 `useColorScheme` gives you the *preference*, which may be `'system'`.
-`usePreferredColorScheme` gives you what is actually on screen:
+`usePreferredColorScheme` gives you what is on screen right now:
 
 ```tsx
 function ThemeIcon(): JSX.Element {
@@ -193,7 +192,7 @@ function SchemeSummary(): JSX.Element {
 
 ### Controlled
 
-Useful when the preference belongs to a user account rather than the browser:
+Use this when the preference belongs to a user account rather than the browser:
 
 ```tsx
 const [scheme, setScheme] = createSignal<ColorScheme>('system');
@@ -211,8 +210,8 @@ const [scheme, setScheme] = createSignal<ColorScheme>('system');
 
 ### Avoiding the first-paint flash
 
-The class lands in an effect, so the server-rendered markup does not have it. Set
-it before first paint with a small inline script in your document head:
+The class is applied from an effect, so server-rendered markup does not have it.
+Set it before the first paint with a small inline script in your document head:
 
 ```html
 <script>
@@ -234,7 +233,7 @@ one piece of output is the `dark` class on `<html>`:
 
 | Target | Marker | Present when |
 | --- | --- | --- |
-| `document.documentElement` | `class="dark"` | The resolved scheme is dark — either the preference is `'dark'`, or it is `'system'` and the OS prefers dark |
+| `document.documentElement` | `class="dark"` | The resolved scheme is dark. That means the preference is `'dark'`, or it is `'system'` and the OS prefers dark |
 
 ### Styling
 
@@ -250,8 +249,8 @@ one piece of output is the `dark` class on `<html>`:
   color: #fafafa;
 }
 
-/* Respect the OS directly where the preference is irrelevant —
-   for example in print styles or an embedded widget. */
+/* Follow the OS directly where the preference does not apply,
+   such as print styles or an embedded widget. */
 @media (prefers-color-scheme: dark) {
   .embedded-widget { background: #18181b; }
 }
@@ -262,7 +261,7 @@ one piece of output is the `dark` class on `<html>`:
 | Hook | Returns | Description |
 | --- | --- | --- |
 | `useColorScheme()` | `[() => ColorScheme, (scheme: ColorScheme) => void]` | The stored preference and a setter. May be `'system'`. |
-| `usePreferredColorScheme()` | `() => NativeColorScheme` | The resolved scheme — what is on screen, matching the `dark` class. |
+| `usePreferredColorScheme()` | `() => NativeColorScheme` | The resolved scheme: what is on screen, matching the `dark` class. |
 | `useNativeColorScheme()` | `() => NativeColorScheme` | What the OS reports, regardless of the stored preference. |
 
 All three throw if called outside a `ColorSchemeProvider`.
@@ -270,14 +269,14 @@ All three throw if called outside a `ColorSchemeProvider`.
 ## Keyboard
 
 The provider handles no keys. Whatever control you build to change the scheme
-brings its own keyboard behaviour — a `<select>`, a set of buttons, or a
-[`RadioGroup`](./radio-group.md).
+brings its own keyboard behaviour, whether that is a `<select>`, a set of
+buttons, or a [`RadioGroup`](./radio-group.md).
 
 ## API
 
 ### `<ColorSchemeProvider>`
 
-Renders no element of its own — only the context and its children.
+Renders no element of its own, only the context and its children.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -287,11 +286,11 @@ Renders no element of its own — only the context and its children.
 | `children` | `JSX.Element` | — | The subtree that can read the scheme. |
 
 > A stored preference wins over `initialValue`. On mount the provider reads
-> `localStorage` and applies either the stored value or `'system'` when there is
-> nothing stored — so `initialValue` only shows through for the first render.
+> `localStorage` and applies the stored value, or `'system'` when nothing is
+> stored. `initialValue` therefore only shows through on the first render.
 
 ## Server-side rendering
 
-The provider reads `localStorage` and mutates `document.documentElement` inside
-effects, so it renders on the server but does nothing there. See
+The provider reads `localStorage` and mutates `document.documentElement` from
+effects. It renders on the server, but does nothing there. See
 [avoiding the first-paint flash](#avoiding-the-first-paint-flash) above.

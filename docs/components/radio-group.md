@@ -1,11 +1,11 @@
 # RadioGroup
 
-A [radio group](https://www.w3.org/WAI/ARIA/apg/patterns/radio/): pick exactly
-one option from a set. The group is a single tab stop; the arrow keys move
-between options *and* select as they go, which is the behaviour native radios
-have and the one the ARIA pattern expects.
+A [radio group](https://www.w3.org/WAI/ARIA/apg/patterns/radio/) picks exactly
+one option from a set. The group is a single tab stop. The arrow keys move
+between options *and* select as they go, which is how native radios behave and
+what the ARIA pattern expects.
 
-Radio options are not restricted to small circles — each `RadioGroupOption` is a
+A radio option does not have to be a small circle. Each `RadioGroupOption` is a
 container with its own label and description slots, so cards and tiles work
 naturally.
 
@@ -33,8 +33,8 @@ import {
 </RadioGroup>
 ```
 
-`RadioGroupLabel` and `RadioGroupDescription` bind to whichever is closest — the
-group at the top level, the option when nested inside one.
+`RadioGroupLabel` and `RadioGroupDescription` bind to whichever is closest: the
+group at the top level, or the option when nested inside one.
 
 ## Examples
 
@@ -106,7 +106,7 @@ group at the top level, the option when nested inside one.
 
 ### Classic radio dots
 
-The dot is just CSS driven by `tc-checked`:
+The dot is CSS driven by `tc-checked`:
 
 ```tsx
 <RadioGroupOption class="radio-row" value="standard">
@@ -160,8 +160,8 @@ const [speed, setSpeed] = createSignal('standard');
 </RadioGroup>
 ```
 
-`onChange` receives `V | undefined` — `undefined` only arises with `toggleable`,
-which lets the user clear the selection.
+`onChange` receives `V | undefined`. The `undefined` case only comes up with
+`toggleable`, which lets the user clear the selection.
 
 ### Object values
 
@@ -187,8 +187,8 @@ interface Plan { id: string; name: string; price: string }
 
 ### Group-level description
 
-Placed outside any option, the description belongs to the group and is referenced
-by its `aria-describedby`:
+Placed outside any option, the description belongs to the group. The group's
+`aria-describedby` points at it:
 
 ```tsx
 <RadioGroup<string> class="radiogroup" defaultValue="standard">
@@ -211,11 +211,11 @@ by its `aria-describedby`:
 </RadioGroupOption>
 ```
 
-Disabled options are skipped by the arrow keys.
+The arrow keys skip disabled options.
 
 ### Horizontal layout
 
-There is no `horizontal` prop — arrow keys in both axes always work — so the
+There is no `horizontal` prop. Arrow keys on both axes always work, so the
 layout is entirely yours:
 
 ```css
@@ -244,7 +244,7 @@ From a nested component, `useSelectState()` reads the group and
 
 ### In a form
 
-`RadioGroup` renders no `<input>`, so add a hidden one if the value must be
+`RadioGroup` renders no `<input>`. Add a hidden one if the value must be
 submitted natively:
 
 ```tsx
@@ -269,9 +269,10 @@ submitted natively:
 | `RadioGroupLabel` | `tc-radio-group-label` | Always |
 | `RadioGroupDescription` | `tc-radio-group-description` | Always |
 
-Note that the option uses **`tc-checked`**, not `tc-selected` — it is a radio, so
-it follows the checkbox family of attributes and carries `aria-checked` too. The
-label and description carry no state attributes; style them through the option.
+The option uses **`tc-checked`**, not `tc-selected`. It is a radio, so it
+follows the checkbox family of attributes and carries `aria-checked` too. The
+label and description carry no state attributes, so style them through the
+option.
 
 ### Styling
 
@@ -288,7 +289,7 @@ label and description carry no state attributes; style them through the option.
 [tc-radio-group][tc-has-selected] .radiogroup-prompt { display: none; }
 ```
 
-`aria-checked` mirrors `tc-checked`, so `[aria-checked="true"]` works equally
+`aria-checked` mirrors `tc-checked`, so `[aria-checked="true"]` works just as
 well.
 
 ### Reading the state in code
@@ -320,7 +321,7 @@ Inside an option — the [select option state](../states.md#select-option-state)
 | <kbd>↑</kbd> / <kbd>←</kbd> | Previous option, wrapping around |
 | <kbd>Tab</kbd> | Enters or leaves the group; only the selected option is in the tab order |
 
-Focusing an option selects it, which is what makes arrow navigation change the
+Focusing an option selects it. That is what makes arrow navigation change the
 value. Disabled options are skipped.
 
 ## API
@@ -348,8 +349,8 @@ Rendered attributes include `role="radiogroup"`, `aria-labelledby` and
 
 ### `<RadioGroupOption>`
 
-One choice. A [`Button`](./button.md) with `role="radio"`, rendered as a `<div>`
-by default so it can hold a label and description.
+One choice. A [`Button`](./button.md) with `role="radio"`. It renders a `<div>`
+by default, so it can hold a label and a description.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -361,13 +362,13 @@ by default so it can hold a label and description.
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
 
 Rendered attributes include `role="radio"`, `aria-checked`, `aria-labelledby`,
-`aria-describedby`, and `tabindex` — `0` while selected, `-1` otherwise, giving
-the roving tab stop.
+`aria-describedby`, and `tabindex`. The `tabindex` is `0` while selected and
+`-1` otherwise, which is what makes the group a single tab stop.
 
 ### `<RadioGroupLabel>`
 
-Names the nearest group or option. Renders a `<label>` by default. Does not take
-a `ref`, and carries no state attributes of its own.
+Names the nearest group or option. Renders a `<label>` by default. It takes no
+`ref` and carries no state attributes of its own.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -386,5 +387,5 @@ take a `ref`.
 | `children` | `JSX.Element` | — | Description text. Not a render prop. |
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
 
-`RadioGroupOption` throws outside a `<RadioGroup>`; the label and description
+`RadioGroupOption` throws outside a `<RadioGroup>`. The label and description
 throw outside a `<RadioGroup>` or `<RadioGroupOption>`.

@@ -2,8 +2,9 @@
 
 An always-visible [listbox](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/):
 a list of options the user picks from, with arrow-key navigation and type-ahead.
-There is no button and no popup — for that, use [`Listbox`](./listbox.md), which
-adds a disclosure around the same list.
+
+There is no button and no popup. For those, use [`Listbox`](./listbox.md), which
+wraps a disclosure around the same list.
 
 ```tsx
 import {
@@ -93,8 +94,8 @@ const people: Person[] = [
 .select-option:focus-visible { outline: none; }
 ```
 
-`by` matters here: the options are objects, and without it two structurally equal
-objects would not compare as the same value.
+`by` matters here. The options are objects, and without it two structurally
+equal objects would not count as the same value.
 
 ### Multiple selection
 
@@ -119,9 +120,9 @@ const [picked, setPicked] = createSignal<Person[]>([]);
 </Select>
 ```
 
-`multiple` switches `value` / `defaultValue` / `onChange` to arrays.
-`toggleable` lets a second click deselect — usually what you want in multiple
-mode.
+`multiple` switches `value`, `defaultValue` and `onChange` to arrays.
+`toggleable` lets a second click deselect, which is usually what you want in
+multiple mode.
 
 ### Showing a tick for selected options
 
@@ -147,7 +148,7 @@ mode.
 .select-mark { color: #1d4ed8; }
 ```
 
-The same mark can be done without a render prop, driven by the attribute alone:
+The same mark works without a render prop, driven by the attribute alone:
 
 ```css
 .select-option::before {
@@ -172,8 +173,8 @@ The same mark can be done without a render prop, driven by the attribute alone:
 </Select>
 ```
 
-`horizontal` swaps which arrow keys navigate and sets `aria-orientation`, so one
-CSS rule keeps layout and semantics in step — see `.select[aria-orientation]`
+`horizontal` swaps which arrow keys navigate, and sets `aria-orientation`. One
+CSS rule then keeps layout and semantics in step; see `.select[aria-orientation]`
 above.
 
 ### Disabled options, and a disabled list
@@ -191,7 +192,7 @@ above.
 </Select>
 ```
 
-Disabled options are skipped by the arrow keys and by type-ahead.
+Both the arrow keys and type-ahead skip disabled options.
 
 ### Clearing the selection
 
@@ -201,7 +202,7 @@ Disabled options are skipped by the arrow keys and by type-ahead.
 </Select>
 ```
 
-With `toggleable`, choosing the selected option again clears it and `onChange`
+With `toggleable`, choosing the selected option again clears it, and `onChange`
 receives `undefined`.
 
 ### Reading the selection
@@ -231,7 +232,7 @@ function SelectionCount(): JSX.Element {
 
 ### Grouping options
 
-Non-option elements are ignored by navigation, so group headings work as-is:
+Navigation ignores non-option elements, so group headings work as-is:
 
 ```tsx
 <Select<string> class="select" defaultValue="gb">
@@ -265,12 +266,12 @@ Non-option elements are ignored by navigation, so group headings work as-is:
 | `SelectOption` | `tc-active` | This option holds keyboard focus |
 | `SelectOption` | `tc-disabled` | This option or the list is disabled |
 
-`tc-selected` and `tc-active` are genuinely different: *selected* is the chosen
-value, *active* is where the keyboard is. They are often on different options
-while the user browses the list.
+`tc-selected` and `tc-active` mean different things. *Selected* is the chosen
+value. *Active* is where the keyboard is. While the user browses the list, they
+sit on different options.
 
-The option also carries `aria-selected`, and the list carries
-`aria-multiselectable` and `aria-orientation`.
+The option also carries `aria-selected`. The list carries `aria-multiselectable`
+and `aria-orientation`.
 
 ### Styling
 
@@ -312,8 +313,9 @@ Inside an option — the [select option state](../states.md#select-option-state)
 | `select()` | `() => void` | Selects this option. |
 | `disabled()` | `boolean` | Whether this option is disabled. |
 
-Reachable through the render prop on either component, `<SelectStateChild>` /
-`<SelectOptionStateChild>`, or `useSelectState()` / `useSelectOptionState()`.
+Reach either one through the render prop on the matching component, through
+`<SelectStateChild>` or `<SelectOptionStateChild>`, or with `useSelectState()`
+or `useSelectOptionState()`.
 
 ## Keyboard
 
@@ -325,9 +327,9 @@ Reachable through the render prop on either component, `<SelectStateChild>` /
 | Printable characters | Type-ahead over option text, with a 250 ms window for multi-character prefixes |
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Selects the focused option; the root suppresses the browser default |
 
-Focusing the list jumps to the selected option if there is one, otherwise to the
-first. Disabled options are skipped. Hovering an option focuses it, which is why
-mouse and keyboard highlight the same way.
+Focusing the list jumps to the selected option, or to the first option when
+nothing is selected. Disabled options are skipped. Hovering an option focuses
+it, which is why mouse and keyboard highlight the same way.
 
 ## API
 
@@ -361,8 +363,8 @@ Owns a [select state](../states.md#select-state) and renders a `<ul>` by default
 
 ### `<SelectOption>`
 
-One option. A [`Button`](./button.md) with `role="option"`, rendered as an `<li>`
-by default.
+One option. A [`Button`](./button.md) with `role="option"`, rendered as an
+`<li>` by default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -373,7 +375,7 @@ by default.
 | `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Label, or a render prop. |
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
 
-Rendered attributes include `role="option"`, `aria-selected`, and `tabindex` —
-`0` while active, `-1` otherwise.
+Rendered attributes include `role="option"`, `aria-selected`, and `tabindex`,
+which is `0` while active and `-1` otherwise.
 
 `SelectOption` throws if rendered outside a `<Select>`.

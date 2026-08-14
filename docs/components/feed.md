@@ -1,8 +1,8 @@
 # Feed
 
-An [ARIA feed](https://www.w3.org/WAI/ARIA/apg/patterns/feed/): a stream of
-articles — a timeline, a comment thread, an infinite-scrolling list — where each
-article is a focus stop and the user can page between them with the keyboard.
+An [ARIA feed](https://www.w3.org/WAI/ARIA/apg/patterns/feed/) is a stream of
+articles: a timeline, a comment thread, an infinite-scrolling list. Each article
+is a focus stop, and the user can page between them with the keyboard.
 
 The pattern exists because an endless list breaks normal reading order. A feed
 tells assistive technology how many articles there are (`aria-setsize`), where
@@ -113,13 +113,13 @@ export function Timeline(props: { posts: Post[] }): JSX.Element {
 }
 ```
 
-`size` should be the total number of articles in the feed, not the number
-currently rendered, when you know it — that is what tells a screen reader "3 of
+Where you know it, `size` should be the total number of articles in the feed,
+not the number currently rendered. That is what tells a screen reader "3 of
 120".
 
 ### Loading more
 
-Set `busy` while you fetch, so the feed is not announced mid-update:
+Set `busy` while you fetch. The feed is then not announced mid-update:
 
 ```tsx
 const [posts, setPosts] = createSignal<Post[]>([]);
@@ -155,7 +155,7 @@ async function loadMore(): Promise<void> {
 
 ### Articles with interactive content
 
-An article is a focus stop, and anything focusable inside it is reachable by
+An article is a focus stop. Anything focusable inside it stays reachable by
 <kbd>Tab</kbd> as usual:
 
 ```tsx
@@ -179,8 +179,8 @@ An article is a focus stop, and anything focusable inside it is reachable by
 
 ### Highlighting the current article
 
-The article is focusable, so `:focus-within` marks the one the user is on —
-including when focus is on a button inside it:
+The article is focusable, so `:focus-within` marks the one the user is on. That
+holds even when focus is on a button inside it:
 
 ```css
 .feed-article:focus-within {
@@ -191,7 +191,7 @@ including when focus is on a button inside it:
 
 ### A comment thread
 
-The same component, different semantics — change the elements with `as`:
+The same component with different semantics. Change the elements with `as`:
 
 ```tsx
 <Feed class="feed" size={comments().length}>
@@ -256,9 +256,8 @@ The same component, different semantics — change the elements with `as`:
 ## State attributes
 
 `Feed` has no selection or open state, so the markers are the only `tc-`
-attributes it writes. Its live state — size, position and busy — is expressed
-through real ARIA attributes instead, because that is what assistive technology
-reads.
+attributes it writes. Its live state — size, position and busy — goes through
+real ARIA attributes instead, because that is what assistive technology reads.
 
 | Element | Attribute | Present when |
 | --- | --- | --- |
@@ -301,9 +300,9 @@ reads.
 
 ### Reading the state in code
 
-`Feed` exposes no state object or render prop — `size` and `busy` are props you
-already own, and the position of each article is the `index` you passed. Keep
-them in your own signals, as in the "loading more" example above.
+`Feed` exposes no state object and no render prop. `size` and `busy` are props
+you already own, and the position of each article is the `index` you passed.
+Keep them in your own signals, as in the "loading more" example above.
 
 ## Keyboard
 
@@ -315,7 +314,7 @@ them in your own signals, as in the "loading more" example above.
 | <kbd>Ctrl</kbd>+<kbd>Home</kbd> | Moves focus before the feed, to the previous focusable element on the page |
 | <kbd>Tab</kbd> | Moves through every article and every focusable element inside them |
 
-Article navigation does not wrap: <kbd>Page Down</kbd> on the last article stays
+Article navigation does not wrap. <kbd>Page Down</kbd> on the last article stays
 put. The Ctrl shortcuts search the whole document, which is what lets a user
 escape a long feed without tabbing through it.
 
@@ -323,8 +322,8 @@ escape a long feed without tabbing through it.
 
 ### `<Feed>`
 
-The outer container. Owns `size` and `busy`, and provides the "jump out of the
-feed" behaviour. Renders a `<div>` by default.
+The outer container. It owns `size` and `busy`, and provides the "jump out of
+the feed" behaviour. Renders a `<div>` by default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -337,7 +336,7 @@ feed" behaviour. Renders a `<div>` by default.
 
 ### `<FeedLabel>`
 
-Names the feed; referenced by `FeedContent`'s `aria-labelledby`. Renders a
+Names the feed. `FeedContent`'s `aria-labelledby` points at it. Renders a
 `<span>` by default. Does not take a `ref`.
 
 | Prop | Type | Default | Description |
@@ -360,8 +359,8 @@ The region that carries `role="feed"` and handles article navigation. Renders a
 
 ### `<FeedArticle>`
 
-One article. Focusable, and positioned within the set. Renders an `<article>` by
-default.
+One article. It is focusable and positioned within the set. Renders an
+`<article>` by default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -394,5 +393,5 @@ Describes the article. Renders a `<p>` by default. Does not take a `ref`.
 | `children` | `JSX.Element` | — | The description. Not a render prop. |
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
 
-`FeedLabel`, `FeedContent` and `FeedArticle` throw outside a `<Feed>`;
+`FeedLabel`, `FeedContent` and `FeedArticle` throw outside a `<Feed>`.
 `FeedArticleLabel` and `FeedArticleDescription` throw outside a `<FeedArticle>`.

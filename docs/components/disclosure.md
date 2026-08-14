@@ -1,9 +1,9 @@
 # Disclosure
 
-A [disclosure](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/): a button
+A [disclosure](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/) is a button
 that shows and hides a section of content. It is the simplest of the
-disclosure-state components — no focus trap, no overlay, no portal — which makes
-it the right base for FAQs, "show more" sections and collapsible sidebars.
+disclosure-state components: no focus trap, no overlay, no portal. That makes it
+the right base for FAQs, "show more" sections and collapsible sidebars.
 
 For several sections that behave as a set, use [`Accordion`](./accordion.md).
 
@@ -94,8 +94,8 @@ const [open, setOpen] = createSignal(false);
 </Disclosure>
 ```
 
-Nothing moves until `setOpen` runs — in controlled mode the component only
-reports the intended new state.
+Nothing moves until `setOpen` runs. In controlled mode the component only
+reports the state it wants to move to.
 
 ### Changing the label with the state
 
@@ -177,7 +177,7 @@ scroll position survive a collapse. You then own its visibility:
 }
 ```
 
-`unmount="offscreen"` is the middle ground: the panel is built once and reused,
+`unmount="offscreen"` is the middle ground. The panel is built once and reused,
 but still detached while closed.
 
 ### Animating the panel
@@ -258,8 +258,8 @@ panel while open.
 }
 ```
 
-Because the button carries `aria-expanded` as well, `[aria-expanded="true"]`
-works just as well if you prefer to style from ARIA.
+The button carries `aria-expanded` too, so `[aria-expanded="true"]` works just
+as well if you prefer to style from ARIA.
 
 ### Reading the state in code
 
@@ -271,9 +271,9 @@ works just as well if you prefer to style from ARIA.
 | `setState(value)` | `(boolean) => void` | Sets the state directly. |
 | `disabled()` | `boolean` | Whether the disclosure is disabled. |
 
-Available as the render-prop argument on `Disclosure`, `DisclosureButton` and
-`DisclosurePanel`, through `<DisclosureStateChild>`, or with
-`useDisclosureState()` in any descendant. Full reference in
+You can reach this state as the render-prop argument on `Disclosure`,
+`DisclosureButton` and `DisclosurePanel`, through `<DisclosureStateChild>`, or
+with `useDisclosureState()` in any descendant. Full reference in
 [disclosure state](../states.md#disclosure-state).
 
 ## Keyboard
@@ -283,8 +283,8 @@ Available as the render-prop argument on `Disclosure`, `DisclosureButton` and
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Toggles the disclosure, when the button has focus |
 | <kbd>Tab</kbd> | Moves through the button and, while open, into the panel |
 
-There is no <kbd>Escape</kbd> handling and no focus trap — a disclosure is
-inline content, not a modal. Use [`Popover`](./popover.md) if you need those.
+There is no <kbd>Escape</kbd> handling and no focus trap. A disclosure is inline
+content, not a modal. Use [`Popover`](./popover.md) if you need those.
 
 ## API
 

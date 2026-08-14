@@ -1,15 +1,15 @@
 # Command
 
 A command palette body: a text input above an always-visible, filtered listbox.
-It is [`Combobox`](./combobox.md) without the popup — the list is always there,
+It is [`Combobox`](./combobox.md) without the popup. The list is always there,
 so there is no open/closed state to manage.
 
 Wrap it in [`CommandBar`](./command-bar.md) for the familiar
 <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>K</kbd> modal, or drop it straight into a
 sidebar or search page.
 
-Like `Combobox`, navigation is virtual: focus stays on the input and the active
-option is published through `aria-activedescendant`.
+Navigation is virtual, as in `Combobox`. Focus stays on the input, and the
+active option is published through `aria-activedescendant`.
 
 ```tsx
 import {
@@ -37,14 +37,14 @@ import {
 
 ## Filtering is yours to render
 
-`matchBy` decides which options match; Terracotta marks them with `tc-matches`
-and leaves them in the DOM. Hide the rest yourself:
+`matchBy` decides which options match. Terracotta marks those with `tc-matches`
+and leaves every option in the DOM. Hide the rest yourself:
 
 ```css
 .command-option:not([tc-matches]) { display: none; }
 ```
 
-Keyboard navigation only visits matching, non-disabled options regardless.
+Either way, keyboard navigation only visits matching, non-disabled options.
 
 ## Examples
 
@@ -137,7 +137,7 @@ export function Palette(props: { actions: Action[] }): JSX.Element {
 }
 ```
 
-Running the action from `onChange` is the usual pattern — `Command` tracks a
+Running the action from `onChange` is the usual pattern. `Command` tracks a
 *selected value*, and what you do with it is up to you.
 
 ### Entries with icons and shortcut hints
@@ -197,9 +197,9 @@ The list's render prop receives the autocomplete state:
 
 ### Grouped entries
 
-Non-option elements are ignored by navigation, so headings need no special
-handling. Hide a heading when none of its entries match by leaning on
-`tc-has-query` plus your own logic:
+Navigation ignores non-option elements, so headings need no special handling. To
+hide a heading when none of its entries match, combine `tc-has-query` with your
+own logic:
 
 ```tsx
 <CommandOptions class="command-options">
@@ -230,7 +230,7 @@ handling. Hide a heading when none of its entries match by leaning on
 
 ### Multiple selection
 
-Useful for a filter palette rather than an action palette:
+Use this for a filter palette rather than an action palette:
 
 ```tsx
 const [active, setActive] = createSignal<Filter[]>([]);
@@ -303,7 +303,7 @@ const [active, setActive] = createSignal<Filter[]>([]);
 </CommandOption>
 ```
 
-Disabled entries are skipped by the arrow keys even when they match the query.
+The arrow keys skip disabled entries, even when they match the query.
 
 ### Reading the query
 
@@ -314,8 +314,8 @@ function QueryEcho(): JSX.Element {
 }
 ```
 
-`<AutocompleteStateChild>` does the same inline. Remember that `query()` is
-debounced by 250 ms behind what has been typed.
+`<AutocompleteStateChild>` does the same inline. Note that `query()` runs 250 ms
+behind what has been typed, because it is debounced.
 
 ## State attributes
 
@@ -338,8 +338,8 @@ debounced by 250 ms behind what has been typed.
 | `CommandOption` | `tc-active` | This entry is virtually focused |
 | `CommandOption` | `tc-disabled` | This entry or the palette is disabled |
 
-There is no `tc-expanded` here — the list is always visible, and `CommandInput`
-reports a constant `aria-expanded="true"` for the same reason.
+There is no `tc-expanded` here. The list is always visible, and for the same
+reason `CommandInput` reports a constant `aria-expanded="true"`.
 
 ### Styling
 
@@ -362,9 +362,9 @@ reports a constant `aria-expanded="true"` for the same reason.
 
 ### Reading the state in code
 
-The [autocomplete state](../states.md#autocomplete-state), via the render prop on
-`Command` or `CommandOptions`, `<AutocompleteStateChild>`, or
-`useAutocompleteState()`:
+The [autocomplete state](../states.md#autocomplete-state). Reach it through the
+render prop on `Command` or `CommandOptions`, through
+`<AutocompleteStateChild>`, or with `useAutocompleteState()`:
 
 | Member | Type | Description |
 | --- | --- | --- |
@@ -377,8 +377,8 @@ The [autocomplete state](../states.md#autocomplete-state), via the render prop o
 | `select(value)` / `focus(value)` / `blur()` | | Changes them. |
 | `disabled()` | `boolean` | Whether the palette is disabled. |
 
-Inside an entry, `useAutocompleteOptionState()` gives the per-option view
-(`isSelected()`, `isActive()`, `matches()`, `select()`, `disabled()`).
+Inside an entry, `useAutocompleteOptionState()` gives the per-option view:
+`isSelected()`, `isActive()`, `matches()`, `select()` and `disabled()`.
 
 ## Keyboard
 
@@ -390,11 +390,11 @@ Handled on `CommandInput`:
 | <kbd>↓</kbd> / <kbd>↑</kbd> | Next / previous matching entry, wrapping around |
 | <kbd>Enter</kbd> | Selects the active entry |
 
-Focusing the input restores the previously active entry, or jumps to the selected
-one, or to the first match. Hovering an entry makes it active, so mouse and
-keyboard agree on what is highlighted.
+Focusing the input restores the entry that was active before. Failing that, it
+jumps to the selected entry, or to the first match. Hovering an entry makes it
+active, so mouse and keyboard agree on what is highlighted.
 
-`Command` handles no <kbd>Escape</kbd> of its own — that belongs to whatever
+`Command` handles no <kbd>Escape</kbd> of its own. That belongs to whatever
 wraps it, usually [`CommandBar`](./command-bar.md).
 
 ## API
@@ -421,7 +421,7 @@ Owns an [autocomplete state](../states.md#autocomplete-state) and renders a
 
 ### `<CommandLabel>`
 
-Names the palette. Renders a `<label>` by default. Does not take a `ref`, and its
+Names the palette. Renders a `<label>` by default. It takes no `ref`, and its
 `children` is not a render prop.
 
 | Prop | Type | Default | Description |
@@ -461,8 +461,8 @@ Rendered attributes include `role="listbox"`, `aria-multiselectable`,
 
 ### `<CommandOption>`
 
-One entry. A [`Button`](./button.md) with `role="option"`, rendered as an `<li>`
-by default.
+One entry. A [`Button`](./button.md) with `role="option"`, rendered as an
+`<li>` by default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -474,6 +474,6 @@ by default.
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
 
 Rendered attributes include `role="option"`, `aria-selected`, `tabindex="-1"`,
-and a generated `id` — the one `aria-activedescendant` points at.
+and a generated `id`, which is the one `aria-activedescendant` points at.
 
 Every descendant throws if rendered outside a `<Command>`.

@@ -1,15 +1,15 @@
 # Listbox
 
-A [collapsible listbox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) — the
-custom equivalent of a `<select>`: a button that shows the current value, and a
-popup list of options.
+A [collapsible listbox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) is
+the custom equivalent of a `<select>`: a button that shows the current value,
+plus a popup list of options.
 
-`Listbox` is unusual in that it owns **two** states at once — a
-[disclosure state](../states.md#disclosure-state) for the popup and a
-[select state](../states.md#select-state) for the value. That is why its change
-callbacks are named `onDisclosureChange` and `onSelectChange` rather than a
-single `onChange`, and why it can be controlled on one axis and uncontrolled on
-the other.
+`Listbox` is unusual, because it owns **two** states at once. A
+[disclosure state](../states.md#disclosure-state) drives the popup, and a
+[select state](../states.md#select-state) drives the value. That is why its
+change callbacks are named `onDisclosureChange` and `onSelectChange` instead of
+a single `onChange`, and why it can be controlled on one axis and uncontrolled
+on the other.
 
 If you do not need the popup, use [`Select`](./select.md) instead.
 
@@ -135,8 +135,8 @@ const [selected, setSelected] = createSignal(people[0]);
 .listbox-option[tc-disabled] { color: #a1a1aa; cursor: not-allowed; }
 ```
 
-Selecting an option closes the popup — unless `multiple` is set, where the popup
-stays open so several values can be picked.
+Selecting an option closes the popup. With `multiple` set, the popup stays open
+so several values can be picked.
 
 ### Multiple selection
 
@@ -204,7 +204,7 @@ const [value, setValue] = createSignal<string>();
 </Listbox>
 ```
 
-Mixing is fine too — an uncontrolled popup with a controlled value is the most
+Mixing them is fine. An uncontrolled popup with a controlled value is the most
 common combination.
 
 ### Horizontal options
@@ -245,7 +245,7 @@ common combination.
 
 ### With a transition
 
-The popup state is a disclosure state, so `<DisclosureStateChild>` gives the
+The popup state is a disclosure state, so `<DisclosureStateChild>` hands you the
 `show` flag:
 
 ```tsx
@@ -305,9 +305,8 @@ The popup state is a disclosure state, so `<DisclosureStateChild>` gives the
 | `ListboxOption` | `tc-active` | This option holds keyboard focus |
 | `ListboxOption` | `tc-disabled` | This option or the listbox is disabled |
 
-Both states are published on every part, which is what makes the caret rotation
-and the placeholder dimming in the example above possible without touching a
-signal.
+Both states are published on every part. That is what makes the caret rotation
+and the placeholder dimming above work without touching a signal.
 
 ### Styling
 
@@ -350,8 +349,8 @@ Selection — the [select state](../states.md#select-state), via
 | `select(value)` | `(V) => void` | Selects it. |
 | `isActive(value)` / `hasActive()` | | Keyboard focus position. |
 
-Inside an option, `useSelectOptionState()` gives the per-option view
-(`isSelected()`, `isActive()`, `select()`, `disabled()`).
+Inside an option, `useSelectOptionState()` gives the per-option view:
+`isSelected()`, `isActive()`, `select()` and `disabled()`.
 
 ## Keyboard
 
@@ -373,9 +372,9 @@ On `ListboxOptions`:
 | Printable characters | Type-ahead over option text, 250 ms window |
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Selects the focused option |
 
-When the popup opens, focus lands on the selected option if there is one, else on
-the first. Moving focus out of the options closes the popup, unless the pointer is
-hovering the button or the list.
+When the popup opens, focus lands on the selected option, or on the first option
+when nothing is selected. Moving focus out of the options closes the popup,
+unless the pointer is hovering the button or the list.
 
 ## API
 
@@ -402,8 +401,7 @@ Renders a `<div>` by default. Does not take a `ref`.
 | `children` | `JSX.Element` | — | The label, button and options. Not a render prop. |
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
 
-There is no `onChange` on `Listbox` — use `onSelectChange` and
-`onDisclosureChange`.
+`Listbox` has no `onChange`. Use `onSelectChange` and `onDisclosureChange`.
 
 ### `<ListboxLabel>`
 
@@ -448,8 +446,8 @@ Rendered attributes include `role="listbox"`, `aria-multiselectable`,
 
 ### `<ListboxOption>`
 
-One option. A [`Button`](./button.md) with `role="option"`, rendered as an `<li>`
-by default and kept out of the tab order.
+One option. A [`Button`](./button.md) with `role="option"`, rendered as an
+`<li>` by default and kept out of the tab order.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -460,5 +458,5 @@ by default and kept out of the tab order.
 | `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Label, or a render prop. |
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
 
-Every descendant throws if rendered outside its required ancestor;
-`ListboxOption` needs a `ListboxOptions` around it, not just a `Listbox`.
+Every descendant throws if rendered outside its required ancestor.
+`ListboxOption` needs a `ListboxOptions` around it, not only a `Listbox`.
