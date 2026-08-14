@@ -16,6 +16,14 @@ yarn add terracotta
 pnpm add terracotta
 ```
 
+## Documentation
+
+- [Getting started](./docs/guides/getting-started.md)
+- [Guides](./docs/README.md#guides) — `as`, controlled state, styling, keyboard
+  and focus, SSR
+- [Component reference](./docs/README.md#components)
+- [State primitives](./docs/states.md)
+
 ## Note
 
 The project is still in development, as I aim to implement the [WAI-ARIA Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.1/).

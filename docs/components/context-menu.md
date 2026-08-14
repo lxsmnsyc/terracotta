@@ -347,7 +347,7 @@ The menu content, with the focus trap and outside-click handling. Renders a
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the panel behaves while closed — see [`unmount`](../README.md#unmount). |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the panel behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
 | `disabled` | `boolean` | `false` | Stops the panel's own key handling. |
 | `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
 | `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
