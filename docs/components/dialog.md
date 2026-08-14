@@ -1,9 +1,9 @@
 # Dialog
 
 A [modal dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/). While
-open, `DialogPanel` traps <kbd>Tab</kbd> inside itself, focuses its first
-focusable element, and closes on <kbd>Escape</kbd>. The dialog also remembers
-which element had focus before it opened and restores it on close.
+open, `DialogPanel` focuses its first focusable element, traps <kbd>Tab</kbd>
+inside itself, and closes on <kbd>Escape</kbd>. The dialog also remembers which
+element had focus before it opened, and restores it on close.
 
 For a dialog that confirms a consequential action, use
 [`AlertDialog`](./alert-dialog.md), which is identical apart from
@@ -33,15 +33,14 @@ import {
 </Dialog>
 ```
 
-`DialogTitle` and `DialogDescription` are wired to the dialog's
-`aria-labelledby` / `aria-describedby` automatically — you do not need to pass
-ids.
+`DialogTitle` and `DialogDescription` wire themselves to the dialog's
+`aria-labelledby` and `aria-describedby`. You never pass ids.
 
 ## Examples
 
 ### Controlled
 
-The usual shape: a button outside the dialog owns the signal.
+The usual shape. A button outside the dialog owns the signal.
 
 ```tsx
 const [open, setOpen] = createSignal(false);
@@ -111,7 +110,7 @@ const [open, setOpen] = createSignal(false);
 ```
 
 `onClose` fires for <kbd>Escape</kbd> and overlay clicks as well as your own
-calls, so wiring it to `setOpen(false)` is enough.
+calls. Wiring it to `setOpen(false)` is enough.
 
 ### Uncontrolled, closing from inside
 
@@ -142,7 +141,7 @@ import { Portal } from 'solid-js/web';
 
 ### With transitions
 
-Set `unmount={false}` so the element survives long enough to animate out, and let
+Set `unmount={false}` so the element survives long enough to animate out. Let
 `Transition` own the mounting:
 
 ```tsx
@@ -183,7 +182,7 @@ Set `unmount={false}` so the element survives long enough to animate out, and le
 
 ### A drawer instead of a centred modal
 
-The behaviour is identical; only the CSS changes:
+The behaviour is identical. Only the CSS changes:
 
 ```css
 .dialog { position: fixed; inset: 0; z-index: 50; }
@@ -201,8 +200,8 @@ The behaviour is identical; only the CSS changes:
 
 ### Choosing what receives focus
 
-The panel focuses its first focusable element. Put the safe choice first, or give
-an element `tabindex="0"` and place it at the top:
+The panel focuses its first focusable element. Put the safe choice first, or
+give an element `tabindex="0"` and place it at the top:
 
 ```tsx
 <DialogPanel class="dialog-panel">
@@ -251,9 +250,9 @@ function CloseButton(): JSX.Element {
 | `DialogDescription` | `tc-dialog-description` | Always |
 | `DialogDescription` | `tc-expanded`, `tc-disabled` | Mirrors the dialog |
 
-With the default `unmount`, the dialog is only in the DOM while it is open, so
-`tc-expanded` is mostly interesting when you set `unmount={false}` — that is when
-it becomes the hook for hiding and showing.
+With the default `unmount`, the dialog is in the DOM only while open.
+`tc-expanded` therefore matters when you set `unmount={false}`, where it becomes
+the hook for hiding and showing.
 
 ### Styling
 
@@ -287,9 +286,10 @@ it becomes the hook for hiding and showing.
 | `setState(value)` | `(boolean) => void` | Sets the state directly. |
 | `disabled()` | `boolean` | Whether the dialog is disabled. |
 
-Available as the render-prop argument on `Dialog` and each of its parts, through
-`<DisclosureStateChild>`, or with `useDisclosureState()` in any descendant. Full
-reference in [disclosure state](../states.md#disclosure-state).
+You can reach this state as the render-prop argument on `Dialog` and each of its
+parts, through `<DisclosureStateChild>`, or with `useDisclosureState()` in any
+descendant. Full reference in
+[disclosure state](../states.md#disclosure-state).
 
 ## Keyboard
 

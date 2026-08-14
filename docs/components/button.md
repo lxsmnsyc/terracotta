@@ -1,13 +1,13 @@
 # Button
 
 Gives any element the behaviour of a button: the `button` role, a sensible
-`tabindex`, disabled wiring, and — when rendered as something other than a real
-`<button>` — <kbd>Enter</kbd> and <kbd>Space</kbd> activation.
+`tabindex` and disabled wiring. When it renders as something other than a real
+`<button>`, it also adds <kbd>Enter</kbd> and <kbd>Space</kbd> activation.
 
-`Button` is also the base that `Toggle`, `MenuItem`, `ListboxOption`,
-`SelectOption`, `Tab`, `RadioGroupOption`, `CheckboxIndicator`,
-`AccordionButton`, `DisclosureButton`, `PopoverButton` and `ListboxButton` are
-built on, which is why they all accept `disabled` and behave alike.
+`Button` is the base for `Toggle`, `MenuItem`, `ListboxOption`, `SelectOption`,
+`Tab`, `RadioGroupOption`, `CheckboxIndicator`, `AccordionButton`,
+`DisclosureButton`, `PopoverButton` and `ListboxButton`. That is why they all
+accept `disabled` and behave alike.
 
 ```tsx
 import { Button } from 'terracotta';
@@ -64,9 +64,9 @@ import { Button } from 'terracotta';
 }
 ```
 
-Note that `disabled` removes the element from the tab order and marks it for
-assistive technology, but it only *blocks clicks* on a natively disabled control.
-On a `<div>` or `<a>`, guard your own handler:
+`disabled` removes the element from the tab order and marks it for assistive
+technology. It only *blocks clicks* on a natively disabled control, though. On a
+`<div>` or `<a>`, guard your own handler:
 
 ```tsx
 <Button as="div" class="button" disabled={saving()} onClick={() => !saving() && save()}>
@@ -85,8 +85,8 @@ On a `<div>` or `<a>`, guard your own handler:
 ### As a non-interactive element
 
 When `as` renders anything other than a `<button>`, Terracotta attaches a
-`keydown` listener that clicks the element on <kbd>Enter</kbd> or <kbd>Space</kbd>,
-so keyboard users get native button behaviour back.
+`keydown` listener that clicks the element on <kbd>Enter</kbd> or
+<kbd>Space</kbd>. Keyboard users get native button behaviour back.
 
 ```tsx
 <Button as="div" class="card-button">
@@ -106,9 +106,9 @@ so keyboard users get native button behaviour back.
 }
 ```
 
-A `<div>` is the right choice here because a `<button>` may not contain
-interactive descendants — but everything else about the button contract is
-restored for you.
+A `<div>` is the right choice here, because a `<button>` may not contain
+interactive descendants. Everything else about the button contract is restored
+for you.
 
 ### Forwarding a ref
 
@@ -131,9 +131,9 @@ element?.focus();
 | `Button` | `tc-button` | Always |
 | `Button` | `tc-disabled` | `disabled` is `true` |
 
-`tc-disabled` is more than a styling hook: every Terracotta focus navigator skips
-elements carrying it, which is how disabled items drop out of arrow-key
-navigation.
+`tc-disabled` is more than a styling hook. Every Terracotta focus navigator
+skips elements that carry it, and that is how disabled items drop out of
+arrow-key navigation.
 
 ### Styling
 
@@ -151,8 +151,8 @@ navigation.
 
 ### Reading the state in code
 
-`Button` has no state object — `disabled` is a prop you already own. Components
-built on `Button` do expose state; see [`Toggle`](./toggle.md) for the closest
+`Button` has no state object. `disabled` is a prop you already own. Components
+built on `Button` do expose state; [`Toggle`](./toggle.md) is the closest
 example.
 
 ## Keyboard

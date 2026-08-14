@@ -1,9 +1,10 @@
 # Popover
 
-A [disclosure-style popover](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/):
-a button that opens a floating panel. Unlike [`Dialog`](./dialog.md) it is not
-modal — the page behind it stays usable — but the panel still traps <kbd>Tab</kbd>
-while it is open, closes on <kbd>Escape</kbd>, and closes when focus leaves it.
+A [disclosure-style popover](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/)
+is a button that opens a floating panel. It is not modal, unlike
+[`Dialog`](./dialog.md), so the page behind it stays usable. The panel still
+traps <kbd>Tab</kbd> while open, closes on <kbd>Escape</kbd>, and closes when
+focus leaves it.
 
 ```tsx
 import {
@@ -117,9 +118,9 @@ const [open, setOpen] = createSignal(false);
 
 ### With a backdrop
 
-`PopoverOverlay` closes the popover when clicked — a click-outside behaviour with
-a visible scrim. It is not conditionally mounted, so render it inside the render
-prop when you only want it while open:
+`PopoverOverlay` closes the popover when clicked. It gives you click-outside
+behaviour with a visible scrim. It is not conditionally mounted, so render it
+inside the render prop when you want it only while open:
 
 ```tsx
 <Popover class="popover" defaultOpen={false}>
@@ -166,8 +167,8 @@ Pair it with [`Menu`](./menu.md) when the panel contains actions:
 
 ### Positioning
 
-Terracotta gives you behaviour, not geometry. Anchor the panel with CSS as above,
-or use the CSS anchor positioning API where it is supported:
+Terracotta gives you behaviour, not geometry. Anchor the panel with CSS as
+above, or use the CSS anchor positioning API where it is supported:
 
 ```css
 .popover-button { anchor-name: --popover-anchor; }
@@ -181,8 +182,8 @@ or use the CSS anchor positioning API where it is supported:
 }
 ```
 
-For a full-featured solution, pass a `ref` to `PopoverButton` and `PopoverPanel`
-and hand both elements to a positioning library.
+For a full-featured solution, pass a `ref` to `PopoverButton` and
+`PopoverPanel`, then hand both elements to a positioning library.
 
 ### Aligning to the end of the button
 
@@ -290,9 +291,10 @@ panel while open.
 | `toggle()` | `() => void` | Flips the state. |
 | `disabled()` | `boolean` | Whether the popover is disabled. |
 
-Available as the render-prop argument on `Popover` and each of its parts, through
-`<DisclosureStateChild>`, or with `useDisclosureState()` in any descendant. Full
-reference in [disclosure state](../states.md#disclosure-state).
+You can reach this state as the render-prop argument on `Popover` and each of
+its parts, through `<DisclosureStateChild>`, or with `useDisclosureState()` in
+any descendant. Full reference in
+[disclosure state](../states.md#disclosure-state).
 
 ## Behaviour and keyboard
 
@@ -304,8 +306,8 @@ reference in [disclosure state](../states.md#disclosure-state).
 | <kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> | Cycles focus within the panel |
 | Focus leaves the panel | Closes it — unless the pointer is hovering the button, so a click on the button reads as a toggle rather than a close-then-reopen |
 
-When the panel opens it focuses its first focusable element, and focus returns to
-wherever it was when the popover closes.
+The panel focuses its first focusable element when it opens. Focus returns to
+where it was when the popover closes.
 
 ## API
 
@@ -354,8 +356,8 @@ The floating content, with the focus trap. Renders a `<div>` by default.
 ### `<PopoverOverlay>`
 
 An optional backdrop that closes the popover when clicked. Renders a `<div>` by
-default. **Not** conditionally mounted — hide it with CSS or wrap it in a
-`<Show>`.
+default. It is **not** conditionally mounted, so hide it with CSS or wrap it in
+a `<Show>`.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

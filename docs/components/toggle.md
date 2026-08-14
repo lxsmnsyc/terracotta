@@ -1,12 +1,12 @@
 # Toggle
 
-A two-state button — pressed or not — following the
+A button with two states, pressed or not, following the
 [ARIA button (toggle) pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/).
-It is a [`Button`](./button.md) wired to a [toggle state](../states.md#toggle-state),
-so it takes every `Button` prop as well.
+It is a [`Button`](./button.md) wired to a
+[toggle state](../states.md#toggle-state), so it takes every `Button` prop too.
 
-Reach for `Toggle` when the control turns something on and off in place (bold in
-an editor, mute on a call). If the control represents a form value, use
+Use `Toggle` when the control turns something on and off in place, such as bold
+in an editor or mute on a call. If the control represents a form value, use
 [`Checkbox`](./checkbox.md) instead.
 
 ```tsx
@@ -23,7 +23,7 @@ import { Toggle, ToggleStateChild, useToggleState } from 'terracotta';
 
 ### Uncontrolled
 
-The toggle owns its state; `onChange` is a notification.
+The toggle owns its state. `onChange` only tells you what happened.
 
 ```tsx
 <Toggle class="toggle" defaultPressed={false} onChange={pressed => setBold(pressed)}>
@@ -63,8 +63,8 @@ const [muted, setMuted] = createSignal(false);
 </Toggle>
 ```
 
-Nothing changes on screen until `setMuted` runs — in controlled mode the
-component only reports the intended new state.
+Nothing changes on screen until `setMuted` runs. In controlled mode the
+component only reports the state it wants to move to.
 
 ### Disabled
 
@@ -74,7 +74,7 @@ component only reports the intended new state.
 </Toggle>
 ```
 
-While disabled, clicks and keyboard activation do not change the state, and both
+While disabled, clicks and keyboard activation do not change the state. Both
 `aria-disabled` and `tc-disabled` are set.
 
 ### Render prop
@@ -92,7 +92,7 @@ While disabled, clicks and keyboard activation do not change the state, and both
 
 ### A switch built from the state attribute
 
-Because the pressed state is an attribute, a sliding switch needs no JavaScript
+The pressed state is an attribute, so a sliding switch needs no JavaScript
 beyond the toggle itself:
 
 ```tsx
@@ -164,8 +164,8 @@ function PressedBadge() {
 | `Toggle` | `tc-pressed` | The toggle is pressed |
 | `Toggle` | `tc-disabled` | The toggle is disabled |
 
-Alongside them, `aria-pressed` is always present as `true` or `false`, so you can
-also select on `[aria-pressed="true"]` if you prefer to style from the ARIA state.
+`aria-pressed` is always present too, as `true` or `false`. Select on
+`[aria-pressed="true"]` instead if you prefer to style from the ARIA state.
 
 ### Styling
 
@@ -190,8 +190,8 @@ also select on `[aria-pressed="true"]` if you prefer to style from the ARIA stat
 | `toggle()` | `() => void` | Flips the state. |
 | `disabled()` | `boolean` | Whether the toggle is disabled. |
 
-Reachable three ways: as the render-prop argument on `Toggle`, through
-`<ToggleStateChild>`, or with `useToggleState()` inside any descendant
+You can reach this state three ways: as the render-prop argument on `Toggle`,
+through `<ToggleStateChild>`, or with `useToggleState()` inside any descendant
 component. Full reference in [toggle state](../states.md#toggle-state).
 
 ## Keyboard

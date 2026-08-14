@@ -1,17 +1,17 @@
 # Combobox
 
-A [combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/): a text input
-that filters a popup listbox as you type. It is what you reach for when a
+A [combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) is a text input
+that filters a popup listbox as you type. Reach for it when a
 [`Listbox`](./listbox.md) has too many options to scroll through.
 
-Like `Listbox`, a `Combobox` owns two states — an
-[autocomplete state](../states.md#autocomplete-state) for the query and the
-selection, and a [disclosure state](../states.md#disclosure-state) for the popup
-— so its callbacks are `onSelectChange` and `onDisclosureChange`.
+A `Combobox` owns two states, as `Listbox` does. An
+[autocomplete state](../states.md#autocomplete-state) holds the query and the
+selection, and a [disclosure state](../states.md#disclosure-state) holds the
+popup. That is why its callbacks are `onSelectChange` and `onDisclosureChange`.
 
-Navigation is *virtual*: DOM focus stays on the input while the arrow keys move
-an active option, published through `aria-activedescendant`. That is what lets
-you keep typing while browsing the list.
+Navigation is *virtual*. DOM focus stays on the input while the arrow keys move
+an active option, which is published through `aria-activedescendant`. That is
+what lets you keep typing while browsing the list.
 
 ```tsx
 import {
@@ -39,17 +39,17 @@ import {
 
 ## Filtering is yours to render
 
-Terracotta decides *which* options match — that is what `matchBy` is for — but it
-does not remove them from the DOM. Each option gets a `tc-matches` attribute when
-it matches the current query, and it is up to you to hide the rest:
+`matchBy` decides *which* options match, but Terracotta does not remove the rest
+from the DOM. An option gets a `tc-matches` attribute while it matches the
+current query, and hiding the others is up to you:
 
 ```css
 .combobox-option:not([tc-matches]) { display: none; }
 ```
 
-This is deliberate: hiding with CSS keeps the options mounted, so the list does
-not thrash on every keystroke. Keyboard navigation only ever visits matching,
-non-disabled options, whether or not you hide the others.
+This is deliberate. Hiding with CSS keeps the options mounted, so the list does
+not thrash on every keystroke. Either way, keyboard navigation only visits
+matching, non-disabled options.
 
 ## Examples
 
@@ -166,9 +166,9 @@ export function PeoplePicker(): JSX.Element {
 .combobox-option[tc-disabled] { color: #a1a1aa; cursor: not-allowed; }
 ```
 
-Note that `tc-active` is the only highlight available here: because focus never
-leaves the input, `:focus` and `:hover` alone would not tell you which option the
-arrow keys are on.
+`tc-active` is the only highlight available here. Focus never leaves the input,
+so `:focus` and `:hover` alone cannot tell you which option the arrow keys are
+on.
 
 ### Multiple selection
 
@@ -214,7 +214,7 @@ const [selected, setSelected] = createSignal<Person[]>([]);
 }
 ```
 
-In multiple mode the popup stays open after each pick; in single mode it closes.
+In multiple mode the popup stays open after each pick. In single mode it closes.
 
 ### An empty state
 
@@ -340,7 +340,8 @@ const [open, setOpen] = createSignal(false);
 </AutocompleteStateChild>
 ```
 
-Remember that `query()` is debounced by 250 ms behind what has been typed.
+Note that `query()` runs 250 ms behind what has been typed, because it is
+debounced.
 
 ## State attributes
 
@@ -363,11 +364,11 @@ Remember that `query()` is debounced by 250 ms behind what has been typed.
 | `ComboboxOption` | `tc-active` | This option is virtually focused |
 | `ComboboxOption` | `tc-disabled` | This option or the combobox is disabled |
 
-> `ComboboxInput` carries **`tc-command-input`**, not `tc-combobox-input` — it
+> `ComboboxInput` carries **`tc-command-input`**, not `tc-combobox-input`. It
 > shares the marker with [`Command`](./command.md)'s input. Select on
 > `tc-command-input`, or give the input your own class.
 
-`tc-has-query` is the container-level counterpart of `tc-matches`: it is present
+`tc-has-query` is the container-level counterpart of `tc-matches`. It is present
 whenever the query is non-empty, which makes "clear" affordances easy.
 
 ### Styling
@@ -395,8 +396,8 @@ whenever the query is non-empty, which makes "clear" affordances easy.
 
 Two states are in scope inside a `Combobox`.
 
-Query and selection — the
-[autocomplete state](../states.md#autocomplete-state), via
+Query and selection: the
+[autocomplete state](../states.md#autocomplete-state), through
 `<AutocompleteStateChild>` or `useAutocompleteState()`:
 
 | Member | Type | Description |
@@ -409,7 +410,7 @@ Query and selection — the
 | `isActive(value)` / `hasActive()` | | Virtual focus position. |
 | `select(value)` / `focus(value)` / `blur()` | | Changes them. |
 
-Popup — the [disclosure state](../states.md#disclosure-state), via
+The popup: the [disclosure state](../states.md#disclosure-state), through
 `<DisclosureStateChild>` or `useDisclosureState()`:
 
 | Member | Type | Description |
@@ -417,8 +418,8 @@ Popup — the [disclosure state](../states.md#disclosure-state), via
 | `isOpen()` | `boolean` | Whether the popup is open. |
 | `open()` / `close()` / `toggle()` | `() => void` | Changes it. |
 
-Inside an option, `useAutocompleteOptionState()` gives the per-option view
-(`isSelected()`, `isActive()`, `matches()`, `select()`, `disabled()`).
+Inside an option, `useAutocompleteOptionState()` gives the per-option view:
+`isSelected()`, `isActive()`, `matches()`, `select()` and `disabled()`.
 
 ## Keyboard
 
@@ -433,8 +434,8 @@ All of this is handled on `ComboboxInput`, since focus never leaves it:
 | <kbd>Escape</kbd> | Closes the popup |
 
 Clicking the input toggles the popup. Blurring the input closes it, unless the
-pointer is over the options list — which is what keeps a click on an option from
-closing the popup before the click lands.
+pointer is over the options list. That exception is what stops a click on an
+option from closing the popup before the click lands.
 
 ## API
 
@@ -461,14 +462,13 @@ Renders a `<div>` by default. Does not take a `ref`.
 | `children` | `JSX.Element` | — | The label, input and options. Not a render prop. |
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
 
-There is no `onChange` on `Combobox` — use `onSelectChange` and
-`onDisclosureChange`. There is no `horizontal` option either; the list is always
-vertical.
+`Combobox` has no `onChange`. Use `onSelectChange` and `onDisclosureChange`.
+There is no `horizontal` option either, because the list is always vertical.
 
 ### `<ComboboxLabel>`
 
-Names the combobox. Renders a `<label>` by default. Does not take a `ref`, and
-its `children` is not a render prop.
+Names the combobox. Renders a `<label>` by default. It takes no `ref`, and its
+`children` is not a render prop.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -479,7 +479,7 @@ its `children` is not a render prop.
 ### `<ComboboxInput>`
 
 The text field. Renders an `<input type="text">` by default. Everything you pass
-— `placeholder`, `value`, `onInput`, `class` — is forwarded, so you control what
+is forwarded — `placeholder`, `value`, `onInput`, `class` — so you control what
 the input displays.
 
 | Prop | Type | Default | Description |
@@ -512,8 +512,8 @@ Rendered attributes include `role="listbox"`, `aria-multiselectable`,
 
 ### `<ComboboxOption>`
 
-One option. A [`Button`](./button.md) with `role="option"`, rendered as an `<li>`
-by default.
+One option. A [`Button`](./button.md) with `role="option"`, rendered as an
+`<li>` by default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

@@ -1,12 +1,12 @@
 # Alert
 
-An [ARIA alert](https://www.w3.org/WAI/ARIA/apg/patterns/alert/): a live region
-that announces an important, usually time-sensitive message. Assistive technology
-reads its contents as soon as they appear, without moving focus.
+An [ARIA alert](https://www.w3.org/WAI/ARIA/apg/patterns/alert/) is a live
+region for an important, usually time-sensitive message. Assistive technology
+reads its contents as soon as they appear. Focus does not move.
 
-Use `Alert` for messages that must interrupt — a failed save, a lost connection.
-For messages the user can dismiss at their own pace, [`Toast`](./toast.md) is the
-better fit; for something that demands a response, use
+Use `Alert` for messages that must interrupt, such as a failed save or a lost
+connection. For messages the user can read at their own pace, use
+[`Toast`](./toast.md). For something that demands a response, use
 [`AlertDialog`](./alert-dialog.md).
 
 ```tsx
@@ -19,14 +19,14 @@ import { Alert } from 'terracotta';
 <Alert/> {/* role="alert" — announced the moment it appears */}
 ```
 
-`Alert` has no state of its own and no sub-components. It is the one Terracotta
-component that is purely semantic.
+`Alert` has no state and no sub-components. It is the one Terracotta component
+that is purely semantic.
 
 ## Examples
 
 ### Announcing a form error
 
-The alert is announced when it enters the DOM, so render it conditionally rather
+The alert is announced when it enters the DOM. Render it conditionally, rather
 than rendering an empty alert and filling it in later.
 
 ```tsx
@@ -88,8 +88,8 @@ export function SaveForm(): JSX.Element {
 
 ### Re-announcing the same message
 
-A live region is only announced when its contents change. If the same error can
-occur twice in a row, remount the alert with a key so it is announced again:
+A live region is announced only when its contents change. If the same error can
+happen twice in a row, remount the alert with a key so it is announced again:
 
 ```tsx
 const [failure, setFailure] = createSignal<{ id: number; message: string }>();
@@ -102,8 +102,8 @@ const [failure, setFailure] = createSignal<{ id: number; message: string }>();
 
 ### Styling by severity without extra classes
 
-If you prefer to express severity as data, any prop you pass is forwarded, so a
-plain `data-*` attribute works:
+Every prop you pass is forwarded, so a plain `data-*` attribute works if you
+would rather express severity as data:
 
 ```tsx
 <Alert class="alert" data-severity="error">
@@ -126,7 +126,7 @@ plain `data-*` attribute works:
 
 ### Styling
 
-The marker is useful as a selector when you would rather not add a class at all:
+Use the marker as a selector when you would rather not add a class at all:
 
 ```css
 [tc-alert] {
@@ -152,13 +152,13 @@ The marker is useful as a selector when you would rather not add a class at all:
 
 ### Reading the state in code
 
-There is none to read — visibility is entirely yours, controlled by whether you
-render the `Alert` at all.
+There is no state to read. Visibility is yours: it depends on whether you render
+the `Alert` at all.
 
 ## Keyboard
 
-`Alert` takes no focus and handles no keys. That is deliberate: an alert
-announces itself without stealing focus from whatever the user is doing. If the
+`Alert` takes no focus and handles no keys. That is deliberate. An alert
+announces itself without pulling the user away from what they were doing. If the
 message needs a response, use [`AlertDialog`](./alert-dialog.md) instead.
 
 ## API

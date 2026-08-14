@@ -1,10 +1,10 @@
 # Accordion
 
-An [accordion](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/): a set of
+An [accordion](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/) is a set of
 stacked headers, each revealing a panel. The `Accordion` root owns a
-[select state](../states.md#select-state), so "which section is open" is just a
-selected value — which is why the same component covers both the
-one-open-at-a-time and the many-open cases through `multiple`.
+[select state](../states.md#select-state), so "which section is open" is only a
+selected value. That is why one component covers both the one-open-at-a-time
+case and the many-open case, through `multiple`.
 
 ```tsx
 import {
@@ -118,8 +118,8 @@ Without it, one section is always open.
 </Accordion>
 ```
 
-In multiple mode `value` / `defaultValue` is an array and `onChange` receives an
-array.
+In multiple mode, `value` and `defaultValue` are arrays, and `onChange` receives
+an array.
 
 ### Controlled
 
@@ -133,7 +133,7 @@ const [open, setOpen] = createSignal<string[]>(['shipping']);
 
 ### Object values
 
-Supply `by` so items are compared by identity rather than reference:
+Pass `by` to compare items by identity instead of by reference:
 
 ```tsx
 interface Section { id: string; title: string; body: string }
@@ -174,11 +174,11 @@ Disable one item, or the whole accordion:
 }
 ```
 
-Disabled items are skipped by the arrow keys as well as being unclickable.
+Disabled items cannot be clicked, and the arrow keys skip them.
 
 ### Showing which item has keyboard focus
 
-`tc-active` marks the item the focus navigator is on, which is distinct from
+`tc-active` marks the item the focus navigator is on. That is not the same as
 `tc-selected`:
 
 ```css
@@ -189,7 +189,7 @@ Disabled items are skipped by the arrow keys as well as being unclickable.
 
 ### Custom heading level
 
-`AccordionHeader` renders an `<h3>`; change it to fit your document outline:
+`AccordionHeader` renders an `<h3>`. Change it to fit your document outline:
 
 ```tsx
 <AccordionHeader as="h2" class="accordion-header">
@@ -252,7 +252,7 @@ Disabled items are skipped by the arrow keys as well as being unclickable.
 </Accordion>
 ```
 
-`<SelectStateChild>` reads the same state from any descendant;
+`<SelectStateChild>` reads the same state from any descendant.
 `<SelectOptionStateChild>` reads the per-item state from inside an
 `AccordionItem`.
 
@@ -275,9 +275,9 @@ Disabled items are skipped by the arrow keys as well as being unclickable.
 | `AccordionPanel` | `tc-accordion-panel` | Always (whenever rendered) |
 | `AccordionPanel` | `tc-selected`, `tc-expanded`, `tc-active`, `tc-disabled` | Mirrors the item |
 
-`tc-selected` and `tc-expanded` always agree on an accordion — both are provided
-so you can use whichever reads better. The button also carries `aria-expanded`
-and, while open, `aria-controls`.
+`tc-selected` and `tc-expanded` always agree on an accordion. Both exist so you
+can use whichever reads better. The button also carries `aria-expanded`, and
+`aria-controls` while open.
 
 ### Styling
 
@@ -335,7 +335,7 @@ Disabled items are skipped.
 
 ### `<Accordion>`
 
-Renders a `<div>` by default. It has no ARIA role of its own — the semantics live
+Renders a `<div>` by default. It has no ARIA role of its own; the semantics live
 on the headers, buttons and panels.
 
 | Prop | Type | Default | Description |
@@ -354,7 +354,7 @@ on the headers, buttons and panels.
 
 ### `<AccordionItem>`
 
-One section. Renders a `<div>` by default; does not take a `ref`.
+One section. Renders a `<div>` by default. Does not take a `ref`.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -377,8 +377,8 @@ The heading that wraps the button. Renders an `<h3>` by default. Does not take a
 
 ### `<AccordionButton>`
 
-A [`Button`](./button.md) that selects its item on click and reports focus to the
-accordion's keyboard navigation. Renders a `<button>` by default.
+A [`Button`](./button.md) that selects its item on click, and reports focus to
+the accordion's keyboard navigation. Renders a `<button>` by default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -390,7 +390,7 @@ accordion's keyboard navigation. Renders a `<button>` by default.
 
 ### `<AccordionPanel>`
 
-The revealed content. Renders a `<div>` by default; does not take a `ref`.
+The revealed content. Renders a `<div>` by default. Does not take a `ref`.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

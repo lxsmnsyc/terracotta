@@ -1,8 +1,8 @@
 # CommandBar
 
-A modal command palette. `CommandBar` is a dialog that additionally installs a
-global <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>K</kbd> shortcut on `window` to open
-itself — so you can mount it once near the root of your app and forget about it.
+A modal command palette. `CommandBar` is a dialog that also installs a global
+<kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>K</kbd> shortcut on `window` to open itself.
+Mount it once near the root of your app and forget about it.
 
 It provides the shell only. Put a [`Command`](./command.md) inside it for the
 searchable list of actions.
@@ -37,7 +37,7 @@ import {
 ### Uncontrolled — the shortcut just works
 
 With `defaultOpen`, the bar owns its state and the global shortcut needs no
-wiring at all:
+wiring:
 
 ```tsx
 <CommandBar class="commandbar" defaultOpen={false}>
@@ -180,9 +180,9 @@ export function Palette(props: { actions: Action[] }): JSX.Element {
 .commandbar-option[tc-disabled] { color: #a1a1aa; }
 ```
 
-Because the keyboard shortcut calls the state's `open()` directly, a
-**controlled** `CommandBar` needs `onOpen` (or `onChange`) wired back to your
-signal — otherwise the shortcut fires but nothing appears.
+The keyboard shortcut calls the state's `open()` directly. A **controlled**
+`CommandBar` therefore needs `onOpen`, or `onChange`, wired back to your signal.
+Without that, the shortcut fires but nothing appears.
 
 ### Adding your own trigger
 
@@ -221,7 +221,7 @@ signal — otherwise the shortcut fires but nothing appears.
 ### Yielding the shortcut to another handler
 
 The global listener ignores events that already had `preventDefault()` called on
-them, so a more specific handler can claim the combination:
+them. A more specific handler can therefore claim the combination:
 
 ```tsx
 // Inside a code editor that wants Cmd+K for its own "insert link"
@@ -310,9 +310,9 @@ editor.addEventListener('keydown', event => {
 | `toggle()` | `() => void` | Flips the state. |
 | `disabled()` | `boolean` | Whether the bar is disabled. |
 
-Available as the render-prop argument on `CommandBar` and each of its parts,
-through `<DisclosureStateChild>`, or with `useDisclosureState()` in any
-descendant. Full reference in
+You can reach this state as the render-prop argument on `CommandBar` and each of
+its parts, through `<DisclosureStateChild>`, or with `useDisclosureState()` in
+any descendant. Full reference in
 [disclosure state](../states.md#disclosure-state).
 
 ## Keyboard
@@ -323,8 +323,8 @@ descendant. Full reference in
 | <kbd>Escape</kbd> | Closes it (handled by `CommandBarPanel`) |
 | <kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> | Cycles focus within the panel |
 
-The global listener is registered while the `CommandBar` is mounted, whether or
-not the bar is open — mount only one.
+The global listener is registered for as long as the `CommandBar` is mounted,
+open or not. Mount only one.
 
 ## API
 
@@ -351,8 +351,9 @@ Rendered attributes include `role="dialog"`, `aria-modal="true"`,
 
 ### `<CommandBarPanel>`
 
-The focus trap. Focuses its first focusable child when the bar opens — put the
-`CommandInput` first so typing starts immediately. Renders a `<div>` by default.
+The focus trap. It focuses its first focusable child when the bar opens, so put
+the `CommandInput` first and typing starts immediately. Renders a `<div>` by
+default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -364,7 +365,7 @@ The focus trap. Focuses its first focusable child when the bar opens — put the
 
 ### `<CommandBarOverlay>`
 
-The backdrop; closes the bar when clicked. Renders a `<div>` by default.
+The backdrop. Closes the bar when clicked. Renders a `<div>` by default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -375,8 +376,8 @@ The backdrop; closes the bar when clicked. Renders a `<div>` by default.
 
 ### `<CommandBarTitle>`
 
-The accessible name. Renders an `<h2>` by default. Does not take a `ref`. Hide it
-visually if the palette has no visible heading.
+The accessible name. Renders an `<h2>` by default. Does not take a `ref`. Hide
+it visually if the palette has no visible heading.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

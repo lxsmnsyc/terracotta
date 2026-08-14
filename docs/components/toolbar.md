@@ -1,12 +1,12 @@
 # Toolbar
 
-A [toolbar](https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/): a container of
-related controls that behaves as a single tab stop. <kbd>Tab</kbd> enters the
-toolbar once; the arrow keys move between the controls inside it.
+A [toolbar](https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/) is a container of
+related controls that acts as a single tab stop. <kbd>Tab</kbd> enters the
+toolbar once, and the arrow keys move between the controls inside it.
 
-Unlike most Terracotta composites, `Toolbar` navigates *any* focusable descendant
-rather than a specific child component, so you can put buttons, links, inputs and
-`<select>` elements in it directly.
+Most Terracotta composites navigate a specific child component. `Toolbar`
+navigates *any* focusable descendant, so you can drop buttons, links, inputs and
+`<select>` elements into it directly.
 
 ```tsx
 import { Toolbar } from 'terracotta';
@@ -62,7 +62,7 @@ import { Toolbar } from 'terracotta';
 }
 ```
 
-The orientation is published as `aria-orientation`, so one CSS rule keeps the
+The orientation is published as `aria-orientation`. One CSS rule then keeps the
 layout and the semantics in step.
 
 ### Vertical
@@ -77,8 +77,8 @@ layout and the semantics in step.
 
 ### With Terracotta controls
 
-`Toggle` is a natural fit, and its `tc-pressed` attribute gives you the active
-state for free:
+`Toggle` is a natural fit. Its `tc-pressed` attribute gives you the active state
+for free:
 
 ```tsx
 <Toolbar class="toolbar" aria-label="Formatting">
@@ -97,8 +97,8 @@ state for free:
 
 ### With separators and groups
 
-Non-focusable elements are simply skipped by the arrow keys, so separators need
-no special handling:
+The arrow keys skip non-focusable elements, so separators need no special
+handling:
 
 ```tsx
 <Toolbar class="toolbar" aria-label="Editor">
@@ -135,9 +135,9 @@ no special handling:
 
 ### Disabled controls
 
-A control disabled the native way (`disabled` on a `<button>`) drops out of the
-focusable set automatically. A Terracotta control marked with `tc-disabled` is
-skipped by navigation for the same reason.
+A control disabled the native way, with `disabled` on a `<button>`, drops out of
+the focusable set on its own. Navigation skips a Terracotta control marked with
+`tc-disabled` for the same reason.
 
 ```tsx
 <Toolbar class="toolbar" aria-label="Editor">
@@ -156,14 +156,14 @@ skipped by navigation for the same reason.
 
 ## State attributes
 
-`Toolbar` holds no state of its own — the controls inside it do.
+`Toolbar` holds no state of its own. The controls inside it do.
 
 | Element | Attribute | Present when |
 | --- | --- | --- |
 | `Toolbar` | `tc-toolbar` | Always |
 
-Orientation is exposed through the standard `aria-orientation` attribute rather
-than a `tc-` one, because it is a genuine ARIA property.
+Orientation uses the standard `aria-orientation` attribute instead of a `tc-`
+one, because it is a genuine ARIA property.
 
 ### Styling
 
@@ -186,7 +186,7 @@ than a `tc-` one, because it is a genuine ARIA property.
 ### Reading the state in code
 
 `Toolbar` exposes no state object. Read the state of the controls it contains
-instead — for example [`Toggle`](./toggle.md)'s `pressed()`.
+instead, such as [`Toggle`](./toggle.md)'s `pressed()`.
 
 ## Keyboard
 
@@ -198,8 +198,8 @@ instead — for example [`Toggle`](./toggle.md)'s `pressed()`.
 | <kbd>Tab</kbd> | Enters or leaves the toolbar — it is a single tab stop |
 
 Arrow navigation does not wrap around the ends. Focusing the toolbar itself
-restores the control that was last focused inside it, falling back to the first
-control — so returning to a toolbar puts you back where you left off.
+restores the control that was focused last, or the first control if there is
+none. Returning to a toolbar puts you back where you left off.
 
 ## API
 
@@ -215,7 +215,7 @@ Renders a `<div>` by default.
 | `children` | `JSX.Element` | — | The controls. Not a render prop. |
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
 
-Give the toolbar an accessible name with `aria-label` or `aria-labelledby` — both
+Give the toolbar an accessible name with `aria-label` or `aria-labelledby`. Both
 are forwarded like any other prop.
 
 #### Rendered attributes

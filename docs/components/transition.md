@@ -1,11 +1,11 @@
 # Transition
 
 Class-driven enter and leave transitions. `Transition` adds and removes CSS
-classes around a visibility change and waits for `transitionend` or
-`animationend` before unmounting, so an element can actually animate out instead
+classes around a visibility change, then waits for `transitionend` or
+`animationend` before unmounting. An element can therefore animate out instead
 of vanishing.
 
-It pairs naturally with every disclosure-based component — give the panel
+It pairs well with every disclosure-based component. Give the panel
 `unmount={false}` and let the transition own the mounting.
 
 ```tsx
@@ -20,27 +20,28 @@ import { Transition, TransitionChild } from 'terracotta';
 </Transition>
 ```
 
-`Transition` *is* a `TransitionChild` with a `show` prop, so the simple case
-needs only one component.
+`Transition` *is* a `TransitionChild` with a `show` prop. The simple case needs
+only one component.
 
 ## How the classes are applied
 
 On **enter**:
 
-1. `beforeEnter()` runs; `enter` and `enterFrom` classes are added.
+1. `beforeEnter()` runs, then the `enter` and `enterFrom` classes are added.
 2. On the next animation frame, `enterFrom` is removed and `enterTo` added.
 3. When the transition or animation ends, `enter` and `enterTo` are removed,
    `entered` is added, and `afterEnter()` runs.
 
 On **leave**:
 
-1. `beforeLeave()` runs; `entered` is removed, `leave` and `leaveFrom` added.
+1. `beforeLeave()` runs, `entered` is removed, and `leave` and `leaveFrom` are
+   added.
 2. On the next animation frame, `leaveFrom` is removed and `leaveTo` added.
 3. When it ends, `leave` and `leaveTo` are removed, the element is hidden (or
    unmounted), and `afterLeave()` runs.
 
-Each prop takes a space-separated class string, so you can pass several class
-names to a single phase.
+Each prop takes a space-separated class string, so one phase can carry several
+class names.
 
 ## Examples
 
@@ -80,8 +81,8 @@ const [show, setShow] = createSignal(true);
 .fade-to   { opacity: 1; }
 ```
 
-Reusing `fade-to` as `leaveFrom` and `fade-from` as `leaveTo` keeps the leave a
-mirror of the enter, which is usually what you want.
+Reusing `fade-to` as `leaveFrom` and `fade-from` as `leaveTo` makes the leave a
+mirror of the enter. That is usually what you want.
 
 ### Slide and fade
 
@@ -136,8 +137,8 @@ work without changes:
 
 ### A resting state with `entered`
 
-`entered` is applied once the enter transition finishes and removed when leaving
-starts — useful for a state that should not be part of the animation itself:
+`entered` is applied once the enter transition finishes, and removed when
+leaving starts. Use it for a state that should not be part of the animation:
 
 ```tsx
 <Transition
@@ -174,15 +175,16 @@ starts — useful for a state that should not be part of the animation itself:
 </Disclosure>
 ```
 
-`unmount={false}` on the panel is the important part: without it the panel
+`unmount={false}` on the panel is the important part. Without it, the panel
 removes itself the moment the disclosure closes, and the leave transition has
 nothing to animate.
 
 ### Coordinating several elements
 
-`TransitionChild` reads `show` from the nearest `Transition`, so a group of
-elements can animate with different timings while leaving together. The parent
-waits for its children's leave transitions before finishing its own.
+`TransitionChild` reads `show` from the nearest `Transition`. A group of
+elements can therefore animate on different timings while still leaving
+together, because the parent waits for its children's leave transitions before
+finishing its own.
 
 ```tsx
 <Transition show={open()}>
@@ -224,8 +226,8 @@ waits for its children's leave transitions before finishing its own.
 </Transition>
 ```
 
-`afterLeave` is the right place to discard state, since it runs once the element
-is actually gone.
+`afterLeave` is the right place to discard state. It runs once the element is
+gone.
 
 ### Respecting reduced motion
 
@@ -237,7 +239,7 @@ is actually gone.
 }
 ```
 
-Keep a non-zero duration rather than removing the transition entirely — the
+Keep a non-zero duration instead of removing the transition entirely. The
 `transitionend` event is what tells Terracotta the leave has finished.
 
 ## State attributes
@@ -286,9 +288,9 @@ entirely:
 }
 ```
 
-This works because the attribute changes across an animation frame exactly as the
-classes do. Note that a leave transition still needs a real duration on the
-element for `transitionend` to fire.
+This works because the attribute changes across an animation frame exactly as
+the classes do. A leave transition still needs a real duration on the element,
+or `transitionend` never fires.
 
 The attribute is also handy for debugging and for assertions:
 
@@ -304,9 +306,9 @@ The attribute is also handy for debugging and for assertions:
 
 ### Reading the state in code
 
-`Transition` exposes no state object and no render prop — `show` is a prop you
-already own. Use the lifecycle callbacks (`beforeEnter`, `afterEnter`,
-`beforeLeave`, `afterLeave`) when you need to react in JavaScript.
+`Transition` exposes no state object and no render prop. `show` is a prop you
+already own. To react in JavaScript, use the lifecycle callbacks: `beforeEnter`,
+`afterEnter`, `beforeLeave` and `afterLeave`.
 
 ## Keyboard
 
@@ -317,8 +319,8 @@ behaviour.
 
 ### `<Transition>`
 
-The root. Provides `show` to its descendants and renders a `TransitionChild` with
-the rest of its props — so it takes every `TransitionChild` prop as well.
+The root. It provides `show` to its descendants and renders a `TransitionChild`
+with the rest of its props, so it takes every `TransitionChild` prop too.
 
 Renders a `<div>` by default.
 
@@ -357,7 +359,7 @@ One transitioning element. Renders a `<div>` by default.
 
 - The leave transition completes on the first `transitionend` **or**
   `animationend` it sees. If an element is hidden with no transition or animation
-  at all, that event never fires and the element stays visible — always give
+  at all, that event never fires and the element stays visible. Always give
   `leave` a real duration.
-- Nested `TransitionChild`s hold their parent back: a parent only starts its own
-  leave transition once every child beneath it has finished leaving.
+- Nested `TransitionChild`s hold their parent back. A parent starts its own leave
+  transition only once every child beneath it has finished leaving.
