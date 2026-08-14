@@ -345,7 +345,7 @@ One transitioning element. Renders a `<div>` by default.
 | `afterEnter` | `() => void` | — | Called once entering has finished. |
 | `beforeLeave` | `() => void` | — | Called just before leaving starts. |
 | `afterLeave` | `() => void` | — | Called once leaving has finished and the element is hidden. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the element behaves while hidden — see [`unmount`](../README.md#unmount). |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the element behaves while hidden — see [`unmount`](../guides/rendering.md#unmount). |
 | `appear` | `boolean` | `false` | Accepted, but currently has no effect: the implementation always runs the enter transition on first show. |
 | `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
 | `children` | `JSX.Element` | — | The content. Not a render prop. |

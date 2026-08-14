@@ -438,7 +438,7 @@ The popup list. Renders a `<ul>` by default.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'ul'` | Element or component to render as. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the list behaves while closed — see [`unmount`](../README.md#unmount). |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the list behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
 | `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
 | `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | — | The options, or a render prop receiving the select state. |
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |

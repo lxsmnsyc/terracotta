@@ -342,7 +342,7 @@ by default. Does not take a `ref`.
 | `onChange` | `(state: boolean) => void` | — | Called with the new state on every change. |
 | `onOpen` | `() => void` | — | Called when it opens, including from the keyboard shortcut. |
 | `onClose` | `() => void` | — | Called when it closes, including via <kbd>Escape</kbd> and overlay clicks. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the bar behaves while closed — see [`unmount`](../README.md#unmount). |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the bar behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
 | `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
 

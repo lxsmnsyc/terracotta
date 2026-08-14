@@ -346,7 +346,7 @@ The floating content, with the focus trap. Renders a `<div>` by default.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the panel behaves while closed — see [`unmount`](../README.md#unmount). |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the panel behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
 | `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
 | `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
