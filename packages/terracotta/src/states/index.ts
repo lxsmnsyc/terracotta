@@ -20,6 +20,16 @@ export {
   useCheckState,
 } from './create-check-state';
 export type {
+  AutocompleteOptionStateOptions,
+  AutocompleteOptionStateProperties,
+  AutocompleteOptionStateRenderProps,
+} from './states/create-autocomplete-option-state';
+export {
+  AutocompleteOptionStateChild,
+  createAutocompleteOptionState,
+  useAutocompleteOptionState,
+} from './states/create-autocomplete-option-state';
+export type {
   CheckStateControlledOptions,
   CheckStateOptions,
   CheckStateProperties,
