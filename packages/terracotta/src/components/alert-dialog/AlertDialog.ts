@@ -61,6 +61,15 @@ function isAlertDialogUncontrolled<T extends ValidComponent = 'div'>(
   return 'defaultOpen' in props;
 }
 
+/**
+ * A modal that interrupts the user to confirm an action. Same behaviour as
+ * `Dialog`, but with `role="alertdialog"`, so it is announced immediately. Use
+ * it only for messages that require a response.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
+ */
 export function AlertDialog<T extends ValidComponent = 'div'>(
   props: AlertDialogProps<T>,
 ): JSX.Element {

@@ -51,6 +51,15 @@ function isContextMenuUncontrolled<T extends ValidComponent = 'div'>(
   return 'defaultOpen' in props;
 }
 
+/**
+ * A menu opened by right-click. It only manages open state and the trap; the
+ * menu's own arrow-key navigation comes from putting a `Menu` inside the
+ * panel.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/context-menu.md}
+ */
 export function ContextMenu<T extends ValidComponent = 'div'>(
   props: ContextMenuProps<T>,
 ): JSX.Element {

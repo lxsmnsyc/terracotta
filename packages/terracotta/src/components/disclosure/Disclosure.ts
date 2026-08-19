@@ -44,6 +44,14 @@ function isDisclosureUncontrolled<T extends ValidComponent = 'div'>(
   return 'defaultOpen' in props;
 }
 
+/**
+ * A button that shows and hides a section. The simplest stateful component in
+ * the library, and the base the dialog-like components are built on.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/disclosure.md}
+ */
 export function Disclosure<T extends ValidComponent = 'div'>(
   props: DisclosureProps<T>,
 ): JSX.Element {

@@ -15,6 +15,14 @@ import { FEED_CONTENT_TAG } from './tags';
 export type FeedContentProps<T extends ValidComponent = 'div'> =
   HeadlessPropsWithRef<T>;
 
+/**
+ * The scrolling region that holds the articles of a `Feed`. Everything outside
+ * it, such as a load-more button, stays out of the feed's navigation.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
+ */
 export function FeedContent<T extends ValidComponent = 'div'>(
   props: FeedContentProps<T>,
 ): JSX.Element {

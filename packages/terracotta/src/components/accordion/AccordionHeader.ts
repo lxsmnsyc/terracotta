@@ -19,6 +19,14 @@ import { ACCORDION_HEADER_TAG } from './tags';
 export type AccordionHeaderProps<T extends ValidComponent = 'h3'> =
   HeadlessProps<T, SelectOptionStateRenderProps>;
 
+/**
+ * The heading that wraps an `AccordionButton`. Needed so screen readers can
+ * list the sections by their headings.
+ *
+ * Renders an `<h3>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ */
 export function AccordionHeader<T extends ValidComponent = 'h3'>(
   props: AccordionHeaderProps<T>,
 ): JSX.Element {

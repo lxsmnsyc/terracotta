@@ -15,6 +15,13 @@ import { MENU_ITEM_TAG } from './tags';
 export type MenuItemProps<T extends ValidComponent = 'li'> =
   HeadlessPropsWithRef<T, MenuChildProps>;
 
+/**
+ * One action in a `Menu`. The arrow keys and type-ahead skip disabled items.
+ *
+ * Renders an `<li>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
+ */
 export function MenuItem<T extends ValidComponent = 'li'>(
   props: MenuItemProps<T>,
 ): JSX.Element {

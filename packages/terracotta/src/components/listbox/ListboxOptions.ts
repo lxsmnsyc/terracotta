@@ -41,6 +41,14 @@ export type ListboxOptionsProps<
   T extends ValidComponent = 'ul',
 > = HeadlessPropsWithRef<T, ListboxOptionsBaseProps<V>>;
 
+/**
+ * The popup list of a `Listbox`. Unmounts while closed unless
+ * `unmount={false}` is set.
+ *
+ * Renders a `<ul>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
+ */
 export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
   props: ListboxOptionsProps<V, T>,
 ): JSX.Element {

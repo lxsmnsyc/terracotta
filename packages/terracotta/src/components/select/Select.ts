@@ -112,6 +112,14 @@ function isSelectUncontrolled<V, T extends ValidComponent = 'ul'>(
   return 'defaultValue' in props;
 }
 
+/**
+ * An always-visible listbox. The same selection behaviour as `Listbox` without
+ * the popup, so it has one state instead of two and a single `onChange`.
+ *
+ * Renders a `<ul>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/select.md}
+ */
 export function Select<V, T extends ValidComponent = 'ul'>(
   props: SelectProps<V, T>,
 ): JSX.Element {

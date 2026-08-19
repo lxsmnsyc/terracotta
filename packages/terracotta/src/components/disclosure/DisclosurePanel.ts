@@ -24,6 +24,14 @@ export type DisclosurePanelBaseProps = Prettify<
 export type DisclosurePanelProps<T extends ValidComponent = 'div'> =
   HeadlessProps<T, DisclosurePanelBaseProps>;
 
+/**
+ * The section a `Disclosure` shows and hides. Unmounts while closed unless
+ * `unmount={false}` is set.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/disclosure.md}
+ */
 export function DisclosurePanel<T extends ValidComponent = 'div'>(
   props: DisclosurePanelProps<T>,
 ): JSX.Element {

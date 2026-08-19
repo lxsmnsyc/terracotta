@@ -12,6 +12,14 @@ import { MENU_TAG } from './tags';
 export type MenuProps<T extends ValidComponent = 'ul'> =
   HeadlessPropsWithRef<T>;
 
+/**
+ * A menu of actions, navigated with the arrow keys and type-ahead. It has no
+ * open state of its own; put it inside a `Popover` or `ContextMenu` for that.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
+ */
 export function Menu<T extends ValidComponent = 'ul'>(
   props: MenuProps<T>,
 ): JSX.Element {

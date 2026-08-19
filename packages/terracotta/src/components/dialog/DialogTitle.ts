@@ -17,6 +17,13 @@ import { DIALOG_TITLE_TAG } from './tags';
 export type DialogTitleProps<T extends ValidComponent = 'h2'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
+/**
+ * The accessible name of a `Dialog`, wired up through `aria-labelledby`.
+ *
+ * Renders an `<h2>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
+ */
 export function DialogTitle<T extends ValidComponent = 'h2'>(
   props: DialogTitleProps<T>,
 ): JSX.Element {

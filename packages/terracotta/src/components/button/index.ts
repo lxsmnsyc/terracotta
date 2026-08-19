@@ -19,6 +19,15 @@ interface ButtonBaseProps {
 export type ButtonProps<T extends ValidComponent = 'button'> =
   HeadlessPropsWithRef<T, ButtonBaseProps>;
 
+/**
+ * Button behaviour on any element. On a real `<button>` this only adds the
+ * disabled handling; on anything else it also supplies `role="button"`,
+ * `tabindex`, and <kbd>Enter</kbd>/<kbd>Space</kbd> activation.
+ *
+ * Renders a `<button>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/button.md}
+ */
 export function Button<T extends ValidComponent = 'button'>(
   props: ButtonProps<T>,
 ): JSX.Element {

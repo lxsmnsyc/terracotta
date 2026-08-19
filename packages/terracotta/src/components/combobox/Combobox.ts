@@ -296,6 +296,16 @@ function getProps<V, T extends ValidComponent = 'div'>(
   ) as ComponentProps<T>;
 }
 
+/**
+ * A text input paired with a popup listbox that filters as you type. It owns
+ * two states at once, so its callbacks are `onDisclosureChange` for the popup
+ * and `onSelectChange` for the value. The required `by` and `matchBy` props
+ * decide value equality and which options survive the current query.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
+ */
 export function Combobox<V, T extends ValidComponent = 'div'>(
   props: ComboboxProps<V, T>,
 ): JSX.Element {

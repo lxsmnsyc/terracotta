@@ -17,6 +17,14 @@ import { CHECKBOX_DESCRIPTION } from './tags';
 export type CheckboxDescriptionProps<T extends ValidComponent = 'p'> =
   HeadlessProps<T, CheckStateRenderProps>;
 
+/**
+ * The accessible description of a `Checkbox`, wired up through `aria-
+ * describedby`.
+ *
+ * Renders a `<p>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/checkbox.md}
+ */
 export function CheckboxDescription<T extends ValidComponent = 'p'>(
   props: CheckboxDescriptionProps<T>,
 ): JSX.Element {

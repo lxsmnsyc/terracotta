@@ -35,6 +35,13 @@ export interface ToggleStateProperties {
   toggle(): void;
 }
 
+/**
+ * Creates a pressed/unpressed state. Backs `Toggle`.
+ *
+ * Pass `defaultPressed` for uncontrolled state or `pressed` for controlled.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#toggle-state}
+ */
 export function createToggleState(
   options: ToggleStateOptions,
 ): ToggleStateProperties {
@@ -121,12 +128,23 @@ export function ToggleStateProvider(
   });
 }
 
+/**
+ * Reads the nearest toggle state from context. Throws when there is none.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#toggle-state}
+ */
 export function useToggleState(): ToggleStateProperties {
   const ctx = useContext(ToggleStateContext);
   assert(ctx, new Error('Missing <ToggleStateProvider>'));
   return ctx;
 }
 
+/**
+ * Passes the nearest toggle state to a render prop. A function child is
+ * treated as a render prop only when it declares exactly one parameter.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#toggle-state}
+ */
 export function ToggleStateChild(props: ToggleStateRenderProps): JSX.Element {
   const state = useToggleState();
   return createMemo(() => {

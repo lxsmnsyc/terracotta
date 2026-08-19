@@ -19,6 +19,14 @@ import { CONTEXT_MENU_OVERLAY_TAG } from './tags';
 export type ContextMenuOverlayProps<T extends ValidComponent = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
+/**
+ * The backdrop behind a `ContextMenu`. Clicking it closes the menu, so give it
+ * a size — it has no styles of its own.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/context-menu.md}
+ */
 export function ContextMenuOverlay<T extends ValidComponent = 'div'>(
   props: ContextMenuOverlayProps<T>,
 ): JSX.Element {

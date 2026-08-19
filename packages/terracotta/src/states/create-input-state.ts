@@ -31,6 +31,13 @@ export interface InputStateProperties {
   disabled(): boolean;
 }
 
+/**
+ * Creates a plain string state. Exported for building text-input components.
+ *
+ * Pass `defaultValue` for uncontrolled state or `value` for controlled.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#input-state}
+ */
 export function createInputState(
   options: InputStateOptions,
 ): InputStateProperties {
@@ -97,12 +104,23 @@ export function InputStateProvider(
   });
 }
 
+/**
+ * Reads the nearest input state from context. Throws when there is none.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#input-state}
+ */
 export function useInputState(): InputStateProperties {
   const ctx = useContext(InputStateContext);
   assert(ctx, new Error('Missing <InputStateProvider>'));
   return ctx;
 }
 
+/**
+ * Passes the nearest input state to a render prop. A function child is treated
+ * as a render prop only when it declares exactly one parameter.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#input-state}
+ */
 export function InputStateChild(props: InputStateRenderProps): JSX.Element {
   const state = useInputState();
   return createMemo(() => {

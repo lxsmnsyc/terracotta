@@ -25,6 +25,13 @@ export type CommandOptionsProps<
   T extends ValidComponent = 'ul',
 > = HeadlessPropsWithRef<T, AutocompleteStateRenderProps<V>>;
 
+/**
+ * The list of results in a `Command`.
+ *
+ * Renders a `<ul>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
+ */
 export function CommandOptions<V, T extends ValidComponent = 'ul'>(
   props: CommandOptionsProps<V, T>,
 ): JSX.Element {

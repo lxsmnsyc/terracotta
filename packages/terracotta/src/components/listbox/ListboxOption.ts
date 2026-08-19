@@ -40,6 +40,14 @@ export type ListboxOptionProps<
   OmitAndMerge<ListboxOptionBaseProps<V>, ButtonProps<T>>
 >;
 
+/**
+ * One option of a `Listbox`. The required `value` prop is what selecting it
+ * produces.
+ *
+ * Renders an `<li>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
+ */
 export function ListboxOption<V, T extends ValidComponent = 'li'>(
   props: ListboxOptionProps<V, T>,
 ): JSX.Element {

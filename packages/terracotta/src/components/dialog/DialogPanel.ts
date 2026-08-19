@@ -23,6 +23,13 @@ import { DIALOG_PANEL_TAG } from './tags';
 export type DialogPanelProps<T extends ValidComponent = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
+/**
+ * The content of a `Dialog`, and the element that traps focus.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
+ */
 export function DialogPanel<T extends ValidComponent = 'div'>(
   props: DialogPanelProps<T>,
 ): JSX.Element {

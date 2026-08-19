@@ -8,6 +8,14 @@ import { RADIO_GROUP_DESCRIPTION_TAG } from './tags';
 export type RadioGroupDescriptionProps<T extends ValidComponent = 'div'> =
   HeadlessProps<T>;
 
+/**
+ * The accessible description of a `RadioGroup` or of one `RadioGroupOption`,
+ * depending on which it is nested in. Wired up through `aria-describedby`.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
+ */
 export function RadioGroupDescription<T extends ValidComponent = 'div'>(
   props: RadioGroupDescriptionProps<T>,
 ): JSX.Element {

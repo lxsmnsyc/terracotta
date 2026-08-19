@@ -17,6 +17,14 @@ import { ALERT_DIALOG_DESCRIPTION_TAG } from './tags';
 export type AlertDialogDescriptionProps<T extends ValidComponent = 'p'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
 
+/**
+ * The accessible description of an `AlertDialog`, wired up through `aria-
+ * describedby`.
+ *
+ * Renders a `<p>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
+ */
 export function AlertDialogDescription<T extends ValidComponent = 'p'>(
   props: AlertDialogDescriptionProps<T>,
 ): JSX.Element {

@@ -17,6 +17,13 @@ import { COMBOBOX_LABEL_TAG } from './tags';
 export type ComboboxLabelProps<T extends ValidComponent = 'label'> =
   HeadlessProps<T>;
 
+/**
+ * The accessible name of a `Combobox`, wired up through `aria-labelledby`.
+ *
+ * Renders a `<label>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
+ */
 export function ComboboxLabel<T extends ValidComponent = 'label'>(
   props: ComboboxLabelProps<T>,
 ): JSX.Element {

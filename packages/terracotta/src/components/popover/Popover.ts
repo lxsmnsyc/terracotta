@@ -51,6 +51,15 @@ function isPopoverUncontrolled<T extends ValidComponent = 'div'>(
   return 'defaultOpen' in props;
 }
 
+/**
+ * A floating panel anchored to a button. Like a `Dialog` in that the panel can
+ * trap `Tab`, but the page behind stays usable and the panel also closes when
+ * focus leaves it.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/popover.md}
+ */
 export function Popover<T extends ValidComponent = 'div'>(
   props: PopoverProps<T>,
 ): JSX.Element {

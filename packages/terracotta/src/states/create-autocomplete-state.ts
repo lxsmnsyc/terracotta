@@ -52,6 +52,15 @@ export type SingleAutocompleteStateOptions<T> =
   | SingleAutocompleteStateControlledOptions<T>
   | SingleAutocompleteStateUncontrolledOptions<T>;
 
+/**
+ * Creates a single-selection state with a debounced text query on top. Backs
+ * `Combobox` and `Command`.
+ *
+ * The required `matchBy` decides which values survive the current query.
+ * Writes to the query are debounced by 250ms, so `query()` lags typing.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#autocomplete-state}
+ */
 export function createSingleAutocompleteState<T>(
   options: SingleAutocompleteStateOptions<T>,
 ): AutocompleteStateProperties<T> {
@@ -161,6 +170,15 @@ export type MultipleAutocompleteStateOptions<T> =
   | MultipleAutocompleteStateControlledOptions<T>
   | MultipleAutocompleteStateUncontrolledOptions<T>;
 
+/**
+ * Creates a multiple-selection state with a debounced text query on top.
+ * Requires `multiple: true`.
+ *
+ * The required `matchBy` decides which values survive the current query.
+ * Writes to the query are debounced by 250ms, so `query()` lags typing.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#autocomplete-state}
+ */
 export function createMultipleAutocompleteState<T>(
   options: MultipleAutocompleteStateOptions<T>,
 ): AutocompleteStateProperties<T> {
@@ -295,12 +313,24 @@ export function AutocompleteStateProvider<T>(
   });
 }
 
+/**
+ * Reads the nearest autocomplete state from context. Throws when there is
+ * none.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#autocomplete-state}
+ */
 export function useAutocompleteState<T>(): AutocompleteStateProperties<T> {
   const ctx = useContext(AutocompleteStateContext);
   assert(ctx, new Error('Missing <AutocompleteStateProvider>'));
   return ctx;
 }
 
+/**
+ * Passes the nearest autocomplete state to a render prop. A function child is
+ * treated as a render prop only when it declares exactly one parameter.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#autocomplete-state}
+ */
 export function AutocompleteStateChild<T>(
   props: AutocompleteStateRenderProps<T>,
 ): JSX.Element {

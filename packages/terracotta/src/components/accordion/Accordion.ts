@@ -94,6 +94,15 @@ function isAccordionMultiple<V, T extends ValidComponent = 'div'>(
   return !!props.multiple;
 }
 
+/**
+ * A set of vertically stacked sections, each of which can be expanded to
+ * reveal its content. Wraps a select state, so `defaultValue`/`value` hold the
+ * id of the open section, or an array of ids when `multiple` is set.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ */
 export function Accordion<V, T extends ValidComponent = 'div'>(
   props: AccordionProps<V, T>,
 ): JSX.Element {

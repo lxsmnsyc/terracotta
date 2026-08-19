@@ -31,6 +31,14 @@ export type ContextMenuPanelBaseProps = Prettify<
 export type ContextMenuPanelProps<T extends ValidComponent = 'div'> =
   HeadlessPropsWithRef<T, ContextMenuPanelBaseProps>;
 
+/**
+ * The floating panel of a `ContextMenu`. Traps `Tab` while open and closes on
+ * <kbd>Escape</kbd>. Position it yourself — the library sets no coordinates.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/context-menu.md}
+ */
 export function ContextMenuPanel<T extends ValidComponent = 'div'>(
   props: ContextMenuPanelProps<T>,
 ): JSX.Element {

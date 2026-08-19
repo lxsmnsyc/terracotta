@@ -38,6 +38,16 @@ export interface DisclosureStateProperties {
   toggle(): void;
 }
 
+/**
+ * Creates an open/closed state. Backs `Disclosure`, `Dialog`, `AlertDialog`,
+ * `Popover`, `ContextMenu`, `CommandBar` and the popups of `Listbox` and
+ * `Combobox`.
+ *
+ * Pass `defaultOpen` for uncontrolled state or `isOpen` for controlled; the
+ * two are mutually exclusive.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#disclosure-state}
+ */
 export function createDisclosureState(
   options: DisclosureStateOptions,
 ): DisclosureStateProperties {
@@ -130,12 +140,23 @@ export function DisclosureStateProvider(
   });
 }
 
+/**
+ * Reads the nearest disclosure state from context. Throws when there is none.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#disclosure-state}
+ */
 export function useDisclosureState(): DisclosureStateProperties {
   const ctx = useContext(DisclosureStateContext);
   assert(ctx, new Error('Missing <DisclosureStateProvider>'));
   return ctx;
 }
 
+/**
+ * Passes the nearest disclosure state to a render prop. A function child is
+ * treated as a render prop only when it declares exactly one parameter.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#disclosure-state}
+ */
 export function DisclosureStateChild(
   props: DisclosureStateRenderProps,
 ): JSX.Element {

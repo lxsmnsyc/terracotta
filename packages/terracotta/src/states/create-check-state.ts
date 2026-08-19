@@ -36,6 +36,14 @@ export interface CheckStateProperties {
   toggle(): void;
 }
 
+/**
+ * Creates a tri-state checkbox value: `true`, `false`, or `undefined` for
+ * indeterminate. Backs `Checkbox`.
+ *
+ * Pass `defaultChecked` for uncontrolled state or `checked` for controlled.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#check-state}
+ */
 export function createCheckState(
   options: CheckStateOptions,
 ): CheckStateProperties {
@@ -129,12 +137,23 @@ export function CheckStateProvider(
   });
 }
 
+/**
+ * Reads the nearest check state from context. Throws when there is none.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#check-state}
+ */
 export function useCheckState(): CheckStateProperties {
   const ctx = useContext(CheckStateContext);
   assert(ctx, new Error('Missing <CheckStateProvider>'));
   return ctx;
 }
 
+/**
+ * Passes the nearest check state to a render prop. A function child is treated
+ * as a render prop only when it declares exactly one parameter.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#check-state}
+ */
 export function CheckStateChild(props: CheckStateRenderProps): JSX.Element {
   const state = useCheckState();
   return createMemo(() => {

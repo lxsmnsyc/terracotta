@@ -19,6 +19,15 @@ const TOOLBAR_TAG = createTag('toolbar');
 export type ToolbarProps<T extends ValidComponent = 'div'> =
   HeadlessPropsWithRef<T, { horizontal?: boolean }>;
 
+/**
+ * A group of controls that share one tab stop. The arrow keys move between
+ * them, so a toolbar of ten buttons costs the keyboard user one `Tab` instead
+ * of ten.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toolbar.md}
+ */
 export function Toolbar<T extends ValidComponent = 'div'>(
   props: ToolbarProps<T>,
 ): JSX.Element {

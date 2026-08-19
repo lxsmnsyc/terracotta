@@ -58,6 +58,15 @@ function isCommandBarUncontrolled<T extends ValidComponent = 'div'>(
   return 'defaultOpen' in props;
 }
 
+/**
+ * A modal opened by a keyboard shortcut,
+ * <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>K</kbd> by default. It is a dialog, not
+ * a palette on its own: put a `Command` inside it for the searchable part.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command-bar.md}
+ */
 export function CommandBar<T extends ValidComponent = 'div'>(
   props: CommandBarProps<T>,
 ): JSX.Element {

@@ -19,6 +19,14 @@ import { COMMAND_BAR_OVERLAY_TAG } from './tags';
 export type CommandBarOverlayProps<T extends ValidComponent = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
+/**
+ * The backdrop behind a `CommandBar`. Clicking it closes the bar, so give it a
+ * size — it has no styles of its own.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command-bar.md}
+ */
 export function CommandBarOverlay<T extends ValidComponent = 'p'>(
   props: CommandBarOverlayProps<T>,
 ): JSX.Element {

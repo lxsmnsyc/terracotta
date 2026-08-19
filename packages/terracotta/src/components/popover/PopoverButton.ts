@@ -27,6 +27,14 @@ export type PopoverButtonProps<T extends ValidComponent = 'button'> =
     OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
   >;
 
+/**
+ * The trigger of a `Popover`. Carries `aria-expanded`, and `aria-controls`
+ * while the panel is mounted.
+ *
+ * Renders a `<button>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/popover.md}
+ */
 export function PopoverButton<T extends ValidComponent = 'button'>(
   props: PopoverButtonProps<T>,
 ): JSX.Element {

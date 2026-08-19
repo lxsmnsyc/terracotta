@@ -19,6 +19,14 @@ import { DIALOG_OVERLAY_TAG } from './tags';
 export type DialogOverlayProps<T extends ValidComponent = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
+/**
+ * The backdrop behind a `Dialog`. Clicking it closes the dialog, so give it a
+ * size — it has no styles of its own and renders 0x0 without them.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
+ */
 export function DialogOverlay<T extends ValidComponent = 'div'>(
   props: DialogOverlayProps<T>,
 ): JSX.Element {

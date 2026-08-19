@@ -22,6 +22,14 @@ import { ALERT_DIALOG_PANEL_TAG } from './tags';
 export type AlertDialogPanelProps<T extends ValidComponent = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
+/**
+ * The content of an `AlertDialog`. Traps `Tab` while the dialog is open and
+ * restores focus to the trigger on close.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
+ */
 export function AlertDialogPanel<T extends ValidComponent = 'div'>(
   props: AlertDialogPanelProps<T>,
 ): JSX.Element {

@@ -35,6 +35,14 @@ export type TabProps<
   T extends ValidComponent = 'div',
 > = HeadlessPropsWithRef<T, TabBaseProps<V>>;
 
+/**
+ * One tab in a `TabList`. The required `value` prop links it to the `TabPanel`
+ * with the same value.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/tabs.md}
+ */
 export function Tab<V, T extends ValidComponent = 'div'>(
   props: TabProps<V, T>,
 ): JSX.Element {

@@ -21,6 +21,14 @@ import { CHECKBOX_INDICATOR } from './tags';
 export type CheckboxIndicatorProps<T extends ValidComponent = 'button'> =
   HeadlessPropsWithRef<T, CheckStateRenderProps>;
 
+/**
+ * The control the user actually clicks. Carries `role="checkbox"` and `aria-
+ * checked`, which is `"mixed"` while the state is indeterminate.
+ *
+ * Renders a `<button>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/checkbox.md}
+ */
 export function CheckboxIndicator<T extends ValidComponent = 'button'>(
   props: CheckboxIndicatorProps<T>,
 ): JSX.Element {

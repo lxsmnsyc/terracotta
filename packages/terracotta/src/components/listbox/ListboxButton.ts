@@ -30,6 +30,14 @@ export type ListboxButtonProps<T extends ValidComponent = 'button'> =
     OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
   >;
 
+/**
+ * The trigger of a `Listbox`. Carries `aria-expanded` and `aria-haspopup`, and
+ * opens the popup with the arrow keys as well as by click.
+ *
+ * Renders a `<button>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
+ */
 export function ListboxButton<T extends ValidComponent = 'button'>(
   props: ListboxButtonProps<T>,
 ): JSX.Element {

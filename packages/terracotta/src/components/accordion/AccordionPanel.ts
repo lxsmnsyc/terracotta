@@ -26,6 +26,14 @@ export type AccordionPanelBaseProps = Prettify<
 export type AccordionPanelProps<T extends ValidComponent = 'div'> =
   HeadlessProps<T, AccordionPanelBaseProps>;
 
+/**
+ * The content revealed when its `AccordionItem` is expanded. Unmounts while
+ * collapsed unless `unmount={false}` is set.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ */
 export function AccordionPanel<T extends ValidComponent = 'div'>(
   props: AccordionPanelProps<T>,
 ): JSX.Element {

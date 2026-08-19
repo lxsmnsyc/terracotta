@@ -20,6 +20,13 @@ import { LISTBOX_LABEL_TAG } from './tags';
 export type ListboxLabelProps<T extends ValidComponent = 'label'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
 
+/**
+ * The accessible name of a `Listbox`, wired up through `aria-labelledby`.
+ *
+ * Renders a `<label>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
+ */
 export function ListboxLabel<T extends ValidComponent = 'label'>(
   props: ListboxLabelProps<T>,
 ): JSX.Element {

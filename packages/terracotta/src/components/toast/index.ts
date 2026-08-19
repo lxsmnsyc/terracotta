@@ -34,6 +34,14 @@ function useToastContext(componentName: string): ToastContextData {
 
 export type ToastProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
 
+/**
+ * One notification inside a {@link Toaster}. Carries `role="status"`, so it is
+ * announced without stealing focus.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
+ */
 export function Toast<T extends ValidComponent = 'div'>(
   props: ToastProps<T>,
 ): JSX.Element {
@@ -54,6 +62,14 @@ export function Toast<T extends ValidComponent = 'div'>(
 
 export type ToasterProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
 
+/**
+ * The region that holds the toasts. It does not read the queue for you:
+ * subscribe with {@link useToaster} and map over the result yourself.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
+ */
 export function Toaster<T extends ValidComponent = 'div'>(
   props: ToasterProps<T>,
 ): JSX.Element {
@@ -78,6 +94,13 @@ export interface ToastData<T> {
 
 export type ToasterListener<T> = (queue: ToastData<T>[]) => void;
 
+/**
+ * The queue behind a {@link Toaster}. Create one at module scope and share it,
+ * so any code can push a toast with `create`, drop one with `remove`, or empty
+ * the queue with `clear`.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
+ */
 export class ToasterStore<T> {
   private static toasterID = 0;
 
@@ -134,6 +157,13 @@ export class ToasterStore<T> {
   }
 }
 
+/**
+ * Subscribes to a {@link ToasterStore} and returns its queue as a signal. The
+ * store is passed in rather than read from context, so the same queue can be
+ * reached from anywhere in the app, including outside the component tree.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
+ */
 export function useToaster<T>(toaster: ToasterStore<T>): () => ToastData<T>[] {
   const [signal, setSignal] = createSignal(toaster.getQueue());
 

@@ -17,6 +17,13 @@ import { COMMAND_BAR_TITLE_TAG } from './tags';
 export type CommandBarTitleProps<T extends ValidComponent = 'h2'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
 
+/**
+ * The accessible name of a `CommandBar`, wired up through `aria-labelledby`.
+ *
+ * Renders an `<h2>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command-bar.md}
+ */
 export function CommandBarTitle<T extends ValidComponent = 'h2'>(
   props: CommandBarTitleProps<T>,
 ): JSX.Element {

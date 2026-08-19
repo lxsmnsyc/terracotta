@@ -8,6 +8,12 @@ interface TabGroupContextData<V> {
 
 export const TabGroupContext = createContext<TabGroupContextData<unknown>>();
 
+/**
+ * Reads the nearest `TabGroup`'s internal context, which holds the id prefix
+ * that links each tab to its panel. Throws when called outside a `TabGroup`.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/tabs.md}
+ */
 export function useTabGroupContext<V>(
   componentName: string,
 ): TabGroupContextData<V> {
