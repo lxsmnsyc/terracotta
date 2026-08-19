@@ -30,6 +30,14 @@ export type TabPanelProps<
   T extends ValidConstructor = 'div',
 > = HeadlessProps<T, TabPanelBaseProps<V>>;
 
+/**
+ * The content shown for the `Tab` with the same `value`. Unmounts while its
+ * tab is unselected unless `unmount={false}` is set.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/tabs.md}
+ */
 export function TabPanel<V, T extends ValidConstructor = 'div'>(
   props: TabPanelProps<V, T>,
 ): JSX.Element {

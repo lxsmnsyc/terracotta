@@ -13,6 +13,14 @@ import { FEED_ARTICLE_DESCRIPTION_TAG } from './tags';
 export type FeedArticleDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T>;
 
+/**
+ * The accessible description of a `FeedArticle`, wired up through `aria-
+ * describedby`.
+ *
+ * Renders a `<p>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
+ */
 export function FeedArticleDescription<T extends ValidConstructor = 'p'>(
   props: FeedArticleDescriptionProps<T>,
 ): JSX.Element {

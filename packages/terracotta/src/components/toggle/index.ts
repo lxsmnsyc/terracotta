@@ -60,6 +60,15 @@ function isToggleUncontrolled<T extends ValidConstructor = 'button'>(
   return 'defaultPressed' in props;
 }
 
+/**
+ * A two-state button, pressed or unpressed, reported through `aria-pressed`.
+ * Use it for controls that stay on until pressed again, such as bold in a text
+ * editor.
+ *
+ * Renders a `<button>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toggle.md}
+ */
 export function Toggle<T extends ValidConstructor = 'button'>(
   props: ToggleProps<T>,
 ): JSX.Element {

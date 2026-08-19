@@ -294,6 +294,15 @@ function getProps<V, T extends ValidConstructor = 'div'>(
   ]) as DynamicProps<T>;
 }
 
+/**
+ * A dropdown select: a button showing the current value, plus a popup list of
+ * options. It owns two states at once, so its callbacks are
+ * `onDisclosureChange` for the popup and `onSelectChange` for the value.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
+ */
 export function Listbox<V, T extends ValidConstructor = 'div'>(
   props: ListboxProps<V, T>,
 ): JSX.Element {

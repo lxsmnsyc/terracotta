@@ -22,6 +22,13 @@ import { CHECKBOX_LABEL } from './tags';
 export type CheckboxLabelProps<T extends ValidConstructor = 'label'> =
   HeadlessProps<T, CheckStateRenderProps>;
 
+/**
+ * The accessible name of a `Checkbox`, wired up through `aria-labelledby`.
+ *
+ * Renders a `<label>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/checkbox.md}
+ */
 export function CheckboxLabel<T extends ValidConstructor = 'label'>(
   props: CheckboxLabelProps<T>,
 ): JSX.Element {

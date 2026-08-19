@@ -24,6 +24,14 @@ import { ALERT_DIALOG_OVERLAY_TAG } from './tags';
 export type AlertDialogOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
+/**
+ * The backdrop behind an `AlertDialog`. Clicking it closes the dialog, so give
+ * it a size — it has no styles of its own and renders 0x0 without them.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
+ */
 export function AlertDialogOverlay<T extends ValidConstructor = 'div'>(
   props: AlertDialogOverlayProps<T>,
 ): JSX.Element {

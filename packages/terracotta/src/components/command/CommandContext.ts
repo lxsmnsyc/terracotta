@@ -17,6 +17,13 @@ interface CommandContextData {
 
 export const CommandContext = createContext<CommandContextData>();
 
+/**
+ * Reads the nearest `Command`'s internal context, which holds the generated
+ * ids and the focus navigator shared by its options. Throws when called
+ * outside a `Command`.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
+ */
 export function useCommandContext(componentName: string): CommandContextData {
   const context = useContext(CommandContext);
   assert(

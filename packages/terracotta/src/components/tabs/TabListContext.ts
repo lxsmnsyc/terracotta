@@ -4,6 +4,12 @@ import FocusNavigator from '../../utils/focus-navigator';
 
 export const TabListContext = createContext<FocusNavigator>();
 
+/**
+ * Reads the nearest `TabList`'s internal context, which holds the focus
+ * navigator shared by its tabs. Throws when called outside a `TabList`.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/tabs.md}
+ */
 export function useTabListContext(componentName: string): FocusNavigator {
   const context = useContext(TabListContext);
   assert(

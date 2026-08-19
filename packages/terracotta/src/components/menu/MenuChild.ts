@@ -12,6 +12,13 @@ export interface MenuChildProps {
   children?: JSX.Element | MenuChildRenderProp;
 }
 
+/**
+ * Renders the children of a `Menu` without adding an element of its own.
+ * Useful when the items come from a wrapper component that would otherwise
+ * break the parent-child relationship the menu relies on.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
+ */
 export function MenuChild(props: MenuChildProps): JSX.Element {
   return createMemo(() => {
     const body = props.children;

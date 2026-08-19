@@ -13,6 +13,13 @@ import { FEED_ARTICLE_LABEL_TAG } from './tags';
 export type FeedArticleLabelProps<T extends ValidConstructor = 'span'> =
   HeadlessProps<T>;
 
+/**
+ * The accessible name of a `FeedArticle`, wired up through `aria-labelledby`.
+ *
+ * Renders a `<span>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
+ */
 export function FeedArticleLabel<T extends ValidConstructor = 'span'>(
   props: FeedArticleLabelProps<T>,
 ): JSX.Element {

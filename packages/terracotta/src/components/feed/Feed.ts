@@ -21,6 +21,17 @@ export interface FeedBaseProps {
 export type FeedProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, FeedBaseProps>;
 
+/**
+ * A stream of articles with the feed keyboard pattern: <kbd>Page Down</kbd>
+ * and <kbd>Page Up</kbd> move between articles,
+ * <kbd>Ctrl</kbd>+<kbd>Home</kbd> and <kbd>Ctrl</kbd>+<kbd>End</kbd> jump to
+ * the ends. Set `size` to the total number of articles, or `-1` when it is
+ * unknown, and `busy` while more are loading.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
+ */
 export function Feed<T extends ValidConstructor = 'div'>(
   props: FeedProps<T>,
 ): JSX.Element {

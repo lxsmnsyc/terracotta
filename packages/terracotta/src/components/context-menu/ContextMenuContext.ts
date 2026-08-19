@@ -10,6 +10,13 @@ interface ContextMenuContextData {
 
 export const ContextMenuContext = createContext<ContextMenuContextData>();
 
+/**
+ * Reads the nearest `ContextMenu`'s internal context, which holds the
+ * generated ids for its boundary and panel. Throws when called outside a
+ * `ContextMenu`.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/context-menu.md}
+ */
 export function useContextMenuContext(
   componentName: string,
 ): ContextMenuContextData {

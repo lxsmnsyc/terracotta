@@ -18,6 +18,13 @@ interface ComboboxContextData {
 
 export const ComboboxContext = createContext<ComboboxContextData>();
 
+/**
+ * Reads the nearest `Combobox`'s internal context, which holds the generated
+ * ids and the focus navigator shared by its options. Throws when called
+ * outside a `Combobox`.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
+ */
 export function useComboboxContext(componentName: string): ComboboxContextData {
   const context = useContext(ComboboxContext);
   assert(

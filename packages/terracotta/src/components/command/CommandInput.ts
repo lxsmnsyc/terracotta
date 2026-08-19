@@ -24,6 +24,15 @@ import { COMMAND_INPUT_TAG } from './tags';
 export type CommandInputProps<T extends ValidConstructor = 'input'> =
   HeadlessPropsWithRef<T>;
 
+/**
+ * The query field of a `Command`. Typing sets the query, which is debounced by
+ * 250ms, and the arrow keys move the active option without moving focus out of
+ * the input.
+ *
+ * Renders an `<input>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
+ */
 export function CommandInput<T extends ValidConstructor = 'input'>(
   props: CommandInputProps<T>,
 ): JSX.Element {

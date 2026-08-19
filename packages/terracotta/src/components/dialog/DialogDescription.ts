@@ -22,6 +22,14 @@ import { DIALOG_DESCRIPTION_TAG } from './tags';
 export type DialogDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
 
+/**
+ * The accessible description of a `Dialog`, wired up through `aria-
+ * describedby`.
+ *
+ * Renders a `<p>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
+ */
 export function DialogDescription<T extends ValidConstructor = 'p'>(
   props: DialogDescriptionProps<T>,
 ): JSX.Element {

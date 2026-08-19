@@ -20,6 +20,13 @@ import { COMMAND_LABEL_TAG } from './tags';
 export type CommandLabelProps<T extends ValidConstructor = 'label'> =
   HeadlessProps<T>;
 
+/**
+ * The accessible name of a `Command`, wired up through `aria-labelledby`.
+ *
+ * Renders a `<label>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
+ */
 export function CommandLabel<T extends ValidConstructor = 'label'>(
   props: CommandLabelProps<T>,
 ): JSX.Element {

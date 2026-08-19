@@ -66,6 +66,14 @@ function isRadioGroupUncontrolled<V, T extends ValidConstructor = 'div'>(
   return 'defaultValue' in props;
 }
 
+/**
+ * A single-choice group. The whole group is one tab stop; the arrow keys move
+ * between options and select as they go.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
+ */
 export function RadioGroup<V, T extends ValidConstructor = 'div'>(
   props: RadioGroupProps<V, T>,
 ): JSX.Element {

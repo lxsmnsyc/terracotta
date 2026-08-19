@@ -23,6 +23,12 @@ export interface SelectOptionStateProperties {
   disabled(): boolean;
 }
 
+/**
+ * Creates one option's view of the nearest select state, so the option can ask
+ * whether it is selected or active without knowing about the others.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-option-state}
+ */
 export function createSelectOptionState<T>(
   options: SelectOptionStateOptions<T>,
 ): SelectOptionStateProperties {
@@ -78,12 +84,24 @@ export function SelectOptionStateProvider(
   });
 }
 
+/**
+ * Reads the nearest select option state from context. Throws when there is
+ * none.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-option-state}
+ */
 export function useSelectOptionState(): SelectOptionStateProperties {
   const ctx = useContext(SelectOptionStateContext);
   assert(ctx, new Error('Missing <SelectOptionStateProvider>'));
   return ctx;
 }
 
+/**
+ * Passes the nearest select option state to a render prop. A function child is
+ * treated as a render prop only when it declares exactly one parameter.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-option-state}
+ */
 export function SelectOptionStateChild(
   props: SelectOptionStateRenderProps,
 ): JSX.Element {

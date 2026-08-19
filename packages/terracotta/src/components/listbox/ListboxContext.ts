@@ -15,6 +15,13 @@ interface ListboxContextData {
 
 export const ListboxContext = createContext<ListboxContextData>();
 
+/**
+ * Reads the nearest `Listbox`'s internal context, which holds the generated
+ * ids for its button, label and options. Throws when called outside a
+ * `Listbox`.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
+ */
 export function useListboxContext(componentName: string): ListboxContextData {
   const context = useContext(ListboxContext);
   assert(

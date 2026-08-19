@@ -24,6 +24,14 @@ import { POPOVER_OVERLAY_TAG } from './tags';
 export type PopoverOverlayProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
+/**
+ * The backdrop behind a `Popover`. Clicking it closes the popover, so give it
+ * a size — it has no styles of its own.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/popover.md}
+ */
 export function PopoverOverlay<T extends ValidConstructor = 'div'>(
   props: PopoverOverlayProps<T>,
 ): JSX.Element {

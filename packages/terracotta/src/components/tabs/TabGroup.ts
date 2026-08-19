@@ -67,6 +67,15 @@ function isTabGroupUncontrolled<V, T extends ValidConstructor = 'div'>(
   return 'defaultValue' in props;
 }
 
+/**
+ * A tabbed interface. The `value` is the id of the selected tab. By default
+ * the arrow keys select as they move; set `manual` so they only move focus and
+ * <kbd>Enter</kbd> or <kbd>Space</kbd> selects.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/tabs.md}
+ */
 export function TabGroup<V, T extends ValidConstructor = 'div'>(
   props: TabGroupProps<V, T>,
 ): JSX.Element {

@@ -41,6 +41,14 @@ export type SelectOptionProps<
   OmitAndMerge<SelectOptionBaseProps<V>, ButtonProps<T>>
 >;
 
+/**
+ * One option of a `Select`. The required `value` prop is what selecting it
+ * produces.
+ *
+ * Renders an `<li>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/select.md}
+ */
 export function SelectOption<V, T extends ValidConstructor = 'li'>(
   props: SelectOptionProps<V, T>,
 ): JSX.Element {

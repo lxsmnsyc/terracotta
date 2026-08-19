@@ -33,6 +33,14 @@ export type PopoverPanelBaseProps = Prettify<
 export type PopoverPanelProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, PopoverPanelBaseProps>;
 
+/**
+ * The floating panel of a `Popover`. Position it yourself — the library sets
+ * no coordinates.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/popover.md}
+ */
 export function PopoverPanel<T extends ValidConstructor = 'div'>(
   props: PopoverPanelProps<T>,
 ): JSX.Element {

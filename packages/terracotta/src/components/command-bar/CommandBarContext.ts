@@ -12,6 +12,13 @@ interface CommandBarContextData {
 
 export const CommandBarContext = createContext<CommandBarContextData>();
 
+/**
+ * Reads the nearest `CommandBar`'s internal context, which holds the generated
+ * ids for its title, description and panel. Throws when called outside a
+ * `CommandBar`.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command-bar.md}
+ */
 export function useCommandBarContext(
   componentName: string,
 ): CommandBarContextData {

@@ -48,6 +48,14 @@ export type CommandOptionProps<
   OmitAndMerge<CommandOptionBaseProps<V>, ButtonProps<T>>
 >;
 
+/**
+ * One result in a `Command`. Carries `tc-matches` while it matches the current
+ * query.
+ *
+ * Renders an `<li>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
+ */
 export function CommandOption<V, T extends ValidConstructor = 'li'>(
   props: CommandOptionProps<V, T>,
 ): JSX.Element {

@@ -15,6 +15,14 @@ import { FEED_ARTICLE_TAG } from './tags';
 export type FeedArticleProps<T extends ValidConstructor = 'article'> =
   HeadlessPropsWithRef<T, { index: number }>;
 
+/**
+ * One entry in a `Feed`. The required `index` prop is its zero-based position,
+ * which becomes `aria-posinset`.
+ *
+ * Renders an `<article>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
+ */
 export function FeedArticle<T extends ValidConstructor = 'article'>(
   props: FeedArticleProps<T>,
 ): JSX.Element {

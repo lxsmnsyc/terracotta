@@ -36,6 +36,14 @@ export type AccordionItemProps<
   T extends ValidConstructor = 'div',
 > = HeadlessProps<T, AccordionItemprops<V>>;
 
+/**
+ * One section of an `Accordion`. The required `value` prop is the id this
+ * section is selected by.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ */
 export function AccordionItem<V, T extends ValidConstructor = 'div'>(
   props: AccordionItemProps<V, T>,
 ): JSX.Element {

@@ -104,6 +104,14 @@ type TransitionStates =
   | 'leave-from'
   | 'leave-to';
 
+/**
+ * A {@link Transition} that follows its parent transition instead of its own
+ * `show` prop, so several elements can animate together on different timings.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/transition.md}
+ */
 export function TransitionChild<T extends ValidConstructor = 'div'>(
   props: TransitionChildProps<T>,
 ): JSX.Element {
@@ -250,6 +258,15 @@ export type TransitionProps<T extends ValidConstructor = 'div'> = Prettify<
   TransitionRootBaseProps & TransitionChildProps<T>
 >;
 
+/**
+ * Applies enter and leave classes around a `show` prop, and keeps its children
+ * mounted until the leave transition finishes. It only adds and removes
+ * classes; the animation itself is yours to write.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/transition.md}
+ */
 export function Transition<T extends ValidConstructor = 'div'>(
   props: TransitionProps<T>,
 ): JSX.Element {

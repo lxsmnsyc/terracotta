@@ -31,6 +31,14 @@ export type DisclosureButtonProps<T extends ValidConstructor = 'button'> =
     OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
   >;
 
+/**
+ * The control that toggles a `Disclosure`. Carries `aria-expanded`, and `aria-
+ * controls` while the panel is mounted.
+ *
+ * Renders a `<button>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/disclosure.md}
+ */
 export function DisclosureButton<T extends ValidConstructor = 'button'>(
   props: DisclosureButtonProps<T>,
 ): JSX.Element {
