@@ -61,6 +61,15 @@ function isDialogUncontrolled<T extends ValidConstructor = 'div'>(
   return 'defaultOpen' in props;
 }
 
+/**
+ * A modal dialog. While it is open the panel traps `Tab`, <kbd>Escape</kbd>
+ * closes it, and focus returns to whatever opened it. Rendering it into a
+ * portal is up to you.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
+ */
 export function Dialog<T extends ValidConstructor = 'div'>(
   props: DialogProps<T>,
 ): JSX.Element {

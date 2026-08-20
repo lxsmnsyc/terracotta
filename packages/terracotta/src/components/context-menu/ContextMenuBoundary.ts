@@ -26,6 +26,14 @@ import { CONTEXT_MENU_BOUNDARY_TAG } from './tags';
 export type ContextMenuBoundaryProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
+/**
+ * The region that listens for right-clicks. Opening the menu suppresses the
+ * browser's own context menu inside this element only.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/context-menu.md}
+ */
 export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
   props: ContextMenuBoundaryProps<T>,
 ): JSX.Element {

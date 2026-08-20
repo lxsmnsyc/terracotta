@@ -4,6 +4,12 @@ import FocusNavigator from '../../utils/focus-navigator';
 
 export const AccordionContext = createContext<FocusNavigator>();
 
+/**
+ * Reads the nearest `Accordion`'s internal context, which holds the focus
+ * navigator shared by its buttons. Throws when called outside an `Accordion`.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ */
 export function useAccordionContext(componentName: string): FocusNavigator {
   const context = useContext(AccordionContext);
   assert(

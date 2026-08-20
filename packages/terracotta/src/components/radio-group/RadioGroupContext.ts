@@ -8,6 +8,13 @@ interface RadioGroupContextData {
 
 export const RadioGroupContext = createContext<RadioGroupContextData>();
 
+/**
+ * Reads the nearest `RadioGroupOption`'s internal context, which holds the
+ * generated ids for its label and description. Throws when called outside a
+ * `RadioGroupOption`.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
+ */
 export function useRadioGroupContext(
   componentName: string,
 ): RadioGroupContextData {

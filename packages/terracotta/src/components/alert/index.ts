@@ -13,6 +13,15 @@ const ALERT_TAG = createTag('alert');
 
 export type AlertProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
 
+/**
+ * A live region for a message that needs attention as soon as it appears, such
+ * as a form error. Assistive technology announces its content without moving
+ * focus.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert.md}
+ */
 export function Alert<T extends ValidConstructor = 'div'>(
   props: AlertProps<T>,
 ): JSX.Element {

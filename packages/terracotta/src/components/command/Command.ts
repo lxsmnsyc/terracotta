@@ -114,6 +114,15 @@ function isCommandUncontrolled<V, T extends ValidConstructor = 'div'>(
   return 'defaultValue' in props;
 }
 
+/**
+ * An always-visible filtered listbox — the body of a command palette. Same
+ * autocomplete state as `Combobox`, but with no popup of its own, so it can be
+ * dropped inside a `CommandBar` or rendered inline.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
+ */
 export function Command<V, T extends ValidConstructor = 'div'>(
   props: CommandProps<V, T>,
 ): JSX.Element {

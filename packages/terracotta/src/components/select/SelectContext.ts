@@ -9,6 +9,12 @@ interface SelectContextData {
 
 export const SelectContext = createContext<SelectContextData>();
 
+/**
+ * Reads the nearest `Select`'s internal context, which holds the focus
+ * navigator shared by its options. Throws when called outside a `Select`.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/select.md}
+ */
 export function useSelectContext(componentName: string): SelectContextData {
   const context = useContext(SelectContext);
   assert(

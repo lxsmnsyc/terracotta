@@ -8,6 +8,13 @@ interface AccordionItemContextData {
 
 export const AccordionItemContext = createContext<AccordionItemContextData>();
 
+/**
+ * Reads the nearest `AccordionItem`'s internal context, which holds the
+ * generated ids that link its button and panel. Throws when called outside an
+ * `AccordionItem`.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ */
 export function useAccordionItemContext(
   componentName: string,
 ): AccordionItemContextData {

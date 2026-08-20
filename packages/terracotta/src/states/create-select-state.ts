@@ -44,6 +44,16 @@ export type SingleSelectStateOptions<T> =
   | SingleSelectStateControlledOptions<T>
   | SingleSelectStateUncontrolledOptions<T>;
 
+/**
+ * Creates a selection state that holds at most one value, and tracks which
+ * value is active. Backs `Accordion`, `Select`, `Listbox`, `RadioGroup` and
+ * `TabGroup`.
+ *
+ * Pass `by` when the values are objects, since the default comparison is by
+ * reference.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-state}
+ */
 export function createSingleSelectState<T>(
   options: SingleSelectStateOptions<T>,
 ): SelectStateProperties<T> {
@@ -137,6 +147,15 @@ export type MultipleSelectStateOptions<T> =
   | MultipleSelectStateControlledOptions<T>
   | MultipleSelectStateUncontrolledOptions<T>;
 
+/**
+ * Creates a selection state that holds an array of values, and tracks which
+ * value is active. Requires `multiple: true`.
+ *
+ * Pass `by` when the values are objects, since the default comparison is by
+ * reference.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-state}
+ */
 export function createMultipleSelectState<T>(
   options: MultipleSelectStateOptions<T>,
 ): SelectStateProperties<T> {
@@ -255,12 +274,23 @@ export function SelectStateProvider<T>(
   });
 }
 
+/**
+ * Reads the nearest select state from context. Throws when there is none.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-state}
+ */
 export function useSelectState<T>(): SelectStateProperties<T> {
   const ctx = useContext(SelectStateContext);
   assert(ctx, new Error('Missing <SelectStateProvider>'));
   return ctx;
 }
 
+/**
+ * Passes the nearest select state to a render prop. A function child is
+ * treated as a render prop only when it declares exactly one parameter.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-state}
+ */
 export function SelectStateChild<T>(
   props: SelectStateRenderProps<T>,
 ): JSX.Element {

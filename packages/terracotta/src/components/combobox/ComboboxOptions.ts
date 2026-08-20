@@ -46,6 +46,14 @@ export type ComboboxOptionsProps<
   T extends ValidConstructor = 'ul',
 > = HeadlessPropsWithRef<T, ComboboxOptionsBaseProps<V>>;
 
+/**
+ * The popup list of a `Combobox`. Unmounts while closed unless
+ * `unmount={false}` is set.
+ *
+ * Renders a `<ul>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
+ */
 export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
   props: ComboboxOptionsProps<V, T>,
 ): JSX.Element {

@@ -30,6 +30,14 @@ export type PopoverButtonProps<T extends ValidConstructor = 'button'> =
     OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
   >;
 
+/**
+ * The trigger of a `Popover`. Carries `aria-expanded`, and `aria-controls`
+ * while the panel is mounted.
+ *
+ * Renders a `<button>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/popover.md}
+ */
 export function PopoverButton<T extends ValidConstructor = 'button'>(
   props: PopoverButtonProps<T>,
 ): JSX.Element {

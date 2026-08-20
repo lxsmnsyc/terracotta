@@ -26,6 +26,14 @@ import { COMMAND_BAR_PANEL_TAG } from './tags';
 export type CommandBarPanelProps<T extends ValidConstructor = 'div'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
+/**
+ * The content of a `CommandBar`. Traps `Tab` while open and restores focus on
+ * close.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command-bar.md}
+ */
 export function CommandBarPanel<T extends ValidConstructor = 'div'>(
   props: CommandBarPanelProps<T>,
 ): JSX.Element {

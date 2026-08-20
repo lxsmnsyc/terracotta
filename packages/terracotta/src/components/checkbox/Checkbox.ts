@@ -49,6 +49,15 @@ function isCheckboxUncontrolled<T extends ValidConstructor = 'div'>(
   return 'defaultChecked' in props;
 }
 
+/**
+ * A checkbox that can be checked, unchecked, or indeterminate. It is a wrapper
+ * only: the tickable control is `CheckboxIndicator`, and the state lives in
+ * `defaultChecked`/`checked`, where `undefined` means indeterminate.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/checkbox.md}
+ */
 export function Checkbox<T extends ValidConstructor = 'div'>(
   props: CheckboxProps<T>,
 ): JSX.Element {

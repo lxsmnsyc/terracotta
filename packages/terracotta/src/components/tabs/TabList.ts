@@ -27,6 +27,14 @@ export type TabListProps<
   T extends ValidConstructor = 'div',
 > = HeadlessPropsWithRef<T, SelectStateRenderProps<V>>;
 
+/**
+ * The row of tabs in a `TabGroup`, and the element that owns their arrow-key
+ * navigation.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/tabs.md}
+ */
 export function TabList<V, T extends ValidConstructor = 'div'>(
   props: TabListProps<V, T>,
 ): JSX.Element {

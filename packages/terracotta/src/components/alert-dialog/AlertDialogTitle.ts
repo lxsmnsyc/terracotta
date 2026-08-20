@@ -22,6 +22,13 @@ import { ALERT_DIALOG_TITLE_TAG } from './tags';
 export type AlertDialogTitleProps<T extends ValidConstructor = 'h2'> =
   HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
 
+/**
+ * The accessible name of an `AlertDialog`, wired up through `aria-labelledby`.
+ *
+ * Renders an `<h2>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
+ */
 export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
   props: AlertDialogTitleProps<T>,
 ): JSX.Element {

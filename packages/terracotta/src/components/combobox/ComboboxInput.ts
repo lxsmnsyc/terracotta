@@ -26,6 +26,15 @@ import { useComboboxContext } from './ComboboxContext';
 export type ComboboxInputProps<T extends ValidConstructor = 'input'> =
   HeadlessPropsWithRef<T>;
 
+/**
+ * The text field of a `Combobox`. Typing sets the query, which is debounced by
+ * 250ms, and the arrow keys move the active option through `aria-
+ * activedescendant` while focus stays in the input.
+ *
+ * Renders an `<input>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
+ */
 export function ComboboxInput<T extends ValidConstructor = 'input'>(
   props: ComboboxInputProps<T>,
 ): JSX.Element {

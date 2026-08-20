@@ -13,6 +13,14 @@ import { RADIO_GROUP_LABEL_TAG } from './tags';
 export type RadioGroupLabelProps<T extends ValidConstructor = 'label'> =
   HeadlessProps<T>;
 
+/**
+ * The accessible name of a `RadioGroup` or of one `RadioGroupOption`,
+ * depending on which it is nested in. Wired up through `aria-labelledby`.
+ *
+ * Renders a `<label>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
+ */
 export function RadioGroupLabel<T extends ValidConstructor = 'label'>(
   props: RadioGroupLabelProps<T>,
 ): JSX.Element {

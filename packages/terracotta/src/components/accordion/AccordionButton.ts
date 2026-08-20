@@ -34,6 +34,15 @@ export type AccordionButtonProps<T extends ValidConstructor = 'button'> =
     OmitAndMerge<SelectOptionStateRenderProps, ButtonProps<T>>
   >;
 
+/**
+ * The control that expands and collapses its `AccordionItem`. Carries `aria-
+ * expanded` and `aria-controls`, and takes part in the accordion's arrow-key
+ * navigation.
+ *
+ * Renders a `<button>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ */
 export function AccordionButton<T extends ValidConstructor = 'button'>(
   props: AccordionButtonProps<T>,
 ): JSX.Element {

@@ -22,6 +22,14 @@ import { COMMAND_BAR_DESCRIPTION_TAG } from './tags';
 export type CommandBarDescriptionProps<T extends ValidConstructor = 'p'> =
   HeadlessProps<T, DisclosureStateRenderProps>;
 
+/**
+ * The accessible description of a `CommandBar`, wired up through `aria-
+ * describedby`.
+ *
+ * Renders a `<p>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command-bar.md}
+ */
 export function CommandBarDescription<T extends ValidConstructor = 'p'>(
   props: CommandBarDescriptionProps<T>,
 ): JSX.Element {
