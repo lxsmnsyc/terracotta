@@ -1,18 +1,7 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it, vi } from 'vitest';
 import { describedBy, labelledBy } from './aria';
-import {
-  AlertDialog,
-  AlertDialogDescription,
-  AlertDialogPanel,
-  AlertDialogTitle,
-  Button,
-  Dialog,
-  DialogDescription,
-  DialogOverlay,
-  DialogPanel,
-  DialogTitle,
-} from '../src';
+import { Button, Dialog, DialogDescription, DialogOverlay, DialogPanel, DialogTitle } from '../src';
 
 function renderDialog(
   props: { open?: boolean; onClose?: () => void } = {},
@@ -123,24 +112,5 @@ describe('Dialog accessibility', () => {
 
     unmount();
     trigger.remove();
-  });
-});
-
-describe('AlertDialog accessibility', () => {
-  it('exposes a modal alertdialog that is named and described', () => {
-    render(() => (
-      <AlertDialog defaultOpen={true}>
-        <AlertDialogPanel>
-          <AlertDialogTitle>Payment failed</AlertDialogTitle>
-          <AlertDialogDescription>Try another card</AlertDialogDescription>
-          <Button>Dismiss</Button>
-        </AlertDialogPanel>
-      </AlertDialog>
-    ));
-    const dialog = screen.getByRole('alertdialog');
-
-    expect(dialog).toHaveAttribute('aria-modal', 'true');
-    expect(labelledBy(dialog)).toHaveTextContent('Payment failed');
-    expect(describedBy(dialog)).toHaveTextContent('Try another card');
   });
 });

@@ -4,7 +4,7 @@ import assert from '../utils/assert';
 
 export interface InputStateControlledOptions {
   value: string | undefined;
-  disabled?: string;
+  disabled?: boolean;
   onChange?: (state?: string) => void;
 }
 
@@ -76,6 +76,13 @@ export interface InputStateProviderProps extends InputStateRenderProps {
 
 const InputStateContext = createContext<InputStateProperties>();
 
+/**
+ * Publishes an input state to its descendants, so `useInputState` and
+ * `InputStateChild` can reach it. No component in the library creates an input
+ * state, so this is the only way to make one available to a subtree.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#input-state}
+ */
 export function InputStateProvider(props: InputStateProviderProps): JSX.Element {
   return createComponent(InputStateContext.Provider, {
     value: props.state,

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { Button, Popover, PopoverButton, PopoverPanel } from '../src';
+import { Button, Popover, PopoverButton, PopoverOverlay, PopoverPanel } from '../src';
 
 function renderPopover(
   props: { open?: boolean; disabled?: boolean } = {},
@@ -95,5 +95,58 @@ describe('Popover accessibility', () => {
     button.click();
 
     expect(button).toHaveAttribute('aria-expanded', 'false');
+  });
+});
+
+describe('PopoverOverlay', () => {
+  it('closes the popover when clicked', () => {
+    render(() => (
+      <Popover defaultOpen>
+        <PopoverButton>Options</PopoverButton>
+        <PopoverOverlay data-testid="overlay" />
+        <PopoverPanel data-testid="panel">
+          <Button>Rename</Button>
+        </PopoverPanel>
+      </Popover>
+    ));
+
+    fireEvent.click(screen.getByTestId('overlay'));
+
+    expect(screen.queryByTestId('panel')).not.toBeInTheDocument();
+  });
+
+  it('carries `tc-expanded` while the popover is open', () => {
+    render(() => (
+      <Popover defaultOpen>
+        <PopoverButton>Options</PopoverButton>
+        <PopoverOverlay data-testid="overlay" />
+        <PopoverPanel data-testid="panel">
+          <Button>Rename</Button>
+        </PopoverPanel>
+      </Popover>
+    ));
+
+    expect(screen.getByTestId('overlay')).toHaveAttribute('tc-expanded');
+  });
+
+  it('stays mounted while the popover is closed, and reports the state', () => {
+    render(() => (
+      <Popover defaultOpen={false}>
+        <PopoverButton>Options</PopoverButton>
+        <PopoverOverlay data-testid="overlay" />
+        <PopoverPanel data-testid="panel">
+          <Button>Rename</Button>
+        </PopoverPanel>
+      </Popover>
+    ));
+
+    // Unlike the panel, the overlay is never unmounted. `tc-expanded` is
+    // present only while open, so `[tc-expanded]` is the hook for showing it.
+    // An overlay left visible while closed would swallow clicks on the page.
+    expect(screen.getByTestId('overlay')).not.toHaveAttribute('tc-expanded');
+  });
+
+  it('requires a surrounding Popover', () => {
+    expect(() => render(() => <PopoverOverlay />)).toThrow(/must be used inside a <Popover>/);
   });
 });

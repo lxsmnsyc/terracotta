@@ -1,4 +1,3 @@
-import assert from './assert';
 import {
   focusFirst,
   focusLast,
@@ -75,7 +74,13 @@ export default class FocusNavigator {
 
   setNextChecked(loop: boolean): void {
     if (this.internalRef instanceof HTMLElement) {
-      assert(this.current, new Error('missing current ref'));
+      // Nothing is current when the effect that would have set it ran before
+      // the popup element existed. Start from the top rather than throwing, so
+      // the very first arrow key still moves.
+      if (!this.current) {
+        this.setFirstChecked();
+        return;
+      }
       const current = focusNext(
         this.query(this.internalRef),
         this.current,
@@ -90,7 +95,11 @@ export default class FocusNavigator {
 
   setPrevChecked(loop: boolean): void {
     if (this.internalRef instanceof HTMLElement) {
-      assert(this.current, new Error('missing current ref'));
+      // As in `setNextChecked`, but arriving from the other end.
+      if (!this.current) {
+        this.setLastChecked();
+        return;
+      }
       const current = focusPrev(
         this.query(this.internalRef),
         this.current,

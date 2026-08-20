@@ -19,6 +19,9 @@ export type MenuProps<T extends ValidConstructor = 'ul'> = HeadlessPropsWithRef<
  * A menu of actions, navigated with the arrow keys and type-ahead. It has no
  * open state of its own; put it inside a `Popover` or `ContextMenu` for that.
  *
+ * Per the ARIA menu pattern every item sits at `tabindex="-1"`, so the menu has
+ * no tab stop and you must move focus to an item yourself when it appears.
+ *
  * Renders a `<div>` by default.
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}

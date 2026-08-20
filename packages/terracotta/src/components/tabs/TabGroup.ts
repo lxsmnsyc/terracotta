@@ -13,6 +13,7 @@ import type {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -56,9 +57,9 @@ function isTabGroupUncontrolled<V, T extends ValidConstructor = 'div'>(
 }
 
 /**
- * A tabbed interface. The `value` is the id of the selected tab. By default
- * the arrow keys select as they move; set `manual` so they only move focus and
- * <kbd>Enter</kbd> or <kbd>Space</kbd> selects.
+ * A tabbed interface. The `value` is the id of the selected tab, and the
+ * arrow keys select as they move. The `horizontal` prop is required: it picks
+ * which arrow keys navigate, and sets `aria-orientation`.
  *
  * Renders a `<div>` by default.
  *
@@ -70,6 +71,7 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
   return createMemo(() => {
     const ownerID = createUniqueId();
     const state = createSingleSelectState(props);
+    const [, setInternalRef] = createForwardRef(props);
 
     const ids = new Map<V, number>();
 
@@ -97,6 +99,7 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
             createHasSelectedState(() => state.hasSelected()),
             createHasActiveState(() => state.hasActive()),
             {
+              ref: setInternalRef,
               get children() {
                 return createComponent(SelectStateProvider, {
                   state,

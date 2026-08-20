@@ -30,7 +30,8 @@ export interface AutocompleteStateProperties<T> {
 export interface SingleAutocompleteStateControlledOptions<T> {
   multiple?: false;
   toggleable?: boolean;
-  value: T;
+  /** `undefined` means nothing is selected, which is also what `toggleable` produces. */
+  value: T | undefined;
   matchBy: (value: T, query: string) => boolean;
   onChange?: (value?: T) => void;
   disabled?: boolean;
@@ -40,7 +41,8 @@ export interface SingleAutocompleteStateControlledOptions<T> {
 export interface SingleAutocompleteStateUncontrolledOptions<T> {
   multiple?: false;
   toggleable?: boolean;
-  defaultValue: T;
+  /** `undefined` starts with nothing selected. */
+  defaultValue: T | undefined;
   matchBy: (value: T, query: string) => boolean;
   onChange?: (value?: T) => void;
   disabled?: boolean;

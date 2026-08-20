@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@solidjs/testing-library';
 import { describe, expect, it, vi } from 'vitest';
 import { pressKeyOnFocused } from './aria';
-import { Menu, MenuItem } from '../src';
+import { Menu, MenuChild, MenuItem } from '../src';
 
 const ITEMS = ['Cut', 'Copy', 'Paste'];
 
@@ -98,5 +98,48 @@ describe('Menu accessibility', () => {
     fireEvent.keyDown(getItem('Cut'), { key: 'Enter' });
 
     expect(onClick).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('MenuChild', () => {
+  it('passes a disabled accessor to its render prop', () => {
+    render(() => (
+      <Menu>
+        <MenuItem>
+          <MenuChild disabled>
+            {(state) => <span>{state.disabled() ? 'off' : 'on'}</span>}
+          </MenuChild>
+        </MenuItem>
+      </Menu>
+    ));
+
+    expect(screen.getByText('off')).toBeInTheDocument();
+  });
+
+  it('reports its own disabled prop, not the surrounding item one', () => {
+    render(() => (
+      <Menu>
+        <MenuItem disabled>
+          <MenuChild>{(state) => <span>{state.disabled() ? 'off' : 'on'}</span>}</MenuChild>
+        </MenuItem>
+      </Menu>
+    ));
+
+    // The item is disabled, the child is not, and MenuChild answers for itself.
+    expect(screen.getByText('on')).toBeInTheDocument();
+  });
+
+  it('renders plain children unchanged and adds no element of its own', () => {
+    render(() => (
+      <Menu>
+        <MenuItem>
+          <MenuChild>Cut</MenuChild>
+        </MenuItem>
+      </Menu>
+    ));
+    const item = screen.getByRole('menuitem', { name: 'Cut' });
+
+    expect(item.children).toHaveLength(0);
+    expect(item).toHaveTextContent('Cut');
   });
 });

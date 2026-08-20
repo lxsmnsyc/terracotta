@@ -72,10 +72,16 @@ export type {
   InputStateControlledOptions,
   InputStateOptions,
   InputStateProperties,
+  InputStateProviderProps,
   InputStateRenderProps,
   InputStateUncontrolledOptions,
 } from './states/create-input-state';
-export { InputStateChild, useInputState, createInputState } from './states/create-input-state';
+export {
+  InputStateChild,
+  InputStateProvider,
+  createInputState,
+  useInputState,
+} from './states/create-input-state';
 export type {
   SelectOptionStateOptions,
   SelectOptionStateProperties,

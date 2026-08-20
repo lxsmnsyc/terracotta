@@ -62,7 +62,7 @@ export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
         id: context.boundaryID,
         ref: setInternalRef,
         get 'aria-controls'() {
-          return state.isOpen() && context.panelID;
+          return state.isOpen() ? context.panelID : undefined;
         },
       },
       createDisabledState(() => state.disabled()),

@@ -136,6 +136,11 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
           }
         };
 
+        // One enter per show cycle. Without this the effect re-running while
+        // already shown — which any change to a transition class prop does —
+        // would restart the animation from `enterFrom`.
+        initial = false;
+
         if (props.beforeEnter) {
           props.beforeEnter();
         }
@@ -179,6 +184,8 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
         removeClassList(element, leave);
         removeClassList(element, leaveTo);
         setVisible(false);
+        // Armed again, so the next show runs its enter transition.
+        initial = true;
         if (transitionParent) {
           transitionParent.unregister();
         }

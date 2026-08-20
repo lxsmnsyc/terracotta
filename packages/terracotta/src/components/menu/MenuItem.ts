@@ -6,6 +6,7 @@ import type {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import { createARIADisabledState, createDisabledState } from '../../utils/state-props';
 import { Button } from '../button';
@@ -29,6 +30,8 @@ export type MenuItemProps<T extends ValidConstructor = 'li'> = HeadlessPropsWith
 export function MenuItem<T extends ValidConstructor = 'li'>(props: MenuItemProps<T>): JSX.Element {
   const context = useMenuContext('MenuItem');
 
+  const [, setInternalRef] = createForwardRef(props);
+
   return createComponent(
     Button,
     mergeProps(
@@ -40,6 +43,7 @@ export function MenuItem<T extends ValidConstructor = 'li'>(props: MenuItemProps
         },
         role: 'menuitem',
         tabindex: -1,
+        ref: setInternalRef,
       },
       createDisabledState(() => props.disabled),
       createARIADisabledState(() => props.disabled),
