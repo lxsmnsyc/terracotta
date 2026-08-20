@@ -1,5 +1,11 @@
 # terracotta
 
+## 1.1.2
+
+### Patch Changes
+
+- fix ref forwarding, tab group id, etc
+
 ## 1.1.1
 
 ### Patch Changes
