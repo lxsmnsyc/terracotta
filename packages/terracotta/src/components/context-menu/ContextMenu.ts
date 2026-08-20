@@ -1,10 +1,5 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   DisclosureStateControlledOptions,
@@ -16,11 +11,7 @@ import {
   createDisclosureState,
 } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -35,15 +26,19 @@ export type ContextMenuControlledBaseProps = Prettify<
   DisclosureStateControlledOptions & DisclosureStateRenderProps
 >;
 
-export type ContextMenuControlledProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, ContextMenuControlledBaseProps>;
+export type ContextMenuControlledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  ContextMenuControlledBaseProps
+>;
 
 export type ContextMenuUncontrolledBaseProps = Prettify<
   DisclosureStateUncontrolledOptions & DisclosureStateRenderProps
 >;
 
-export type ContextMenuUncontrolledProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, ContextMenuUncontrolledBaseProps>;
+export type ContextMenuUncontrolledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  ContextMenuUncontrolledBaseProps
+>;
 
 export type ContextMenuProps<T extends ValidConstructor = 'div'> =
   | ContextMenuControlledProps<T>
@@ -91,7 +86,7 @@ export function ContextMenu<T extends ValidConstructor = 'div'>(
     },
     get children() {
       return createDynamic(
-        () => props.as || ('div' as T),
+        () => props.as ?? ('div' as T),
         mergeProps(
           CONTEXT_MENU_TAG,
           createDisabledState(() => state.disabled()),

@@ -11,7 +11,7 @@ export default function getFocusableElements(
   const replicated: Element[] = [];
 
   for (let i = 0, len = nodes.length; i < len; i += 1) {
-    if (!(filter && filter.contains(nodes[i]))) {
+    if (!filter?.contains(nodes[i])) {
       replicated.push(nodes[i]);
     }
   }

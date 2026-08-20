@@ -6,19 +6,19 @@ import type {
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
-import {
-  createARIADisabledState,
-  createDisabledState,
-} from '../../utils/state-props';
+import { createARIADisabledState, createDisabledState } from '../../utils/state-props';
 import { Button } from '../button';
 import type { MenuChildProps } from './MenuChild';
 import { MenuChild } from './MenuChild';
 import { useMenuContext } from './MenuContext';
 import { MENU_ITEM_TAG } from './tags';
 
-export type MenuItemProps<T extends ValidConstructor = 'li'> =
-  HeadlessPropsWithRef<T, MenuChildProps>;
+export type MenuItemProps<T extends ValidConstructor = 'li'> = HeadlessPropsWithRef<
+  T,
+  MenuChildProps
+>;
 
 /**
  * One action in a `Menu`. The arrow keys and type-ahead skip disabled items.
@@ -27,10 +27,10 @@ export type MenuItemProps<T extends ValidConstructor = 'li'> =
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
  */
-export function MenuItem<T extends ValidConstructor = 'li'>(
-  props: MenuItemProps<T>,
-): JSX.Element {
+export function MenuItem<T extends ValidConstructor = 'li'>(props: MenuItemProps<T>): JSX.Element {
   const context = useMenuContext('MenuItem');
+
+  const [, setInternalRef] = createForwardRef(props);
 
   return createComponent(
     Button,
@@ -39,10 +39,11 @@ export function MenuItem<T extends ValidConstructor = 'li'>(
       createOwnerAttribute(context.getId()),
       {
         get as() {
-          return props.as || ('li' as T);
+          return props.as ?? ('li' as T);
         },
         role: 'menuitem',
         tabindex: -1,
+        ref: setInternalRef,
       },
       createDisabledState(() => props.disabled),
       createARIADisabledState(() => props.disabled),

@@ -2,9 +2,9 @@ import {
   ContextMenu,
   ContextMenuBoundary,
   ContextMenuPanel,
-  Transition,
   Menu,
   MenuItem,
+  Transition,
 } from 'terracotta';
 import type { JSX } from 'solid-js';
 import { createSignal } from 'solid-js';
@@ -35,10 +35,8 @@ export default function App(): JSX.Element {
                 'text-white group border border-dashed border-white p-32 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75',
               )}
               onContextMenu={(e: MouseEvent): void => {
-                if (e.currentTarget) {
-                  const rect = (
-                    e.currentTarget as HTMLElement
-                  ).getBoundingClientRect();
+                if (e.currentTarget instanceof HTMLElement) {
+                  const rect = e.currentTarget.getBoundingClientRect();
                   setX(e.clientX - rect.left);
                   setY(e.clientY - rect.top);
                 }

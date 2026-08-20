@@ -1,15 +1,8 @@
 import type { JSX } from 'solid-js';
 import { Match, Switch, createSignal } from 'solid-js';
-import {
-  Checkbox,
-  CheckboxDescription,
-  CheckboxIndicator,
-  CheckboxLabel,
-} from 'terracotta';
+import { Checkbox, CheckboxDescription, CheckboxIndicator, CheckboxLabel } from 'terracotta';
 
-function CheckIcon(
-  props: JSX.IntrinsicElements['svg'] & { title: string },
-): JSX.Element {
+function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -19,19 +12,12 @@ function CheckIcon(
       {...props}
     >
       <title>{props.title}</title>
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M5 13l4 4L19 7"
-      />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
     </svg>
   );
 }
 
-function CloseIcon(
-  props: JSX.IntrinsicElements['svg'] & { title: string },
-): JSX.Element {
+function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -51,9 +37,7 @@ function CloseIcon(
   );
 }
 
-function UndefinedIcon(
-  props: JSX.IntrinsicElements['svg'] & { title: string },
-): JSX.Element {
+function UndefinedIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -63,12 +47,7 @@ function UndefinedIcon(
       {...props}
     >
       <title>{props.title}</title>
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M20 12H4"
-      />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
     </svg>
   );
 }
@@ -101,9 +80,7 @@ export default function App(): JSX.Element {
           </Switch>
         </CheckboxIndicator>
         <div class="flex-1 flex flex-col text-white">
-          <CheckboxLabel class="font-bold">
-            This is a checkbox label
-          </CheckboxLabel>
+          <CheckboxLabel class="font-bold">This is a checkbox label</CheckboxLabel>
           <CheckboxDescription class="font-semibold text-xs opacity-50">
             This is a checkbox description
           </CheckboxDescription>

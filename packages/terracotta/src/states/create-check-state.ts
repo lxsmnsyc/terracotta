@@ -21,18 +21,16 @@ export interface CheckStateUncontrolledOptions {
   onChange?: (state?: boolean) => void;
 }
 
-export type CheckStateOptions =
-  | CheckStateControlledOptions
-  | CheckStateUncontrolledOptions;
+export type CheckStateOptions = CheckStateControlledOptions | CheckStateUncontrolledOptions;
 
 export interface CheckStateProperties {
-  checked(): boolean | undefined;
-  setState(newState?: boolean): void;
-  disabled(): boolean;
-  check(): void;
-  uncheck(): void;
-  reset(): void;
-  toggle(): void;
+  checked: () => boolean | undefined;
+  setState: (newState?: boolean) => void;
+  disabled: () => boolean;
+  check: () => void;
+  uncheck: () => void;
+  reset: () => void;
+  toggle: () => void;
 }
 
 /**
@@ -43,9 +41,7 @@ export interface CheckStateProperties {
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#check-state}
  */
-export function createCheckState(
-  options: CheckStateOptions,
-): CheckStateProperties {
+export function createCheckState(options: CheckStateOptions): CheckStateProperties {
   // Reference to the signal read
   let signal: Accessor<boolean | undefined>;
   // Reference to the signal write
@@ -56,9 +52,7 @@ export function createCheckState(
   if ('defaultChecked' in options) {
     // Uncontrolled toggle means the toggle
     // manages its own state.
-    const [isOpen, setIsOpen] = createSignal<boolean | undefined>(
-      options.defaultChecked,
-    );
+    const [isOpen, setIsOpen] = createSignal<boolean | undefined>(options.defaultChecked);
     signal = isOpen;
     setSignal = (value): void => {
       setIsOpen(value);
@@ -121,9 +115,7 @@ export interface CheckStateProviderProps extends CheckStateRenderProps {
 
 const CheckStateContext = createContext<CheckStateProperties>();
 
-export function CheckStateProvider(
-  props: CheckStateProviderProps,
-): JSX.Element {
+export function CheckStateProvider(props: CheckStateProviderProps): JSX.Element {
   return createComponent(CheckStateContext.Provider, {
     value: props.state,
     get children() {

@@ -19,9 +19,6 @@ export const PopoverContext = createContext<PopoverContextData>();
  */
 export function usePopoverContext(componentName: string): PopoverContextData {
   const context = useContext(PopoverContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <Popover>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <Popover>`));
   return context;
 }

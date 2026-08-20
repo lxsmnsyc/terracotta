@@ -17,10 +17,7 @@ export const SelectContext = createContext<SelectContextData>();
  */
 export function useSelectContext(componentName: string): SelectContextData {
   const context = useContext(SelectContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <Select>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <Select>`));
   return context;
 }
 

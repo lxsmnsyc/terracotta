@@ -9,10 +9,7 @@ import {
   SelectOptionStateProvider,
   createSelectOptionState,
 } from '../../states/create-select-option-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef, ValidConstructor } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
@@ -33,10 +30,7 @@ export type SelectOptionBaseProps<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps
 >;
 
-export type SelectOptionProps<
-  V,
-  T extends ValidConstructor = 'li',
-> = HeadlessPropsWithRef<
+export type SelectOptionProps<V, T extends ValidConstructor = 'li'> = HeadlessPropsWithRef<
   T,
   OmitAndMerge<SelectOptionBaseProps<V>, ButtonProps<T>>
 >;
@@ -88,7 +82,7 @@ export function SelectOption<V, T extends ValidConstructor = 'li'>(
       createOwnerAttribute(context.controller.getId()),
       {
         get as() {
-          return props.as || ('li' as T);
+          return props.as ?? ('li' as T);
         },
         role: 'option',
         get tabindex() {

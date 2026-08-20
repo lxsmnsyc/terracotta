@@ -14,13 +14,8 @@ export const TabGroupContext = createContext<TabGroupContextData<unknown>>();
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/tabs.md}
  */
-export function useTabGroupContext<V>(
-  componentName: string,
-): TabGroupContextData<V> {
+export function useTabGroupContext<V>(componentName: string): TabGroupContextData<V> {
   const context = useContext(TabGroupContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <TabGroup>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <TabGroup>`));
   return context;
 }

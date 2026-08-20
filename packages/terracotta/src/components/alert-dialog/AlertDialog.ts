@@ -1,10 +1,5 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   DisclosureStateControlledOptions,
@@ -18,11 +13,7 @@ import {
 import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -34,22 +25,22 @@ import { AlertDialogContext } from './AlertDialogContext';
 import { ALERT_DIALOG_TAG } from './tags';
 
 export type AlertDialogControlledBaseProps = Prettify<
-  DisclosureStateControlledOptions &
-    DisclosureStateRenderProps &
-    UnmountableProps
+  DisclosureStateControlledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type AlertDialogControlledProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, AlertDialogControlledBaseProps>;
+export type AlertDialogControlledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  AlertDialogControlledBaseProps
+>;
 
 export type AlertDialogUncontrolledBaseProps = Prettify<
-  DisclosureStateUncontrolledOptions &
-    DisclosureStateRenderProps &
-    UnmountableProps
+  DisclosureStateUncontrolledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type AlertDialogUncontrolledProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, AlertDialogUncontrolledBaseProps>;
+export type AlertDialogUncontrolledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  AlertDialogUncontrolledBaseProps
+>;
 
 export type AlertDialogProps<T extends ValidConstructor = 'div'> =
   | AlertDialogControlledProps<T>
@@ -103,7 +94,7 @@ export function AlertDialog<T extends ValidConstructor = 'div'>(
         () => state.isOpen(),
         () =>
           createDynamic(
-            () => props.as || ('div' as T),
+            () => props.as ?? ('div' as T),
             mergeProps(
               isAlertDialogUncontrolled(props)
                 ? omitProps(props, [

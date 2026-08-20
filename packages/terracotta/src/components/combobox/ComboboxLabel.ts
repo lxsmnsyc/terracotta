@@ -4,11 +4,7 @@ import { omitProps } from 'solid-use/props';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
 import {
   createDisabledState,
   createExpandedState,
@@ -19,8 +15,7 @@ import {
 import { useComboboxContext } from './ComboboxContext';
 import { COMBOBOX_LABEL_TAG } from './tags';
 
-export type ComboboxLabelProps<T extends ValidConstructor = 'label'> =
-  HeadlessProps<T>;
+export type ComboboxLabelProps<T extends ValidConstructor = 'label'> = HeadlessProps<T>;
 
 /**
  * The accessible name of a `Combobox`, wired up through `aria-labelledby`.
@@ -37,7 +32,7 @@ export function ComboboxLabel<T extends ValidConstructor = 'label'>(
   const disclosureState = useDisclosureState();
 
   return createDynamic(
-    () => props.as || ('label' as T),
+    () => props.as ?? ('label' as T),
     mergeProps(
       COMBOBOX_LABEL_TAG,
       {

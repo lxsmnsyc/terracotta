@@ -2,8 +2,8 @@ import type { JSX } from 'solid-js';
 import { createMemo } from 'solid-js';
 
 // Show has a quirky TS support since 1.7
-export default function createShow<T>(
-  when: () => T,
+export default function createShow(
+  when: () => unknown,
   children: () => JSX.Element,
   fallback?: () => JSX.Element,
 ): JSX.Element {

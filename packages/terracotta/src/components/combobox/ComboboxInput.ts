@@ -23,8 +23,7 @@ import useEventListener from '../../utils/use-event-listener';
 import { COMMAND_INPUT_TAG } from '../command/tags';
 import { useComboboxContext } from './ComboboxContext';
 
-export type ComboboxInputProps<T extends ValidConstructor = 'input'> =
-  HeadlessPropsWithRef<T>;
+export type ComboboxInputProps<T extends ValidConstructor = 'input'> = HeadlessPropsWithRef<T>;
 
 /**
  * The text field of a `Combobox`. Typing sets the query, which is debounced by
@@ -43,8 +42,7 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
   const disclosureState = useDisclosureState();
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined =>
-    autocompleteState.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => autocompleteState.disabled() || props.disabled;
 
   createEffect(() => {
     const current = internalRef();
@@ -59,7 +57,7 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
         });
       }
 
-      useEventListener(current, 'keydown', e => {
+      useEventListener(current, 'keydown', (e) => {
         if (!isDisabled()) {
           switch (e.key) {
             case 'Escape': {
@@ -101,7 +99,7 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
           disclosureState.toggle();
         }
       });
-      useEventListener(current, 'blur', e => {
+      useEventListener(current, 'blur', (e) => {
         if (context.optionsHovering) {
           return;
         }
@@ -142,7 +140,7 @@ export function ComboboxInput<T extends ValidConstructor = 'input'>(
   });
 
   return createDynamic(
-    () => props.as || ('input' as T),
+    () => props.as ?? ('input' as T),
     mergeProps(
       COMMAND_INPUT_TAG,
       {

@@ -2,16 +2,11 @@ import type { JSX } from 'solid-js';
 import { mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
 import { useFeedArticleContext } from './FeedArticleContext';
 import { FEED_ARTICLE_DESCRIPTION_TAG } from './tags';
 
-export type FeedArticleDescriptionProps<T extends ValidConstructor = 'p'> =
-  HeadlessProps<T>;
+export type FeedArticleDescriptionProps<T extends ValidConstructor = 'p'> = HeadlessProps<T>;
 
 /**
  * The accessible description of a `FeedArticle`, wired up through `aria-
@@ -26,7 +21,7 @@ export function FeedArticleDescription<T extends ValidConstructor = 'p'>(
 ): JSX.Element {
   const context = useFeedArticleContext('FeedArticleDescription');
   return createDynamic(
-    () => props.as || ('p' as T),
+    () => props.as ?? ('p' as T),
     mergeProps(
       FEED_ARTICLE_DESCRIPTION_TAG,
       {

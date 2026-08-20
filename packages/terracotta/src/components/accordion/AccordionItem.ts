@@ -10,11 +10,7 @@ import {
   createSelectOptionState,
 } from '../../states/create-select-option-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createActiveState,
@@ -31,10 +27,10 @@ export type AccordionItemprops<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps
 >;
 
-export type AccordionItemProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessProps<T, AccordionItemprops<V>>;
+export type AccordionItemProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  AccordionItemprops<V>
+>;
 
 /**
  * One section of an `Accordion`. The required `value` prop is the id this
@@ -56,7 +52,7 @@ export function AccordionItem<V, T extends ValidConstructor = 'div'>(
     value: { buttonID, panelID },
     get children() {
       return createDynamic(
-        () => props.as || ('div' as T),
+        () => props.as ?? ('div' as T),
         mergeProps(
           omitProps(props, ['as', 'children', 'value', 'disabled']),
           ACCORDION_ITEM_TAG,

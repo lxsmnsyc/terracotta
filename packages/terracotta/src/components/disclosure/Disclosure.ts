@@ -11,11 +11,7 @@ import {
   createDisclosureState,
 } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -29,15 +25,19 @@ export type DisclosureControlledBaseProps = Prettify<
   DisclosureStateControlledOptions & DisclosureStateRenderProps
 >;
 
-export type DisclosureControlledProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, DisclosureControlledBaseProps>;
+export type DisclosureControlledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  DisclosureControlledBaseProps
+>;
 
 export type DisclosureUncontrolledBaseProps = Prettify<
   DisclosureStateUncontrolledOptions & DisclosureStateRenderProps
 >;
 
-export type DisclosureUncontrolledProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, DisclosureUncontrolledBaseProps>;
+export type DisclosureUncontrolledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  DisclosureUncontrolledBaseProps
+>;
 
 export type DisclosureProps<T extends ValidConstructor = 'div'> =
   | DisclosureControlledProps<T>
@@ -73,7 +73,7 @@ export function Disclosure<T extends ValidConstructor = 'div'>(
     },
     get children() {
       return createDynamic(
-        () => props.as || 'div',
+        () => props.as ?? 'div',
         mergeProps(
           DISCLOSURE_TAG,
           createDisabledState(() => state.disabled()),

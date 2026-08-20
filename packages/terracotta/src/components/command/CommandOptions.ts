@@ -24,10 +24,10 @@ import useEventListener from '../../utils/use-event-listener';
 import { useCommandContext } from './CommandContext';
 import { COMMAND_OPTIONS_TAG } from './tags';
 
-export type CommandOptionsProps<
-  V,
-  T extends ValidConstructor = 'ul',
-> = HeadlessPropsWithRef<T, AutocompleteStateRenderProps<V>>;
+export type CommandOptionsProps<V, T extends ValidConstructor = 'ul'> = HeadlessPropsWithRef<
+  T,
+  AutocompleteStateRenderProps<V>
+>;
 
 /**
  * The list of results in a `Command`.
@@ -66,7 +66,7 @@ export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
   });
 
   return createDynamic(
-    () => props.as || ('ul' as T),
+    () => props.as ?? ('ul' as T),
     mergeProps(
       COMMAND_OPTIONS_TAG,
       {

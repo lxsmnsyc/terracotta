@@ -12,20 +12,21 @@ import isEqual from '../utils/is-equal';
 import type { Ref } from '../utils/types';
 
 export interface SelectStateProperties<T> {
-  isSelected(value: T): boolean;
-  select(value: T): void;
-  hasSelected(): boolean;
-  isActive(value: T): boolean;
-  hasActive(): boolean;
-  focus(value: T): void;
-  blur(): void;
-  disabled(): boolean;
+  isSelected: (value: T) => boolean;
+  select: (value: T) => void;
+  hasSelected: () => boolean;
+  isActive: (value: T) => boolean;
+  hasActive: () => boolean;
+  focus: (value: T) => void;
+  blur: () => void;
+  disabled: () => boolean;
 }
 
 export interface SingleSelectStateControlledOptions<T> {
   multiple?: false;
   toggleable?: boolean;
-  value: T;
+  /** `undefined` means nothing is selected, which is also what `toggleable` produces. */
+  value: T | undefined;
   onChange?: (value?: T) => void;
   disabled?: boolean;
   by?: (a: T, b: T) => boolean;
@@ -34,7 +35,8 @@ export interface SingleSelectStateControlledOptions<T> {
 export interface SingleSelectStateUncontrolledOptions<T> {
   multiple?: false;
   toggleable?: boolean;
-  defaultValue: T;
+  /** `undefined` starts with nothing selected. */
+  defaultValue: T | undefined;
   onChange?: (value?: T) => void;
   disabled?: boolean;
   by?: (a: T, b: T) => boolean;
@@ -62,12 +64,10 @@ export function createSingleSelectState<T>(
   let selectedValue: Accessor<T | undefined>;
   let setSelectedValue: (value: T | undefined) => void;
 
-  const equals = options.by || isEqual;
+  const equals = options.by ?? isEqual;
 
   if ('defaultValue' in options) {
-    const [selected, setSelected] = createSignal<T | undefined>(
-      options.defaultValue,
-    );
+    const [selected, setSelected] = createSignal<T | undefined>(options.defaultValue);
     selectedValue = selected;
     setSelectedValue = (value): void => {
       setSelected(() => value);
@@ -164,7 +164,7 @@ export function createMultipleSelectState<T>(
   let selectedValues: Accessor<T[]>;
   let setSelectedValues: (value: T[]) => void;
 
-  const equals = options.by || isEqual;
+  const equals = options.by ?? isEqual;
 
   if ('defaultValue' in options) {
     const [selected, setSelected] = createSignal<T[]>(options.defaultValue);
@@ -259,11 +259,11 @@ export interface SelectStateProviderProps<T> extends SelectStateRenderProps<T> {
 
 const SelectStateContext = createContext<SelectStateProperties<unknown>>();
 
-export function SelectStateProvider<T>(
-  props: SelectStateProviderProps<T>,
-): JSX.Element {
+export function SelectStateProvider<T>(props: SelectStateProviderProps<T>): JSX.Element {
   return createComponent(SelectStateContext.Provider, {
-    value: props.state,
+    // The context erases the value type; every consumer re-applies its own `T`
+    // through `useSelectState`.
+    value: props.state as SelectStateProperties<unknown>,
     get children() {
       const current = props.children;
       if (typeof current === 'function') {
@@ -291,9 +291,7 @@ export function useSelectState<T>(): SelectStateProperties<T> {
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-state}
  */
-export function SelectStateChild<T>(
-  props: SelectStateRenderProps<T>,
-): JSX.Element {
+export function SelectStateChild<T>(props: SelectStateRenderProps<T>): JSX.Element {
   const state = useSelectState<T>();
   return createMemo(() => {
     const current = props.children;

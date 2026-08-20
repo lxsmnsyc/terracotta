@@ -19,13 +19,8 @@ export const CommandBarContext = createContext<CommandBarContextData>();
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command-bar.md}
  */
-export function useCommandBarContext(
-  componentName: string,
-): CommandBarContextData {
+export function useCommandBarContext(componentName: string): CommandBarContextData {
   const context = useContext(CommandBarContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <CommandBar>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <CommandBar>`));
   return context;
 }

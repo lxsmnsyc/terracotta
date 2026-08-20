@@ -1,12 +1,5 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  mergeProps,
-  onCleanup,
-  onMount,
-  untrack,
-} from 'solid-js';
+import { createComponent, createEffect, mergeProps, onCleanup, onMount, untrack } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
 import {
@@ -41,10 +34,10 @@ export type ComboboxOptionsBaseProps<V> = Prettify<
   UnmountableProps & AutocompleteStateRenderProps<V>
 >;
 
-export type ComboboxOptionsProps<
-  V,
-  T extends ValidConstructor = 'ul',
-> = HeadlessPropsWithRef<T, ComboboxOptionsBaseProps<V>>;
+export type ComboboxOptionsProps<V, T extends ValidConstructor = 'ul'> = HeadlessPropsWithRef<
+  T,
+  ComboboxOptionsBaseProps<V>
+>;
 
 /**
  * The popup list of a `Combobox`. Unmounts while closed unless
@@ -108,7 +101,7 @@ export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
     () => disclosureState.isOpen(),
     () =>
       createDynamic(
-        () => props.as || ('ul' as T),
+        () => props.as ?? ('ul' as T),
         mergeProps(
           COMBOBOX_OPTIONS_TAG,
           {

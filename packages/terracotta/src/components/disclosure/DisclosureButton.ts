@@ -3,14 +3,8 @@ import { createEffect, mergeProps } from 'solid-js';
 import { createComponent } from 'solid-js/web';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
+import type { HeadlessPropsWithRef, ValidConstructor } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
@@ -25,11 +19,10 @@ import { Button } from '../button';
 import { useDisclosureContext } from './DisclosureContext';
 import { DISCLOSURE_BUTTON_TAG } from './tags';
 
-export type DisclosureButtonProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<
-    T,
-    OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
-  >;
+export type DisclosureButtonProps<T extends ValidConstructor = 'button'> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
+>;
 
 /**
  * The control that toggles a `Disclosure`. Carries `aria-expanded`, and `aria-
@@ -47,8 +40,7 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined =>
-    state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
   createEffect(() => {
     const current = internalRef();
@@ -69,7 +61,7 @@ export function DisclosureButton<T extends ValidConstructor = 'button'>(
         id: context.buttonID,
         ref: setInternalRef,
         get 'aria-controls'() {
-          return state.isOpen() && context.panelID;
+          return state.isOpen() ? context.panelID : undefined;
         },
       },
       createDisabledState(isDisabled),

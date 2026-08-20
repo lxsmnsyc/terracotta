@@ -16,10 +16,7 @@ import {
   createAutocompleteOptionState,
 } from '../../states/create-autocomplete-option-state';
 import { useDisclosureState } from '../../states/create-disclosure-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef, ValidConstructor } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
@@ -42,10 +39,7 @@ export type ComboboxOptionBaseProps<V> = Prettify<
   AutocompleteOptionStateOptions<V> & AutocompleteOptionStateRenderProps
 >;
 
-export type ComboboxOptionProps<
-  V,
-  T extends ValidConstructor = 'li',
-> = HeadlessPropsWithRef<
+export type ComboboxOptionProps<V, T extends ValidConstructor = 'li'> = HeadlessPropsWithRef<
   T,
   OmitAndMerge<ComboboxOptionBaseProps<V>, ButtonProps<T>>
 >;
@@ -105,7 +99,7 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
       useEventListener(current, 'mouseleave', () => {
         state.blur();
       });
-      useVirtualFocus(el => {
+      useVirtualFocus((el) => {
         if (el === current) {
           focusOption();
         }
@@ -121,7 +115,7 @@ export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
       {
         id,
         get as() {
-          return props.as || ('li' as T);
+          return props.as ?? ('li' as T);
         },
         role: 'option',
         tabindex: -1,

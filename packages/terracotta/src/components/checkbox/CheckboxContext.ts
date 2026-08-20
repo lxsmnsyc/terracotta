@@ -19,9 +19,6 @@ export const CheckboxContext = createContext<CheckboxContextData>();
  */
 export function useCheckboxContext(componentName: string): CheckboxContextData {
   const context = useContext(CheckboxContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <Checkbox>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <Checkbox>`));
   return context;
 }

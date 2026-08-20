@@ -1,9 +1,7 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta';
 import type { JSX } from 'solid-js';
 
-function ChevronUpIcon(
-  props: JSX.IntrinsicElements['svg'] & { title: string },
-): JSX.Element {
+function ChevronUpIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,12 +11,7 @@ function ChevronUpIcon(
       {...props}
     >
       <title>{props.title}</title>
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M5 15l7-7 7 7"
-      />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
     </svg>
   );
 }
@@ -36,17 +29,15 @@ export default function App(): JSX.Element {
               <>
                 <span>What is your refund policy?</span>
                 <ChevronUpIcon
-                  class={`${
-                    isOpen() ? 'transform rotate-180' : ''
-                  } w-5 h-5 text-purple-500`}
+                  class={`${isOpen() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
                   title={isOpen() ? 'Close' : 'Open'}
                 />
               </>
             )}
           </DisclosureButton>
           <DisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
-            If you're unhappy with your purchase for any reason, email us within
-            90 days and we'll refund you in full, no questions asked.
+            If you're unhappy with your purchase for any reason, email us within 90 days and we'll
+            refund you in full, no questions asked.
           </DisclosurePanel>
         </Disclosure>
         <Disclosure defaultOpen as="div">
@@ -55,17 +46,13 @@ export default function App(): JSX.Element {
               <>
                 <span>Do you offer technical support?</span>
                 <ChevronUpIcon
-                  class={`${
-                    isOpen() ? 'transform rotate-180' : ''
-                  } w-5 h-5 text-purple-500`}
+                  class={`${isOpen() ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`}
                   title={isOpen() ? 'Close' : 'Open'}
                 />
               </>
             )}
           </DisclosureButton>
-          <DisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
-            No.
-          </DisclosurePanel>
+          <DisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-500">No.</DisclosurePanel>
         </Disclosure>
       </div>
     </div>

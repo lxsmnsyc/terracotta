@@ -13,25 +13,25 @@ import useEventListener from '../../utils/use-event-listener';
 import { MenuContext, createMenuItemFocusNavigator } from './MenuContext';
 import { MENU_TAG } from './tags';
 
-export type MenuProps<T extends ValidConstructor = 'ul'> =
-  HeadlessPropsWithRef<T>;
+export type MenuProps<T extends ValidConstructor = 'ul'> = HeadlessPropsWithRef<T>;
 
 /**
  * A menu of actions, navigated with the arrow keys and type-ahead. It has no
  * open state of its own; put it inside a `Popover` or `ContextMenu` for that.
  *
+ * Per the ARIA menu pattern every item sits at `tabindex="-1"`, so the menu has
+ * no tab stop and you must move focus to an item yourself when it appears.
+ *
  * Renders a `<div>` by default.
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
  */
-export function Menu<T extends ValidConstructor = 'ul'>(
-  props: MenuProps<T>,
-): JSX.Element {
+export function Menu<T extends ValidConstructor = 'ul'>(props: MenuProps<T>): JSX.Element {
   const controller = createMenuItemFocusNavigator();
 
   const [ref, setRef] = createForwardRef(props);
 
-  const pushCharacter = createTypeAhead(value => {
+  const pushCharacter = createTypeAhead((value) => {
     controller.setFirstMatch(value);
   });
 
@@ -43,7 +43,7 @@ export function Menu<T extends ValidConstructor = 'ul'>(
         controller.clearRef();
       });
 
-      useEventListener(current, 'keydown', e => {
+      useEventListener(current, 'keydown', (e) => {
         switch (e.key) {
           case 'ArrowUp':
           case 'ArrowLeft': {
@@ -80,7 +80,7 @@ export function Menu<T extends ValidConstructor = 'ul'>(
           }
         }
       });
-      useEventListener(current, 'focusin', e => {
+      useEventListener(current, 'focusin', (e) => {
         if (e.target && e.target !== current) {
           controller.setCurrent(e.target as HTMLElement);
         }
@@ -92,7 +92,7 @@ export function Menu<T extends ValidConstructor = 'ul'>(
     value: controller,
     get children() {
       return createDynamic(
-        () => props.as || ('div' as T),
+        () => props.as ?? ('div' as T),
         mergeProps(
           MENU_TAG,
           {

@@ -21,17 +21,15 @@ export interface ToggleStateUncontrolledOptions {
   onChange?: (state: boolean) => void;
 }
 
-export type ToggleStateOptions =
-  | ToggleStateControlledOptions
-  | ToggleStateUncontrolledOptions;
+export type ToggleStateOptions = ToggleStateControlledOptions | ToggleStateUncontrolledOptions;
 
 export interface ToggleStateProperties {
-  pressed(): boolean;
-  setState(newState: boolean): void;
-  disabled(): boolean;
-  check(): void;
-  uncheck(): void;
-  toggle(): void;
+  pressed: () => boolean;
+  setState: (newState: boolean) => void;
+  disabled: () => boolean;
+  check: () => void;
+  uncheck: () => void;
+  toggle: () => void;
 }
 
 /**
@@ -41,9 +39,7 @@ export interface ToggleStateProperties {
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#toggle-state}
  */
-export function createToggleState(
-  options: ToggleStateOptions,
-): ToggleStateProperties {
+export function createToggleState(options: ToggleStateOptions): ToggleStateProperties {
   // Reference to the signal read
   let signal: Accessor<boolean>;
   // Reference to the signal write
@@ -112,9 +108,7 @@ export interface ToggleStateProviderProps extends ToggleStateRenderProps {
 
 const ToggleStateContext = createContext<ToggleStateProperties>();
 
-export function ToggleStateProvider(
-  props: ToggleStateProviderProps,
-): JSX.Element {
+export function ToggleStateProvider(props: ToggleStateProviderProps): JSX.Element {
   return createComponent(ToggleStateContext.Provider, {
     value: props.state,
     get children() {

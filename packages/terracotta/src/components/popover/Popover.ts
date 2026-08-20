@@ -1,10 +1,5 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   DisclosureStateControlledOptions,
@@ -16,11 +11,7 @@ import {
   createDisclosureState,
 } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -35,15 +26,19 @@ export type PopoverControlledBaseProps = Prettify<
   DisclosureStateRenderProps & DisclosureStateControlledOptions
 >;
 
-export type PopoverControlledProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, PopoverControlledBaseProps>;
+export type PopoverControlledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  PopoverControlledBaseProps
+>;
 
 export type PopoverUncontrolledBaseProps = Prettify<
   DisclosureStateRenderProps & DisclosureStateUncontrolledOptions
 >;
 
-export type PopoverUncontrolledProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, PopoverUncontrolledBaseProps>;
+export type PopoverUncontrolledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  PopoverUncontrolledBaseProps
+>;
 
 export type PopoverProps<T extends ValidConstructor = 'div'> =
   | PopoverControlledProps<T>
@@ -64,9 +59,7 @@ function isPopoverUncontrolled<T extends ValidConstructor = 'div'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/popover.md}
  */
-export function Popover<T extends ValidConstructor = 'div'>(
-  props: PopoverProps<T>,
-): JSX.Element {
+export function Popover<T extends ValidConstructor = 'div'>(props: PopoverProps<T>): JSX.Element {
   const ownerID = createUniqueId();
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
@@ -92,7 +85,7 @@ export function Popover<T extends ValidConstructor = 'div'>(
     },
     get children() {
       return createDynamic(
-        () => props.as || ('div' as T),
+        () => props.as ?? ('div' as T),
         mergeProps(
           POPOVER_TAG,
           createDisabledState(() => state.disabled()),

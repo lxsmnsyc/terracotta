@@ -27,10 +27,7 @@ export const ComboboxContext = createContext<ComboboxContextData>();
  */
 export function useComboboxContext(componentName: string): ComboboxContextData {
   const context = useContext(ComboboxContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <Combobox>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <Combobox>`));
   return context;
 }
 

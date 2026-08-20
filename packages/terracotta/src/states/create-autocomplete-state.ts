@@ -13,24 +13,25 @@ import isEqual from '../utils/is-equal';
 import type { Ref } from '../utils/types';
 
 export interface AutocompleteStateProperties<T> {
-  isSelected(value: T): boolean;
-  select(value: T): void;
-  hasSelected(): boolean;
-  isActive(value: T): boolean;
-  hasActive(): boolean;
-  focus(value: T): void;
-  blur(): void;
-  disabled(): boolean;
-  query(): string;
-  setQuery(value: string): void;
-  matches(value: T): boolean;
-  hasQuery(): boolean;
+  isSelected: (value: T) => boolean;
+  select: (value: T) => void;
+  hasSelected: () => boolean;
+  isActive: (value: T) => boolean;
+  hasActive: () => boolean;
+  focus: (value: T) => void;
+  blur: () => void;
+  disabled: () => boolean;
+  query: () => string;
+  setQuery: (value: string) => void;
+  matches: (value: T) => boolean;
+  hasQuery: () => boolean;
 }
 
 export interface SingleAutocompleteStateControlledOptions<T> {
   multiple?: false;
   toggleable?: boolean;
-  value: T;
+  /** `undefined` means nothing is selected, which is also what `toggleable` produces. */
+  value: T | undefined;
   matchBy: (value: T, query: string) => boolean;
   onChange?: (value?: T) => void;
   disabled?: boolean;
@@ -40,7 +41,8 @@ export interface SingleAutocompleteStateControlledOptions<T> {
 export interface SingleAutocompleteStateUncontrolledOptions<T> {
   multiple?: false;
   toggleable?: boolean;
-  defaultValue: T;
+  /** `undefined` starts with nothing selected. */
+  defaultValue: T | undefined;
   matchBy: (value: T, query: string) => boolean;
   onChange?: (value?: T) => void;
   disabled?: boolean;
@@ -68,12 +70,10 @@ export function createSingleAutocompleteState<T>(
   let selectedValue: Accessor<T | undefined>;
   let setSelectedValue: (value: T | undefined) => void;
 
-  const equals = options.by || isEqual;
+  const equals = options.by ?? isEqual;
 
   if ('defaultValue' in options) {
-    const [selected, setSelected] = createSignal<T | undefined>(
-      options.defaultValue,
-    );
+    const [selected, setSelected] = createSignal<T | undefined>(options.defaultValue);
     selectedValue = selected;
     setSelectedValue = (value): void => {
       setSelected(() => value);
@@ -186,7 +186,7 @@ export function createMultipleAutocompleteState<T>(
   let selectedValues: Accessor<T[]>;
   let setSelectedValues: (value: T[]) => void;
 
-  const equals = options.by || isEqual;
+  const equals = options.by ?? isEqual;
 
   if ('defaultValue' in options) {
     const [selected, setSelected] = createSignal<T[]>(options.defaultValue);
@@ -284,24 +284,22 @@ export function createMultipleAutocompleteState<T>(
 }
 
 export interface AutocompleteStateRenderProps<T> {
-  children?:
-    | JSX.Element
-    | ((state: AutocompleteStateProperties<T>) => JSX.Element);
+  children?: JSX.Element | ((state: AutocompleteStateProperties<T>) => JSX.Element);
 }
 
-export interface AutocompleteStateProviderProps<T>
-  extends AutocompleteStateRenderProps<T> {
+export interface AutocompleteStateProviderProps<T> extends AutocompleteStateRenderProps<T> {
   state: AutocompleteStateProperties<T>;
 }
 
-const AutocompleteStateContext =
-  createContext<AutocompleteStateProperties<unknown>>();
+const AutocompleteStateContext = createContext<AutocompleteStateProperties<unknown>>();
 
 export function AutocompleteStateProvider<T>(
   props: AutocompleteStateProviderProps<T>,
 ): JSX.Element {
   return createComponent(AutocompleteStateContext.Provider, {
-    value: props.state,
+    // The context erases the value type; every consumer re-applies its own `T`
+    // through `useAutocompleteState`.
+    value: props.state as AutocompleteStateProperties<unknown>,
     get children() {
       const current = props.children;
       if (typeof current === 'function') {
@@ -330,9 +328,7 @@ export function useAutocompleteState<T>(): AutocompleteStateProperties<T> {
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#autocomplete-state}
  */
-export function AutocompleteStateChild<T>(
-  props: AutocompleteStateRenderProps<T>,
-): JSX.Element {
+export function AutocompleteStateChild<T>(props: AutocompleteStateRenderProps<T>): JSX.Element {
   const state = useAutocompleteState<T>();
   return createMemo(() => {
     const current = props.children;

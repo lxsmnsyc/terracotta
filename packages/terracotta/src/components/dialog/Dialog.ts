@@ -1,10 +1,5 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   DisclosureStateControlledOptions,
@@ -18,11 +13,7 @@ import {
 import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -34,22 +25,22 @@ import { DialogContext } from './DialogContext';
 import { DIALOG_TAG } from './tags';
 
 export type DialogControlledBaseProps = Prettify<
-  DisclosureStateControlledOptions &
-    DisclosureStateRenderProps &
-    UnmountableProps
+  DisclosureStateControlledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type DialogControlledProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, DialogControlledBaseProps>;
+export type DialogControlledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  DialogControlledBaseProps
+>;
 
 export type DialogUncontrolledBaseProps = Prettify<
-  DisclosureStateUncontrolledOptions &
-    DisclosureStateRenderProps &
-    UnmountableProps
+  DisclosureStateUncontrolledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type DialogUncontrolledProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, DialogUncontrolledBaseProps>;
+export type DialogUncontrolledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  DialogUncontrolledBaseProps
+>;
 
 export type DialogProps<T extends ValidConstructor = 'div'> =
   | DialogControlledProps<T>
@@ -70,9 +61,7 @@ function isDialogUncontrolled<T extends ValidConstructor = 'div'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
  */
-export function Dialog<T extends ValidConstructor = 'div'>(
-  props: DialogProps<T>,
-): JSX.Element {
+export function Dialog<T extends ValidConstructor = 'div'>(props: DialogProps<T>): JSX.Element {
   const ownerID = createUniqueId();
   const panelID = createUniqueId();
   const titleID = createUniqueId();
@@ -103,7 +92,7 @@ export function Dialog<T extends ValidConstructor = 'div'>(
         () => state.isOpen(),
         () =>
           createDynamic(
-            () => props.as || ('div' as T),
+            () => props.as ?? ('div' as T),
             mergeProps(
               DIALOG_TAG,
               {

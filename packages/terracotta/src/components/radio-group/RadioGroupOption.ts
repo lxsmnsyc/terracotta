@@ -1,10 +1,5 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   SelectOptionStateOptions,
@@ -39,10 +34,10 @@ export type RadioGroupOptionBaseProps<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps
 >;
 
-export type RadioGroupOptionProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessPropsWithRef<T, RadioGroupOptionBaseProps<V>>;
+export type RadioGroupOptionProps<V, T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+  T,
+  RadioGroupOptionBaseProps<V>
+>;
 
 /**
  * One choice in a `RadioGroup`. The required `value` prop is what selecting it
@@ -89,7 +84,7 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
           createOwnerAttribute(context.getId()),
           {
             get as() {
-              return props.as || ('div' as T);
+              return props.as ?? ('div' as T);
             },
             role: 'radio',
             'aria-labelledby': labelID,

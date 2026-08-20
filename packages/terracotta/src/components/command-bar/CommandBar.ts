@@ -1,10 +1,5 @@
 import type { JSX } from 'solid-js';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  mergeProps,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type {
   DisclosureStateControlledOptions,
@@ -18,11 +13,7 @@ import {
 import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -35,22 +26,22 @@ import { CommandBarContext } from './CommandBarContext';
 import { COMMAND_BAR_TAG } from './tags';
 
 export type CommandBarControlledBaseProps = Prettify<
-  DisclosureStateControlledOptions &
-    DisclosureStateRenderProps &
-    UnmountableProps
+  DisclosureStateControlledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type CommandBarControlledProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, CommandBarControlledBaseProps>;
+export type CommandBarControlledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  CommandBarControlledBaseProps
+>;
 
 export type CommandBarUncontrolledBaseProps = Prettify<
-  DisclosureStateUncontrolledOptions &
-    DisclosureStateRenderProps &
-    UnmountableProps
+  DisclosureStateUncontrolledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type CommandBarUncontrolledProps<T extends ValidConstructor = 'div'> =
-  HeadlessProps<T, CommandBarUncontrolledBaseProps>;
+export type CommandBarUncontrolledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  CommandBarUncontrolledBaseProps
+>;
 
 export type CommandBarProps<T extends ValidConstructor = 'div'> =
   | CommandBarControlledProps<T>
@@ -91,7 +82,7 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
   });
 
   createEffect(() => {
-    useEventListener(window, 'keydown', e => {
+    useEventListener(window, 'keydown', (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k' && !e.defaultPrevented) {
         e.preventDefault();
         state.open();
@@ -112,7 +103,7 @@ export function CommandBar<T extends ValidConstructor = 'div'>(
         () => state.isOpen(),
         () =>
           createDynamic(
-            () => props.as || ('div' as T),
+            () => props.as ?? ('div' as T),
             mergeProps(
               COMMAND_BAR_TAG,
               createDisabledState(() => state.disabled()),

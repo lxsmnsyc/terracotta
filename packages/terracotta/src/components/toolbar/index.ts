@@ -8,20 +8,17 @@ import type {
   ValidConstructor,
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
-import {
-  focusFirst,
-  focusLast,
-  focusNext,
-  focusPrev,
-} from '../../utils/focus-navigation';
+import { focusFirst, focusLast, focusNext, focusPrev } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
 import { createTag } from '../../utils/namespace';
 import useEventListener from '../../utils/use-event-listener';
 
 const TOOLBAR_TAG = createTag('toolbar');
 
-export type ToolbarProps<T extends ValidConstructor = 'div'> =
-  HeadlessPropsWithRef<T, { horizontal?: boolean }>;
+export type ToolbarProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+  T,
+  { horizontal?: boolean }
+>;
 
 /**
  * A group of controls that share one tab stop. The arrow keys move between
@@ -32,13 +29,10 @@ export type ToolbarProps<T extends ValidConstructor = 'div'> =
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toolbar.md}
  */
-export function Toolbar<T extends ValidConstructor = 'div'>(
-  props: ToolbarProps<T>,
-): JSX.Element {
+export function Toolbar<T extends ValidConstructor = 'div'>(props: ToolbarProps<T>): JSX.Element {
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isHorizontal = (): boolean =>
-    props.horizontal == null ? true : props.horizontal;
+  const isHorizontal = (): boolean => props.horizontal ?? true;
 
   let focusedElement: HTMLElement | undefined;
 
@@ -49,12 +43,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
       document.activeElement &&
       ref.contains(document.activeElement)
     ) {
-      focusNext(
-        getFocusableElements(ref),
-        document.activeElement as HTMLElement,
-        false,
-        false,
-      );
+      focusNext(getFocusableElements(ref), document.activeElement as HTMLElement, false, false);
     }
   }
 
@@ -65,19 +54,14 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
       document.activeElement &&
       ref.contains(document.activeElement)
     ) {
-      focusPrev(
-        getFocusableElements(ref),
-        document.activeElement as HTMLElement,
-        false,
-        false,
-      );
+      focusPrev(getFocusableElements(ref), document.activeElement as HTMLElement, false, false);
     }
   }
 
   createEffect(() => {
     const current = internalRef();
     if (current instanceof HTMLElement) {
-      useEventListener(current, 'keydown', e => {
+      useEventListener(current, 'keydown', (e) => {
         switch (e.key) {
           case 'ArrowLeft': {
             if (isHorizontal()) {
@@ -128,7 +112,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
           focusFirst(getFocusableElements(current), false);
         }
       });
-      useEventListener(current, 'focusin', e => {
+      useEventListener(current, 'focusin', (e) => {
         if (e.target && e.target !== current) {
           focusedElement = e.target as HTMLElement;
         }
@@ -137,7 +121,7 @@ export function Toolbar<T extends ValidConstructor = 'div'>(
   });
 
   return createDynamic(
-    () => props.as || ('div' as T),
+    () => props.as ?? ('div' as T),
     mergeProps(
       TOOLBAR_TAG,
       {

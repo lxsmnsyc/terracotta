@@ -15,13 +15,8 @@ export const DisclosureContext = createContext<DisclosureContextData>();
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/disclosure.md}
  */
-export function useDisclosureContext(
-  componentName: string,
-): DisclosureContextData {
+export function useDisclosureContext(componentName: string): DisclosureContextData {
   const context = useContext(DisclosureContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <Disclosure>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <Disclosure>`));
   return context;
 }

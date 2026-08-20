@@ -2,15 +2,9 @@ import type { JSX } from 'solid-js';
 import { createComponent, createEffect, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import { useSelectState } from '../../states/create-select-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef, ValidConstructor } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
@@ -27,11 +21,10 @@ import { Button } from '../button';
 import { useListboxContext } from './ListboxContext';
 import { LISTBOX_BUTTON_TAG } from './tags';
 
-export type ListboxButtonProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<
-    T,
-    OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
-  >;
+export type ListboxButtonProps<T extends ValidConstructor = 'button'> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
+>;
 
 /**
  * The trigger of a `Listbox`. Carries `aria-expanded` and `aria-haspopup`, and
@@ -49,8 +42,7 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
   const selectState = useSelectState();
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined =>
-    disclosureState.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => disclosureState.disabled() || props.disabled;
 
   createEffect(() => {
     const current = internalRef();
@@ -62,7 +54,7 @@ export function ListboxButton<T extends ValidConstructor = 'button'>(
           disclosureState.toggle();
         }
       });
-      useEventListener(current, 'keydown', e => {
+      useEventListener(current, 'keydown', (e) => {
         if (!isDisabled()) {
           switch (e.key) {
             case 'ArrowUp':

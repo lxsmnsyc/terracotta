@@ -8,27 +8,19 @@ import {
 } from '../../states/create-select-option-state';
 import createDynamic from '../../utils/create-dynamic';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessProps,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
-import {
-  createActiveState,
-  createSelectedState,
-} from '../../utils/state-props';
+import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import { createActiveState, createSelectedState } from '../../utils/state-props';
 import { useTabGroupContext } from './TabGroupContext';
 import { TAB_PANEL_TAG } from './tags';
 
-export interface TabPanelBaseProps<V>
-  extends Exclude<SelectOptionStateOptions<V>, 'disabled'> {
+export interface TabPanelBaseProps<V> extends Exclude<SelectOptionStateOptions<V>, 'disabled'> {
   unmount?: boolean;
 }
 
-export type TabPanelProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessProps<T, TabPanelBaseProps<V>>;
+export type TabPanelProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+  T,
+  TabPanelBaseProps<V>
+>;
 
 /**
  * The content shown for the `Tab` with the same `value`. Unmounts while its
@@ -49,7 +41,7 @@ export function TabPanel<V, T extends ValidConstructor = 'div'>(
     () => state.isSelected(),
     () =>
       createDynamic(
-        () => props.as || ('div' as T),
+        () => props.as ?? ('div' as T),
         mergeProps(
           TAB_PANEL_TAG,
           {

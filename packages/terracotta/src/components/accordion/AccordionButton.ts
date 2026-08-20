@@ -6,10 +6,7 @@ import {
   SelectOptionStateChild,
   useSelectOptionState,
 } from '../../states/create-select-option-state';
-import type {
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef, ValidConstructor } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import {
@@ -28,11 +25,10 @@ import { useAccordionContext } from './AccordionContext';
 import { useAccordionItemContext } from './AccordionItemContext';
 import { ACCORDION_BUTTON_TAG } from './tags';
 
-export type AccordionButtonProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<
-    T,
-    OmitAndMerge<SelectOptionStateRenderProps, ButtonProps<T>>
-  >;
+export type AccordionButtonProps<T extends ValidConstructor = 'button'> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<SelectOptionStateRenderProps, ButtonProps<T>>
+>;
 
 /**
  * The control that expands and collapses its `AccordionItem`. Carries `aria-
@@ -52,8 +48,7 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined =>
-    state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
   createEffect(() => {
     const current = internalRef();
@@ -86,7 +81,7 @@ export function AccordionButton<T extends ValidConstructor = 'button'>(
         id: itemContext.buttonID,
         ref: setInternalRef,
         get 'aria-controls'() {
-          return state.isSelected() && itemContext.panelID;
+          return state.isSelected() ? itemContext.panelID : undefined;
         },
       },
       createOwnerAttribute(rootContext.getId()),

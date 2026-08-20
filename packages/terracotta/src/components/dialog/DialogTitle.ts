@@ -2,25 +2,21 @@ import type { JSX } from 'solid-js';
 import { createComponent, mergeProps } from 'solid-js';
 import { omitProps } from 'solid-use/props';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type {
   DynamicProps,
   HeadlessPropsWithRef,
   ValidConstructor,
 } from '../../utils/dynamic-prop';
-import {
-  createDisabledState,
-  createExpandedState,
-} from '../../utils/state-props';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import { useDialogContext } from './DialogContext';
 import { DIALOG_TITLE_TAG } from './tags';
 
-export type DialogTitleProps<T extends ValidConstructor = 'h2'> =
-  HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
+export type DialogTitleProps<T extends ValidConstructor = 'h2'> = HeadlessPropsWithRef<
+  T,
+  DisclosureStateRenderProps
+>;
 
 /**
  * The accessible name of a `Dialog`, wired up through `aria-labelledby`.
@@ -35,7 +31,7 @@ export function DialogTitle<T extends ValidConstructor = 'h2'>(
   const context = useDialogContext('DialogTitle');
   const state = useDisclosureState();
   return createDynamic(
-    () => props.as || ('h2' as T),
+    () => props.as ?? ('h2' as T),
     mergeProps(
       DIALOG_TITLE_TAG,
       {

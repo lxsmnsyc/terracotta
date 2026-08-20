@@ -9,10 +9,7 @@ import type {
 } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
-import {
-  createARIADisabledState,
-  createDisabledState,
-} from '../../utils/state-props';
+import { createARIADisabledState, createDisabledState } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
 
 const BUTTON_TAG = createTag('button');
@@ -21,8 +18,10 @@ interface ButtonBaseProps {
   disabled?: boolean;
 }
 
-export type ButtonProps<T extends ValidConstructor = 'button'> =
-  HeadlessPropsWithRef<T, ButtonBaseProps>;
+export type ButtonProps<T extends ValidConstructor = 'button'> = HeadlessPropsWithRef<
+  T,
+  ButtonBaseProps
+>;
 
 /**
  * Button behaviour on any element. On a real `<button>` this only adds the
@@ -33,9 +32,7 @@ export type ButtonProps<T extends ValidConstructor = 'button'> =
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/button.md}
  */
-export function Button<T extends ValidConstructor = 'button'>(
-  props: ButtonProps<T>,
-): JSX.Element {
+export function Button<T extends ValidConstructor = 'button'>(props: ButtonProps<T>): JSX.Element {
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(() => {
@@ -43,7 +40,7 @@ export function Button<T extends ValidConstructor = 'button'>(
     if (current instanceof HTMLElement) {
       // This behavior is redundant for buttons
       if (current.tagName !== 'BUTTON') {
-        useEventListener(current, 'keydown', e => {
+        useEventListener(current, 'keydown', (e) => {
           switch (e.key) {
             case 'Enter':
             case ' ': {
@@ -57,7 +54,7 @@ export function Button<T extends ValidConstructor = 'button'>(
   });
 
   return createDynamic(
-    () => props.as || ('button' as T),
+    () => props.as ?? ('button' as T),
     mergeProps(
       BUTTON_TAG,
       {
