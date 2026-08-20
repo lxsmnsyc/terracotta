@@ -146,7 +146,7 @@ export function useColorScheme(): [() => ColorScheme, (newScheme: ColorScheme) =
 
 /**
  * Reads what the operating system currently prefers, ignoring the user's
- * choice. Returns `true` when the system is in dark mode.
+ * choice. Returns an accessor for `'light'` or `'dark'`.
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/color-scheme.md}
  */

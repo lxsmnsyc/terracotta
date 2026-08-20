@@ -51,12 +51,14 @@ export type {
 export {
   createInputState,
   InputStateChild,
+  InputStateProvider,
   useInputState,
 } from './create-input-state';
 export type {
   InputStateControlledOptions,
   InputStateOptions,
   InputStateProperties,
+  InputStateProviderProps,
   InputStateRenderProps,
   InputStateUncontrolledOptions,
 } from './create-input-state';

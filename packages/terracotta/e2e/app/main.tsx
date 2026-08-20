@@ -1,6 +1,8 @@
 import type { JSX } from 'solid-js';
 import { render } from 'solid-js/web';
 import CheckboxCase from './cases/checkbox';
+import ComboboxCase from './cases/combobox';
+import CommandCase from './cases/command';
 import DialogCase from './cases/dialog';
 import ListboxCase from './cases/listbox';
 import MenuCase from './cases/menu';
@@ -12,6 +14,8 @@ import ToolbarCase from './cases/toolbar';
 // dependency and keeps the harness startup cheap.
 const CASES: Record<string, () => JSX.Element> = {
   checkbox: CheckboxCase,
+  combobox: ComboboxCase,
+  command: CommandCase,
   dialog: DialogCase,
   listbox: ListboxCase,
   menu: MenuCase,

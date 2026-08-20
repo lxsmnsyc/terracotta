@@ -13,9 +13,9 @@ export interface MenuChildProps {
 }
 
 /**
- * Renders the children of a `Menu` without adding an element of its own.
- * Useful when the items come from a wrapper component that would otherwise
- * break the parent-child relationship the menu relies on.
+ * The render prop a `MenuItem` passes to its children, available as a
+ * standalone component. It renders no element of its own, and reports its own
+ * `disabled` prop rather than the surrounding item's.
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
  */

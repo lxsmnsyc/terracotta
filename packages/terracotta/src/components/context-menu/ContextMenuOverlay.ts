@@ -21,7 +21,9 @@ export type ContextMenuOverlayProps<T extends ValidComponent = 'div'> =
 
 /**
  * The backdrop behind a `ContextMenu`. Clicking it closes the menu, so give it
- * a size — it has no styles of its own.
+ * a size — it has no styles of its own. It is never unmounted, unlike the
+ * panel, so hide it with CSS or a `<Show>` while closed, or it will swallow
+ * clicks on the page.
  *
  * Renders a `<div>` by default.
  *

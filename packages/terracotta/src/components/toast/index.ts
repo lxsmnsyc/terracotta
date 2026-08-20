@@ -132,7 +132,7 @@ export class ToasterStore<T> {
   }
 
   create(data: T): string {
-    const id = `toast-${this.id}-[${this.toastID}`;
+    const id = `toast-${this.id}-${this.toastID}`;
     this.toastID += 1;
     this.queue.push({
       id,

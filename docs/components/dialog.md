@@ -338,6 +338,9 @@ keeps <kbd>Tab</kbd> inside itself, and closes on <kbd>Escape</kbd>. Renders a
 ### `<DialogOverlay>`
 
 The backdrop. Closes the dialog when clicked. Renders a `<div>` by default.
+Unlike the `Popover` and `ContextMenu` overlays, this one needs no `<Show>`
+guard: `Dialog` unmounts its whole subtree while closed, so the overlay goes
+with it.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

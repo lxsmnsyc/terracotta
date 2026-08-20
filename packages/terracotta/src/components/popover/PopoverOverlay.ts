@@ -21,7 +21,9 @@ export type PopoverOverlayProps<T extends ValidComponent = 'div'> =
 
 /**
  * The backdrop behind a `Popover`. Clicking it closes the popover, so give it
- * a size — it has no styles of its own.
+ * a size — it has no styles of its own. It is never unmounted, unlike the
+ * panel, so hide it with CSS or a `<Show>` while closed, or it will swallow
+ * clicks on the page.
  *
  * Renders a `<div>` by default.
  *

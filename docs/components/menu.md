@@ -243,6 +243,37 @@ Handled on the `Menu` root, across its `MenuItem` descendants:
 
 Both the arrow keys and type-ahead skip disabled items.
 
+### Getting focus into the menu
+
+Every item carries `tabindex="-1"`, and the `Menu` root has no `tabindex` of
+its own. That matches the [WAI-ARIA menu
+pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/), which puts every
+item at `tabindex="-1"` outside a menubar, and says <kbd>Tab</kbd> does not
+move focus into a menu at all. The spec puts the responsibility on you:
+"authors are responsible for ensuring focus moves to an item inside of a menu
+when the menu opens."
+
+Terracotta does not do that for you, and neither do the panels. `PopoverPanel`
+and `ContextMenuPanel` focus their first *tabbable* child on open, and a menu
+item is deliberately not tabbable, so a panel whose only content is a `Menu`
+leaves focus where it was. Move focus yourself when the menu appears:
+
+```tsx
+<PopoverPanel
+  ref={panel => {
+    // Items are focusable programmatically even at tabindex="-1".
+    queueMicrotask(() => panel.querySelector<HTMLElement>('[role="menuitem"]')?.focus());
+  }}
+>
+  <Menu as="ul">…</Menu>
+</PopoverPanel>
+```
+
+An always-visible `Menu` that no popup owns falls outside the pattern
+entirely — the spec covers menubars and menus opened from a button. Give the
+user a real control to move focus from, or reach for a
+[`Toolbar`](./toolbar.md), which is a single tab stop by design.
+
 ## API
 
 ### `<Menu>`
@@ -265,8 +296,9 @@ Rendered attributes: `role="menu"`, a generated `id`, `tc-menu`.
 ### `<MenuItem>`
 
 A [`Button`](./button.md) with `role="menuitem"`. Renders an `<li>` by default.
-It sits outside the tab order (`tabindex="-1"`), which is what makes the menu a
-single tab stop.
+It sits outside the tab order (`tabindex="-1"`), as the ARIA menu pattern
+requires. That means the menu has no tab stop at all — see [getting focus into
+the menu](#getting-focus-into-the-menu).
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

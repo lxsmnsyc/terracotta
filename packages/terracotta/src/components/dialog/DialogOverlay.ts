@@ -21,7 +21,8 @@ export type DialogOverlayProps<T extends ValidComponent = 'div'> =
 
 /**
  * The backdrop behind a `Dialog`. Clicking it closes the dialog, so give it a
- * size — it has no styles of its own and renders 0x0 without them.
+ * size — it has no styles of its own and renders 0x0 without them. It needs no
+ * `<Show>` guard: `Dialog` unmounts its whole subtree while closed.
  *
  * Renders a `<div>` by default.
  *
