@@ -6,14 +6,17 @@
     "examples/*",
     "docs"
   ],
-  "devDependencies": {
-    "@biomejs/biome": "catalog:",
-    "@changesets/cli": "catalog:",
-    "typescript": "catalog:"
-  },
   "scripts": {
     "cs:ver": "changeset version",
     "cs:pub": "changeset publish",
     "cs:add": "changeset add"
+  },
+  "devDependencies": {
+    "@changesets/cli": "catalog:",
+    "@lxsmnsyc/oxlint-config": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "oxlint-tsgolint": "catalog:",
+    "typescript": "catalog:"
   }
 }

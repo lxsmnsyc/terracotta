@@ -1,5 +1,5 @@
 import { fileURLToPath } from 'node:url';
-import solid from 'vite-plugin-solid';
+import solid from '@solidjs/vite-plugin';
 import { defineConfig } from 'vite';
 
 // The harness imports the library from source so that `pnpm test:e2e` never
@@ -7,9 +7,14 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   root: fileURLToPath(new URL('./app', import.meta.url)),
   resolve: {
-    alias: {
-      terracotta: fileURLToPath(new URL('../src/index.ts', import.meta.url)),
-    },
+    alias: [
+      // The package has no root entry any more; every component is its own
+      // subpath, so map `terracotta/<name>` onto the matching source folder.
+      {
+        find: /^terracotta\/(.*)$/,
+        replacement: fileURLToPath(new URL('../src/components/$1', import.meta.url)),
+      },
+    ],
   },
   plugins: [solid()],
   server: {

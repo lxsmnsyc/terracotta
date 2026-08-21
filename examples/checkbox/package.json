@@ -1,18 +1,15 @@
 {
   "name": "checkbox-example",
-  "type": "module",
   "version": "1.0.8-next.6",
+  "private": true,
+  "type": "module",
+  "publishConfig": {
+    "access": "restricted"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "catalog:",
-    "postcss": "catalog:",
-    "typescript": "catalog:",
-    "vite": "catalog:",
-    "vite-plugin-solid": "catalog:"
   },
   "dependencies": {
     "@solidjs/web": "catalog:",
@@ -20,8 +17,11 @@
     "tailwindcss": "catalog:",
     "terracotta": "catalog:"
   },
-  "private": true,
-  "publishConfig": {
-    "access": "restricted"
+  "devDependencies": {
+    "@solidjs/vite-plugin": "catalog:",
+    "@tailwindcss/postcss": "catalog:",
+    "postcss": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
   }
 }

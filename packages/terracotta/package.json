@@ -1,66 +1,32 @@
 {
   "name": "terracotta",
   "version": "2.0.0-next.6",
-  "type": "module",
+  "private": false,
   "description": "Headless UI for SolidJS",
-  "repository": {
-    "url": "https://github.com/lxsmnsyc/terracotta.git",
-    "type": "git"
-  },
+  "keywords": [
+    "headless-ui",
+    "pridepack",
+    "solid-js"
+  ],
   "homepage": "https://github.com/lxsmnsyc/terracotta/tree/main/packages/terracotta",
   "bugs": {
     "url": "https://github.com/lxsmnsyc/terracotta/issues"
   },
-  "publishConfig": {
-    "access": "public"
-  },
+  "license": "MIT",
   "author": "Alexis Munsayac",
-  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lxsmnsyc/terracotta.git"
+  },
   "files": [
     "dist",
     "src"
   ],
-  "engines": {
-    "node": ">=20"
-  },
-  "license": "MIT",
-  "keywords": [
-    "pridepack",
-    "solid-js",
-    "headless-ui"
-  ],
-  "devDependencies": {
-    "@playwright/test": "catalog:",
-    "@solidjs/testing-library": "catalog:",
-    "@solidjs/web": "catalog:",
-    "@testing-library/jest-dom": "catalog:",
-    "@types/node": "catalog:",
-    "jsdom": "catalog:",
-    "solid-js": "catalog:",
-    "tsdown": "catalog:",
-    "tslib": "catalog:",
-    "typescript": "catalog:",
-    "vite": "catalog:",
-    "vitest": "catalog:"
-  },
-  "peerDependencies": {
-    "@solidjs/web": "^2.0.0-beta.15",
-    "solid-js": "^2.0.0-beta.15"
-  },
-  "dependencies": {
-    "solid-use": "^1.0.0-next.2"
-  },
-  "scripts": {
-    "prepublishOnly": "tsdown",
-    "build": "tsdown",
-    "watch": "tsdown --watch",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "e2e:dev": "vite --config e2e/vite.config.ts"
-  },
+  "type": "module",
   "types": "./dist/types/index.d.ts",
+  "typesVersions": {
+    "*": {}
+  },
   "exports": {
     "./accordion": "./dist/accordion.js",
     "./alert": "./dist/alert.js",
@@ -89,7 +55,42 @@
     "./utils": "./dist/utils.js",
     "./package.json": "./package.json"
   },
-  "typesVersions": {
-    "*": {}
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "tsdown",
+    "build": "tsdown",
+    "watch": "tsdown --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "e2e:dev": "vite --config e2e/vite.config.ts"
+  },
+  "dependencies": {
+    "solid-use": "^1.0.0-next.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "catalog:",
+    "@solidjs/testing-library": "catalog:",
+    "@solidjs/vite-plugin": "catalog:",
+    "@solidjs/web": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@types/node": "catalog:",
+    "jsdom": "catalog:",
+    "solid-js": "catalog:",
+    "tsdown": "catalog:",
+    "tslib": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "@solidjs/web": "^2.0.0-rc.0",
+    "solid-js": "^2.0.0-rc.0"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
