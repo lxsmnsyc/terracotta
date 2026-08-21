@@ -1,6 +1,12 @@
 import type { JSX } from 'solid-js';
 import { createSignal } from 'solid-js';
-import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from 'terracotta';
+import {
+  Listbox,
+  ListboxButton,
+  ListboxLabel,
+  ListboxOption,
+  ListboxOptions,
+} from 'terracotta/listbox';
 
 const FRUITS = ['apple', 'banana', 'cherry', 'durian'];
 

@@ -27,9 +27,9 @@ test('keeps DOM focus in the input and tracks the option with aria-activedescend
   await expect(input).toBeFocused();
   const active = await input.getAttribute('aria-activedescendant');
   expect(active).not.toBeNull();
-  // Nothing is active until the first arrow key, which lands on the first
-  // option rather than the second.
-  await expect(page.locator(`#${active}`)).toHaveText('ada');
+  // Opening activates the selected option, so the first arrow key steps past
+  // `ada` rather than landing on it.
+  await expect(page.locator(`#${active}`)).toHaveText('grace');
 });
 
 test('skips disabled options with the arrow keys', async ({ page }) => {
@@ -38,9 +38,8 @@ test('skips disabled options with the arrow keys', async ({ page }) => {
 
   await page.keyboard.press('ArrowDown');
   await page.keyboard.press('ArrowDown');
-  await page.keyboard.press('ArrowDown');
 
-  // ada, grace, then `katherine` is disabled so the third step reaches
+  // grace, then `katherine` is disabled so the second step reaches
   // `margaret`.
   const active = await input.getAttribute('aria-activedescendant');
   await expect(page.locator(`#${active}`)).toHaveText('margaret');
@@ -59,7 +58,6 @@ test('filters the options as you type, once the query settles', async ({ page })
 test('commits a selection with Enter', async ({ page }) => {
   await page.getByRole('combobox').click();
 
-  await page.keyboard.press('ArrowDown');
   await page.keyboard.press('ArrowDown');
   await page.keyboard.press('Enter');
 

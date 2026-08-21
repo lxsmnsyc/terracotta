@@ -1,7 +1,14 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it, vi } from 'vitest';
-import { describedBy, labelledBy } from './aria';
-import { Button, Dialog, DialogDescription, DialogOverlay, DialogPanel, DialogTitle } from '../src';
+import { activeElement, describedBy, labelledBy, settle } from './aria';
+import { Button } from '../src/components/button';
+import {
+  Dialog,
+  DialogDescription,
+  DialogOverlay,
+  DialogPanel,
+  DialogTitle,
+} from '../src/components/dialog';
 
 function renderDialog(
   props: { open?: boolean; onClose?: () => void } = {},
@@ -20,54 +27,60 @@ function renderDialog(
 }
 
 describe('Dialog accessibility', () => {
-  it('exposes a modal dialog', () => {
+  it('exposes a modal dialog', async () => {
     renderDialog();
+    await settle();
     const dialog = screen.getByRole('dialog');
 
     expect(dialog).toHaveAttribute('aria-modal', 'true');
   });
 
-  it('names and describes the dialog', () => {
+  it('names and describes the dialog', async () => {
     renderDialog();
+    await settle();
     const dialog = screen.getByRole('dialog');
 
     expect(labelledBy(dialog)).toHaveTextContent('Delete file');
     expect(describedBy(dialog)).toHaveTextContent('This cannot be undone');
   });
 
-  it('stays out of the accessibility tree while closed', () => {
+  it('stays out of the accessibility tree while closed', async () => {
     renderDialog({ open: false });
+    await settle();
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('moves focus into the panel when opened', () => {
+  it('moves focus into the panel when opened', async () => {
     renderDialog();
+    await settle();
 
-    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Cancel' }));
+    expect(await activeElement()).toBe(screen.getByRole('button', { name: 'Cancel' }));
   });
 
-  it('keeps Tab inside the panel', () => {
+  it('keeps Tab inside the panel', async () => {
     renderDialog();
+    await settle();
     const cancel = screen.getByRole('button', { name: 'Cancel' });
     const confirm = screen.getByRole('button', { name: 'Confirm' });
 
     fireEvent.keyDown(cancel, { key: 'Tab' });
-    expect(document.activeElement).toBe(confirm);
+    expect(await activeElement()).toBe(confirm);
 
     // Wrapping around from the last focusable element returns to the first.
     fireEvent.keyDown(confirm, { key: 'Tab' });
-    expect(document.activeElement).toBe(cancel);
+    expect(await activeElement()).toBe(cancel);
   });
 
-  it('walks backwards with Shift+Tab', () => {
+  it('walks backwards with Shift+Tab', async () => {
     renderDialog();
+    await settle();
     const cancel = screen.getByRole('button', { name: 'Cancel' });
     const confirm = screen.getByRole('button', { name: 'Confirm' });
 
     fireEvent.keyDown(cancel, { key: 'Tab', shiftKey: true });
 
-    expect(document.activeElement).toBe(confirm);
+    expect(await activeElement()).toBe(confirm);
   });
 
   it('closes on Escape', () => {
@@ -86,15 +99,16 @@ describe('Dialog accessibility', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('closes when the overlay is clicked', () => {
+  it('closes when the overlay is clicked', async () => {
     renderDialog();
+    await settle();
 
     screen.getByTestId('overlay').click();
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('restores focus to the previously focused element on close', () => {
+  it('restores focus to the previously focused element on close', async () => {
     const trigger = document.createElement('button');
     document.body.appendChild(trigger);
     trigger.focus();
@@ -108,7 +122,7 @@ describe('Dialog accessibility', () => {
       </Dialog>
     ));
 
-    expect(document.activeElement).toBe(trigger);
+    expect(await activeElement()).toBe(trigger);
 
     unmount();
     trigger.remove();

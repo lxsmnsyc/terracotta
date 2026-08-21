@@ -1,7 +1,7 @@
-import { fireEvent, render, screen } from '@solidjs/testing-library';
-import { createSignal } from 'solid-js';
+import { render, screen } from '@solidjs/testing-library';
+import { createSignal, flush } from 'solid-js';
 import { describe, expect, it, vi } from 'vitest';
-import { Transition, TransitionChild } from '../src';
+import { Transition, TransitionChild } from '../src/components/transition';
 
 const CLASSES = {
   enter: 'enter',
@@ -13,9 +13,17 @@ const CLASSES = {
   leaveTo: 'leave-to',
 };
 
-/** Transition advances its class swap inside `requestAnimationFrame`. */
-async function nextFrame(): Promise<void> {
-  await new Promise<void>((resolve) => {
+/**
+ * The transition advances its class swap inside `requestAnimationFrame`.
+ *
+ * There is no `transitionend` to fire here: the implementation measures the
+ * element, finds no CSS duration, and settles in a single frame rather than
+ * waiting for an event that would never arrive. So these tests assert the
+ * start and end states and the callback order, not an intermediate `enter-to`
+ * step that only exists while a real animation is running.
+ */
+function nextFrame(): Promise<void> {
+  return new Promise((resolve) => {
     requestAnimationFrame(() => {
       resolve();
     });
@@ -47,20 +55,20 @@ describe('Transition', () => {
 
   it('applies the enter classes before the first frame', () => {
     render(() => (
-      <Transition show {...CLASSES}>
+      <Transition show appear {...CLASSES}>
         Panel
       </Transition>
     ));
     const panel = screen.getByText('Panel');
 
     expect(panel).toHaveClass('enter', 'enter-from');
-    expect(panel).not.toHaveClass('enter-to');
+    expect(panel).not.toHaveClass('entered');
     expect(panel).toHaveAttribute('tc-transition', 'enter-from');
   });
 
-  it('swaps enter-from for enter-to on the next frame', async () => {
+  it('settles into the entered class on the next frame', async () => {
     render(() => (
-      <Transition show {...CLASSES}>
+      <Transition show appear {...CLASSES}>
         Panel
       </Transition>
     ));
@@ -68,119 +76,72 @@ describe('Transition', () => {
 
     await nextFrame();
 
-    expect(panel).not.toHaveClass('enter-from');
-    expect(panel).toHaveClass('enter', 'enter-to');
-    expect(panel).toHaveAttribute('tc-transition', 'enter-to');
-  });
-
-  it('settles into the entered class once the transition ends', async () => {
-    render(() => (
-      <Transition show {...CLASSES}>
-        Panel
-      </Transition>
-    ));
-    const panel = screen.getByText('Panel');
-
-    await nextFrame();
-    fireEvent.transitionEnd(panel);
-
-    expect(panel).not.toHaveClass('enter', 'enter-to');
+    expect(panel).not.toHaveClass('enter', 'enter-from');
     expect(panel).toHaveClass('entered');
     expect(panel).toHaveAttribute('tc-transition', 'entered');
   });
 
-  it('accepts an animation ending the transition too', async () => {
-    render(() => (
-      <Transition show {...CLASSES}>
-        Panel
-      </Transition>
-    ));
-    const panel = screen.getByText('Panel');
-
-    await nextFrame();
-    fireEvent.animationEnd(panel);
-
-    expect(panel).toHaveClass('entered');
-  });
-
   it('calls beforeEnter before the classes go on, and afterEnter at the end', async () => {
-    const beforeEnter = vi.fn();
-    const afterEnter = vi.fn();
+    const beforeEnter = vi.fn<() => void>();
+    const afterEnter = vi.fn<() => void>();
     render(() => (
-      <Transition
-        show
-        beforeEnter={() => {
-          beforeEnter();
-        }}
-        afterEnter={() => {
-          afterEnter();
-        }}
-        {...CLASSES}
-      >
+      <Transition show appear beforeEnter={beforeEnter} afterEnter={afterEnter} {...CLASSES}>
         Panel
       </Transition>
     ));
-    const panel = screen.getByText('Panel');
 
     expect(beforeEnter).toHaveBeenCalled();
     expect(afterEnter).not.toHaveBeenCalled();
 
     await nextFrame();
-    fireEvent.transitionEnd(panel);
 
     expect(afterEnter).toHaveBeenCalled();
   });
 
-  it('applies the leave classes and keeps the element mounted meanwhile', async () => {
+  it('applies the leave classes before the first frame', async () => {
     const [show, setShow] = createSignal(true);
     render(() => (
-      <Transition show={show()} {...CLASSES}>
+      <Transition show={show()} appear {...CLASSES}>
         Panel
       </Transition>
     ));
     const panel = screen.getByText('Panel');
     await nextFrame();
-    fireEvent.transitionEnd(panel);
 
     setShow(false);
+    flush();
+    // The leave waits on `waitForTransition`, so its classes land a microtask
+    // later rather than in the same tick as the signal write.
+    await Promise.resolve();
+    // `tc-transition` is written from a signal, so it needs one more flush to
+    // reach the DOM after the classes have gone on.
+    flush();
 
     expect(panel).toBeInTheDocument();
-    expect(panel).not.toHaveClass('entered');
+    // `entered` is left in place through the leave rather than removed first,
+    // so leave classes have to be specific enough to override it.
     expect(panel).toHaveClass('leave', 'leave-from');
     expect(panel).toHaveAttribute('tc-transition', 'leave-from');
-
-    await nextFrame();
-
-    expect(panel).not.toHaveClass('leave-from');
-    expect(panel).toHaveClass('leave', 'leave-to');
-    expect(panel).toHaveAttribute('tc-transition', 'leave-to');
   });
 
-  it('unmounts only once the leave transition ends', async () => {
+  it('stays mounted for the leave, then unmounts', async () => {
     const [show, setShow] = createSignal(true);
-    const afterLeave = vi.fn();
+    const afterLeave = vi.fn<() => void>();
     render(() => (
-      <Transition
-        show={show()}
-        afterLeave={() => {
-          afterLeave();
-        }}
-        {...CLASSES}
-      >
+      <Transition show={show()} appear afterLeave={afterLeave} {...CLASSES}>
         Panel
       </Transition>
     ));
-    const panel = screen.getByText('Panel');
     await nextFrame();
-    fireEvent.transitionEnd(panel);
 
     setShow(false);
-    await nextFrame();
+
+    flush();
 
     expect(screen.getByText('Panel')).toBeInTheDocument();
     expect(afterLeave).not.toHaveBeenCalled();
 
-    fireEvent.transitionEnd(panel);
+    await nextFrame();
 
     expect(screen.queryByText('Panel')).not.toBeInTheDocument();
     expect(afterLeave).toHaveBeenCalled();
@@ -188,15 +149,9 @@ describe('Transition', () => {
 
   it('calls beforeLeave as the leave starts', async () => {
     const [show, setShow] = createSignal(true);
-    const beforeLeave = vi.fn();
+    const beforeLeave = vi.fn<() => void>();
     render(() => (
-      <Transition
-        show={show()}
-        beforeLeave={() => {
-          beforeLeave();
-        }}
-        {...CLASSES}
-      >
+      <Transition show={show()} appear beforeLeave={beforeLeave} {...CLASSES}>
         Panel
       </Transition>
     ));
@@ -206,46 +161,45 @@ describe('Transition', () => {
 
     setShow(false);
 
+    flush();
+
     expect(beforeLeave).toHaveBeenCalled();
   });
 
   it('re-runs the enter transition on a later show', async () => {
     const [show, setShow] = createSignal(true);
     render(() => (
-      <Transition show={show()} unmount={false} {...CLASSES}>
+      <Transition show={show()} appear unmount={false} {...CLASSES}>
         Panel
       </Transition>
     ));
     const panel = screen.getByText('Panel');
-
     await nextFrame();
-    fireEvent.transitionEnd(panel);
     setShow(false);
+    flush();
     await nextFrame();
-    fireEvent.transitionEnd(panel);
 
     setShow(true);
 
-    // The element was never unmounted, so the enter has to be armed again by
-    // the leave finishing rather than by a fresh mount.
+    flush();
+
     expect(panel).toHaveClass('enter', 'enter-from');
   });
 
   it('does not restart the enter transition when a class prop changes', async () => {
     const [enter, setEnter] = createSignal('enter');
     render(() => (
-      <Transition show {...CLASSES} enter={enter()}>
+      <Transition show appear {...CLASSES} enter={enter()}>
         Panel
       </Transition>
     ));
     const panel = screen.getByText('Panel');
-
     await nextFrame();
-    fireEvent.transitionEnd(panel);
     expect(panel).toHaveClass('entered');
 
-    // `props.enter` is read on the enter path, so this re-runs the effect.
     setEnter('enter-slow');
+
+    flush();
 
     expect(panel).toHaveClass('entered');
     expect(panel).not.toHaveClass('enter-from');
@@ -253,7 +207,7 @@ describe('Transition', () => {
 
   it('renders as another element when asked', () => {
     render(() => (
-      <Transition as="section" show {...CLASSES}>
+      <Transition as="section" show appear {...CLASSES}>
         Panel
       </Transition>
     ));
@@ -266,31 +220,33 @@ describe('TransitionChild', () => {
   it('follows the parent transition rather than its own show prop', () => {
     render(() => (
       <Transition show>
-        <TransitionChild {...CLASSES}>Child</TransitionChild>
+        <TransitionChild appear {...CLASSES}>
+          Child
+        </TransitionChild>
       </Transition>
     ));
-    const child = screen.getByText('Child');
 
-    expect(child).toHaveClass('enter', 'enter-from');
+    expect(screen.getByText('Child')).toHaveClass('enter', 'enter-from');
   });
 
-  it('stays mounted until its own leave transition ends', async () => {
+  it('stays mounted for its own leave, then unmounts', async () => {
     const [show, setShow] = createSignal(true);
     render(() => (
       <Transition show={show()}>
-        <TransitionChild {...CLASSES}>Child</TransitionChild>
+        <TransitionChild appear {...CLASSES}>
+          Child
+        </TransitionChild>
       </Transition>
     ));
-    const child = screen.getByText('Child');
     await nextFrame();
-    fireEvent.transitionEnd(child);
 
     setShow(false);
-    await nextFrame();
+
+    flush();
 
     expect(screen.getByText('Child')).toBeInTheDocument();
 
-    fireEvent.transitionEnd(child);
+    await nextFrame();
 
     expect(screen.queryByText('Child')).not.toBeInTheDocument();
   });

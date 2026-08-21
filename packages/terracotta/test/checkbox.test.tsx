@@ -1,7 +1,12 @@
 import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
 import { describedBy, labelledBy } from './aria';
-import { Checkbox, CheckboxDescription, CheckboxIndicator, CheckboxLabel } from '../src';
+import {
+  Checkbox,
+  CheckboxDescription,
+  CheckboxIndicator,
+  CheckboxLabel,
+} from '../src/components/checkbox';
 
 function renderCheckbox(
   props: { disabled?: boolean; checked?: boolean } = {},

@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
+import { activeElement } from './aria';
 import { describe, expect, it } from 'vitest';
-import { Button, Toolbar } from '../src';
+import { Button } from '../src/components/button';
+import { Toolbar } from '../src/components/toolbar';
 
 const ACTIONS = ['Bold', 'Italic', 'Underline'];
 
@@ -43,44 +45,44 @@ describe('Toolbar accessibility', () => {
     expect(screen.getByRole('toolbar')).toHaveAttribute('tabindex', '0');
   });
 
-  it('focuses the first action when the toolbar itself is focused', () => {
+  it('focuses the first action when the toolbar itself is focused', async () => {
     renderToolbar();
 
     fireEvent.focus(screen.getByRole('toolbar'));
 
-    expect(document.activeElement).toBe(getAction('Bold'));
+    expect(await activeElement()).toBe(getAction('Bold'));
   });
 
-  it('moves focus with ArrowRight and ArrowLeft when horizontal', () => {
+  it('moves focus with ArrowRight and ArrowLeft when horizontal', async () => {
     renderToolbar();
     getAction('Bold').focus();
 
     fireEvent.keyDown(screen.getByRole('toolbar'), { key: 'ArrowRight' });
-    expect(document.activeElement).toBe(getAction('Italic'));
+    expect(await activeElement()).toBe(getAction('Italic'));
 
     fireEvent.keyDown(screen.getByRole('toolbar'), { key: 'ArrowLeft' });
-    expect(document.activeElement).toBe(getAction('Bold'));
+    expect(await activeElement()).toBe(getAction('Bold'));
   });
 
-  it('moves focus with ArrowDown and ArrowUp when vertical', () => {
+  it('moves focus with ArrowDown and ArrowUp when vertical', async () => {
     renderToolbar({ horizontal: false });
     getAction('Bold').focus();
 
     fireEvent.keyDown(screen.getByRole('toolbar'), { key: 'ArrowDown' });
-    expect(document.activeElement).toBe(getAction('Italic'));
+    expect(await activeElement()).toBe(getAction('Italic'));
 
     fireEvent.keyDown(screen.getByRole('toolbar'), { key: 'ArrowUp' });
-    expect(document.activeElement).toBe(getAction('Bold'));
+    expect(await activeElement()).toBe(getAction('Bold'));
   });
 
-  it('jumps to the first and last action with Home and End', () => {
+  it('jumps to the first and last action with Home and End', async () => {
     renderToolbar();
     getAction('Italic').focus();
 
     fireEvent.keyDown(screen.getByRole('toolbar'), { key: 'End' });
-    expect(document.activeElement).toBe(getAction('Underline'));
+    expect(await activeElement()).toBe(getAction('Underline'));
 
     fireEvent.keyDown(screen.getByRole('toolbar'), { key: 'Home' });
-    expect(document.activeElement).toBe(getAction('Bold'));
+    expect(await activeElement()).toBe(getAction('Bold'));
   });
 });

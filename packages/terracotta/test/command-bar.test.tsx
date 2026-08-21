@@ -1,14 +1,15 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
+import { flush } from 'solid-js';
 import { describe, expect, it, vi } from 'vitest';
-import { describedBy, labelledBy, pressKeyOnFocused } from './aria';
+import { activeElement, describedBy, labelledBy, pressKeyOnFocused, settle } from './aria';
+import { Button } from '../src/components/button';
 import {
-  Button,
   CommandBar,
   CommandBarDescription,
   CommandBarOverlay,
   CommandBarPanel,
   CommandBarTitle,
-} from '../src';
+} from '../src/components/command-bar';
 
 function renderCommandBar(
   props: { open?: boolean; disabled?: boolean; onClose?: () => void } = {},
@@ -37,62 +38,71 @@ function renderCommandBar(
 function pressShortcut(init: KeyboardEventInit): KeyboardEvent {
   const event = new KeyboardEvent('keydown', { bubbles: true, cancelable: true, ...init });
   window.dispatchEvent(event);
+  flush();
   return event;
 }
 
 describe('CommandBar accessibility', () => {
-  it('stays out of the accessibility tree while closed', () => {
+  it('stays out of the accessibility tree while closed', async () => {
     renderCommandBar();
+    await settle();
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('exposes a modal dialog once open', () => {
+  it('exposes a modal dialog once open', async () => {
     renderCommandBar({ open: true });
+    await settle();
 
     expect(screen.getByRole('dialog')).toHaveAttribute('aria-modal', 'true');
   });
 
-  it('names and describes the dialog', () => {
+  it('names and describes the dialog', async () => {
     renderCommandBar({ open: true });
+    await settle();
     const dialog = screen.getByRole('dialog');
 
     expect(labelledBy(dialog)).toHaveTextContent('Command palette');
     expect(describedBy(dialog)).toHaveTextContent('Search for a command');
   });
 
-  it('opens on Ctrl+K', () => {
+  it('opens on Ctrl+K', async () => {
     renderCommandBar();
+    await settle();
 
     pressShortcut({ key: 'k', ctrlKey: true });
 
     expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
-  it('opens on Cmd+K', () => {
+  it('opens on Cmd+K', async () => {
     renderCommandBar();
+    await settle();
 
     pressShortcut({ key: 'k', metaKey: true });
 
     expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
-  it('claims the shortcut so the browser does not act on it', () => {
+  it('claims the shortcut so the browser does not act on it', async () => {
     renderCommandBar();
+    await settle();
 
     expect(pressShortcut({ key: 'k', ctrlKey: true }).defaultPrevented).toBe(true);
   });
 
-  it('ignores a bare k', () => {
+  it('ignores a bare k', async () => {
     renderCommandBar();
+    await settle();
 
     pressShortcut({ key: 'k' });
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('ignores the shortcut once something else has handled it', () => {
+  it('ignores the shortcut once something else has handled it', async () => {
     renderCommandBar();
+    await settle();
     const event = new KeyboardEvent('keydown', {
       bubbles: true,
       cancelable: true,
@@ -102,27 +112,31 @@ describe('CommandBar accessibility', () => {
     event.preventDefault();
 
     window.dispatchEvent(event);
+    flush();
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('does not open while disabled', () => {
+  it('does not open while disabled', async () => {
     renderCommandBar({ disabled: true });
+    await settle();
 
     pressShortcut({ key: 'k', ctrlKey: true });
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('moves focus into the panel when opened', () => {
+  it('moves focus into the panel when opened', async () => {
     renderCommandBar({ open: true });
+    await settle();
 
-    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Open file' }));
+    expect(await activeElement()).toBe(screen.getByRole('button', { name: 'Open file' }));
   });
 
-  it('closes on Escape', () => {
+  it('closes on Escape', async () => {
     const onClose = vi.fn<() => void>();
     renderCommandBar({ open: true, onClose });
+    await settle();
 
     pressKeyOnFocused('Escape');
 
@@ -130,37 +144,40 @@ describe('CommandBar accessibility', () => {
     expect(onClose).toHaveBeenCalled();
   });
 
-  it('keeps Tab inside the panel', () => {
+  it('keeps Tab inside the panel', async () => {
     renderCommandBar({ open: true });
+    await settle();
     const open = screen.getByRole('button', { name: 'Open file' });
     const close = screen.getByRole('button', { name: 'Close file' });
 
     pressKeyOnFocused('Tab');
-    expect(document.activeElement).toBe(close);
+    expect(await activeElement()).toBe(close);
 
     pressKeyOnFocused('Tab');
-    expect(document.activeElement).toBe(open);
+    expect(await activeElement()).toBe(open);
   });
 
-  it('closes when the overlay is clicked', () => {
+  it('closes when the overlay is clicked', async () => {
     renderCommandBar({ open: true });
+    await settle();
 
     fireEvent.click(screen.getByTestId('overlay'));
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('returns focus to where it was when it closes', () => {
+  it('returns focus to where it was when it closes', async () => {
     renderCommandBar();
+    await settle();
     const trigger = screen.getByRole('button', { name: 'Page content' });
     trigger.focus();
 
     pressShortcut({ key: 'k', ctrlKey: true });
-    expect(document.activeElement).not.toBe(trigger);
+    expect(await activeElement()).not.toBe(trigger);
 
     pressKeyOnFocused('Escape');
 
-    expect(document.activeElement).toBe(trigger);
+    expect(await activeElement()).toBe(trigger);
   });
 
   it('requires a surrounding CommandBar', () => {

@@ -6,7 +6,7 @@ import {
   ComboboxLabel,
   ComboboxOption,
   ComboboxOptions,
-} from 'terracotta';
+} from 'terracotta/combobox';
 
 const PEOPLE = ['ada', 'grace', 'katherine', 'margaret'];
 

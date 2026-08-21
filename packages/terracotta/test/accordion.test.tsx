@@ -1,7 +1,13 @@
 import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { pressKeyOnFocused } from './aria';
-import { Accordion, AccordionButton, AccordionHeader, AccordionItem, AccordionPanel } from '../src';
+import { activeElement, pressKeyOnFocused } from './aria';
+import {
+  Accordion,
+  AccordionButton,
+  AccordionHeader,
+  AccordionItem,
+  AccordionPanel,
+} from '../src/components/accordion';
 
 const ITEMS = ['first', 'second', 'third'];
 
@@ -104,35 +110,35 @@ describe('Accordion accessibility', () => {
     expect(button).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('moves focus with ArrowDown and ArrowUp', () => {
+  it('moves focus with ArrowDown and ArrowUp', async () => {
     renderAccordion();
     getButton('first').focus();
 
     pressKeyOnFocused('ArrowDown');
-    expect(document.activeElement).toBe(getButton('second'));
+    expect(await activeElement()).toBe(getButton('second'));
 
     pressKeyOnFocused('ArrowUp');
-    expect(document.activeElement).toBe(getButton('first'));
+    expect(await activeElement()).toBe(getButton('first'));
   });
 
-  it('jumps to the first and last header with Home and End', () => {
+  it('jumps to the first and last header with Home and End', async () => {
     renderAccordion();
     getButton('second').focus();
 
     pressKeyOnFocused('End');
-    expect(document.activeElement).toBe(getButton('third'));
+    expect(await activeElement()).toBe(getButton('third'));
 
     pressKeyOnFocused('Home');
-    expect(document.activeElement).toBe(getButton('first'));
+    expect(await activeElement()).toBe(getButton('first'));
   });
 
-  it('skips disabled headers during keyboard navigation', () => {
+  it('skips disabled headers during keyboard navigation', async () => {
     renderAccordion({ disabled: ['second'] });
     getButton('first').focus();
 
     pressKeyOnFocused('ArrowDown');
 
-    expect(document.activeElement).toBe(getButton('third'));
+    expect(await activeElement()).toBe(getButton('third'));
   });
 
   it('supports multiple expanded items in multiple mode', () => {

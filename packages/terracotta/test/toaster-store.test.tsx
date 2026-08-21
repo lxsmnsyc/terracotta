@@ -1,7 +1,8 @@
 import { render, screen } from '@solidjs/testing-library';
-import { For, createRoot } from 'solid-js';
+import { For, flush } from 'solid-js';
+import { withRoot } from './reactive';
 import { describe, expect, it, vi } from 'vitest';
-import { Toast, Toaster, ToasterStore, useToaster } from '../src';
+import { Toast, Toaster, ToasterStore, useToaster } from '../src/components/toast';
 
 interface Notice {
   title: string;
@@ -128,12 +129,10 @@ describe('useToaster', () => {
     const store = new ToasterStore<Notice>();
     store.create({ title: 'Queued before mount' });
 
-    createRoot((dispose) => {
-      const queue = useToaster(store);
+    const [queue, dispose] = withRoot(() => useToaster(store));
 
-      expect(queue()).toHaveLength(1);
-      dispose();
-    });
+    expect(queue()).toHaveLength(1);
+    dispose();
   });
 
   it('re-renders the region as toasts are created and removed', () => {
@@ -151,10 +150,13 @@ describe('useToaster', () => {
     expect(screen.queryAllByRole('status')).toHaveLength(0);
 
     const id = store.create({ title: 'Saved' });
+    // The store notifies a signal, and Solid 2 defers the render that follows.
+    flush();
 
     expect(screen.getByRole('status')).toHaveTextContent('Saved');
 
     store.remove(id);
+    flush();
 
     expect(screen.queryAllByRole('status')).toHaveLength(0);
   });

@@ -1,5 +1,5 @@
 import type { JSX } from 'solid-js';
-import { Tab, TabGroup, TabList, TabPanel } from 'terracotta';
+import { Tab, TabGroup, TabList, TabPanel } from 'terracotta/tabs';
 
 const TABS = ['alpha', 'beta', 'gamma'];
 

@@ -1,6 +1,12 @@
 import type { JSX } from 'solid-js';
 import { createSignal } from 'solid-js';
-import { Command, CommandInput, CommandLabel, CommandOption, CommandOptions } from 'terracotta';
+import {
+  Command,
+  CommandInput,
+  CommandLabel,
+  CommandOption,
+  CommandOptions,
+} from 'terracotta/command';
 
 const ACTIONS = ['open file', 'close file', 'rename file', 'delete file'];
 

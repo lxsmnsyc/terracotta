@@ -9,78 +9,86 @@ import {
   AccordionHeader,
   AccordionItem,
   AccordionPanel,
-  Alert,
+} from '../src/components/accordion';
+import { Alert } from '../src/components/alert';
+import {
   AlertDialog,
   AlertDialogDescription,
   AlertDialogOverlay,
   AlertDialogPanel,
   AlertDialogTitle,
-  Button,
+} from '../src/components/alert-dialog';
+import { Button } from '../src/components/button';
+import {
   Checkbox,
   CheckboxDescription,
   CheckboxIndicator,
   CheckboxLabel,
+} from '../src/components/checkbox';
+import {
   Combobox,
   ComboboxInput,
   ComboboxLabel,
   ComboboxOption,
   ComboboxOptions,
+} from '../src/components/combobox';
+import {
   Command,
+  CommandInput,
+  CommandLabel,
+  CommandOption,
+  CommandOptions,
+} from '../src/components/command';
+import {
   CommandBar,
   CommandBarDescription,
   CommandBarOverlay,
   CommandBarPanel,
   CommandBarTitle,
-  CommandInput,
-  CommandLabel,
-  CommandOption,
-  CommandOptions,
+} from '../src/components/command-bar';
+import {
   ContextMenu,
   ContextMenuBoundary,
   ContextMenuOverlay,
   ContextMenuPanel,
+} from '../src/components/context-menu';
+import {
   Dialog,
   DialogDescription,
   DialogOverlay,
   DialogPanel,
   DialogTitle,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
+} from '../src/components/dialog';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '../src/components/disclosure';
+import {
   Feed,
   FeedArticle,
   FeedArticleDescription,
   FeedArticleLabel,
   FeedContent,
   FeedLabel,
+} from '../src/components/feed';
+import {
   Listbox,
   ListboxButton,
   ListboxLabel,
   ListboxOption,
   ListboxOptions,
-  Menu,
-  MenuItem,
-  Popover,
-  PopoverButton,
-  PopoverOverlay,
-  PopoverPanel,
+} from '../src/components/listbox';
+import { Menu, MenuItem } from '../src/components/menu';
+import { Popover, PopoverButton, PopoverOverlay, PopoverPanel } from '../src/components/popover';
+import {
   RadioGroup,
   RadioGroupDescription,
   RadioGroupLabel,
   RadioGroupOption,
-  Select,
-  SelectOption,
-  Tab,
-  TabGroup,
-  TabList,
-  TabPanel,
-  Toast,
-  Toaster,
-  Toggle,
-  Toolbar,
-  Transition,
-  TransitionChild,
-} from '../src';
+} from '../src/components/radio-group';
+import { Select, SelectOption } from '../src/components/select';
+import { Tab, TabGroup, TabList, TabPanel } from '../src/components/tabs';
+import { Toast, Toaster } from '../src/components/toast';
+import { Toggle } from '../src/components/toggle';
+import { Toolbar } from '../src/components/toolbar';
+import { Transition, TransitionChild } from '../src/components/transition';
 
 /** Receives the element the component rendered, whatever `as` it was given. */
 type Ref = (element: HTMLElement) => void;
@@ -138,8 +146,10 @@ const CASES: Case[] = [
     name: 'TransitionChild',
     as: 'article',
     render: (ref) => (
+      // 2.x only shows a child of an already-open transition when `appear`
+      // is set; without it `visible` starts false and nothing mounts.
       <Transition show>
-        <TransitionChild as="article" ref={ref} />
+        <TransitionChild appear as="article" ref={ref} />
       </Transition>
     ),
   },

@@ -1,13 +1,13 @@
 import type { JSX } from 'solid-js';
 import { createSignal } from 'solid-js';
+import { Button } from 'terracotta/button';
 import {
-  Button,
   Dialog,
   DialogDescription,
   DialogOverlay,
   DialogPanel,
   DialogTitle,
-} from 'terracotta';
+} from 'terracotta/dialog';
 
 export default function DialogCase(): JSX.Element {
   const [open, setOpen] = createSignal(false);

@@ -1,4 +1,5 @@
 import { fireEvent } from '@solidjs/testing-library';
+import { flush } from 'solid-js';
 
 /**
  * Resolves an IDREF attribute (`aria-labelledby`, `aria-describedby`, ...) to
@@ -25,4 +26,28 @@ export function pressKeyOnFocused(key: string, init: { shiftKey?: boolean } = {}
     throw new Error(`Nothing is focused, cannot press "${key}"`);
   }
   fireEvent.keyDown(target, { key, ...init });
+}
+
+/**
+ * `document.activeElement` once the components have finished moving it.
+ *
+ * Two things defer that on Solid 2: effects run on a flush, and the panels wait
+ * on `waitForTransition` before focusing, which settles on a microtask. So a
+ * plain read of the property can catch the state from before the panel opened.
+ */
+export async function activeElement(): Promise<Element | null> {
+  flush();
+  await Promise.resolve();
+  flush();
+  return document.activeElement;
+}
+
+/**
+ * Waits for the components to finish their opening work — the deferred effects
+ * and the `waitForTransition` microtask that moves focus into a panel. Call it
+ * after rendering something that opens, before driving the keyboard, so the
+ * focus trap starts from the element the component chose rather than `<body>`.
+ */
+export async function settle(): Promise<void> {
+  await activeElement();
 }

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@solidjs/testing-library';
 import { describe, expect, it, vi } from 'vitest';
-import { pressKeyOnFocused } from './aria';
-import { Menu, MenuChild, MenuItem } from '../src';
+import { activeElement, pressKeyOnFocused } from './aria';
+import { Menu, MenuChild, MenuItem } from '../src/components/menu';
 
 const ITEMS = ['Cut', 'Copy', 'Paste'];
 
@@ -35,26 +35,26 @@ describe('Menu accessibility', () => {
     }
   });
 
-  it('moves focus with the arrow keys', () => {
+  it('moves focus with the arrow keys', async () => {
     renderMenu();
     getItem('Cut').focus();
 
     pressKeyOnFocused('ArrowDown');
-    expect(document.activeElement).toBe(getItem('Copy'));
+    expect(await activeElement()).toBe(getItem('Copy'));
 
     pressKeyOnFocused('ArrowUp');
-    expect(document.activeElement).toBe(getItem('Cut'));
+    expect(await activeElement()).toBe(getItem('Cut'));
   });
 
-  it('jumps to the first and last item with Home and End', () => {
+  it('jumps to the first and last item with Home and End', async () => {
     renderMenu();
     getItem('Copy').focus();
 
     pressKeyOnFocused('End');
-    expect(document.activeElement).toBe(getItem('Paste'));
+    expect(await activeElement()).toBe(getItem('Paste'));
 
     pressKeyOnFocused('Home');
-    expect(document.activeElement).toBe(getItem('Cut'));
+    expect(await activeElement()).toBe(getItem('Cut'));
   });
 
   it('supports type-ahead by first character', async () => {
@@ -64,12 +64,12 @@ describe('Menu accessibility', () => {
     pressKeyOnFocused('p');
 
     // Type-ahead is debounced so that multi-character searches work.
-    await waitFor(() => {
-      expect(document.activeElement).toBe(getItem('Paste'));
+    await waitFor(async () => {
+      expect(await activeElement()).toBe(getItem('Paste'));
     });
   });
 
-  it('marks disabled items and skips them while navigating', () => {
+  it('marks disabled items and skips them while navigating', async () => {
     renderMenu({ disabled: ['Copy'] });
     const disabled = getItem('Copy');
 
@@ -78,7 +78,7 @@ describe('Menu accessibility', () => {
     getItem('Cut').focus();
     pressKeyOnFocused('ArrowDown');
 
-    expect(document.activeElement).toBe(getItem('Paste'));
+    expect(await activeElement()).toBe(getItem('Paste'));
   });
 
   it('activates an item with Enter through the button behaviour', () => {

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it, vi } from 'vitest';
-import { Button } from '../src';
+import { Button } from '../src/components/button';
 
 describe('Button accessibility', () => {
   it('renders a native button with the `button` role', () => {

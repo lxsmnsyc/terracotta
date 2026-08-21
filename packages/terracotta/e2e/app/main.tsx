@@ -1,5 +1,5 @@
 import type { JSX } from 'solid-js';
-import { render } from 'solid-js/web';
+import { render } from '@solidjs/web';
 import CheckboxCase from './cases/checkbox';
 import ComboboxCase from './cases/combobox';
 import CommandCase from './cases/command';

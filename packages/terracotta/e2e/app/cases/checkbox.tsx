@@ -5,8 +5,8 @@ import {
   CheckboxDescription,
   CheckboxIndicator,
   CheckboxLabel,
-  Toggle,
-} from 'terracotta';
+} from 'terracotta/checkbox';
+import { Toggle } from 'terracotta/toggle';
 
 export default function CheckboxCase(): JSX.Element {
   const [checked, setChecked] = createSignal(false);

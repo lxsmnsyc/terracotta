@@ -8,7 +8,7 @@ import {
   FeedArticleLabel,
   FeedContent,
   FeedLabel,
-} from '../src';
+} from '../src/components/feed';
 
 const POSTS = ['first post', 'second post', 'third post'];
 

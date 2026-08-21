@@ -1,7 +1,7 @@
 import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { pressKeyOnFocused } from './aria';
-import { Tab, TabGroup, TabList, TabPanel } from '../src';
+import { activeElement, pressKeyOnFocused } from './aria';
+import { Tab, TabGroup, TabList, TabPanel } from '../src/components/tabs';
 
 const TABS = ['alpha', 'beta', 'gamma'];
 
@@ -86,39 +86,39 @@ describe('Tabs accessibility', () => {
     expect(screen.getByRole('tabpanel')).toHaveTextContent('gamma panel');
   });
 
-  it('moves selection with ArrowRight and ArrowLeft when horizontal', () => {
+  it('moves selection with ArrowRight and ArrowLeft when horizontal', async () => {
     renderTabs();
     getTab('alpha').focus();
 
     pressKeyOnFocused('ArrowRight');
-    expect(document.activeElement).toBe(getTab('beta'));
+    expect(await activeElement()).toBe(getTab('beta'));
     expect(getTab('beta')).toHaveAttribute('aria-selected', 'true');
 
     pressKeyOnFocused('ArrowLeft');
-    expect(document.activeElement).toBe(getTab('alpha'));
+    expect(await activeElement()).toBe(getTab('alpha'));
   });
 
-  it('ignores the cross-axis arrows when horizontal', () => {
+  it('ignores the cross-axis arrows when horizontal', async () => {
     renderTabs();
     getTab('alpha').focus();
 
     pressKeyOnFocused('ArrowDown');
 
-    expect(document.activeElement).toBe(getTab('alpha'));
+    expect(await activeElement()).toBe(getTab('alpha'));
   });
 
-  it('jumps to the first and last tab with Home and End', () => {
+  it('jumps to the first and last tab with Home and End', async () => {
     renderTabs();
     getTab('beta').focus();
 
     pressKeyOnFocused('End');
-    expect(document.activeElement).toBe(getTab('gamma'));
+    expect(await activeElement()).toBe(getTab('gamma'));
 
     pressKeyOnFocused('Home');
-    expect(document.activeElement).toBe(getTab('alpha'));
+    expect(await activeElement()).toBe(getTab('alpha'));
   });
 
-  it('marks disabled tabs and skips them while navigating', () => {
+  it('marks disabled tabs and skips them while navigating', async () => {
     renderTabs({ disabled: ['beta'] });
     const disabled = getTab('beta');
 
@@ -128,6 +128,6 @@ describe('Tabs accessibility', () => {
     getTab('alpha').focus();
     pressKeyOnFocused('ArrowRight');
 
-    expect(document.activeElement).toBe(getTab('gamma'));
+    expect(await activeElement()).toBe(getTab('gamma'));
   });
 });

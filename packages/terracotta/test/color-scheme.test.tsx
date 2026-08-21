@@ -1,13 +1,14 @@
 import { render, screen } from '@solidjs/testing-library';
 import type { JSX } from 'solid-js';
+import { flush } from 'solid-js';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { ColorScheme } from '../src';
+import type { ColorScheme } from '../src/components/color-scheme';
 import {
   ColorSchemeProvider,
   useColorScheme,
   useNativeColorScheme,
   usePreferredColorScheme,
-} from '../src';
+} from '../src/components/color-scheme';
 
 const STORAGE_KEY = 'theme-preference';
 
@@ -68,6 +69,8 @@ function setSystemPrefersDark(value: boolean): void {
   for (const listener of listeners.slice()) {
     listener();
   }
+  // The listener writes to a signal, and Solid 2 defers the render that follows.
+  flush();
 }
 
 function Readout(): JSX.Element {
