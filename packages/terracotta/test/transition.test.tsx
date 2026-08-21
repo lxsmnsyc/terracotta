@@ -368,6 +368,26 @@ describe('Transition', () => {
     expect(screen.queryByText('Panel')).not.toBeInTheDocument();
   });
 
+  it('reports each phase through onTransition without binding it to the DOM', async () => {
+    const onTransition = vi.fn<(state: string) => void>();
+    render(() => (
+      <Transition show appear onTransition={onTransition} {...CLASSES}>
+        Panel
+      </Transition>
+    ));
+    const panel = screen.getByText('Panel');
+    await settle();
+
+    expect(onTransition.mock.calls.flat()).toEqual(['enter-from', 'enter-to', 'entered']);
+
+    // The prop is named like an event handler, so leaving it on the props that
+    // reach the element would have Solid bind it as a listener for a DOM
+    // `transition` event and call it with that event in place of a phase.
+    panel.dispatchEvent(new CustomEvent('transition'));
+
+    expect(onTransition).toHaveBeenCalledTimes(3);
+  });
+
   it('renders as another element when asked', () => {
     render(() => (
       <Transition as="section" show appear {...CLASSES}>
