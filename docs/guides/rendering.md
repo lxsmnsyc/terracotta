@@ -65,3 +65,33 @@ Inside a [`Transition`](../components/transition.md), `unmount={false}` is
 handled for you: the transitioning element is marked `inert` once it starts
 leaving and stays that way while hidden, so its content leaves the tab order and
 the accessibility tree even though it is still in the DOM.
+
+### `unmount="offscreen"`
+
+`'offscreen'` sits between the two. The children are built the first time the
+component renders and are never torn down again; hiding only detaches them from
+the document, and showing puts the very same nodes back.
+
+```tsx
+<PopoverPanel class="panel" unmount="offscreen">
+  <ExpensiveChart data={points()} />
+</PopoverPanel>
+```
+
+The chart is constructed once. Reopening the popover reattaches the element that
+was already there rather than mounting a second chart, so anything the component
+holds in its own state — a computed layout, a loaded dataset, an uncontrolled
+input's value — is still there. Being detached, the content is out of the
+document while hidden, so <kbd>Tab</kbd> cannot reach it and screen readers
+cannot announce it, exactly as with the default.
+
+What does not stop is the work. A detached subtree is still mounted as far as
+Solid is concerned: its effects keep running, its subscriptions stay subscribed,
+and any interval or polling loop it started keeps firing while nothing is on
+screen. `'offscreen'` is worth it for a subtree that is expensive to *build* and
+cheap to keep; it is the wrong choice for one that is expensive to *run*. Prefer
+the default there, or pause the work yourself while the component is closed.
+
+Measurements are the other thing to watch. A detached element has no layout, so
+`getBoundingClientRect()` reads zeroes and `offsetWidth` is `0` until it is
+attached again. Measure after it becomes visible, not while it is hidden.
