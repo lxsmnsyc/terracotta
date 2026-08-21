@@ -32,12 +32,15 @@ export function pressKeyOnFocused(key: string, init: { shiftKey?: boolean } = {}
  * `document.activeElement` once the components have finished moving it.
  *
  * Two things defer that on Solid 2: effects run on a flush, and the panels wait
- * on `waitForTransition` before focusing, which settles on a microtask. So a
- * plain read of the property can catch the state from before the panel opened.
+ * on `waitForTransition` before focusing, which settles a microtask or two
+ * later. So a plain read of the property can catch the state from before the
+ * panel opened.
  */
 export async function activeElement(): Promise<Element | null> {
   flush();
-  await Promise.resolve();
+  await new Promise<void>((resolve) => {
+    setTimeout(resolve, 0);
+  });
   flush();
   return document.activeElement;
 }

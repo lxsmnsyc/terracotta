@@ -24,7 +24,7 @@ import {
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
-import { waitForTransition } from '../../utils/wait-for-transition';
+import { afterTransition } from '../../utils/wait-for-transition';
 import { useComboboxContext } from './ComboboxContext';
 import { COMBOBOX_OPTIONS_TAG } from './tags';
 
@@ -95,7 +95,7 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
     createDependencyList(() => [internalRef(), disclosureState.isOpen()] as const),
     ([current, flag]) => {
       if (current instanceof HTMLElement && flag) {
-        waitForTransition(current).then(() => {
+        afterTransition(current, () => {
           if (autocompleteState.hasSelected()) {
             context.controller.setFirstChecked(SELECTED_NODE);
           } else {

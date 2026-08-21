@@ -20,6 +20,10 @@ export type DialogOverlayProps<T extends ValidComponent = 'div'> = HeadlessProps
  * size — it has no styles of its own and renders 0x0 without them. It needs no
  * `<Show>` guard: `Dialog` unmounts its whole subtree while closed.
  *
+ * A full-screen overlay is positioned, so it paints above an unpositioned
+ * sibling: give `DialogPanel` a `position` or a `z-index` of its own, or the
+ * overlay covers it and swallows the clicks meant for it.
+ *
  * Renders a `<div>` by default.
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}

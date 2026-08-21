@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { activeElement, labelledBy } from './aria';
+import { activeElement, labelledBy, settle } from './aria';
 import {
   Combobox,
   ComboboxInput,
@@ -89,6 +89,20 @@ describe('Combobox accessibility', () => {
 
     expect(input).toHaveAttribute('aria-expanded', 'false');
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+  });
+
+  it('activates the selected option when the popup opens', async () => {
+    renderCombobox({ open: true, value: 'grace' });
+    await settle();
+
+    expect(getInput()).toHaveAttribute('aria-activedescendant', getOption('grace').id);
+  });
+
+  it('activates the first option when the popup opens with nothing selected', async () => {
+    renderCombobox({ open: true });
+    await settle();
+
+    expect(getInput()).toHaveAttribute('aria-activedescendant', getOption('ada').id);
   });
 
   it('keeps DOM focus on the input and tracks the active option virtually', async () => {

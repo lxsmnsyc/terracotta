@@ -21,14 +21,17 @@ test('keeps DOM focus in the input and tracks the option with aria-activedescend
   const input = page.getByRole('combobox');
   await input.click();
 
+  // Opening activates the selected option, so the popup starts on `ada`.
+  await expect(input).toHaveAttribute('aria-activedescendant', /.+/);
+  const opened = await input.getAttribute('aria-activedescendant');
+  await expect(page.locator(`#${opened}`)).toHaveText('ada');
+
   await page.keyboard.press('ArrowDown');
 
   // Virtual focus: the input keeps DOM focus so typing continues to work.
   await expect(input).toBeFocused();
   const active = await input.getAttribute('aria-activedescendant');
   expect(active).not.toBeNull();
-  // Opening activates the selected option, so the first arrow key steps past
-  // `ada` rather than landing on it.
   await expect(page.locator(`#${active}`)).toHaveText('grace');
 });
 
@@ -39,8 +42,8 @@ test('skips disabled options with the arrow keys', async ({ page }) => {
   await page.keyboard.press('ArrowDown');
   await page.keyboard.press('ArrowDown');
 
-  // grace, then `katherine` is disabled so the second step reaches
-  // `margaret`.
+  // The popup opens on `ada`, then `katherine` is disabled, so the second step
+  // steps over it to `margaret`.
   const active = await input.getAttribute('aria-activedescendant');
   await expect(page.locator(`#${active}`)).toHaveText('margaret');
 });

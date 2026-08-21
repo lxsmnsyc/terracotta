@@ -1,9 +1,9 @@
 # Transition
 
 Class-driven enter and leave transitions. `Transition` adds and removes CSS
-classes around a visibility change, then waits for `transitionend` or
-`animationend` before unmounting. An element can therefore animate out instead
-of vanishing.
+classes around a visibility change, waiting for the element's own animations to
+finish between steps, and keeps it mounted until the leave transition is over.
+An element can therefore animate out instead of vanishing.
 
 It pairs well with every disclosure-based component. Give the panel
 `unmount={false}` and let the transition own the mounting.
@@ -28,20 +28,35 @@ only one component.
 On **enter**:
 
 1. `beforeEnter()` runs, then the `enter` and `enterFrom` classes are added.
-2. On the next animation frame, `enterFrom` is removed and `enterTo` added.
-3. When the transition or animation ends, `enter` and `enterTo` are removed,
-   `entered` is added, and `afterEnter()` runs.
+2. Once the element has nothing left animating, `enterFrom` is removed and
+   `enterTo` added.
+3. Once that animation finishes, `enter` and `enterTo` are removed, `entered` is
+   added, and `afterEnter()` runs.
 
 On **leave**:
 
-1. `beforeLeave()` runs, `entered` is removed, and `leave` and `leaveFrom` are
-   added.
-2. On the next animation frame, `leaveFrom` is removed and `leaveTo` added.
-3. When it ends, `leave` and `leaveTo` are removed, the element is hidden (or
-   unmounted), and `afterLeave()` runs.
+1. `beforeLeave()` runs and every nested `TransitionChild` leaves first.
+2. `entered` is removed, and `leave` and `leaveFrom` are added.
+3. Once the element has nothing left animating, `leaveFrom` is removed and
+   `leaveTo` added.
+4. Once that animation finishes, `leave` and `leaveTo` are removed, the element
+   is hidden (or unmounted), and `afterLeave()` runs.
+
+Every wait goes through `Element.getAnimations()` rather than a `transitionend`
+listener, so an element with nothing to animate advances on the next microtask
+instead of waiting for an event that would never arrive.
 
 Each prop takes a space-separated class string, so one phase can carry several
 class names.
+
+## Interrupting
+
+A `show` change part-way through a transition takes effect immediately. The
+running transition stops at its next step — its `afterEnter` or `afterLeave`
+never fires — and the opposite one starts, clearing the classes the interrupted
+one left behind. So a panel shown again while it is fading out enters from
+`enterFrom` rather than easing back from wherever the fade had got to: the phase
+lives entirely in the classes, and there is no partial value to resume from.
 
 ## Examples
 
@@ -106,8 +121,8 @@ mirror of the enter. That is usually what you want.
 
 ### Keyframe animations
 
-`animationend` ends the transition just as `transitionend` does, so keyframes
-work without changes:
+Keyframe animations are waited on exactly like transitions, so they work
+without changes:
 
 ```tsx
 <Transition
@@ -239,14 +254,16 @@ gone.
 }
 ```
 
-Keep a non-zero duration instead of removing the transition entirely. The
-`transitionend` event is what tells Terracotta the leave has finished.
+Shortening the duration is enough, and dropping the transition altogether is
+safe too: Terracotta waits on the element's running animations, so an element
+with nothing to animate simply moves straight to the next step.
 
 ## State attributes
 
 | Element | Attribute | Present when |
 | --- | --- | --- |
 | `Transition` / `TransitionChild` | `tc-transition` | Always, carrying the current phase |
+| `Transition` / `TransitionChild` | `inert` | While leaving, and for as long as the element stays mounted afterwards |
 
 The phase values, in order:
 
@@ -288,9 +305,7 @@ entirely:
 }
 ```
 
-This works because the attribute changes across an animation frame exactly as
-the classes do. A leave transition still needs a real duration on the element,
-or `transitionend` never fires.
+This works because the attribute changes at exactly the points the classes do.
 
 The attribute is also handy for debugging and for assertions:
 
@@ -348,7 +363,7 @@ One transitioning element. Renders a `<div>` by default.
 | `beforeLeave` | `() => void` | — | Called just before leaving starts. |
 | `afterLeave` | `() => void` | — | Called once leaving has finished and the element is hidden. |
 | `unmount` | `boolean \| 'offscreen'` | `true` | How the element behaves while hidden — see [`unmount`](../guides/rendering.md#unmount). |
-| `appear` | `boolean` | `false` | Accepted, but currently has no effect: the implementation always runs the enter transition on first show. |
+| `appear` | `boolean` | `false` | Mount and start entering on the very first render. It matters for a nested `TransitionChild`, which otherwise waits for its parent to finish entering before it mounts and runs its own enter. |
 | `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
 | `children` | `JSX.Element` | — | The content. Not a render prop. |
 | *…rest* | props of `as` | — | Forwarded to the rendered element. |
@@ -357,9 +372,19 @@ One transitioning element. Renders a `<div>` by default.
 
 ## Notes
 
-- The leave transition completes on the first `transitionend` **or**
-  `animationend` it sees. If an element is hidden with no transition or animation
-  at all, that event never fires and the element stays visible. Always give
-  `leave` a real duration.
-- Nested `TransitionChild`s hold their parent back. A parent starts its own leave
+- Each step ends when the element has no animation left running, read through
+  `Element.getAnimations()`. An element hidden with no transition or animation at
+  all advances immediately rather than stalling, so a missing duration no longer
+  leaves it stranded on screen.
+- Nested `TransitionChild`s hold their parent back in both directions. A child
+  enters only once its parent has entered, and a parent starts its own leave
   transition only once every child beneath it has finished leaving.
+- The element is marked `inert` the moment a leave starts, and stays inert for
+  as long as `unmount={false}` keeps it around afterwards. A panel that is fading
+  out is therefore unclickable and out of the tab order rather than lingering as
+  a focus trap behind its own animation. The enter phases stay interactive, so a
+  panel nested inside can still take focus while it animates in.
+- Panels that move focus into themselves — `DialogPanel`, `PopoverPanel`,
+  `ContextMenuPanel`, `CommandBarPanel`, `ListboxOptions`, `ComboboxOptions` —
+  wait for the same animations to finish before focusing, so focus lands once the
+  panel has settled rather than while it is still animating in.

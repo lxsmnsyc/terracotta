@@ -146,8 +146,9 @@ const CASES: Case[] = [
     name: 'TransitionChild',
     as: 'article',
     render: (ref) => (
-      // 2.x only shows a child of an already-open transition when `appear`
-      // is set; without it `visible` starts false and nothing mounts.
+      // A child of an already-open transition only mounts on the first render
+      // when `appear` is set; without it `visible` starts false and the mount
+      // waits on the parent finishing its own enter.
       <Transition show>
         <TransitionChild appear as="article" ref={ref} />
       </Transition>

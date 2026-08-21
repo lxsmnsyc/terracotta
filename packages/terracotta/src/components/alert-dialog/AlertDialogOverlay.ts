@@ -18,6 +18,10 @@ export type AlertDialogOverlayProps<T extends ValidComponent = 'div'> = Headless
  * The backdrop behind an `AlertDialog`. Clicking it closes the dialog, so give
  * it a size — it has no styles of its own and renders 0x0 without them.
  *
+ * A full-screen overlay is positioned, so it paints above an unpositioned
+ * sibling: give `AlertDialogPanel` a `position` or a `z-index` of its own, or the
+ * overlay covers it and swallows the clicks meant for it.
+ *
  * Renders a `<div>` by default.
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}

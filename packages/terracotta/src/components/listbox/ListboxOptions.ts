@@ -21,7 +21,7 @@ import {
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
-import { waitForTransition } from '../../utils/wait-for-transition';
+import { afterTransition } from '../../utils/wait-for-transition';
 import { useListboxContext } from './ListboxContext';
 import { createListboxOptionsFocusNavigator, ListboxOptionsContext } from './ListboxOptionsContext';
 import { LISTBOX_OPTIONS_TAG } from './tags';
@@ -66,7 +66,7 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
       if (current instanceof HTMLElement && isOpen) {
         controller.setRef(current);
 
-        waitForTransition(current).then(() => {
+        afterTransition(current, () => {
           if (selectState.hasSelected()) {
             controller.setFirstChecked(SELECTED_NODE);
           } else {

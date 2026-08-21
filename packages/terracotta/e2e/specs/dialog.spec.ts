@@ -45,6 +45,17 @@ test('closes on Escape and restores focus to the trigger', async ({ page }) => {
   await expect(page.getByTestId('before')).toBeFocused();
 });
 
+test('keeps clicks inside the panel from closing the dialog', async ({ page }) => {
+  await page.getByTestId('before').click();
+
+  // The overlay covers the viewport and closes on click, so the panel has to
+  // paint above it. Clicking the panel itself, not one of its buttons, is what
+  // catches the overlay stealing the click.
+  await page.getByTestId('panel').click({ position: { x: 4, y: 4 } });
+
+  await expect(page.getByRole('dialog')).toBeVisible();
+});
+
 test('closes when the overlay is clicked', async ({ page }) => {
   await page.getByTestId('before').click();
 

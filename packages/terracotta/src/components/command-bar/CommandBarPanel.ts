@@ -10,7 +10,7 @@ import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
-import { waitForTransition } from '../../utils/wait-for-transition';
+import { afterTransition } from '../../utils/wait-for-transition';
 import { useCommandBarContext } from './CommandBarContext';
 import { COMMAND_BAR_PANEL_TAG } from './tags';
 
@@ -40,7 +40,7 @@ export function CommandBarPanel<T extends ValidComponent = 'div'>(
     ([current, isOpen]) => {
       if (current instanceof HTMLElement) {
         if (isOpen) {
-          waitForTransition(current).then(() => {
+          afterTransition(current, () => {
             focusFirst(getFocusableElements(current), false);
           });
 

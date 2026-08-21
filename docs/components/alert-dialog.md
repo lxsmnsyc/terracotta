@@ -112,6 +112,15 @@ const [open, setOpen] = createSignal(false);
 .danger { background: #dc2626; color: #ffffff; }
 ```
 
+### Keeping the panel above the overlay
+
+`position: relative` on the panel is not decoration. The overlay is
+`position: fixed`, and a positioned element paints above an unpositioned sibling
+whatever their order in the markup — so an unstyled panel ends up *under* the
+backdrop, dimmed and unclickable, and every click meant for it lands on the
+overlay and closes the dialog instead. Give the panel a `position` of its own,
+or a `z-index`, and the stacking follows the markup again.
+
 ### Putting the safe choice first
 
 The panel focuses its first focusable element. The order of the buttons

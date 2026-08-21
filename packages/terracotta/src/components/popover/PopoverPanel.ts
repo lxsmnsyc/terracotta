@@ -14,7 +14,7 @@ import { mergeFunc } from '../../utils/merge-func';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
-import { waitForTransition } from '../../utils/wait-for-transition';
+import { afterTransition } from '../../utils/wait-for-transition';
 import { usePopoverContext } from './PopoverContext';
 import { POPOVER_PANEL_TAG } from './tags';
 
@@ -45,7 +45,7 @@ export function PopoverPanel<T extends ValidComponent = 'div'>(
     createDependencyList(() => [internalRef(), state.isOpen()] as const),
     ([current, isOpen]) => {
       if (current instanceof HTMLElement && isOpen) {
-        waitForTransition(current).then(() => {
+        afterTransition(current, () => {
           focusFirst(getFocusableElements(current), false);
         });
 

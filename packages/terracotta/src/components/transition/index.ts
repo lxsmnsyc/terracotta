@@ -57,6 +57,14 @@ function getClassList(classes?: string): string[] {
 }
 
 /**
+ * A transition runs detached from the effect that started it, so a hook that
+ * throws mid-transition must not take the effect down with it.
+ */
+function ignoreTransitionError(): void {
+  // do nothing
+}
+
+/**
  * A {@link Transition} that follows its parent transition instead of its own
  * `show` prop, so several elements can animate together on different timings.
  *
@@ -81,6 +89,8 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
     }),
   );
 
+  // Nested transitions only start once this one has finished entering, and have
+  // to be done before this one starts leaving.
   const [ready, setReady] = createSignal(false);
 
   const state = new TransitionState(ready, {
@@ -104,6 +114,22 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
       setVisible(false);
     },
   });
+
+  /**
+   * An element on its way out, or one kept mounted by `unmount={false}`, is
+   * still in the DOM: without `inert` its content stays clickable and reachable
+   * by Tab while it fades away. The enter phases stay interactive so that a
+   * panel nested inside can take focus as it opens.
+   */
+  function isInert(): true | undefined {
+    const value = current();
+    if (value === undefined) {
+      // Nothing has transitioned yet, so the only element on screen is one that
+      // `unmount={false}` mounted while hidden.
+      return root.show ? undefined : true;
+    }
+    return value === 'leave-from' || value === 'leave-to' ? true : undefined;
+  }
 
   createEffect(
     createDependencyList(() => [
@@ -143,7 +169,7 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
       },
     );
     createEffect(internalRef, (element) => {
-      if (element instanceof HTMLElement) {
+      if (element instanceof HTMLElement && element.isConnected) {
         state.setElement(element);
       }
     });
@@ -161,13 +187,18 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
   createEffect(
     createDependencyList(() => [internalRef(), root.show]),
     ([element, flag]) => {
-      if (element instanceof HTMLElement) {
+      // `unmount` throws the element away and builds a new one, and the ref
+      // still holds the old one when `show` flips back to true. Transitioning
+      // that detached element would put the classes somewhere invisible and
+      // leave the element that actually mounts unanimated, so wait for the ref
+      // to catch up.
+      if (element instanceof HTMLElement && element.isConnected) {
         state.setElement(element);
 
         if (flag) {
-          state.show();
+          state.show().catch(ignoreTransitionError);
         } else {
-          state.hide();
+          state.hide().catch(ignoreTransitionError);
         }
       }
     },
@@ -201,12 +232,16 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
               'beforeEnter',
               'beforeLeave',
               'entered',
+              'onTransition',
               'ref',
             ),
             {
               ref: setInternalRef,
               get 'tc-transition'() {
                 return current();
+              },
+              get inert() {
+                return isInert();
               },
             },
           ) as ComponentProps<T>,
