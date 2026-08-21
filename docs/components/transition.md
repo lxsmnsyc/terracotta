@@ -384,6 +384,11 @@ One transitioning element. Renders a `<div>` by default.
   out is therefore unclickable and out of the tab order rather than lingering as
   a focus trap behind its own animation. The enter phases stay interactive, so a
   panel nested inside can still take focus while it animates in.
+- `unmount={true}` and `unmount="offscreen"` need no such treatment: both take
+  the element out of the document once the leave transition has finished, so the
+  content is already unreachable. The difference between them is only what
+  happens to the subtree behind the scenes — see
+  [`unmount`](../guides/rendering.md#unmount).
 - Panels that move focus into themselves — `DialogPanel`, `PopoverPanel`,
   `ContextMenuPanel`, `CommandBarPanel`, `ListboxOptions`, `ComboboxOptions` —
   wait for the same animations to finish before focusing, so focus lands once the

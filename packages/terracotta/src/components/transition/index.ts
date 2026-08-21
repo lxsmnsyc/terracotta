@@ -3,11 +3,11 @@ import {
   createComponent,
   createContext,
   createEffect,
+  createMemo,
   createSignal,
   mergeProps,
   on,
   onCleanup,
-  untrack,
   useContext,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
@@ -82,14 +82,41 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
 
   const [current, setCurrent] = createSignal<TransitionStates>();
   const [internalRef, setInternalRef] = createForwardRef(props);
-  const [visible, setVisible] = createSignal<boolean>(
-    untrack(() => {
-      if (props.appear) {
-        return root.show;
-      }
+  /**
+   * Whether this element has finished leaving. It starts `false` so that the
+   * enter path never has to write it: a write while the component is being
+   * resolved would invalidate whichever computation is resolving it, and that
+   * computation is the one that built this component in the first place.
+   */
+  const [left, setLeft] = createSignal(false);
+
+  /**
+   * Where the element wants to be. A child without `appear` waits for its
+   * parent to finish entering before it mounts at all.
+   */
+  function shown(): boolean {
+    if (props.appear) {
+      return root.show;
+    }
+    if (parent) {
+      return root.show && parent.visible();
+    }
+    return root.show;
+  }
+
+  /**
+   * Mounted state, derived rather than assigned: an element that is no longer
+   * wanted stays mounted until its leave transition has finished with it.
+   */
+  const visible = createMemo<boolean>((wasVisible = false) => {
+    if (shown()) {
+      return true;
+    }
+    if (!wasVisible) {
       return false;
-    }),
-  );
+    }
+    return !left();
+  });
 
   // Nested transitions only start once this one has finished entering, and have
   // to be done before this one starts leaving.
@@ -103,6 +130,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
     beforeEnter() {
       props.beforeEnter?.();
       setReady(false);
+      setLeft(false);
     },
     beforeLeave() {
       props.beforeLeave?.();
@@ -113,7 +141,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
     },
     afterLeave() {
       props.afterLeave?.();
-      setVisible(false);
+      setLeft(true);
     },
   });
 
@@ -153,32 +181,11 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
     });
 
     createEffect(
-      on(
-        () => root.show && parent.visible(),
-        (flag) => {
-          if (flag) {
-            setVisible(true);
-          }
-        },
-      ),
-    );
-    createEffect(
       on(internalRef, (element) => {
         if (element instanceof HTMLElement && element.isConnected) {
           state.setElement(element);
         }
       }),
-    );
-  } else {
-    createEffect(
-      on(
-        () => root.show,
-        (flag) => {
-          if (flag) {
-            setVisible(true);
-          }
-        },
-      ),
     );
   }
 

@@ -178,7 +178,9 @@ scroll position survive a collapse. You then own its visibility:
 ```
 
 `unmount="offscreen"` is the middle ground. The panel is built once and reused,
-but still detached while closed.
+but still detached while closed, so its state survives without leaving anything
+in the document. Its effects keep running while it is hidden — see
+[`unmount`](../guides/rendering.md#unmountoffscreen).
 
 ### Animating the panel
 
