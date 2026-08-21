@@ -1,6 +1,6 @@
 {
   "name": "feed-example",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "private": true,
   "type": "module",
   "publishConfig": {
@@ -14,7 +14,7 @@
   "dependencies": {
     "solid-js": "^1.9.10",
     "tailwindcss": "^4.1.18",
-    "terracotta": "1.2.0"
+    "terracotta": "1.2.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
