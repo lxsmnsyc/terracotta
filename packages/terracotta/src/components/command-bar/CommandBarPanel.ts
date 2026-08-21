@@ -49,13 +49,18 @@ export function CommandBarPanel<T extends ValidConstructor = 'div'>(
 
         useEventListener(current, 'keydown', (e) => {
           if (!props.disabled) {
+            // Keys this panel acts on are not passed on: a `Dialog` or another panel
+            // around this one traps `Tab` and closes on `Escape` too, and would
+            // otherwise move focus a second time or close both layers at once.
             switch (e.key) {
               case 'Tab': {
                 e.preventDefault();
+                e.stopPropagation();
                 lockFocus(current, e.shiftKey, false);
                 break;
               }
               case 'Escape': {
+                e.stopPropagation();
                 state.close();
                 break;
               }
