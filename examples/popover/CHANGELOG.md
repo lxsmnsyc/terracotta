@@ -1,5 +1,12 @@
 # popover-example
 
+## 1.0.12
+
+### Patch Changes
+
+- Updated dependencies [2c7c625]
+  - terracotta@1.2.2
+
 ## 1.0.11
 
 ### Patch Changes
