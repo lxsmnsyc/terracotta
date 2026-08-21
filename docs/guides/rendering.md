@@ -95,3 +95,75 @@ the default there, or pause the work yourself while the component is closed.
 Measurements are the other thing to watch. A detached element has no layout, so
 `getBoundingClientRect()` reads zeroes and `offsetWidth` is `0` until it is
 attached again. Measure after it becomes visible, not while it is hidden.
+
+## Async content
+
+Panels hold whatever you put in them, `Loading` included, and a boundary inside
+a panel behaves the way it would anywhere else. What is worth knowing is how it
+lines up with the two things a panel does when it opens: transition, and move
+focus.
+
+```tsx
+<Transition show={isOpen()} enter="panel-enter" enterFrom="from" enterTo="to">
+  <DisclosurePanel unmount={false}>
+    <Loading fallback={<Spinner />}>
+      <Comments />
+    </Loading>
+  </DisclosurePanel>
+</Transition>
+```
+
+**Transitions do not wait for the resource.** The transition drives the panel
+element, and the boundary swaps its own contents underneath. The panel animates
+in on schedule with the fallback inside it, and the content replaces the
+fallback whenever it arrives, mid-animation or long after. Closing while the
+resource is still pending is fine too: the leave transition runs, and the
+pending boundary is removed along with the panel.
+
+Put the boundary the other way round — a `Loading` wrapping the `Transition` —
+and the transitioning element is not in the document while suspended, so nothing
+animates until the boundary resolves. Solid holds back the effects created under
+a suspended boundary, so the transition runs when the content lands rather than
+being missed.
+
+**Focus is taken once, when the panel opens.** Dialog, AlertDialog, Popover,
+ContextMenu and CommandBar look through the panel for something focusable as
+they open. A panel showing a fallback usually has nothing to offer, so focus
+stays where it was, and the content that arrives a moment later does not get
+focus either — no second look is taken. The
+[dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/) expects
+focus to be inside the dialog, so this is worth designing around. An async read
+defers even when its value has already settled, so a boundary always shows its
+fallback for the render the panel looks at — having the data ready in advance
+does not help.
+
+Two ways to keep focus where it belongs:
+
+- Keep something focusable in the panel that is not behind the boundary — a
+  close button, for instance, which a dialog usually wants anyway. It is there
+  when the panel opens, takes focus, and keeps it while the content loads.
+
+  ```tsx
+  <DialogPanel>
+    <button type="button" onClick={close}>Close</button>
+    <Loading fallback={<Spinner />}>
+      <Details />
+    </Loading>
+  </DialogPanel>
+  ```
+
+- Or hoist the boundary above the component, so the panel is built only once
+  its content is ready and finds it on the first look.
+
+  ```tsx
+  <Loading fallback={<Spinner />}>
+    <Dialog isOpen={isOpen()}>
+      <DialogPanel>
+        <Details />
+      </DialogPanel>
+    </Dialog>
+  </Loading>
+  ```
+
+  The trade-off is that nothing of the dialog exists while loading, so the
+  fallback has to stand in for the whole thing rather than for its contents.

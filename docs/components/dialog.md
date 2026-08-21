@@ -231,6 +231,10 @@ give an element `tabindex="0"` and place it at the top:
 </DialogPanel>
 ```
 
+The search runs once, as the panel opens, so a panel whose content is still
+loading has nothing to focus and is not asked again. See
+[async content](../guides/rendering.md#async-content).
+
 ### Locking page scroll
 
 Terracotta does not touch the document's scroll. Do it in an effect:
