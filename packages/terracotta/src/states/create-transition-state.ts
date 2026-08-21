@@ -53,6 +53,19 @@ function removeClassList(ref: HTMLElement, classes: string[]): void {
 }
 
 /**
+ * Forces the browser to compute the element's style as it stands.
+ *
+ * A transition only runs when a property changes between two computed styles.
+ * Committing the starting state on its own, before the class carrying the
+ * `transition` declaration goes on, is what makes the browser treat that state
+ * as where the transition begins rather than as something to animate towards.
+ */
+function commitStyle(ref: HTMLElement): string {
+  // The property read does not matter: any of them recomputes the whole style.
+  return getComputedStyle(ref).transitionProperty;
+}
+
+/**
  * Runs one element's enter and leave transitions.
  *
  * The state holds no reactivity of its own: a caller feeds it an element and a
@@ -146,8 +159,14 @@ export class TransitionState {
     }
     this.hooks.onTransition?.('enter-from');
     if (classes) {
-      addClassList(element, classes.enter);
+      // The starting state goes on first and is committed on its own. Applying
+      // it together with `enter` would leave the browser transitioning *into*
+      // the starting state — the element would fade out before fading in —
+      // whenever the element's style had already been computed once, which is
+      // what happens to a panel that has just been mounted by something else.
       addClassList(element, classes.enterFrom);
+      commitStyle(element);
+      addClassList(element, classes.enter);
     }
     await waitForTransition(element);
     if (this.token !== token) {
@@ -235,8 +254,10 @@ export class TransitionState {
     }
     this.hooks.onTransition?.('leave-from');
     if (classes) {
-      addClassList(element, classes.leave);
+      // Same order as the enter, and for the same reason.
       addClassList(element, classes.leaveFrom);
+      commitStyle(element);
+      addClassList(element, classes.leave);
     }
     await waitForTransition(element);
     if (this.token !== token) {
