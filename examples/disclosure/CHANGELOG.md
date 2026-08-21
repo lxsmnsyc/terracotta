@@ -1,5 +1,12 @@
 # disclosure-example
 
+## 1.0.13
+
+### Patch Changes
+
+- Updated dependencies [7f254cb]
+  - terracotta@1.2.3
+
 ## 1.0.12
 
 ### Patch Changes
