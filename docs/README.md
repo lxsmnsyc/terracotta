@@ -18,7 +18,7 @@ Start here. These cover the props and conventions that every component shares.
 | Guide | What it covers |
 | --- | --- |
 | [Getting started](./guides/getting-started.md) | Install, a first component, and the mental model |
-| [Rendering](./guides/rendering.md) | `as`, prop passthrough, `ref`, `unmount` |
+| [Rendering](./guides/rendering.md) | `as`, prop passthrough, `ref`, `unmount`, async content |
 | [State](./guides/state.md) | Controlled vs uncontrolled, render props, state hooks |
 | [Styling](./guides/styling.md) | The `tc-` state attributes and how to style with them |
 | [Keyboard and focus](./guides/keyboard-and-focus.md) | Roving tabindex, virtual focus, focus restoration |

@@ -182,6 +182,13 @@ but still detached while closed, so its state survives without leaving anything
 in the document. Its effects keep running while it is hidden — see
 [`unmount`](../guides/rendering.md#unmountoffscreen).
 
+### Loading the panel content
+
+A `Suspense` boundary inside the panel behaves as it does anywhere else, and the
+panel does not wait for it: it opens, animates, and shows the fallback until the
+content arrives. See [async content](../guides/rendering.md#async-content) for
+how that lines up with transitions and with focus.
+
 ### Animating the panel
 
 ```tsx
