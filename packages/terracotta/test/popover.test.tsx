@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
 import { Button, Popover, PopoverButton, PopoverOverlay, PopoverPanel } from '../src';
+import { activeElement, settle } from './aria';
 
 function renderPopover(
   props: { open?: boolean; disabled?: boolean } = {},
@@ -47,14 +48,15 @@ describe('Popover accessibility', () => {
     expect(button).toHaveAttribute('aria-controls', panel.id);
   });
 
-  it('moves focus into the panel when opened', () => {
+  it('moves focus into the panel when opened', async () => {
     renderPopover({ open: true });
 
-    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Rename' }));
+    expect(await activeElement()).toBe(screen.getByRole('button', { name: 'Rename' }));
   });
 
-  it('keeps Tab inside the panel', () => {
+  it('keeps Tab inside the panel', async () => {
     renderPopover({ open: true });
+    await settle();
     const rename = screen.getByRole('button', { name: 'Rename' });
     const duplicate = screen.getByRole('button', { name: 'Duplicate' });
 

@@ -13,6 +13,10 @@ Navigation is *virtual*. DOM focus stays on the input while the arrow keys move
 an active option, which is published through `aria-activedescendant`. That is
 what lets you keep typing while browsing the list.
 
+Opening the popup activates an option straight away — the selected one, or the
+first if there is no selection — so the arrow keys start from somewhere
+sensible.
+
 ```tsx
 import {
   Combobox,

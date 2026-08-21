@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it, vi } from 'vitest';
-import { pressKeyOnFocused } from './aria';
+import { activeElement, pressKeyOnFocused, settle } from './aria';
 import {
   Button,
   ContextMenu,
@@ -92,15 +92,16 @@ describe('ContextMenu accessibility', () => {
     expect(getBoundary()).toHaveAttribute('aria-disabled', 'true');
   });
 
-  it('moves focus into the panel when opened', () => {
+  it('moves focus into the panel when opened', async () => {
     renderContextMenu({ open: true });
 
-    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Cut' }));
+    expect(await activeElement()).toBe(screen.getByRole('button', { name: 'Cut' }));
   });
 
-  it('closes on Escape', () => {
+  it('closes on Escape', async () => {
     const onClose = vi.fn<() => void>();
     renderContextMenu({ open: true, onClose });
+    await settle();
 
     pressKeyOnFocused('Escape');
 
@@ -108,8 +109,9 @@ describe('ContextMenu accessibility', () => {
     expect(onClose).toHaveBeenCalled();
   });
 
-  it('keeps Tab inside the panel', () => {
+  it('keeps Tab inside the panel', async () => {
     renderContextMenu({ open: true });
+    await settle();
     const cut = screen.getByRole('button', { name: 'Cut' });
     const copy = screen.getByRole('button', { name: 'Copy' });
 

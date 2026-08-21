@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it, vi } from 'vitest';
-import { describedBy, labelledBy, pressKeyOnFocused } from './aria';
+import { activeElement, describedBy, labelledBy, pressKeyOnFocused, settle } from './aria';
 import {
   Button,
   CommandBar,
@@ -114,15 +114,16 @@ describe('CommandBar accessibility', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('moves focus into the panel when opened', () => {
+  it('moves focus into the panel when opened', async () => {
     renderCommandBar({ open: true });
 
-    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Open file' }));
+    expect(await activeElement()).toBe(screen.getByRole('button', { name: 'Open file' }));
   });
 
-  it('closes on Escape', () => {
+  it('closes on Escape', async () => {
     const onClose = vi.fn<() => void>();
     renderCommandBar({ open: true, onClose });
+    await settle();
 
     pressKeyOnFocused('Escape');
 
@@ -130,8 +131,9 @@ describe('CommandBar accessibility', () => {
     expect(onClose).toHaveBeenCalled();
   });
 
-  it('keeps Tab inside the panel', () => {
+  it('keeps Tab inside the panel', async () => {
     renderCommandBar({ open: true });
+    await settle();
     const open = screen.getByRole('button', { name: 'Open file' });
     const close = screen.getByRole('button', { name: 'Close file' });
 
@@ -150,13 +152,13 @@ describe('CommandBar accessibility', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('returns focus to where it was when it closes', () => {
+  it('returns focus to where it was when it closes', async () => {
     renderCommandBar();
     const trigger = screen.getByRole('button', { name: 'Page content' });
     trigger.focus();
 
     pressShortcut({ key: 'k', ctrlKey: true });
-    expect(document.activeElement).not.toBe(trigger);
+    expect(await activeElement()).not.toBe(trigger);
 
     pressKeyOnFocused('Escape');
 

@@ -24,6 +24,7 @@ import {
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
+import { afterTransition } from '../../utils/wait-for-transition';
 import { useListboxContext } from './ListboxContext';
 import { ListboxOptionsContext, createListboxOptionsFocusNavigator } from './ListboxOptionsContext';
 import { LISTBOX_OPTIONS_TAG } from './tags';
@@ -71,11 +72,13 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
           controller.clearRef();
         });
 
-        if (untrack(() => selectState.hasSelected())) {
-          controller.setFirstChecked(SELECTED_NODE);
-        } else {
-          controller.setFirstChecked();
-        }
+        afterTransition(current, () => {
+          if (untrack(() => selectState.hasSelected())) {
+            controller.setFirstChecked(SELECTED_NODE);
+          } else {
+            controller.setFirstChecked();
+          }
+        });
 
         useEventListener(current, 'keydown', (e) => {
           if (!selectState.disabled()) {

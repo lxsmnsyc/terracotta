@@ -60,3 +60,8 @@ The default is the safe one. Hidden content is really gone, so <kbd>Tab</kbd>
 cannot reach it and screen readers cannot announce it. Use `false` only when
 something else needs the element to stay alive, such as a transition or a
 measurement, and hide it yourself.
+
+Inside a [`Transition`](../components/transition.md), `unmount={false}` is
+handled for you: the transitioning element is marked `inert` once it starts
+leaving and stays that way while hidden, so its content leaves the tab order and
+the accessibility tree even though it is still in the DOM.

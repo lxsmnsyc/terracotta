@@ -27,6 +27,7 @@ import {
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
+import { afterTransition } from '../../utils/wait-for-transition';
 import { useComboboxContext } from './ComboboxContext';
 import { COMBOBOX_OPTIONS_TAG } from './tags';
 
@@ -86,12 +87,17 @@ export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
 
   onMount(() => {
     createEffect(() => {
-      if (disclosureState.isOpen()) {
-        if (untrack(() => autocompleteState.hasSelected())) {
-          context.controller.setFirstChecked(SELECTED_NODE);
-        } else {
-          context.controller.setFirstChecked();
-        }
+      const current = internalRef();
+      if (current instanceof HTMLElement && disclosureState.isOpen()) {
+        // Waiting for the popup to finish transitioning in is what makes this
+        // land at all: the options only exist once it has mounted.
+        afterTransition(current, () => {
+          if (untrack(() => autocompleteState.hasSelected())) {
+            context.controller.setFirstChecked(SELECTED_NODE);
+          } else {
+            context.controller.setFirstChecked();
+          }
+        });
       }
     });
   });

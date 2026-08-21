@@ -5,9 +5,14 @@ import {
   createEffect,
   createSignal,
   mergeProps,
+  on,
+  onCleanup,
+  untrack,
   useContext,
 } from 'solid-js';
 import { omitProps } from 'solid-use/props';
+import type { TransitionHooks, TransitionStates } from '../../states/create-transition-state';
+import { TransitionState } from '../../states/create-transition-state';
 import assert from '../../utils/assert';
 import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
@@ -24,14 +29,8 @@ export interface TransitionRootBaseProps {
   show: boolean;
 }
 
-interface TransitionCounter {
-  register(): void;
-  unregister(): void;
-  done(): boolean;
-}
-
 const TransitionRootContext = createContext<TransitionRootBaseProps>();
-const TransitionCounterContext = createContext<TransitionCounter>();
+const TransitionStateContext = createContext<{ value?: TransitionState }>({});
 
 function useTransitionRootContext(componentName: string): TransitionRootBaseProps {
   const context = useContext(TransitionRootContext);
@@ -39,25 +38,7 @@ function useTransitionRootContext(componentName: string): TransitionRootBaseProp
   return context;
 }
 
-function createTransitionCounter(): TransitionCounter {
-  // Set of currently transitioning TransitionChilds nested within a TransitionChild
-  const [size, setSize] = createSignal(0);
-
-  return {
-    // Reactive set
-    register(): void {
-      setSize((c) => c + 1);
-    },
-    unregister(): void {
-      setSize((c) => c - 1);
-    },
-    done(): boolean {
-      return size() === 0;
-    },
-  };
-}
-
-export interface TransitionBaseChildProps extends UnmountableProps {
+export interface TransitionBaseChildProps extends UnmountableProps, TransitionHooks {
   appear?: boolean;
   enter?: string;
   enterFrom?: string;
@@ -66,27 +47,6 @@ export interface TransitionBaseChildProps extends UnmountableProps {
   leave?: string;
   leaveFrom?: string;
   leaveTo?: string;
-  beforeEnter?: () => void;
-  afterEnter?: () => void;
-  beforeLeave?: () => void;
-  afterLeave?: () => void;
-}
-
-function getClassList(classes?: string): string[] {
-  return classes ? classes.split(' ') : [];
-}
-
-function addClassList(ref: HTMLElement, classes: string[]): void {
-  const filtered = classes.filter((value) => value);
-  if (filtered.length) {
-    ref.classList.add(...filtered);
-  }
-}
-function removeClassList(ref: HTMLElement, classes: string[]): void {
-  const filtered = classes.filter((value) => value);
-  if (filtered.length) {
-    ref.classList.remove(...filtered);
-  }
 }
 
 export type TransitionChildProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
@@ -94,7 +54,17 @@ export type TransitionChildProps<T extends ValidConstructor = 'div'> = HeadlessP
   TransitionBaseChildProps
 >;
 
-type TransitionStates = 'enter-from' | 'enter-to' | 'entered' | 'leave-from' | 'leave-to';
+function getClassList(classes?: string): string[] {
+  return classes ? classes.split(' ') : [];
+}
+
+/**
+ * A transition runs detached from the effect that started it, so a hook that
+ * throws mid-transition must not take the effect down with it.
+ */
+function ignoreTransitionError(): void {
+  // do nothing
+}
 
 /**
  * A {@link Transition} that follows its parent transition instead of its own
@@ -107,117 +77,127 @@ type TransitionStates = 'enter-from' | 'enter-to' | 'entered' | 'leave-from' | '
 export function TransitionChild<T extends ValidConstructor = 'div'>(
   props: TransitionChildProps<T>,
 ): JSX.Element {
-  const values = useTransitionRootContext('TransitionChild');
-  // Transitions pending on parent
-  const transitionParent = useContext(TransitionCounterContext);
-  // Transitions pending underneath element
-  const transitionChildren = createTransitionCounter();
+  const root = useTransitionRootContext('TransitionChild');
+  const parent = useContext(TransitionStateContext).value;
 
-  const [state, setState] = createSignal<TransitionStates>();
-  const [visible, setVisible] = createSignal(values.show);
-  const [ref, setRef] = createForwardRef(props);
-  let initial = true;
-
-  function transition(element: HTMLElement, shouldEnter: boolean): void {
-    if (shouldEnter) {
-      if (initial) {
-        const enter = getClassList(props.enter);
-        const enterFrom = getClassList(props.enterFrom);
-        const enterTo = getClassList(props.enterTo);
-        const entered = getClassList(props.entered);
-
-        const endTransition = (): void => {
-          removeClassList(element, enter);
-          removeClassList(element, enterTo);
-          setState('entered');
-          addClassList(element, entered);
-          if (props.afterEnter) {
-            props.afterEnter();
-          }
-        };
-
-        // One enter per show cycle. Without this the effect re-running while
-        // already shown — which any change to a transition class prop does —
-        // would restart the animation from `enterFrom`.
-        initial = false;
-
-        if (props.beforeEnter) {
-          props.beforeEnter();
-        }
-        setState('enter-from');
-        addClassList(element, enter);
-        addClassList(element, enterFrom);
-
-        requestAnimationFrame(() => {
-          removeClassList(element, enterFrom);
-          setState('enter-to');
-          addClassList(element, enterTo);
-          element.addEventListener('transitionend', endTransition, {
-            once: true,
-          });
-          element.addEventListener('animationend', endTransition, {
-            once: true,
-          });
-        });
+  const [current, setCurrent] = createSignal<TransitionStates>();
+  const [internalRef, setInternalRef] = createForwardRef(props);
+  const [visible, setVisible] = createSignal<boolean>(
+    untrack(() => {
+      if (props.appear) {
+        return root.show;
       }
-    } else {
-      const leave = getClassList(props.leave);
-      const leaveFrom = getClassList(props.leaveFrom);
-      const leaveTo = getClassList(props.leaveTo);
-      const entered = getClassList(props.entered);
-      if (props.beforeLeave) {
-        props.beforeLeave();
-      }
-      if (transitionParent) {
-        transitionParent.register();
-      }
-      removeClassList(element, entered);
-      setState('leave-from');
-      addClassList(element, leave);
-      addClassList(element, leaveFrom);
-      requestAnimationFrame(() => {
-        removeClassList(element, leaveFrom);
-        setState('leave-to');
-        addClassList(element, leaveTo);
-      });
-      const endTransition = (): void => {
-        removeClassList(element, leave);
-        removeClassList(element, leaveTo);
-        setVisible(false);
-        // Armed again, so the next show runs its enter transition.
-        initial = true;
-        if (transitionParent) {
-          transitionParent.unregister();
-        }
-        if (props.afterLeave) {
-          props.afterLeave();
-        }
-      };
-      element.addEventListener('transitionend', endTransition, { once: true });
-      element.addEventListener('animationend', endTransition, { once: true });
+      return false;
+    }),
+  );
+
+  // Nested transitions only start once this one has finished entering, and have
+  // to be done before this one starts leaving.
+  const [ready, setReady] = createSignal(false);
+
+  const state = new TransitionState(ready, {
+    onTransition(value) {
+      props.onTransition?.(value);
+      setCurrent(value);
+    },
+    beforeEnter() {
+      props.beforeEnter?.();
+      setReady(false);
+    },
+    beforeLeave() {
+      props.beforeLeave?.();
+    },
+    afterEnter() {
+      props.afterEnter?.();
+      setReady(true);
+    },
+    afterLeave() {
+      props.afterLeave?.();
+      setVisible(false);
+    },
+  });
+
+  /**
+   * An element on its way out, or one kept mounted by `unmount={false}`, is
+   * still in the DOM: without `inert` its content stays clickable and reachable
+   * by Tab while it fades away. The enter phases stay interactive so that a
+   * panel nested inside can take focus as it opens.
+   */
+  function isInert(): true | undefined {
+    const value = current();
+    if (value === undefined) {
+      // Nothing has transitioned yet, so the only element on screen is one that
+      // `unmount={false}` mounted while hidden.
+      return root.show ? undefined : true;
     }
+    return value === 'leave-from' || value === 'leave-to' ? true : undefined;
   }
 
   createEffect(() => {
-    const shouldShow = values.show;
-    if (shouldShow) {
-      setVisible(true);
-    }
-    const internalRef = ref();
-    if (internalRef instanceof HTMLElement) {
-      if (shouldShow) {
-        transition(internalRef, true);
-      } else if (transitionChildren.done()) {
-        transition(internalRef, false);
-      }
-    } else {
-      // Ref is missing, reset initial
-      initial = true;
-    }
+    state.setClasses({
+      enter: getClassList(props.enter),
+      enterFrom: getClassList(props.enterFrom),
+      enterTo: getClassList(props.enterTo),
+      entered: getClassList(props.entered),
+      leave: getClassList(props.leave),
+      leaveFrom: getClassList(props.leaveFrom),
+      leaveTo: getClassList(props.leaveTo),
+    });
   });
 
-  return createComponent(TransitionCounterContext.Provider, {
-    value: transitionChildren,
+  if (parent) {
+    parent.register(state);
+
+    onCleanup(() => {
+      parent.unregister(state);
+    });
+
+    createEffect(
+      on(
+        () => root.show && parent.visible(),
+        (flag) => {
+          if (flag) {
+            setVisible(true);
+          }
+        },
+      ),
+    );
+    createEffect(
+      on(internalRef, (element) => {
+        if (element instanceof HTMLElement) {
+          state.setElement(element);
+        }
+      }),
+    );
+  } else {
+    createEffect(
+      on(
+        () => root.show,
+        (flag) => {
+          if (flag) {
+            setVisible(true);
+          }
+        },
+      ),
+    );
+  }
+
+  createEffect(
+    on([internalRef, () => root.show], ([element, flag]) => {
+      if (element instanceof HTMLElement) {
+        state.setElement(element);
+
+        if (flag) {
+          state.show().catch(ignoreTransitionError);
+        } else {
+          state.hide().catch(ignoreTransitionError);
+        }
+      }
+    }),
+  );
+
+  return createComponent(TransitionStateContext.Provider, {
+    value: { value: state },
     get children() {
       return createUnmountable(props, visible, () =>
         createDynamic(
@@ -238,12 +218,16 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
               'beforeEnter',
               'beforeLeave',
               'entered',
+              'onTransition',
               'ref',
             ]),
             {
-              ref: setRef,
+              ref: setInternalRef,
               get 'tc-transition'() {
-                return state();
+                return current();
+              },
+              get inert() {
+                return isInert();
               },
             },
           ) as DynamicProps<T>,
@@ -272,10 +256,15 @@ export function Transition<T extends ValidConstructor = 'div'>(
   return createComponent(TransitionRootContext.Provider, {
     value: props,
     get children() {
-      return createComponent(
-        TransitionChild,
-        omitProps(props, ['show']) as TransitionChildProps<T>,
-      );
+      return createComponent(TransitionStateContext.Provider, {
+        value: { value: undefined },
+        get children() {
+          return createComponent(
+            TransitionChild,
+            omitProps(props, ['show']) as TransitionChildProps<T>,
+          );
+        },
+      });
     },
   });
 }

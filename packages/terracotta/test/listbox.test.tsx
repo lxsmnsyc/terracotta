@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '../src';
+import { activeElement, settle } from './aria';
 
 const FRUITS = ['apple', 'banana', 'cherry'];
 
@@ -103,14 +104,15 @@ describe('Listbox accessibility', () => {
     }
   });
 
-  it('focuses the selected option when opened', () => {
+  it('focuses the selected option when opened', async () => {
     renderListbox({ open: true, value: 'cherry' });
 
-    expect(document.activeElement).toBe(getOption('cherry'));
+    expect(await activeElement()).toBe(getOption('cherry'));
   });
 
-  it('moves focus with the vertical arrow keys', () => {
+  it('moves focus with the vertical arrow keys', async () => {
     renderListbox({ open: true, value: 'apple' });
+    await settle();
     const list = screen.getByRole('listbox');
 
     fireEvent.keyDown(list, { key: 'ArrowDown' });
@@ -120,8 +122,9 @@ describe('Listbox accessibility', () => {
     expect(document.activeElement).toBe(getOption('apple'));
   });
 
-  it('jumps to the first and last option with Home and End', () => {
+  it('jumps to the first and last option with Home and End', async () => {
     renderListbox({ open: true, value: 'banana' });
+    await settle();
     const list = screen.getByRole('listbox');
 
     fireEvent.keyDown(list, { key: 'End' });
@@ -151,8 +154,9 @@ describe('Listbox accessibility', () => {
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });
 
-  it('marks disabled options and skips them while navigating', () => {
+  it('marks disabled options and skips them while navigating', async () => {
     renderListbox({ open: true, value: 'apple', disabled: ['banana'] });
+    await settle();
 
     expect(getOption('banana')).toHaveAttribute('aria-disabled', 'true');
 

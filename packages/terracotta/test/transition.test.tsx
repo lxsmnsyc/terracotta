@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@solidjs/testing-library';
+import { render, screen } from '@solidjs/testing-library';
 import { createSignal } from 'solid-js';
 import { describe, expect, it, vi } from 'vitest';
 import { Transition, TransitionChild } from '../src';
@@ -13,12 +13,18 @@ const CLASSES = {
   leaveTo: 'leave-to',
 };
 
-/** Transition advances its class swap inside `requestAnimationFrame`. */
-async function nextFrame(): Promise<void> {
+/**
+ * The transition drives its class swap off `waitForTransition`, which resolves
+ * on a microtask once the element has no running animation.
+ *
+ * There is no `transitionend` to fire here: with no animation to wait on, each
+ * step settles on its own. So these tests assert the start and end states and
+ * the callback order, not an intermediate `enter-to` step that only exists
+ * while a real animation is running.
+ */
+async function settle(): Promise<void> {
   await new Promise<void>((resolve) => {
-    requestAnimationFrame(() => {
-      resolve();
-    });
+    setTimeout(resolve, 0);
   });
 }
 
@@ -47,140 +53,107 @@ describe('Transition', () => {
 
   it('applies the enter classes before the first frame', () => {
     render(() => (
-      <Transition show {...CLASSES}>
+      <Transition show appear {...CLASSES}>
         Panel
       </Transition>
     ));
     const panel = screen.getByText('Panel');
 
     expect(panel).toHaveClass('enter', 'enter-from');
-    expect(panel).not.toHaveClass('enter-to');
+    expect(panel).not.toHaveClass('entered');
     expect(panel).toHaveAttribute('tc-transition', 'enter-from');
   });
 
-  it('swaps enter-from for enter-to on the next frame', async () => {
+  it('swaps enter-from for enter-to once the element has nothing left to animate', async () => {
     render(() => (
-      <Transition show {...CLASSES}>
+      <Transition show appear {...CLASSES}>
         Panel
       </Transition>
     ));
     const panel = screen.getByText('Panel');
 
-    await nextFrame();
+    await Promise.resolve();
 
     expect(panel).not.toHaveClass('enter-from');
     expect(panel).toHaveClass('enter', 'enter-to');
     expect(panel).toHaveAttribute('tc-transition', 'enter-to');
   });
 
-  it('settles into the entered class once the transition ends', async () => {
+  it('settles into the entered class', async () => {
     render(() => (
-      <Transition show {...CLASSES}>
+      <Transition show appear {...CLASSES}>
         Panel
       </Transition>
     ));
     const panel = screen.getByText('Panel');
 
-    await nextFrame();
-    fireEvent.transitionEnd(panel);
+    await settle();
 
-    expect(panel).not.toHaveClass('enter', 'enter-to');
+    expect(panel).not.toHaveClass('enter', 'enter-from');
     expect(panel).toHaveClass('entered');
     expect(panel).toHaveAttribute('tc-transition', 'entered');
   });
 
-  it('accepts an animation ending the transition too', async () => {
-    render(() => (
-      <Transition show {...CLASSES}>
-        Panel
-      </Transition>
-    ));
-    const panel = screen.getByText('Panel');
-
-    await nextFrame();
-    fireEvent.animationEnd(panel);
-
-    expect(panel).toHaveClass('entered');
-  });
-
   it('calls beforeEnter before the classes go on, and afterEnter at the end', async () => {
-    const beforeEnter = vi.fn();
-    const afterEnter = vi.fn();
+    const beforeEnter = vi.fn<() => void>();
+    const afterEnter = vi.fn<() => void>();
     render(() => (
-      <Transition
-        show
-        beforeEnter={() => {
-          beforeEnter();
-        }}
-        afterEnter={() => {
-          afterEnter();
-        }}
-        {...CLASSES}
-      >
+      <Transition show appear beforeEnter={beforeEnter} afterEnter={afterEnter} {...CLASSES}>
         Panel
       </Transition>
     ));
-    const panel = screen.getByText('Panel');
 
     expect(beforeEnter).toHaveBeenCalled();
     expect(afterEnter).not.toHaveBeenCalled();
 
-    await nextFrame();
-    fireEvent.transitionEnd(panel);
+    await settle();
 
     expect(afterEnter).toHaveBeenCalled();
   });
 
-  it('applies the leave classes and keeps the element mounted meanwhile', async () => {
+  it('applies the leave classes while the element is still mounted', async () => {
     const [show, setShow] = createSignal(true);
     render(() => (
-      <Transition show={show()} {...CLASSES}>
+      <Transition show={show()} appear {...CLASSES}>
         Panel
       </Transition>
     ));
     const panel = screen.getByText('Panel');
-    await nextFrame();
-    fireEvent.transitionEnd(panel);
+    await settle();
 
     setShow(false);
+    // The leave waits on `waitForTransition`, so its classes land a microtask
+    // later rather than in the same tick as the signal write.
+    await Promise.resolve();
 
     expect(panel).toBeInTheDocument();
     expect(panel).not.toHaveClass('entered');
     expect(panel).toHaveClass('leave', 'leave-from');
     expect(panel).toHaveAttribute('tc-transition', 'leave-from');
 
-    await nextFrame();
+    await Promise.resolve();
 
     expect(panel).not.toHaveClass('leave-from');
     expect(panel).toHaveClass('leave', 'leave-to');
     expect(panel).toHaveAttribute('tc-transition', 'leave-to');
   });
 
-  it('unmounts only once the leave transition ends', async () => {
+  it('stays mounted for the leave, then unmounts', async () => {
     const [show, setShow] = createSignal(true);
-    const afterLeave = vi.fn();
+    const afterLeave = vi.fn<() => void>();
     render(() => (
-      <Transition
-        show={show()}
-        afterLeave={() => {
-          afterLeave();
-        }}
-        {...CLASSES}
-      >
+      <Transition show={show()} appear afterLeave={afterLeave} {...CLASSES}>
         Panel
       </Transition>
     ));
-    const panel = screen.getByText('Panel');
-    await nextFrame();
-    fireEvent.transitionEnd(panel);
+    await settle();
 
     setShow(false);
-    await nextFrame();
 
     expect(screen.getByText('Panel')).toBeInTheDocument();
     expect(afterLeave).not.toHaveBeenCalled();
 
-    fireEvent.transitionEnd(panel);
+    await settle();
 
     expect(screen.queryByText('Panel')).not.toBeInTheDocument();
     expect(afterLeave).toHaveBeenCalled();
@@ -188,19 +161,13 @@ describe('Transition', () => {
 
   it('calls beforeLeave as the leave starts', async () => {
     const [show, setShow] = createSignal(true);
-    const beforeLeave = vi.fn();
+    const beforeLeave = vi.fn<() => void>();
     render(() => (
-      <Transition
-        show={show()}
-        beforeLeave={() => {
-          beforeLeave();
-        }}
-        {...CLASSES}
-      >
+      <Transition show={show()} appear beforeLeave={beforeLeave} {...CLASSES}>
         Panel
       </Transition>
     ));
-    await nextFrame();
+    await settle();
 
     expect(beforeLeave).not.toHaveBeenCalled();
 
@@ -212,48 +179,142 @@ describe('Transition', () => {
   it('re-runs the enter transition on a later show', async () => {
     const [show, setShow] = createSignal(true);
     render(() => (
-      <Transition show={show()} unmount={false} {...CLASSES}>
+      <Transition show={show()} appear unmount={false} {...CLASSES}>
         Panel
       </Transition>
     ));
     const panel = screen.getByText('Panel');
-
-    await nextFrame();
-    fireEvent.transitionEnd(panel);
+    await settle();
     setShow(false);
-    await nextFrame();
-    fireEvent.transitionEnd(panel);
+    await settle();
 
     setShow(true);
 
-    // The element was never unmounted, so the enter has to be armed again by
-    // the leave finishing rather than by a fresh mount.
     expect(panel).toHaveClass('enter', 'enter-from');
   });
 
   it('does not restart the enter transition when a class prop changes', async () => {
     const [enter, setEnter] = createSignal('enter');
     render(() => (
-      <Transition show {...CLASSES} enter={enter()}>
+      <Transition show appear {...CLASSES} enter={enter()}>
         Panel
       </Transition>
     ));
     const panel = screen.getByText('Panel');
-
-    await nextFrame();
-    fireEvent.transitionEnd(panel);
+    await settle();
     expect(panel).toHaveClass('entered');
 
-    // `props.enter` is read on the enter path, so this re-runs the effect.
     setEnter('enter-slow');
 
     expect(panel).toHaveClass('entered');
     expect(panel).not.toHaveClass('enter-from');
   });
 
+  // jsdom has no `inert` support, so Solid's property assignment lands as a
+  // plain property rather than reflecting to an attribute. The browser-level
+  // behaviour is covered by `e2e/specs/transition.spec.ts`.
+  it('marks an element that is mounted but hidden as inert', () => {
+    render(() => (
+      <Transition show={false} unmount={false} {...CLASSES}>
+        Panel
+      </Transition>
+    ));
+
+    expect(screen.getByText('Panel').inert).toBe(true);
+  });
+
+  it('stays interactive while entering and once entered', async () => {
+    render(() => (
+      <Transition show appear {...CLASSES}>
+        Panel
+      </Transition>
+    ));
+    const panel = screen.getByText('Panel');
+
+    expect(panel.inert).toBeFalsy();
+
+    await settle();
+
+    expect(panel.inert).toBeFalsy();
+  });
+
+  it('goes inert while leaving and stays inert once hidden', async () => {
+    const [show, setShow] = createSignal(true);
+    render(() => (
+      <Transition show={show()} appear unmount={false} {...CLASSES}>
+        Panel
+      </Transition>
+    ));
+    const panel = screen.getByText('Panel');
+    await settle();
+
+    setShow(false);
+    await Promise.resolve();
+
+    expect(panel.inert).toBe(true);
+
+    await settle();
+
+    expect(panel.inert).toBe(true);
+  });
+
+  it('reverses a leave that is still running', async () => {
+    const [show, setShow] = createSignal(true);
+    const afterLeave = vi.fn<() => void>();
+    render(() => (
+      <Transition show={show()} appear afterLeave={afterLeave} {...CLASSES}>
+        Panel
+      </Transition>
+    ));
+    const panel = screen.getByText('Panel');
+    await settle();
+
+    setShow(false);
+    await Promise.resolve();
+    expect(panel).toHaveAttribute('tc-transition', 'leave-from');
+
+    setShow(true);
+
+    // The leave stops where it is instead of finishing and unmounting.
+    expect(panel).toHaveAttribute('tc-transition', 'enter-from');
+    expect(panel).not.toHaveClass('leave', 'leave-from', 'leave-to');
+    expect(panel.inert).toBeFalsy();
+
+    await settle();
+
+    expect(afterLeave).not.toHaveBeenCalled();
+    expect(screen.getByText('Panel')).toHaveClass('entered');
+  });
+
+  it('reverses an enter that is still running', async () => {
+    const [show, setShow] = createSignal(true);
+    const afterEnter = vi.fn<() => void>();
+    render(() => (
+      <Transition show={show()} appear afterEnter={afterEnter} {...CLASSES}>
+        Panel
+      </Transition>
+    ));
+    const panel = screen.getByText('Panel');
+    expect(panel).toHaveAttribute('tc-transition', 'enter-from');
+
+    setShow(false);
+    // The leave starts by letting any nested children leave first, so its own
+    // classes land a microtask later.
+    await Promise.resolve();
+
+    expect(panel).toHaveAttribute('tc-transition', 'leave-from');
+    expect(panel).not.toHaveClass('enter', 'enter-from', 'enter-to');
+    expect(panel.inert).toBe(true);
+
+    await settle();
+
+    expect(afterEnter).not.toHaveBeenCalled();
+    expect(screen.queryByText('Panel')).not.toBeInTheDocument();
+  });
+
   it('renders as another element when asked', () => {
     render(() => (
-      <Transition as="section" show {...CLASSES}>
+      <Transition as="section" show appear {...CLASSES}>
         Panel
       </Transition>
     ));
@@ -266,33 +327,53 @@ describe('TransitionChild', () => {
   it('follows the parent transition rather than its own show prop', () => {
     render(() => (
       <Transition show>
-        <TransitionChild {...CLASSES}>Child</TransitionChild>
+        <TransitionChild appear {...CLASSES}>
+          Child
+        </TransitionChild>
       </Transition>
     ));
-    const child = screen.getByText('Child');
 
-    expect(child).toHaveClass('enter', 'enter-from');
+    expect(screen.getByText('Child')).toHaveClass('enter', 'enter-from');
   });
 
-  it('stays mounted until its own leave transition ends', async () => {
+  it('stays mounted for its own leave, then unmounts', async () => {
     const [show, setShow] = createSignal(true);
     render(() => (
       <Transition show={show()}>
-        <TransitionChild {...CLASSES}>Child</TransitionChild>
+        <TransitionChild appear {...CLASSES}>
+          Child
+        </TransitionChild>
       </Transition>
     ));
-    const child = screen.getByText('Child');
-    await nextFrame();
-    fireEvent.transitionEnd(child);
+    await settle();
 
     setShow(false);
-    await nextFrame();
 
     expect(screen.getByText('Child')).toBeInTheDocument();
 
-    fireEvent.transitionEnd(child);
+    await settle();
 
     expect(screen.queryByText('Child')).not.toBeInTheDocument();
+  });
+
+  it('goes inert when the transition leaves', async () => {
+    const [show, setShow] = createSignal(true);
+    render(() => (
+      <Transition show={show()} unmount={false}>
+        <TransitionChild appear unmount={false} {...CLASSES}>
+          Child
+        </TransitionChild>
+      </Transition>
+    ));
+    const child = screen.getByText('Child');
+    await settle();
+
+    expect(child.inert).toBeFalsy();
+
+    setShow(false);
+    await settle();
+
+    expect(child.inert).toBe(true);
   });
 
   it('requires a surrounding Transition', () => {

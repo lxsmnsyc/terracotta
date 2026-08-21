@@ -8,6 +8,7 @@ import ListboxCase from './cases/listbox';
 import MenuCase from './cases/menu';
 import PopoverCase from './cases/popover';
 import TabsCase from './cases/tabs';
+import TransitionCase from './cases/transition';
 import ToolbarCase from './cases/toolbar';
 
 // Each spec navigates to `/?case=<name>`; keeping one bundle avoids a router
@@ -21,6 +22,7 @@ const CASES: Record<string, () => JSX.Element> = {
   menu: MenuCase,
   popover: PopoverCase,
   tabs: TabsCase,
+  transition: TransitionCase,
   toolbar: ToolbarCase,
 };
 

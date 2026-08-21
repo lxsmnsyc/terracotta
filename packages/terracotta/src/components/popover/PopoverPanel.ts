@@ -17,6 +17,7 @@ import getFocusableElements from '../../utils/focus-query';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
+import { afterTransition } from '../../utils/wait-for-transition';
 import { usePopoverContext } from './PopoverContext';
 import { POPOVER_PANEL_TAG } from './tags';
 
@@ -46,7 +47,9 @@ export function PopoverPanel<T extends ValidConstructor = 'div'>(
   createEffect(() => {
     const current = internalRef();
     if (current instanceof HTMLElement && state.isOpen()) {
-      focusFirst(getFocusableElements(current), false);
+      afterTransition(current, () => {
+        focusFirst(getFocusableElements(current), false);
+      });
       useEventListener(current, 'keydown', (e) => {
         if (!state.disabled()) {
           switch (e.key) {

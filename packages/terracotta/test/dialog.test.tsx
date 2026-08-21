@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it, vi } from 'vitest';
-import { describedBy, labelledBy } from './aria';
+import { activeElement, describedBy, labelledBy, settle } from './aria';
 import { Button, Dialog, DialogDescription, DialogOverlay, DialogPanel, DialogTitle } from '../src';
 
 function renderDialog(
@@ -41,14 +41,15 @@ describe('Dialog accessibility', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('moves focus into the panel when opened', () => {
+  it('moves focus into the panel when opened', async () => {
     renderDialog();
 
-    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Cancel' }));
+    expect(await activeElement()).toBe(screen.getByRole('button', { name: 'Cancel' }));
   });
 
-  it('keeps Tab inside the panel', () => {
+  it('keeps Tab inside the panel', async () => {
     renderDialog();
+    await settle();
     const cancel = screen.getByRole('button', { name: 'Cancel' });
     const confirm = screen.getByRole('button', { name: 'Confirm' });
 
@@ -60,8 +61,9 @@ describe('Dialog accessibility', () => {
     expect(document.activeElement).toBe(cancel);
   });
 
-  it('walks backwards with Shift+Tab', () => {
+  it('walks backwards with Shift+Tab', async () => {
     renderDialog();
+    await settle();
     const cancel = screen.getByRole('button', { name: 'Cancel' });
     const confirm = screen.getByRole('button', { name: 'Confirm' });
 

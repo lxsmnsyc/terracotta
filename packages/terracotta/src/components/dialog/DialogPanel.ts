@@ -14,6 +14,7 @@ import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
+import { afterTransition } from '../../utils/wait-for-transition';
 import { useDialogContext } from './DialogContext';
 import { DIALOG_PANEL_TAG } from './tags';
 
@@ -40,7 +41,9 @@ export function DialogPanel<T extends ValidConstructor = 'div'>(
   createEffect(() => {
     const current = internalRef();
     if (current instanceof HTMLElement && state.isOpen()) {
-      focusFirst(getFocusableElements(current), false);
+      afterTransition(current, () => {
+        focusFirst(getFocusableElements(current), false);
+      });
       useEventListener(current, 'keydown', (e) => {
         if (!props.disabled) {
           switch (e.key) {
