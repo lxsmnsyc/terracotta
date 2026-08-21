@@ -1,6 +1,6 @@
 import type { DynamicProps, JSX } from '@solidjs/web';
 import type { Element } from 'solid-js';
-import { children, createComponent, Show } from 'solid-js';
+import { Show, children, createComponent } from 'solid-js';
 import createDynamic from './create-dynamic';
 
 // An `unmountable` is a kind of component
@@ -37,7 +37,7 @@ function Offscreen(props: OffscreenProps): JSX.Element {
     },
     keyed: true,
     get children(): Element {
-      return result as Element;
+      return result;
     },
   });
 }
@@ -47,21 +47,18 @@ export function createUnmountable(
   shouldMount: () => boolean,
   render: () => JSX.Element,
 ): JSX.Element {
-  return createDynamic<Conditional>(
-    () => (props.unmount === 'offscreen' ? Offscreen : (Show as Conditional)),
-    {
-      get when() {
-        // `unmount` defaults to true, so an omitted prop has to mean "remove me
-        // while hidden". Only an explicit `false` keeps the children mounted
-        // regardless of the condition.
-        const mode = props.unmount ?? true;
-        return mode === false || shouldMount();
-      },
-      get children() {
-        return render();
-      },
-      // `createDynamic` supplies `component` itself, which `DynamicProps`
-      // still asks for here.
-    } as DynamicProps<Conditional>,
-  );
+  return createDynamic<Conditional>(() => (props.unmount === 'offscreen' ? Offscreen : Show), {
+    get when() {
+      // `unmount` defaults to true, so an omitted prop has to mean "remove me
+      // while hidden". Only an explicit `false` keeps the children mounted
+      // regardless of the condition.
+      const mode = props.unmount ?? true;
+      return mode === false || shouldMount();
+    },
+    get children() {
+      return render();
+    },
+    // `createDynamic` supplies `component` itself, which `DynamicProps`
+    // still asks for here.
+  } as DynamicProps<Conditional>);
 }
