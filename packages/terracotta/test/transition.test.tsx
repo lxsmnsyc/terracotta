@@ -75,6 +75,32 @@ describe('Transition', () => {
     expect(panel).toHaveAttribute('tc-transition', 'enter-from');
   });
 
+  it('commits the starting state before the class that carries the transition', () => {
+    // Applying both in one change makes the browser transition *into* the
+    // starting state, which shows up as the panel flashing at its final
+    // appearance and fading the wrong way before it enters.
+    const classesWhenCommitted: string[] = [];
+    const original = window.getComputedStyle;
+    const spy = vi.spyOn(window, 'getComputedStyle').mockImplementation((element, pseudo) => {
+      if (element instanceof HTMLElement && element.textContent === 'Panel') {
+        classesWhenCommitted.push(element.className);
+      }
+      return original.call(window, element, pseudo);
+    });
+
+    try {
+      render(() => (
+        <Transition show appear {...CLASSES}>
+          Panel
+        </Transition>
+      ));
+    } finally {
+      spy.mockRestore();
+    }
+
+    expect(classesWhenCommitted).toContain('enter-from');
+  });
+
   it('swaps enter-from for enter-to once the element has nothing left to animate', async () => {
     render(() => (
       <Transition show appear {...CLASSES}>
