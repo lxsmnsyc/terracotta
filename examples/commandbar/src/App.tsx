@@ -60,7 +60,9 @@ export default function App(): JSX.Element {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <CommandBarPanel class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+            {/* `relative` keeps the panel above the fixed overlay, which would
+                otherwise paint over it and swallow its clicks. */}
+            <CommandBarPanel class="relative inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle bg-white shadow-xl rounded-2xl">
               <CommandBarTitle as="h3" class="text-xl font-medium leading-6 text-gray-900">
                 Search
               </CommandBarTitle>

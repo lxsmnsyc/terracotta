@@ -90,7 +90,7 @@ export default function App(): JSX.Element {
                             </div>
                           </div>
                           {checked() && (
-                            <div class="flex-shrink-0 text-white">
+                            <div class="shrink-0 text-white">
                               <CheckIcon class="w-6 h-6" title="Checked" />
                             </div>
                           )}

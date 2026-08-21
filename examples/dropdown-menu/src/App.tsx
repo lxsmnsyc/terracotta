@@ -38,15 +38,15 @@ export default function App(): JSX.Element {
           <>
             <PopoverButton
               class={classNames(
-                isOpen() && 'text-opacity-90',
-                'text-white group bg-purple-700 px-3 py-2 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75',
+                isOpen() ? 'text-white/90' : 'text-white',
+                'group bg-purple-700 px-3 py-2 rounded-md inline-flex items-center text-base font-medium hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75',
               )}
             >
               <span>Action</span>
               <ChevronDownIcon
                 class={classNames(
-                  isOpen() && 'text-opacity-70',
-                  'ml-2 h-5 w-5 text-purple-300 group-hover:text-opacity-80 transition ease-in-out duration-150',
+                  isOpen() ? 'text-purple-300/70' : 'text-purple-300',
+                  'ml-2 h-5 w-5 group-hover:text-purple-300/80 transition ease-in-out duration-150',
                 )}
                 aria-hidden="true"
                 title={isOpen() ? 'Close' : 'Open'}
