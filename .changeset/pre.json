@@ -26,6 +26,8 @@
   "changesets": [
     "eager-emus-notice",
     "fuzzy-doors-tie",
+    "nested-popup-keys",
+    "offscreen-transition-mount",
     "open-boxes-try",
     "soft-carrots-shake",
     "sweet-crews-cross",
