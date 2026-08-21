@@ -112,6 +112,14 @@ const [open, setOpen] = createSignal(false);
 `onClose` fires for <kbd>Escape</kbd> and overlay clicks as well as your own
 calls. Wiring it to `setOpen(false)` is enough.
 
+### Popups inside the dialog
+
+A `Popover`, `Listbox`, `Combobox` or `Menu` can live inside a dialog. The inner
+popup keeps the keys it handles to itself, so <kbd>Tab</kbd> cycles within an
+open popover rather than moving through the dialog behind it, and
+<kbd>Escape</kbd> closes one layer at a time — the popup first, the dialog once
+the popup is gone.
+
 ### Keeping the panel above the overlay
 
 `position: relative` on the panel is not decoration. The overlay is

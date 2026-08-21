@@ -6,6 +6,7 @@ import CommandCase from './cases/command';
 import DialogCase from './cases/dialog';
 import ListboxCase from './cases/listbox';
 import MenuCase from './cases/menu';
+import NestingCase from './cases/nesting';
 import PopoverCase from './cases/popover';
 import TabsCase from './cases/tabs';
 import TransitionCase from './cases/transition';
@@ -21,6 +22,7 @@ const CASES: Record<string, () => JSX.Element> = {
   dialog: DialogCase,
   listbox: ListboxCase,
   menu: MenuCase,
+  nesting: NestingCase,
   popover: PopoverCase,
   tabs: TabsCase,
   transition: TransitionCase,

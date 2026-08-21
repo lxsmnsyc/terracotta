@@ -54,8 +54,12 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
           }),
         useEventListener(current, 'keydown', (e) => {
           if (!isDisabled()) {
+            // Keys this panel acts on are not passed on: a `Dialog` or another panel
+            // around this one traps `Tab` and closes on `Escape` too, and would
+            // otherwise move focus a second time or close both layers at once.
             switch (e.key) {
               case 'Escape': {
+                e.stopPropagation();
                 disclosureState.close();
                 break;
               }
