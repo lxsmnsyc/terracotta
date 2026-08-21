@@ -1,5 +1,12 @@
 # feed-example
 
+## 1.0.10
+
+### Patch Changes
+
+- Updated dependencies [9902614]
+  - terracotta@1.2.0
+
 ## 1.0.9
 
 ### Patch Changes
