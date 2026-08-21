@@ -63,7 +63,7 @@ export default function App(): JSX.Element {
                 <AccordionHeader>
                   <AccordionButton
                     as="div"
-                    class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
+                    class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
                   >
                     {({ isSelected }): JSX.Element => (
                       <>

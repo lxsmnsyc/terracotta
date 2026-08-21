@@ -33,7 +33,7 @@ export default function MultipleSelect(): JSX.Element {
         matchBy={matchBy}
       >
         <CommandLabel class="text-xl font-semibold">Multi Selection</CommandLabel>
-        <div class="p-2 bg-gray-50 bg-opacity-50 rounded-lg flex flex-wrap gap-1">
+        <div class="p-2 bg-gray-50/50 rounded-lg flex flex-wrap gap-1">
           <For each={selected()} fallback={<span class="block truncate">No selected.</span>}>
             {(item): JSX.Element => (
               <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
@@ -43,10 +43,10 @@ export default function MultipleSelect(): JSX.Element {
           </For>
         </div>
         <CommandInput
-          class="w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
+          class="w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
           placeholder="Select an item"
         />
-        <CommandOptions class="bg-gray-50 bg-opacity-50 rounded-lg overflow-hidden">
+        <CommandOptions class="bg-gray-50/50 rounded-lg overflow-hidden">
           <For each={people}>
             {(person): JSX.Element => (
               <CommandOption class="focus:outline-none group" value={person}>

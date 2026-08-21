@@ -32,7 +32,7 @@ export default function App(): JSX.Element {
                   pressed={checked()}
                   class={classNames(
                     checked() ? 'text-color-600 bg-purple-200' : '',
-                    'focus:outline-none focus-visible:ring focus-visible:ring-purple-400 focus-visible:ring-opacity-75',
+                    'focus:outline-none focus-visible:ring focus-visible:ring-purple-400/75',
                     'w-6 h-6 flex items-center justify-center rounded transition',
                   )}
                   onChange={setChecked}

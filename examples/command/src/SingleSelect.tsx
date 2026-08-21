@@ -26,11 +26,11 @@ export default function SingleSelect(): JSX.Element {
       >
         <CommandLabel class="text-xl font-semibold">Single Selection</CommandLabel>
         <CommandInput
-          class="w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
+          class="w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
           placeholder="Select an item"
           value={selected().name}
         />
-        <CommandOptions class="bg-gray-50 bg-opacity-50 rounded-lg overflow-hidden">
+        <CommandOptions class="bg-gray-50/50 rounded-lg overflow-hidden">
           <For each={people}>
             {(person): JSX.Element => (
               <CommandOption class="focus:outline-none group" value={person}>

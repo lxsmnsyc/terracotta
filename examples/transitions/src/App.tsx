@@ -25,7 +25,7 @@ export default function App(): JSX.Element {
         onClick={(): void => {
           setIsShowing(!isShowing());
         }}
-        class="flex items-center px-3 py-2 mt-8 text-sm font-medium text-white transition transform bg-black rounded-full backface-visibility-hidden active:bg-opacity-40 hover:scale-105 hover:bg-opacity-30 focus:outline-none bg-opacity-20"
+        class="flex items-center px-3 py-2 mt-8 text-sm font-medium text-white transition transform bg-black/20 rounded-full backface-visibility-hidden active:bg-black/40 hover:scale-105 hover:bg-black/30 focus:outline-none"
       >
         <svg viewBox="0 0 20 20" fill="none" class="w-5 h-5 opacity-70">
           <title>Re-run</title>

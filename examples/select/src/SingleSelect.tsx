@@ -19,7 +19,7 @@ export default function SingleSelect(): JSX.Element {
     <div class="flex flex-col gap-2">
       <span class="text-xl font-semibold">Single Selection</span>
       <Select toggleable value={selected()} onChange={setSelected}>
-        <div class="relative mt-1 bg-gray-50 bg-opacity-50 rounded-lg overflow-hidden">
+        <div class="relative mt-1 bg-gray-50/50 rounded-lg overflow-hidden">
           <For each={people}>
             {(person): JSX.Element => (
               <SelectOption class="focus:outline-none group" value={person}>

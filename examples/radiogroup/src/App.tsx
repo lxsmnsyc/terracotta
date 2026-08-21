@@ -59,9 +59,8 @@ export default function App(): JSX.Element {
                     <RadioGroupOption
                       value={plan}
                       class={classNames(
-                        isSelected(plan) ? 'bg-sky-900 bg-opacity-75 text-white' : 'bg-white',
-                        isActive(plan) &&
-                          'ring-2 ring-offset-2 ring-offset-sky-300 ring-white ring-opacity-60',
+                        isSelected(plan) ? 'bg-sky-900/75 text-white' : 'bg-white',
+                        isActive(plan) && 'ring-2 ring-offset-2 ring-offset-sky-300 ring-white/60',
                         'relative rounded-lg shadow-md px-5 py-4 cursor-pointer flex focus:outline-none',
                       )}
                     >
@@ -85,7 +84,7 @@ export default function App(): JSX.Element {
                             </div>
                           </div>
                           {checked() && (
-                            <div class="flex-shrink-0 text-white">
+                            <div class="shrink-0 text-white">
                               <CheckIcon class="w-6 h-6" title="Checked" />
                             </div>
                           )}
