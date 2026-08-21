@@ -1,7 +1,4 @@
-function useEventListener<
-  T extends HTMLElement,
-  K extends keyof HTMLElementEventMap,
->(
+function useEventListener<T extends HTMLElement, K extends keyof HTMLElementEventMap>(
   node: T,
   type: K,
   listener: (ev: HTMLElementEventMap[K]) => void,

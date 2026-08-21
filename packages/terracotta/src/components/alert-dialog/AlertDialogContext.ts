@@ -8,7 +8,7 @@ interface AlertDialogContextData {
   descriptionID: string;
 }
 
-export const AlertDialogContext = createContext<AlertDialogContextData>();
+export const AlertDialogContext = createContext<AlertDialogContextData | null>(null);
 
 /**
  * Reads the nearest `AlertDialog`'s internal context, which holds the

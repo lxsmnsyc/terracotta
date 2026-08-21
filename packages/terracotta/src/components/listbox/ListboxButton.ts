@@ -1,10 +1,7 @@
 import type { JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import { useSelectState } from '../../states/create-select-state';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
@@ -24,11 +21,10 @@ import { Button } from '../button';
 import { useListboxContext } from './ListboxContext';
 import { LISTBOX_BUTTON_TAG } from './tags';
 
-export type ListboxButtonProps<T extends ValidComponent = 'button'> =
-  HeadlessPropsWithRef<
-    T,
-    OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
-  >;
+export type ListboxButtonProps<T extends ValidComponent = 'button'> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
+>;
 
 /**
  * The trigger of a `Listbox`. Carries `aria-expanded` and `aria-haspopup`, and
@@ -46,10 +42,9 @@ export function ListboxButton<T extends ValidComponent = 'button'>(
   const selectState = useSelectState();
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined =>
-    disclosureState.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => disclosureState.disabled() || props.disabled;
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       context.anchor = current;
       context.buttonHovering = false;
@@ -60,7 +55,7 @@ export function ListboxButton<T extends ValidComponent = 'button'>(
             disclosureState.toggle();
           }
         }),
-        useEventListener(current, 'keydown', e => {
+        useEventListener(current, 'keydown', (e) => {
           if (!isDisabled()) {
             switch (e.key) {
               case 'ArrowUp':

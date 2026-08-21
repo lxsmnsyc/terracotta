@@ -6,7 +6,7 @@ interface AccordionItemContextData {
   panelID: string;
 }
 
-export const AccordionItemContext = createContext<AccordionItemContextData>();
+export const AccordionItemContext = createContext<AccordionItemContextData | null>(null);
 
 /**
  * Reads the nearest `AccordionItem`'s internal context, which holds the

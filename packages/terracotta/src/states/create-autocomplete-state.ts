@@ -74,9 +74,7 @@ export function createSingleAutocompleteState<T>(
   const equals = options.by || isEqual;
 
   if ('defaultValue' in options) {
-    const [selected, setSelected] = createSignal<T | undefined>(
-      () => options.defaultValue,
-    );
+    const [selected, setSelected] = createSignal<T | undefined>(() => options.defaultValue);
     selectedValue = selected;
     setSelectedValue = (value): void => {
       setSelected(() => value);
@@ -287,18 +285,14 @@ export function createMultipleAutocompleteState<T>(
 }
 
 export interface AutocompleteStateRenderProps<T> {
-  children?:
-    | JSX.Element
-    | ((state: AutocompleteStateProperties<T>) => JSX.Element);
+  children?: JSX.Element | ((state: AutocompleteStateProperties<T>) => JSX.Element);
 }
 
-export interface AutocompleteStateProviderProps<T>
-  extends AutocompleteStateRenderProps<T> {
+export interface AutocompleteStateProviderProps<T> extends AutocompleteStateRenderProps<T> {
   state: AutocompleteStateProperties<T>;
 }
 
-const AutocompleteStateContext =
-  createContext<AutocompleteStateProperties<unknown>>();
+const AutocompleteStateContext = createContext<AutocompleteStateProperties<unknown> | null>(null);
 
 export function AutocompleteStateProvider<T>(
   props: AutocompleteStateProviderProps<T>,
@@ -333,9 +327,7 @@ export function useAutocompleteState<T>(): AutocompleteStateProperties<T> {
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#autocomplete-state}
  */
-export function AutocompleteStateChild<T>(
-  props: AutocompleteStateRenderProps<T>,
-): JSX.Element {
+export function AutocompleteStateChild<T>(props: AutocompleteStateRenderProps<T>): JSX.Element {
   const state = useAutocompleteState<T>();
   return createMemo(() => {
     const current = props.children;

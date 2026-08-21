@@ -8,15 +8,11 @@ import {
 import createDynamic from '../../utils/create-dynamic';
 import { createUnmountable } from '../../utils/create-unmountable';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
-import {
-  createActiveState,
-  createSelectedState,
-} from '../../utils/state-props';
+import { createActiveState, createSelectedState } from '../../utils/state-props';
 import { useTabGroupContext } from './TabGroupContext';
 import { TAB_PANEL_TAG } from './tags';
 
-export interface TabPanelBaseProps<V>
-  extends Exclude<SelectOptionStateOptions<V>, 'disabled'> {
+export interface TabPanelBaseProps<V> extends Exclude<SelectOptionStateOptions<V>, 'disabled'> {
   unmount?: boolean;
 }
 

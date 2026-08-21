@@ -6,7 +6,7 @@ interface TabGroupContextData<V> {
   getId(kind: string, value: V): string;
 }
 
-export const TabGroupContext = createContext<TabGroupContextData<unknown>>();
+export const TabGroupContext = createContext<TabGroupContextData<unknown> | null>(null);
 
 /**
  * Reads the nearest `TabGroup`'s internal context, which holds the id prefix

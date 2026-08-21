@@ -48,9 +48,7 @@ export interface DisclosureStateProperties {
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#disclosure-state}
  */
-export function createDisclosureState(
-  options: DisclosureStateOptions,
-): DisclosureStateProperties {
+export function createDisclosureState(options: DisclosureStateOptions): DisclosureStateProperties {
   let signal: Accessor<boolean>;
   let setSignal: (value: boolean) => void;
 
@@ -118,16 +116,13 @@ export interface DisclosureStateRenderProps {
   children?: JSX.Element | ((state: DisclosureStateProperties) => JSX.Element);
 }
 
-export interface DisclosureStateProviderProps
-  extends DisclosureStateRenderProps {
+export interface DisclosureStateProviderProps extends DisclosureStateRenderProps {
   state: DisclosureStateProperties;
 }
 
-const DisclosureStateContext = createContext<DisclosureStateProperties>();
+const DisclosureStateContext = createContext<DisclosureStateProperties | null>(null);
 
-export function DisclosureStateProvider(
-  props: DisclosureStateProviderProps,
-): JSX.Element {
+export function DisclosureStateProvider(props: DisclosureStateProviderProps): JSX.Element {
   return createComponent(DisclosureStateContext, {
     value: props.state,
     get children() {
@@ -157,9 +152,7 @@ export function useDisclosureState(): DisclosureStateProperties {
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#disclosure-state}
  */
-export function DisclosureStateChild(
-  props: DisclosureStateRenderProps,
-): JSX.Element {
+export function DisclosureStateChild(props: DisclosureStateRenderProps): JSX.Element {
   const state = useDisclosureState();
   return createMemo(() => {
     const current = props.children;

@@ -1,23 +1,19 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
-import {
-  createDisabledState,
-  createExpandedState,
-} from '../../utils/state-props';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
 import { usePopoverContext } from './PopoverContext';
 import { POPOVER_OVERLAY_TAG } from './tags';
 
-export type PopoverOverlayProps<T extends ValidComponent = 'div'> =
-  HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
+export type PopoverOverlayProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
+  T,
+  DisclosureStateRenderProps
+>;
 
 /**
  * The backdrop behind a `Popover`. Clicking it closes the popover, so give it
@@ -37,7 +33,7 @@ export function PopoverOverlay<T extends ValidComponent = 'div'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       return useEventListener(current, 'click', () => {
         state.close();

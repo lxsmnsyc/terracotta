@@ -1,21 +1,17 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
-import {
-  createDisabledState,
-  createExpandedState,
-} from '../../utils/state-props';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import { useDialogContext } from './DialogContext';
 import { DIALOG_DESCRIPTION_TAG } from './tags';
 
-export type DialogDescriptionProps<T extends ValidComponent = 'p'> =
-  HeadlessProps<T, DisclosureStateRenderProps>;
+export type DialogDescriptionProps<T extends ValidComponent = 'p'> = HeadlessProps<
+  T,
+  DisclosureStateRenderProps
+>;
 
 /**
  * The accessible description of a `Dialog`, wired up through `aria-

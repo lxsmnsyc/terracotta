@@ -1,20 +1,11 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  merge,
-  omit,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, merge, omit } from 'solid-js';
 import type {
   SelectStateRenderProps,
   SingleSelectStateControlledOptions,
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
-import {
-  createSingleSelectState,
-  SelectStateProvider,
-} from '../../states/create-select-state';
+import { createSingleSelectState, SelectStateProvider } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
@@ -38,19 +29,19 @@ export type RadioGroupControlledBaseProps<V> = Prettify<
   SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type RadioGroupControlledProps<
-  V,
-  T extends ValidComponent = 'div',
-> = HeadlessPropsWithRef<T, RadioGroupControlledBaseProps<V>>;
+export type RadioGroupControlledProps<V, T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
+  T,
+  RadioGroupControlledBaseProps<V>
+>;
 
 export type RadioGroupUncontrolledBaseProps<V> = Prettify<
   SingleSelectStateUncontrolledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type RadioGroupUncontrolledProps<
-  V,
-  T extends ValidComponent = 'div',
-> = HeadlessPropsWithRef<T, RadioGroupUncontrolledBaseProps<V>>;
+export type RadioGroupUncontrolledProps<V, T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
+  T,
+  RadioGroupUncontrolledBaseProps<V>
+>;
 
 export type RadioGroupProps<V, T extends ValidComponent = 'div'> =
   | RadioGroupControlledProps<V, T>
@@ -80,14 +71,14 @@ export function RadioGroup<V, T extends ValidComponent = 'div'>(
 
   const [ref, setRef] = createForwardRef(props);
 
-  createEffect(ref, current => {
+  createEffect(ref, (current) => {
     if (current instanceof HTMLElement) {
       controller.setRef(current);
       return mergeFunc(
         () => {
           controller.clearRef();
         },
-        useEventListener(current, 'keydown', e => {
+        useEventListener(current, 'keydown', (e) => {
           if (!state.disabled()) {
             switch (e.key) {
               case 'ArrowLeft':
@@ -105,7 +96,7 @@ export function RadioGroup<V, T extends ValidComponent = 'div'>(
             }
           }
         }),
-        useEventListener(current, 'focusin', e => {
+        useEventListener(current, 'focusin', (e) => {
           if (e.target && e.target !== current) {
             controller.setCurrent(e.target as HTMLElement);
           }

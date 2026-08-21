@@ -1,11 +1,5 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  merge,
-  omit,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, merge, omit } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
@@ -31,15 +25,19 @@ export type PopoverControlledBaseProps = Prettify<
   DisclosureStateRenderProps & DisclosureStateControlledOptions
 >;
 
-export type PopoverControlledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, PopoverControlledBaseProps>;
+export type PopoverControlledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  PopoverControlledBaseProps
+>;
 
 export type PopoverUncontrolledBaseProps = Prettify<
   DisclosureStateRenderProps & DisclosureStateUncontrolledOptions
 >;
 
-export type PopoverUncontrolledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, PopoverUncontrolledBaseProps>;
+export type PopoverUncontrolledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  PopoverUncontrolledBaseProps
+>;
 
 export type PopoverProps<T extends ValidComponent = 'div'> =
   | PopoverControlledProps<T>
@@ -60,9 +58,7 @@ function isPopoverUncontrolled<T extends ValidComponent = 'div'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/popover.md}
  */
-export function Popover<T extends ValidComponent = 'div'>(
-  props: PopoverProps<T>,
-): JSX.Element {
+export function Popover<T extends ValidComponent = 'div'>(props: PopoverProps<T>): JSX.Element {
   const ownerID = createUniqueId();
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
@@ -73,7 +69,7 @@ export function Popover<T extends ValidComponent = 'div'>(
 
   createEffect(
     () => state.isOpen(),
-    flag => {
+    (flag) => {
       if (flag) {
         fsp.save();
       } else {
@@ -108,16 +104,7 @@ export function Popover<T extends ValidComponent = 'div'>(
                 'onClose',
                 'onOpen',
               )
-            : omit(
-                props,
-                'as',
-                'children',
-                'isOpen',
-                'disabled',
-                'onChange',
-                'onClose',
-                'onOpen',
-              ),
+            : omit(props, 'as', 'children', 'isOpen', 'disabled', 'onChange', 'onClose', 'onOpen'),
           {
             get children() {
               return createComponent(DisclosureStateProvider, {

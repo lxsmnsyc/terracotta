@@ -38,7 +38,7 @@ interface ColorSchemeContextData {
   preferred: NativeColorScheme;
 }
 
-const ColorSchemeContext = createContext<ColorSchemeContextData>();
+const ColorSchemeContext = createContext<ColorSchemeContextData | null>(null);
 
 const STORAGE_KEY = 'theme-preference';
 
@@ -96,12 +96,12 @@ export function ColorSchemeProvider(props: ColorSchemeProviderProps): JSX.Elemen
   });
 
   // Sync storage when signal changes
-  createEffect(get, value => {
+  createEffect(get, (value) => {
     localStorage.setItem(STORAGE_KEY, value);
   });
 
   // Sync document class
-  createEffect(shouldToggle, value => {
+  createEffect(shouldToggle, (value) => {
     document.documentElement.classList.toggle('dark', value);
   });
 

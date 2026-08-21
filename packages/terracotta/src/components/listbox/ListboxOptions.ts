@@ -2,10 +2,7 @@ import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, createEffect, merge, omit } from 'solid-js';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
-import {
-  SelectStateProvider,
-  useSelectState,
-} from '../../states/create-select-state';
+import { SelectStateProvider, useSelectState } from '../../states/create-select-state';
 import { createDependencyList } from '../../utils/create-dependency-list';
 import createDynamic from '../../utils/create-dynamic';
 import createTypeAhead from '../../utils/create-type-ahead';
@@ -26,20 +23,15 @@ import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
 import { waitForTransition } from '../../utils/wait-for-transition';
 import { useListboxContext } from './ListboxContext';
-import {
-  createListboxOptionsFocusNavigator,
-  ListboxOptionsContext,
-} from './ListboxOptionsContext';
+import { createListboxOptionsFocusNavigator, ListboxOptionsContext } from './ListboxOptionsContext';
 import { LISTBOX_OPTIONS_TAG } from './tags';
 
-export type ListboxOptionsBaseProps<V> = Prettify<
-  UnmountableProps & SelectStateRenderProps<V>
->;
+export type ListboxOptionsBaseProps<V> = Prettify<UnmountableProps & SelectStateRenderProps<V>>;
 
-export type ListboxOptionsProps<
-  V,
-  T extends ValidComponent = 'ul',
-> = HeadlessPropsWithRef<T, ListboxOptionsBaseProps<V>>;
+export type ListboxOptionsProps<V, T extends ValidComponent = 'ul'> = HeadlessPropsWithRef<
+  T,
+  ListboxOptionsBaseProps<V>
+>;
 
 /**
  * The popup list of a `Listbox`. Unmounts while closed unless
@@ -60,7 +52,7 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
 
   const controller = createListboxOptionsFocusNavigator(context.optionsID);
 
-  const pushCharacter = createTypeAhead(value => {
+  const pushCharacter = createTypeAhead((value) => {
     controller.setFirstMatch(value);
   });
 
@@ -87,7 +79,7 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
             controller.clearRef();
           },
 
-          useEventListener(current, 'keydown', e => {
+          useEventListener(current, 'keydown', (e) => {
             if (!selectState.disabled()) {
               switch (e.key) {
                 case 'Escape': {
@@ -146,7 +138,7 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
               }
             }
           }),
-          useEventListener(current, 'focusout', e => {
+          useEventListener(current, 'focusout', (e) => {
             if (context.buttonHovering || context.optionsHovering) {
               return;
             }
@@ -157,7 +149,7 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
               disclosureState.close();
             }
           }),
-          useEventListener(current, 'focusin', e => {
+          useEventListener(current, 'focusin', (e) => {
             if (e.target && e.target !== current) {
               controller.setCurrent(e.target as HTMLElement);
             }
@@ -188,7 +180,7 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
               {
                 id: context.optionsID,
                 role: 'listbox',
-                'aria-multiselectable': context.multiple,
+                'aria-multiselectable': context.multiple ? 'true' : 'false',
                 'aria-labelledby': context.buttonID,
                 ref: setInternalRef,
                 get 'aria-orientation'() {

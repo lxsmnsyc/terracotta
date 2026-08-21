@@ -11,7 +11,7 @@ interface FeedContextData {
   focusNext: () => void;
 }
 
-export const FeedContext = createContext<FeedContextData>();
+export const FeedContext = createContext<FeedContextData | null>(null);
 
 /**
  * Reads the nearest `Feed`'s internal context, which holds the generated ids

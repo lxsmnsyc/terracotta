@@ -5,10 +5,7 @@ import type {
   ToggleStateRenderProps,
   ToggleStateUncontrolledOptions,
 } from '../../states/create-toggle-state';
-import {
-  createToggleState,
-  ToggleStateProvider,
-} from '../../states/create-toggle-state';
+import { createToggleState, ToggleStateProvider } from '../../states/create-toggle-state';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
@@ -29,21 +26,19 @@ export type ToggleControlledBaseProps = Prettify<
   ToggleStateControlledOptions & ToggleStateRenderProps
 >;
 
-export type ToggleControlledProps<T extends ValidComponent = 'button'> =
-  HeadlessPropsWithRef<
-    T,
-    OmitAndMerge<ToggleControlledBaseProps, ButtonProps<T>>
-  >;
+export type ToggleControlledProps<T extends ValidComponent = 'button'> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<ToggleControlledBaseProps, ButtonProps<T>>
+>;
 
 export type ToggleUncontrolledBaseProps = Prettify<
   ToggleStateUncontrolledOptions & ToggleStateRenderProps
 >;
 
-export type ToggleUncontrolledProps<T extends ValidComponent = 'button'> =
-  HeadlessPropsWithRef<
-    T,
-    OmitAndMerge<ToggleUncontrolledBaseProps, ButtonProps<T>>
-  >;
+export type ToggleUncontrolledProps<T extends ValidComponent = 'button'> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<ToggleUncontrolledBaseProps, ButtonProps<T>>
+>;
 
 export type ToggleProps<T extends ValidComponent = 'button'> =
   | ToggleControlledProps<T>
@@ -64,13 +59,11 @@ function isToggleUncontrolled<T extends ValidComponent = 'button'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toggle.md}
  */
-export function Toggle<T extends ValidComponent = 'button'>(
-  props: ToggleProps<T>,
-): JSX.Element {
+export function Toggle<T extends ValidComponent = 'button'>(props: ToggleProps<T>): JSX.Element {
   const [ref, setRef] = createForwardRef(props);
   const state = createToggleState(props);
 
-  createEffect(ref, current => {
+  createEffect(ref, (current) => {
     if (current instanceof HTMLElement) {
       return useEventListener(current, 'click', () => {
         state.toggle();
@@ -99,14 +92,7 @@ export function Toggle<T extends ValidComponent = 'button'>(
       createDisabledState(() => state.disabled()),
       createARIADisabledState(() => state.disabled()),
       isToggleUncontrolled(props)
-        ? omit(
-            props,
-            'onChange',
-            'defaultPressed',
-            'ref',
-            'disabled',
-            'children',
-          )
+        ? omit(props, 'onChange', 'defaultPressed', 'ref', 'disabled', 'children')
         : omit(props, 'onChange', 'pressed', 'ref', 'disabled', 'children'),
     ) as ComponentProps<T>,
   );

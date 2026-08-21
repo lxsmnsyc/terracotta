@@ -8,7 +8,7 @@ interface ContextMenuContextData {
   anchor?: HTMLElement | null;
 }
 
-export const ContextMenuContext = createContext<ContextMenuContextData>();
+export const ContextMenuContext = createContext<ContextMenuContextData | null>(null);
 
 /**
  * Reads the nearest `ContextMenu`'s internal context, which holds the

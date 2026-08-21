@@ -19,8 +19,7 @@ import useEventListener from '../../utils/use-event-listener';
 import { COMMAND_INPUT_TAG } from '../command/tags';
 import { useComboboxContext } from './ComboboxContext';
 
-export type ComboboxInputProps<T extends ValidComponent = 'input'> =
-  HeadlessPropsWithRef<T>;
+export type ComboboxInputProps<T extends ValidComponent = 'input'> = HeadlessPropsWithRef<T>;
 
 /**
  * The text field of a `Combobox`. Typing sets the query, which is debounced by
@@ -39,10 +38,9 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
   const disclosureState = useDisclosureState();
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined =>
-    autocompleteState.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => autocompleteState.disabled() || props.disabled;
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       context.anchor = current;
       context.inputHovering = false;
@@ -54,7 +52,7 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
               autocompleteState.setQuery(current.value);
             }
           }),
-        useEventListener(current, 'keydown', e => {
+        useEventListener(current, 'keydown', (e) => {
           if (!isDisabled()) {
             switch (e.key) {
               case 'Escape': {
@@ -96,7 +94,7 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
             disclosureState.toggle();
           }
         }),
-        useEventListener(current, 'blur', e => {
+        useEventListener(current, 'blur', (e) => {
           console.log(context.inputHovering, context.optionsHovering);
           if (context.inputHovering || context.optionsHovering) {
             return;
@@ -125,7 +123,7 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
 
   createEffect(
     () => autocompleteState.query(),
-    query => {
+    (query) => {
       if (query !== '') {
         if (disclosureState.isOpen()) {
           context.controller.setFirstChecked();
@@ -138,7 +136,7 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
 
   createEffect(
     () => context.getActiveDescendant(),
-    activeDescendant => {
+    (activeDescendant) => {
       if (activeDescendant) {
         const current = document.getElementById(activeDescendant);
         if (current) {

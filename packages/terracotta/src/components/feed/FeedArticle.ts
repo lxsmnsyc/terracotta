@@ -7,8 +7,10 @@ import { FeedArticleContext } from './FeedArticleContext';
 import { useFeedContext } from './FeedContext';
 import { FEED_ARTICLE_TAG } from './tags';
 
-export type FeedArticleProps<T extends ValidComponent = 'article'> =
-  HeadlessPropsWithRef<T, { index: number }>;
+export type FeedArticleProps<T extends ValidComponent = 'article'> = HeadlessPropsWithRef<
+  T,
+  { index: number }
+>;
 
 /**
  * One entry in a `Feed`. The required `index` prop is its zero-based position,

@@ -19,12 +19,12 @@ import type { Prettify } from '../../utils/types';
 import { useAccordionItemContext } from './AccordionItemContext';
 import { ACCORDION_PANEL_TAG } from './tags';
 
-export type AccordionPanelBaseProps = Prettify<
-  SelectOptionStateRenderProps & UnmountableProps
->;
+export type AccordionPanelBaseProps = Prettify<SelectOptionStateRenderProps & UnmountableProps>;
 
-export type AccordionPanelProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, AccordionPanelBaseProps>;
+export type AccordionPanelProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  AccordionPanelBaseProps
+>;
 
 /**
  * The content revealed when its `AccordionItem` is expanded. Unmounts while

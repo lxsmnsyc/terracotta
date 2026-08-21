@@ -30,10 +30,7 @@ export type SelectOptionBaseProps<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps
 >;
 
-export type SelectOptionProps<
-  V,
-  T extends ValidComponent = 'li',
-> = HeadlessPropsWithRef<
+export type SelectOptionProps<V, T extends ValidComponent = 'li'> = HeadlessPropsWithRef<
   T,
   OmitAndMerge<SelectOptionBaseProps<V>, ButtonProps<T>>
 >;
@@ -53,7 +50,7 @@ export function SelectOption<V, T extends ValidComponent = 'li'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
   const state = createSelectOptionState(props);
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       return mergeFunc(
         useEventListener(current, 'click', () => {

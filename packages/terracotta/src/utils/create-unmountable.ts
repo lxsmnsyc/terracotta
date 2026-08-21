@@ -16,7 +16,7 @@ export function createUnmountable(
   shouldMount: () => boolean,
   render: () => JSX.Element,
 ): JSX.Element {
-  const mode = createMemo(() => (props.unmount == null ? true : props.unmount));
+  const mode = createMemo(() => props.unmount ?? true);
   const condition = createMemo(() => shouldMount());
   return createMemo(() => {
     const currentMode = mode();

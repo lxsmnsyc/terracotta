@@ -1,11 +1,5 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  merge,
-  omit,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, merge, omit } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
@@ -30,22 +24,22 @@ import { DialogContext } from './DialogContext';
 import { DIALOG_TAG } from './tags';
 
 export type DialogControlledBaseProps = Prettify<
-  DisclosureStateControlledOptions &
-    DisclosureStateRenderProps &
-    UnmountableProps
+  DisclosureStateControlledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type DialogControlledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, DialogControlledBaseProps>;
+export type DialogControlledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  DialogControlledBaseProps
+>;
 
 export type DialogUncontrolledBaseProps = Prettify<
-  DisclosureStateUncontrolledOptions &
-    DisclosureStateRenderProps &
-    UnmountableProps
+  DisclosureStateUncontrolledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type DialogUncontrolledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, DialogUncontrolledBaseProps>;
+export type DialogUncontrolledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  DialogUncontrolledBaseProps
+>;
 
 export type DialogProps<T extends ValidComponent = 'div'> =
   | DialogControlledProps<T>
@@ -66,9 +60,7 @@ function isDialogUncontrolled<T extends ValidComponent = 'div'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
  */
-export function Dialog<T extends ValidComponent = 'div'>(
-  props: DialogProps<T>,
-): JSX.Element {
+export function Dialog<T extends ValidComponent = 'div'>(props: DialogProps<T>): JSX.Element {
   const ownerID = createUniqueId();
   const panelID = createUniqueId();
   const titleID = createUniqueId();
@@ -80,7 +72,7 @@ export function Dialog<T extends ValidComponent = 'div'>(
 
   createEffect(
     () => state.isOpen(),
-    flag => {
+    (flag) => {
       if (flag) {
         fsp.save();
       } else {
@@ -108,7 +100,7 @@ export function Dialog<T extends ValidComponent = 'div'>(
               {
                 id: ownerID,
                 role: 'dialog',
-                'aria-modal': true,
+                'aria-modal': 'true',
                 'aria-labelledby': titleID,
                 'aria-describedby': descriptionID,
                 get children() {

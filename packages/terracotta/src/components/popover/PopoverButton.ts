@@ -1,10 +1,7 @@
 import type { JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
@@ -21,11 +18,10 @@ import { Button } from '../button';
 import { usePopoverContext } from './PopoverContext';
 import { POPOVER_BUTTON_TAG } from './tags';
 
-export type PopoverButtonProps<T extends ValidComponent = 'button'> =
-  HeadlessPropsWithRef<
-    T,
-    OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
-  >;
+export type PopoverButtonProps<T extends ValidComponent = 'button'> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<DisclosureStateRenderProps, ButtonProps<T>>
+>;
 
 /**
  * The trigger of a `Popover`. Carries `aria-expanded`, and `aria-controls`
@@ -43,10 +39,9 @@ export function PopoverButton<T extends ValidComponent = 'button'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined =>
-    state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       context.anchor = current;
       context.hovering = false;

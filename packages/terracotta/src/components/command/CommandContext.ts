@@ -18,7 +18,7 @@ interface CommandContextData {
   setSelectedDescendant(current: string | undefined): void;
 }
 
-export const CommandContext = createContext<CommandContextData>();
+export const CommandContext = createContext<CommandContextData | null>(null);
 
 /**
  * Reads the nearest `Command`'s internal context, which holds the generated

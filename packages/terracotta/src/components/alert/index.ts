@@ -17,9 +17,7 @@ export type AlertProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert.md}
  */
-export function Alert<T extends ValidComponent = 'div'>(
-  props: AlertProps<T>,
-): JSX.Element {
+export function Alert<T extends ValidComponent = 'div'>(props: AlertProps<T>): JSX.Element {
   const alertID = createUniqueId();
 
   return createDynamic(

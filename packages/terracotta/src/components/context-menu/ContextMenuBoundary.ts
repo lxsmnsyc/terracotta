@@ -1,10 +1,7 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
@@ -18,8 +15,10 @@ import useEventListener from '../../utils/use-event-listener';
 import { useContextMenuContext } from './ContextMenuContext';
 import { CONTEXT_MENU_BOUNDARY_TAG } from './tags';
 
-export type ContextMenuBoundaryProps<T extends ValidComponent = 'div'> =
-  HeadlessPropsWithRef<T, DisclosureStateRenderProps>;
+export type ContextMenuBoundaryProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
+  T,
+  DisclosureStateRenderProps
+>;
 
 /**
  * The region that listens for right-clicks. Opening the menu suppresses the
@@ -37,10 +36,10 @@ export function ContextMenuBoundary<T extends ValidComponent = 'div'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       context.anchor = current;
-      return useEventListener(current, 'contextmenu', e => {
+      return useEventListener(current, 'contextmenu', (e) => {
         if (!state.disabled()) {
           e.preventDefault();
           state.open();

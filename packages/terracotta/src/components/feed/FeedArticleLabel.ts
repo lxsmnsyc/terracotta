@@ -5,8 +5,7 @@ import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { useFeedArticleContext } from './FeedArticleContext';
 import { FEED_ARTICLE_LABEL_TAG } from './tags';
 
-export type FeedArticleLabelProps<T extends ValidComponent = 'span'> =
-  HeadlessProps<T>;
+export type FeedArticleLabelProps<T extends ValidComponent = 'span'> = HeadlessProps<T>;
 
 /**
  * The accessible name of a `FeedArticle`, wired up through `aria-labelledby`.

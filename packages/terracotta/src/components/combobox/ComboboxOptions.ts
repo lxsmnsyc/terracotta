@@ -32,10 +32,10 @@ export type ComboboxOptionsBaseProps<V> = Prettify<
   UnmountableProps & AutocompleteStateRenderProps<V>
 >;
 
-export type ComboboxOptionsProps<
-  V,
-  T extends ValidComponent = 'ul',
-> = HeadlessPropsWithRef<T, ComboboxOptionsBaseProps<V>>;
+export type ComboboxOptionsProps<V, T extends ValidComponent = 'ul'> = HeadlessPropsWithRef<
+  T,
+  ComboboxOptionsBaseProps<V>
+>;
 
 /**
  * The popup list of a `Combobox`. Unmounts while closed unless
@@ -54,7 +54,7 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       context.controller.setRef(current);
       context.optionsHovering = false;
@@ -83,7 +83,7 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
 
   createEffect(
     () => !disclosureState.isOpen(),
-    value => {
+    (value) => {
       if (value) {
         setInternalRef(undefined);
       }
@@ -92,9 +92,7 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
 
   // TODO check timing
   createEffect(
-    createDependencyList(
-      () => [internalRef(), disclosureState.isOpen()] as const,
-    ),
+    createDependencyList(() => [internalRef(), disclosureState.isOpen()] as const),
     ([current, flag]) => {
       if (current instanceof HTMLElement && flag) {
         waitForTransition(current).then(() => {
@@ -119,7 +117,7 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
           {
             id: context.optionsID,
             role: 'listbox',
-            'aria-multiselectable': context.multiple,
+            'aria-multiselectable': context.multiple ? 'true' : 'false',
             ref: setInternalRef,
             // TODO should Combobox support "horizontal"?
             'aria-orientation': 'vertical',

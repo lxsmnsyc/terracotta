@@ -26,10 +26,10 @@ export type AccordionItemprops<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps
 >;
 
-export type AccordionItemProps<
-  V,
-  T extends ValidComponent = 'div',
-> = HeadlessProps<T, AccordionItemprops<V>>;
+export type AccordionItemProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  AccordionItemprops<V>
+>;
 
 /**
  * One section of an `Accordion`. The required `value` prop is the id this

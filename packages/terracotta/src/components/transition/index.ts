@@ -21,32 +21,22 @@ import { createDependencyList } from '../../utils/create-dependency-list';
 import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import {
-  createForwardRef,
-  type HeadlessPropsWithRef,
-} from '../../utils/dynamic-prop';
+import { createForwardRef, type HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import type { Prettify } from '../../utils/types';
 export interface TransitionRootBaseProps {
   show: boolean;
 }
 
-const TransitionRootContext = createContext<TransitionRootBaseProps>();
+const TransitionRootContext = createContext<TransitionRootBaseProps | null>(null);
 const TransitionStateContext = createContext<{ value?: TransitionState }>({});
 
-function useTransitionRootContext(
-  componentName: string,
-): TransitionRootBaseProps {
+function useTransitionRootContext(componentName: string): TransitionRootBaseProps {
   const context = useContext(TransitionRootContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <Transition>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <Transition>`));
   return context;
 }
 
-export interface TransitionBaseChildProps
-  extends UnmountableProps,
-    TransitionHooks {
+export interface TransitionBaseChildProps extends UnmountableProps, TransitionHooks {
   appear?: boolean;
   enter?: string;
   enterFrom?: string;
@@ -57,8 +47,10 @@ export interface TransitionBaseChildProps
   leaveTo?: string;
 }
 
-export type TransitionChildProps<T extends ValidComponent = 'div'> =
-  HeadlessPropsWithRef<T, TransitionBaseChildProps>;
+export type TransitionChildProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
+  T,
+  TransitionBaseChildProps
+>;
 
 function getClassList(classes?: string): string[] {
   return classes ? classes.split(' ') : [];
@@ -144,13 +136,13 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
     });
     createEffect(
       () => root.show && parent.visible(),
-      flag => {
+      (flag) => {
         if (flag) {
           setVisible(true);
         }
       },
     );
-    createEffect(internalRef, element => {
+    createEffect(internalRef, (element) => {
       if (element instanceof HTMLElement) {
         state.setElement(element);
       }
@@ -158,7 +150,7 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
   } else {
     createEffect(
       () => root.show,
-      flag => {
+      (flag) => {
         if (flag) {
           setVisible(true);
         }
@@ -224,7 +216,7 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
   });
 }
 
-export type TransitionProps<T extends ValidConstructor = 'div'> = Prettify<
+export type TransitionProps<T extends ValidComponent = 'div'> = Prettify<
   TransitionRootBaseProps & TransitionChildProps<T>
 >;
 
@@ -237,7 +229,7 @@ export type TransitionProps<T extends ValidConstructor = 'div'> = Prettify<
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/transition.md}
  */
-export function Transition<T extends ValidConstructor = 'div'>(
+export function Transition<T extends ValidComponent = 'div'>(
   props: TransitionProps<T>,
 ): JSX.Element {
   return createComponent(TransitionRootContext, {

@@ -30,10 +30,7 @@ import {
   createHasSelectedState,
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
-import {
-  CommandContext,
-  createCommandOptionFocusNavigator,
-} from './CommandContext';
+import { CommandContext, createCommandOptionFocusNavigator } from './CommandContext';
 import { COMMAND_TAG } from './tags';
 
 export interface CommandBaseProps {
@@ -41,41 +38,35 @@ export interface CommandBaseProps {
 }
 
 export type SingleCommandControlledBaseProps<V> = Prettify<
-  CommandBaseProps &
-    SingleAutocompleteStateControlledOptions<V> &
-    AutocompleteStateRenderProps<V>
+  CommandBaseProps & SingleAutocompleteStateControlledOptions<V> & AutocompleteStateRenderProps<V>
 >;
 
-export type SingleCommandControlledProps<
-  V,
-  T extends ValidComponent = 'div',
-> = HeadlessProps<T, SingleCommandControlledBaseProps<V>>;
+export type SingleCommandControlledProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  SingleCommandControlledBaseProps<V>
+>;
 
 export type SingleCommandUncontrolledBaseProps<V> = Prettify<
-  CommandBaseProps &
-    SingleAutocompleteStateUncontrolledOptions<V> &
-    AutocompleteStateRenderProps<V>
+  CommandBaseProps & SingleAutocompleteStateUncontrolledOptions<V> & AutocompleteStateRenderProps<V>
 >;
 
-export type SingleCommandUncontrolledProps<
-  V,
-  T extends ValidComponent = 'div',
-> = HeadlessProps<T, SingleCommandUncontrolledBaseProps<V>>;
+export type SingleCommandUncontrolledProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  SingleCommandUncontrolledBaseProps<V>
+>;
 
 export type SingleCommandProps<V, T extends ValidComponent = 'div'> =
   | SingleCommandControlledProps<V, T>
   | SingleCommandUncontrolledProps<V, T>;
 
 export type MultipleCommandControlledBaseProps<V> = Prettify<
-  CommandBaseProps &
-    MultipleAutocompleteStateControlledOptions<V> &
-    AutocompleteStateRenderProps<V>
+  CommandBaseProps & MultipleAutocompleteStateControlledOptions<V> & AutocompleteStateRenderProps<V>
 >;
 
-export type MultipleCommandControlledProps<
-  V,
-  T extends ValidComponent = 'div',
-> = HeadlessProps<T, MultipleCommandControlledBaseProps<V>>;
+export type MultipleCommandControlledProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  MultipleCommandControlledBaseProps<V>
+>;
 
 export type MultipleCommandUncontrolledBaseProps<V> = Prettify<
   CommandBaseProps &
@@ -83,10 +74,10 @@ export type MultipleCommandUncontrolledBaseProps<V> = Prettify<
     AutocompleteStateRenderProps<V>
 >;
 
-export type MultipleCommandUncontrolledProps<
-  V,
-  T extends ValidComponent = 'div',
-> = HeadlessProps<T, MultipleCommandUncontrolledBaseProps<V>>;
+export type MultipleCommandUncontrolledProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  MultipleCommandUncontrolledBaseProps<V>
+>;
 
 export type MultipleCommandProps<V, T extends ValidComponent = 'div'> =
   | MultipleCommandControlledProps<V, T>
@@ -104,9 +95,7 @@ function isCommandMultiple<V, T extends ValidComponent = 'div'>(
 
 function isCommandUncontrolled<V, T extends ValidComponent = 'div'>(
   props: CommandProps<V, T>,
-): props is
-  | SingleCommandUncontrolledProps<V, T>
-  | MultipleCommandUncontrolledProps<V, T> {
+): props is SingleCommandUncontrolledProps<V, T> | MultipleCommandUncontrolledProps<V, T> {
   return 'defaultValue' in props;
 }
 
@@ -128,11 +117,12 @@ export function Command<V, T extends ValidComponent = 'div'>(
       ? createMultipleAutocompleteState(props)
       : createSingleAutocompleteState(props);
     const [activeDescendant, setActiveDescendant] = createSignal<string>();
-    const [selectedDescendant, setSelectedDescendant] = createSignal<
-      string | undefined
-    >(undefined, {
-      equals: false,
-    });
+    const [selectedDescendant, setSelectedDescendant] = createSignal<string | undefined>(
+      undefined,
+      {
+        equals: false,
+      },
+    );
 
     const inputID = createUniqueId();
     const optionsID = createUniqueId();
@@ -140,7 +130,7 @@ export function Command<V, T extends ValidComponent = 'div'>(
 
     createEffect(
       () => !state.hasActive(),
-      flag => {
+      (flag) => {
         if (flag) {
           setActiveDescendant(undefined);
         }

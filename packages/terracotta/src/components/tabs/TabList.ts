@@ -1,27 +1,21 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
-import {
-  SelectStateChild,
-  useSelectState,
-} from '../../states/create-select-state';
+import { SelectStateChild, useSelectState } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
-import {
-  createHasActiveState,
-  createHasSelectedState,
-} from '../../utils/state-props';
+import { createHasActiveState, createHasSelectedState } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
 import { useTabGroupContext } from './TabGroupContext';
 import { createTabFocusNavigator, TabListContext } from './TabListContext';
 import { TAB_LIST_TAG } from './tags';
 
-export type TabListProps<
-  V,
-  T extends ValidComponent = 'div',
-> = HeadlessPropsWithRef<T, SelectStateRenderProps<V>>;
+export type TabListProps<V, T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
+  T,
+  SelectStateRenderProps<V>
+>;
 
 /**
  * The row of tabs in a `TabGroup`, and the element that owns their arrow-key
@@ -39,14 +33,14 @@ export function TabList<V, T extends ValidComponent = 'div'>(
   const state = useSelectState();
   const [ref, setRef] = createForwardRef(props);
 
-  createEffect(ref, current => {
+  createEffect(ref, (current) => {
     if (current instanceof HTMLElement) {
       controller.setRef(current);
       return mergeFunc(
         () => {
           controller.clearRef();
         },
-        useEventListener(current, 'keydown', e => {
+        useEventListener(current, 'keydown', (e) => {
           if (!state.disabled()) {
             switch (e.key) {
               case 'ArrowUp': {
@@ -90,7 +84,7 @@ export function TabList<V, T extends ValidComponent = 'div'>(
             }
           }
         }),
-        useEventListener(current, 'focusin', e => {
+        useEventListener(current, 'focusin', (e) => {
           if (e.target && e.target !== current) {
             controller.setCurrent(e.target as HTMLElement);
           }

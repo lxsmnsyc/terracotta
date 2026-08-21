@@ -5,15 +5,11 @@ import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
 import useEventListener from '../../utils/use-event-listener';
-import {
-  createFeedArticleFocusNavigator,
-  FeedContentContext,
-} from './FeedContentContext';
+import { createFeedArticleFocusNavigator, FeedContentContext } from './FeedContentContext';
 import { useFeedContext } from './FeedContext';
 import { FEED_CONTENT_TAG } from './tags';
 
-export type FeedContentProps<T extends ValidComponent = 'div'> =
-  HeadlessPropsWithRef<T>;
+export type FeedContentProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<T>;
 
 /**
  * The scrolling region that holds the articles of a `Feed`. Everything outside
@@ -31,7 +27,7 @@ export function FeedContent<T extends ValidComponent = 'div'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       controller.setRef(current);
 
@@ -39,7 +35,7 @@ export function FeedContent<T extends ValidComponent = 'div'>(
         () => {
           controller.clearRef();
         },
-        useEventListener(current, 'keydown', e => {
+        useEventListener(current, 'keydown', (e) => {
           if (e.ctrlKey) {
             switch (e.key) {
               case 'Home': {
@@ -71,7 +67,7 @@ export function FeedContent<T extends ValidComponent = 'div'>(
               break;
           }
         }),
-        useEventListener(current, 'focusin', e => {
+        useEventListener(current, 'focusin', (e) => {
           if (e.target && e.target !== current) {
             controller.setCurrent(e.target as HTMLElement);
           }
@@ -93,7 +89,7 @@ export function FeedContent<T extends ValidComponent = 'div'>(
             role: 'feed',
             'aria-labelledby': context.labelID,
             get 'aria-busy'() {
-              return context.isBusy();
+              return context.isBusy() ? 'true' : 'false';
             },
             ref: setInternalRef,
           },

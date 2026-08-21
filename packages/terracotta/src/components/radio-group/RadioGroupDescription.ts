@@ -5,8 +5,7 @@ import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { useRadioGroupContext } from './RadioGroupContext';
 import { RADIO_GROUP_DESCRIPTION_TAG } from './tags';
 
-export type RadioGroupDescriptionProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T>;
+export type RadioGroupDescriptionProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
 
 /**
  * The accessible description of a `RadioGroup` or of one `RadioGroupOption`,

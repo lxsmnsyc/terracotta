@@ -9,8 +9,7 @@ import useEventListener from '../../utils/use-event-listener';
 import { createMenuItemFocusNavigator, MenuContext } from './MenuContext';
 import { MENU_TAG } from './tags';
 
-export type MenuProps<T extends ValidComponent = 'ul'> =
-  HeadlessPropsWithRef<T>;
+export type MenuProps<T extends ValidComponent = 'ul'> = HeadlessPropsWithRef<T>;
 
 /**
  * A menu of actions, navigated with the arrow keys and type-ahead. It has no
@@ -23,18 +22,16 @@ export type MenuProps<T extends ValidComponent = 'ul'> =
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
  */
-export function Menu<T extends ValidComponent = 'ul'>(
-  props: MenuProps<T>,
-): JSX.Element {
+export function Menu<T extends ValidComponent = 'ul'>(props: MenuProps<T>): JSX.Element {
   const controller = createMenuItemFocusNavigator();
 
   const [ref, setRef] = createForwardRef(props);
 
-  const pushCharacter = createTypeAhead(value => {
+  const pushCharacter = createTypeAhead((value) => {
     controller.setFirstMatch(value);
   });
 
-  createEffect(ref, current => {
+  createEffect(ref, (current) => {
     if (current instanceof HTMLElement) {
       controller.setRef(current);
 
@@ -42,7 +39,7 @@ export function Menu<T extends ValidComponent = 'ul'>(
         () => {
           controller.clearRef();
         },
-        useEventListener(current, 'keydown', e => {
+        useEventListener(current, 'keydown', (e) => {
           switch (e.key) {
             case 'ArrowUp':
             case 'ArrowLeft': {
@@ -79,7 +76,7 @@ export function Menu<T extends ValidComponent = 'ul'>(
             }
           }
         }),
-        useEventListener(current, 'focusin', e => {
+        useEventListener(current, 'focusin', (e) => {
           if (e.target && e.target !== current) {
             controller.setCurrent(e.target as HTMLElement);
           }

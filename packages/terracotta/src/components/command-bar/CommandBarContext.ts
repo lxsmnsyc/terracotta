@@ -10,7 +10,7 @@ interface CommandBarContextData {
   onClose?: () => void;
 }
 
-export const CommandBarContext = createContext<CommandBarContextData>();
+export const CommandBarContext = createContext<CommandBarContextData | null>(null);
 
 /**
  * Reads the nearest `CommandBar`'s internal context, which holds the generated

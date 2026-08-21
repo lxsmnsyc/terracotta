@@ -1,11 +1,5 @@
 import type { JSX } from '@solidjs/web';
-import {
-  createComponent,
-  createContext,
-  createMemo,
-  untrack,
-  useContext,
-} from 'solid-js';
+import { createComponent, createContext, createMemo, untrack, useContext } from 'solid-js';
 import assert from '../utils/assert';
 import { useSelectState } from './create-select-state';
 
@@ -57,21 +51,16 @@ export function createSelectOptionState<T>(
 }
 
 export interface SelectOptionStateRenderProps {
-  children?:
-    | JSX.Element
-    | ((state: SelectOptionStateProperties) => JSX.Element);
+  children?: JSX.Element | ((state: SelectOptionStateProperties) => JSX.Element);
 }
 
-export interface SelectOptionStateProviderProps
-  extends SelectOptionStateRenderProps {
+export interface SelectOptionStateProviderProps extends SelectOptionStateRenderProps {
   state: SelectOptionStateProperties;
 }
 
-const SelectOptionStateContext = createContext<SelectOptionStateProperties>();
+const SelectOptionStateContext = createContext<SelectOptionStateProperties | null>(null);
 
-export function SelectOptionStateProvider(
-  props: SelectOptionStateProviderProps,
-): JSX.Element {
+export function SelectOptionStateProvider(props: SelectOptionStateProviderProps): JSX.Element {
   return createComponent(SelectOptionStateContext, {
     value: props.state,
     get children() {
@@ -102,9 +91,7 @@ export function useSelectOptionState(): SelectOptionStateProperties {
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-option-state}
  */
-export function SelectOptionStateChild(
-  props: SelectOptionStateRenderProps,
-): JSX.Element {
+export function SelectOptionStateChild(props: SelectOptionStateRenderProps): JSX.Element {
   const state = useSelectOptionState();
   return createMemo(() => {
     const current = props.children;

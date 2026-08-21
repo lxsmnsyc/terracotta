@@ -1,11 +1,5 @@
 import type { JSX, ValidComponent } from '@solidjs/web';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  merge,
-  omit,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, merge, omit } from 'solid-js';
 import type {
   AutocompleteOptionStateOptions,
   AutocompleteOptionStateRenderProps,
@@ -38,10 +32,7 @@ export type CommandOptionBaseProps<V> = Prettify<
   AutocompleteOptionStateOptions<V> & AutocompleteOptionStateRenderProps
 >;
 
-export type CommandOptionProps<
-  V,
-  T extends ValidComponent = 'li',
-> = HeadlessPropsWithRef<
+export type CommandOptionProps<V, T extends ValidComponent = 'li'> = HeadlessPropsWithRef<
   T,
   OmitAndMerge<CommandOptionBaseProps<V>, ButtonProps<T>>
 >;
@@ -64,7 +55,7 @@ export function CommandOption<V, T extends ValidComponent = 'li'>(
 
   createEffect(
     () => !state.disabled() && context.getSelectedDescendant() === id,
-    flag => {
+    (flag) => {
       if (flag) {
         state.select();
       }
@@ -76,7 +67,7 @@ export function CommandOption<V, T extends ValidComponent = 'li'>(
     state.focus();
   }
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       return mergeFunc(
         useEventListener(current, 'click', () => {
@@ -93,7 +84,7 @@ export function CommandOption<V, T extends ValidComponent = 'li'>(
         useEventListener(current, 'mouseleave', () => {
           state.blur();
         }),
-        useVirtualFocus(el => {
+        useVirtualFocus((el) => {
           if (el === current) {
             focusOption();
           }

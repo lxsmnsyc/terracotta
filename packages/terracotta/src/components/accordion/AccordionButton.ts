@@ -25,11 +25,10 @@ import { useAccordionContext } from './AccordionContext';
 import { useAccordionItemContext } from './AccordionItemContext';
 import { ACCORDION_BUTTON_TAG } from './tags';
 
-export type AccordionButtonProps<T extends ValidComponent = 'button'> =
-  HeadlessPropsWithRef<
-    T,
-    OmitAndMerge<SelectOptionStateRenderProps, ButtonProps<T>>
-  >;
+export type AccordionButtonProps<T extends ValidComponent = 'button'> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<SelectOptionStateRenderProps, ButtonProps<T>>
+>;
 
 /**
  * The control that expands and collapses its `AccordionItem`. Carries `aria-
@@ -49,10 +48,9 @@ export function AccordionButton<T extends ValidComponent = 'button'>(
 
   const [internalRef, setInternalRef] = createForwardRef<T>(props);
 
-  const isDisabled = (): boolean | undefined =>
-    state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       return mergeFunc(
         useEventListener(current, 'click', () => {

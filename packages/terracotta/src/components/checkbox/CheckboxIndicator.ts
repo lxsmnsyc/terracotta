@@ -1,10 +1,7 @@
 import type { JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { CheckStateRenderProps } from '../../states/create-check-state';
-import {
-  CheckStateChild,
-  useCheckState,
-} from '../../states/create-check-state';
+import { CheckStateChild, useCheckState } from '../../states/create-check-state';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import {
@@ -19,8 +16,10 @@ import { Button } from '../button';
 import { useCheckboxContext } from './CheckboxContext';
 import { CHECKBOX_INDICATOR } from './tags';
 
-export type CheckboxIndicatorProps<T extends ValidComponent = 'button'> =
-  HeadlessPropsWithRef<T, CheckStateRenderProps>;
+export type CheckboxIndicatorProps<T extends ValidComponent = 'button'> = HeadlessPropsWithRef<
+  T,
+  CheckStateRenderProps
+>;
 
 /**
  * The control the user actually clicks. Carries `role="checkbox"` and `aria-
@@ -38,7 +37,7 @@ export function CheckboxIndicator<T extends ValidComponent = 'button'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       return useEventListener(current, 'click', () => {
         state.toggle();

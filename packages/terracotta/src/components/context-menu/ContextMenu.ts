@@ -1,11 +1,5 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  merge,
-  omit,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, merge, omit } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
@@ -31,15 +25,19 @@ export type ContextMenuControlledBaseProps = Prettify<
   DisclosureStateControlledOptions & DisclosureStateRenderProps
 >;
 
-export type ContextMenuControlledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, ContextMenuControlledBaseProps>;
+export type ContextMenuControlledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  ContextMenuControlledBaseProps
+>;
 
 export type ContextMenuUncontrolledBaseProps = Prettify<
   DisclosureStateUncontrolledOptions & DisclosureStateRenderProps
 >;
 
-export type ContextMenuUncontrolledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, ContextMenuUncontrolledBaseProps>;
+export type ContextMenuUncontrolledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  ContextMenuUncontrolledBaseProps
+>;
 
 export type ContextMenuProps<T extends ValidComponent = 'div'> =
   | ContextMenuControlledProps<T>
@@ -73,7 +71,7 @@ export function ContextMenu<T extends ValidComponent = 'div'>(
 
   createEffect(
     () => state.isOpen(),
-    flag => {
+    (flag) => {
       if (flag) {
         fsp.save();
       } else {
@@ -107,16 +105,7 @@ export function ContextMenu<T extends ValidComponent = 'div'>(
                 'onClose',
                 'onOpen',
               )
-            : omit(
-                props,
-                'as',
-                'children',
-                'isOpen',
-                'disabled',
-                'onChange',
-                'onClose',
-                'onOpen',
-              ),
+            : omit(props, 'as', 'children', 'isOpen', 'disabled', 'onChange', 'onClose', 'onOpen'),
           {
             get children() {
               return createComponent(DisclosureStateProvider, {

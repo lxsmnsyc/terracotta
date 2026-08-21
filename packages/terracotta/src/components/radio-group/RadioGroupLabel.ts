@@ -5,8 +5,7 @@ import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { useRadioGroupContext } from './RadioGroupContext';
 import { RADIO_GROUP_LABEL_TAG } from './tags';
 
-export type RadioGroupLabelProps<T extends ValidComponent = 'label'> =
-  HeadlessProps<T>;
+export type RadioGroupLabelProps<T extends ValidComponent = 'label'> = HeadlessProps<T>;
 
 /**
  * The accessible name of a `RadioGroup` or of one `RadioGroupOption`,

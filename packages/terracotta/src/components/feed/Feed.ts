@@ -13,10 +13,7 @@ export interface FeedBaseProps {
   busy?: boolean;
 }
 
-export type FeedProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
-  T,
-  FeedBaseProps
->;
+export type FeedProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<T, FeedBaseProps>;
 
 /**
  * A stream of articles with the feed keyboard pattern: <kbd>Page Down</kbd>
@@ -29,9 +26,7 @@ export type FeedProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
  */
-export function Feed<T extends ValidComponent = 'div'>(
-  props: FeedProps<T>,
-): JSX.Element {
+export function Feed<T extends ValidComponent = 'div'>(props: FeedProps<T>): JSX.Element {
   const ownerID = createUniqueId();
   const labelID = createUniqueId();
   const contentID = createUniqueId();
@@ -52,23 +47,13 @@ export function Feed<T extends ValidComponent = 'div'>(
       focusNext() {
         const current = ref();
         if (current instanceof HTMLElement) {
-          focusNext(
-            getFocusableElements(document.documentElement),
-            current,
-            false,
-            false,
-          );
+          focusNext(getFocusableElements(document.documentElement), current, false, false);
         }
       },
       focusPrev() {
         const current = ref();
         if (current instanceof HTMLElement) {
-          focusPrev(
-            getFocusableElements(document.documentElement),
-            current,
-            false,
-            false,
-          );
+          focusPrev(getFocusableElements(document.documentElement), current, false, false);
         }
       },
     },

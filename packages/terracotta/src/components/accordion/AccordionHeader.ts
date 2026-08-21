@@ -16,8 +16,10 @@ import {
 import { useAccordionItemContext } from './AccordionItemContext';
 import { ACCORDION_HEADER_TAG } from './tags';
 
-export type AccordionHeaderProps<T extends ValidComponent = 'h3'> =
-  HeadlessProps<T, SelectOptionStateRenderProps>;
+export type AccordionHeaderProps<T extends ValidComponent = 'h3'> = HeadlessProps<
+  T,
+  SelectOptionStateRenderProps
+>;
 
 /**
  * The heading that wraps an `AccordionButton`. Needed so screen readers can

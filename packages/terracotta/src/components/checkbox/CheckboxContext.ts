@@ -8,7 +8,7 @@ interface CheckboxContextData {
   descriptionID: string;
 }
 
-export const CheckboxContext = createContext<CheckboxContextData>();
+export const CheckboxContext = createContext<CheckboxContextData | null>(null);
 
 /**
  * Reads the nearest `Checkbox`'s internal context, which holds the generated

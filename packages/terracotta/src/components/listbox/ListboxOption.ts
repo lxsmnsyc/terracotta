@@ -32,10 +32,7 @@ export type ListboxOptionBaseProps<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps
 >;
 
-export type ListboxOptionProps<
-  V,
-  T extends ValidComponent = 'li',
-> = HeadlessPropsWithRef<
+export type ListboxOptionProps<V, T extends ValidComponent = 'li'> = HeadlessPropsWithRef<
   T,
   OmitAndMerge<ListboxOptionBaseProps<V>, ButtonProps<T>>
 >;
@@ -60,7 +57,7 @@ export function ListboxOption<V, T extends ValidComponent = 'li'>(
 
   // I would really love to use createEffect but for some reason
   // the timing is never accurate
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       return mergeFunc(
         useEventListener(current, 'click', () => {

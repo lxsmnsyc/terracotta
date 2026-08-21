@@ -21,7 +21,7 @@ interface ComboboxContextData {
   setSelectedDescendant(current: string | undefined): void;
 }
 
-export const ComboboxContext = createContext<ComboboxContextData>();
+export const ComboboxContext = createContext<ComboboxContextData | null>(null);
 
 /**
  * Reads the nearest `Combobox`'s internal context, which holds the generated

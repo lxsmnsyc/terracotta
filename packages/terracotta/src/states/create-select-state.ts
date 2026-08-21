@@ -68,9 +68,7 @@ export function createSingleSelectState<T>(
   const equals = options.by || isEqual;
 
   if ('defaultValue' in options) {
-    const [selected, setSelected] = createSignal<T | undefined>(
-      () => options.defaultValue,
-    );
+    const [selected, setSelected] = createSignal<T | undefined>(() => options.defaultValue);
     selectedValue = selected;
     setSelectedValue = (value): void => {
       setSelected(() => value);
@@ -260,11 +258,9 @@ export interface SelectStateProviderProps<T> extends SelectStateRenderProps<T> {
   state: SelectStateProperties<T>;
 }
 
-const SelectStateContext = createContext<SelectStateProperties<unknown>>();
+const SelectStateContext = createContext<SelectStateProperties<unknown> | null>(null);
 
-export function SelectStateProvider<T>(
-  props: SelectStateProviderProps<T>,
-): JSX.Element {
+export function SelectStateProvider<T>(props: SelectStateProviderProps<T>): JSX.Element {
   return createComponent(SelectStateContext, {
     value: props.state,
     get children() {
@@ -294,9 +290,7 @@ export function useSelectState<T>(): SelectStateProperties<T> {
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-state}
  */
-export function SelectStateChild<T>(
-  props: SelectStateRenderProps<T>,
-): JSX.Element {
+export function SelectStateChild<T>(props: SelectStateRenderProps<T>): JSX.Element {
   const state = useSelectState<T>();
   return createMemo(() => {
     const current = props.children;

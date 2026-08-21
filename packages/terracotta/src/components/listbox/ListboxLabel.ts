@@ -1,10 +1,7 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import { useSelectState } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
@@ -17,8 +14,10 @@ import {
 import { useListboxContext } from './ListboxContext';
 import { LISTBOX_LABEL_TAG } from './tags';
 
-export type ListboxLabelProps<T extends ValidComponent = 'label'> =
-  HeadlessProps<T, DisclosureStateRenderProps>;
+export type ListboxLabelProps<T extends ValidComponent = 'label'> = HeadlessProps<
+  T,
+  DisclosureStateRenderProps
+>;
 
 /**
  * The accessible name of a `Listbox`, wired up through `aria-labelledby`.

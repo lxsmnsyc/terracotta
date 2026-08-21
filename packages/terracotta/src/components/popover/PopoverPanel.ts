@@ -1,10 +1,7 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import { createDependencyList } from '../../utils/create-dependency-list';
 import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
@@ -14,22 +11,19 @@ import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
 import { mergeFunc } from '../../utils/merge-func';
-import {
-  createDisabledState,
-  createExpandedState,
-} from '../../utils/state-props';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
 import { waitForTransition } from '../../utils/wait-for-transition';
 import { usePopoverContext } from './PopoverContext';
 import { POPOVER_PANEL_TAG } from './tags';
 
-export type PopoverPanelBaseProps = Prettify<
-  DisclosureStateRenderProps & UnmountableProps
->;
+export type PopoverPanelBaseProps = Prettify<DisclosureStateRenderProps & UnmountableProps>;
 
-export type PopoverPanelProps<T extends ValidComponent = 'div'> =
-  HeadlessPropsWithRef<T, PopoverPanelBaseProps>;
+export type PopoverPanelProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
+  T,
+  PopoverPanelBaseProps
+>;
 
 /**
  * The floating panel of a `Popover`. Position it yourself — the library sets
@@ -56,7 +50,7 @@ export function PopoverPanel<T extends ValidComponent = 'div'>(
         });
 
         return mergeFunc(
-          useEventListener(current, 'keydown', e => {
+          useEventListener(current, 'keydown', (e) => {
             if (!state.disabled()) {
               switch (e.key) {
                 case 'Tab': {
@@ -71,7 +65,7 @@ export function PopoverPanel<T extends ValidComponent = 'div'>(
               }
             }
           }),
-          useEventListener(current, 'focusout', e => {
+          useEventListener(current, 'focusout', (e) => {
             if (context.hovering) {
               return;
             }

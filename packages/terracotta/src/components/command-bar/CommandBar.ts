@@ -1,12 +1,5 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  merge,
-  omit,
-  onSettled,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, merge, omit, onSettled } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
@@ -31,22 +24,22 @@ import useFocusStartPoint from '../../utils/use-focus-start-point';
 import { CommandBarContext } from './CommandBarContext';
 import { COMMAND_BAR_TAG } from './tags';
 export type CommandBarControlledBaseProps = Prettify<
-  DisclosureStateControlledOptions &
-    DisclosureStateRenderProps &
-    UnmountableProps
+  DisclosureStateControlledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type CommandBarControlledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, CommandBarControlledBaseProps>;
+export type CommandBarControlledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  CommandBarControlledBaseProps
+>;
 
 export type CommandBarUncontrolledBaseProps = Prettify<
-  DisclosureStateUncontrolledOptions &
-    DisclosureStateRenderProps &
-    UnmountableProps
+  DisclosureStateUncontrolledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type CommandBarUncontrolledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, CommandBarUncontrolledBaseProps>;
+export type CommandBarUncontrolledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  CommandBarUncontrolledBaseProps
+>;
 
 export type CommandBarProps<T extends ValidComponent = 'div'> =
   | CommandBarControlledProps<T>
@@ -80,7 +73,7 @@ export function CommandBar<T extends ValidComponent = 'div'>(
 
   createEffect(
     () => state.isOpen(),
-    flag => {
+    (flag) => {
       if (flag) {
         fsp.save();
       } else {
@@ -90,7 +83,7 @@ export function CommandBar<T extends ValidComponent = 'div'>(
   );
 
   onSettled(() =>
-    useEventListener(window, 'keydown', e => {
+    useEventListener(window, 'keydown', (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k' && !e.defaultPrevented) {
         e.preventDefault();
         state.open();
@@ -120,7 +113,7 @@ export function CommandBar<T extends ValidComponent = 'div'>(
               {
                 id: ownerID,
                 role: 'dialog',
-                'aria-modal': true,
+                'aria-modal': 'true',
                 'aria-labelledby': titleID,
                 'aria-describedby': descriptionID,
                 get children() {

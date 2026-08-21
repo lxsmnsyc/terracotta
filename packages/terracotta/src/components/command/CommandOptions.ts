@@ -20,10 +20,10 @@ import useEventListener from '../../utils/use-event-listener';
 import { useCommandContext } from './CommandContext';
 import { COMMAND_OPTIONS_TAG } from './tags';
 
-export type CommandOptionsProps<
-  V,
-  T extends ValidComponent = 'ul',
-> = HeadlessPropsWithRef<T, AutocompleteStateRenderProps<V>>;
+export type CommandOptionsProps<V, T extends ValidComponent = 'ul'> = HeadlessPropsWithRef<
+  T,
+  AutocompleteStateRenderProps<V>
+>;
 
 /**
  * The list of results in a `Command`.
@@ -40,7 +40,7 @@ export function CommandOptions<V, T extends ValidComponent = 'ul'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       context.controller.setRef(current);
       context.optionsHovering = false;
@@ -74,7 +74,7 @@ export function CommandOptions<V, T extends ValidComponent = 'ul'>(
       {
         id: context.optionsID,
         role: 'listbox',
-        'aria-multiselectable': context.multiple,
+        'aria-multiselectable': context.multiple ? 'true' : 'false',
         ref: setInternalRef,
         // TODO should Command support "horizontal"?
         'aria-orientation': 'vertical',

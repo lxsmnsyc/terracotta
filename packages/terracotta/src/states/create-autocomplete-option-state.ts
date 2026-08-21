@@ -1,11 +1,5 @@
 import type { JSX } from '@solidjs/web';
-import {
-  createComponent,
-  createContext,
-  createMemo,
-  untrack,
-  useContext,
-} from 'solid-js';
+import { createComponent, createContext, createMemo, untrack, useContext } from 'solid-js';
 import assert from '../utils/assert';
 import { useAutocompleteState } from './create-autocomplete-state';
 
@@ -59,18 +53,16 @@ export function createAutocompleteOptionState<T>(
 }
 
 export interface AutocompleteOptionStateRenderProps {
-  children?:
-    | JSX.Element
-    | ((state: AutocompleteOptionStateProperties) => JSX.Element);
+  children?: JSX.Element | ((state: AutocompleteOptionStateProperties) => JSX.Element);
 }
 
-export interface AutocompleteOptionStateProviderProps
-  extends AutocompleteOptionStateRenderProps {
+export interface AutocompleteOptionStateProviderProps extends AutocompleteOptionStateRenderProps {
   state: AutocompleteOptionStateProperties;
 }
 
-const AutocompleteOptionStateContext =
-  createContext<AutocompleteOptionStateProperties>();
+const AutocompleteOptionStateContext = createContext<AutocompleteOptionStateProperties | null>(
+  null,
+);
 
 export function AutocompleteOptionStateProvider(
   props: AutocompleteOptionStateProviderProps,

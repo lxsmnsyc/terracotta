@@ -1,15 +1,5 @@
-import type {
-  ComponentProps,
-  JSX,
-  ValidComponent,
-} from '@solidjs/web';
-import {
-  createComponent,
-  createTrackedEffect,
-  createUniqueId,
-  merge,
-  omit,
-} from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createTrackedEffect, createUniqueId, merge, omit } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
@@ -34,22 +24,22 @@ import { AlertDialogContext } from './AlertDialogContext';
 import { ALERT_DIALOG_TAG } from './tags';
 
 export type AlertDialogControlledBaseProps = Prettify<
-  DisclosureStateControlledOptions &
-    DisclosureStateRenderProps &
-    UnmountableProps
+  DisclosureStateControlledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type AlertDialogControlledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, AlertDialogControlledBaseProps>;
+export type AlertDialogControlledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  AlertDialogControlledBaseProps
+>;
 
 export type AlertDialogUncontrolledBaseProps = Prettify<
-  DisclosureStateUncontrolledOptions &
-    DisclosureStateRenderProps &
-    UnmountableProps
+  DisclosureStateUncontrolledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type AlertDialogUncontrolledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, AlertDialogUncontrolledBaseProps>;
+export type AlertDialogUncontrolledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  AlertDialogUncontrolledBaseProps
+>;
 
 export type AlertDialogProps<T extends ValidComponent = 'div'> =
   | AlertDialogControlledProps<T>
@@ -132,7 +122,7 @@ export function AlertDialog<T extends ValidComponent = 'div'>(
               {
                 id: ownerID,
                 role: 'alertdialog',
-                'aria-modal': true,
+                'aria-modal': 'true',
                 'aria-labelledby': titleID,
                 'aria-describedby': descriptionID,
                 get children() {

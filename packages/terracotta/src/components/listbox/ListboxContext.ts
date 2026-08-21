@@ -16,7 +16,7 @@ interface ListboxContextData {
   isHorizontal(): boolean | undefined;
 }
 
-export const ListboxContext = createContext<ListboxContextData>();
+export const ListboxContext = createContext<ListboxContextData | null>(null);
 
 /**
  * Reads the nearest `Listbox`'s internal context, which holds the generated

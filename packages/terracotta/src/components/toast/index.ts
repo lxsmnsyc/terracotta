@@ -21,14 +21,11 @@ interface ToastContextData {
   ownerID: string;
 }
 
-const ToastContext = createContext<ToastContextData>();
+const ToastContext = createContext<ToastContextData | null>(null);
 
 function useToastContext(componentName: string): ToastContextData {
   const context = useContext(ToastContext);
-  assert(
-    context,
-    new Error(`<${componentName}> must be used inside a <Toaster>`),
-  );
+  assert(context, new Error(`<${componentName}> must be used inside a <Toaster>`));
   return context;
 }
 
@@ -42,9 +39,7 @@ export type ToastProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
  */
-export function Toast<T extends ValidComponent = 'div'>(
-  props: ToastProps<T>,
-): JSX.Element {
+export function Toast<T extends ValidComponent = 'div'>(props: ToastProps<T>): JSX.Element {
   useToastContext('Toast');
 
   return createDynamic(
@@ -70,9 +65,7 @@ export type ToasterProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
  */
-export function Toaster<T extends ValidComponent = 'div'>(
-  props: ToasterProps<T>,
-): JSX.Element {
+export function Toaster<T extends ValidComponent = 'div'>(props: ToasterProps<T>): JSX.Element {
   const ownerID = createUniqueId();
 
   return createComponent(ToastContext, {
@@ -143,7 +136,7 @@ export class ToasterStore<T> {
   }
 
   remove(id: string): void {
-    this.queue = this.queue.filter(item => item.id !== id);
+    this.queue = this.queue.filter((item) => item.id !== id);
     this.notify();
   }
 

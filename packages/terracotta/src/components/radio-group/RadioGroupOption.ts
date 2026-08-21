@@ -1,11 +1,5 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  merge,
-  omit,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, merge, omit } from 'solid-js';
 import type {
   SelectOptionStateOptions,
   SelectOptionStateRenderProps,
@@ -36,10 +30,10 @@ export type RadioGroupOptionBaseProps<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps
 >;
 
-export type RadioGroupOptionProps<
-  V,
-  T extends ValidComponent = 'div',
-> = HeadlessPropsWithRef<T, RadioGroupOptionBaseProps<V>>;
+export type RadioGroupOptionProps<V, T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
+  T,
+  RadioGroupOptionBaseProps<V>
+>;
 
 /**
  * One choice in a `RadioGroup`. The required `value` prop is what selecting it
@@ -60,7 +54,7 @@ export function RadioGroupOption<V, T extends ValidComponent = 'div'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
   const state = createSelectOptionState(props);
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       return mergeFunc(
         useEventListener(current, 'click', () => {
@@ -75,6 +69,7 @@ export function RadioGroupOption<V, T extends ValidComponent = 'div'>(
         }),
       );
     }
+    return undefined;
   });
 
   return createComponent(RadioGroupContext, {

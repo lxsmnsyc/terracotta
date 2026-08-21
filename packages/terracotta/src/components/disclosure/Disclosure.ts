@@ -24,15 +24,19 @@ export type DisclosureControlledBaseProps = Prettify<
   DisclosureStateControlledOptions & DisclosureStateRenderProps
 >;
 
-export type DisclosureControlledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, DisclosureControlledBaseProps>;
+export type DisclosureControlledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  DisclosureControlledBaseProps
+>;
 
 export type DisclosureUncontrolledBaseProps = Prettify<
   DisclosureStateUncontrolledOptions & DisclosureStateRenderProps
 >;
 
-export type DisclosureUncontrolledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, DisclosureUncontrolledBaseProps>;
+export type DisclosureUncontrolledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  DisclosureUncontrolledBaseProps
+>;
 
 export type DisclosureProps<T extends ValidComponent = 'div'> =
   | DisclosureControlledProps<T>
@@ -85,16 +89,7 @@ export function Disclosure<T extends ValidComponent = 'div'>(
                 'onClose',
                 'onOpen',
               )
-            : omit(
-                props,
-                'as',
-                'children',
-                'isOpen',
-                'disabled',
-                'onChange',
-                'onClose',
-                'onOpen',
-              ),
+            : omit(props, 'as', 'children', 'isOpen', 'disabled', 'onChange', 'onClose', 'onOpen'),
           {
             get children() {
               return createComponent(DisclosureStateProvider, {

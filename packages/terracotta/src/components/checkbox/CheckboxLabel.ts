@@ -1,21 +1,17 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, merge, omit } from 'solid-js';
 import type { CheckStateRenderProps } from '../../states/create-check-state';
-import {
-  CheckStateChild,
-  useCheckState,
-} from '../../states/create-check-state';
+import { CheckStateChild, useCheckState } from '../../states/create-check-state';
 import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
-import {
-  createCheckedState,
-  createDisabledState,
-} from '../../utils/state-props';
+import { createCheckedState, createDisabledState } from '../../utils/state-props';
 import { useCheckboxContext } from './CheckboxContext';
 import { CHECKBOX_LABEL } from './tags';
 
-export type CheckboxLabelProps<T extends ValidComponent = 'label'> =
-  HeadlessProps<T, CheckStateRenderProps>;
+export type CheckboxLabelProps<T extends ValidComponent = 'label'> = HeadlessProps<
+  T,
+  CheckStateRenderProps
+>;
 
 /**
  * The accessible name of a `Checkbox`, wired up through `aria-labelledby`.

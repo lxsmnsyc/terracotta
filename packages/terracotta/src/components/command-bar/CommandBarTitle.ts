@@ -1,21 +1,17 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import { createComponent, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
-import {
-  DisclosureStateChild,
-  useDisclosureState,
-} from '../../states/create-disclosure-state';
+import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
-import {
-  createDisabledState,
-  createExpandedState,
-} from '../../utils/state-props';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import { useCommandBarContext } from './CommandBarContext';
 import { COMMAND_BAR_TITLE_TAG } from './tags';
 
-export type CommandBarTitleProps<T extends ValidComponent = 'h2'> =
-  HeadlessProps<T, DisclosureStateRenderProps>;
+export type CommandBarTitleProps<T extends ValidComponent = 'h2'> = HeadlessProps<
+  T,
+  DisclosureStateRenderProps
+>;
 
 /**
  * The accessible name of a `CommandBar`, wired up through `aria-labelledby`.

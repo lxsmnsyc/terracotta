@@ -17,8 +17,7 @@ import useEventListener from '../../utils/use-event-listener';
 import { useCommandContext } from './CommandContext';
 import { COMMAND_INPUT_TAG } from './tags';
 
-export type CommandInputProps<T extends ValidComponent = 'input'> =
-  HeadlessPropsWithRef<T>;
+export type CommandInputProps<T extends ValidComponent = 'input'> = HeadlessPropsWithRef<T>;
 
 /**
  * The query field of a `Command`. Typing sets the query, which is debounced by
@@ -36,10 +35,9 @@ export function CommandInput<T extends ValidComponent = 'input'>(
   const state = useAutocompleteState();
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  const isDisabled = (): boolean | undefined =>
-    state.disabled() || props.disabled;
+  const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
 
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       context.anchor = current;
       return mergeFunc(
@@ -49,7 +47,7 @@ export function CommandInput<T extends ValidComponent = 'input'>(
               state.setQuery(current.value);
             }
           }),
-        useEventListener(current, 'keydown', e => {
+        useEventListener(current, 'keydown', (e) => {
           if (!isDisabled()) {
             switch (e.key) {
               case 'ArrowUp': {
@@ -95,7 +93,7 @@ export function CommandInput<T extends ValidComponent = 'input'>(
 
   createEffect(
     () => state.query() !== '',
-    flag => {
+    (flag) => {
       if (flag) {
         context.controller.setFirstChecked();
       }
@@ -104,7 +102,7 @@ export function CommandInput<T extends ValidComponent = 'input'>(
 
   createEffect(
     () => context.getActiveDescendant(),
-    activeDescendant => {
+    (activeDescendant) => {
       if (activeDescendant) {
         const ref = document.getElementById(activeDescendant);
         if (ref) {
@@ -132,7 +130,7 @@ export function CommandInput<T extends ValidComponent = 'input'>(
         // Since combobox roles have aria-expanded=false
         // as default but Command has a visible listbox
         // we set this to true
-        'aria-expanded': true,
+        'aria-expanded': 'true',
         get 'aria-activedescendant'() {
           return context.getActiveDescendant();
         },

@@ -12,8 +12,7 @@ import {
 import { useCommandContext } from './CommandContext';
 import { COMMAND_LABEL_TAG } from './tags';
 
-export type CommandLabelProps<T extends ValidComponent = 'label'> =
-  HeadlessProps<T>;
+export type CommandLabelProps<T extends ValidComponent = 'label'> = HeadlessProps<T>;
 
 /**
  * The accessible name of a `Command`, wired up through `aria-labelledby`.

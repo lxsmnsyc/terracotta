@@ -1,22 +1,14 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
-import {
-  createComponent,
-  createMemo,
-  createUniqueId,
-  merge,
-  omit,
-} from 'solid-js';
+import { createComponent, createMemo, createUniqueId, merge, omit } from 'solid-js';
 import type {
   SelectStateRenderProps,
   SingleSelectStateControlledOptions,
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
-import {
-  createSingleSelectState,
-  SelectStateProvider,
-} from '../../states/create-select-state';
+import { createSingleSelectState, SelectStateProvider } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -32,26 +24,22 @@ export interface TabGroupBaseProps {
 }
 
 export type TabGroupControlledBaseProps<V> = Prettify<
-  TabGroupBaseProps &
-    SingleSelectStateControlledOptions<V> &
-    SelectStateRenderProps<V>
+  TabGroupBaseProps & SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type TabGroupControlledProps<
-  V,
-  T extends ValidComponent = 'div',
-> = HeadlessPropsWithRef<T, TabGroupControlledBaseProps<V>>;
+export type TabGroupControlledProps<V, T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
+  T,
+  TabGroupControlledBaseProps<V>
+>;
 
 export type TabGroupUncontrolledBaseProps<V> = Prettify<
-  TabGroupBaseProps &
-    SingleSelectStateUncontrolledOptions<V> &
-    SelectStateRenderProps<V>
+  TabGroupBaseProps & SingleSelectStateUncontrolledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type TabGroupUncontrolledProps<
-  V,
-  T extends ValidComponent = 'div',
-> = HeadlessPropsWithRef<T, TabGroupUncontrolledBaseProps<V>>;
+export type TabGroupUncontrolledProps<V, T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
+  T,
+  TabGroupUncontrolledBaseProps<V>
+>;
 
 export type TabGroupProps<V, T extends ValidComponent = 'div'> =
   | TabGroupControlledProps<V, T>
@@ -64,9 +52,9 @@ function isTabGroupUncontrolled<V, T extends ValidComponent = 'div'>(
 }
 
 /**
- * A tabbed interface. The `value` is the id of the selected tab. By default
- * the arrow keys select as they move; set `manual` so they only move focus and
- * <kbd>Enter</kbd> or <kbd>Space</kbd> selects.
+ * A tabbed interface. The `value` is the id of the selected tab, and the
+ * arrow keys select as they move. The `horizontal` prop is required: it picks
+ * which arrow keys navigate, and sets `aria-orientation`.
  *
  * Renders a `<div>` by default.
  *
@@ -78,6 +66,7 @@ export function TabGroup<V, T extends ValidComponent = 'div'>(
   return createMemo(() => {
     const ownerID = createUniqueId();
     const state = createSingleSelectState(props);
+    const [, setInternalRef] = createForwardRef(props);
 
     const ids = new Map<V, number>();
 
@@ -105,6 +94,7 @@ export function TabGroup<V, T extends ValidComponent = 'div'>(
             createHasSelectedState(() => state.hasSelected()),
             createHasActiveState(() => state.hasActive()),
             {
+              ref: setInternalRef,
               get children() {
                 return createComponent(SelectStateProvider, {
                   state,

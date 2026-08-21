@@ -5,10 +5,7 @@ import type {
   CheckStateRenderProps,
   CheckStateUncontrolledOptions,
 } from '../../states/create-check-state';
-import {
-  CheckStateProvider,
-  createCheckState,
-} from '../../states/create-check-state';
+import { CheckStateProvider, createCheckState } from '../../states/create-check-state';
 import createDynamic from '../../utils/create-dynamic';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
@@ -24,15 +21,19 @@ export type CheckboxControlledBaseProps = Prettify<
   CheckStateControlledOptions & CheckStateRenderProps
 >;
 
-export type CheckboxControlledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, CheckboxControlledBaseProps>;
+export type CheckboxControlledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  CheckboxControlledBaseProps
+>;
 
 export type CheckboxUncontrolledBaseProps = Prettify<
   CheckStateUncontrolledOptions & CheckStateRenderProps
 >;
 
-export type CheckboxUncontrolledProps<T extends ValidComponent = 'div'> =
-  HeadlessProps<T, CheckboxUncontrolledBaseProps>;
+export type CheckboxUncontrolledProps<T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  CheckboxUncontrolledBaseProps
+>;
 
 export type CheckboxProps<T extends ValidComponent = 'div'> =
   | CheckboxControlledProps<T>
@@ -53,9 +54,7 @@ function isCheckboxUncontrolled<T extends ValidComponent = 'div'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/checkbox.md}
  */
-export function Checkbox<T extends ValidComponent = 'div'>(
-  props: CheckboxProps<T>,
-): JSX.Element {
+export function Checkbox<T extends ValidComponent = 'div'>(props: CheckboxProps<T>): JSX.Element {
   const ownerID = createUniqueId();
   const labelID = createUniqueId();
   const indicatorID = createUniqueId();
@@ -79,14 +78,7 @@ export function Checkbox<T extends ValidComponent = 'div'>(
           createARIADisabledState(() => state.disabled()),
           createCheckedState(() => state.checked()),
           isCheckboxUncontrolled(props)
-            ? omit(
-                props,
-                'as',
-                'children',
-                'defaultChecked',
-                'disabled',
-                'onChange',
-              )
+            ? omit(props, 'as', 'children', 'defaultChecked', 'disabled', 'onChange')
             : omit(props, 'as', 'children', 'checked', 'disabled', 'onChange'),
           {
             get children() {

@@ -1,11 +1,5 @@
 import type { JSX, ValidComponent } from '@solidjs/web';
-import {
-  createComponent,
-  createEffect,
-  createUniqueId,
-  merge,
-  omit,
-} from 'solid-js';
+import { createComponent, createEffect, createUniqueId, merge, omit } from 'solid-js';
 import type {
   AutocompleteOptionStateOptions,
   AutocompleteOptionStateRenderProps,
@@ -39,10 +33,7 @@ export type ComboboxOptionBaseProps<V> = Prettify<
   AutocompleteOptionStateOptions<V> & AutocompleteOptionStateRenderProps
 >;
 
-export type ComboboxOptionProps<
-  V,
-  T extends ValidComponent = 'li',
-> = HeadlessPropsWithRef<
+export type ComboboxOptionProps<V, T extends ValidComponent = 'li'> = HeadlessPropsWithRef<
   T,
   OmitAndMerge<ComboboxOptionBaseProps<V>, ButtonProps<T>>
 >;
@@ -67,7 +58,7 @@ export function ComboboxOption<V, T extends ValidComponent = 'li'>(
 
   createEffect(
     () => !state.disabled() && context.getSelectedDescendant() === id,
-    value => {
+    (value) => {
       if (value) {
         state.select();
         if (!context.multiple) {
@@ -84,7 +75,7 @@ export function ComboboxOption<V, T extends ValidComponent = 'li'>(
 
   // I would really love to use createEffect but for some reason
   // the timing is never accurate
-  createEffect(internalRef, current => {
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       return mergeFunc(
         useEventListener(current, 'click', () => {
@@ -104,7 +95,7 @@ export function ComboboxOption<V, T extends ValidComponent = 'li'>(
         useEventListener(current, 'mouseleave', () => {
           state.blur();
         }),
-        useVirtualFocus(el => {
+        useVirtualFocus((el) => {
           if (el === current) {
             focusOption();
           }

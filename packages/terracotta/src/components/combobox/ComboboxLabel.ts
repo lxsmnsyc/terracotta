@@ -14,8 +14,7 @@ import {
 import { useComboboxContext } from './ComboboxContext';
 import { COMBOBOX_LABEL_TAG } from './tags';
 
-export type ComboboxLabelProps<T extends ValidComponent = 'label'> =
-  HeadlessProps<T>;
+export type ComboboxLabelProps<T extends ValidComponent = 'label'> = HeadlessProps<T>;
 
 /**
  * The accessible name of a `Combobox`, wired up through `aria-labelledby`.

@@ -18,21 +18,16 @@ export interface TransitionHooks {
   afterLeave?: () => void;
 }
 
-export type TransitionStates =
-  | 'enter-from'
-  | 'enter-to'
-  | 'entered'
-  | 'leave-from'
-  | 'leave-to';
+export type TransitionStates = 'enter-from' | 'enter-to' | 'entered' | 'leave-from' | 'leave-to';
 
 function addClassList(ref: HTMLElement, classes: string[]): void {
-  const filtered = classes.filter(value => value);
+  const filtered = classes.filter((value) => value);
   if (filtered.length) {
     ref.classList.add(...filtered);
   }
 }
 function removeClassList(ref: HTMLElement, classes: string[]): void {
-  const filtered = classes.filter(value => value);
+  const filtered = classes.filter((value) => value);
   if (filtered.length) {
     ref.classList.remove(...filtered);
   }
@@ -95,7 +90,7 @@ export class TransitionState {
     await waitForTransition(element);
     this.hooks.afterEnter?.();
 
-    await Promise.all([...this.children].map(state => state.show()));
+    await Promise.all([...this.children].map((state) => state.show()));
     this.showing = undefined;
   }
 
@@ -117,7 +112,7 @@ export class TransitionState {
   private async _hide(element: HTMLElement, classes?: TransitionClasses) {
     this.hooks.beforeLeave?.();
     // TODO check for interuption
-    await Promise.all([...this.children].map(state => state.hide()));
+    await Promise.all([...this.children].map((state) => state.hide()));
 
     if (classes) {
       removeClassList(element, classes.entered);

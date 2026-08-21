@@ -1,11 +1,5 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
-import {
-  createComponent,
-  createEffect,
-  createMemo,
-  merge,
-  omit,
-} from 'solid-js';
+import { createComponent, createEffect, createMemo, merge, omit } from 'solid-js';
 import type {
   MultipleSelectStateControlledOptions,
   MultipleSelectStateUncontrolledOptions,
@@ -29,10 +23,7 @@ import {
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
-import {
-  AccordionContext,
-  createAccordionFocusNavigator,
-} from './AccordionContext';
+import { AccordionContext, createAccordionFocusNavigator } from './AccordionContext';
 import { ACCORDION_TAG } from './tags';
 import createDynamic from '../../utils/create-dynamic';
 
@@ -80,17 +71,13 @@ export type AccordionProps<V, T extends ValidComponent = 'div'> =
 
 function isAccordionUncontrolled<V, T extends ValidComponent = 'div'>(
   props: AccordionProps<V, T>,
-): props is
-  | AccordionSingleUncontrolledProps<V, T>
-  | AccordionMultipleUncontrolledProps<V, T> {
+): props is AccordionSingleUncontrolledProps<V, T> | AccordionMultipleUncontrolledProps<V, T> {
   return 'defaultValue' in props;
 }
 
 function isAccordionMultiple<V, T extends ValidComponent = 'div'>(
   props: AccordionProps<V, T>,
-): props is
-  | AccordionMultipleUncontrolledProps<V, T>
-  | AccordionMultipleControlledProps<V, T> {
+): props is AccordionMultipleUncontrolledProps<V, T> | AccordionMultipleControlledProps<V, T> {
   return !!props.multiple;
 }
 
@@ -113,13 +100,13 @@ export function Accordion<V, T extends ValidComponent = 'div'>(
     const controller = createAccordionFocusNavigator();
     const [ref, setRef] = createForwardRef(props);
 
-    createEffect(ref, current => {
+    createEffect(ref, (current) => {
       if (current instanceof HTMLElement) {
         controller.setRef(current);
 
         return mergeFunc(
           () => controller.clearRef(),
-          useEventListener(current, 'keydown', e => {
+          useEventListener(current, 'keydown', (e) => {
             if (!state.disabled()) {
               switch (e.key) {
                 case 'ArrowUp': {
@@ -147,7 +134,7 @@ export function Accordion<V, T extends ValidComponent = 'div'>(
               }
             }
           }),
-          useEventListener(current, 'focusin', e => {
+          useEventListener(current, 'focusin', (e) => {
             if (e.target && e.target !== current) {
               controller.setCurrent(e.target as HTMLElement);
             }

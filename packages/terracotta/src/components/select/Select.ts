@@ -1,11 +1,5 @@
 import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
-import {
-  createComponent,
-  createEffect,
-  createMemo,
-  merge,
-  omit,
-} from 'solid-js';
+import { createComponent, createEffect, createMemo, merge, omit } from 'solid-js';
 import type {
   MultipleSelectStateControlledOptions,
   MultipleSelectStateUncontrolledOptions,
@@ -32,10 +26,7 @@ import {
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
-import {
-  createSelectOptionFocusNavigator,
-  SelectContext,
-} from './SelectContext';
+import { createSelectOptionFocusNavigator, SelectContext } from './SelectContext';
 import { SELECT_TAG } from './tags';
 
 export interface SelectBaseProps {
@@ -43,20 +34,16 @@ export interface SelectBaseProps {
 }
 
 export type SingleSelectControlledBaseProps<V> = Prettify<
-  SelectBaseProps &
-    SingleSelectStateControlledOptions<V> &
-    SelectStateRenderProps<V>
+  SelectBaseProps & SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type SingleSelectControlledProps<
-  V,
-  T extends ValidComponent = 'ul',
-> = HeadlessPropsWithRef<T, SingleSelectControlledBaseProps<V>>;
+export type SingleSelectControlledProps<V, T extends ValidComponent = 'ul'> = HeadlessPropsWithRef<
+  T,
+  SingleSelectControlledBaseProps<V>
+>;
 
 export type SingleSelectUncontrolledBaseProps<V> = Prettify<
-  SelectBaseProps &
-    SingleSelectStateUncontrolledOptions<V> &
-    SelectStateRenderProps<V>
+  SelectBaseProps & SingleSelectStateUncontrolledOptions<V> & SelectStateRenderProps<V>
 >;
 
 export type SingleSelectUncontrolledProps<
@@ -69,9 +56,7 @@ export type SingleSelectProps<V, T extends ValidComponent = 'ul'> =
   | SingleSelectUncontrolledProps<V, T>;
 
 export type MultipleSelectControlledBaseProps<V> = Prettify<
-  SelectBaseProps &
-    MultipleSelectStateControlledOptions<V> &
-    SelectStateRenderProps<V>
+  SelectBaseProps & MultipleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
 >;
 
 export type MultipleSelectControlledProps<
@@ -80,9 +65,7 @@ export type MultipleSelectControlledProps<
 > = HeadlessPropsWithRef<T, MultipleSelectControlledBaseProps<V>>;
 
 export type MultipleSelectUncontrolledBaseProps<V> = Prettify<
-  SelectBaseProps &
-    MultipleSelectStateUncontrolledOptions<V> &
-    SelectStateRenderProps<V>
+  SelectBaseProps & MultipleSelectStateUncontrolledOptions<V> & SelectStateRenderProps<V>
 >;
 
 export type MultipleSelectUncontrolledProps<
@@ -106,9 +89,7 @@ function isSelectMultiple<V, T extends ValidComponent = 'ul'>(
 
 function isSelectUncontrolled<V, T extends ValidComponent = 'ul'>(
   props: SelectProps<V, T>,
-): props is
-  | SingleSelectUncontrolledProps<V, T>
-  | MultipleSelectUncontrolledProps<V, T> {
+): props is SingleSelectUncontrolledProps<V, T> | MultipleSelectUncontrolledProps<V, T> {
   return 'defaultValue' in props;
 }
 
@@ -120,9 +101,7 @@ function isSelectUncontrolled<V, T extends ValidComponent = 'ul'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/select.md}
  */
-export function Select<V, T extends ValidComponent = 'ul'>(
-  props: SelectProps<V, T>,
-): JSX.Element {
+export function Select<V, T extends ValidComponent = 'ul'>(props: SelectProps<V, T>): JSX.Element {
   return createMemo(() => {
     const controller = createSelectOptionFocusNavigator();
     const [ref, setRef] = createForwardRef(props);
@@ -130,18 +109,18 @@ export function Select<V, T extends ValidComponent = 'ul'>(
       ? createMultipleSelectState(props)
       : createSingleSelectState(props);
 
-    const pushCharacter = createTypeAhead(value => {
+    const pushCharacter = createTypeAhead((value) => {
       controller.setFirstMatch(value);
     });
 
-    createEffect(ref, current => {
+    createEffect(ref, (current) => {
       if (current instanceof HTMLElement) {
         controller.setRef(current);
         return mergeFunc(
           () => {
             controller.clearRef();
           },
-          useEventListener(current, 'keydown', e => {
+          useEventListener(current, 'keydown', (e) => {
             if (!state.disabled()) {
               switch (e.key) {
                 case 'ArrowUp': {
@@ -203,7 +182,7 @@ export function Select<V, T extends ValidComponent = 'ul'>(
               controller.setFirstChecked();
             }
           }),
-          useEventListener(current, 'focusin', e => {
+          useEventListener(current, 'focusin', (e) => {
             if (e.target && e.target !== current) {
               controller.setCurrent(e.target as HTMLElement);
             }
@@ -224,7 +203,7 @@ export function Select<V, T extends ValidComponent = 'ul'>(
               id: controller.getId(),
               role: 'listbox',
               get 'aria-multiselectable'() {
-                return props.multiple;
+                return props.multiple ? 'true' : 'false';
               },
               ref: setRef,
               get 'aria-orientation'() {

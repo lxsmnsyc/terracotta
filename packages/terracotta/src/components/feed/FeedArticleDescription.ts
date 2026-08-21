@@ -5,8 +5,7 @@ import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { useFeedArticleContext } from './FeedArticleContext';
 import { FEED_ARTICLE_DESCRIPTION_TAG } from './tags';
 
-export type FeedArticleDescriptionProps<T extends ValidComponent = 'p'> =
-  HeadlessProps<T>;
+export type FeedArticleDescriptionProps<T extends ValidComponent = 'p'> = HeadlessProps<T>;
 
 /**
  * The accessible description of a `FeedArticle`, wired up through `aria-
