@@ -10,9 +10,7 @@ interface ToastProps {
   message: string;
 }
 
-function CloseIcon(
-  props: JSX.IntrinsicElements['svg'] & { title: string },
-): JSX.Element {
+function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -54,9 +52,7 @@ function CustomToast(props: ToastProps): JSX.Element {
       }}
     >
       <Toast class="flex justify-between items-center">
-        <span class="flex-1 text-sm font-semibold text-white">
-          {props.message}
-        </span>
+        <span class="flex-1 text-sm font-semibold text-white">{props.message}</span>
         <button
           type="button"
           class="flex-none w-6 h-6 p-1 text-white bg-rose-900/25 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
@@ -73,9 +69,7 @@ export default function App(): JSX.Element {
   const notifs = useToaster(notifications);
 
   function createToast(): void {
-    notifications.create(
-      `This toast is created on ${new Date().toTimeString()}`,
-    );
+    notifications.create(`This toast is created on ${new Date().toTimeString()}`);
   }
 
   const [isOpen, setIsOpen] = createSignal(false);
@@ -90,7 +84,7 @@ export default function App(): JSX.Element {
 
   createEffect(
     () => notifs().length > 0,
-    flag => {
+    (flag) => {
       if (flag) {
         setIsOpen(true);
       }
@@ -155,9 +149,7 @@ export default function App(): JSX.Element {
                   </div>
                 }
               >
-                {(item): JSX.Element => (
-                  <CustomToast id={item().id} message={item().data} />
-                )}
+                {(item): JSX.Element => <CustomToast id={item().id} message={item().data} />}
               </For>
             </div>
           </div>

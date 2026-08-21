@@ -25,7 +25,7 @@ const entries = Object.fromEntries([
     'toggle',
     'toolbar',
     'transition',
-  ].map(value => [value, `./src/components/${value}`]),
+  ].map((value) => [value, `./src/components/${value}`]),
   ['states', './src/states/index.ts'],
   ['utils', './src/utils/index.ts'],
 ]);

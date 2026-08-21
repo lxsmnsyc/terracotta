@@ -10,25 +10,11 @@ import {
 } from 'terracotta/feed';
 import { Transition } from 'terracotta/transition';
 
-function SpinnerIcon(
-  props: JSX.IntrinsicElements['svg'] & { title: string },
-): JSX.Element {
+function SpinnerIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" {...props}>
       <title>{props.title}</title>
-      <circle
-        class="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        stroke-width="4"
-      />
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
       <path
         class="opacity-75"
         fill="currentColor"
@@ -131,7 +117,7 @@ export default function App(): JSX.Element {
   const [articles, setArticles] = createSignal<Article[]>(loadData(10));
 
   function sleep(timeout: number): Promise<boolean> {
-    return new Promise<boolean>(resolve => {
+    return new Promise<boolean>((resolve) => {
       setTimeout(resolve, timeout, true);
     });
   }
@@ -139,17 +125,13 @@ export default function App(): JSX.Element {
   async function loadMore(): Promise<void> {
     setBusy(true);
     await sleep(1000);
-    setArticles(current => [...current, ...loadData(5)]);
+    setArticles((current) => [...current, ...loadData(5)]);
     setBusy(false);
   }
 
   return (
     <div class="w-full flex items-center justify-center">
-      <Feed
-        class="max-h-96 w-96 flex flex-col"
-        busy={busy()}
-        size={articles().length}
-      >
+      <Feed class="max-h-96 w-96 flex flex-col" busy={busy()} size={articles().length}>
         <div class="flex-none my-2 flex justify-between items-center">
           <FeedLabel class="text-xl text-white font-bold">Feed</FeedLabel>
           <Transition
@@ -161,10 +143,7 @@ export default function App(): JSX.Element {
             leaveTo="opacity-0 scale-50"
             leave="transform transition duration-200 ease-out"
           >
-            <SpinnerIcon
-              title="Loading"
-              class="animate-spin w-5 h-5 text-white"
-            />
+            <SpinnerIcon title="Loading" class="animate-spin w-5 h-5 text-white" />
           </Transition>
         </div>
         <FeedContent
@@ -173,8 +152,7 @@ export default function App(): JSX.Element {
             const el = e.target as HTMLElement;
             if (
               !busy() &&
-              el.offsetHeight + el.scrollTop >=
-                el.scrollHeight - el.getBoundingClientRect().height
+              el.offsetHeight + el.scrollTop >= el.scrollHeight - el.getBoundingClientRect().height
             ) {
               loadMore().catch(() => {
                 //
@@ -200,10 +178,7 @@ export default function App(): JSX.Element {
           </For>
           <Show when={busy()}>
             <div class="w-full flex items-center justify-center">
-              <SpinnerIcon
-                title="Loading"
-                class="animate-spin w-5 h-5 text-white"
-              />
+              <SpinnerIcon title="Loading" class="animate-spin w-5 h-5 text-white" />
             </div>
           </Show>
         </FeedContent>

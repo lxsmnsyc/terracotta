@@ -6,13 +6,7 @@ import { Transition } from 'terracotta/transition';
 
 function IconOne(): JSX.Element {
   return (
-    <svg
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <title>Icon One</title>
       <rect width="48" height="48" rx="8" fill="#FFEDD5" />
       <path
@@ -40,13 +34,7 @@ function IconOne(): JSX.Element {
 
 function IconTwo(): JSX.Element {
   return (
-    <svg
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <title>Icon Two</title>
       <rect width="48" height="48" rx="8" fill="#FFEDD5" />
       <path
@@ -67,13 +55,7 @@ function IconTwo(): JSX.Element {
 
 function IconThree(): JSX.Element {
   return (
-    <svg
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <title>Icon Three</title>
       <rect width="48" height="48" rx="8" fill="#FFEDD5" />
       <rect x="13" y="32" width="2" height="4" fill="#FDBA74" />
@@ -107,9 +89,7 @@ const solutions = [
   },
 ];
 
-function ChevronDownIcon(
-  props: JSX.IntrinsicElements['svg'] & { title: string },
-): JSX.Element {
+function ChevronDownIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -119,12 +99,7 @@ function ChevronDownIcon(
       {...props}
     >
       <title>{props.title}</title>
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width={2}
-        d="M19 9l-7 7-7-7"
-      />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M19 9l-7 7-7-7" />
     </svg>
   );
 }
@@ -177,18 +152,11 @@ export default function App(): JSX.Element {
                           class="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
                         >
                           <div class="flex items-center justify-center shrink-0 w-10 h-10 text-white sm:h-12 sm:w-12">
-                            <Dynamic
-                              component={item().icon}
-                              aria-hidden="true"
-                            />
+                            <Dynamic component={item().icon} aria-hidden="true" />
                           </div>
                           <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-900">
-                              {item().name}
-                            </p>
-                            <p class="text-sm text-gray-500">
-                              {item().description}
-                            </p>
+                            <p class="text-sm font-medium text-gray-900">{item().name}</p>
+                            <p class="text-sm text-gray-500">{item().description}</p>
                           </div>
                         </a>
                       )}
@@ -200,9 +168,7 @@ export default function App(): JSX.Element {
                       class="flow-root px-2 py-2 transition duration-150 ease-in-out rounded-md hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
                     >
                       <span class="flex items-center">
-                        <span class="text-sm font-medium text-gray-900">
-                          Documentation
-                        </span>
+                        <span class="text-sm font-medium text-gray-900">Documentation</span>
                       </span>
                       <span class="block text-sm text-gray-500">
                         Start integrating products and tools

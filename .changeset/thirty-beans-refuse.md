@@ -1,5 +1,5 @@
 ---
-"terracotta": patch
+'terracotta': patch
 ---
 
 fix JSX path

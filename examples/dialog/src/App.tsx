@@ -1,11 +1,6 @@
 import type { JSX } from '@solidjs/web';
 import { createSignal } from 'solid-js';
-import {
-  Dialog,
-  DialogOverlay,
-  DialogPanel,
-  DialogTitle,
-} from 'terracotta/dialog';
+import { Dialog, DialogOverlay, DialogPanel, DialogTitle } from 'terracotta/dialog';
 import { Transition, TransitionChild } from 'terracotta/transition';
 
 export default function App(): JSX.Element {
@@ -32,11 +27,7 @@ export default function App(): JSX.Element {
       </div>
 
       <Transition appear show={isOpen()}>
-        <Dialog
-          isOpen
-          class="fixed inset-0 z-10 overflow-y-auto"
-          onClose={closeModal}
-        >
+        <Dialog isOpen class="fixed inset-0 z-10 overflow-y-auto" onClose={closeModal}>
           <div class="min-h-screen px-4 flex items-center justify-center relative">
             <TransitionChild
               enter="ease-out duration-300"
@@ -58,16 +49,13 @@ export default function App(): JSX.Element {
               leaveTo="opacity-0 scale-95"
             >
               <DialogPanel class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                <DialogTitle
-                  as="h3"
-                  class="text-lg font-medium leading-6 text-gray-900"
-                >
+                <DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">
                   Payment successful
                 </DialogTitle>
                 <div class="mt-2">
                   <p class="text-sm text-gray-500">
-                    Your payment has been successfully submitted. We’ve sent
-                    your an email with all of the details of your order.
+                    Your payment has been successfully submitted. We’ve sent your an email with all
+                    of the details of your order.
                   </p>
                 </div>
 

@@ -1,5 +1,5 @@
 ---
-"terracotta": patch
+'terracotta': patch
 ---
 
 beta.15 compat

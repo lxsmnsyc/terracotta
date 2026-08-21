@@ -3,9 +3,7 @@ import { Menu, MenuItem } from 'terracotta/menu';
 import { Popover, PopoverButton, PopoverPanel } from 'terracotta/popover';
 import { Transition } from 'terracotta/transition';
 
-function ChevronDownIcon(
-  props: JSX.IntrinsicElements['svg'] & { title: string },
-): JSX.Element {
+function ChevronDownIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,12 +13,7 @@ function ChevronDownIcon(
       {...props}
     >
       <title>{props.title}</title>
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width={2}
-        d="M19 9l-7 7-7-7"
-      />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M19 9l-7 7-7-7" />
     </svg>
   );
 }
