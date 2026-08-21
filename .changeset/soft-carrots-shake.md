@@ -17,6 +17,15 @@ running animations (`Element.getAnimations()`) instead of listening for
   selected one, or the first. It always meant to, but it ran before the options
   had mounted, so the popup opened with no active option until the first arrow
   key.
+- Siblings of one transition apply their starting classes against the same style
+  baseline. Reading `Element.getAnimations()` flushes style, so the first
+  sibling's read used to freeze the resting style of one that had not applied
+  its classes yet — that sibling then animated *into* its starting state before
+  animating out of it, a phase behind the rest of the group.
+- Transitions run against the element that is actually on screen. A transition
+  whose element had been unmounted and rebuilt (`show` going `false` then `true`
+  again under the default `unmount`) used to apply its classes to the detached
+  element the ref still held, leaving the newly mounted one unanimated.
 - Transitions are interruptible. Toggling `show` while one is running reverses
   it immediately; it used to be ignored outright, which could leave an element
   stuck visible after `show` had gone `false`.

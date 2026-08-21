@@ -164,7 +164,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
     );
     createEffect(
       on(internalRef, (element) => {
-        if (element instanceof HTMLElement) {
+        if (element instanceof HTMLElement && element.isConnected) {
           state.setElement(element);
         }
       }),
@@ -184,7 +184,12 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
 
   createEffect(
     on([internalRef, () => root.show], ([element, flag]) => {
-      if (element instanceof HTMLElement) {
+      // `unmount` throws the element away and builds a new one, and the ref
+      // still holds the old one when `show` flips back to true. Transitioning
+      // that detached element would put the classes somewhere invisible and
+      // leave the element that actually mounts unanimated, so wait for the ref
+      // to catch up.
+      if (element instanceof HTMLElement && element.isConnected) {
         state.setElement(element);
 
         if (flag) {

@@ -96,7 +96,15 @@ export class TransitionState {
    * whenever an `unmount`ing element is rebuilt.
    */
   setElement(element: HTMLElement): void {
+    if (this.element === element) {
+      return;
+    }
     this.element = element;
+    // Whatever was running belonged to the element that has just been replaced,
+    // so it no longer describes anything on screen.
+    this.token += 1;
+    this.showing = undefined;
+    this.hiding = undefined;
   }
 
   private classes?: TransitionClasses;

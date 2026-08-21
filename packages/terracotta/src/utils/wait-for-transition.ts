@@ -7,6 +7,12 @@
  * immediately rather than throwing.
  */
 export default async function waitForTransition(el: Element): Promise<void> {
+  // `getAnimations` flushes style, so reading it straight away would freeze the
+  // current styles of every element that has not applied its own classes yet —
+  // a sibling that has just mounted would then transition *into* its starting
+  // state before transitioning out of it. Yielding first lets the whole group
+  // apply its classes against the same style baseline.
+  await Promise.resolve();
   try {
     const animations = el.getAnimations();
     if (animations.length > 0) {

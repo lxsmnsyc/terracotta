@@ -22,11 +22,13 @@ export function describedBy(element: Element): HTMLElement | null {
  * `document.activeElement` once the components have finished moving it.
  *
  * The panels wait on `waitForTransition` before focusing, which settles on a
- * microtask, so a plain read of the property can catch the state from before
- * the panel opened.
+ * microtask or two, so a plain read of the property can catch the state from
+ * before the panel opened.
  */
 export async function activeElement(): Promise<Element | null> {
-  await Promise.resolve();
+  await new Promise<void>((resolve) => {
+    setTimeout(resolve, 0);
+  });
   return document.activeElement;
 }
 

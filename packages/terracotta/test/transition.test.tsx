@@ -28,6 +28,17 @@ async function settle(): Promise<void> {
   });
 }
 
+/**
+ * Advances the transition by one step.
+ *
+ * A step costs two microtasks with nothing animating: one for the yield the
+ * state takes before it reads the element's animations, and one for resuming
+ * the caller of this helper.
+ */
+async function nextStep(): Promise<void> {
+  await Promise.resolve();
+}
+
 const MISSING_ROOT = /must be used inside a <Transition>/;
 
 describe('Transition', () => {
@@ -72,7 +83,7 @@ describe('Transition', () => {
     ));
     const panel = screen.getByText('Panel');
 
-    await Promise.resolve();
+    await nextStep();
 
     expect(panel).not.toHaveClass('enter-from');
     expect(panel).toHaveClass('enter', 'enter-to');
@@ -122,16 +133,16 @@ describe('Transition', () => {
     await settle();
 
     setShow(false);
-    // The leave waits on `waitForTransition`, so its classes land a microtask
-    // later rather than in the same tick as the signal write.
-    await Promise.resolve();
+    // The leave waits on `waitForTransition`, so its classes land a step later
+    // rather than in the same tick as the signal write.
+    await nextStep();
 
     expect(panel).toBeInTheDocument();
     expect(panel).not.toHaveClass('entered');
     expect(panel).toHaveClass('leave', 'leave-from');
     expect(panel).toHaveAttribute('tc-transition', 'leave-from');
 
-    await Promise.resolve();
+    await nextStep();
 
     expect(panel).not.toHaveClass('leave-from');
     expect(panel).toHaveClass('leave', 'leave-to');
@@ -193,6 +204,29 @@ describe('Transition', () => {
     expect(panel).toHaveClass('enter', 'enter-from');
   });
 
+  it('runs the enter transition again after unmounting and remounting', async () => {
+    const [show, setShow] = createSignal(true);
+    render(() => (
+      <Transition show={show()} appear {...CLASSES}>
+        Panel
+      </Transition>
+    ));
+    await settle();
+    setShow(false);
+    await settle();
+    expect(screen.queryByText('Panel')).not.toBeInTheDocument();
+
+    setShow(true);
+
+    // The element that mounts is a new one, so the transition has to run
+    // against it rather than the detached element the ref still held.
+    expect(screen.getByText('Panel')).toHaveClass('enter', 'enter-from');
+
+    await settle();
+
+    expect(screen.getByText('Panel')).toHaveClass('entered');
+  });
+
   it('does not restart the enter transition when a class prop changes', async () => {
     const [enter, setEnter] = createSignal('enter');
     render(() => (
@@ -249,7 +283,7 @@ describe('Transition', () => {
     await settle();
 
     setShow(false);
-    await Promise.resolve();
+    await nextStep();
 
     expect(panel.inert).toBe(true);
 
@@ -270,7 +304,7 @@ describe('Transition', () => {
     await settle();
 
     setShow(false);
-    await Promise.resolve();
+    await nextStep();
     expect(panel).toHaveAttribute('tc-transition', 'leave-from');
 
     setShow(true);
@@ -299,8 +333,8 @@ describe('Transition', () => {
 
     setShow(false);
     // The leave starts by letting any nested children leave first, so its own
-    // classes land a microtask later.
-    await Promise.resolve();
+    // classes land a step later.
+    await nextStep();
 
     expect(panel).toHaveAttribute('tc-transition', 'leave-from');
     expect(panel).not.toHaveClass('enter', 'enter-from', 'enter-to');
