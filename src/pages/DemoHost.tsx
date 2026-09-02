@@ -14,6 +14,7 @@ import { DEMO_CHANNEL, isDemoMessage } from '../lib/demo-bridge';
 
 import '../styles/reset.css';
 import '../themes/_contract.css';
+import '../styles/demos.css';
 import { isTheme } from '../themes';
 
 /**

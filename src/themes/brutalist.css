@@ -1,0 +1,350 @@
+/*
+ * Brutalist.
+ *
+ * Nothing soft: pure black ink on paper white, hairlines replaced by 2–3px
+ * rules, no rounded corners anywhere, and shadows that are hard offsets rather
+ * than blurs. Type is uppercase and tracked out wherever it labels something.
+ *
+ * The point of this file is how little of it there is. Terracotta writes state
+ * as `tc-` attributes and no styles of its own, so this theme changes no
+ * markup, no component and no demo — it redefines the tokens in
+ * `_contract.css` and then overrides the shape of the baseline vocabulary in
+ * `styles/demos.css`. Every one of the forty-five demos on this site follows.
+ */
+
+[data-theme='brutalist'] {
+  --surface-0: #fffdf7;
+  --surface-1: #f4f0e4;
+  --surface-2: #e6e0cd;
+
+  --text-1: #000000;
+  --text-2: #2b2b2b;
+  --text-3: #6b6b6b;
+
+  --border: #000000;
+  --border-strong: #000000;
+
+  --accent: #1b23e0;
+  --accent-hover: #000000;
+  --accent-contrast: #ffffff;
+  --accent-soft: #ffe500;
+
+  --focus: #1b23e0;
+  --danger: #d61f00;
+
+  --overlay: rgb(0 0 0 / 70%);
+
+  /* Corners are a decision this theme does not make. */
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+
+  /* Offsets, not blurs. */
+  --shadow-1: 3px 3px 0 var(--border);
+  --shadow-2: 6px 6px 0 var(--border);
+
+  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --masthead-height: 4rem;
+}
+
+[data-theme='brutalist'].dark {
+  --surface-0: #000000;
+  --surface-1: #111111;
+  --surface-2: #1e1e1e;
+
+  --text-1: #ffffff;
+  --text-2: #d6d6d6;
+  --text-3: #8a8a8a;
+
+  --border: #ffffff;
+  --border-strong: #ffffff;
+
+  --accent: #ffe500;
+  --accent-hover: #ffffff;
+  --accent-contrast: #000000;
+  --accent-soft: #1b23e0;
+
+  --focus: #ffe500;
+  --danger: #ff5c3d;
+
+  --overlay: rgb(0 0 0 / 85%);
+}
+
+/* ------------------------------------------------------------------ *
+ * Shape
+ *
+ * One rule does most of the work: everything the baseline draws a hairline
+ * around gets a real border instead. The selectors are the baseline's own
+ * class names — nothing here knows which component it is styling.
+ * ------------------------------------------------------------------ */
+
+[data-theme='brutalist'] .control,
+[data-theme='brutalist'] .panel,
+[data-theme='brutalist'] .button,
+[data-theme='brutalist'] .field,
+[data-theme='brutalist'] .toggle,
+[data-theme='brutalist'] .disclosure,
+[data-theme='brutalist'] .accordion,
+[data-theme='brutalist'] .listbox-button,
+[data-theme='brutalist'] .listbox-options,
+[data-theme='brutalist'] .combobox-input,
+[data-theme='brutalist'] .combobox-options,
+[data-theme='brutalist'] .command-input,
+[data-theme='brutalist'] .command-options,
+[data-theme='brutalist'] .commandbar-panel,
+[data-theme='brutalist'] .select,
+[data-theme='brutalist'] .radio-card,
+[data-theme='brutalist'] .toolbar,
+[data-theme='brutalist'] .menu,
+[data-theme='brutalist'] .contextmenu-panel,
+[data-theme='brutalist'] .contextmenu-boundary,
+[data-theme='brutalist'] .popover-panel,
+[data-theme='brutalist'] .dialog-panel,
+[data-theme='brutalist'] .drawer-panel,
+[data-theme='brutalist'] .toast,
+[data-theme='brutalist'] .feed-article,
+[data-theme='brutalist'] .alert,
+[data-theme='brutalist'] .transition-box,
+[data-theme='brutalist'] .transition-card,
+[data-theme='brutalist'] .checkbox-box,
+[data-theme='brutalist'] .radio-dot,
+[data-theme='brutalist'] .switch-track,
+[data-theme='brutalist'] .demo-tabs {
+  border: 2px solid var(--border);
+}
+
+/* Things that float carry the offset shadow rather than a soft one. */
+[data-theme='brutalist'] .panel,
+[data-theme='brutalist'] .listbox-options,
+[data-theme='brutalist'] .combobox-options,
+[data-theme='brutalist'] .commandbar-panel,
+[data-theme='brutalist'] .contextmenu-panel,
+[data-theme='brutalist'] .popover-panel,
+[data-theme='brutalist'] .dialog-panel,
+[data-theme='brutalist'] .toast {
+  box-shadow: var(--shadow-2);
+}
+
+/* Anything that names something is set in caps. */
+[data-theme='brutalist'] .listbox-label,
+[data-theme='brutalist'] .combobox-label,
+[data-theme='brutalist'] .radiogroup-label,
+[data-theme='brutalist'] .feed-label,
+[data-theme='brutalist'] .sidebar-section-title,
+[data-theme='brutalist'] .toc-title,
+[data-theme='brutalist'] .demo-tab,
+[data-theme='brutalist'] .demo-tool,
+[data-theme='brutalist'] .button,
+[data-theme='brutalist'] .toggle,
+[data-theme='brutalist'] .control {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+[data-theme='brutalist'] .button,
+[data-theme='brutalist'] .control,
+[data-theme='brutalist'] .toggle {
+  font-size: 0.8rem;
+}
+
+/* Pressed and hover are a hard inversion, not a tint. */
+[data-theme='brutalist'] .button:hover,
+[data-theme='brutalist'] .control:hover,
+[data-theme='brutalist'] .toolbar-button:hover,
+[data-theme='brutalist'] .menu-item[tc-active],
+[data-theme='brutalist'] .listbox-option[tc-active],
+[data-theme='brutalist'] .select-option[tc-active],
+[data-theme='brutalist'] .combobox-option[tc-active],
+[data-theme='brutalist'] .command-option[tc-active],
+[data-theme='brutalist'] .theme-picker-option[tc-active] {
+  background: var(--text-1);
+  color: var(--surface-0);
+}
+
+/*
+ * The inversion above repaints the row, but any child that carries its own
+ * colour keeps it — a muted blurb or an accent tick then sits on the inverted
+ * ground and disappears. Descendants of an inverted row inherit instead.
+ */
+[data-theme='brutalist'] .button:hover *,
+[data-theme='brutalist'] .control:hover *,
+[data-theme='brutalist'] .toolbar-button:hover *,
+[data-theme='brutalist'] .menu-item[tc-active] *,
+[data-theme='brutalist'] .listbox-option[tc-active] *,
+[data-theme='brutalist'] .select-option[tc-active] *,
+[data-theme='brutalist'] .combobox-option[tc-active] *,
+[data-theme='brutalist'] .command-option[tc-active] *,
+[data-theme='brutalist'] .theme-picker-option[tc-active] * {
+  color: inherit;
+}
+
+/* The selected theme's tick is a pseudo-element, so `*` cannot reach it. */
+[data-theme='brutalist'] .theme-picker-option[tc-active][tc-selected] .theme-picker-option-name::after {
+  color: inherit;
+}
+
+[data-theme='brutalist'] .toggle[tc-pressed],
+[data-theme='brutalist'] .toolbar-toggle[tc-pressed],
+[data-theme='brutalist'] .checkbox-box[tc-checked=''],
+[data-theme='brutalist'] .checkbox-box[tc-checked='mixed'],
+[data-theme='brutalist'] .switch-track[tc-checked=''],
+[data-theme='brutalist'] [tc-pressed] .switch-track {
+  background: var(--accent-soft);
+  color: var(--text-1);
+}
+
+[data-theme='brutalist'] .radio-card[tc-checked],
+[data-theme='brutalist'] .scheme-picker-option[tc-checked],
+[data-theme='brutalist'] .sidebar-link[aria-current='page'] {
+  background: var(--accent-soft);
+  color: var(--text-1);
+}
+
+[data-theme='brutalist'] .radio-card[tc-active] {
+  box-shadow: var(--shadow-1);
+}
+
+/* The selected tab is a filled block, not an underline. */
+[data-theme='brutalist'] .tablist {
+  gap: 0;
+  border-block-end: 2px solid var(--border);
+}
+
+[data-theme='brutalist'] .tab {
+  border: 2px solid transparent;
+  border-block-end: none;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+[data-theme='brutalist'] .tab[tc-selected] {
+  border-color: var(--border);
+  background: var(--accent-soft);
+  color: var(--text-1);
+}
+
+[data-theme='brutalist'] .tablist-vertical {
+  border-block-end: none;
+  border-inline-end: 2px solid var(--border);
+}
+
+[data-theme='brutalist'] .demo-tab[tc-selected] {
+  background: var(--accent-soft);
+  box-shadow: none;
+  color: var(--text-1);
+}
+
+/* Panels and markers ------------------------------------------------ */
+
+[data-theme='brutalist'] .disclosure-button,
+[data-theme='brutalist'] .accordion-button {
+  border-block-end: 2px solid transparent;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+[data-theme='brutalist'] .disclosure-button[tc-expanded],
+[data-theme='brutalist'] .accordion-button[tc-selected] {
+  border-block-end-color: var(--border);
+  background: var(--accent-soft);
+  color: var(--text-1);
+}
+
+[data-theme='brutalist'] .disclosure-panel,
+[data-theme='brutalist'] .accordion-panel {
+  border-block-start-width: 2px;
+}
+
+[data-theme='brutalist'] .accordion-item + .accordion-item {
+  border-block-start-width: 2px;
+}
+
+/* The switch is a square in a box, and it steps rather than slides. */
+[data-theme='brutalist'] .switch-track {
+  border-radius: 0;
+  padding: 0.2rem;
+}
+
+[data-theme='brutalist'] .switch-knob {
+  border: 2px solid var(--border);
+  border-radius: 0;
+  background: var(--surface-0);
+  box-shadow: none;
+  transition: translate 80ms steps(2, end);
+}
+
+[data-theme='brutalist'] .radio-dot {
+  border-radius: 0;
+}
+
+[data-theme='brutalist'] .radio-row[tc-checked] .radio-dot {
+  border-width: 2px;
+  background: var(--accent-soft);
+}
+
+/* Chrome ------------------------------------------------------------ */
+
+[data-theme='brutalist'] .masthead {
+  border-block-end: 3px solid var(--border);
+  backdrop-filter: none;
+  background: var(--surface-0);
+}
+
+[data-theme='brutalist'] .brand {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+[data-theme='brutalist'] .brand-mark {
+  border: 2px solid var(--border);
+  border-radius: 0;
+  background: var(--accent-soft);
+}
+
+[data-theme='brutalist'] .page-title {
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+[data-theme='brutalist'] .prose h2 {
+  border-block-end-width: 2px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+[data-theme='brutalist'] .prose .shiki,
+[data-theme='brutalist'] .prose :not(pre) > code,
+[data-theme='brutalist'] .page-lede code {
+  border-width: 2px;
+  border-radius: 0;
+}
+
+[data-theme='brutalist'] .toc-list {
+  border-inline-start-width: 2px;
+}
+
+[data-theme='brutalist'] .demo-toolbar {
+  border-block-end-width: 2px;
+}
+
+[data-theme='brutalist'] .hero-install {
+  border-width: 2px;
+}
+
+[data-theme='brutalist'] .prose hr {
+  border-block-start-width: 3px;
+}
+
+/* Focus is a slab, not a hairline. */
+[data-theme='brutalist'] :focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}

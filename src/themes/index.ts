@@ -1,3 +1,5 @@
+import './brutalist.css';
+import './glass.css';
 import './terracotta.css';
 
 export interface ThemeMeta {
@@ -18,6 +20,16 @@ export const THEMES: readonly ThemeMeta[] = [
     id: 'terracotta',
     name: 'Terracotta',
     blurb: 'The house style. Warm neutrals, generous spacing.',
+  },
+  {
+    id: 'brutalist',
+    name: 'Brutalist',
+    blurb: 'Hard borders, square corners, offset shadows, caps.',
+  },
+  {
+    id: 'glass',
+    name: 'Glass',
+    blurb: 'Frosted, translucent panels floating over a coloured wash.',
   },
 ];
 

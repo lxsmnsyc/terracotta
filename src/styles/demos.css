@@ -1,0 +1,1114 @@
+/*
+ * The demo vocabulary — the baseline.
+ *
+ * These are the class names every file in `src/demos` uses. They are
+ * deliberately generic: a demo says what a thing *is*, and the look comes from
+ * whichever theme is active. Nothing here hard-codes a colour; every value is
+ * one of the tokens in `themes/_contract.css`, so a theme that only redefines
+ * tokens already restyles all of it.
+ *
+ * A theme may override any of this — shape, spacing, typography, whole rules —
+ * by repeating a selector under its own `[data-theme='…']` scope, which always
+ * wins on specificity. `themes/brutalist.css` does exactly that.
+ *
+ * State comes from Terracotta's `tc-` attributes, so every state rule below is
+ * a plain attribute selector and no demo carries a state class of its own.
+ */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  inline-size: min(100%, 30rem);
+}
+
+.hint {
+  color: var(--text-2);
+  font-size: 0.875rem;
+}
+
+/* Buttons ---------------------------------------------------------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding: 0.45rem 0.9rem;
+  color: var(--text-1);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/*
+ * The filled variants carry their own colour, so the neutral hover has to step
+ * around them — a plain `.button:hover` out-specifies `.button-danger` and was
+ * repainting a red button grey while leaving its label white.
+ */
+.button:not(.button-primary, .button-danger):hover {
+  background: var(--surface-1);
+}
+
+.button[tc-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Disclosure ------------------------------------------------------- */
+
+.disclosure {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  overflow: hidden;
+}
+
+.disclosure + .disclosure {
+  margin-block-start: 0.5rem;
+}
+
+.disclosure-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  inline-size: 100%;
+  border: none;
+  background: var(--surface-1);
+  padding: 0.7rem 0.9rem;
+  color: var(--text-1);
+  font-weight: 500;
+  text-align: start;
+}
+
+.disclosure-button:hover {
+  background: var(--surface-2);
+}
+
+.disclosure-button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+
+/* The chevron follows the open state with no signal and no handler. */
+.disclosure-chevron {
+  color: var(--text-3);
+  transition: rotate 150ms ease;
+}
+
+.disclosure-button[tc-expanded] .disclosure-chevron {
+  rotate: 90deg;
+}
+
+.disclosure-panel {
+  border-block-start: 1px solid var(--border);
+  padding: 0.85rem 0.9rem;
+  color: var(--text-2);
+}
+
+/* Listbox ---------------------------------------------------------- */
+
+.listbox {
+  position: relative;
+  inline-size: min(100%, 18rem);
+}
+
+.listbox-label {
+  display: block;
+  margin-block-end: 0.3rem;
+  color: var(--text-2);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.listbox-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  inline-size: 100%;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding: 0.45rem 0.75rem;
+  text-align: start;
+}
+
+.listbox-caret {
+  color: var(--text-3);
+  transition: rotate 150ms ease;
+}
+
+.listbox-button[tc-expanded] .listbox-caret {
+  rotate: 180deg;
+}
+
+/* Nothing chosen yet — the container reports it, so the value can be dimmed. */
+.listbox-button:not([tc-has-selected]) .listbox-value {
+  color: var(--text-3);
+}
+
+.listbox-options {
+  position: absolute;
+  z-index: 10;
+  inset-inline: 0;
+  margin-block-start: 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  box-shadow: var(--shadow-2);
+  padding: 0.25rem;
+  max-block-size: 15rem;
+  overflow-y: auto;
+}
+
+.listbox-option {
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+}
+
+.listbox-option[tc-active] {
+  background: var(--accent-soft);
+}
+
+.listbox-option[tc-selected] {
+  font-weight: 600;
+}
+
+.listbox-option[tc-disabled] {
+  color: var(--text-3);
+  cursor: not-allowed;
+}
+
+/* Toggle and switch ------------------------------------------------ */
+
+.toggle {
+  align-self: flex-start;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding: 0.45rem 0.9rem;
+  color: var(--text-1);
+  font-weight: 500;
+}
+
+.toggle[tc-pressed] {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.toggle[tc-disabled],
+.switch[tc-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  align-self: flex-start;
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--text-1);
+}
+
+.switch-track {
+  display: inline-flex;
+  align-items: center;
+  inline-size: 2.25rem;
+  block-size: 1.3rem;
+  border-radius: 999px;
+  background: var(--surface-2);
+  padding: 0.15rem;
+  transition: background 150ms ease;
+}
+
+.switch-knob {
+  inline-size: 1rem;
+  block-size: 1rem;
+  border-radius: 999px;
+  background: var(--surface-0);
+  box-shadow: var(--shadow-1);
+  transition: translate 150ms ease;
+}
+
+/* One attribute drives the whole animation, from either component. */
+[tc-pressed] .switch-track,
+[tc-checked=''] .switch-track,
+.switch-track[tc-checked=''] {
+  background: var(--accent);
+}
+
+[tc-pressed] .switch-knob,
+[tc-checked=''] .switch-knob,
+.switch-track[tc-checked=''] .switch-knob {
+  translate: 0.95rem 0;
+}
+
+/* Button ----------------------------------------------------------- */
+
+.button[tc-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+a.button {
+  text-decoration: none;
+}
+
+/* Checkbox --------------------------------------------------------- */
+
+.checkbox {
+  display: flex;
+  align-items: start;
+  gap: 0.625rem;
+  cursor: pointer;
+}
+
+.checkbox-children {
+  display: grid;
+  gap: 0.5rem;
+  margin-inline-start: 1.75rem;
+}
+
+.checkbox-box {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: 1.15rem;
+  block-size: 1.15rem;
+  margin-block-start: 0.15rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-0);
+  color: var(--accent-contrast);
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.checkbox-box[tc-checked=''],
+.checkbox-box[tc-checked='mixed'] {
+  border-color: transparent;
+  background: var(--accent);
+}
+
+.checkbox-label {
+  font-weight: 500;
+}
+
+.checkbox-description {
+  display: block;
+  color: var(--text-2);
+  font-size: 0.85rem;
+}
+
+.checkbox[tc-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.checkbox-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  inline-size: 100%;
+  cursor: pointer;
+}
+
+/* Alert ------------------------------------------------------------ */
+
+.alert {
+  border: 1px solid var(--border-strong);
+  border-inline-start-width: 3px;
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  padding: 0.7rem 0.9rem;
+  color: var(--text-1);
+}
+
+.alert[data-severity='info'] {
+  border-inline-start-color: var(--accent);
+}
+
+.alert[data-severity='warning'] {
+  border-inline-start-color: #b45309;
+}
+
+.alert[data-severity='danger'] {
+  border-inline-start-color: var(--danger);
+  color: var(--danger);
+}
+
+/* Accordion -------------------------------------------------------- */
+
+.accordion {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  overflow: hidden;
+}
+
+.accordion-item + .accordion-item {
+  border-block-start: 1px solid var(--border);
+}
+
+.accordion-header {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.accordion-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  inline-size: 100%;
+  border: none;
+  background: var(--surface-0);
+  padding: 0.7rem 0.9rem;
+  color: var(--text-1);
+  font-weight: 500;
+  text-align: start;
+}
+
+.accordion-button:hover {
+  background: var(--surface-1);
+}
+
+/* The open item and the keyboard-focused item are separate states, and each
+   has its own attribute. */
+.accordion-button[tc-selected] {
+  color: var(--accent);
+}
+
+.accordion-button[tc-active] {
+  background: var(--accent-soft);
+}
+
+.accordion-button[tc-disabled] {
+  color: var(--text-3);
+  cursor: not-allowed;
+}
+
+.accordion-marker {
+  color: var(--text-3);
+  transition: rotate 150ms ease;
+}
+
+.accordion-button[tc-selected] .accordion-marker {
+  rotate: 90deg;
+}
+
+.accordion-panel {
+  border-block-start: 1px solid var(--border);
+  background: var(--surface-1);
+  padding: 0.85rem 0.9rem;
+  color: var(--text-2);
+}
+
+/* Tabs ------------------------------------------------------------- */
+
+.tabs {
+  inline-size: min(100%, 28rem);
+}
+
+.tabs-vertical {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.tablist {
+  display: flex;
+  gap: 0.25rem;
+  border-block-end: 1px solid var(--border);
+}
+
+.tablist-vertical {
+  flex-direction: column;
+  border-block-end: none;
+  border-inline-end: 1px solid var(--border);
+}
+
+.tab {
+  border: none;
+  border-block-end: 2px solid transparent;
+  background: none;
+  padding: 0.45rem 0.8rem;
+  color: var(--text-2);
+  text-align: start;
+}
+
+.tablist-vertical .tab {
+  border-block-end: none;
+  border-inline-end: 2px solid transparent;
+}
+
+.tab[tc-selected] {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.tab[tc-disabled] {
+  color: var(--text-3);
+  cursor: not-allowed;
+}
+
+.tabpanel {
+  padding-block: 0.9rem;
+  color: var(--text-2);
+}
+
+/* Radio group ------------------------------------------------------ */
+
+.radiogroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  inline-size: min(100%, 22rem);
+}
+
+.radiogroup-label {
+  color: var(--text-2);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.radio-card {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding: 0.7rem 0.9rem;
+  cursor: pointer;
+}
+
+.radio-card[tc-checked] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.radio-card[tc-active] {
+  box-shadow: 0 0 0 2px var(--focus);
+}
+
+.radio-card[tc-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.radio-card-title {
+  display: block;
+  font-weight: 600;
+}
+
+.radio-card-hint {
+  display: block;
+  color: var(--text-2);
+  font-size: 0.85rem;
+}
+
+.radio-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.25rem 0;
+  cursor: pointer;
+}
+
+.radio-dot {
+  display: grid;
+  place-items: center;
+  inline-size: 1.05rem;
+  block-size: 1.05rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface-0);
+}
+
+.radio-row[tc-checked] .radio-dot {
+  border-color: var(--accent);
+  border-width: 5px;
+}
+
+/* Select ----------------------------------------------------------- */
+
+.select {
+  display: grid;
+  gap: 0.15rem;
+  inline-size: min(100%, 18rem);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding: 0.25rem;
+  max-block-size: 13rem;
+  overflow-y: auto;
+}
+
+.select-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+}
+
+.select-option[tc-active] {
+  background: var(--accent-soft);
+}
+
+.select-option[tc-selected] {
+  font-weight: 600;
+}
+
+.select-option[tc-disabled] {
+  color: var(--text-3);
+  cursor: not-allowed;
+}
+
+/* The tick is present in the markup and revealed by the attribute, so
+   selection costs no re-render. */
+.select-tick {
+  color: var(--accent);
+  visibility: hidden;
+}
+
+.select-option[tc-selected] .select-tick {
+  visibility: visible;
+}
+
+/* Toolbar ---------------------------------------------------------- */
+
+.toolbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  padding: 0.25rem;
+}
+
+.toolbar[aria-orientation='vertical'] {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.toolbar-button,
+.toolbar-toggle {
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  padding: 0.3rem 0.6rem;
+  color: var(--text-1);
+}
+
+.toolbar-button:hover,
+.toolbar-toggle:hover {
+  background: var(--surface-2);
+}
+
+.toolbar-toggle[tc-pressed] {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.toolbar-button:disabled,
+.toolbar-button[tc-disabled] {
+  color: var(--text-3);
+  cursor: not-allowed;
+}
+
+.toolbar-separator {
+  inline-size: 1px;
+  align-self: stretch;
+  background: var(--border-strong);
+  margin-inline: 0.4rem;
+  margin-block: 0.15rem;
+}
+
+.toolbar[aria-orientation='vertical'] .toolbar-separator {
+  inline-size: auto;
+  block-size: 1px;
+  margin-inline: 0.15rem;
+  margin-block: 0.4rem;
+}
+
+.menu-separator {
+  block-size: 1px;
+  background: var(--border);
+  margin-block: 0.3rem;
+  margin-inline: 0.35rem;
+}
+
+/* Shared demo helpers ---------------------------------------------- */
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.field {
+  inline-size: 100%;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding: 0.45rem 0.7rem;
+  color: var(--text-1);
+}
+
+.button-primary {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.button-danger {
+  border-color: transparent;
+  background: var(--danger);
+  color: #fff;
+}
+
+.button-primary:hover {
+  background: var(--accent-hover);
+}
+
+/* Mixing towards the primary text colour darkens this in a light scheme and
+   lightens it in a dark one, so one rule covers both. */
+.button-danger:hover {
+  background: color-mix(in srgb, var(--danger) 88%, var(--text-1));
+}
+
+/* Combobox and command -------------------------------------------- */
+
+.combobox {
+  position: relative;
+  inline-size: min(100%, 18rem);
+}
+
+.combobox-label {
+  display: block;
+  margin-block-end: 0.3rem;
+  color: var(--text-2);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.combobox-input,
+.command-input {
+  inline-size: 100%;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding: 0.45rem 0.75rem;
+  color: var(--text-1);
+}
+
+.combobox-options {
+  position: absolute;
+  z-index: 10;
+  inset-inline: 0;
+  margin-block-start: 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  box-shadow: var(--shadow-2);
+  padding: 0.25rem;
+  max-block-size: 13rem;
+  overflow-y: auto;
+}
+
+.combobox-option,
+.command-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+}
+
+/* Filtering is an attribute, not a re-render: options that do not match the
+   query are simply hidden. */
+.combobox-option:not([tc-matches]),
+.command-option:not([tc-matches]) {
+  display: none;
+}
+
+.combobox-option[tc-active],
+.command-option[tc-active] {
+  background: var(--accent-soft);
+}
+
+.combobox-option[tc-selected],
+.command-option[tc-selected] {
+  font-weight: 600;
+}
+
+.command {
+  inline-size: min(100%, 24rem);
+}
+
+.command-options {
+  margin-block-start: 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding: 0.25rem;
+  max-block-size: 13rem;
+  overflow-y: auto;
+}
+
+.command-hint {
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+/* Command bar ------------------------------------------------------ */
+
+.commandbar-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+}
+
+.commandbar-panel {
+  position: fixed;
+  inset-block-start: 12%;
+  inset-inline: 50%;
+  translate: -50% 0;
+  inline-size: min(90%, 26rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-0);
+  box-shadow: var(--shadow-2);
+  padding: 0.75rem;
+}
+
+/* Dialog ----------------------------------------------------------- */
+
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+}
+
+.dialog-panel {
+  position: fixed;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  translate: -50% -50%;
+  display: grid;
+  gap: 0.75rem;
+  inline-size: min(90%, 24rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-0);
+  box-shadow: var(--shadow-2);
+  padding: 1.1rem;
+}
+
+.drawer-panel {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-end: 0;
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  inline-size: min(80%, 18rem);
+  border-inline-start: 1px solid var(--border);
+  background: var(--surface-0);
+  box-shadow: var(--shadow-2);
+  padding: 1.1rem;
+}
+
+.dialog-title {
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+
+.dialog-description {
+  color: var(--text-2);
+  font-size: 0.9rem;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* Popover ---------------------------------------------------------- */
+
+.popover {
+  position: relative;
+  align-self: flex-start;
+}
+
+.popover-caret {
+  color: var(--text-3);
+  transition: rotate 150ms ease;
+}
+
+.popover [tc-expanded] .popover-caret,
+.popover-button[tc-expanded] .popover-caret {
+  rotate: 180deg;
+}
+
+.popover-panel {
+  position: absolute;
+  z-index: 10;
+  inset-inline-start: 0;
+  margin-block-start: 0.35rem;
+  inline-size: max-content;
+  max-inline-size: 18rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  box-shadow: var(--shadow-2);
+  padding: 0.75rem;
+}
+
+.popover-panel-flush {
+  padding: 0.25rem;
+}
+
+/* Menu ------------------------------------------------------------- */
+
+.menu {
+  display: grid;
+  gap: 0.1rem;
+  inline-size: min(100%, 14rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding: 0.25rem;
+}
+
+.popover-panel .menu {
+  border: none;
+  padding: 0;
+}
+
+.menu-item {
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.6rem;
+  color: var(--text-1);
+  cursor: pointer;
+}
+
+.menu-item[tc-active] {
+  background: var(--accent-soft);
+}
+
+.menu-item[tc-disabled] {
+  color: var(--text-3);
+  cursor: not-allowed;
+}
+
+.menu-item-danger {
+  color: var(--danger);
+}
+
+/* Context menu ----------------------------------------------------- */
+
+.contextmenu-boundary {
+  display: grid;
+  place-items: center;
+  min-block-size: 7rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  color: var(--text-2);
+}
+
+.contextmenu-overlay {
+  position: fixed;
+  inset: 0;
+}
+
+.contextmenu-panel {
+  position: fixed;
+  z-index: 10;
+  inline-size: 12rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  box-shadow: var(--shadow-2);
+  padding: 0.25rem;
+}
+
+/* Toast ------------------------------------------------------------ */
+
+.toaster {
+  display: grid;
+  gap: 0.5rem;
+  inline-size: min(100%, 22rem);
+}
+
+.toast {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid var(--border-strong);
+  border-inline-start-width: 3px;
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  box-shadow: var(--shadow-1);
+  padding: 0.6rem 0.8rem;
+}
+
+.toast[data-tone='success'] {
+  border-inline-start-color: #15803d;
+}
+
+.toast[data-tone='error'] {
+  border-inline-start-color: var(--danger);
+}
+
+.toast-title {
+  font-weight: 500;
+}
+
+.toast-dismiss {
+  border: none;
+  background: none;
+  color: var(--text-3);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* Feed ------------------------------------------------------------- */
+
+.feed {
+  inline-size: min(100%, 26rem);
+}
+
+.feed-label {
+  display: block;
+  margin-block-end: 0.4rem;
+  color: var(--text-2);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.feed-content {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.feed-article {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding: 0.7rem 0.9rem;
+}
+
+.feed-article:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.feed-article-title {
+  display: block;
+  font-weight: 600;
+}
+
+.feed-article-body {
+  display: block;
+  color: var(--text-2);
+  font-size: 0.9rem;
+}
+
+/* Transition ------------------------------------------------------- */
+
+.transition-box,
+.transition-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  padding: 0.85rem 0.9rem;
+  color: var(--text-2);
+}
+
+.transition-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-block-size: 7rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.transition-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--accent-soft);
+}
+
+.transition-card {
+  position: relative;
+  background: var(--surface-0);
+  box-shadow: var(--shadow-2);
+}
+
+.fade-enter {
+  transition: opacity 200ms ease-out;
+}
+
+.fade-leave {
+  transition: opacity 150ms ease-in;
+}
+
+.fade-from {
+  opacity: 0;
+}
+
+.fade-to {
+  opacity: 1;
+}
+
+.slide-enter {
+  transition:
+    opacity 220ms ease-out,
+    translate 220ms ease-out;
+  transition-delay: 80ms;
+}
+
+.slide-leave {
+  transition:
+    opacity 150ms ease-in,
+    translate 150ms ease-in;
+}
+
+.slide-from {
+  opacity: 0;
+  translate: 0 0.5rem;
+}
+
+.slide-to {
+  opacity: 1;
+  translate: none;
+}
+
+/*
+ * Demos that open an overlay need room to show it. A framed demo is sized to
+ * its content, and a fixed-position panel adds no content height — so the
+ * demos that open one reserve the space instead.
+ */
+.stage-tall {
+  min-block-size: 20rem;
+}

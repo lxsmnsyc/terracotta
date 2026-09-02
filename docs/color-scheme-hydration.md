@@ -39,16 +39,58 @@ button outside the provider and it counts normally. The controlled form
 (`value` / `onChange`) fails in the same way, so the internal `createSignal` is
 not the cause.
 
-## Likely cause
+## Cause
 
-The provider creates three `createEffect`s and reads `usePrefersDark()` /
-`usePageVisibility()`. The first effect calls `set(...)` synchronously on its
-first run, which writes the scheme while hydration is still resuming.
+`ColorSchemeProvider` calls `usePrefersDark()` and `usePageVisibility()` from
+`solid-use`. Both pick their implementation at module scope:
 
-Whatever the precise mechanism, the general rule this site had to learn applies
-here too: **a reactive owner created on one side only shifts every hydration id
-allocated after it**, and the tree stops matching from that point on. The same
-mistake in this repo's own code (`createEffect` inside an `if (!isServer)`
-block) produced exactly the same symptom, with the same silence. Hoisting the
-effects out of the guard fixed it here; the guard belongs inside the effect
-body, which does not run during SSR anyway.
+```ts
+const useMediaQuery = isServer
+  ? _query => () => false                     // no reactive nodes at all
+  : query => {
+      const [state, setState] = createSignal(false);
+      onSettled(() => { /* … */ });           // an owner
+      return state;
+    };
+```
+
+The server branch creates nothing. The client branch creates a signal and an
+`onSettled` owner — twice over, once per hook. So the client builds two reactive
+owners at that point in the tree that the server never built.
+
+Solid 2 allocates hydration keys as owners are created while it walks the tree.
+Two extra owners shift every key allocated after them, so the keys the client
+computes for the provider's children no longer match the `_hk` attributes in the
+server's HTML. Hydration cannot find those nodes and gives up on them.
+
+## Evidence
+
+Each case is a stock start-mode app with a counter button; "broken" means the
+button renders but never counts.
+
+| Case | Result |
+| --- | --- |
+| `createSignal` created on the client only | hydrates |
+| `onSettled` created on the client only | **broken**, silently |
+| `onSettled` created on both sides | hydrates |
+| Client-only `onSettled` in a wrapper, button inside it | **broken** |
+| The same wrapper, button rendered *before* it | hydrates |
+
+So `onSettled` is not the problem and neither is the signal: creating a
+reactive owner **on one side only** is. That also explains why the controlled
+form (`value` / `onChange`) fails identically — that branch only chooses
+`get`/`set`, and both hooks are called either way.
+
+## Fix
+
+Create the same nodes on both sides and guard the *body* instead:
+`createSignal` and `onSettled` unconditionally, with the `window` / `document`
+access inside the callback, which does not run during SSR anyway. The table
+above shows an unconditional `onSettled` server-renders fine.
+
+The rule, which cost this repo the same bug in its own code: **`isServer` may
+decide what a reactive node does, never whether it exists.**
+
+This repo made the same mistake in its own code — `createEffect` inside an
+`if (!isServer)` block — and got exactly the same symptom, with the same
+silence. Hoisting the effects out of the guard fixed it.

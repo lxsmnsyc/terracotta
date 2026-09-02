@@ -6,19 +6,26 @@
  * by Terracotta's own `ColorSchemeProvider`), and it may style anything else it
  * likes on top.
  *
- * Two vocabularies are themeable:
+ * A theme has to define every token below, in both colour schemes (`html.dark`
+ * is toggled by the colour-scheme provider). Defining only tokens is enough for
+ * a complete theme: the two stylesheets a theme paints are written entirely in
+ * them.
  *
- *   1. The chrome and demo shell classes — `.control`, `.panel`, `.shell`,
- *      `.demo`, `.prose` and friends. Structure for these lives in
- *      `styles/chrome.css` and `styles/prose.css`; a theme is free to override
- *      any of it.
+ *   1. The chrome — `.masthead`, `.sidebar-link`, `.control`, `.demo`,
+ *      `.prose` and friends, in `styles/chrome.css` and `styles/prose.css`.
  *
- *   2. The demo vocabulary — the class names the demos in `src/demos` use.
- *      Demos never carry inline styles or theme-specific classes, so a theme
- *      that styles the vocabulary styles every demo at once. The names are
- *      component-shaped and documented alongside each component page:
- *      `.disclosure`, `.disclosure-button`, `.listbox-option`, and so on,
- *      combined with Terracotta's `tc-` state attributes.
+ *   2. The demo vocabulary — the class names every file in `src/demos` uses,
+ *      in `styles/demos.css`. Demos carry no styles and no theme-specific
+ *      classes, so styling the vocabulary styles all forty-five demos at once.
+ *      The names are component-shaped — `.disclosure`, `.disclosure-button`,
+ *      `.listbox-option` — and combine with Terracotta's `tc-` state
+ *      attributes.
+ *
+ * Beyond tokens, a theme may override any rule in either stylesheet by
+ * repeating its selector under `[data-theme='<id>']`, which always wins on
+ * specificity. `terracotta.css` is tokens only; `brutalist.css` also reshapes
+ * the baseline — borders, corners, shadows, casing — without touching a single
+ * component or demo.
  *
  * The values below are the fallbacks. They exist so a half-finished theme
  * still renders something readable rather than an unstyled page, and so the
@@ -48,6 +55,9 @@
 
   --focus: #2563eb;
   --danger: #dc2626;
+
+  /* Behind a modal panel. */
+  --overlay: rgb(0 0 0 / 45%);
 
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
@@ -85,6 +95,8 @@
 
   --focus: #60a5fa;
   --danger: #f87171;
+
+  --overlay: rgb(0 0 0 / 65%);
 
   --shadow-1: 0 1px 2px rgb(0 0 0 / 40%);
   --shadow-2: 0 8px 24px rgb(0 0 0 / 50%);

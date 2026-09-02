@@ -90,16 +90,33 @@ would in an application. The costs of the boundary are handled by
 ## Themes
 
 Terracotta writes `tc-` state attributes and never touches `class`, so a theme
-is nothing but CSS. `src/themes/_contract.css` documents the custom properties
-every theme must define and carries neutral fallbacks;
-`src/themes/terracotta.css` is the worked example.
+is nothing but CSS.
 
-A theme is scoped to `html[data-theme="<id>"]` and styles two vocabularies: the
-site's own chrome classes, and the class names the demos use. Because demos
-carry no styles of their own, switching theme restyles the entire site and
-every demo at once — the same markup, a different design system. That is the
-argument the site is making, so the theme picker is deliberately in the
-masthead rather than buried in a settings page.
+Two stylesheets get painted, and both are written purely in the tokens that
+`src/themes/_contract.css` defines:
+
+- `src/styles/chrome.css` (and `prose.css`) — the site's own furniture.
+- `src/styles/demos.css` — the **demo vocabulary**: the class names every file
+  in `src/demos` uses. Demos carry no styles and no theme-specific classes, so
+  this one file dresses all forty-five of them.
+
+A theme is therefore only a token block scoped to `html[data-theme="<id>"]`.
+`terracotta.css` is exactly that and nothing more. Beyond tokens it may also
+override any baseline rule by repeating the selector under its own scope, which
+always wins on specificity — `brutalist.css` does that to reshape borders,
+corners, shadows and casing, and `glass.css` to frost every surface, and
+neither touches a single component or demo.
+
+`glass.css` also shows how far a theme's licence goes: because
+`backdrop-filter` needs something behind it to blur, that theme paints the
+document itself — a fixed gradient wash on the root element, with `body` made
+transparent — and it clears the opaque background Shiki bakes into highlighted
+code so the code blocks frost like everything else. It reverts to flat opaque
+surfaces under `prefers-reduced-transparency`.
+
+Switching theme therefore restyles the entire site and every demo at once: the
+same markup, a different design system. That is the argument the site is
+making, so the theme picker sits in the masthead rather than in a settings page.
 
 To add one: write `src/themes/<id>.css`, import it from `src/themes/index.ts`,
 and add its entry to `THEMES`. Nothing else changes.

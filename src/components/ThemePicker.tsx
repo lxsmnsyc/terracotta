@@ -1,5 +1,5 @@
 import type { JSX } from '@solidjs/web';
-import { For } from 'solid-js';
+import { For, createEffect, createSignal } from 'solid-js';
 import {
   Listbox,
   ListboxButton,
@@ -8,7 +8,7 @@ import {
   ListboxOptions,
 } from 'terracotta/listbox';
 import { useTheme } from '../lib/theme';
-import { THEMES, type ThemeMeta } from '../themes';
+import { DEFAULT_THEME, THEMES, type ThemeMeta } from '../themes';
 
 /**
  * The site's own chrome is built out of Terracotta. The theme picker is the
@@ -18,6 +18,24 @@ import { THEMES, type ThemeMeta } from '../themes';
 export default function ThemePicker(): JSX.Element {
   const { theme, setTheme } = useTheme();
   const current = (): ThemeMeta => THEMES.find((entry) => entry.id === theme()) ?? THEMES[0]!;
+
+  /*
+   * The server cannot know which theme is stored in the browser, so it always
+   * renders the default name. Hydration reuses the server's text node and only
+   * rewrites it when the value *changes*, which meant a reader who had picked
+   * another theme saw the whole site restyled while the button still read
+   * "Terracotta". Starting from the server's answer and moving to the real one
+   * in an effect makes that a change, so the text is patched.
+   */
+  const [label, setLabel] = createSignal(
+    (THEMES.find((entry) => entry.id === DEFAULT_THEME) ?? THEMES[0]!).name,
+  );
+  createEffect(
+    () => current().name,
+    (name) => {
+      setLabel(name);
+    },
+  );
 
   return (
     <Listbox<ThemeMeta>
@@ -34,7 +52,7 @@ export default function ThemePicker(): JSX.Element {
       <ListboxLabel class="visually-hidden">Theme</ListboxLabel>
       <ListboxButton class="theme-picker-button control">
         <span class="theme-picker-swatch" aria-hidden="true" />
-        <span class="theme-picker-value">{current().name}</span>
+        <span class="theme-picker-value">{label()}</span>
         <span class="theme-picker-caret" aria-hidden="true">
           ▾
         </span>
