@@ -121,7 +121,14 @@ HTML changed — the `##` before a heading, the brackets around a button, the `>
 beside the current page, the `$` before the wordmark — it is generated content.
 No component, no demo and no line of markup differs from any other theme.
 
-Two things every theme after the first has had to know:
+`blueprint.css` is a drawing sheet: grid paper on the root element, hairlines
+instead of shadows, stencilled labels on anything that names a part, and sheet
+numbers down the left of the headings from a CSS counter on `.prose`. It is the
+theme that changes the *information design* rather than the palette — the API
+tables become fully ruled parts schedules, and nothing casts a shadow because a
+blueprint has no depth.
+
+Three things every theme after the first has had to know:
 
 - A row that fills on hover or selection repaints only itself. Children that
   carry their own colour — a muted blurb, an accent tick — keep it and vanish
@@ -131,6 +138,28 @@ Two things every theme after the first has had to know:
   classes and ties with `[data-theme='x'].dark .shiki`. A theme overriding a
   dark-scheme baseline rule has to carry `:root` too, or the winner is whichever
   stylesheet the bundler emits last.
+- Setting `border-style` on an element the baseline gives a single border to
+  boxes it in on all four sides. Name the side.
+
+## Tests
+
+`pnpm test` runs the Playwright suite in `tests/`. It starts the dev server
+itself, so nothing has to be running first.
+
+- `pages.spec.ts` walks every page in the sidebar and fails on anything in the
+  console. A page that fails to hydrate still renders — it just stops
+  responding — so the console is where that shows up and nowhere else.
+- `themes.spec.ts` puts each theme through both colour schemes, checks the
+  contract's tokens all resolve, and asserts that switching theme moves the
+  chrome and the demo frames together.
+- `contrast.spec.ts` measures text against the ground it actually sits on —
+  compositing translucent layers down the ancestor chain, which `glass` needs —
+  and holds filled buttons and active rows to 4.5:1 in every theme and scheme.
+  Every contrast bug this site has had was a fill repainted without its label.
+- `theme-picker.spec.ts` covers the appearance controls, including that the
+  picker names the stored theme on first paint. That one is a hydration trap:
+  the server cannot know the visitor's theme, and hydration rewrites a text node
+  only when the value changes.
 
 Switching theme therefore restyles the entire site and every demo at once: the
 same markup, a different design system. That is the argument the site is

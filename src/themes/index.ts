@@ -1,3 +1,4 @@
+import './blueprint.css';
 import './brutalist.css';
 import './glass.css';
 import './terminal.css';
@@ -36,6 +37,11 @@ export const THEMES: readonly ThemeMeta[] = [
     id: 'terminal',
     name: 'Terminal',
     blurb: 'Monospace phosphor, scanlines, and a blinking cursor.',
+  },
+  {
+    id: 'blueprint',
+    name: 'Blueprint',
+    blurb: 'Grid paper, hairlines, stencil labels, numbered sheets.',
   },
 ];
 

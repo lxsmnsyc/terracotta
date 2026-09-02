@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "lint": "oxlint --type-aware",
     "format": "oxfmt .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
   },
   "dependencies": {
     "@solidjs/router": "2.0.0-next.21",
@@ -20,6 +22,7 @@
   },
   "devDependencies": {
     "@lxsmnsyc/oxlint-config": "^0.1.2",
+    "@playwright/test": "^1.62.1",
     "@solidjs/vite-plugin": "3.0.0-next.37",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^25.5.0",

@@ -673,10 +673,16 @@ a.button {
   color: var(--accent-contrast);
 }
 
+/*
+ * Not white: `--danger` is a dark red in a light scheme and a light one in a
+ * dark scheme, so a fixed white label is legible in only half the themes.
+ * `--accent-contrast` is the colour each theme already nominates for text on
+ * one of its filled surfaces, and it flips with the scheme the same way.
+ */
 .button-danger {
   border-color: transparent;
   background: var(--danger);
-  color: #fff;
+  color: var(--accent-contrast);
 }
 
 .button-primary:hover {

@@ -275,7 +275,7 @@
   box-shadow:
     0 6px 18px color-mix(in srgb, var(--danger) 35%, transparent),
     var(--glass-sheen);
-  color: #fff;
+  color: var(--accent-contrast);
 }
 
 [data-theme='glass'] .button-danger:hover {

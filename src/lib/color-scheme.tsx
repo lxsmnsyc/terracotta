@@ -25,16 +25,36 @@ interface ColorSchemeContextValue {
 
 const ColorSchemeContext = createContext<ColorSchemeContextValue>();
 
+function isScheme(value: string | null): value is ColorScheme {
+  return value === 'light' || value === 'dark' || value === 'system';
+}
+
 function readStoredScheme(): ColorScheme {
   if (isServer) {
     return 'system';
   }
   try {
     const stored = localStorage.getItem(SCHEME_STORAGE_KEY);
-    return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+    return isScheme(stored) ? stored : 'system';
   } catch {
     return 'system';
   }
+}
+
+/**
+ * A demo frame is told which appearance to render through the query string, so
+ * that its first paint already matches the page around it. The boot script in
+ * `Document` reads it, and so must this: starting from storage instead would
+ * flip the frame back to the visitor's own scheme the moment it hydrated —
+ * which is also what a reader saw after following a demo's "Open" link out of
+ * a dark page.
+ */
+function schemeFromQuery(): ColorScheme | null {
+  if (isServer) {
+    return null;
+  }
+  const requested = new URLSearchParams(location.search).get('scheme');
+  return isScheme(requested) ? requested : null;
 }
 
 /**
@@ -54,7 +74,8 @@ function readStoredScheme(): ColorScheme {
  * client tree agree, and nothing is written until after hydration settles.
  */
 export function ColorSchemeProvider(props: { children: JSX.Element }): JSX.Element {
-  const [scheme, setScheme] = createSignal<ColorScheme>(readStoredScheme());
+  const requested = schemeFromQuery();
+  const [scheme, setScheme] = createSignal<ColorScheme>(requested ?? readStoredScheme());
   const [systemDark, setSystemDark] = createSignal(
     !isServer && matchMedia('(prefers-color-scheme: dark)').matches,
   );
@@ -92,6 +113,12 @@ export function ColorSchemeProvider(props: { children: JSX.Element }): JSX.Eleme
   createEffect(
     () => scheme(),
     (value) => {
+      // A frame showing someone else's appearance must not write it into this
+      // browser's preference — but a scheme chosen *inside* the frame still
+      // counts, so only the value that came from the query is skipped.
+      if (requested !== null && value === requested) {
+        return;
+      }
       try {
         localStorage.setItem(SCHEME_STORAGE_KEY, value);
       } catch {
