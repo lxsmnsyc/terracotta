@@ -1,5 +1,6 @@
 import './brutalist.css';
 import './glass.css';
+import './terminal.css';
 import './terracotta.css';
 
 export interface ThemeMeta {
@@ -30,6 +31,11 @@ export const THEMES: readonly ThemeMeta[] = [
     id: 'glass',
     name: 'Glass',
     blurb: 'Frosted, translucent panels floating over a coloured wash.',
+  },
+  {
+    id: 'terminal',
+    name: 'Terminal',
+    blurb: 'Monospace phosphor, scanlines, and a blinking cursor.',
   },
 ];
 

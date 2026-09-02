@@ -284,10 +284,28 @@
 
 /* Chrome ------------------------------------------------------------ */
 
+/*
+ * The masthead frosts through a pseudo-element rather than through itself.
+ * An element with `backdrop-filter` becomes a backdrop root: its descendants
+ * can only sample what is inside it, so the theme picker's popup — which hangs
+ * below the masthead, outside its box — had nothing to blur and rendered flat.
+ * Moving the filter to `::before` keeps the masthead frosted while leaving the
+ * popup free to sample the page behind it.
+ */
 [data-theme='glass'] .masthead {
+  position: sticky;
   border-block-end-color: var(--border);
+  backdrop-filter: none;
+  background: transparent;
+}
+
+[data-theme='glass'] .masthead::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
   backdrop-filter: var(--glass-blur-strong);
   background: var(--surface-1);
+  content: '';
 }
 
 [data-theme='glass'] .brand-mark {
@@ -314,14 +332,14 @@
  * in `prose.css` rather than rely on stylesheet order.
  */
 [data-theme='glass'] .shiki,
-[data-theme='glass'].dark .shiki {
+:root[data-theme='glass'].dark .shiki {
   border-color: var(--border);
   backdrop-filter: var(--glass-blur);
   background-color: var(--surface-1);
 }
 
 [data-theme='glass'] .shiki span,
-[data-theme='glass'].dark .shiki span {
+:root[data-theme='glass'].dark .shiki span {
   background-color: transparent;
 }
 

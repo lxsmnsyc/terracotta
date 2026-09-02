@@ -1,0 +1,343 @@
+/*
+ * Terminal.
+ *
+ * A phosphor console: everything monospace, nothing rounded, scanlines over
+ * the whole page, and a cursor blinking after the page title. Light is an
+ * amber paper printout, dark is green phosphor on black.
+ *
+ * The other themes restyle the site. This one changes what the site appears to
+ * *be* — and still without touching a single component, demo, or line of
+ * markup. Where it looks like the HTML changed (the `##` before a heading, the
+ * brackets around a button, the `>` beside the current page) it is generated
+ * content, which is the strongest form of the argument this site is making:
+ * Terracotta writes `tc-` state attributes and no styles, so the whole surface
+ * is the theme's to reinterpret.
+ */
+
+[data-theme='terminal'] {
+  --surface-0: #faf6ec;
+  --surface-1: #f2ecdc;
+  --surface-2: #e6dec7;
+
+  --text-1: #2b2117;
+  --text-2: #5a4a35;
+  --text-3: #8d7a5e;
+
+  --border: #cbbb99;
+  --border-strong: #a3906d;
+
+  --accent: #a35a00;
+  --accent-hover: #7a4300;
+  --accent-contrast: #faf6ec;
+  --accent-soft: #f0e2c4;
+
+  --focus: #a35a00;
+  --danger: #a51f1f;
+
+  --overlay: rgb(43 33 23 / 55%);
+
+  /* A terminal has no corners. */
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+
+  --shadow-1: none;
+  --shadow-2: 0 0 0 1px var(--border-strong);
+
+  /* One family for the whole document, which is most of the effect. */
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, 'Courier New', monospace;
+  --font-sans: var(--font-mono);
+
+  --masthead-height: 3rem;
+
+  /* Theme-private. */
+  --scanline: rgb(43 33 23 / 5%);
+  --glow: none;
+}
+
+[data-theme='terminal'].dark {
+  --surface-0: #03130a;
+  --surface-1: #061c0f;
+  --surface-2: #0c2b18;
+
+  --text-1: #b9ffcf;
+  --text-2: #6ee39a;
+  --text-3: #3f9b63;
+
+  --border: #164a2c;
+  --border-strong: #2a7a4a;
+
+  --accent: #39ff88;
+  --accent-hover: #7dffb4;
+  --accent-contrast: #03130a;
+  --accent-soft: #0e2f1c;
+
+  --focus: #39ff88;
+  --danger: #ff6b5a;
+
+  --overlay: rgb(0 8 4 / 78%);
+
+  --shadow-2: 0 0 0 1px var(--border-strong);
+
+  --scanline: rgb(0 0 0 / 28%);
+  /* Phosphor bleeds. Only in the dark scheme — ink on paper does not glow. */
+  --glow: 0 0 6px currentcolor;
+}
+
+/* ------------------------------------------------------------------ *
+ * The screen
+ *
+ * Scanlines ride above everything on a fixed, non-interactive layer. It hangs
+ * off `body` rather than a wrapper, so the demo frames — separate documents
+ * carrying the same `data-theme` — get their own without any component
+ * knowing.
+ * ------------------------------------------------------------------ */
+
+[data-theme='terminal'] body::after {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--scanline) 0,
+    var(--scanline) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  content: '';
+  pointer-events: none;
+}
+
+[data-theme='terminal'].dark body {
+  text-shadow: var(--glow);
+}
+
+/* ------------------------------------------------------------------ *
+ * Generated content
+ *
+ * Markdown, rendered back into the source it came from.
+ * ------------------------------------------------------------------ */
+
+[data-theme='terminal'] .prose h2::before {
+  color: var(--text-3);
+  content: '## ';
+}
+
+[data-theme='terminal'] .prose h3::before {
+  color: var(--text-3);
+  content: '### ';
+}
+
+[data-theme='terminal'] .prose h2 {
+  border-block-end-style: dashed;
+}
+
+[data-theme='terminal'] .prose hr {
+  border-block-start-style: dashed;
+}
+
+[data-theme='terminal'] .prose blockquote {
+  border-inline-start-style: dashed;
+  font-style: normal;
+}
+
+[data-theme='terminal'] .prose blockquote::before {
+  color: var(--text-3);
+  content: '> ';
+}
+
+/* Every navigation entry is a line in a listing; the current one has the
+   prompt. The idle marker is the same width, so nothing shifts. */
+[data-theme='terminal'] .sidebar-link::before {
+  color: var(--text-3);
+  content: '\00a0\00a0';
+}
+
+[data-theme='terminal'] .sidebar-link[aria-current='page']::before,
+[data-theme='terminal'] .sidebar-link:hover::before {
+  color: var(--accent);
+  content: '>\00a0';
+}
+
+[data-theme='terminal'] .sidebar-section-title::before,
+[data-theme='terminal'] .toc-title::before {
+  content: '// ';
+}
+
+/* A button is a target you type at. */
+[data-theme='terminal'] .button::before,
+[data-theme='terminal'] .control::before,
+[data-theme='terminal'] .demo-tool::before {
+  content: '[';
+}
+
+[data-theme='terminal'] .button::after,
+[data-theme='terminal'] .control::after,
+[data-theme='terminal'] .demo-tool::after {
+  content: ']';
+}
+
+/* The cursor. It is the page's, not any component's. */
+[data-theme='terminal'] .page-title::after,
+[data-theme='terminal'] .hero-title::after {
+  color: var(--accent);
+  content: '_';
+  animation: terminal-blink 1.1s steps(1, end) infinite;
+}
+
+@keyframes terminal-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme='terminal'] .page-title::after,
+  [data-theme='terminal'] .hero-title::after {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Shape
+ *
+ * Selection is a filled block, the way a console highlights a row.
+ * ------------------------------------------------------------------ */
+
+[data-theme='terminal'] .menu-item[tc-active],
+[data-theme='terminal'] .listbox-option[tc-active],
+[data-theme='terminal'] .select-option[tc-active],
+[data-theme='terminal'] .combobox-option[tc-active],
+[data-theme='terminal'] .command-option[tc-active],
+[data-theme='terminal'] .theme-picker-option[tc-active],
+[data-theme='terminal'] .accordion-button[tc-active],
+[data-theme='terminal'] .tab[tc-selected],
+[data-theme='terminal'] .demo-tab[tc-selected],
+[data-theme='terminal'] .sidebar-link[aria-current='page'] {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/*
+ * A filled row repaints only itself; children that carry their own colour —
+ * a muted blurb, an accent tick — would keep it and vanish into the fill.
+ */
+[data-theme='terminal'] .menu-item[tc-active] *,
+[data-theme='terminal'] .listbox-option[tc-active] *,
+[data-theme='terminal'] .select-option[tc-active] *,
+[data-theme='terminal'] .combobox-option[tc-active] *,
+[data-theme='terminal'] .command-option[tc-active] *,
+[data-theme='terminal'] .theme-picker-option[tc-active] * {
+  color: inherit;
+}
+
+[data-theme='terminal'] .theme-picker-option[tc-active][tc-selected] .theme-picker-option-name::after {
+  color: inherit;
+}
+
+[data-theme='terminal'] .sidebar-link[aria-current='page']::before {
+  color: var(--accent-contrast);
+}
+
+[data-theme='terminal'] .tablist {
+  border-block-end-style: dashed;
+}
+
+[data-theme='terminal'] .tab {
+  border: 1px solid transparent;
+  border-block-end: none;
+}
+
+/* Toggles read as a checkbox in a listing: `[x]` against `[ ]`. */
+[data-theme='terminal'] .checkbox-box,
+[data-theme='terminal'] .radio-dot {
+  border-radius: 0;
+}
+
+[data-theme='terminal'] .radio-dot {
+  border-radius: 0;
+}
+
+[data-theme='terminal'] .switch-track {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface-1);
+  padding: 0.15rem;
+}
+
+[data-theme='terminal'] .switch-track[tc-checked=''],
+[data-theme='terminal'] [tc-pressed] .switch-track {
+  background: var(--accent-soft);
+}
+
+[data-theme='terminal'] .switch-knob {
+  border-radius: 0;
+  background: var(--accent);
+  box-shadow: none;
+  transition: translate 90ms steps(3, end);
+}
+
+/* Chrome ------------------------------------------------------------ */
+
+[data-theme='terminal'] .masthead {
+  border-block-end-style: dashed;
+  backdrop-filter: none;
+  background: var(--surface-0);
+}
+
+[data-theme='terminal'] .brand::before {
+  color: var(--accent);
+  content: '$\00a0';
+}
+
+[data-theme='terminal'] .brand-mark {
+  border-radius: 0;
+  background: var(--accent);
+}
+
+[data-theme='terminal'] .page-title,
+[data-theme='terminal'] .hero-title,
+[data-theme='terminal'] .prose h2,
+[data-theme='terminal'] .prose h3 {
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+[data-theme='terminal'] .page-lede,
+[data-theme='terminal'] .hero-lede {
+  font-size: 1rem;
+}
+
+[data-theme='terminal'] .toc-list {
+  border-inline-start-style: dashed;
+}
+
+[data-theme='terminal'] .demo-toolbar {
+  border-block-end-style: dashed;
+}
+
+/*
+ * Shiki bakes its own background into the block and into every span. Left
+ * alone the code sat on a GitHub-coloured slab in the middle of a console, so
+ * the ground is replaced with the theme's own and the spans are cleared —
+ * only the syntax colours survive. The dark selector carries `:root`
+ * so that it out-specifies `:root.dark .shiki span` in `prose.css` outright —
+ * without it the two tie at three classes and the winner is decided by
+ * whichever stylesheet the bundler happens to emit last.
+ */
+[data-theme='terminal'] .shiki,
+:root[data-theme='terminal'].dark .shiki {
+  border-style: dashed;
+  background-color: var(--surface-1);
+}
+
+[data-theme='terminal'] .shiki span,
+:root[data-theme='terminal'].dark .shiki span {
+  background-color: transparent;
+}
+
+/* Focus is a dashed marquee, like a selected cell. */
+[data-theme='terminal'] :focus-visible {
+  outline: 2px dashed var(--focus);
+  outline-offset: 1px;
+}

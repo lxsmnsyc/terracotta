@@ -114,6 +114,24 @@ transparent — and it clears the opaque background Shiki bakes into highlighted
 code so the code blocks frost like everything else. It reverts to flat opaque
 surfaces under `prefers-reduced-transparency`.
 
+`terminal.css` goes furthest. It is a phosphor console — one monospace family
+for the whole document, no corners, scanlines on a fixed pseudo-element hung
+off `body`, and a cursor blinking after the page title. Where it looks like the
+HTML changed — the `##` before a heading, the brackets around a button, the `>`
+beside the current page, the `$` before the wordmark — it is generated content.
+No component, no demo and no line of markup differs from any other theme.
+
+Two things every theme after the first has had to know:
+
+- A row that fills on hover or selection repaints only itself. Children that
+  carry their own colour — a muted blurb, an accent tick — keep it and vanish
+  into the fill, so the fill needs a companion rule making descendants inherit.
+  Pseudo-elements need naming explicitly; `*` cannot reach them.
+- `:root` is a pseudo-class, so `:root.dark .shiki` in `prose.css` scores three
+  classes and ties with `[data-theme='x'].dark .shiki`. A theme overriding a
+  dark-scheme baseline rule has to carry `:root` too, or the winner is whichever
+  stylesheet the bundler emits last.
+
 Switching theme therefore restyles the entire site and every demo at once: the
 same markup, a different design system. That is the argument the site is
 making, so the theme picker sits in the masthead rather than in a settings page.
