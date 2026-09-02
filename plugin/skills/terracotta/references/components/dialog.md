@@ -1,3 +1,5 @@
+<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+
 # Dialog
 
 A [modal dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/). While

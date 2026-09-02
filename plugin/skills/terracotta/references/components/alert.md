@@ -1,3 +1,5 @@
+<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+
 # Alert
 
 An [ARIA alert](https://www.w3.org/WAI/ARIA/apg/patterns/alert/) is a live

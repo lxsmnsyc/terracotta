@@ -1,3 +1,5 @@
+<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+
 # ColorScheme
 
 Light / dark / system colour-scheme management. `ColorSchemeProvider` keeps three

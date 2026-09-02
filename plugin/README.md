@@ -8,7 +8,7 @@ behaviour.
 
 ## Install
 
-```
+```text
 /plugin marketplace add lxsmnsyc/terracotta
 /plugin install terracotta@terracotta
 ```
@@ -18,14 +18,14 @@ from `terracotta`. Nothing else needs configuring.
 
 ## What is in it
 
-| Path | Contents |
-| --- | --- |
-| `skills/terracotta/SKILL.md` | The conventions every component shares |
-| `skills/terracotta/references/recipes.md` | Complete, typechecked examples for the common components |
+| Path                            | Contents                                                                                                   |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `skills/terracotta/SKILL.md`    | The API shape and the conventions every component shares. Hand-written, and the only part not in the docs. |
+| `skills/terracotta/references/` | The whole of the repository's `docs/`, so per-component detail is available offline.                       |
 
-Per-component reference — key bindings, every prop, worked markup — stays in
-[the repository docs](https://github.com/lxsmnsyc/terracotta/tree/main/docs),
-which the skill links to rather than duplicating.
+The reference tree is **generated**, not maintained by hand: `pnpm skill:sync`
+copies `docs/` into it, and `pnpm skill:check` fails when the copy is stale.
+Edit `docs/`, never the copy.
 
 ## Versions
 
@@ -34,5 +34,5 @@ This plugin documents **Terracotta 2.x**, which needs Solid 2 (`solid-js` and
 differs — chiefly that 1.x has a package root entry, so `import { Dialog } from
 'terracotta'` is correct there.
 
-Every export name and code sample was taken from the built package and
-typechecked against it, not written from memory.
+Every export name in `SKILL.md` was taken from the built package rather than
+written from memory.

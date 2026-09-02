@@ -1,3 +1,5 @@
+<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+
 # Feed
 
 An [ARIA feed](https://www.w3.org/WAI/ARIA/apg/patterns/feed/) is a stream of

@@ -1,3 +1,5 @@
+<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+
 # Combobox
 
 A [combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) is a text input

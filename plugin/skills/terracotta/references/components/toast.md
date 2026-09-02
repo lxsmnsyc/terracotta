@@ -1,3 +1,5 @@
+<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+
 # Toast
 
 Toast notifications are short, non-blocking messages. They appear in a corner of

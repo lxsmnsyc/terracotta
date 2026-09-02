@@ -1,3 +1,5 @@
+<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+
 # CommandBar
 
 A modal command palette. `CommandBar` is a dialog that also installs a global

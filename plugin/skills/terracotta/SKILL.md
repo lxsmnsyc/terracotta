@@ -40,32 +40,32 @@ import { createSignal, For } from 'solid-js';
 Subpath — exported parts. The first name in each row is the root that owns the
 state; the rest are its parts.
 
-| Subpath | Exports |
-| --- | --- |
-| `terracotta/accordion` | `Accordion`, `AccordionItem`, `AccordionHeader`, `AccordionButton`, `AccordionPanel` |
-| `terracotta/alert` | `Alert` |
+| Subpath                   | Exports                                                                                               |
+| ------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `terracotta/accordion`    | `Accordion`, `AccordionItem`, `AccordionHeader`, `AccordionButton`, `AccordionPanel`                  |
+| `terracotta/alert`        | `Alert`                                                                                               |
 | `terracotta/alert-dialog` | `AlertDialog`, `AlertDialogPanel`, `AlertDialogOverlay`, `AlertDialogTitle`, `AlertDialogDescription` |
-| `terracotta/button` | `Button` |
-| `terracotta/checkbox` | `Checkbox`, `CheckboxIndicator`, `CheckboxLabel`, `CheckboxDescription` |
-| `terracotta/color-scheme` | `ColorSchemeProvider`, `useColorScheme`, `useNativeColorScheme`, `usePreferredColorScheme` |
-| `terracotta/combobox` | `Combobox`, `ComboboxLabel`, `ComboboxInput`, `ComboboxOptions`, `ComboboxOption` |
-| `terracotta/command` | `Command`, `CommandLabel`, `CommandInput`, `CommandOptions`, `CommandOption` |
-| `terracotta/command-bar` | `CommandBar`, `CommandBarPanel`, `CommandBarOverlay`, `CommandBarTitle`, `CommandBarDescription` |
-| `terracotta/context-menu` | `ContextMenu`, `ContextMenuBoundary`, `ContextMenuPanel`, `ContextMenuOverlay` |
-| `terracotta/dialog` | `Dialog`, `DialogPanel`, `DialogOverlay`, `DialogTitle`, `DialogDescription` |
-| `terracotta/disclosure` | `Disclosure`, `DisclosureButton`, `DisclosurePanel` |
-| `terracotta/feed` | `Feed`, `FeedLabel`, `FeedContent`, `FeedArticle`, `FeedArticleLabel`, `FeedArticleDescription` |
-| `terracotta/listbox` | `Listbox`, `ListboxLabel`, `ListboxButton`, `ListboxOptions`, `ListboxOption` |
-| `terracotta/menu` | `Menu`, `MenuItem`, `MenuChild` |
-| `terracotta/popover` | `Popover`, `PopoverButton`, `PopoverPanel`, `PopoverOverlay` |
-| `terracotta/radio-group` | `RadioGroup`, `RadioGroupLabel`, `RadioGroupDescription`, `RadioGroupOption` |
-| `terracotta/select` | `Select`, `SelectOption` |
-| `terracotta/tabs` | `TabGroup`, `TabList`, `Tab`, `TabPanel` |
-| `terracotta/toast` | `Toaster`, `Toast`, `ToasterStore`, `useToaster` |
-| `terracotta/toggle` | `Toggle` |
-| `terracotta/toolbar` | `Toolbar` |
-| `terracotta/transition` | `Transition`, `TransitionChild` |
-| `terracotta/states` | State primitives — see [State primitives](#state-primitives) |
+| `terracotta/button`       | `Button`                                                                                              |
+| `terracotta/checkbox`     | `Checkbox`, `CheckboxIndicator`, `CheckboxLabel`, `CheckboxDescription`                               |
+| `terracotta/color-scheme` | `ColorSchemeProvider`, `useColorScheme`, `useNativeColorScheme`, `usePreferredColorScheme`            |
+| `terracotta/combobox`     | `Combobox`, `ComboboxLabel`, `ComboboxInput`, `ComboboxOptions`, `ComboboxOption`                     |
+| `terracotta/command`      | `Command`, `CommandLabel`, `CommandInput`, `CommandOptions`, `CommandOption`                          |
+| `terracotta/command-bar`  | `CommandBar`, `CommandBarPanel`, `CommandBarOverlay`, `CommandBarTitle`, `CommandBarDescription`      |
+| `terracotta/context-menu` | `ContextMenu`, `ContextMenuBoundary`, `ContextMenuPanel`, `ContextMenuOverlay`                        |
+| `terracotta/dialog`       | `Dialog`, `DialogPanel`, `DialogOverlay`, `DialogTitle`, `DialogDescription`                          |
+| `terracotta/disclosure`   | `Disclosure`, `DisclosureButton`, `DisclosurePanel`                                                   |
+| `terracotta/feed`         | `Feed`, `FeedLabel`, `FeedContent`, `FeedArticle`, `FeedArticleLabel`, `FeedArticleDescription`       |
+| `terracotta/listbox`      | `Listbox`, `ListboxLabel`, `ListboxButton`, `ListboxOptions`, `ListboxOption`                         |
+| `terracotta/menu`         | `Menu`, `MenuItem`, `MenuChild`                                                                       |
+| `terracotta/popover`      | `Popover`, `PopoverButton`, `PopoverPanel`, `PopoverOverlay`                                          |
+| `terracotta/radio-group`  | `RadioGroup`, `RadioGroupLabel`, `RadioGroupDescription`, `RadioGroupOption`                          |
+| `terracotta/select`       | `Select`, `SelectOption`                                                                              |
+| `terracotta/tabs`         | `TabGroup`, `TabList`, `Tab`, `TabPanel`                                                              |
+| `terracotta/toast`        | `Toaster`, `Toast`, `ToasterStore`, `useToaster`                                                      |
+| `terracotta/toggle`       | `Toggle`                                                                                              |
+| `terracotta/toolbar`      | `Toolbar`                                                                                             |
+| `terracotta/transition`   | `Transition`, `TransitionChild`                                                                       |
+| `terracotta/states`       | State primitives — see [State primitives](#state-primitives)                                          |
 
 Pick by pattern, not by name: `Listbox` is a dropdown (button plus popup),
 `Select` is an always-visible listbox, `Command` is an always-visible filtered
@@ -77,12 +77,12 @@ Terracotta chooses between the two by looking at which prop you passed. The
 choice is made once, at creation — never switch a component between them at
 runtime.
 
-| Uncontrolled | Controlled | Components |
-| --- | --- | --- |
-| `defaultOpen` | `isOpen` | Disclosure, Dialog, AlertDialog, Popover, ContextMenu, CommandBar, Listbox, Combobox |
-| `defaultValue` | `value` | Accordion, Select, Listbox, Combobox, Command, RadioGroup, TabGroup |
-| `defaultChecked` | `checked` | Checkbox |
-| `defaultPressed` | `pressed` | Toggle |
+| Uncontrolled     | Controlled | Components                                                                           |
+| ---------------- | ---------- | ------------------------------------------------------------------------------------ |
+| `defaultOpen`    | `isOpen`   | Disclosure, Dialog, AlertDialog, Popover, ContextMenu, CommandBar, Listbox, Combobox |
+| `defaultValue`   | `value`    | Accordion, Select, Listbox, Combobox, Command, RadioGroup, TabGroup                  |
+| `defaultChecked` | `checked`  | Checkbox                                                                             |
+| `defaultPressed` | `pressed`  | Toggle                                                                               |
 
 A **controlled** component never writes its own state: it calls `onChange` and
 nothing moves until you update the value you passed in. If a click appears to do
@@ -128,41 +128,47 @@ accepts one.
 
 **`unmount`** controls hidden content:
 
-| Value | Behaviour |
-| --- | --- |
-| `true` *(default)* | Children are removed while hidden and rebuilt when shown. |
-| `false` | Children are always rendered; you hide them yourself. |
-| `'offscreen'` | Children are built once and reused, detached while hidden. |
+| Value              | Behaviour                                                  |
+| ------------------ | ---------------------------------------------------------- |
+| `true` _(default)_ | Children are removed while hidden and rebuilt when shown.  |
+| `false`            | Children are always rendered; you hide them yourself.      |
+| `'offscreen'`      | Children are built once and reused, detached while hidden. |
 
 `'offscreen'` keeps a subtree's state across toggles, but a detached subtree is
 still mounted: its effects keep running and it has no layout, so
 `getBoundingClientRect()` reads zeroes. Use it for subtrees expensive to
-*build*, not expensive to *run*.
+_build_, not expensive to _run_.
 
 ## Styling
 
 State reaches CSS through `tc-` attributes. Terracotta never touches `class`.
 
-| Attribute | Values | Meaning |
-| --- | --- | --- |
-| `tc-disabled` | `""` when disabled | Interaction blocked; focus navigation skips it. |
-| `tc-expanded` | `""` when open | Disclosure-like state is open. |
-| `tc-checked` | `""` checked, `"mixed"` indeterminate, absent unchecked | Checkbox / radio state. |
-| `tc-selected` | `""` when selected | Option, tab or item is the selected value. |
-| `tc-active` | `""` when active | Holds focus within its group. |
-| `tc-pressed` | `""` when pressed | Toggle button state. |
-| `tc-matches` | `""` when matching the query | Combobox / Command filtering. |
-| `tc-has-selected` / `tc-has-active` / `tc-has-query` | `""` | A descendant is selected / active; the query is non-empty. |
-| `tc-transition` | `enter-from`, `enter-to`, `entered`, `leave-from`, `leave-to` | Current phase of a `TransitionChild`. |
+| Attribute                                            | Values                                                        | Meaning                                                    |
+| ---------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------- |
+| `tc-disabled`                                        | `""` when disabled                                            | Interaction blocked; focus navigation skips it.            |
+| `tc-expanded`                                        | `""` when open                                                | Disclosure-like state is open.                             |
+| `tc-checked`                                         | `""` checked, `"mixed"` indeterminate, absent unchecked       | Checkbox / radio state.                                    |
+| `tc-selected`                                        | `""` when selected                                            | Option, tab or item is the selected value.                 |
+| `tc-active`                                          | `""` when active                                              | Holds focus within its group.                              |
+| `tc-pressed`                                         | `""` when pressed                                             | Toggle button state.                                       |
+| `tc-matches`                                         | `""` when matching the query                                  | Combobox / Command filtering.                              |
+| `tc-has-selected` / `tc-has-active` / `tc-has-query` | `""`                                                          | A descendant is selected / active; the query is non-empty. |
+| `tc-transition`                                      | `enter-from`, `enter-to`, `entered`, `leave-from`, `leave-to` | Current phase of a `TransitionChild`.                      |
 
 Every part also stamps a marker named after itself (`tc-dialog`,
 `tc-listbox-option`, …). Booleans are empty-string-when-on, absent-when-off, so
 a bare attribute selector is the test:
 
 ```css
-.option[tc-active]   { background: #eff6ff; }
-.option[tc-selected] { font-weight: 600; }
-[tc-checked="mixed"] { /* indeterminate */ }
+.option[tc-active] {
+  background: #eff6ff;
+}
+.option[tc-selected] {
+  font-weight: 600;
+}
+[tc-checked='mixed'] {
+  /* indeterminate */
+}
 ```
 
 ## Transitions
@@ -173,8 +179,15 @@ the animation is yours to write. `TransitionChild` follows its parent instead of
 its own `show`, so a group animates together.
 
 ```tsx
-<Transition show={isOpen()} enter="fade" enterFrom="opacity-0" enterTo="opacity-100"
-            leave="fade" leaveFrom="opacity-100" leaveTo="opacity-0">
+<Transition
+  show={isOpen()}
+  enter="fade"
+  enterFrom="opacity-0"
+  enterTo="opacity-100"
+  leave="fade"
+  leaveFrom="opacity-100"
+  leaveTo="opacity-0"
+>
   <PopoverPanel unmount={false}>…</PopoverPanel>
 </Transition>
 ```
@@ -264,17 +277,22 @@ Terracotta 1.x targets Solid 1 and does have a root entry, so
 memo. Everything else in this skill — parts, `as`, `tc-*` attributes, controlled
 and uncontrolled props, keyboard behaviour — applies to both.
 
-## Recipes
+## Reference material
 
-[references/recipes.md](./references/recipes.md) holds complete, typechecked
-examples for Dialog, Listbox, Combobox, Tabs, a transitioned Popover, toasts, a
-tri-state checkbox, reading state from a descendant, and building on a state
-primitive. Read it when writing one of those rather than reconstructing the
-shape from this page.
+The full documentation ships with this skill, under
+[references/](./references/README.md). It is a copy of the repository's `docs/`,
+generated rather than rewritten, so it says exactly what the maintained docs
+say.
 
-## Full documentation
+Read the page for the component you are working on before writing anything
+non-trivial — each one carries its parts, every prop, the keyboard bindings, the
+`tc-` attributes it writes, and worked markup with CSS:
 
-Per-component reference, part by part, with keyboard tables and worked examples:
-<https://github.com/lxsmnsyc/terracotta/tree/main/docs>. Each component has its
-own page under `docs/components/`, and the cross-cutting rules are in
-`docs/guides/`.
+- `references/components/<name>.md` — one page per component, named after its
+  subpath (`dialog`, `listbox`, `radio-group`, …)
+- `references/states.md` — the state primitives in full
+- `references/guides/` — rendering, state, styling, keyboard and focus, SSR
+
+This page is the part that is _not_ in the docs: the shape of the API an agent
+needs before it starts, and the mistakes worth not making. The references are
+the authority on everything else.

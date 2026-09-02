@@ -9,7 +9,9 @@
   "scripts": {
     "cs:ver": "changeset version",
     "cs:pub": "changeset publish",
-    "cs:add": "changeset add"
+    "cs:add": "changeset add",
+    "skill:sync": "node scripts/sync-plugin-docs.mjs",
+    "skill:check": "node scripts/sync-plugin-docs.mjs --check"
   },
   "devDependencies": {
     "@changesets/cli": "catalog:",
