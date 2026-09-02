@@ -1,7 +1,7 @@
 import { render } from '@solidjs/testing-library';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { describe, expect, it } from 'vitest';
 import {
   Accordion,

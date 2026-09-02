@@ -1,5 +1,5 @@
 import { render, screen } from '@solidjs/testing-library';
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { createComponent } from 'solid-js';
 import { describe, expect, it } from 'vitest';
 import { settle } from './aria';

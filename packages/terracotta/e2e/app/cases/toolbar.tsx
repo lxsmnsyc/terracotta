@@ -1,4 +1,4 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { Button } from 'terracotta/button';
 import { Toolbar } from 'terracotta/toolbar';
 
