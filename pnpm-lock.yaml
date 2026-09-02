@@ -54,9 +54,6 @@ catalogs:
     tailwindcss:
       specifier: ^4.1.18
       version: 4.1.18
-    terracotta:
-      specifier: 2.0.0-next.8
-      version: 2.0.0-next.8
     tsdown:
       specifier: ^0.21.2
       version: 0.21.2
@@ -108,7 +105,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -139,7 +136,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -170,7 +167,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -201,7 +198,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -232,7 +229,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -263,7 +260,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -294,7 +291,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -325,7 +322,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -356,7 +353,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -387,7 +384,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -418,7 +415,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -449,7 +446,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -480,7 +477,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -511,7 +508,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -542,7 +539,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -573,7 +570,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -604,7 +601,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -635,7 +632,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':
@@ -666,7 +663,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.18
       terracotta:
-        specifier: 'catalog:'
+        specifier: workspace:*
         version: link:../../packages/terracotta
     devDependencies:
       '@solidjs/vite-plugin':

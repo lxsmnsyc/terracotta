@@ -16,7 +16,7 @@
     "@solidjs/web": "catalog:",
     "solid-js": "catalog:",
     "tailwindcss": "catalog:",
-    "terracotta": "catalog:"
+    "terracotta": "workspace:*"
   },
   "devDependencies": {
     "@solidjs/vite-plugin": "catalog:",
