@@ -1,0 +1,392 @@
+/*
+ * Bevel.
+ *
+ * The set has flat paper, flat lines, flat frost and flat pills. This one is
+ * the only theme with a *third dimension*: nothing is a rectangle of colour,
+ * everything is a moulded surface. Controls are raised — a light-to-dark face,
+ * a white highlight along the top edge, a shadow underneath — and inputs,
+ * grooves and listings are recessed into the page. Pressing a control inverts
+ * its gradient and moves it down a pixel, because that is what pressing a
+ * physical thing does.
+ *
+ * It is a demonstration of how little of a design system lives in the markup.
+ * Terracotta contributes no styles, and the baseline draws the vocabulary with
+ * flat fills and hairlines, so a stylesheet alone can take the whole site back
+ * to 2008 without a single component, demo or class name changing.
+ */
+
+[data-theme='bevel'] {
+  --surface-0: #eef1f6;
+  --surface-1: #e2e7ef;
+  --surface-2: #d3dae5;
+
+  --text-1: #16202c;
+  --text-2: #44526a;
+  --text-3: #78859a;
+
+  --border: #aab4c4;
+  --border-strong: #8c98aa;
+
+  --accent: #2b6ed9;
+  --accent-hover: #1f5cbb;
+  --accent-contrast: #ffffff;
+  --accent-soft: #d9e5fa;
+
+  --focus: #2b6ed9;
+  --danger: #bf3529;
+
+  --overlay: rgb(22 32 44 / 45%);
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 9px;
+
+  --shadow-1: 0 1px 1px rgb(22 32 44 / 16%);
+  --shadow-2: 0 10px 24px rgb(22 32 44 / 28%);
+
+  --font-sans: 'Lucida Grande', 'Segoe UI', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Monaco, 'JetBrains Mono', Menlo, monospace;
+
+  /*
+   * The depth kit. Every raised thing wears `face` + `edge` + `drop`; every
+   * recessed thing wears `well`. Those four declarations are the theme.
+   */
+  --face: linear-gradient(180deg, #ffffff 0%, #e4e9f1 100%);
+  --face-color: #eef1f6;
+  --face-hover: linear-gradient(180deg, #ffffff 0%, #edf1f7 100%);
+  --face-down: linear-gradient(180deg, #c4cddc 0%, #e2e8f1 100%);
+  --face-down-color: #d4dce7;
+  --edge:
+    inset 0 1px 0 rgb(255 255 255 / 90%),
+    inset 0 -1px 0 rgb(22 32 44 / 8%);
+  --drop: 0 1px 1px rgb(22 32 44 / 18%);
+  --well:
+    inset 0 2px 3px rgb(22 32 44 / 18%),
+    inset 0 -1px 0 rgb(255 255 255 / 70%);
+  --emboss: 0 1px 0 rgb(255 255 255 / 75%);
+  --gloss: linear-gradient(180deg, rgb(255 255 255 / 38%) 0%, rgb(255 255 255 / 4%) 52%, rgb(0 0 0 / 6%) 100%);
+}
+
+[data-theme='bevel'].dark {
+  --surface-0: #23262c;
+  --surface-1: #2b2f36;
+  --surface-2: #363b44;
+
+  --text-1: #eef1f6;
+  --text-2: #b3bcca;
+  --text-3: #808b9b;
+
+  --border: #14171c;
+  --border-strong: #0d1014;
+
+  --accent: #4c8df6;
+  --accent-hover: #6ea3f8;
+  --accent-contrast: #0d1014;
+  --accent-soft: #24334a;
+
+  --focus: #4c8df6;
+  --danger: #f0655a;
+
+  --overlay: rgb(0 0 0 / 65%);
+
+  --shadow-1: 0 1px 1px rgb(0 0 0 / 45%);
+  --shadow-2: 0 10px 24px rgb(0 0 0 / 60%);
+
+  /* The light source does not move; the material gets darker. */
+  --face: linear-gradient(180deg, #464c56 0%, #333840 100%);
+  --face-color: #3b414a;
+  --face-hover: linear-gradient(180deg, #515863 0%, #3c424b 100%);
+  --face-down: linear-gradient(180deg, #22262c 0%, #333840 100%);
+  --face-down-color: #282d34;
+  --edge:
+    inset 0 1px 0 rgb(255 255 255 / 14%),
+    inset 0 -1px 0 rgb(0 0 0 / 35%);
+  --drop: 0 1px 2px rgb(0 0 0 / 55%);
+  --well:
+    inset 0 2px 4px rgb(0 0 0 / 55%),
+    inset 0 -1px 0 rgb(255 255 255 / 8%);
+  --emboss: 0 -1px 0 rgb(0 0 0 / 55%);
+}
+
+/* ------------------------------------------------------------------ *
+ * Raised
+ *
+ * `background-color` is always declared alongside the gradient: a painted
+ * surface with no colour underneath reads as transparent to anything that
+ * asks — including the contrast checks in `tests/`.
+ * ------------------------------------------------------------------ */
+
+[data-theme='bevel'] .control:not(.control-primary),
+[data-theme='bevel'] .button:not(.button-primary, .button-danger),
+[data-theme='bevel'] .toggle,
+[data-theme='bevel'] .listbox-button,
+[data-theme='bevel'] .select,
+[data-theme='bevel'] .radio-card,
+[data-theme='bevel'] .toolbar,
+[data-theme='bevel'] .demo-tab,
+[data-theme='bevel'] .tab,
+[data-theme='bevel'] .theme-swatch,
+[data-theme='bevel'] .scheme-picker-option {
+  border: 1px solid var(--border-strong);
+  background-color: var(--face-color);
+  background-image: var(--face);
+  box-shadow: var(--edge), var(--drop);
+  color: var(--text-1);
+  text-shadow: var(--emboss);
+}
+
+[data-theme='bevel'] .control:not(.control-primary):hover,
+[data-theme='bevel'] .button:not(.button-primary, .button-danger):hover,
+[data-theme='bevel'] .toggle:hover {
+  background-image: var(--face-hover);
+}
+
+/* Pressed is a physical event: the face inverts, the bevel becomes a well, and
+   the thing moves down by exactly the height of its own highlight. */
+[data-theme='bevel'] .control:active,
+[data-theme='bevel'] .button:active,
+[data-theme='bevel'] .toggle:active,
+[data-theme='bevel'] .toggle[tc-pressed],
+[data-theme='bevel'] .toolbar-toggle[tc-pressed],
+[data-theme='bevel'] .listbox-button[tc-expanded],
+[data-theme='bevel'] .popover-button[tc-expanded],
+[data-theme='bevel'] .tab[tc-selected],
+[data-theme='bevel'] .demo-tab[tc-selected],
+[data-theme='bevel'] .scheme-picker-option[tc-checked],
+[data-theme='bevel'] .theme-swatch[tc-checked] {
+  background-color: var(--face-down-color);
+  background-image: var(--face-down);
+  box-shadow: var(--well);
+  translate: 0 1px;
+}
+
+/* Panels are raised furniture, so they get the face and a real drop shadow. */
+[data-theme='bevel'] .panel,
+[data-theme='bevel'] .listbox-options,
+[data-theme='bevel'] .combobox-options,
+[data-theme='bevel'] .command-options,
+[data-theme='bevel'] .commandbar-panel,
+[data-theme='bevel'] .contextmenu-panel,
+[data-theme='bevel'] .popover-panel,
+[data-theme='bevel'] .dialog-panel,
+[data-theme='bevel'] .drawer-panel,
+[data-theme='bevel'] .menu,
+[data-theme='bevel'] .toast,
+[data-theme='bevel'] .demo-tabs,
+[data-theme='bevel'] .feed-article,
+[data-theme='bevel'] .alert,
+[data-theme='bevel'] .transition-box,
+[data-theme='bevel'] .transition-card {
+  border: 1px solid var(--border-strong);
+  background-color: var(--surface-0);
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 55%) 0%, rgb(255 255 255 / 0%) 3rem);
+  box-shadow: var(--edge), var(--shadow-2);
+}
+
+/* ------------------------------------------------------------------ *
+ * Recessed
+ * ------------------------------------------------------------------ */
+
+[data-theme='bevel'] .field,
+[data-theme='bevel'] .combobox-input,
+[data-theme='bevel'] .command-input,
+[data-theme='bevel'] .checkbox-box,
+[data-theme='bevel'] .radio-dot,
+[data-theme='bevel'] .switch-track,
+[data-theme='bevel'] .shiki,
+[data-theme='bevel'] .hero-install,
+[data-theme='bevel'] .contextmenu-boundary,
+[data-theme='bevel'] .toolbar,
+[data-theme='bevel'] .theme-picker,
+[data-theme='bevel'] .scheme-picker {
+  border: 1px solid var(--border-strong);
+  background-color: var(--surface-1);
+  background-image: none;
+  box-shadow: var(--well);
+  text-shadow: none;
+}
+
+/* The two pickers are grooves holding raised keys, so they take the well and
+   leave the keys their own faces. */
+[data-theme='bevel'] .theme-picker,
+[data-theme='bevel'] .scheme-picker,
+[data-theme='bevel'] .toolbar {
+  background-color: var(--surface-2);
+}
+
+/* ------------------------------------------------------------------ *
+ * Glossy — the accent is lacquered, not painted
+ * ------------------------------------------------------------------ */
+
+[data-theme='bevel'] .button-primary,
+[data-theme='bevel'] .control-primary {
+  border: 1px solid var(--accent-hover);
+  background-color: var(--accent);
+  background-image: var(--gloss);
+  box-shadow: var(--drop), inset 0 1px 0 rgb(255 255 255 / 45%);
+  color: var(--accent-contrast);
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 30%);
+}
+
+[data-theme='bevel'] .button-danger {
+  border: 1px solid color-mix(in srgb, var(--danger) 70%, #000);
+  background-color: var(--danger);
+  background-image: var(--gloss);
+  box-shadow: var(--drop), inset 0 1px 0 rgb(255 255 255 / 40%);
+  color: var(--accent-contrast);
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 30%);
+}
+
+[data-theme='bevel'] .button-primary:active,
+[data-theme='bevel'] .button-danger:active,
+[data-theme='bevel'] .control-primary:active {
+  background-image:
+    linear-gradient(180deg, rgb(0 0 0 / 18%) 0%, rgb(0 0 0 / 4%) 100%);
+  box-shadow: inset 0 2px 4px rgb(0 0 0 / 35%);
+  translate: 0 1px;
+}
+
+[data-theme='bevel'] .checkbox-box[tc-checked=''],
+[data-theme='bevel'] .checkbox-box[tc-checked='mixed'],
+[data-theme='bevel'] .switch-track[tc-checked=''] {
+  border-color: var(--accent-hover);
+  background-color: var(--accent);
+  background-image: var(--gloss);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 40%);
+}
+
+/* The knob is the one thing that stays raised inside a groove. */
+[data-theme='bevel'] .switch-knob {
+  border: 1px solid var(--border-strong);
+  background-color: var(--face-color);
+  background-image: var(--face);
+  box-shadow: var(--edge), var(--drop);
+}
+
+/* ------------------------------------------------------------------ *
+ * Listings
+ *
+ * A selected row in a real toolkit is a gradient too — and it keeps its
+ * children, which would otherwise hold their own colour against the fill.
+ * ------------------------------------------------------------------ */
+
+[data-theme='bevel'] .menu-item[tc-active],
+[data-theme='bevel'] .listbox-option[tc-active],
+[data-theme='bevel'] .select-option[tc-active],
+[data-theme='bevel'] .combobox-option[tc-active],
+[data-theme='bevel'] .command-option[tc-active],
+[data-theme='bevel'] .sidebar-link[aria-current='page'] {
+  background-color: var(--accent);
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 26%), rgb(0 0 0 / 8%));
+  color: var(--accent-contrast);
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
+}
+
+[data-theme='bevel'] .menu-item[tc-active] *,
+[data-theme='bevel'] .listbox-option[tc-active] *,
+[data-theme='bevel'] .select-option[tc-active] *,
+[data-theme='bevel'] .combobox-option[tc-active] *,
+[data-theme='bevel'] .command-option[tc-active] * {
+  color: inherit;
+}
+
+/* Chrome ------------------------------------------------------------ */
+
+/* A title bar: brushed strip, hard shadow line under it. */
+[data-theme='bevel'] .masthead {
+  border-block-end: 1px solid var(--border-strong);
+  backdrop-filter: none;
+  background-color: var(--surface-1);
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 70%) 0%, rgb(255 255 255 / 0%) 100%);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 60%);
+}
+
+[data-theme='bevel'] .brand {
+  text-shadow: var(--emboss);
+}
+
+[data-theme='bevel'] .brand-mark {
+  border: 1px solid var(--accent-hover);
+  background-image: var(--gloss);
+  box-shadow: var(--drop), inset 0 1px 0 rgb(255 255 255 / 50%);
+}
+
+[data-theme='bevel'] .page-title,
+[data-theme='bevel'] .hero-title,
+[data-theme='bevel'] .prose h2,
+[data-theme='bevel'] .prose h3 {
+  text-shadow: var(--emboss);
+}
+
+[data-theme='bevel'] .demo-toolbar {
+  border-block-end: 1px solid var(--border-strong);
+  background-color: var(--surface-1);
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 60%), rgb(0 0 0 / 4%));
+}
+
+[data-theme='bevel'] .prose :not(pre) > code,
+[data-theme='bevel'] .page-lede code {
+  border-color: var(--border-strong);
+  background: var(--surface-1);
+  box-shadow: var(--well);
+}
+
+/*
+ * Shiki bakes an opaque background into the block and into every span, so both
+ * are replaced — the listing is a recessed well like any other input. The dark
+ * selector carries `:root` so that it out-specifies `:root.dark .shiki span` in
+ * `prose.css` outright — without it the two tie at three classes and the winner
+ * is whichever stylesheet the bundler emits last.
+ */
+:root[data-theme='bevel'].dark .shiki {
+  background-color: var(--surface-1);
+}
+
+[data-theme='bevel'] .shiki span,
+:root[data-theme='bevel'].dark .shiki span {
+  background-color: transparent;
+}
+
+/*
+ * The sheen is a white overlay, so in the dark scheme the same alpha that
+ * reads as a polished edge on silver reads as a stripe of grey on graphite.
+ * The material changed; the highlight has to change with it.
+ */
+[data-theme='bevel'].dark .masthead,
+[data-theme='bevel'].dark .demo-toolbar {
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 8%) 0%, rgb(0 0 0 / 14%) 100%);
+}
+
+[data-theme='bevel'].dark .panel,
+[data-theme='bevel'].dark .listbox-options,
+[data-theme='bevel'].dark .combobox-options,
+[data-theme='bevel'].dark .command-options,
+[data-theme='bevel'].dark .commandbar-panel,
+[data-theme='bevel'].dark .contextmenu-panel,
+[data-theme='bevel'].dark .popover-panel,
+[data-theme='bevel'].dark .dialog-panel,
+[data-theme='bevel'].dark .drawer-panel,
+[data-theme='bevel'].dark .menu,
+[data-theme='bevel'].dark .toast,
+[data-theme='bevel'].dark .demo-tabs,
+[data-theme='bevel'].dark .feed-article,
+[data-theme='bevel'].dark .alert,
+[data-theme='bevel'].dark .transition-box,
+[data-theme='bevel'].dark .transition-card {
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 7%) 0%, rgb(255 255 255 / 0%) 3rem);
+}
+
+[data-theme='bevel'] .demo-tool {
+  color: var(--text-2);
+}
+
+[data-theme='bevel'] :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* The chip that stands for this theme in the picker. Unscoped on purpose:
+   the picker shows every theme at once, whichever one is active. */
+.theme-swatch-bevel {
+  background: linear-gradient(135deg, #f4f7fb 0 50%, #2b6ed9 50% 100%);
+}

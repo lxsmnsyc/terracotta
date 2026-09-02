@@ -1,3 +1,4 @@
+import './bevel.css';
 import './bloom.css';
 import './blueprint.css';
 import './brutalist.css';
@@ -60,6 +61,11 @@ export const THEMES: readonly ThemeMeta[] = [
     id: 'bloom',
     name: 'Bloom',
     blurb: 'No lines anywhere: pills, soft fills, and a lift on hover.',
+  },
+  {
+    id: 'bevel',
+    name: 'Bevel',
+    blurb: 'Moulded surfaces: raised faces, recessed wells, buttons that press.',
   },
 ];
 

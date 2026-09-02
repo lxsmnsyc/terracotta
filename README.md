@@ -155,6 +155,16 @@ pixel. Most of the file is therefore spent turning borders into backgrounds,
 which is a thing a theme can only do because the baseline draws the vocabulary
 and the library draws nothing.
 
+`bevel.css` is the only theme with a third dimension. Nothing in it is a
+rectangle of colour: controls are moulded — a light-to-dark face, a white
+highlight along the top edge, a shadow underneath — while inputs, grooves and
+listings are recessed into the page, and pressing a control inverts its
+gradient and moves it down a pixel. Four declarations do almost all of it
+(`--face`, `--edge`, `--drop`, `--well`), and the accent is lacquered rather
+than painted. It is the clearest measure of how little of a design system lives
+in the markup: the site goes back to 2008 without a component, a demo or a
+class name changing.
+
 Three things every theme after the first has had to know:
 
 - A row that fills on hover or selection repaints only itself. Children that
@@ -167,6 +177,9 @@ Three things every theme after the first has had to know:
   stylesheet the bundler emits last.
 - Setting `border-style` on an element the baseline gives a single border to
   boxes it in on all four sides. Name the side.
+- A gradient is `background-image`, and an element painted with one alone has
+  no `background-color` — it reads as transparent to anything that asks, the
+  contrast checks in `tests/` included. Declare both.
 
 ## Tests
 

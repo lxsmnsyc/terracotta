@@ -17,6 +17,7 @@ export const THEMES = [
   'x-ray',
   'editorial',
   'bloom',
+  'bevel',
 ] as const;
 export const SCHEMES = ['light', 'dark'] as const;
 
