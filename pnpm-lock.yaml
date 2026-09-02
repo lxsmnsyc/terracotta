@@ -55,8 +55,8 @@ catalogs:
       specifier: ^4.1.18
       version: 4.1.18
     terracotta:
-      specifier: 2.0.0-next.6
-      version: 2.0.0-next.6
+      specifier: 2.0.0-next.8
+      version: 2.0.0-next.8
     tsdown:
       specifier: ^0.21.2
       version: 0.21.2
@@ -688,8 +688,8 @@ importers:
   packages/terracotta:
     dependencies:
       solid-use:
-        specifier: ^1.0.0-next.2
-        version: 1.0.0-next.2(@solidjs/web@2.0.0-rc.1(solid-js@2.0.0-rc.1))(solid-js@2.0.0-rc.1)
+        specifier: ^1.0.0-next.3
+        version: 1.0.0-next.3(solid-js@2.0.0-rc.1)
     devDependencies:
       '@playwright/test':
         specifier: 'catalog:'
@@ -2691,12 +2691,11 @@ packages:
   solid-js@2.0.0-rc.1:
     resolution: {integrity: sha512-UD+UfqfiuuOTaDw01YeT+LwsYJC2ilTlMfs6h8EC8FFLmZD0ZjeZIoJXdZEo9uMzIof2tu0Rfh3dnzI7FAmuJQ==}
 
-  solid-use@1.0.0-next.2:
-    resolution: {integrity: sha512-B5Li4cnaO/4XHCVkqjZX/JjFWq0h1ECmGHEUFKTQG1O7p4lLPB5533fYPD6kD8yhkeegE31yDDGZL4B7xpmjVA==}
+  solid-use@1.0.0-next.3:
+    resolution: {integrity: sha512-bEUzCWEKEYIYr807QNUQfewX3MlaIYExZFKuM3S9kK3pc4tlnpc0YPKnpQp28Inmtd3DzLkmK9Zq1UC1xVM7Gw==}
     engines: {node: '>=20'}
     peerDependencies:
-      '@solidjs/web': ^2.0.0-beta.3
-      solid-js: ^2.0.0-beta.3
+      solid-js: ^2.0.0-rc.5
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -4707,9 +4706,8 @@ snapshots:
       seroval: 1.5.6
       seroval-plugins: 1.5.6(seroval@1.5.6)
 
-  solid-use@1.0.0-next.2(@solidjs/web@2.0.0-rc.1(solid-js@2.0.0-rc.1))(solid-js@2.0.0-rc.1):
+  solid-use@1.0.0-next.3(solid-js@2.0.0-rc.1):
     dependencies:
-      '@solidjs/web': 2.0.0-rc.1(solid-js@2.0.0-rc.1)
       solid-js: 2.0.0-rc.1
 
   source-map-js@1.2.1: {}

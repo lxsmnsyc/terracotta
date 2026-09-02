@@ -69,7 +69,7 @@
     "e2e:dev": "vite --config e2e/vite.config.ts"
   },
   "dependencies": {
-    "solid-use": "^1.0.0-next.2"
+    "solid-use": "^1.0.0-next.3"
   },
   "devDependencies": {
     "@playwright/test": "catalog:",
