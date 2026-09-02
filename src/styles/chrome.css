@@ -1,0 +1,543 @@
+/*
+ * The docs shell: masthead, sidebar, content column, table of contents, and
+ * the demo frame. Everything here is expressed in the contract's tokens, which
+ * is why switching theme restyles the site and not only the demos.
+ */
+
+.shell {
+  min-block-size: 100vh;
+}
+
+/* Masthead --------------------------------------------------------- */
+
+.masthead {
+  position: sticky;
+  z-index: 20;
+  inset-block-start: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  block-size: var(--masthead-height);
+  border-block-end: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-0) 85%, transparent);
+  backdrop-filter: blur(8px);
+  padding-inline: 1.25rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--text-1);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.brand-mark {
+  inline-size: 1.1rem;
+  block-size: 1.1rem;
+  border-radius: 0.3rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+}
+
+.masthead-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* A shared affordance for the chrome's own buttons and links. */
+.control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding: 0.35rem 0.7rem;
+  color: var(--text-1);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.control:hover {
+  background: var(--surface-1);
+}
+
+.control-primary {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.control-primary:hover {
+  background: var(--accent-hover);
+}
+
+.panel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  box-shadow: var(--shadow-2);
+}
+
+/* Theme picker ----------------------------------------------------- */
+
+.theme-picker {
+  position: relative;
+}
+
+.theme-picker-swatch {
+  inline-size: 0.7rem;
+  block-size: 0.7rem;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.theme-picker-caret {
+  color: var(--text-3);
+  transition: rotate 150ms ease;
+}
+
+.theme-picker-button[tc-expanded] .theme-picker-caret {
+  rotate: 180deg;
+}
+
+.theme-picker-options {
+  position: absolute;
+  z-index: 30;
+  inset-inline-end: 0;
+  inline-size: 18rem;
+  margin-block-start: 0.35rem;
+  padding: 0.25rem;
+}
+
+.theme-picker-option {
+  display: grid;
+  gap: 0.1rem;
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.6rem;
+  cursor: pointer;
+}
+
+.theme-picker-option[tc-active] {
+  background: var(--accent-soft);
+}
+
+.theme-picker-option-name {
+  font-weight: 600;
+}
+
+.theme-picker-option[tc-selected] .theme-picker-option-name::after {
+  content: ' ✓';
+  color: var(--accent);
+}
+
+.theme-picker-option-blurb {
+  color: var(--text-2);
+  font-size: 0.8rem;
+}
+
+/* Scheme picker ---------------------------------------------------- */
+
+.scheme-picker {
+  display: flex;
+  gap: 0.15rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 0.15rem;
+}
+
+.scheme-picker-option {
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.5rem;
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.scheme-picker-option[tc-checked] {
+  background: var(--surface-2);
+  color: var(--text-1);
+}
+
+/* Layout ----------------------------------------------------------- */
+
+.layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  gap: 2rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  max-inline-size: 84rem;
+}
+
+.sidebar {
+  position: sticky;
+  align-self: start;
+  inset-block-start: var(--masthead-height);
+  padding-block: 1.75rem;
+  max-block-size: calc(100vh - var(--masthead-height));
+  overflow-y: auto;
+}
+
+.sidebar-section + .sidebar-section {
+  margin-block-start: 1.5rem;
+}
+
+.sidebar-section-title {
+  margin-block-end: 0.4rem;
+  color: var(--text-3);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sidebar-list {
+  display: grid;
+  gap: 0.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar-link {
+  display: block;
+  border-radius: var(--radius-sm);
+  padding: 0.25rem 0.5rem;
+  color: var(--text-2);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.sidebar-link:hover {
+  background: var(--surface-1);
+  color: var(--text-1);
+}
+
+.sidebar-link[aria-current='page'] {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.content {
+  min-inline-size: 0;
+  padding-block: 2rem 5rem;
+}
+
+.page-grid {
+  display: grid;
+  grid-template-columns: minmax(0, var(--content-width)) var(--toc-width);
+  gap: 3rem;
+}
+
+.page {
+  min-inline-size: 0;
+}
+
+.page-header {
+  margin-block-end: 2rem;
+}
+
+.page-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.page-lede {
+  margin-block-start: 0.6rem;
+  color: var(--text-2);
+  font-size: 1.05rem;
+}
+
+/* The lede is rendered markdown, so it carries links and code spans and needs
+   the same treatment they get inside the body. */
+.page-lede code {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-1);
+  padding: 0.1em 0.35em;
+  color: var(--text-1);
+  font-size: 0.85em;
+}
+
+/* The hero sits between the lede and the first heading, so it carries the
+   spacing of a section break rather than of a paragraph. */
+.page-header + .demo {
+  margin-block: 2rem 2.75rem;
+}
+
+.page-loading,
+.demo-stage-loading {
+  color: var(--text-3);
+  padding-block: 2rem;
+}
+
+/* Table of contents ------------------------------------------------ */
+
+.toc {
+  position: sticky;
+  align-self: start;
+  inset-block-start: calc(var(--masthead-height) + 2rem);
+  max-block-size: calc(100vh - var(--masthead-height) - 4rem);
+  overflow-y: auto;
+}
+
+.toc-title {
+  margin-block-end: 0.5rem;
+  color: var(--text-3);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.toc-list {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  border-inline-start: 1px solid var(--border);
+  list-style: none;
+}
+
+.toc-item[data-level='3'] {
+  padding-inline-start: 0.75rem;
+}
+
+.toc-link {
+  display: block;
+  padding-inline-start: 0.75rem;
+  color: var(--text-2);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.toc-link:hover {
+  color: var(--accent);
+}
+
+/* Demo ------------------------------------------------------------- */
+
+.demo {
+  margin: 1.75rem 0;
+}
+
+.demo-tabs {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-0);
+  overflow: hidden;
+}
+
+.demo-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-block-end: 1px solid var(--border);
+  background: var(--surface-1);
+  padding: 0.35rem 0.5rem;
+}
+
+.demo-tablist {
+  display: flex;
+  gap: 0.15rem;
+}
+
+.demo-tab {
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  padding: 0.3rem 0.7rem;
+  color: var(--text-2);
+  font-size: 0.85rem;
+}
+
+.demo-tab[tc-selected] {
+  background: var(--surface-0);
+  box-shadow: var(--shadow-1);
+  color: var(--text-1);
+  font-weight: 600;
+}
+
+.demo-tools {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.demo-tool {
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  padding: 0.3rem 0.55rem;
+  color: var(--text-2);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.demo-tool:hover {
+  background: var(--surface-2);
+  color: var(--text-1);
+}
+
+.demo-frame {
+  inline-size: 100%;
+  border: 0;
+  background: var(--surface-0);
+  transition: block-size 120ms ease;
+}
+
+.demo-panel-code {
+  max-block-size: 32rem;
+  overflow: auto;
+}
+
+.demo-caption {
+  margin-block-start: 0.6rem;
+  color: var(--text-2);
+  font-size: 0.9rem;
+}
+
+.demo-caption > :last-child {
+  margin-block-end: 0;
+}
+
+/* The document inside the frame. */
+.demo-stage {
+  display: flex;
+  align-items: flex-start;
+  padding: 1.5rem;
+}
+
+.demo-stage-missing {
+  color: var(--danger);
+}
+
+/* Home ------------------------------------------------------------- */
+
+.home {
+  display: grid;
+  gap: 4rem;
+  max-inline-size: var(--content-width);
+}
+
+.hero-title {
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.hero-lede {
+  margin-block-start: 1rem;
+  color: var(--text-2);
+  font-size: 1.1rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-block-start: 1.5rem;
+}
+
+.hero-install {
+  margin-block-start: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  padding: 0.7rem 0.9rem;
+  color: var(--text-2);
+}
+
+.pitch-title {
+  font-size: 1.6rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.pitch-body {
+  margin-block-start: 0.75rem;
+  color: var(--text-2);
+}
+
+.index {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+.index-title {
+  margin-block-end: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.index-list {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.index-link {
+  color: var(--text-2);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.index-link:hover {
+  color: var(--accent);
+}
+
+/* Mobile ----------------------------------------------------------- */
+
+.mobile-nav {
+  display: none;
+  padding: 0.75rem 1.25rem 0;
+}
+
+.mobile-nav-chevron {
+  transition: rotate 150ms ease;
+}
+
+.mobile-nav-button[tc-expanded] .mobile-nav-chevron {
+  rotate: 90deg;
+}
+
+.mobile-nav-panel {
+  margin-block-start: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+@media (max-width: 60rem) {
+  .page-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .toc {
+    display: none;
+  }
+}
+
+@media (max-width: 48rem) {
+  .mobile-nav {
+    display: block;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

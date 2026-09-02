@@ -1,0 +1,37 @@
+{
+  "name": "terracotta-docs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Documentation site for Terracotta, the headless UI library for SolidJS",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "oxlint --type-aware",
+    "format": "oxfmt .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@solidjs/router": "2.0.0-next.21",
+    "@solidjs/web": "2.0.0-rc.5",
+    "solid-js": "2.0.0-rc.5",
+    "terracotta": "2.0.0-next.8"
+  },
+  "devDependencies": {
+    "@lxsmnsyc/oxlint-config": "^0.1.2",
+    "@solidjs/vite-plugin": "3.0.0-next.37",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^25.5.0",
+    "markdown-it": "^15.0.1",
+    "oxfmt": "^0.62.0",
+    "oxlint": "^1.77.0",
+    "oxlint-tsgolint": "^7.0.2001",
+    "shiki": "^4.4.3",
+    "typescript": "^5.9.3",
+    "vite": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
