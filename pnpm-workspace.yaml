@@ -9,7 +9,7 @@ catalog:
   '@lxsmnsyc/oxlint-config': ^0.1.2
   '@playwright/test': ^1.62.1
   '@solidjs/testing-library': 1.0.0-beta.2
-  '@solidjs/vite-plugin': 3.0.0-next.31
+  '@solidjs/vite-plugin': 3.0.0-next.37
   '@solidjs/web': 2.0.0-rc.5
   '@tailwindcss/postcss': ^4.1.18
   '@testing-library/jest-dom': ^7.0.0
@@ -25,5 +25,5 @@ catalog:
   tsdown: ^0.21.2
   tslib: ^2.8.1
   typescript: ^5.9.3
-  vite: ^7.3.0
+  vite: ^8.2.2
   vitest: ^4.1.10
