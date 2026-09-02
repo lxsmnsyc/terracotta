@@ -245,6 +245,17 @@ already expressed as route rules. [vercel.json](vercel.json) pins
 recognise Vite in the dependencies and substitute its own SPA build, which
 never runs Nitro at all.
 
+Two pnpm settings in [pnpm-workspace.yaml](pnpm-workspace.yaml) exist for that
+build. pnpm 11 refuses to install any package published in the last day, and
+this project's toolchain is on prereleases that are often hours old when the
+lockfile is updated, so a same-day deploy failed the policy check rather than
+the build; `minimumReleaseAge: 60` keeps an hour of quarantine instead of a
+day. pnpm 11 also promotes an unapproved dependency build script from a warning
+to a hard error, and esbuild's script has never run in this project, so
+`strictDepBuilds: false` puts that back to a warning rather than allowlisting a
+script nothing needs. Both belong in that file rather than in `.npmrc` or
+`package.json`, which recent pnpm no longer reads them from.
+
 ```text
 pnpm build              # vite build && nitro build  -> .vercel/output
 npx vercel deploy --prebuilt
