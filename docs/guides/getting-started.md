@@ -14,7 +14,8 @@ pnpm add terracotta
 yarn add terracotta
 ```
 
-`solid-js` is a peer dependency. Terracotta supports `^1.8`.
+`solid-js` and `@solidjs/web` are peer dependencies. Terracotta 2.x supports
+`^2.0.0-rc.0` of both.
 
 ## Your first component
 
