@@ -22,7 +22,7 @@ Every widget is a set of parts that you compose. Terracotta renders nothing
 beyond the elements you write, and adds no class names to them.
 
 ```tsx
-import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta';
+import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclosure';
 
 function Details() {
   return (

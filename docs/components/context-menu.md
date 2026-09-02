@@ -15,9 +15,8 @@ import {
   ContextMenuBoundary,
   ContextMenuPanel,
   ContextMenuOverlay,
-  DisclosureStateChild,
-  useDisclosureState,
-} from 'terracotta';
+} from 'terracotta/context-menu';
+import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 ```
 
 ## Anatomy

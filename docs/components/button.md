@@ -10,7 +10,7 @@ Gives any element the behaviour of a button: the `button` role, a sensible
 accept `disabled` and behave alike.
 
 ```tsx
-import { Button } from 'terracotta';
+import { Button } from 'terracotta/button';
 ```
 
 ## Anatomy

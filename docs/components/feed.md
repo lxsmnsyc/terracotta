@@ -17,7 +17,7 @@ import {
   FeedArticle,
   FeedArticleLabel,
   FeedArticleDescription,
-} from 'terracotta';
+} from 'terracotta/feed';
 ```
 
 ## Anatomy
@@ -41,9 +41,13 @@ import {
 ```tsx
 import { For, createSignal, type JSX } from 'solid-js';
 import {
-  Feed, FeedArticle, FeedArticleDescription, FeedArticleLabel,
-  FeedContent, FeedLabel,
-} from 'terracotta';
+  Feed,
+  FeedArticle,
+  FeedArticleDescription,
+  FeedArticleLabel,
+  FeedContent,
+  FeedLabel,
+} from 'terracotta/feed';
 
 interface Post { id: string; title: string; body: string }
 

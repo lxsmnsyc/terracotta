@@ -24,9 +24,8 @@ import {
   ComboboxInput,
   ComboboxOptions,
   ComboboxOption,
-  DisclosureStateChild,
-  AutocompleteStateChild,
-} from 'terracotta';
+} from 'terracotta/combobox';
+import { DisclosureStateChild, AutocompleteStateChild } from 'terracotta/states';
 ```
 
 ## Anatomy
@@ -62,8 +61,12 @@ matching, non-disabled options.
 ```tsx
 import { For, createSignal, type JSX } from 'solid-js';
 import {
-  Combobox, ComboboxInput, ComboboxLabel, ComboboxOption, ComboboxOptions,
-} from 'terracotta';
+  Combobox,
+  ComboboxInput,
+  ComboboxLabel,
+  ComboboxOption,
+  ComboboxOptions,
+} from 'terracotta/combobox';
 
 interface Person { id: number; name: string }
 

@@ -10,7 +10,7 @@ instead of representing values. Wire an `onClick` to each item.
 dropdown, or [`ContextMenu`](./context-menu.md) for a right-click menu.
 
 ```tsx
-import { Menu, MenuItem, MenuChild } from 'terracotta';
+import { Menu, MenuItem, MenuChild } from 'terracotta/menu';
 ```
 
 ## Anatomy

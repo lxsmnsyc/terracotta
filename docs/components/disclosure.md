@@ -8,13 +8,8 @@ the right base for FAQs, "show more" sections and collapsible sidebars.
 For several sections that behave as a set, use [`Accordion`](./accordion.md).
 
 ```tsx
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  DisclosureStateChild,
-  useDisclosureState,
-} from 'terracotta';
+import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclosure';
+import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 ```
 
 ## Anatomy

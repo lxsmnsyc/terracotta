@@ -10,7 +10,8 @@ in an editor or mute on a call. If the control represents a form value, use
 [`Checkbox`](./checkbox.md) instead.
 
 ```tsx
-import { Toggle, ToggleStateChild, useToggleState } from 'terracotta';
+import { ToggleStateChild, useToggleState } from 'terracotta/states';
+import { Toggle } from 'terracotta/toggle';
 ```
 
 ## Anatomy

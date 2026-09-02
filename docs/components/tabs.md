@@ -6,14 +6,8 @@ arrow keys move focus and select at the same time, so the visible panel always
 matches the focused tab.
 
 ```tsx
-import {
-  TabGroup,
-  TabList,
-  Tab,
-  TabPanel,
-  SelectStateChild,
-  useSelectState,
-} from 'terracotta';
+import { SelectStateChild, useSelectState } from 'terracotta/states';
+import { TabGroup, TabList, Tab, TabPanel } from 'terracotta/tabs';
 ```
 
 ## Anatomy

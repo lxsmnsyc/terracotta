@@ -16,7 +16,7 @@ import {
   useColorScheme,
   useNativeColorScheme,
   usePreferredColorScheme,
-} from 'terracotta';
+} from 'terracotta/color-scheme';
 ```
 
 ## Types
@@ -43,7 +43,7 @@ read.
 
 ```tsx
 import { type JSX } from 'solid-js';
-import { ColorSchemeProvider, useColorScheme, type ColorScheme } from 'terracotta';
+import { ColorSchemeProvider, useColorScheme, type ColorScheme } from 'terracotta/color-scheme';
 
 function SchemePicker(): JSX.Element {
   const [scheme, setScheme] = useColorScheme();

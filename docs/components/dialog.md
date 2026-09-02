@@ -16,9 +16,8 @@ import {
   DialogOverlay,
   DialogTitle,
   DialogDescription,
-  DisclosureStateChild,
-  useDisclosureState,
-} from 'terracotta';
+} from 'terracotta/dialog';
+import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 ```
 
 ## Anatomy

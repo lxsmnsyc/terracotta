@@ -15,9 +15,8 @@ import {
   RadioGroupLabel,
   RadioGroupDescription,
   RadioGroupOption,
-  SelectStateChild,
-  useSelectState,
-} from 'terracotta';
+} from 'terracotta/radio-group';
+import { SelectStateChild, useSelectState } from 'terracotta/states';
 ```
 
 ## Anatomy

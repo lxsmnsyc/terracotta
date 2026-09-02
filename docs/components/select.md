@@ -7,13 +7,8 @@ There is no button and no popup. For those, use [`Listbox`](./listbox.md), which
 wraps a disclosure around the same list.
 
 ```tsx
-import {
-  Select,
-  SelectOption,
-  SelectStateChild,
-  SelectOptionStateChild,
-  useSelectState,
-} from 'terracotta';
+import { Select, SelectOption } from 'terracotta/select';
+import { SelectStateChild, SelectOptionStateChild, useSelectState } from 'terracotta/states';
 ```
 
 ## Anatomy

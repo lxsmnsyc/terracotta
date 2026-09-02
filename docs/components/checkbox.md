@@ -11,9 +11,8 @@ import {
   CheckboxIndicator,
   CheckboxLabel,
   CheckboxDescription,
-  CheckStateChild,
-  useCheckState,
-} from 'terracotta';
+} from 'terracotta/checkbox';
+import { CheckStateChild, useCheckState } from 'terracotta/states';
 ```
 
 ## Anatomy

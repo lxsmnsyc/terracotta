@@ -8,7 +8,7 @@ npm i terracotta
 ```
 
 ```tsx
-import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta';
+import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclosure';
 ```
 
 ## Guides

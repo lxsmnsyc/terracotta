@@ -12,7 +12,7 @@ The queue lives outside the component tree, so any code can raise a toast
 without prop drilling: a fetch handler, a router guard, a worker callback.
 
 ```tsx
-import { Toast, Toaster, ToasterStore, useToaster } from 'terracotta';
+import { Toast, Toaster, ToasterStore, useToaster } from 'terracotta/toast';
 ```
 
 ## Anatomy
@@ -29,7 +29,7 @@ import { Toast, Toaster, ToasterStore, useToaster } from 'terracotta';
 
 ```tsx
 import { For, type JSX } from 'solid-js';
-import { Toast, Toaster, ToasterStore, useToaster } from 'terracotta';
+import { Toast, Toaster, ToasterStore, useToaster } from 'terracotta/toast';
 
 export interface Notice {
   title: string;

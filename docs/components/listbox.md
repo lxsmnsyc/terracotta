@@ -20,9 +20,8 @@ import {
   ListboxLabel,
   ListboxOptions,
   ListboxOption,
-  DisclosureStateChild,
-  SelectStateChild,
-} from 'terracotta';
+} from 'terracotta/listbox';
+import { DisclosureStateChild, SelectStateChild } from 'terracotta/states';
 ```
 
 ## Anatomy

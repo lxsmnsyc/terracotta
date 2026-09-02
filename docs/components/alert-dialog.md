@@ -19,9 +19,8 @@ import {
   AlertDialogOverlay,
   AlertDialogTitle,
   AlertDialogDescription,
-  DisclosureStateChild,
-  useDisclosureState,
-} from 'terracotta';
+} from 'terracotta/alert-dialog';
+import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 ```
 
 ## Anatomy

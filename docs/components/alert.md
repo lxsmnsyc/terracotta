@@ -10,7 +10,7 @@ connection. For messages the user can read at their own pace, use
 [`AlertDialog`](./alert-dialog.md).
 
 ```tsx
-import { Alert } from 'terracotta';
+import { Alert } from 'terracotta/alert';
 ```
 
 ## Anatomy
@@ -31,7 +31,7 @@ than rendering an empty alert and filling it in later.
 
 ```tsx
 import { Show, createSignal, type JSX } from 'solid-js';
-import { Alert } from 'terracotta';
+import { Alert } from 'terracotta/alert';
 
 export function SaveForm(): JSX.Element {
   const [error, setError] = createSignal<string>();

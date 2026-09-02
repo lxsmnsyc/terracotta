@@ -13,9 +13,8 @@ import {
   AccordionHeader,
   AccordionButton,
   AccordionPanel,
-  SelectStateChild,
-  SelectOptionStateChild,
-} from 'terracotta';
+} from 'terracotta/accordion';
+import { SelectStateChild, SelectOptionStateChild } from 'terracotta/states';
 ```
 
 ## Anatomy

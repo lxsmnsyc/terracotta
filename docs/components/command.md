@@ -18,9 +18,8 @@ import {
   CommandInput,
   CommandOptions,
   CommandOption,
-  AutocompleteStateChild,
-  useAutocompleteState,
-} from 'terracotta';
+} from 'terracotta/command';
+import { AutocompleteStateChild, useAutocompleteState } from 'terracotta/states';
 ```
 
 ## Anatomy
@@ -53,8 +52,12 @@ Either way, keyboard navigation only visits matching, non-disabled options.
 ```tsx
 import { For, type JSX } from 'solid-js';
 import {
-  Command, CommandInput, CommandLabel, CommandOption, CommandOptions,
-} from 'terracotta';
+  Command,
+  CommandInput,
+  CommandLabel,
+  CommandOption,
+  CommandOptions,
+} from 'terracotta/command';
 
 interface Action { id: string; label: string; run: () => void }
 

@@ -7,14 +7,8 @@ traps <kbd>Tab</kbd> while open, closes on <kbd>Escape</kbd>, and closes when
 focus leaves it.
 
 ```tsx
-import {
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-  PopoverOverlay,
-  DisclosureStateChild,
-  useDisclosureState,
-} from 'terracotta';
+import { Popover, PopoverButton, PopoverPanel, PopoverOverlay } from 'terracotta/popover';
+import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 ```
 
 ## Anatomy

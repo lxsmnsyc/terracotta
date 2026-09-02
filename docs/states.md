@@ -11,7 +11,7 @@ Three things are exported per state:
 - `…StateChild` — a component whose `children` render prop receives the store.
 
 ```tsx
-import { DisclosureStateChild, useDisclosureState } from 'terracotta';
+import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 
 // Render prop, no extra component needed
 <Dialog defaultOpen={false}>

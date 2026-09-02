@@ -14,9 +14,8 @@ import {
   CommandBarOverlay,
   CommandBarTitle,
   CommandBarDescription,
-  DisclosureStateChild,
-  useDisclosureState,
-} from 'terracotta';
+} from 'terracotta/command-bar';
+import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 ```
 
 ## Anatomy
@@ -95,11 +94,14 @@ wiring:
 
 ```tsx
 import { For, createSignal, type JSX } from 'solid-js';
+import { Command, CommandInput, CommandOption, CommandOptions } from 'terracotta/command';
 import {
-  Command, CommandInput, CommandOption, CommandOptions,
-  CommandBar, CommandBarDescription, CommandBarOverlay,
-  CommandBarPanel, CommandBarTitle,
-} from 'terracotta';
+  CommandBar,
+  CommandBarDescription,
+  CommandBarOverlay,
+  CommandBarPanel,
+  CommandBarTitle,
+} from 'terracotta/command-bar';
 
 interface Action { id: string; label: string; run: () => void }
 

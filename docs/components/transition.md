@@ -9,7 +9,7 @@ It pairs well with every disclosure-based component. Give the panel
 `unmount={false}` and let the transition own the mounting.
 
 ```tsx
-import { Transition, TransitionChild } from 'terracotta';
+import { Transition, TransitionChild } from 'terracotta/transition';
 ```
 
 ## Anatomy

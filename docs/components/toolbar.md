@@ -9,7 +9,7 @@ navigates *any* focusable descendant, so you can drop buttons, links, inputs and
 `<select>` elements into it directly.
 
 ```tsx
-import { Toolbar } from 'terracotta';
+import { Toolbar } from 'terracotta/toolbar';
 ```
 
 ## Anatomy
