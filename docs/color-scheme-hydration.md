@@ -1,5 +1,14 @@
 # `ColorSchemeProvider` prevents its subtree from hydrating
 
+> **Fixed upstream.** `solid-use@1.0.0-next.3` builds the same reactive nodes on
+> both sides — `createSignal` and `onSettled` unconditionally, with the
+> `matchMedia` and `document` access moved inside the `onSettled` callback,
+> which is a no-op on the server. Verified against
+> `terracotta@2.0.0-next.9`: with `ColorSchemeProvider` wrapping this entire
+> site, the chrome hydrates, theme switching works, the demo frames respond, and
+> the dev console is silent. The report below is kept because the rule it
+> established still applies to any primitive that branches on `isServer`.
+
 Terracotta 2.0.0-next.8, Solid 2.0.0-rc.5, `@solidjs/vite-plugin` 3.0.0-next.37
 in start mode with `ssr: true`.
 

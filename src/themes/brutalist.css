@@ -9,7 +9,7 @@
  * as `tc-` attributes and no styles of its own, so this theme changes no
  * markup, no component and no demo — it redefines the tokens in
  * `_contract.css` and then overrides the shape of the baseline vocabulary in
- * `styles/demos.css`. Every one of the forty-five demos on this site follows.
+ * `styles/demos.css`. Every one of the forty-seven demos on this site follows.
  */
 
 [data-theme='brutalist'] {

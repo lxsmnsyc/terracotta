@@ -893,6 +893,23 @@ a.button {
 
 /* Menu ------------------------------------------------------------- */
 
+/*
+ * `MenuItem` and `ListboxOption` render `<li>`, and a bare `<li>` in a grid or
+ * flex parent still draws its marker — outside the box, since the parent is not
+ * a list. Terracotta chooses the element, the page chooses whether it looks
+ * like a list.
+ */
+.menu-item,
+.listbox-option,
+.select-option,
+.combobox-option,
+.command-option,
+.radio-row,
+.radio-card,
+.feed-article {
+  list-style: none;
+}
+
 .menu {
   display: grid;
   gap: 0.1rem;
@@ -940,9 +957,26 @@ a.button {
   color: var(--text-2);
 }
 
+/*
+ * The overlay is mounted whether or not the menu is open — it is the layer that
+ * catches the click that dismisses it — and it covers the viewport. Closed, it
+ * is invisible but still live, which broke the component twice over inside a
+ * demo frame, where the "viewport" is the frame: it swallowed the right-click
+ * that is supposed to open the menu, and under a theme that gives overlays a
+ * `backdrop-filter` it blurred the entire demo permanently.
+ *
+ * Terracotta styles nothing and publishes `tc-expanded`, so taking the closed
+ * overlay out of the page is the page's job. `display: none` rather than
+ * `pointer-events: none` because it has to drop the filter too, and this
+ * overlay never animates — nothing here transitions it in or out.
+ */
 .contextmenu-overlay {
   position: fixed;
   inset: 0;
+}
+
+.contextmenu-overlay:not([tc-expanded]) {
+  display: none;
 }
 
 .contextmenu-panel {

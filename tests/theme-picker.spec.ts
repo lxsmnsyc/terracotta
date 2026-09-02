@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { SCHEMES, THEMES, useAppearance } from './support/docs';
+import { SCHEMES, THEMES, clickUntil, useAppearance } from './support/docs';
 
 test('the picker is a radio group naming every theme', async ({ page }) => {
   await page.goto('/');
@@ -37,14 +37,16 @@ for (const theme of THEMES) {
 test('choosing a theme applies it at once and survives a reload', async ({ page }) => {
   await page.goto('/');
 
-  await page.click('.theme-swatch[data-theme-id="terminal"]');
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'terminal');
+  await clickUntil(page, '.theme-swatch[data-theme-id="terminal"]', () =>
+    expect(page.locator('html')).toHaveAttribute('data-theme', 'terminal'),
+  );
 
   // Still on screen, so the next theme is one click away rather than a round
   // trip through a menu.
   await expect(page.locator('.theme-swatch[data-theme-id="blueprint"]')).toBeVisible();
-  await page.click('.theme-swatch[data-theme-id="blueprint"]');
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'blueprint');
+  await clickUntil(page, '.theme-swatch[data-theme-id="blueprint"]', () =>
+    expect(page.locator('html')).toHaveAttribute('data-theme', 'blueprint'),
+  );
 
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'blueprint');
@@ -57,10 +59,16 @@ test('choosing a theme applies it at once and survives a reload', async ({ page 
 test('the picker is operable from the keyboard', async ({ page }) => {
   await page.goto('/');
 
-  await page.locator('.theme-swatch[data-theme-id="terracotta"]').focus();
-  await page.keyboard.press('ArrowRight');
-
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'brutalist');
+  // Same pre-hydration race as a click: the swatch is focusable from the
+  // server's markup long before it answers a key. Arrowing from the first
+  // swatch always lands on the second, so a repeat is harmless.
+  await expect(async () => {
+    await page.locator('.theme-swatch[data-theme-id="terracotta"]').focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'brutalist', {
+      timeout: 1000,
+    });
+  }).toPass({ timeout: 15_000 });
 });
 
 for (const scheme of SCHEMES) {

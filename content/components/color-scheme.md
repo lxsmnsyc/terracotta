@@ -1,7 +1,10 @@
 # ColorScheme
 
-Light / dark / system colour-scheme management. `ColorSchemeProvider` keeps three
-things in sync:
+Light / dark / system colour-scheme management. `ColorSchemeProvider` holds the
+preference, resolves `'system'` against the operating system, and reflects the
+result as a `dark` class on the document element.
+
+It keeps three things in sync:
 
 - the preference, persisted in `localStorage` under the key `theme-preference`
 - the `dark` class on `<html>`, toggled to match the resolved scheme
@@ -9,6 +12,11 @@ things in sync:
 
 It also listens for the `storage` event, and for the page becoming visible
 again. A change made in one tab therefore reaches the others.
+
+:::hero color-scheme/basic
+The provider toggles `dark` on the document element it is rendered into — which
+here is the demo frame, not the page around it. Only this box changes.
+:::
 
 ```tsx
 import {
@@ -211,6 +219,12 @@ const [scheme, setScheme] = createSignal<ColorScheme>('system');
   …
 </ColorSchemeProvider>
 ```
+
+:::demo color-scheme/controlled
+The preference lives in the component's own signal; the provider only reports
+changes through `onChange`.
+:::
+
 
 ### Avoiding the first-paint flash
 

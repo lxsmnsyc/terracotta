@@ -1,4 +1,4 @@
-import type { ConsoleMessage, Page } from '@playwright/test';
+import { type ConsoleMessage, type FrameLocator, type Page, expect } from '@playwright/test';
 
 /**
  * The themes the site ships, and the two colour schemes each has to support.
@@ -25,7 +25,7 @@ export type Theme = (typeof THEMES)[number];
 export type Scheme = (typeof SCHEMES)[number];
 
 export const THEME_STORAGE_KEY = 'tc-docs-theme';
-export const SCHEME_STORAGE_KEY = 'theme-preference';
+export const SCHEME_STORAGE_KEY = 'tc-docs-scheme';
 
 /** A representative slice of the site: home, a popup-heavy page, a modal page. */
 export const SAMPLE_PATHS = ['/', '/components/listbox', '/components/alert-dialog'];
@@ -83,6 +83,49 @@ export function watchForErrors(page: Page, where?: () => string): string[] {
     }
   });
   return errors;
+}
+
+/**
+ * Clicks a control that opens a popup, and waits for the popup rather than for
+ * the click.
+ *
+ * The control is server-rendered, so it exists — and Playwright will happily
+ * click it — before hydration has attached anything to it, and under a loaded
+ * dev server that window is wide enough to lose the first click. Retrying is
+ * safe because the trigger publishes `tc-expanded`: a second click only happens
+ * while the popup is still closed, so this can never toggle it shut.
+ *
+ * Takes a page or a frame, because half the things worth clicking on this site
+ * live inside a demo iframe.
+ */
+export async function openPopup(
+  scope: Page | FrameLocator,
+  trigger: string,
+  item: string,
+  options?: { button?: 'left' | 'right' },
+): Promise<void> {
+  await expect(async () => {
+    if ((await scope.locator(`${trigger}[tc-expanded]`).count()) === 0) {
+      await scope.locator(trigger).first().click(options);
+    }
+    await expect(scope.locator(item).first()).toBeVisible({ timeout: 1500 });
+  }).toPass({ timeout: 25_000 });
+}
+
+/**
+ * Clicks until the page reflects it, for controls whose state is idempotent —
+ * picking an already-picked radio changes nothing, so a repeat is free. Same
+ * pre-hydration race as `openPopup`.
+ */
+export async function clickUntil(
+  page: Page,
+  selector: string,
+  settled: () => Promise<unknown>,
+): Promise<void> {
+  await expect(async () => {
+    await page.click(selector);
+    await settled();
+  }).toPass({ timeout: 15_000 });
 }
 
 /** Every documentation page, read from the sidebar rather than hard-coded. */

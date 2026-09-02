@@ -1,5 +1,14 @@
 {
-  "include": ["src", "vite", "tests", "vite.config.ts", "playwright.config.ts", "env.d.ts"],
+  "include": [
+    "src",
+    "vite",
+    "tests",
+    "server",
+    "vite.config.ts",
+    "playwright.config.ts",
+    "nitro.config.ts",
+    "env.d.ts"
+  ],
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "target": "ES2022",

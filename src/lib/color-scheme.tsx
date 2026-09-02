@@ -11,8 +11,14 @@ import {
 export type NativeColorScheme = 'light' | 'dark';
 export type ColorScheme = NativeColorScheme | 'system';
 
-/** The key Terracotta's own `ColorSchemeProvider` uses. Kept identical. */
-export const SCHEME_STORAGE_KEY = 'theme-preference';
+/*
+ * Deliberately *not* Terracotta's own `theme-preference`. The ColorScheme page
+ * demos mount the real provider, which writes that key on mount — so sharing it
+ * would mean opening that page silently overwrote the reader's own choice for
+ * the whole site. A docs-scoped key keeps the demos honest: they use the
+ * unmodified library, and what they store stays theirs.
+ */
+export const SCHEME_STORAGE_KEY = 'tc-docs-scheme';
 
 interface ColorSchemeContextValue {
   scheme: () => ColorScheme;
@@ -58,20 +64,24 @@ function schemeFromQuery(): ColorScheme | null {
 }
 
 /**
- * A local re-implementation of Terracotta's `ColorSchemeProvider`, matching it
- * exactly: the same `theme-preference` storage key, the same `dark` class on
- * `<html>`, the same `'system'` resolution and cross-tab `storage` sync.
+ * A local re-implementation of Terracotta's `ColorSchemeProvider`: the same
+ * `dark` class on `<html>`, the same `'system'` resolution, the same cross-tab
+ * `storage` sync.
  *
- * The library's own provider cannot be used here yet. Under SSR it stops its
- * entire subtree from hydrating — silently, with no error — because it writes
- * the scheme from an effect while hydration is still in progress. With the
- * provider wrapping the router, that left the whole site as static HTML: no
- * client-side navigation, no theme switching, and no messaging into the demo
- * frames. A twelve-line reproduction is in `docs/color-scheme-hydration.md`.
+ * It was originally written because the library's provider could not hydrate at
+ * all — it stopped its entire subtree dead, silently, which with the provider
+ * wrapping the router left the whole site as static HTML. That is fixed as of
+ * `terracotta@2.0.0-next.9` and `solid-use@1.0.0-next.3`; the account is kept in
+ * `docs/color-scheme-hydration.md` because the rule it turned on is worth
+ * remembering.
  *
- * Everything below is deliberately hydration-safe: the signal starts from what
- * the boot script already wrote into the DOM, so the server tree and the
- * client tree agree, and nothing is written until after hydration settles.
+ * Two things keep this file around anyway, and both are about the docs rather
+ * than about the library:
+ *
+ *   1. It honours `?scheme=` so a demo frame renders — and stays — in the
+ *      appearance the page around it asked for.
+ *   2. It stores under a docs-scoped key, leaving `theme-preference` free for
+ *      the ColorScheme demos to use the real provider on the real key.
  */
 export function ColorSchemeProvider(props: { children: JSX.Element }): JSX.Element {
   const requested = schemeFromQuery();

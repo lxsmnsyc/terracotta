@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { CONTRAST_FLOOR, textContrast } from './support/contrast';
-import { SCHEMES, THEMES, useAppearance } from './support/docs';
+import { SCHEMES, THEMES, openPopup, useAppearance } from './support/docs';
 
 /**
  * Filled controls and filled rows are where themes go wrong. The fill comes
@@ -36,13 +36,11 @@ for (const theme of THEMES) {
       await useAppearance(page, theme, scheme);
       await page.goto(`/demo/listbox/basic${appearance}`);
 
-      await page.click('.listbox-button');
+      await openPopup(page, '.listbox-button', '.listbox-option');
 
       // Opening does not by itself mark a row current, so the pointer does it:
       // waiting for `[tc-active]` to appear on its own is a race.
-      const first = page.locator('.listbox-option').first();
-      await expect(first).toBeVisible();
-      await first.hover();
+      await page.locator('.listbox-option').first().hover();
 
       const option = page.locator('.listbox-option[tc-active]').first();
       await expect(option).toBeVisible();

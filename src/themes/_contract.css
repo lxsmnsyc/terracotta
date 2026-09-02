@@ -16,7 +16,7 @@
  *
  *   2. The demo vocabulary — the class names every file in `src/demos` uses,
  *      in `styles/demos.css`. Demos carry no styles and no theme-specific
- *      classes, so styling the vocabulary styles all forty-five demos at once.
+ *      classes, so styling the vocabulary styles all forty-seven demos at once.
  *      The names are component-shaped — `.disclosure`, `.disclosure-button`,
  *      `.listbox-option` — and combine with Terracotta's `tc-` state
  *      attributes.

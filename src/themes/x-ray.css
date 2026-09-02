@@ -16,7 +16,7 @@
  *
  * An option that is both active and selected therefore shows an amber outline
  * around a green ring. Neither channel affects layout: `outline` and
- * `box-shadow` do not participate in flow, so all forty-five demos keep their
+ * `box-shadow` do not participate in flow, so all forty-seven demos keep their
  * geometry exactly.
  *
  * The docs chrome is built out of Terracotta too, so it annotates itself —

@@ -1,5 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { SAMPLE_PATHS, SCHEMES, THEMES, useAppearance, watchForErrors } from './support/docs';
+import {
+  SAMPLE_PATHS,
+  SCHEMES,
+  THEMES,
+  clickUntil,
+  useAppearance,
+  watchForErrors,
+} from './support/docs';
 
 /**
  * Terracotta writes `tc-` state attributes and never touches `class`, so a
@@ -65,9 +72,9 @@ test('switching theme restyles the chrome and the demos together', async ({ page
     (el) => getComputedStyle(el).backgroundColor,
   );
 
-  await page.click('.theme-swatch[data-theme-id="blueprint"]');
-
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'blueprint');
+  await clickUntil(page, '.theme-swatch[data-theme-id="blueprint"]', () =>
+    expect(page.locator('html')).toHaveAttribute('data-theme', 'blueprint'),
+  );
   const after = await page.locator('.sidebar-link[aria-current="page"]').evaluate(
     (el) => getComputedStyle(el).backgroundColor,
   );
