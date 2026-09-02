@@ -147,13 +147,13 @@ Renders a `<button>` by default.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'button'` | Element or component to render as. Non-`<button>` elements get <kbd>Enter</kbd>/<kbd>Space</kbd> activation from `Button`. |
-| `defaultPressed` | `boolean` | — | Initial state, uncontrolled. Mutually exclusive with `pressed`. |
-| `pressed` | `boolean` | — | Current state, controlled. Mutually exclusive with `defaultPressed`. |
+| `defaultPressed` | `boolean` | none | Initial state, uncontrolled. Mutually exclusive with `pressed`. |
+| `pressed` | `boolean` | none | Current state, controlled. Mutually exclusive with `defaultPressed`. |
 | `disabled` | `boolean` | `false` | Blocks toggling and marks the button disabled. |
-| `onChange` | `(state: boolean) => void` | — | Called with the new pressed state on every toggle. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: ToggleStateProperties) => JSX.Element` | — | Contents, or a render prop receiving the toggle state. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `onChange` | `(state: boolean) => void` | none | Called with the new pressed state on every toggle. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: ToggleStateProperties) => JSX.Element` | none | Contents, or a render prop receiving the toggle state. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 #### Rendered attributes
 

@@ -10,8 +10,9 @@ export const CONTRAST_FLOOR = 4.5;
  * controls transparent, and `glass` makes every surface translucent on purpose.
  * So backgrounds are composited down the ancestor chain until one is opaque,
  * and anything still translucent at the root is composited over white or black
- * according to the colour scheme. That last step is an approximation — a themed
- * wash is not pure white — but it errs towards reporting *less* contrast than
+ * according to the colour scheme. That last step is an approximation, since a
+ * themed wash is not pure white, but it errs towards reporting *less* contrast
+ * than
  * there is, which is the safe direction for a floor.
  */
 export async function textContrast(locator: Locator): Promise<number> {
@@ -21,7 +22,7 @@ export async function textContrast(locator: Locator): Promise<number> {
      * string. Computed colours are not always `rgb()`: a colour mid-transition
      * comes back as `oklab(...)`, `color-mix()` results as `color(srgb ...)`,
      * and a hand-rolled parser silently read an oklab lightness of 0.75 as 0.75
-     * of 255 — reporting a bright red button as nearly black.
+     * of 255, reporting a bright red button as nearly black.
      */
     const canvas = document.createElement('canvas');
     canvas.width = 1;

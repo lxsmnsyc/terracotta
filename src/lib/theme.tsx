@@ -56,7 +56,7 @@ export function ThemeProvider(props: { children: JSX.Element }): JSX.Element {
   return <ThemeContext value={value}>{props.children}</ThemeContext>;
 }
 
-/** Throws outside a `<ThemeProvider>` — the context is deliberately default-less. */
+/** Throws outside a `<ThemeProvider>`: the context is deliberately default-less. */
 export function useTheme(): ThemeContextValue {
   return useContext(ThemeContext);
 }

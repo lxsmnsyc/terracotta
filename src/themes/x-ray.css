@@ -1,7 +1,7 @@
 /*
  * X-ray.
  *
- * A neutral, dense, devtools-grey reading surface — with the machinery left
+ * A neutral, dense, devtools-grey reading surface, with the machinery left
  * showing. Terracotta styles nothing and writes its entire state model into
  * `tc-` DOM attributes, so a stylesheet can select on that model directly.
  * This theme does: every element that is expanded, active, selected, checked,
@@ -9,9 +9,9 @@
  *
  * Two channels, so overlapping states stay readable:
  *
- *   outline (outside the box)  what the component is *doing* now —
+ *   outline (outside the box)  what the component is *doing* now:
  *                              `tc-expanded`, `tc-active`
- *   inset ring (inside)        what it *holds* —
+ *   inset ring (inside)        what it *holds*:
  *                              `tc-selected`, `tc-checked`, `tc-pressed`
  *
  * An option that is both active and selected therefore shows an amber outline
@@ -19,7 +19,7 @@
  * `box-shadow` do not participate in flow, so all forty-seven demos keep their
  * geometry exactly.
  *
- * The docs chrome is built out of Terracotta too, so it annotates itself —
+ * The docs chrome is built out of Terracotta too, so it annotates itself.
  * the theme picker you switch with is a `Listbox`, and it lights up while you
  * use it.
  */
@@ -102,7 +102,7 @@
 /* ------------------------------------------------------------------ *
  * Channel one: what the component is doing
  *
- * Selectors are attributes, not class names — nothing here knows which
+ * Selectors are attributes, not class names, and nothing here knows which
  * component it is drawing, only what state that component has published.
  * ------------------------------------------------------------------ */
 
@@ -128,7 +128,8 @@
 
 /*
  * A hairline, not a border. Terracotta mirrors a component's state onto its
- * parts — a checked row, its label and its box all publish `tc-checked` — so
+ * parts, so that a checked row, its label and its box all publish
+ * `tc-checked`, and so
  * these rings nest three deep in places. That nesting is the truth of the
  * markup and worth seeing; at 2px it read as a stack of borders instead.
  */
@@ -159,7 +160,7 @@
 
 /*
  * A filled row repaints only itself, and the rings above sit on top of
- * whatever it is filled with — so the fill has to stay light enough to read
+ * whatever it is filled with, so the fill has to stay light enough to read
  * against. These are the baseline's own selection colours, kept deliberately
  * pale here for that reason.
  */
@@ -220,7 +221,7 @@
 /*
  * Shiki bakes an opaque background into the block and into every span, so both
  * are replaced with the theme's own surface. The dark selector carries `:root`
- * so that it out-specifies `:root.dark .shiki span` in `prose.css` outright —
+ * so that it out-specifies `:root.dark .shiki span` in `prose.css` outright.
  * without it the two tie at three classes and the winner is whichever
  * stylesheet the bundler emits last.
  */

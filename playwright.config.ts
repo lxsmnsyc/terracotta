@@ -17,7 +17,7 @@ export default defineConfig({
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   /*
    * `PROD=1` points the whole suite at the deployable Nitro output instead of
-   * the dev server — worth doing before a release, because the failure this
+   * the dev server. It is worth doing before a release, because the failure this
    * site has been bitten by most (a subtree that never hydrates) is loud in dev
    * and completely silent in a production build.
    */

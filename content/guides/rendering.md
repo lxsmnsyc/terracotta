@@ -4,7 +4,7 @@ How Terracotta turns its parts into DOM: which element it renders, which props
 reach that element, how you get a handle on it, and what happens to hidden
 content.
 
-## `as` — polymorphic rendering
+## `as`, or polymorphic rendering
 
 Every rendered component accepts `as`. It picks the element or component to
 render, and takes either an intrinsic tag name (`'section'`, `'li'`, …) or any
@@ -80,8 +80,8 @@ the document, and showing puts the very same nodes back.
 
 The chart is constructed once. Reopening the popover reattaches the element that
 was already there rather than mounting a second chart, so anything the component
-holds in its own state — a computed layout, a loaded dataset, an uncontrolled
-input's value — is still there. Being detached, the content is out of the
+holds in its own state, whether a computed layout, a loaded dataset or an
+uncontrolled input's value, is still there. Being detached, the content is out of the
 document while hidden, so <kbd>Tab</kbd> cannot reach it and screen readers
 cannot announce it, exactly as with the default.
 
@@ -120,8 +120,9 @@ fallback whenever it arrives, mid-animation or long after. Closing while the
 resource is still pending is fine too: the leave transition runs, and the
 pending boundary is removed along with the panel.
 
-Put the boundary the other way round — a `Loading` wrapping the `Transition` —
-and the transitioning element is not in the document while suspended, so nothing
+Put the boundary the other way round, with a `Loading` wrapping the
+`Transition`, and the transitioning element is not in the document while
+suspended, so nothing
 animates until the boundary resolves. Solid holds back the effects created under
 a suspended boundary, so the transition runs when the content lands rather than
 being missed.
@@ -130,17 +131,17 @@ being missed.
 ContextMenu and CommandBar look through the panel for something focusable as
 they open. A panel showing a fallback usually has nothing to offer, so focus
 stays where it was, and the content that arrives a moment later does not get
-focus either — no second look is taken. The
+focus either, and no second look is taken. The
 [dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/) expects
 focus to be inside the dialog, so this is worth designing around. An async read
 defers even when its value has already settled, so a boundary always shows its
-fallback for the render the panel looks at — having the data ready in advance
+fallback for the render the panel looks at, so having the data ready in advance
 does not help.
 
 Two ways to keep focus where it belongs:
 
-- Keep something focusable in the panel that is not behind the boundary — a
-  close button, for instance, which a dialog usually wants anyway. It is there
+- Keep something focusable in the panel that is not behind the boundary, such as
+  a close button, which a dialog usually wants anyway. It is there
   when the panel opens, takes focus, and keeps it while the content loads.
 
   ```tsx

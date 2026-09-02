@@ -10,7 +10,7 @@ import {
 
 /**
  * Terracotta writes `tc-` state attributes and never touches `class`, so a
- * theme is nothing but CSS — which means the proof that a theme works is that
+ * theme is nothing but CSS, which means the proof that a theme works is that
  * the site keeps behaving identically while looking completely different.
  */
 for (const theme of THEMES) {

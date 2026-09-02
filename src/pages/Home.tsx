@@ -26,9 +26,9 @@ export default function Home(): JSX.Element {
       <section class="hero">
         <h1 class="hero-title">Behaviour, not decoration.</h1>
         <p class="hero-lede">
-          Terracotta gives SolidJS the accessible half of a component library — state, keyboard
-          handling and ARIA wiring — and leaves every pixel to you. It reports what it is doing
-          through <code>tc-</code> attributes and never touches your <code>class</code>.
+          Terracotta gives SolidJS the accessible half of a component library, meaning state,
+          keyboard handling and ARIA wiring, and leaves every pixel to you. It reports what it is
+          doing through <code>tc-</code> attributes and never touches your <code>class</code>.
         </p>
 
         <div class="hero-actions">
@@ -49,7 +49,7 @@ export default function Home(): JSX.Element {
         <h2 class="pitch-title">Change the theme. Watch the markup stay put.</h2>
         <p class="pitch-body">
           Every demo on this site runs in its own document, and every one of them is wearing the
-          theme you picked in the header. Switch it and nothing about the components changes — only
+          theme you picked in the header. Switch it and nothing about the components changes. Only
           the stylesheet reading their state attributes does. That is the entire argument for
           headless components, and you can run it yourself right here.
         </p>

@@ -1,6 +1,6 @@
 /**
- * Demos run in an iframe so each one gets a real document — its own stacking
- * context, its own `<body>`, its own focus scope. That is the only way a modal
+ * Demos run in an iframe so each one gets a real document, with its own
+ * stacking context, its own `<body>` and its own focus scope. That is the only way a modal
  * dialog or a focus trap can be shown honestly inside a docs page. The cost is
  * that theme changes and height have to cross the frame boundary, which is
  * what this protocol is for.

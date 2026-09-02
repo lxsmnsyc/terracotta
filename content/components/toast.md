@@ -6,10 +6,10 @@ the screen and go away again. Terracotta splits this into three pieces:
 :::hero toast/basic
 :::
 
-- `ToasterStore` — a framework-agnostic queue. Create it outside your components
+- `ToasterStore` is a framework-agnostic queue. Create it outside your components
   and push messages into it from anywhere.
-- `useToaster(store)` — subscribes to a store and returns a Solid accessor.
-- `<Toaster>` / `<Toast>` — the markup, with the right live-region roles.
+- `useToaster(store)` subscribes to a store and returns a Solid accessor.
+- `<Toaster>` and `<Toast>` are the markup, with the right live-region roles.
 
 The queue lives outside the component tree, so any code can raise a toast
 without prop drilling: a fetch handler, a router guard, a worker callback.
@@ -199,8 +199,8 @@ one, and throws otherwise. Renders a `<div>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | The toasts. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The toasts. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes: `tc-toaster`.
 
@@ -211,8 +211,8 @@ A single notification. Renders a `<div>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | The message. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The message. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 #### Rendered attributes
 

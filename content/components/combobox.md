@@ -16,8 +16,8 @@ Navigation is *virtual*. DOM focus stays on the input while the arrow keys move
 an active option, which is published through `aria-activedescendant`. That is
 what lets you keep typing while browsing the list.
 
-Opening the popup activates an option straight away — the selected one, or the
-first if there is no selection — so the arrow keys start from somewhere
+Opening the popup activates an option straight away, either the selected one or
+the first if there is no selection, so the arrow keys start from somewhere
 sensible.
 
 ```tsx
@@ -256,7 +256,7 @@ debounced.
 | `Combobox` | `tc-disabled` | The combobox is disabled |
 | `ComboboxLabel` | `tc-combobox-label` | Always |
 | `ComboboxLabel` | `tc-expanded`, `tc-has-selected`, `tc-has-active`, `tc-has-query`, `tc-disabled` | Mirrors the combobox |
-| `ComboboxInput` | `tc-command-input` | Always — see the note below |
+| `ComboboxInput` | `tc-command-input` | Always. See the note below |
 | `ComboboxInput` | `tc-expanded`, `tc-has-selected`, `tc-has-active`, `tc-has-query`, `tc-disabled` | Mirrors the combobox |
 | `ComboboxOptions` | `tc-combobox-options` | Always (whenever rendered) |
 | `ComboboxOptions` | `tc-expanded`, `tc-has-selected`, `tc-has-active`, `tc-has-query`, `tc-disabled` | Mirrors the combobox |
@@ -279,7 +279,7 @@ whenever the query is non-empty, which makes "clear" affordances easy.
 /* Filtering */
 [tc-combobox-option]:not([tc-matches]) { display: none; }
 
-/* Virtual focus — the only highlight, since DOM focus stays on the input */
+/* Virtual focus: the only highlight, since DOM focus stays on the input */
 [tc-combobox-option][tc-active]   { background: #eff6ff; }
 [tc-combobox-option][tc-selected] { font-weight: 600; }
 [tc-combobox-option][tc-disabled] { color: #a1a1aa; }
@@ -350,19 +350,19 @@ Renders a `<div>` by default. Does not take a `ref`.
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `matchBy` | `(value: V, query: string) => boolean` | *required* | Decides whether an option matches the current query. |
 | `multiple` | `boolean` | `false` | When `true`, the value is an array and the popup stays open after each pick. |
-| `defaultValue` | `V` \| `V[]` | — | Initial selection, uncontrolled. Mutually exclusive with `value`. |
-| `value` | `V` \| `V[]` | — | Current selection, controlled. Mutually exclusive with `defaultValue`. |
-| `onSelectChange` | `(value?: V) => void` \| `(value: V[]) => void` | — | Called with the new selection. |
-| `defaultOpen` | `boolean` | — | Initial popup state, uncontrolled. Mutually exclusive with `isOpen`. |
-| `isOpen` | `boolean` | — | Current popup state, controlled. Mutually exclusive with `defaultOpen`. |
-| `onDisclosureChange` | `(value: boolean) => void` | — | Called when the popup opens or closes. |
-| `onOpen` | `() => void` | — | Called when the popup opens. |
-| `onClose` | `() => void` | — | Called when the popup closes. |
+| `defaultValue` | `V` \| `V[]` | none | Initial selection, uncontrolled. Mutually exclusive with `value`. |
+| `value` | `V` \| `V[]` | none | Current selection, controlled. Mutually exclusive with `defaultValue`. |
+| `onSelectChange` | `(value?: V) => void` \| `(value: V[]) => void` | none | Called with the new selection. |
+| `defaultOpen` | `boolean` | none | Initial popup state, uncontrolled. Mutually exclusive with `isOpen`. |
+| `isOpen` | `boolean` | none | Current popup state, controlled. Mutually exclusive with `defaultOpen`. |
+| `onDisclosureChange` | `(value: boolean) => void` | none | Called when the popup opens or closes. |
+| `onOpen` | `() => void` | none | Called when the popup opens. |
+| `onClose` | `() => void` | none | Called when the popup closes. |
 | `toggleable` | `boolean` | `false` | Selecting the already-selected value clears or removes it. |
 | `disabled` | `boolean` | `false` | Disables the whole combobox. |
 | `by` | `(a: V, b: V) => boolean` | reference equality | Compares values. Needed for object values. |
-| `children` | `JSX.Element` | — | The label, input and options. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The label, input and options. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 `Combobox` has no `onChange`. Use `onSelectChange` and `onDisclosureChange`.
 There is no `horizontal` option either, because the list is always vertical.
@@ -375,22 +375,22 @@ Names the combobox. Renders a `<label>` by default. It takes no `ref`, and its
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'label'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | Label text. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | Label text. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<ComboboxInput>`
 
 The text field. Renders an `<input type="text">` by default. Everything you pass
-is forwarded — `placeholder`, `value`, `onInput`, `class` — so you control what
-the input displays.
+is forwarded, including `placeholder`, `value`, `onInput` and `class`, so you
+control what the input displays.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'input'` | Element or component to render as. Query tracking only works on a real `<input>`. |
 | `disabled` | `boolean` | `false` | Disables the input's own handling. It is also disabled when the `Combobox` is. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` | — | Rarely used for an input. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` | none | Rarely used for an input. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="combobox"`, `type="text"`, `tabindex="0"`,
 `aria-haspopup="listbox"`, `aria-controls`, `aria-labelledby`, `aria-expanded`
@@ -404,10 +404,10 @@ focus stays on the input.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'ul'` | Element or component to render as. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the list behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: AutocompleteStateProperties<V>) => JSX.Element` | — | The options, or a render prop receiving the autocomplete state. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the list behaves while closed. See [`unmount`](../guides/rendering.md#unmount). |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: AutocompleteStateProperties<V>) => JSX.Element` | none | The options, or a render prop receiving the autocomplete state. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="listbox"`, `aria-multiselectable`,
 `aria-orientation="vertical"` and `tabindex="-1"`.
@@ -422,11 +422,11 @@ One option. A [`Button`](./button.md) with `role="option"`, rendered as an
 | `as` | `ValidConstructor` | `'li'` | Element or component to render as. |
 | `value` | `V` | *required* | The value this option represents; also what `matchBy` receives. |
 | `disabled` | `boolean` | `false` | Disables this option and removes it from navigation. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: AutocompleteOptionStateProperties) => JSX.Element` | — | Label, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: AutocompleteOptionStateProperties) => JSX.Element` | none | Label, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="option"`, `aria-selected`, `tabindex="-1"`,
-and a generated `id` — the one `aria-activedescendant` points at.
+and a generated `id`, the one `aria-activedescendant` points at.
 
 Every descendant throws if rendered outside a `<Combobox>`.

@@ -4,7 +4,7 @@ import { Toolbar } from 'terracotta/toolbar';
 
 /**
  * Roving focus works on any focusable child, Terracotta's own components
- * included — the toolbar owns navigation, each control owns its state.
+ * included: the toolbar owns navigation, each control owns its state.
  */
 export default function ToolbarWithControls(): JSX.Element {
   return (

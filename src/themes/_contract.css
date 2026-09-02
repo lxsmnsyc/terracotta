@@ -11,20 +11,21 @@
  * a complete theme: the two stylesheets a theme paints are written entirely in
  * them.
  *
- *   1. The chrome — `.masthead`, `.sidebar-link`, `.control`, `.demo`,
+ *   1. The chrome: `.masthead`, `.sidebar-link`, `.control`, `.demo`,
  *      `.prose` and friends, in `styles/chrome.css` and `styles/prose.css`.
  *
- *   2. The demo vocabulary — the class names every file in `src/demos` uses,
+ *   2. The demo vocabulary, meaning the class names every file in `src/demos` uses,
  *      in `styles/demos.css`. Demos carry no styles and no theme-specific
  *      classes, so styling the vocabulary styles all forty-seven demos at once.
- *      The names are component-shaped — `.disclosure`, `.disclosure-button`,
- *      `.listbox-option` — and combine with Terracotta's `tc-` state
+ *      The names are component-shaped, such as `.disclosure`,
+ *      `.disclosure-button` and `.listbox-option`, and they combine with
+ *      Terracotta's `tc-` state
  *      attributes.
  *
  * Beyond tokens, a theme may override any rule in either stylesheet by
  * repeating its selector under `[data-theme='<id>']`, which always wins on
  * specificity. `terracotta.css` is tokens only; `brutalist.css` also reshapes
- * the baseline — borders, corners, shadows, casing — without touching a single
+ * the baseline's borders, corners, shadows and casing, without touching a single
  * component or demo.
  *
  * The values below are the fallbacks. They exist so a half-finished theme

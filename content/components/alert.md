@@ -19,7 +19,7 @@ import { Alert } from 'terracotta/alert';
 ## Anatomy
 
 ```tsx
-<Alert/> {/* role="alert" — announced the moment it appears */}
+<Alert/> {/* role="alert": announced the moment it appears */}
 ```
 
 `Alert` has no state and no sub-components. It is the one Terracotta component
@@ -119,8 +119,8 @@ Renders a `<div>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | The message. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The message. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 #### Rendered attributes
 

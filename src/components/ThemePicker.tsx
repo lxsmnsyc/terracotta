@@ -24,7 +24,7 @@ export default function ThemePicker(): JSX.Element {
 
   /*
    * The server cannot know which theme is in the visitor's storage, so it
-   * renders the default as checked — and hydration reuses the server's DOM,
+   * renders the default as checked, and hydration reuses the server's DOM,
    * moving the mark only when the value *changes*. Starting from the server's
    * answer and stepping to the real one in an effect makes it a change, so the
    * mark lands on the theme the page is actually painted in.
@@ -54,7 +54,7 @@ export default function ThemePicker(): JSX.Element {
             class="theme-swatch"
             value={entry.id}
             data-theme-id={entry.id}
-            title={`${entry.name} — ${entry.blurb}`}
+            title={`${entry.name}: ${entry.blurb}`}
           >
             <RadioGroupLabel class="visually-hidden">{entry.name}</RadioGroupLabel>
             <span class={`theme-swatch-chip theme-swatch-${entry.id}`} aria-hidden="true" />

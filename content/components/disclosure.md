@@ -31,7 +31,7 @@ import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 ## Examples
 
 Every demo below runs in its own document, wearing the theme selected in the
-header. None of the demos carry styles of their own — switch theme and the same
+header. None of the demos carry styles of their own: switch theme and the same
 markup renders differently.
 
 ### Uncontrolled
@@ -42,7 +42,7 @@ are.
 
 :::demo disclosure/basic
 The chevron turns with CSS alone. `DisclosureButton` carries `tc-expanded` while
-the panel is open, and the theme rotates on `[tc-expanded]` — no signal, no
+the panel is open, and the theme rotates on `[tc-expanded]`. No signal, no
 handler.
 :::
 
@@ -115,7 +115,7 @@ scroll position survive a collapse. You then own its visibility:
 
 `unmount="offscreen"` is the middle ground. The panel is built once and reused,
 but still detached while closed, so its state survives without leaving anything
-in the document. Its effects keep running while it is hidden — see
+in the document. Its effects keep running while it is hidden. See
 [`unmount`](../guides/rendering.md#unmount-offscreen).
 
 ### Loading the panel content
@@ -186,7 +186,7 @@ panel while open.
 ### Styling
 
 The demos above use these class names. Everything that changes as the
-disclosure opens is an attribute selector — there is no state in the CSS that
+disclosure opens is an attribute selector. There is no state in the CSS that
 Terracotta did not already put in the DOM.
 
 ```css
@@ -210,7 +210,7 @@ Terracotta did not already put in the DOM.
   cursor: pointer;
 }
 
-/* The chevron turns when the section is open — no JS involved */
+/* The chevron turns when the section is open, with no JS involved */
 .disclosure-chevron {
   transition: rotate 150ms ease;
 }
@@ -274,14 +274,14 @@ by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `defaultOpen` | `boolean` | — | Initial state, uncontrolled. Mutually exclusive with `isOpen`. |
-| `isOpen` | `boolean` | — | Current state, controlled. Mutually exclusive with `defaultOpen`. |
+| `defaultOpen` | `boolean` | none | Initial state, uncontrolled. Mutually exclusive with `isOpen`. |
+| `isOpen` | `boolean` | none | Current state, controlled. Mutually exclusive with `defaultOpen`. |
 | `disabled` | `boolean` | `false` | Blocks opening and closing. |
-| `onChange` | `(state: boolean) => void` | — | Called with the new state on every change. |
-| `onOpen` | `() => void` | — | Called when it opens, before `onChange`. |
-| `onClose` | `() => void` | — | Called when it closes, after `onChange`. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop receiving the state. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `onChange` | `(state: boolean) => void` | none | Called with the new state on every change. |
+| `onOpen` | `() => void` | none | Called when it opens, before `onChange`. |
+| `onClose` | `() => void` | none | Called when it closes, after `onChange`. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop receiving the state. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<DisclosureButton>`
 
@@ -292,9 +292,9 @@ default.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'button'` | Element or component to render as. |
 | `disabled` | `boolean` | `false` | Disables this button. It is also disabled when the `Disclosure` is. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Label, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Label, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Its `id` is generated and linked to the panel through `aria-controls`.
 
@@ -306,9 +306,9 @@ The content shown while open. Renders a `<div>` by default. Does not take a
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the panel behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the panel behaves while closed. See [`unmount`](../guides/rendering.md#unmount). |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 `DisclosureButton` and `DisclosurePanel` throw if rendered outside a
 `<Disclosure>`.

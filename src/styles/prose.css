@@ -5,8 +5,8 @@
 
 /*
  * A page is a list of blocks, and each run of markdown arrives as one `<div>`
- * of rendered HTML. So the flow content — paragraphs, lists, code blocks,
- * tables — is a *grandchild* of `.prose`, not a child, and a plain
+ * of rendered HTML. So the flow content (paragraphs, lists, code blocks,
+ * tables) is a *grandchild* of `.prose`, not a child, and a plain
  * `> * + *` rule silently matched nothing but the wrappers themselves.
  */
 .prose > * + *,

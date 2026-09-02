@@ -7,7 +7,7 @@
  *
  * The point of this file is how little of it there is. Terracotta writes state
  * as `tc-` attributes and no styles of its own, so this theme changes no
- * markup, no component and no demo — it redefines the tokens in
+ * markup, no component and no demo. It redefines the tokens in
  * `_contract.css` and then overrides the shape of the baseline vocabulary in
  * `styles/demos.css`. Every one of the forty-seven demos on this site follows.
  */
@@ -77,7 +77,7 @@
  *
  * One rule does most of the work: everything the baseline draws a hairline
  * around gets a real border instead. The selectors are the baseline's own
- * class names — nothing here knows which component it is styling.
+ * class names, and nothing here knows which component it is styling.
  * ------------------------------------------------------------------ */
 
 [data-theme='brutalist'] .control,
@@ -165,7 +165,7 @@
 
 /*
  * The inversion above repaints the row, but any child that carries its own
- * colour keeps it — a muted blurb or an accent tick then sits on the inverted
+ * colour keeps it, so a muted blurb or an accent tick then sits on the inverted
  * ground and disappears. Descendants of an inverted row inherit instead.
  */
 [data-theme='brutalist'] .button:hover *,

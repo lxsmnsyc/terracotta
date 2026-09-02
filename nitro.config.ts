@@ -8,8 +8,9 @@ const here = (path: string): string => fileURLToPath(new URL(path, import.meta.u
  *
  * The Solid plugin's start mode owns dev and the build, and stops there: it
  * emits client assets to `dist/client` and a server bundle to
- * `dist/server/server.js` whose default export is a Fetchable — `{ fetch(request) }`
- * — and then it is somebody else's problem to listen on a port, serve the
+ * `dist/server/server.js` whose default export is a Fetchable,
+ * `{ fetch(request) }`. After that it is somebody else's problem to listen on a
+ * port, serve the
  * assets, and package the result for a host. That is exactly Nitro's job, and
  * the Fetchable shape is one it already speaks, so the whole integration is the
  * catch-all route in `server/routes`.
@@ -26,7 +27,7 @@ export default defineNitroConfig({
    * Vercel's Build Output API: `nitro build` writes `.vercel/output`, which the
    * platform picks up with no framework detection and no dashboard settings.
    * `NITRO_PRESET` overrides this from the environment, which is how the local
-   * scripts get a plain Node server out of the same source — see `build:node`.
+   * scripts get a plain Node server out of the same source. See `build:node`.
    */
   preset: 'vercel',
 

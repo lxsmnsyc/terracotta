@@ -151,7 +151,7 @@ instead, such as [`Toggle`](./toggle.md)'s `pressed()`.
 | <kbd>→</kbd> / <kbd>←</kbd> | Next / previous control, when horizontal |
 | <kbd>↓</kbd> / <kbd>↑</kbd> | Next / previous control, when vertical |
 | <kbd>Home</kbd> / <kbd>End</kbd> | First / last control |
-| <kbd>Tab</kbd> | Enters or leaves the toolbar — it is a single tab stop |
+| <kbd>Tab</kbd> | Enters or leaves the toolbar, which is a single tab stop |
 
 Arrow navigation does not wrap around the ends. Focusing the toolbar itself
 restores the control that was focused last, or the first control if there is
@@ -167,9 +167,9 @@ Renders a `<div>` by default.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `horizontal` | `boolean` | `true` | Orientation. Decides which arrow keys navigate and what `aria-orientation` reports. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` | — | The controls. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` | none | The controls. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Give the toolbar an accessible name with `aria-label` or `aria-labelledby`. Both
 are forwarded like any other prop.

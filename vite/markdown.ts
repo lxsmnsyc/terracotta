@@ -298,9 +298,9 @@ function parseNav(raw: string, file: string): NavSection[] {
 }
 
 /**
- * Title and lede, read straight off the source. They are needed synchronously —
+ * Title and lede, read straight off the source. They are needed synchronously,
  * the sidebar lists them, and `<title>` must be registered before the SSR shell
- * flushes — so they cannot come from the page module, which loads on demand.
+ * flushes, so they cannot come from the page module, which loads on demand.
  */
 function scanFrontMatter(source: string): { title?: string; description?: string } {
   const heading = /^#\s+(.+)$/m.exec(source);

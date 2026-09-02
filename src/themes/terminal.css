@@ -6,7 +6,7 @@
  * amber paper printout, dark is green phosphor on black.
  *
  * The other themes restyle the site. This one changes what the site appears to
- * *be* — and still without touching a single component, demo, or line of
+ * *be*, and still without touching a single component, demo, or line of
  * markup. Where it looks like the HTML changed (the `##` before a heading, the
  * brackets around a button, the `>` beside the current page) it is generated
  * content, which is the strongest form of the argument this site is making:
@@ -80,7 +80,7 @@
   --shadow-2: 0 0 0 1px var(--border-strong);
 
   --scanline: rgb(0 0 0 / 28%);
-  /* Phosphor bleeds. Only in the dark scheme — ink on paper does not glow. */
+  /* Phosphor bleeds. Only in the dark scheme: ink on paper does not glow. */
   --glow: 0 0 6px currentcolor;
 }
 
@@ -88,8 +88,8 @@
  * The screen
  *
  * Scanlines ride above everything on a fixed, non-interactive layer. It hangs
- * off `body` rather than a wrapper, so the demo frames — separate documents
- * carrying the same `data-theme` — get their own without any component
+ * off `body` rather than a wrapper, so the demo frames, which are separate
+ * documents carrying the same `data-theme`, get their own without any component
  * knowing.
  * ------------------------------------------------------------------ */
 
@@ -218,8 +218,9 @@
 }
 
 /*
- * A filled row repaints only itself; children that carry their own colour —
- * a muted blurb, an accent tick — would keep it and vanish into the fill.
+ * A filled row repaints only itself; children that carry their own colour,
+ * such as a muted blurb or an accent tick, would keep it and vanish into the
+ * fill.
  */
 [data-theme='terminal'] .menu-item[tc-active] *,
 [data-theme='terminal'] .listbox-option[tc-active] *,
@@ -313,9 +314,9 @@
 /*
  * Shiki bakes its own background into the block and into every span. Left
  * alone the code sat on a GitHub-coloured slab in the middle of a console, so
- * the ground is replaced with the theme's own and the spans are cleared —
+ * the ground is replaced with the theme's own and the spans are cleared, so
  * only the syntax colours survive. The dark selector carries `:root`
- * so that it out-specifies `:root.dark .shiki span` in `prose.css` outright —
+ * so that it out-specifies `:root.dark .shiki span` in `prose.css` outright.
  * without it the two tie at three classes and the winner is decided by
  * whichever stylesheet the bundler happens to emit last.
  */

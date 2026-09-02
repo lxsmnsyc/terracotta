@@ -81,7 +81,7 @@ interface Section { id: string; title: string }
 
 ```tsx
 <TabPanel class="tabpanel" value="billing" unmount={false}>
-  {/* Stays in the DOM while other tabs are shown — keeps scroll position,
+  {/* Stays in the DOM while other tabs are shown, keeping scroll position,
       form state, and anything else you would lose on unmount. */}
 </TabPanel>
 ```
@@ -191,7 +191,7 @@ the value.
 
 ### Reading the state in code
 
-On the group and list — the [select state](../states.md#select-state):
+On the group and list, from the [select state](../states.md#select-state):
 
 | Member | Type | Description |
 | --- | --- | --- |
@@ -201,7 +201,7 @@ On the group and list — the [select state](../states.md#select-state):
 | `isActive(value)` / `hasActive()` | | Keyboard focus position. |
 | `disabled()` | `boolean` | Whether the group is disabled. |
 
-Inside a `Tab` or `TabPanel` — the
+Inside a `Tab` or `TabPanel`, from the
 [select option state](../states.md#select-option-state):
 
 | Member | Type | Description |
@@ -220,7 +220,7 @@ Handled on `TabList`:
 | <kbd>→</kbd> / <kbd>←</kbd> | Next / previous tab, wrapping around (horizontal) |
 | <kbd>↓</kbd> / <kbd>↑</kbd> | Next / previous tab, wrapping around (vertical) |
 | <kbd>Home</kbd> / <kbd>End</kbd> | First / last tab |
-| <kbd>Tab</kbd> | Leaves the tab list — only the selected tab is in the tab order |
+| <kbd>Tab</kbd> | Leaves the tab list, since only the selected tab is in the tab order |
 
 Moving focus to a tab selects it. Disabled tabs are skipped.
 
@@ -235,15 +235,15 @@ Owns a single-selection [select state](../states.md#select-state) and renders a
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `horizontal` | `boolean` | *required* | Orientation of the tab list. |
-| `defaultValue` | `V` | — | Initially selected tab, uncontrolled. Mutually exclusive with `value`. |
-| `value` | `V` | — | Currently selected tab, controlled. Mutually exclusive with `defaultValue`. |
-| `onChange` | `(value?: V) => void` | — | Called with the newly selected value. |
+| `defaultValue` | `V` | none | Initially selected tab, uncontrolled. Mutually exclusive with `value`. |
+| `value` | `V` | none | Currently selected tab, controlled. Mutually exclusive with `defaultValue`. |
+| `onChange` | `(value?: V) => void` | none | Called with the newly selected value. |
 | `toggleable` | `boolean` | `false` | Allow deselecting the active tab, leaving no panel shown. Rarely what you want for tabs. |
 | `disabled` | `boolean` | `false` | Disables the whole group. |
 | `by` | `(a: V, b: V) => boolean` | reference equality | Compares values. Needed for object values. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | — | The list and panels, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | none | The list and panels, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<TabList>`
 
@@ -252,9 +252,9 @@ The row (or column) of tabs. Renders a `<div>` by default.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | — | The tabs, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | none | The tabs, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="tablist"` and `aria-orientation`.
 
@@ -268,9 +268,9 @@ default.
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `value` | `V` | *required* | Identifies the tab and links it to the `TabPanel` with the same value. |
 | `disabled` | `boolean` | `false` | Disables this tab and removes it from navigation. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Label, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | Label, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="tab"`, `aria-selected`, `aria-controls`, a
 derived `id`, and `tabindex`, which is `0` while selected and `-1` otherwise.
@@ -284,8 +284,8 @@ The content for one tab. Renders a `<div>` by default. Does not take a `ref`.
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `value` | `V` | *required* | Must match the `value` of its `Tab`. |
 | `unmount` | `boolean` | `true` | Whether the panel is removed from the DOM when its tab is not selected. |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="tabpanel"`, `aria-labelledby`, a derived
 `id`, and `tabindex`, which is `0` while selected and `-1` otherwise.

@@ -3,8 +3,9 @@
  *
  * The set has flat paper, flat lines, flat frost and flat pills. This one is
  * the only theme with a *third dimension*: nothing is a rectangle of colour,
- * everything is a moulded surface. Controls are raised — a light-to-dark face,
- * a white highlight along the top edge, a shadow underneath — and inputs,
+ * everything is a moulded surface. Controls are raised, with a light-to-dark
+ * face, a white highlight along the top edge and a shadow underneath, while
+ * inputs,
  * grooves and listings are recessed into the page. Pressing a control inverts
  * its gradient and moves it down a pixel, because that is what pressing a
  * physical thing does.
@@ -113,7 +114,7 @@
  *
  * `background-color` is always declared alongside the gradient: a painted
  * surface with no colour underneath reads as transparent to anything that
- * asks — including the contrast checks in `tests/`.
+ * asks, including the contrast checks in `tests/`.
  * ------------------------------------------------------------------ */
 
 [data-theme='bevel'] .control:not(.control-primary),
@@ -215,7 +216,7 @@
 }
 
 /* ------------------------------------------------------------------ *
- * Glossy — the accent is lacquered, not painted
+ * Glossy: the accent is lacquered, not painted
  * ------------------------------------------------------------------ */
 
 [data-theme='bevel'] .button-primary,
@@ -266,7 +267,7 @@
 /* ------------------------------------------------------------------ *
  * Listings
  *
- * A selected row in a real toolkit is a gradient too — and it keeps its
+ * A selected row in a real toolkit is a gradient too, and it keeps its
  * children, which would otherwise hold their own colour against the fill.
  * ------------------------------------------------------------------ */
 
@@ -333,9 +334,9 @@
 
 /*
  * Shiki bakes an opaque background into the block and into every span, so both
- * are replaced — the listing is a recessed well like any other input. The dark
+ * are replaced, so the listing is a recessed well like any other input. The dark
  * selector carries `:root` so that it out-specifies `:root.dark .shiki span` in
- * `prose.css` outright — without it the two tie at three classes and the winner
+ * `prose.css` outright. Without it the two tie at three classes and the winner
  * is whichever stylesheet the bundler emits last.
  */
 :root[data-theme='bevel'].dark .shiki {

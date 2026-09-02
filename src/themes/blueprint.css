@@ -9,7 +9,7 @@
  * The rule this theme follows is that a blueprint has no depth: nothing casts
  * a shadow, nothing is rounded to speak of, and the only weight available is
  * line weight. Everything below is written in the tokens from `_contract.css`
- * plus the baseline's own class names — no component, demo or line of markup
+ * plus the baseline's own class names. No component, demo or line of markup
  * differs from any other theme.
  */
 
@@ -86,8 +86,8 @@
  * The paper
  *
  * Two grids, fine over coarse. It goes on the root element with `body` left
- * transparent, so the demo frames — separate documents carrying the same
- * `data-theme` — are drawn on the same sheet without any component knowing.
+ * transparent, so the demo frames, which are separate documents carrying the
+ * same `data-theme`, are drawn on the same sheet without any component knowing.
  * ------------------------------------------------------------------ */
 
 [data-theme='blueprint'] {
@@ -336,7 +336,7 @@
  * Shiki bakes an opaque background into the block and into every span, so both
  * have to be cleared or the code sits on a slab that belongs to another
  * design. The dark selector carries `:root` so that it out-specifies
- * `:root.dark .shiki span` in `prose.css` outright — without it the two tie at
+ * `:root.dark .shiki span` in `prose.css` outright. Without it the two tie at
  * three classes and the winner is whichever stylesheet the bundler emits last.
  */
 :root[data-theme='blueprint'].dark .shiki {

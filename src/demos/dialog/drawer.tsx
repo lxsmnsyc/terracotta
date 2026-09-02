@@ -19,7 +19,7 @@ export default function DrawerDialog(): JSX.Element {
         <DialogOverlay class="dialog-overlay" />
         <DialogPanel class="drawer-panel">
           <DialogTitle class="dialog-title">Filters</DialogTitle>
-          <p class="hint">Anything can live in here — it is an ordinary element.</p>
+          <p class="hint">Anything can live in here; it is an ordinary element.</p>
           <button type="button" class="button" onClick={() => setOpen(false)}>
             Done
           </button>

@@ -16,7 +16,7 @@ export default function ButtonAsOtherElements(): JSX.Element {
       </Button>
 
       <Button class="button" as="div" onClick={() => setActivations((n) => n + 1)}>
-        A div — try Enter and Space
+        A div: try Enter and Space
       </Button>
       <p class="hint">Activated {activations()} times.</p>
     </div>

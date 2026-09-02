@@ -7,7 +7,7 @@ export default defineConfig({
   rules: {
     'new-cap': 'off',
     'no-underscore-dangle': 'off',
-    // Solid 2 consumes promise-returning computations directly — a memo whose
+    // Solid 2 consumes promise-returning computations directly, and a memo whose
     // body calls a `query` is the documented shape, and marking those arrows
     // `async` would suggest the value is awaited somewhere it is not.
     'typescript/promise-function-async': 'off',

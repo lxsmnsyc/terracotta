@@ -1,7 +1,7 @@
 /*
  * Bloom.
  *
- * Every other theme in this set is drawn with lines — hairlines, 2px rules,
+ * Every other theme in this set is drawn with lines: hairlines, 2px rules,
  * dashes, grids, outlines. This one has none. Nothing is outlined and nothing
  * is square: shapes are separated by fill and by a soft, tinted shadow, every
  * interactive thing is a pill, and hovering lifts it a pixel off the page.
@@ -307,8 +307,8 @@
 /*
  * Shiki bakes an opaque background into the block and into every span, so both
  * are replaced with the theme's own fill. The dark selector carries `:root` so
- * that it out-specifies `:root.dark .shiki span` in `prose.css` outright —
- * without it the two tie at three classes and the winner is whichever
+ * that it out-specifies `:root.dark .shiki span` in `prose.css` outright.
+ * Without it the two tie at three classes and the winner is whichever
  * stylesheet the bundler emits last.
  */
 :root[data-theme='bloom'].dark .shiki {

@@ -201,7 +201,7 @@ and the placeholder dimming above work without touching a signal.
 
 Two states are in scope inside a `Listbox`.
 
-Popup — the [disclosure state](../states.md#disclosure-state), via
+The popup, from the [disclosure state](../states.md#disclosure-state), via
 `<DisclosureStateChild>` or `useDisclosureState()`:
 
 | Member | Type | Description |
@@ -209,7 +209,7 @@ Popup — the [disclosure state](../states.md#disclosure-state), via
 | `isOpen()` | `boolean` | Whether the popup is open. |
 | `open()` / `close()` / `toggle()` | `() => void` | Changes it. |
 
-Selection — the [select state](../states.md#select-state), via
+The selection, from the [select state](../states.md#select-state), via
 `<SelectStateChild>` or `useSelectState()`:
 
 | Member | Type | Description |
@@ -256,20 +256,20 @@ Renders a `<div>` by default. Does not take a `ref`.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `multiple` | `boolean` | `false` | When `true`, the value is an array and picking an option keeps the popup open. |
-| `defaultValue` | `V` \| `V[]` | — | Initial selection, uncontrolled. Mutually exclusive with `value`. |
-| `value` | `V` \| `V[]` | — | Current selection, controlled. Mutually exclusive with `defaultValue`. |
-| `onSelectChange` | `(value?: V) => void` \| `(value: V[]) => void` | — | Called with the new selection. |
-| `defaultOpen` | `boolean` | — | Initial popup state, uncontrolled. Mutually exclusive with `isOpen`. |
-| `isOpen` | `boolean` | — | Current popup state, controlled. Mutually exclusive with `defaultOpen`. |
-| `onDisclosureChange` | `(value: boolean) => void` | — | Called when the popup opens or closes. |
-| `onOpen` | `() => void` | — | Called when the popup opens. |
-| `onClose` | `() => void` | — | Called when the popup closes. |
+| `defaultValue` | `V` \| `V[]` | none | Initial selection, uncontrolled. Mutually exclusive with `value`. |
+| `value` | `V` \| `V[]` | none | Current selection, controlled. Mutually exclusive with `defaultValue`. |
+| `onSelectChange` | `(value?: V) => void` \| `(value: V[]) => void` | none | Called with the new selection. |
+| `defaultOpen` | `boolean` | none | Initial popup state, uncontrolled. Mutually exclusive with `isOpen`. |
+| `isOpen` | `boolean` | none | Current popup state, controlled. Mutually exclusive with `defaultOpen`. |
+| `onDisclosureChange` | `(value: boolean) => void` | none | Called when the popup opens or closes. |
+| `onOpen` | `() => void` | none | Called when the popup opens. |
+| `onClose` | `() => void` | none | Called when the popup closes. |
 | `toggleable` | `boolean` | `false` | Selecting the already-selected value clears or removes it. |
 | `disabled` | `boolean` | `false` | Disables the whole listbox. |
 | `by` | `(a: V, b: V) => boolean` | reference equality | Compares values. Needed for object values. |
 | `horizontal` | `boolean` | `false` | Lays the options out horizontally: swaps the navigation keys and sets `aria-orientation`. |
-| `children` | `JSX.Element` | — | The label, button and options. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The label, button and options. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 `Listbox` has no `onChange`. Use `onSelectChange` and `onDisclosureChange`.
 
@@ -280,8 +280,8 @@ Names the listbox. Renders a `<label>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'label'` | Element or component to render as. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Label text, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Label text, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<ListboxButton>`
 
@@ -292,9 +292,9 @@ default.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'button'` | Element or component to render as. |
 | `disabled` | `boolean` | `false` | Disables this button. It is also disabled when the `Listbox` is. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Usually the current value, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Usually the current value, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `aria-haspopup="listbox"`, `aria-controls` and
 `aria-expanded`.
@@ -306,10 +306,10 @@ The popup list. Renders a `<ul>` by default.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'ul'` | Element or component to render as. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the list behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | — | The options, or a render prop receiving the select state. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the list behaves while closed. See [`unmount`](../guides/rendering.md#unmount). |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | none | The options, or a render prop receiving the select state. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="listbox"`, `aria-multiselectable`,
 `aria-labelledby` and `aria-orientation`.
@@ -324,9 +324,9 @@ One option. A [`Button`](./button.md) with `role="option"`, rendered as an
 | `as` | `ValidConstructor` | `'li'` | Element or component to render as. |
 | `value` | `V` | *required* | The value this option represents. |
 | `disabled` | `boolean` | `false` | Disables this option and removes it from navigation. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Label, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | Label, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Every descendant throws if rendered outside its required ancestor.
 `ListboxOption` needs a `ListboxOptions` around it, not only a `Listbox`.

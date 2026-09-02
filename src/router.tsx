@@ -8,8 +8,8 @@ import Home from './pages/Home';
  * The route components are imported eagerly rather than through `lazy`. A lazy
  * route only hydrates if its chunk was preloaded before the client resumes, and
  * nothing in this setup declares the matched route's module to the build
- * manifest — so a lazy route throws during hydration and the whole site falls
- * back to static HTML: no client-side navigation, no theme switching, no
+ * manifest. A lazy route therefore throws during hydration and the whole site
+ * falls back to static HTML: no client-side navigation, no theme switching, no
  * messaging into the demo frames.
  *
  * Nothing is lost by it. The weight of this site is in the page content and the
@@ -32,7 +32,7 @@ export const Router = createRouter({
         {
           path: '/*slug',
           component: DocPage,
-          // Starts the page load as the route renders — and on the server it
+          // Starts the page load as the route renders. On the server it also
           // fills the query cache the client hydrates from, so the first
           // render on both sides sees the same, already-resolved page.
           preload: ({ params }) => {

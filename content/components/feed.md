@@ -187,8 +187,8 @@ The same component with different semantics. Change the elements with `as`:
 ## State attributes
 
 `Feed` has no selection or open state, so the markers are the only `tc-`
-attributes it writes. Its live state — size, position and busy — goes through
-real ARIA attributes instead, because that is what assistive technology reads.
+attributes it writes. Its live state, meaning size, position and busy, goes
+through real ARIA attributes instead, because that is what assistive technology reads.
 
 | Element | Attribute | Present when |
 | --- | --- | --- |
@@ -197,8 +197,8 @@ real ARIA attributes instead, because that is what assistive technology reads.
 | `FeedContent` | `tc-feed-content` | Always |
 | `FeedContent` | `aria-busy` | `"true"` while `busy` is set on the `Feed` |
 | `FeedArticle` | `tc-feed-article` | Always |
-| `FeedArticle` | `tc-owner` | Always — ties the article to the feed's keyboard navigation |
-| `FeedArticle` | `aria-posinset`, `aria-setsize` | Always — one-based position, and the feed's `size` |
+| `FeedArticle` | `tc-owner` | Always. Ties the article to the feed's keyboard navigation |
+| `FeedArticle` | `aria-posinset`, `aria-setsize` | Always. One-based position, and the feed's `size` |
 | `FeedArticleLabel` | `tc-feed-article-label` | Always |
 | `FeedArticleDescription` | `tc-feed-article-description` | Always |
 
@@ -217,7 +217,7 @@ real ARIA attributes instead, because that is what assistive technology reads.
   padding: 1rem;
 }
 
-/* Busy is a real ARIA attribute — style from it directly */
+/* Busy is a real ARIA attribute, so style from it directly */
 [tc-feed-content][aria-busy="true"] { opacity: 0.6; }
 
 /* Position-aware styling, straight from the ARIA attribute */
@@ -261,9 +261,9 @@ the feed" behaviour. Renders a `<div>` by default.
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `size` | `number` | *required* | Total number of articles in the feed. Published on each article as `aria-setsize`. |
 | `busy` | `boolean` | `false` | Whether the feed is loading. Published on `FeedContent` as `aria-busy`. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` | — | The label and content. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` | none | The label and content. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<FeedLabel>`
 
@@ -273,8 +273,8 @@ Names the feed. `FeedContent`'s `aria-labelledby` points at it. Renders a
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'span'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | The label text. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The label text. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<FeedContent>`
 
@@ -284,9 +284,9 @@ The region that carries `role="feed"` and handles article navigation. Renders a
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` | — | The articles. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` | none | The articles. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<FeedArticle>`
 
@@ -297,9 +297,9 @@ One article. It is focusable and positioned within the set. Renders an
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'article'` | Element or component to render as. |
 | `index` | `number` | *required* | Zero-based position in the feed. Published as `aria-posinset` (one-based). |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` | — | The article's contents. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` | none | The article's contents. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `tabindex="0"`, `aria-labelledby` and
 `aria-describedby`.
@@ -311,8 +311,8 @@ Names the article. Renders a `<span>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'span'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | The label text. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The label text. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<FeedArticleDescription>`
 
@@ -321,8 +321,8 @@ Describes the article. Renders a `<p>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'p'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | The description. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The description. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 `FeedLabel`, `FeedContent` and `FeedArticle` throw outside a `<Feed>`.
 `FeedArticleLabel` and `FeedArticleDescription` throw outside a `<FeedArticle>`.

@@ -18,7 +18,7 @@ export interface ThemeMeta {
 /**
  * Every theme is a stylesheet scoped to `html[data-theme="<id>"]` that
  * implements the contract in `_contract.css`. Adding one means adding a file
- * and an entry here — no component in the site or in any demo changes, which
+ * and an entry here. No component in the site or in any demo changes, which
  * is the point the whole site is making.
  */
 export const THEMES: readonly ThemeMeta[] = [

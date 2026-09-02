@@ -5,7 +5,7 @@ import { SCHEMES, THEMES, openPopup, useAppearance } from './support/docs';
 /**
  * Filled controls and filled rows are where themes go wrong. The fill comes
  * from one rule and the label from another, and a theme that repaints only the
- * fill leaves the text stranded — which is exactly how a red "delete" button
+ * fill leaves the text stranded, which is exactly how a red "delete" button
  * ended up grey with a white label, and how a hovered option in the theme
  * picker turned black under a near-black description.
  *

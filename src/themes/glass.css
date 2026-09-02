@@ -36,7 +36,7 @@
 
   --overlay: rgb(148 163 194 / 35%);
 
-  /* Glass is generously rounded — a sharp corner reads as paper. */
+  /* Glass is generously rounded: a sharp corner reads as paper. */
   --radius-sm: 0.5rem;
   --radius-md: 0.85rem;
   --radius-lg: 1.35rem;
@@ -94,9 +94,9 @@
  * The wash
  *
  * Blur needs something to blur. The gradient goes on the root element, not on
- * `body`, so `body` can be transparent and every sheet above it — including
+ * `body`, so `body` can be transparent and every sheet above it, including
  * the ones inside a demo frame, which is its own document with the same
- * `data-theme` — has the same backdrop to sample.
+ * `data-theme`, has the same backdrop to sample.
  * ------------------------------------------------------------------ */
 
 [data-theme='glass'] {
@@ -183,7 +183,7 @@
 }
 
 /*
- * Hover and active lift the sheet rather than tinting it — but only for the
+ * Hover and active lift the sheet rather than tinting it, but only for the
  * controls that are a sheet to begin with. A filled or already-checked control
  * carries its own colour and its own text colour with it, and painting glass
  * over it leaves the label stranded on the wrong ground.
@@ -197,8 +197,8 @@
   background: var(--surface-2);
 }
 
-/* Background only: the list items that mean something by their colour — a
-   destructive menu item, for one — keep it. */
+/* Background only: the list items that mean something by their colour, such as
+   a destructive menu item, keep it. */
 [data-theme='glass'] .menu-item[tc-active],
 [data-theme='glass'] .listbox-option[tc-active],
 [data-theme='glass'] .select-option[tc-active],
@@ -249,7 +249,7 @@
 }
 
 /*
- * The filled variants stay filled. They are tinted glass rather than clear —
+ * The filled variants stay filled. They are tinted glass rather than clear:
  * enough transparency to belong to the theme, enough colour to keep white or
  * contrast text legible, including on hover.
  */
@@ -288,8 +288,8 @@
 /*
  * The masthead frosts through a pseudo-element rather than through itself.
  * An element with `backdrop-filter` becomes a backdrop root: its descendants
- * can only sample what is inside it, so the theme picker's popup — which hangs
- * below the masthead, outside its box — had nothing to blur and rendered flat.
+ * can only sample what is inside it, so the theme picker's popup, which hangs
+ * below the masthead and outside its box, had nothing to blur and rendered flat.
  * Moving the filter to `::before` keeps the masthead frosted while leaving the
  * popup free to sample the page behind it.
  */
@@ -348,7 +348,7 @@
  * Inline code gets the translucent ground but *not* the blur. A `backdrop-
  * filter` box takes everything painted behind it, and on a page with a couple
  * of hundred inline code spans that meant a couple of hundred blur layers
- * sampling a fixed background — which smeared visibly over the surrounding
+ * sampling a fixed background, which smeared visibly over the surrounding
  * prose and cost a great deal to composite. Blur belongs on surfaces you can
  * see through to something, not on a word in a sentence.
  */

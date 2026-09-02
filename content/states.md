@@ -6,9 +6,9 @@ anywhere in its subtree, or build your own component on the same behaviour.
 
 Three things are exported per state:
 
-- `create…State(options)` — creates the store. Call it inside a component you own.
-- `use…State()` — reads the nearest store from context. Throws if there is none.
-- `…StateChild` — a component whose `children` render prop receives the store.
+- `create…State(options)` creates the store. Call it inside a component you own.
+- `use…State()` reads the nearest store from context. Throws if there is none.
+- `…StateChild` is a component whose `children` render prop receives the store.
 
 ```tsx
 import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
@@ -43,12 +43,12 @@ Open/closed state. Backs `Disclosure`, `Dialog`, `AlertDialog`, `Popover`,
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `defaultOpen` | `boolean` | — | Initial state, uncontrolled. Mutually exclusive with `isOpen`. |
-| `isOpen` | `boolean` | — | Current state, controlled. Mutually exclusive with `defaultOpen`. |
+| `defaultOpen` | `boolean` | none | Initial state, uncontrolled. Mutually exclusive with `isOpen`. |
+| `isOpen` | `boolean` | none | Current state, controlled. Mutually exclusive with `defaultOpen`. |
 | `disabled` | `boolean` | `false` | Blocks every state change. |
-| `onChange` | `(state: boolean) => void` | — | Called on every change with the new state. |
-| `onOpen` | `() => void` | — | Called when the state becomes open. Runs before `onChange`. |
-| `onClose` | `() => void` | — | Called when the state becomes closed. Runs after `onChange`. |
+| `onChange` | `(state: boolean) => void` | none | Called on every change with the new state. |
+| `onOpen` | `() => void` | none | Called when the state becomes open. Runs before `onChange`. |
+| `onClose` | `() => void` | none | Called when the state becomes closed. Runs after `onChange`. |
 
 ### Properties
 
@@ -73,10 +73,10 @@ Pressed/unpressed state for toggle buttons. Backs `Toggle`.
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `defaultPressed` | `boolean` | — | Initial state, uncontrolled. |
-| `pressed` | `boolean` | — | Current state, controlled. |
+| `defaultPressed` | `boolean` | none | Initial state, uncontrolled. |
+| `pressed` | `boolean` | none | Current state, controlled. |
 | `disabled` | `boolean` | `false` | Blocks every state change. |
-| `onChange` | `(state: boolean) => void` | — | Called with the new state. |
+| `onChange` | `(state: boolean) => void` | none | Called with the new state. |
 
 ### Properties
 
@@ -101,10 +101,10 @@ Backs `Checkbox`.
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `defaultChecked` | `boolean \| undefined` | — | Initial state, uncontrolled. `undefined` starts indeterminate. |
-| `checked` | `boolean \| undefined` | — | Current state, controlled. |
+| `defaultChecked` | `boolean \| undefined` | none | Initial state, uncontrolled. `undefined` starts indeterminate. |
+| `checked` | `boolean \| undefined` | none | Current state, controlled. |
 | `disabled` | `boolean` | `false` | Blocks every state change. |
-| `onChange` | `(state?: boolean) => void` | — | Called with the new state. |
+| `onChange` | `(state?: boolean) => void` | none | Called with the new state. |
 
 ### Properties
 
@@ -129,10 +129,10 @@ A plain string value. Exported for building text-input components.
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `defaultValue` | `string \| undefined` | — | Initial value, uncontrolled. |
-| `value` | `string \| undefined` | — | Current value, controlled. |
+| `defaultValue` | `string \| undefined` | none | Initial value, uncontrolled. |
+| `value` | `string \| undefined` | none | Current value, controlled. |
 | `disabled` | `boolean` | `false` | Blocks writes. |
-| `onChange` | `(state?: string) => void` | — | Called with the new value. |
+| `onChange` | `(state?: string) => void` | none | Called with the new value. |
 
 ### Properties
 
@@ -158,9 +158,9 @@ Selection over a set of values, in single or multiple mode. It also tracks the
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `multiple` | `false` / `true` | `false` | Discriminates the two variants. `createMultipleSelectState` requires `multiple: true`. |
-| `defaultValue` | `T` (single) / `T[]` (multiple) | — | Initial selection, uncontrolled. |
-| `value` | `T` (single) / `T[]` (multiple) | — | Current selection, controlled. |
-| `onChange` | `(value?: T) => void` / `(value: T[]) => void` | — | Called with the new selection. |
+| `defaultValue` | `T` (single) / `T[]` (multiple) | none | Initial selection, uncontrolled. |
+| `value` | `T` (single) / `T[]` (multiple) | none | Current selection, controlled. |
+| `onChange` | `(value?: T) => void` / `(value: T[]) => void` | none | Called with the new selection. |
 | `toggleable` | `boolean` | `false` | When `true`, selecting the already-selected value clears it (single) or removes it (multiple). |
 | `disabled` | `boolean` | `false` | Blocks selection and focus changes. |
 | `by` | `(a: T, b: T) => boolean` | reference equality | Compares values. The default treats `NaN` as equal to `NaN`; supply your own for value objects, e.g. `(a, b) => a.id === b.id`. |

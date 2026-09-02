@@ -4,7 +4,7 @@ import { Checkbox, CheckboxIndicator, CheckboxLabel } from 'terracotta/checkbox'
 
 const LABELS = ['Comments', 'Mentions', 'Weekly digest'];
 
-/** Three states, three glyphs — keyed by the value the state reports. */
+/** Three states, three glyphs, keyed by the value the state reports. */
 const MARKS: Record<string, string> = { true: '✓', false: '', undefined: '–' };
 
 /**

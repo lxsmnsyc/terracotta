@@ -221,7 +221,7 @@ can use whichever reads better. The button also carries `aria-expanded`, and
 
 ### Reading the state in code
 
-On the root — the [select state](../states.md#select-state):
+On the root, from the [select state](../states.md#select-state):
 
 | Member | Type | Description |
 | --- | --- | --- |
@@ -231,7 +231,7 @@ On the root — the [select state](../states.md#select-state):
 | `isActive(value)` / `hasActive()` | | Keyboard focus position. |
 | `disabled()` | `boolean` | Whether the accordion is disabled. |
 
-Inside an item — the [select option state](../states.md#select-option-state):
+Inside an item, from the [select option state](../states.md#select-option-state):
 
 | Member | Type | Description |
 | --- | --- | --- |
@@ -264,15 +264,15 @@ on the headers, buttons and panels.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `multiple` | `boolean` | `false` | When `true`, several items can be open, and `value` / `defaultValue` / `onChange` deal in arrays. |
-| `defaultValue` | `V` \| `V[]` | — | Initially open item(s), uncontrolled. Mutually exclusive with `value`. |
-| `value` | `V` \| `V[]` | — | Currently open item(s), controlled. Mutually exclusive with `defaultValue`. |
-| `onChange` | `(value?: V) => void` \| `(value: V[]) => void` | — | Called with the new selection. Array form in multiple mode. |
+| `defaultValue` | `V` \| `V[]` | none | Initially open item(s), uncontrolled. Mutually exclusive with `value`. |
+| `value` | `V` \| `V[]` | none | Currently open item(s), controlled. Mutually exclusive with `defaultValue`. |
+| `onChange` | `(value?: V) => void` \| `(value: V[]) => void` | none | Called with the new selection. Array form in multiple mode. |
 | `toggleable` | `boolean` | `false` | Allow closing the open item by selecting it again. |
 | `disabled` | `boolean` | `false` | Disables the whole accordion. |
 | `by` | `(a: V, b: V) => boolean` | reference equality | Compares values. Needed for object values. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | — | Items, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | none | Items, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<AccordionItem>`
 
@@ -283,8 +283,8 @@ One section. Renders a `<div>` by default. Does not take a `ref`.
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `value` | `V` | *required* | The value this section represents. |
 | `disabled` | `boolean` | `false` | Disables this section. It is also disabled when the `Accordion` is. |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | The header and panel, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | The header and panel, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<AccordionHeader>`
 
@@ -294,8 +294,8 @@ The heading that wraps the button. Renders an `<h3>` by default. Does not take a
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'h3'` | Element or component to render as. |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Usually an `AccordionButton`. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | Usually an `AccordionButton`. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<AccordionButton>`
 
@@ -306,9 +306,9 @@ the accordion's keyboard navigation. Renders a `<button>` by default.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'button'` | Element or component to render as. |
 | `disabled` | `boolean` | `false` | Disables this button. It is also disabled when its item or the accordion is. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Label, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | Label, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<AccordionPanel>`
 
@@ -317,9 +317,9 @@ The revealed content. Renders a `<div>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the panel behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the panel behaves while closed. See [`unmount`](../guides/rendering.md#unmount). |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 It is labelled by its button through `aria-labelledby`.
 

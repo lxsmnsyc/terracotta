@@ -75,7 +75,7 @@ export default function DemoHost(): JSX.Element {
   }
 
   // The parent cannot measure across the frame boundary, so the frame reports
-  // its own height whenever the demo changes size — a dialog opening, a listbox
+  // its own height whenever the demo changes size: a dialog opening, a listbox
   // expanding, a toast arriving.
   //
   // The effect is created on both sides even though its body only ever runs in

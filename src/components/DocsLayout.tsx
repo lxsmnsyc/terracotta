@@ -24,7 +24,7 @@ export default function DocsLayout(props: { children?: JSX.Element }): JSX.Eleme
         </div>
       </header>
 
-      {/* The mobile navigation is a `Disclosure` — the same component the
+      {/* The mobile navigation is a `Disclosure`, the same component the
           Disclosure page documents, doing a real job rather than a demo one. */}
       <Disclosure class="mobile-nav" defaultOpen={false}>
         <DisclosureButton class="control mobile-nav-button">

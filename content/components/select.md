@@ -202,7 +202,7 @@ and `aria-orientation`.
 [tc-select-option][tc-selected] { font-weight: 600; }
 [tc-select-option][tc-disabled] { color: #a1a1aa; cursor: not-allowed; }
 
-/* Both at once — the selected option is also the one being browsed */
+/* Both at once: the selected option is also the one being browsed */
 [tc-select-option][tc-selected][tc-active] { background: #dbeafe; }
 
 /* Container-level state */
@@ -215,7 +215,7 @@ and `aria-orientation`.
 
 ### Reading the state in code
 
-On the list — the [select state](../states.md#select-state):
+On the list, from the [select state](../states.md#select-state):
 
 | Member | Type | Description |
 | --- | --- | --- |
@@ -226,7 +226,7 @@ On the list — the [select state](../states.md#select-state):
 | `focus(value)` / `blur()` | `() => void` | Moves or clears the active value. |
 | `disabled()` | `boolean` | Whether the list is disabled. |
 
-Inside an option — the [select option state](../states.md#select-option-state):
+Inside an option, from the [select option state](../states.md#select-option-state):
 
 | Member | Type | Description |
 | --- | --- | --- |
@@ -263,16 +263,16 @@ Owns a [select state](../states.md#select-state) and renders a `<ul>` by default
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'ul'` | Element or component to render as. |
 | `multiple` | `boolean` | `false` | When `true`, `value` / `defaultValue` / `onChange` deal in arrays. |
-| `defaultValue` | `V` \| `V[]` | — | Initial selection, uncontrolled. Mutually exclusive with `value`. |
-| `value` | `V` \| `V[]` | — | Current selection, controlled. Mutually exclusive with `defaultValue`. |
-| `onChange` | `(value?: V) => void` \| `(value: V[]) => void` | — | Called with the new selection. |
+| `defaultValue` | `V` \| `V[]` | none | Initial selection, uncontrolled. Mutually exclusive with `value`. |
+| `value` | `V` \| `V[]` | none | Current selection, controlled. Mutually exclusive with `defaultValue`. |
+| `onChange` | `(value?: V) => void` \| `(value: V[]) => void` | none | Called with the new selection. |
 | `toggleable` | `boolean` | `false` | Selecting the already-selected value clears (single) or removes (multiple) it. |
 | `disabled` | `boolean` | `false` | Disables the whole list. |
 | `by` | `(a: V, b: V) => boolean` | reference equality | Compares values. Needed for object values. |
 | `horizontal` | `boolean` | `false` | Lays the list out horizontally: swaps the navigation keys and sets `aria-orientation`. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | — | The options, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | none | The options, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 #### Rendered attributes
 
@@ -281,7 +281,7 @@ Owns a [select state](../states.md#select-state) and renders a `<ul>` by default
 | `role` | `"listbox"` |
 | `aria-multiselectable` | Mirrors `multiple` |
 | `aria-orientation` | `"horizontal"` or `"vertical"` |
-| `tabindex` | `0`, or `-1` once an option is active — so focus moves down into the options |
+| `tabindex` | `0`, or `-1` once an option is active, so focus moves down into the options |
 
 ### `<SelectOption>`
 
@@ -293,9 +293,9 @@ One option. A [`Button`](./button.md) with `role="option"`, rendered as an
 | `as` | `ValidConstructor` | `'li'` | Element or component to render as. |
 | `value` | `V` | *required* | The value this option represents. |
 | `disabled` | `boolean` | `false` | Disables this option and removes it from navigation. It is also disabled when the `Select` is. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Label, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | Label, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="option"`, `aria-selected`, and `tabindex`,
 which is `0` while active and `-1` otherwise.

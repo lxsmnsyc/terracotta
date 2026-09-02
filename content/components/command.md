@@ -268,7 +268,7 @@ reason `CommandInput` reports a constant `aria-expanded="true"`.
 /* Filtering */
 [tc-command-option]:not([tc-matches]) { display: none; }
 
-/* Virtual focus — the only highlight, since DOM focus stays on the input */
+/* Virtual focus: the only highlight, since DOM focus stays on the input */
 [tc-command-option][tc-active]   { background: #f4f4f5; }
 [tc-command-option][tc-selected] { font-weight: 600; }
 [tc-command-option][tc-disabled] { color: #a1a1aa; }
@@ -330,15 +330,15 @@ Owns an [autocomplete state](../states.md#autocomplete-state) and renders a
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `matchBy` | `(value: V, query: string) => boolean` | *required* | Decides whether an entry matches the current query. |
 | `multiple` | `boolean` | `false` | When `true`, `value` / `defaultValue` / `onChange` deal in arrays. |
-| `defaultValue` | `V` \| `V[]` | — | Initial selection, uncontrolled. Mutually exclusive with `value`. |
-| `value` | `V` \| `V[]` | — | Current selection, controlled. Mutually exclusive with `defaultValue`. |
-| `onChange` | `(value?: V) => void` \| `(value: V[]) => void` | — | Called with the new selection. |
+| `defaultValue` | `V` \| `V[]` | none | Initial selection, uncontrolled. Mutually exclusive with `value`. |
+| `value` | `V` \| `V[]` | none | Current selection, controlled. Mutually exclusive with `defaultValue`. |
+| `onChange` | `(value?: V) => void` \| `(value: V[]) => void` | none | Called with the new selection. |
 | `toggleable` | `boolean` | `false` | Selecting the already-selected value clears or removes it. |
 | `disabled` | `boolean` | `false` | Disables the whole palette. |
 | `by` | `(a: V, b: V) => boolean` | reference equality | Compares values. Needed for object values. |
-| `horizontal` | `boolean` | `false` | Accepted for symmetry with `Select`, but currently unused — the list is always navigated vertically. |
-| `children` | `JSX.Element` \| `(state: AutocompleteStateProperties<V>) => JSX.Element` | — | The label, input and options, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `horizontal` | `boolean` | `false` | Accepted for symmetry with `Select`, but currently unused: the list is always navigated vertically. |
+| `children` | `JSX.Element` \| `(state: AutocompleteStateProperties<V>) => JSX.Element` | none | The label, input and options, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<CommandLabel>`
 
@@ -348,8 +348,8 @@ Names the palette. Renders a `<label>` by default. It takes no `ref`, and its
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'label'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | Label text. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | Label text. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<CommandInput>`
 
@@ -359,8 +359,8 @@ The text field. Renders an `<input type="text">` by default.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'input'` | Element or component to render as. Query tracking only works on a real `<input>`. |
 | `disabled` | `boolean` | `false` | Disables the input's own handling. It is also disabled when the `Command` is. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element, including `placeholder` and `value`. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element, including `placeholder` and `value`. |
 
 Rendered attributes include `role="combobox"`, `type="text"`, `tabindex="0"`,
 `aria-controls`, `aria-expanded="true"` and `aria-activedescendant`.
@@ -373,9 +373,9 @@ order.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'ul'` | Element or component to render as. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: AutocompleteStateProperties<V>) => JSX.Element` | — | The entries, or a render prop receiving the autocomplete state. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: AutocompleteStateProperties<V>) => JSX.Element` | none | The entries, or a render prop receiving the autocomplete state. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="listbox"`, `aria-multiselectable`,
 `aria-orientation="vertical"` and `tabindex="-1"`.
@@ -390,9 +390,9 @@ One entry. A [`Button`](./button.md) with `role="option"`, rendered as an
 | `as` | `ValidConstructor` | `'li'` | Element or component to render as. |
 | `value` | `V` | *required* | The value this entry represents; also what `matchBy` receives. |
 | `disabled` | `boolean` | `false` | Disables this entry and removes it from navigation. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: AutocompleteOptionStateProperties) => JSX.Element` | — | Label, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: AutocompleteOptionStateProperties) => JSX.Element` | none | Label, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="option"`, `aria-selected`, `tabindex="-1"`,
 and a generated `id`, which is the one `aria-activedescendant` points at.

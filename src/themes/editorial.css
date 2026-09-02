@@ -9,8 +9,8 @@
  * It is the theme that changes the *typography*, which is the axis a token
  * contract makes easiest to forget: `--font-sans` is a name, not a promise,
  * and a theme is free to answer it with a serif. Everything else here is
- * spacing and rhythm — the measure narrows, the leading opens, the rules thin
- * out — and none of it touches a component or a demo.
+ * spacing and rhythm: the measure narrows, the leading opens, the rules thin
+ * out. None of it touches a component or a demo.
  */
 
 [data-theme='editorial'] {
@@ -116,7 +116,7 @@
 
 /*
  * The drop cap. `::first-letter` finds the first letter of the block even when
- * it sits inside an inline — which it often does here, because the lede is
+ * it sits inside an inline, which it often does here, because the lede is
  * rendered markdown and may open with a link.
  */
 [data-theme='editorial'] .page-lede::first-letter {
@@ -147,7 +147,7 @@
 
 /*
  * Figures, numbered. The counter is on `.page`, so the hero demo under the
- * lede is Fig. 1 and the demos in the body carry on from there — a manual
+ * lede is Fig. 1 and the demos in the body carry on from there. A manual
  * numbers what it shows you.
  */
 [data-theme='editorial'] .page {
@@ -259,7 +259,7 @@
  * Shiki bakes an opaque background into the block and into every span; both are
  * replaced so a listing sits on the page's own stock. The dark selector carries
  * `:root` so that it out-specifies `:root.dark .shiki span` in `prose.css`
- * outright — without it the two tie at three classes and the winner is
+ * outright. Without it the two tie at three classes and the winner is
  * whichever stylesheet the bundler emits last.
  */
 [data-theme='editorial'] .shiki,

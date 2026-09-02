@@ -3,7 +3,7 @@ import { docPaths, openPopup, useAppearance, watchForErrors } from './support/do
 
 /**
  * The whole site, in the default appearance. A page that fails to hydrate
- * still *renders* — it simply stops responding — so the console is the only
+ * still *renders* and simply stops responding, so the console is the only
  * place the failure shows up, and an empty console is the assertion that
  * matters most here.
  */
@@ -49,7 +49,7 @@ test('demo frames carry the appearance they are asked for', async ({ page }) => 
 
 /**
  * The context-menu overlay is mounted whether or not the menu is open and
- * covers the whole viewport — which, inside a demo frame, is the demo. Left
+ * covers the whole viewport, which inside a demo frame is the demo itself. Left
  * live it swallowed the right-click that opens the menu, and under `glass`,
  * which gives overlays a `backdrop-filter`, it blurred the demo permanently.
  * Both symptoms come back the moment the closed overlay is in the page again,

@@ -1,5 +1,5 @@
 /*
- * The demo vocabulary — the baseline.
+ * The demo vocabulary: the baseline.
  *
  * These are the class names every file in `src/demos` uses. They are
  * deliberately generic: a demo says what a thing *is*, and the look comes from
@@ -7,9 +7,9 @@
  * one of the tokens in `themes/_contract.css`, so a theme that only redefines
  * tokens already restyles all of it.
  *
- * A theme may override any of this — shape, spacing, typography, whole rules —
- * by repeating a selector under its own `[data-theme='…']` scope, which always
- * wins on specificity. `themes/brutalist.css` does exactly that.
+ * A theme may override any of this, whether shape, spacing, typography or
+ * whole rules, by repeating a selector under its own `[data-theme='…']` scope,
+ * which always wins on specificity. `themes/brutalist.css` does exactly that.
  *
  * State comes from Terracotta's `tc-` attributes, so every state rule below is
  * a plain attribute selector and no demo carries a state class of its own.
@@ -44,7 +44,7 @@
 
 /*
  * The filled variants carry their own colour, so the neutral hover has to step
- * around them — a plain `.button:hover` out-specifies `.button-danger` and was
+ * around them. A plain `.button:hover` out-specifies `.button-danger` and was
  * repainting a red button grey while leaving its label white.
  */
 .button:not(.button-primary, .button-danger):hover {
@@ -145,7 +145,7 @@
   rotate: 180deg;
 }
 
-/* Nothing chosen yet — the container reports it, so the value can be dimmed. */
+/* Nothing chosen yet. The container reports it, so the value can be dimmed. */
 .listbox-button:not([tc-has-selected]) .listbox-value {
   color: var(--text-3);
 }
@@ -895,7 +895,7 @@ a.button {
 
 /*
  * `MenuItem` and `ListboxOption` render `<li>`, and a bare `<li>` in a grid or
- * flex parent still draws its marker — outside the box, since the parent is not
+ * flex parent still draws its marker outside the box, since the parent is not
  * a list. Terracotta chooses the element, the page chooses whether it looks
  * like a list.
  */
@@ -958,8 +958,9 @@ a.button {
 }
 
 /*
- * The overlay is mounted whether or not the menu is open — it is the layer that
- * catches the click that dismisses it — and it covers the viewport. Closed, it
+ * The overlay is mounted whether or not the menu is open, because it is the
+ * layer that catches the click that dismisses it, and it covers the whole
+ * viewport. Closed, it
  * is invisible but still live, which broke the component twice over inside a
  * demo frame, where the "viewport" is the frame: it swallowed the right-click
  * that is supposed to open the menu, and under a theme that gives overlays a
@@ -968,7 +969,7 @@ a.button {
  * Terracotta styles nothing and publishes `tc-expanded`, so taking the closed
  * overlay out of the page is the page's job. `display: none` rather than
  * `pointer-events: none` because it has to drop the filter too, and this
- * overlay never animates — nothing here transitions it in or out.
+ * overlay never animates: nothing here transitions it in or out.
  */
 .contextmenu-overlay {
   position: fixed;
@@ -1146,7 +1147,7 @@ a.button {
 
 /*
  * Demos that open an overlay need room to show it. A framed demo is sized to
- * its content, and a fixed-position panel adds no content height — so the
+ * its content, and a fixed-position panel adds no content height, so the
  * demos that open one reserve the space instead.
  */
 .stage-tall {

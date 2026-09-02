@@ -1,7 +1,7 @@
 # `ColorSchemeProvider` prevents its subtree from hydrating
 
 > **Fixed upstream.** `solid-use@1.0.0-next.3` builds the same reactive nodes on
-> both sides — `createSignal` and `onSettled` unconditionally, with the
+> both sides, creating `createSignal` and `onSettled` unconditionally with the
 > `matchMedia` and `document` access moved inside the `onSettled` callback,
 > which is a no-op on the server. Verified against
 > `terracotta@2.0.0-next.9`: with `ColorSchemeProvider` wrapping this entire
@@ -18,7 +18,7 @@ subtree is ever attached. A sibling of the provider hydrates normally, so the
 damage is scoped to its own children.
 
 That is why this site cannot use it yet: with the provider wrapping the router,
-the entire documentation site rendered as static HTML — no client-side
+the entire documentation site rendered as static HTML, with no client-side
 navigation, no theme switching, and no `postMessage` reaching the demo frames.
 `src/lib/color-scheme.tsx` is a like-for-like local replacement, using the same
 `theme-preference` storage key and the same `dark` class on `<html>`.
@@ -64,7 +64,7 @@ const useMediaQuery = isServer
 ```
 
 The server branch creates nothing. The client branch creates a signal and an
-`onSettled` owner — twice over, once per hook. So the client builds two reactive
+`onSettled` owner, twice over, once per hook. So the client builds two reactive
 owners at that point in the tree that the server never built.
 
 Solid 2 allocates hydration keys as owners are created while it walks the tree.
@@ -87,7 +87,7 @@ button renders but never counts.
 
 So `onSettled` is not the problem and neither is the signal: creating a
 reactive owner **on one side only** is. That also explains why the controlled
-form (`value` / `onChange`) fails identically — that branch only chooses
+form (`value` / `onChange`) fails identically: that branch only chooses
 `get`/`set`, and both hooks are called either way.
 
 ## Fix
@@ -100,6 +100,6 @@ above shows an unconditional `onSettled` server-renders fine.
 The rule, which cost this repo the same bug in its own code: **`isServer` may
 decide what a reactive node does, never whether it exists.**
 
-This repo made the same mistake in its own code — `createEffect` inside an
-`if (!isServer)` block — and got exactly the same symptom, with the same
+This repo made the same mistake in its own code, putting a `createEffect`
+inside an `if (!isServer)` block, and got exactly the same symptom, with the same
 silence. Hoisting the effects out of the guard fixed it.

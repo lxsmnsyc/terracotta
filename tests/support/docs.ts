@@ -34,7 +34,7 @@ export const SAMPLE_PATHS = ['/', '/components/listbox', '/components/alert-dial
  * Vite re-optimises dependencies the first time a route pulls in a module it
  * has not seen, and serves a 504 to whatever was in flight. It is a dev-server
  * artefact, it resolves itself on the next request, and it says nothing about
- * the site — so it is the one thing the console sweep ignores.
+ * the site, so it is the one thing the console sweep ignores.
  */
 const DEV_SERVER_NOISE = [
   /Outdated Optimize Dep/,
@@ -63,7 +63,8 @@ export async function useAppearance(page: Page, theme: Theme, scheme: Scheme): P
 
 /**
  * Collects everything the page reports as an error. Hydration failures surface
- * here and nowhere else — the page still renders, it just stops responding —
+ * here and nowhere else, because the page still renders and merely stops
+ * responding,
  * so an empty list is the main evidence that the site is alive.
  */
 export function watchForErrors(page: Page, where?: () => string): string[] {
@@ -89,8 +90,8 @@ export function watchForErrors(page: Page, where?: () => string): string[] {
  * Clicks a control that opens a popup, and waits for the popup rather than for
  * the click.
  *
- * The control is server-rendered, so it exists — and Playwright will happily
- * click it — before hydration has attached anything to it, and under a loaded
+ * The control is server-rendered, so it exists, and Playwright will happily
+ * click it, before hydration has attached anything to it. Under a loaded
  * dev server that window is wide enough to lose the first click. Retrying is
  * safe because the trigger publishes `tc-expanded`: a second click only happens
  * while the popup is still closed, so this can never toggle it shut.
@@ -113,7 +114,7 @@ export async function openPopup(
 }
 
 /**
- * Clicks until the page reflects it, for controls whose state is idempotent —
+ * Clicks until the page reflects it, for controls whose state is idempotent:
  * picking an already-picked radio changes nothing, so a repeat is free. Same
  * pre-hydration race as `openPopup`.
  */

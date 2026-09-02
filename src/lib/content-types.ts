@@ -20,7 +20,7 @@ export type DemoBlock = Extract<DocBlock, { type: 'demo' }>;
 export interface DocModule {
   slug: string;
   title: string;
-  /** Rendered HTML — the lede is prose, with links and code spans in it. */
+  /** Rendered HTML. The lede is prose, with links and code spans in it. */
   description: string;
   headings: DocHeading[];
   /**

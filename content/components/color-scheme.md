@@ -14,8 +14,8 @@ It also listens for the `storage` event, and for the page becoming visible
 again. A change made in one tab therefore reaches the others.
 
 :::hero color-scheme/basic
-The provider toggles `dark` on the document element it is rendered into — which
-here is the demo frame, not the page around it. Only this box changes.
+The provider toggles `dark` on the document element it is rendered into, which
+here is the demo frame rather than the page around it. Only this box changes.
 :::
 
 ```tsx
@@ -40,7 +40,7 @@ read.
 ## Anatomy
 
 ```tsx
-<ColorSchemeProvider>{/* renders no element — context only */}
+<ColorSchemeProvider>{/* renders no element, context only */}
   {/* useColorScheme() / usePreferredColorScheme() work anywhere below */}
 </ColorSchemeProvider>
 ```
@@ -298,10 +298,10 @@ Renders no element of its own, only the context and its children.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `initialValue` | `ColorScheme` | — | Initial preference, uncontrolled. Mutually exclusive with `value`. |
-| `value` | `ColorScheme` | — | Current preference, controlled. Mutually exclusive with `initialValue`. |
-| `onChange` | `(scheme: ColorScheme) => void` | — | Called whenever the preference changes, including when it is restored from storage or synced from another tab. |
-| `children` | `JSX.Element` | — | The subtree that can read the scheme. |
+| `initialValue` | `ColorScheme` | none | Initial preference, uncontrolled. Mutually exclusive with `value`. |
+| `value` | `ColorScheme` | none | Current preference, controlled. Mutually exclusive with `initialValue`. |
+| `onChange` | `(scheme: ColorScheme) => void` | none | Called whenever the preference changes, including when it is restored from storage or synced from another tab. |
+| `children` | `JSX.Element` | none | The subtree that can read the scheme. |
 
 > A stored preference wins over `initialValue`. On mount the provider reads
 > `localStorage` and applies the stored value, or `'system'` when nothing is

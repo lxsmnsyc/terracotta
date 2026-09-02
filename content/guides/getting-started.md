@@ -83,7 +83,7 @@ Terracotta ships a plugin for [Claude Code](https://www.claude.com/product/claud
 It carries a skill that describes the component catalogue and every part name,
 the subpath imports, controlled versus uncontrolled state, render props, `as`
 and prop passthrough, the `tc-` attributes, `unmount`, transitions, and the
-keyboard and focus behaviour — with a copy of this reference material alongside
+keyboard and focus behaviour, with a copy of this reference material alongside
 it, so the detail is available without a fetch.
 
 ```text
@@ -103,12 +103,12 @@ so it loads on its own once you are working in SolidJS code that imports from
 /plugin
 ```
 
-It documents Terracotta 2 and marks where 1.x differs — chiefly that 1.x has a
+It documents Terracotta 2 and marks where 1.x differs, chiefly that 1.x has a
 package root entry, so `import { Dialog } from 'terracotta'` is right there and
 resolves to nothing here.
 
 ## Where to go next
 
-- [Component reference](../README.md#components) — every component, part by part
-- [State primitives](../states.md) — the reactive stores underneath, which you
+- [Component reference](../README.md#components): every component, part by part
+- [State primitives](../states.md): the reactive stores underneath, which you
   can also use on their own

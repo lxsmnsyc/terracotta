@@ -51,7 +51,7 @@ const [accepted, setAccepted] = createSignal<boolean | undefined>(false);
 </Checkbox>
 ```
 
-### Indeterminate — a "select all" parent
+### Indeterminate, a "select all" parent
 
 `undefined` is the indeterminate value. It renders as `aria-checked="mixed"` and
 `tc-checked="mixed"`.
@@ -212,7 +212,7 @@ descendant. Full reference in [check state](../states.md#check-state).
 | Key | Action |
 | --- | --- |
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Toggles the checkbox, when the indicator has focus |
-| <kbd>Tab</kbd> | Focuses the indicator — the only focusable part |
+| <kbd>Tab</kbd> | Focuses the indicator, which is the only focusable part |
 
 The label is not a focus stop. Clicking it still toggles the box, through the
 native `<label for>` relationship.
@@ -228,12 +228,12 @@ indicator.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `defaultChecked` | `boolean \| undefined` | — | Initial value, uncontrolled. `undefined` starts indeterminate. Mutually exclusive with `checked`. |
-| `checked` | `boolean \| undefined` | — | Current value, controlled. Mutually exclusive with `defaultChecked`. |
+| `defaultChecked` | `boolean \| undefined` | none | Initial value, uncontrolled. `undefined` starts indeterminate. Mutually exclusive with `checked`. |
+| `checked` | `boolean \| undefined` | none | Current value, controlled. Mutually exclusive with `defaultChecked`. |
 | `disabled` | `boolean` | `false` | Blocks every state change. |
-| `onChange` | `(state?: boolean) => void` | — | Called with the new value; `undefined` means indeterminate. |
-| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `onChange` | `(state?: boolean) => void` | none | Called with the new value; `undefined` means indeterminate. |
+| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<CheckboxIndicator>`
 
@@ -243,9 +243,9 @@ Renders a `<button>` by default.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'button'` | Element or component to render as. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | — | The visual mark, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | none | The visual mark, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="checkbox"`, `aria-checked`,
 `aria-labelledby` and `aria-describedby`.
@@ -258,8 +258,8 @@ take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'label'` | Element or component to render as. |
-| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | — | Label text, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | none | Label text, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<CheckboxDescription>`
 
@@ -269,8 +269,8 @@ Supporting text. The indicator's `aria-describedby` points at it. Renders a
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'p'` | Element or component to render as. |
-| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | — | Description text, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | none | Description text, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 All three descendants must be rendered inside a `<Checkbox>`. Each throws with a
 message naming itself when it is not.
