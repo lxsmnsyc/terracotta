@@ -1,5 +1,37 @@
 # terracotta
 
+## 2.0.0-next.9
+
+### Patch Changes
+
+- c128bcf: Fix the query that finds focusable elements inside a panel.
+
+  It now looks past the element it was given for anything that takes a subtree out
+  of the tab order, so a panel is no longer offered content hidden by an `inert`
+  or `hidden` ancestor. `Transition` marks a leaving element `inert`, which made
+  this reachable: focus could be sent into a panel that was fading out, where the
+  browser would refuse it and leave focus where it was. Where the browser provides
+  `checkVisibility`, content hidden by CSS is skipped as well.
+
+  The selector itself is more accurate too. `input[type="hidden"]` and
+  `contenteditable="false"` are no longer offered, `object` and `embed` are gone
+  since neither is tab-navigable, and `summary`, `audio[controls]` and
+  `video[controls]` are now included.
+
+- 19fb94b: Fix a panel flashing at its final appearance before it enters.
+
+  The starting state and the class carrying the `transition` declaration were
+  applied in the same change, so whenever the element's style had already been
+  computed once, the browser treated the starting state as somewhere to animate
+  _to_: the panel appeared fully visible, faded out to its `enterFrom` state over
+  the whole duration, and only then entered. A `PopoverPanel` inside a
+  `Transition` hit this reliably, because opening the popover computes the panel's
+  style before the transition applies its classes.
+
+  The starting state is now committed on its own before the transition can act on
+  it, in both directions, so an enter begins from `enterFrom` and a leave from
+  `leaveFrom` however the element came to be on screen.
+
 ## 2.0.0-next.8
 
 ### Patch Changes
