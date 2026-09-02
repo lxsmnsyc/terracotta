@@ -2,6 +2,7 @@ import './blueprint.css';
 import './brutalist.css';
 import './glass.css';
 import './terminal.css';
+import './x-ray.css';
 import './terracotta.css';
 
 export interface ThemeMeta {
@@ -42,6 +43,11 @@ export const THEMES: readonly ThemeMeta[] = [
     id: 'blueprint',
     name: 'Blueprint',
     blurb: 'Grid paper, hairlines, stencil labels, numbered sheets.',
+  },
+  {
+    id: 'x-ray',
+    name: 'X-ray',
+    blurb: 'Devtools grey, with every tc- state attribute drawn as you use it.',
   },
 ];
 

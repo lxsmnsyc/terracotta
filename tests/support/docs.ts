@@ -8,7 +8,14 @@ import type { ConsoleMessage, Page } from '@playwright/test';
  * `theme-picker.spec.ts` asserts the two lists agree, so the duplication cannot
  * drift silently.
  */
-export const THEMES = ['terracotta', 'brutalist', 'glass', 'terminal', 'blueprint'] as const;
+export const THEMES = [
+  'terracotta',
+  'brutalist',
+  'glass',
+  'terminal',
+  'blueprint',
+  'x-ray',
+] as const;
 export const SCHEMES = ['light', 'dark'] as const;
 
 export type Theme = (typeof THEMES)[number];

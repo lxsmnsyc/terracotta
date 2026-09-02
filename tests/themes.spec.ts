@@ -65,8 +65,7 @@ test('switching theme restyles the chrome and the demos together', async ({ page
     (el) => getComputedStyle(el).backgroundColor,
   );
 
-  await page.click('.theme-picker-button');
-  await page.locator('.theme-picker-option', { hasText: 'Blueprint' }).click();
+  await page.click('.theme-swatch[data-theme-id="blueprint"]');
 
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'blueprint');
   const after = await page.locator('.sidebar-link[aria-current="page"]').evaluate(

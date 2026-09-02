@@ -84,61 +84,47 @@
   box-shadow: var(--shadow-2);
 }
 
-/* Theme picker ----------------------------------------------------- */
+/* Theme picker ----------------------------------------------------- *
+ * A row of swatches, one per theme, always visible: comparing two themes is
+ * two clicks in the same place. Each chip is painted by the theme it stands
+ * for, in that theme's own file.
+ * ------------------------------------------------------------------ */
 
 .theme-picker {
-  position: relative;
+  display: flex;
+  gap: 0.2rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 0.2rem;
 }
 
-.theme-picker-swatch {
-  inline-size: 0.7rem;
-  block-size: 0.7rem;
-  border-radius: 999px;
-  background: var(--accent);
-}
-
-.theme-picker-caret {
-  color: var(--text-3);
-  transition: rotate 150ms ease;
-}
-
-.theme-picker-button[tc-expanded] .theme-picker-caret {
-  rotate: 180deg;
-}
-
-.theme-picker-options {
-  position: absolute;
-  z-index: 30;
-  inset-inline-end: 0;
-  inline-size: 18rem;
-  margin-block-start: 0.35rem;
-  padding: 0.25rem;
-}
-
-.theme-picker-option {
+.theme-swatch {
   display: grid;
-  gap: 0.1rem;
+  place-items: center;
   border-radius: var(--radius-sm);
-  padding: 0.5rem 0.6rem;
+  padding: 0.15rem;
   cursor: pointer;
 }
 
-.theme-picker-option[tc-active] {
-  background: var(--accent-soft);
+.theme-swatch-chip {
+  display: block;
+  inline-size: 1.05rem;
+  block-size: 1.05rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
 }
 
-.theme-picker-option-name {
-  font-weight: 600;
+.theme-swatch[tc-active] {
+  box-shadow: 0 0 0 2px var(--focus);
 }
 
-.theme-picker-option[tc-selected] .theme-picker-option-name::after {
-  content: ' ✓';
-  color: var(--accent);
+.theme-swatch[tc-checked] {
+  background: var(--surface-2);
 }
 
-.theme-picker-option-blurb {
-  color: var(--text-2);
-  font-size: 0.8rem;
+.theme-swatch[tc-checked] .theme-swatch-chip {
+  border-color: var(--text-1);
+  box-shadow: 0 0 0 1px var(--surface-0) inset;
 }
 
 /* Scheme picker ---------------------------------------------------- */
@@ -218,9 +204,12 @@
   color: var(--text-1);
 }
 
+/* `--accent-hover` rather than `--accent`: it is the darker of the two in a
+   light scheme and the lighter in a dark one, which is the direction that
+   helps in both against the soft accent ground. */
 .sidebar-link[aria-current='page'] {
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--accent-hover);
   font-weight: 600;
 }
 

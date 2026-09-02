@@ -233,7 +233,6 @@
 [data-theme='blueprint'] .select-option[tc-active],
 [data-theme='blueprint'] .combobox-option[tc-active],
 [data-theme='blueprint'] .command-option[tc-active],
-[data-theme='blueprint'] .theme-picker-option[tc-active],
 [data-theme='blueprint'] .sidebar-link[aria-current='page'] {
   background: var(--accent-soft);
   box-shadow: inset 2px 0 0 var(--accent);
@@ -245,8 +244,7 @@
 [data-theme='blueprint'] .listbox-option[tc-active] *,
 [data-theme='blueprint'] .select-option[tc-active] *,
 [data-theme='blueprint'] .combobox-option[tc-active] *,
-[data-theme='blueprint'] .command-option[tc-active] *,
-[data-theme='blueprint'] .theme-picker-option[tc-active] * {
+[data-theme='blueprint'] .command-option[tc-active] * {
   color: inherit;
 }
 
@@ -355,4 +353,10 @@
 [data-theme='blueprint'] :focus-visible {
   outline: 1px solid var(--focus);
   outline-offset: 3px;
+}
+
+/* The chip that stands for this theme in the picker. Unscoped on purpose:
+   the picker shows every theme at once, whichever one is active. */
+.theme-swatch-blueprint {
+  background: linear-gradient(135deg, #0a1a30 0 50%, #7fd4ff 50% 100%);
 }

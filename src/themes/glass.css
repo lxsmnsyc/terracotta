@@ -203,8 +203,7 @@
 [data-theme='glass'] .listbox-option[tc-active],
 [data-theme='glass'] .select-option[tc-active],
 [data-theme='glass'] .combobox-option[tc-active],
-[data-theme='glass'] .command-option[tc-active],
-[data-theme='glass'] .theme-picker-option[tc-active] {
+[data-theme='glass'] .command-option[tc-active] {
   background: var(--surface-2);
 }
 
@@ -217,7 +216,9 @@
   border-color: color-mix(in srgb, var(--accent) 45%, transparent);
   background: var(--accent-soft);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
-  color: var(--accent);
+  /* The darker end of the accent in light, the lighter in dark: `--accent`
+     itself only just clears 4:1 on this ground. */
+  color: var(--accent-hover);
 }
 
 [data-theme='glass'] .checkbox-box[tc-checked=''],
@@ -381,4 +382,10 @@
     --surface-1: #0d1220;
     --surface-2: #1e2637;
   }
+}
+
+/* The chip that stands for this theme in the picker. Unscoped on purpose:
+   the picker shows every theme at once, whichever one is active. */
+.theme-swatch-glass {
+  background: linear-gradient(135deg, #dbeafe 0 50%, #a78bfa 50% 100%);
 }

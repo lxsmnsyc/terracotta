@@ -1,0 +1,250 @@
+/*
+ * X-ray.
+ *
+ * A neutral, dense, devtools-grey reading surface — with the machinery left
+ * showing. Terracotta styles nothing and writes its entire state model into
+ * `tc-` DOM attributes, so a stylesheet can select on that model directly.
+ * This theme does: every element that is expanded, active, selected, checked,
+ * pressed, matched or disabled is drawn as such, live, as you use it.
+ *
+ * Two channels, so overlapping states stay readable:
+ *
+ *   outline (outside the box)  what the component is *doing* now —
+ *                              `tc-expanded`, `tc-active`
+ *   inset ring (inside)        what it *holds* —
+ *                              `tc-selected`, `tc-checked`, `tc-pressed`
+ *
+ * An option that is both active and selected therefore shows an amber outline
+ * around a green ring. Neither channel affects layout: `outline` and
+ * `box-shadow` do not participate in flow, so all forty-five demos keep their
+ * geometry exactly.
+ *
+ * The docs chrome is built out of Terracotta too, so it annotates itself —
+ * the theme picker you switch with is a `Listbox`, and it lights up while you
+ * use it.
+ */
+
+[data-theme='x-ray'] {
+  --surface-0: #ffffff;
+  --surface-1: #f6f7f9;
+  --surface-2: #e9ecf1;
+
+  --text-1: #11151c;
+  --text-2: #4a5462;
+  --text-3: #8b95a5;
+
+  --border: #dde1e8;
+  --border-strong: #c2c9d4;
+
+  --accent: #6532d9;
+  --accent-hover: #5127b5;
+  --accent-contrast: #ffffff;
+  --accent-soft: #efe9fd;
+
+  --focus: #6532d9;
+  --danger: #c22a2a;
+
+  --overlay: rgb(17 21 28 / 50%);
+
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+
+  --shadow-1: 0 1px 1px rgb(17 21 28 / 6%);
+  --shadow-2: 0 8px 24px rgb(17 21 28 / 14%);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+
+  --masthead-height: 3rem;
+
+  /* The state palette. Theme-private, and the whole point of the theme. */
+  --x-expanded: #2563eb;
+  --x-active: #d97706;
+  --x-selected: #059669;
+  --x-checked: #9333ea;
+  --x-pressed: #db2777;
+  --x-matches: #0891b2;
+  --x-disabled: #94a3b8;
+}
+
+[data-theme='x-ray'].dark {
+  --surface-0: #0f1218;
+  --surface-1: #161b23;
+  --surface-2: #222a35;
+
+  --text-1: #eef1f6;
+  --text-2: #a8b2c1;
+  --text-3: #6f7b8c;
+
+  --border: #262f3b;
+  --border-strong: #3a4553;
+
+  --accent: #a78bfa;
+  --accent-hover: #c4b5fd;
+  --accent-contrast: #0f1218;
+  --accent-soft: #241d3d;
+
+  --focus: #a78bfa;
+  --danger: #f87171;
+
+  --overlay: rgb(4 6 10 / 70%);
+
+  --x-expanded: #60a5fa;
+  --x-active: #fbbf24;
+  --x-selected: #34d399;
+  --x-checked: #c084fc;
+  --x-pressed: #f472b6;
+  --x-matches: #22d3ee;
+  --x-disabled: #64748b;
+}
+
+/* ------------------------------------------------------------------ *
+ * Channel one: what the component is doing
+ *
+ * Selectors are attributes, not class names — nothing here knows which
+ * component it is drawing, only what state that component has published.
+ * ------------------------------------------------------------------ */
+
+[data-theme='x-ray'] [tc-expanded] {
+  outline: 1px dashed var(--x-expanded);
+  outline-offset: 2px;
+}
+
+[data-theme='x-ray'] [tc-active] {
+  outline: 1px solid var(--x-active);
+  outline-offset: 2px;
+}
+
+/* `tc-matches` marks the rows a filter kept, so it reads as a highlight rather
+   than as an outline. */
+[data-theme='x-ray'] [tc-matches] {
+  border-inline-start: 2px solid var(--x-matches);
+}
+
+/* ------------------------------------------------------------------ *
+ * Channel two: what the component holds
+ * ------------------------------------------------------------------ */
+
+/*
+ * A hairline, not a border. Terracotta mirrors a component's state onto its
+ * parts — a checked row, its label and its box all publish `tc-checked` — so
+ * these rings nest three deep in places. That nesting is the truth of the
+ * markup and worth seeing; at 2px it read as a stack of borders instead.
+ */
+[data-theme='x-ray'] [tc-selected] {
+  box-shadow: inset 0 0 0 1px var(--x-selected);
+}
+
+[data-theme='x-ray'] [tc-checked] {
+  box-shadow: inset 0 0 0 1px var(--x-checked);
+}
+
+[data-theme='x-ray'] [tc-checked='mixed'] {
+  box-shadow: inset 0 0 0 1px var(--x-checked), inset 0 0 0 3px var(--surface-0);
+}
+
+[data-theme='x-ray'] [tc-pressed] {
+  box-shadow: inset 0 0 0 1px var(--x-pressed);
+}
+
+/* Off is drawn as struck through, in the one colour that means "not available". */
+[data-theme='x-ray'] [tc-disabled] {
+  background-image: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--x-disabled) 22%, transparent) 0 3px,
+    transparent 3px 7px
+  );
+}
+
+/*
+ * A filled row repaints only itself, and the rings above sit on top of
+ * whatever it is filled with — so the fill has to stay light enough to read
+ * against. These are the baseline's own selection colours, kept deliberately
+ * pale here for that reason.
+ */
+[data-theme='x-ray'] .menu-item[tc-active],
+[data-theme='x-ray'] .listbox-option[tc-active],
+[data-theme='x-ray'] .select-option[tc-active],
+[data-theme='x-ray'] .combobox-option[tc-active],
+[data-theme='x-ray'] .command-option[tc-active] {
+  background: var(--surface-2);
+}
+
+[data-theme='x-ray'] .menu-item[tc-active] *,
+[data-theme='x-ray'] .listbox-option[tc-active] *,
+[data-theme='x-ray'] .select-option[tc-active] *,
+[data-theme='x-ray'] .combobox-option[tc-active] *,
+[data-theme='x-ray'] .command-option[tc-active] * {
+  color: inherit;
+}
+
+/* The switch and checkbox already fill with the accent when set; the ring
+   would disappear into it, so those two keep a neutral fill and let the ring
+   carry the state. */
+[data-theme='x-ray'] .checkbox-box[tc-checked=''],
+[data-theme='x-ray'] .checkbox-box[tc-checked='mixed'],
+[data-theme='x-ray'] .switch-track[tc-checked=''],
+[data-theme='x-ray'] [tc-pressed] .switch-track {
+  background: var(--surface-2);
+  color: var(--text-1);
+}
+
+[data-theme='x-ray'] .switch-knob {
+  background: var(--x-checked);
+}
+
+/* Chrome ------------------------------------------------------------ */
+
+[data-theme='x-ray'] .masthead {
+  backdrop-filter: none;
+  background: var(--surface-1);
+}
+
+[data-theme='x-ray'] .brand-mark {
+  border-radius: 2px;
+}
+
+[data-theme='x-ray'] .page-title,
+[data-theme='x-ray'] .hero-title {
+  font-weight: 640;
+}
+
+[data-theme='x-ray'] .sidebar-link,
+[data-theme='x-ray'] .toc-link,
+[data-theme='x-ray'] .demo-tab,
+[data-theme='x-ray'] .demo-tool {
+  font-size: 0.85rem;
+}
+
+/*
+ * Shiki bakes an opaque background into the block and into every span, so both
+ * are replaced with the theme's own surface. The dark selector carries `:root`
+ * so that it out-specifies `:root.dark .shiki span` in `prose.css` outright —
+ * without it the two tie at three classes and the winner is whichever
+ * stylesheet the bundler emits last.
+ */
+[data-theme='x-ray'] .shiki,
+:root[data-theme='x-ray'].dark .shiki {
+  background-color: var(--surface-1);
+}
+
+[data-theme='x-ray'] .shiki span,
+:root[data-theme='x-ray'].dark .shiki span {
+  background-color: transparent;
+}
+
+/*
+ * Last, so that focus wins over the state outlines. Focus is where the user
+ * is; everything else is where the component is.
+ */
+[data-theme='x-ray'] :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* The chip that stands for this theme in the picker. Unscoped on purpose:
+   the picker shows every theme at once, whichever one is active. */
+.theme-swatch-x-ray {
+  background: linear-gradient(135deg, #ffffff 0 50%, #6532d9 50% 100%);
+}

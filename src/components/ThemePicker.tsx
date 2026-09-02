@@ -1,72 +1,66 @@
 import type { JSX } from '@solidjs/web';
 import { For, createEffect, createSignal } from 'solid-js';
-import {
-  Listbox,
-  ListboxButton,
-  ListboxLabel,
-  ListboxOption,
-  ListboxOptions,
-} from 'terracotta/listbox';
+import { RadioGroup, RadioGroupLabel, RadioGroupOption } from 'terracotta/radio-group';
 import { useTheme } from '../lib/theme';
-import { DEFAULT_THEME, THEMES, type ThemeMeta } from '../themes';
+import { DEFAULT_THEME, THEMES } from '../themes';
 
 /**
- * The site's own chrome is built out of Terracotta. The theme picker is the
- * most direct proof available: it is a `Listbox`, and the theme it switches
- * restyles the very listbox you used to switch it.
+ * The site's own chrome is built out of Terracotta, and the theme picker is the
+ * most direct proof available: it is a `RadioGroup`, and the theme it switches
+ * restyles the very radio group you used to switch it.
+ *
+ * A radio group rather than a popup because the whole point of the control is
+ * comparison. Every theme stays on screen and one click away from the last, so
+ * switching between two of them is two clicks in the same place rather than
+ * two round trips through a menu that closes over the page you are trying to
+ * look at.
+ *
+ * Each swatch is painted by the theme it stands for: `themes/<id>.css` carries
+ * an unscoped `.theme-swatch-<id>` rule, so a theme still arrives as one file
+ * plus one entry in `THEMES`, and no palette is duplicated here.
  */
 export default function ThemePicker(): JSX.Element {
   const { theme, setTheme } = useTheme();
-  const current = (): ThemeMeta => THEMES.find((entry) => entry.id === theme()) ?? THEMES[0]!;
 
   /*
-   * The server cannot know which theme is stored in the browser, so it always
-   * renders the default name. Hydration reuses the server's text node and only
-   * rewrites it when the value *changes*, which meant a reader who had picked
-   * another theme saw the whole site restyled while the button still read
-   * "Terracotta". Starting from the server's answer and moving to the real one
-   * in an effect makes that a change, so the text is patched.
+   * The server cannot know which theme is in the visitor's storage, so it
+   * renders the default as checked — and hydration reuses the server's DOM,
+   * moving the mark only when the value *changes*. Starting from the server's
+   * answer and stepping to the real one in an effect makes it a change, so the
+   * mark lands on the theme the page is actually painted in.
    */
-  const [label, setLabel] = createSignal(
-    (THEMES.find((entry) => entry.id === DEFAULT_THEME) ?? THEMES[0]!).name,
-  );
+  const [checked, setChecked] = createSignal(DEFAULT_THEME);
   createEffect(
-    () => current().name,
-    (name) => {
-      setLabel(name);
+    () => theme(),
+    (value) => {
+      setChecked(value);
     },
   );
 
   return (
-    <Listbox<ThemeMeta>
+    <RadioGroup<string>
       class="theme-picker"
-      defaultOpen={false}
-      value={current()}
-      onSelectChange={(value) => {
+      value={checked()}
+      onChange={(value) => {
         if (value) {
-          setTheme(value.id);
+          setTheme(value);
         }
       }}
-      by={(a, b) => a.id === b.id}
     >
-      <ListboxLabel class="visually-hidden">Theme</ListboxLabel>
-      <ListboxButton class="theme-picker-button control">
-        <span class="theme-picker-swatch" aria-hidden="true" />
-        <span class="theme-picker-value">{label()}</span>
-        <span class="theme-picker-caret" aria-hidden="true">
-          ▾
-        </span>
-      </ListboxButton>
-      <ListboxOptions class="theme-picker-options panel">
-        <For each={THEMES}>
-          {(entry) => (
-            <ListboxOption class="theme-picker-option" value={entry}>
-              <span class="theme-picker-option-name">{entry.name}</span>
-              <span class="theme-picker-option-blurb">{entry.blurb}</span>
-            </ListboxOption>
-          )}
-        </For>
-      </ListboxOptions>
-    </Listbox>
+      <RadioGroupLabel class="visually-hidden">Theme</RadioGroupLabel>
+      <For each={THEMES}>
+        {(entry) => (
+          <RadioGroupOption
+            class="theme-swatch"
+            value={entry.id}
+            data-theme-id={entry.id}
+            title={`${entry.name} — ${entry.blurb}`}
+          >
+            <RadioGroupLabel class="visually-hidden">{entry.name}</RadioGroupLabel>
+            <span class={`theme-swatch-chip theme-swatch-${entry.id}`} aria-hidden="true" />
+          </RadioGroupOption>
+        )}
+      </For>
+    </RadioGroup>
   );
 }

@@ -128,6 +128,17 @@ theme that changes the *information design* rather than the palette — the API
 tables become fully ruled parts schedules, and nothing casts a shadow because a
 blueprint has no depth.
 
+`x-ray.css` is the one that argues the case outright. Terracotta styles nothing
+and publishes its entire state model as `tc-` DOM attributes, so a stylesheet
+can select on that model directly — and this theme does, drawing every element
+that is expanded, active, selected, checked, pressed, matched or disabled as
+you use it. Two channels keep overlapping states legible: an outline outside
+the box for what a component is *doing*, a hairline ring inside for what it
+*holds*. Neither participates in layout, so all forty-five demos keep their
+geometry. It doubles as a live legend for the "State attributes" table on every
+component page, and because the docs chrome is built out of Terracotta too, the
+theme picker annotates itself while you use it.
+
 Three things every theme after the first has had to know:
 
 - A row that fills on hover or selection repaints only itself. Children that
@@ -175,8 +186,16 @@ which currently stops its whole subtree from hydrating — see
 [docs/color-scheme-hydration.md](docs/color-scheme-hydration.md).
 
 Everything else in the chrome is built from the library it documents: the theme
-picker is a `Listbox`, the appearance switch is a `RadioGroup`, the mobile
-navigation is a `Disclosure`, and the demo Preview/Code switch is a `TabGroup`.
+picker and the appearance switch are `RadioGroup`s, the mobile navigation is a
+`Disclosure`, and the demo Preview/Code switch is a `TabGroup`.
+
+The theme picker is a radio group rather than a popup because the point of the
+control is comparison: every theme stays on screen, so switching between two of
+them is two clicks in the same place instead of two round trips through a menu
+that closes over the page you are trying to look at. Each swatch is painted by
+the theme it stands for — `themes/<id>.css` carries an unscoped
+`.theme-swatch-<id>` rule — so a theme is still one file plus one entry in
+`THEMES`, and no palette is written down twice.
 
 ## Hydration
 

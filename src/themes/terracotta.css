@@ -62,3 +62,9 @@
 
   --overlay: rgb(10 7 6 / 70%);
 }
+
+/* The chip that stands for this theme in the picker. Unscoped on purpose:
+   the picker shows every theme at once, whichever one is active. */
+.theme-swatch-terracotta {
+  background: linear-gradient(135deg, #fdfcfb 0 50%, #b4451f 50% 100%);
+}

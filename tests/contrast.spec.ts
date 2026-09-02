@@ -40,19 +40,14 @@ for (const theme of THEMES) {
       expect(await textContrast(option)).toBeGreaterThanOrEqual(CONTRAST_FLOOR);
     });
 
-    test(`${theme} / ${scheme}: a hovered theme-picker option keeps its blurb readable`, async ({
-      page,
-    }) => {
+    test(`${theme} / ${scheme}: the current sidebar entry stays legible`, async ({ page }) => {
       await useAppearance(page, theme, scheme);
-      await page.goto('/');
+      await page.goto('/components/listbox');
 
-      await page.click('.theme-picker-button');
-      const option = page.locator('.theme-picker-option').first();
-      await option.hover();
-      await expect(option).toHaveAttribute('tc-active', '');
-
-      const blurb = option.locator('.theme-picker-option-blurb');
-      expect(await textContrast(blurb)).toBeGreaterThanOrEqual(CONTRAST_FLOOR);
+      // The only filled row in the chrome that carries text of its own.
+      const current = page.locator('.sidebar-link[aria-current="page"]');
+      await expect(current).toBeVisible();
+      expect(await textContrast(current)).toBeGreaterThanOrEqual(CONTRAST_FLOOR);
     });
   }
 }

@@ -158,8 +158,7 @@
 [data-theme='brutalist'] .listbox-option[tc-active],
 [data-theme='brutalist'] .select-option[tc-active],
 [data-theme='brutalist'] .combobox-option[tc-active],
-[data-theme='brutalist'] .command-option[tc-active],
-[data-theme='brutalist'] .theme-picker-option[tc-active] {
+[data-theme='brutalist'] .command-option[tc-active] {
   background: var(--text-1);
   color: var(--surface-0);
 }
@@ -176,13 +175,7 @@
 [data-theme='brutalist'] .listbox-option[tc-active] *,
 [data-theme='brutalist'] .select-option[tc-active] *,
 [data-theme='brutalist'] .combobox-option[tc-active] *,
-[data-theme='brutalist'] .command-option[tc-active] *,
-[data-theme='brutalist'] .theme-picker-option[tc-active] * {
-  color: inherit;
-}
-
-/* The selected theme's tick is a pseudo-element, so `*` cannot reach it. */
-[data-theme='brutalist'] .theme-picker-option[tc-active][tc-selected] .theme-picker-option-name::after {
+[data-theme='brutalist'] .command-option[tc-active] * {
   color: inherit;
 }
 
@@ -347,4 +340,10 @@
 [data-theme='brutalist'] :focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
+}
+
+/* The chip that stands for this theme in the picker. Unscoped on purpose:
+   the picker shows every theme at once, whichever one is active. */
+.theme-swatch-brutalist {
+  background: linear-gradient(135deg, #fffdf7 0 50%, #000000 50% 100%);
 }

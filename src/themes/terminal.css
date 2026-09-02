@@ -209,7 +209,6 @@
 [data-theme='terminal'] .select-option[tc-active],
 [data-theme='terminal'] .combobox-option[tc-active],
 [data-theme='terminal'] .command-option[tc-active],
-[data-theme='terminal'] .theme-picker-option[tc-active],
 [data-theme='terminal'] .accordion-button[tc-active],
 [data-theme='terminal'] .tab[tc-selected],
 [data-theme='terminal'] .demo-tab[tc-selected],
@@ -226,12 +225,7 @@
 [data-theme='terminal'] .listbox-option[tc-active] *,
 [data-theme='terminal'] .select-option[tc-active] *,
 [data-theme='terminal'] .combobox-option[tc-active] *,
-[data-theme='terminal'] .command-option[tc-active] *,
-[data-theme='terminal'] .theme-picker-option[tc-active] * {
-  color: inherit;
-}
-
-[data-theme='terminal'] .theme-picker-option[tc-active][tc-selected] .theme-picker-option-name::after {
+[data-theme='terminal'] .command-option[tc-active] * {
   color: inherit;
 }
 
@@ -340,4 +334,10 @@
 [data-theme='terminal'] :focus-visible {
   outline: 2px dashed var(--focus);
   outline-offset: 1px;
+}
+
+/* The chip that stands for this theme in the picker. Unscoped on purpose:
+   the picker shows every theme at once, whichever one is active. */
+.theme-swatch-terminal {
+  background: linear-gradient(135deg, #03130a 0 50%, #39ff88 50% 100%);
 }
