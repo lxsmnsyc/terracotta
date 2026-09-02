@@ -16,14 +16,27 @@ export const CONTRAST_FLOOR = 4.5;
  */
 export async function textContrast(locator: Locator): Promise<number> {
   return locator.evaluate((element: Element) => {
+    /*
+     * Resolved through a canvas rather than by reading the numbers out of the
+     * string. Computed colours are not always `rgb()`: a colour mid-transition
+     * comes back as `oklab(...)`, `color-mix()` results as `color(srgb ...)`,
+     * and a hand-rolled parser silently read an oklab lightness of 0.75 as 0.75
+     * of 255 — reporting a bright red button as nearly black.
+     */
+    const canvas = document.createElement('canvas');
+    canvas.width = 1;
+    canvas.height = 1;
+    const context = canvas.getContext('2d', { willReadFrequently: true });
+
     const parse = (value: string): [number, number, number, number] | null => {
-      const numbers = value.match(/[\d.]+/g)?.map(Number);
-      if (!numbers || numbers.length < 3) {
+      if (!context) {
         return null;
       }
-      const scale = value.startsWith('color(') ? 255 : 1;
-      const [r = 0, g = 0, b = 0, a = 1] = numbers;
-      return [r * scale, g * scale, b * scale, a];
+      context.globalCompositeOperation = 'copy';
+      context.fillStyle = value;
+      context.fillRect(0, 0, 1, 1);
+      const [r = 0, g = 0, b = 0, a = 0] = context.getImageData(0, 0, 1, 1).data;
+      return [r, g, b, a / 255];
     };
 
     // Source-over. The composited alpha matters: a translucent layer over

@@ -147,6 +147,14 @@ make a point the contract makes easy to forget: `--font-sans` is a token name,
 not a promise, and a theme is free to answer it with a serif and to reset the
 measure and the leading around it.
 
+`bloom.css` takes the shape axis. Every other theme in the set is drawn with
+lines — hairlines, 2px rules, dashes, grids, outlines — and this one has none:
+nothing is outlined and nothing is square. Shapes are separated by fill and a
+soft tinted shadow, everything you can touch is a pill, and hovering lifts it a
+pixel. Most of the file is therefore spent turning borders into backgrounds,
+which is a thing a theme can only do because the baseline draws the vocabulary
+and the library draws nothing.
+
 Three things every theme after the first has had to know:
 
 - A row that fills on hover or selection repaints only itself. Children that
@@ -183,6 +191,10 @@ from a cold `node_modules/.vite`.
   compositing translucent layers down the ancestor chain, which `glass` needs —
   and holds filled buttons and active rows to 4.5:1 in every theme and scheme.
   Every contrast bug this site has had was a fill repainted without its label.
+  Colours are resolved by painting them to a canvas rather than by parsing the
+  computed string: a fill caught mid-transition comes back as `oklab(...)` and a
+  hand-rolled parser reads its lightness of `0.75` as 0.75 of 255, reporting a
+  bright red button as nearly black.
 - `theme-picker.spec.ts` covers the appearance controls, including that the
   picker names the stored theme on first paint. That one is a hydration trap:
   the server cannot know the visitor's theme, and hydration rewrites a text node

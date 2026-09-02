@@ -1,3 +1,4 @@
+import './bloom.css';
 import './blueprint.css';
 import './brutalist.css';
 import './editorial.css';
@@ -54,6 +55,11 @@ export const THEMES: readonly ThemeMeta[] = [
     id: 'editorial',
     name: 'Editorial',
     blurb: 'Ivory stock, serif text, drop caps and numbered figures.',
+  },
+  {
+    id: 'bloom',
+    name: 'Bloom',
+    blurb: 'No lines anywhere: pills, soft fills, and a lift on hover.',
   },
 ];
 

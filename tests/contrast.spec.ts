@@ -27,6 +27,8 @@ for (const theme of THEMES) {
       expect(await textContrast(button)).toBeGreaterThanOrEqual(CONTRAST_FLOOR);
 
       await button.hover();
+      // Some themes transition the fill on hover; measure where it lands.
+      await page.waitForTimeout(300);
       expect(await textContrast(button)).toBeGreaterThanOrEqual(CONTRAST_FLOOR);
     });
 
@@ -35,6 +37,13 @@ for (const theme of THEMES) {
       await page.goto(`/demo/listbox/basic${appearance}`);
 
       await page.click('.listbox-button');
+
+      // Opening does not by itself mark a row current, so the pointer does it:
+      // waiting for `[tc-active]` to appear on its own is a race.
+      const first = page.locator('.listbox-option').first();
+      await expect(first).toBeVisible();
+      await first.hover();
+
       const option = page.locator('.listbox-option[tc-active]').first();
       await expect(option).toBeVisible();
       expect(await textContrast(option)).toBeGreaterThanOrEqual(CONTRAST_FLOOR);
