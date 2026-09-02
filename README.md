@@ -139,6 +139,14 @@ geometry. It doubles as a live legend for the "State attributes" table on every
 component page, and because the docs chrome is built out of Terracotta too, the
 theme picker annotates itself while you use it.
 
+`editorial.css` is the one with a voice rather than a technique. Ivory stock, a
+serif text face at a book measure, an oxblood rubric, small caps wherever the
+page labels itself, a drop cap opening every article, an asterism between
+sections, and demos numbered as figures from a counter on `.page`. It exists to
+make a point the contract makes easy to forget: `--font-sans` is a token name,
+not a promise, and a theme is free to answer it with a serif and to reset the
+measure and the leading around it.
+
 Three things every theme after the first has had to know:
 
 - A row that fills on hover or selection repaints only itself. Children that
@@ -156,6 +164,14 @@ Three things every theme after the first has had to know:
 
 `pnpm test` runs the Playwright suite in `tests/`. It starts the dev server
 itself, so nothing has to be running first.
+
+The suite runs against the dev server, which is why `vite.config.ts` points
+`optimizeDeps.entries` at `src/**/*.tsx`. Demos are loaded lazily, so without
+it Vite does not discover the Terracotta subpaths they import until the first
+visit to a component page, then re-optimises mid-flight and 504s whatever was
+in the air — including the module a page was hydrating with. Crawling them up
+front settles the dependency set before the first request, and the suite passes
+from a cold `node_modules/.vite`.
 
 - `pages.spec.ts` walks every page in the sidebar and fails on anything in the
   console. A page that fails to hydrate still renders — it just stops

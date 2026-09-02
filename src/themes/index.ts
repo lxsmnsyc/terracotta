@@ -1,5 +1,6 @@
 import './blueprint.css';
 import './brutalist.css';
+import './editorial.css';
 import './glass.css';
 import './terminal.css';
 import './x-ray.css';
@@ -48,6 +49,11 @@ export const THEMES: readonly ThemeMeta[] = [
     id: 'x-ray',
     name: 'X-ray',
     blurb: 'Devtools grey, with every tc- state attribute drawn as you use it.',
+  },
+  {
+    id: 'editorial',
+    name: 'Editorial',
+    blurb: 'Ivory stock, serif text, drop caps and numbered figures.',
   },
 ];
 

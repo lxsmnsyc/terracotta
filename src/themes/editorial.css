@@ -1,0 +1,285 @@
+/*
+ * Editorial.
+ *
+ * The set had six ways of being technical and no voice for reading, so this
+ * one is a printed manual: ivory stock, a serif text face at a book measure,
+ * an oxblood rubric, small caps wherever the page labels itself, a drop cap
+ * opening every article, and figures numbered the way a manual numbers them.
+ *
+ * It is the theme that changes the *typography*, which is the axis a token
+ * contract makes easiest to forget: `--font-sans` is a name, not a promise,
+ * and a theme is free to answer it with a serif. Everything else here is
+ * spacing and rhythm — the measure narrows, the leading opens, the rules thin
+ * out — and none of it touches a component or a demo.
+ */
+
+[data-theme='editorial'] {
+  --surface-0: #fbf8f1;
+  --surface-1: #f4efe3;
+  --surface-2: #e9e1cf;
+
+  --text-1: #191512;
+  --text-2: #4a4239;
+  --text-3: #8a7f70;
+
+  --border: #ddd3c0;
+  --border-strong: #bcae95;
+
+  --accent: #7d1128;
+  --accent-hover: #5c0b1d;
+  --accent-contrast: #fbf8f1;
+  --accent-soft: #f2e3e2;
+
+  --focus: #7d1128;
+  --danger: #9b2226;
+
+  --overlay: rgb(25 21 18 / 45%);
+
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+
+  --shadow-1: none;
+  --shadow-2: 0 10px 30px rgb(25 21 18 / 14%);
+
+  /* A text face, answering the token the contract calls `--font-sans`. */
+  --font-sans: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia,
+    'Times New Roman', serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* A book measure, not a screen one. */
+  --content-width: 40rem;
+  --masthead-height: 3.5rem;
+}
+
+[data-theme='editorial'].dark {
+  --surface-0: #16130f;
+  --surface-1: #1e1a15;
+  --surface-2: #2a241d;
+
+  --text-1: #ece4d6;
+  --text-2: #b6ab9a;
+  --text-3: #7f7466;
+
+  --border: #2f2820;
+  --border-strong: #473d31;
+
+  --accent: #e4899a;
+  --accent-hover: #f0aab6;
+  --accent-contrast: #16130f;
+  --accent-soft: #2c1e1f;
+
+  --focus: #e4899a;
+  --danger: #f0857f;
+
+  --overlay: rgb(8 6 4 / 70%);
+
+  --shadow-2: 0 10px 30px rgb(0 0 0 / 50%);
+}
+
+/* ------------------------------------------------------------------ *
+ * Setting
+ * ------------------------------------------------------------------ */
+
+[data-theme='editorial'] .prose p,
+[data-theme='editorial'] .prose li,
+[data-theme='editorial'] .page-lede {
+  line-height: 1.75;
+  text-wrap: pretty;
+}
+
+[data-theme='editorial'] .page-title,
+[data-theme='editorial'] .hero-title,
+[data-theme='editorial'] .prose h2,
+[data-theme='editorial'] .prose h3 {
+  font-weight: 600;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+/* Chapter openings: the rule sits above the heading, and the heading itself is
+   set in small caps rather than in a heavier weight. */
+[data-theme='editorial'] .prose h2 {
+  padding-block: 0.8rem 0;
+  border-block-start: 1px solid var(--border-strong);
+  border-block-end: 0;
+  font-size: 1.3rem;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.04em;
+}
+
+[data-theme='editorial'] .prose h3 {
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 600;
+}
+
+/*
+ * The drop cap. `::first-letter` finds the first letter of the block even when
+ * it sits inside an inline — which it often does here, because the lede is
+ * rendered markdown and may open with a link.
+ */
+[data-theme='editorial'] .page-lede::first-letter {
+  float: inline-start;
+  margin-inline-end: 0.08em;
+  padding-block-start: 0.06em;
+  color: var(--accent);
+  font-size: 3.1em;
+  font-weight: 600;
+  line-height: 0.82;
+}
+
+/* Anything that labels the page rather than speaking to the reader. */
+[data-theme='editorial'] .sidebar-section-title,
+[data-theme='editorial'] .toc-title,
+[data-theme='editorial'] .demo-tab,
+[data-theme='editorial'] .demo-tool,
+[data-theme='editorial'] .prose th,
+[data-theme='editorial'] .listbox-label,
+[data-theme='editorial'] .combobox-label,
+[data-theme='editorial'] .radiogroup-label,
+[data-theme='editorial'] .feed-label {
+  font-variant-caps: all-small-caps;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: none;
+}
+
+/*
+ * Figures, numbered. The counter is on `.page`, so the hero demo under the
+ * lede is Fig. 1 and the demos in the body carry on from there — a manual
+ * numbers what it shows you.
+ */
+[data-theme='editorial'] .page {
+  counter-reset: figure;
+}
+
+[data-theme='editorial'] .demo {
+  counter-increment: figure;
+}
+
+[data-theme='editorial'] .demo::before {
+  display: block;
+  margin-block-end: 0.45rem;
+  color: var(--text-3);
+  font-variant-caps: all-small-caps;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  content: 'Fig. ' counter(figure);
+}
+
+[data-theme='editorial'] .demo-caption {
+  font-style: italic;
+}
+
+/* Quotations are indented and italic, with the mark hung in the margin. */
+[data-theme='editorial'] .prose blockquote {
+  position: relative;
+  border-inline-start: 0;
+  padding-inline-start: 1.6rem;
+  color: var(--text-2);
+  font-style: italic;
+}
+
+[data-theme='editorial'] .prose blockquote::before {
+  position: absolute;
+  inset-inline-start: 0;
+  color: var(--border-strong);
+  font-size: 2.2em;
+  line-height: 1;
+  content: '\\201C';
+}
+
+/* A rule between sections is an ornament, not a border. */
+[data-theme='editorial'] .prose hr {
+  border: 0;
+  color: var(--text-3);
+  font-size: 1rem;
+  letter-spacing: 0.5em;
+  line-height: 1;
+  /* Compensates the trailing letter-space, which would otherwise pull the
+     centred group half a space to the left. */
+  text-indent: 0.5em;
+  text-align: center;
+}
+
+/* An asterism rather than a dingbat: three characters the text face is
+   guaranteed to have, at the size the text is set in. */
+[data-theme='editorial'] .prose hr::before {
+  content: '***';
+}
+
+/* Tables are set as a manual sets them: horizontal rules only, figures lined. */
+[data-theme='editorial'] .prose table {
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-theme='editorial'] .prose th {
+  border-block-end-color: var(--border-strong);
+  white-space: nowrap;
+}
+
+/* Chrome ------------------------------------------------------------ */
+
+[data-theme='editorial'] .masthead {
+  border-block-end-color: var(--border-strong);
+  backdrop-filter: none;
+  background: var(--surface-0);
+}
+
+[data-theme='editorial'] .brand {
+  font-variant-caps: all-small-caps;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+[data-theme='editorial'] .brand-mark {
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+[data-theme='editorial'] .sidebar-link,
+[data-theme='editorial'] .toc-link {
+  font-size: 0.95rem;
+}
+
+[data-theme='editorial'] .sidebar-link[aria-current='page'] {
+  background: none;
+  box-shadow: inset 2px 0 0 var(--accent);
+  font-style: italic;
+}
+
+[data-theme='editorial'] .prose :not(pre) > code,
+[data-theme='editorial'] .page-lede code {
+  font-size: 0.82em;
+}
+
+/*
+ * Shiki bakes an opaque background into the block and into every span; both are
+ * replaced so a listing sits on the page's own stock. The dark selector carries
+ * `:root` so that it out-specifies `:root.dark .shiki span` in `prose.css`
+ * outright — without it the two tie at three classes and the winner is
+ * whichever stylesheet the bundler emits last.
+ */
+[data-theme='editorial'] .shiki,
+:root[data-theme='editorial'].dark .shiki {
+  border-color: var(--border);
+  background-color: var(--surface-1);
+}
+
+[data-theme='editorial'] .shiki span,
+:root[data-theme='editorial'].dark .shiki span {
+  background-color: transparent;
+}
+
+[data-theme='editorial'] :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* The chip that stands for this theme in the picker. Unscoped on purpose:
+   the picker shows every theme at once, whichever one is active. */
+.theme-swatch-editorial {
+  background: linear-gradient(135deg, #fbf8f1 0 50%, #7d1128 50% 100%);
+}

@@ -15,6 +15,7 @@ export const THEMES = [
   'terminal',
   'blueprint',
   'x-ray',
+  'editorial',
 ] as const;
 export const SCHEMES = ['light', 'dark'] as const;
 
