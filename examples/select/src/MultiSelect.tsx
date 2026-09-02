@@ -22,7 +22,7 @@ export default function MultiSelect(): JSX.Element {
         <div class="relative mt-1 bg-gray-50/50 rounded-lg overflow-hidden">
           <For each={people}>
             {(person): JSX.Element => (
-              <SelectOption class="focus:outline-none group" value={person()}>
+              <SelectOption class="focus:outline-none group" value={person}>
                 {({ isActive, isSelected }): JSX.Element => (
                   <div
                     class={classNames(
@@ -37,7 +37,7 @@ export default function MultiSelect(): JSX.Element {
                         'block truncate',
                       )}
                     >
-                      {person().name}
+                      {person.name}
                     </span>
                     {isSelected() ? (
                       <span

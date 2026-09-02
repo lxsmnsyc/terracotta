@@ -45,7 +45,7 @@ export default function SingleExample(): JSX.Element {
                 >
                   <For each={people}>
                     {(person): JSX.Element => (
-                      <ListboxOption class="focus:outline-none group" value={person()}>
+                      <ListboxOption class="focus:outline-none group" value={person}>
                         {({ isActive, isSelected }): JSX.Element => (
                           <div
                             class={classNames(
@@ -60,7 +60,7 @@ export default function SingleExample(): JSX.Element {
                                 'block truncate',
                               )}
                             >
-                              {person().name}
+                              {person.name}
                             </span>
                             {isSelected() ? (
                               <span

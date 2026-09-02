@@ -66,7 +66,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "e2e:dev": "vite --config e2e/vite.config.ts"
+    "e2e:dev": "vite --config e2e/vite.config.ts",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p e2e/tsconfig.json"
   },
   "dependencies": {
     "solid-use": "^1.0.0-next.3"

@@ -8,7 +8,7 @@ import {
   AccordionPanel,
 } from 'terracotta/accordion';
 
-function ChevronUpIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function ChevronUpIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -17,7 +17,7 @@ function ChevronUpIcon(props: JSX.IntrinsicElements['svg'] & { title: string }):
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
     </svg>
   );
@@ -59,7 +59,7 @@ export default function App(): JSX.Element {
         <Accordion class="space-y-2" defaultValue={FAQS[0]} toggleable>
           <For each={FAQS}>
             {(faq): JSX.Element => (
-              <AccordionItem value={faq()}>
+              <AccordionItem value={faq}>
                 <AccordionHeader>
                   <AccordionButton
                     as="div"
@@ -67,7 +67,7 @@ export default function App(): JSX.Element {
                   >
                     {({ isSelected }): JSX.Element => (
                       <>
-                        <span>{faq().question}</span>
+                        <span>{faq.question}</span>
                         <div>
                           <ChevronUpIcon
                             class={`flex-0 ${
@@ -81,7 +81,7 @@ export default function App(): JSX.Element {
                   </AccordionButton>
                 </AccordionHeader>
                 <AccordionPanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
-                  {faq().answer}
+                  {faq.answer}
                 </AccordionPanel>
               </AccordionItem>
             )}

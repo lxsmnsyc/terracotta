@@ -10,7 +10,7 @@ interface ToastProps {
   message: string;
 }
 
-function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +19,7 @@ function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -149,7 +149,7 @@ export default function App(): JSX.Element {
                   </div>
                 }
               >
-                {(item): JSX.Element => <CustomToast id={item().id} message={item().data} />}
+                {(item): JSX.Element => <CustomToast id={item.id} message={item.data} />}
               </For>
             </div>
           </div>

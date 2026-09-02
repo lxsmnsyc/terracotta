@@ -11,7 +11,8 @@
     "cs:pub": "changeset publish",
     "cs:add": "changeset add",
     "skill:sync": "node scripts/sync-plugin-docs.mjs",
-    "skill:check": "node scripts/sync-plugin-docs.mjs --check"
+    "skill:check": "node scripts/sync-plugin-docs.mjs --check",
+    "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
     "@changesets/cli": "catalog:",

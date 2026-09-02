@@ -7,7 +7,7 @@ import {
   CheckboxLabel,
 } from 'terracotta/checkbox';
 
-function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -16,13 +16,13 @@ function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
     </svg>
   );
 }
 
-function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +31,7 @@ function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -42,7 +42,7 @@ function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX
   );
 }
 
-function UndefinedIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function UndefinedIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +51,7 @@ function UndefinedIcon(props: JSX.IntrinsicElements['svg'] & { title: string }):
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
     </svg>
   );

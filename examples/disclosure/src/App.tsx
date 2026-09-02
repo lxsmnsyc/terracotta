@@ -1,7 +1,7 @@
 import type { JSX } from '@solidjs/web';
 import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclosure';
 
-function ChevronUpIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function ChevronUpIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,7 +10,7 @@ function ChevronUpIcon(props: JSX.IntrinsicElements['svg'] & { title: string }):
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
     </svg>
   );

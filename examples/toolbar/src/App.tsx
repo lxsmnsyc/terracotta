@@ -38,7 +38,7 @@ export default function App(): JSX.Element {
                   )}
                   onChange={setChecked}
                 >
-                  <span class={item().class}>{item().label}</span>
+                  <span class={item.class}>{item.label}</span>
                 </Toggle>
               );
             }}

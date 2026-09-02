@@ -60,7 +60,7 @@ export default function SingleExample(): JSX.Element {
               >
                 <For each={people}>
                   {(person): JSX.Element => (
-                    <ComboboxOption class="focus:outline-none group" value={person()}>
+                    <ComboboxOption class="focus:outline-none group" value={person}>
                       {({ isActive, isSelected, matches }): JSX.Element => (
                         <div
                           class={classNames(
@@ -76,7 +76,7 @@ export default function SingleExample(): JSX.Element {
                               'block truncate',
                             )}
                           >
-                            {person().name}
+                            {person.name}
                           </span>
                           {isSelected() ? (
                             <span

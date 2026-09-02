@@ -39,7 +39,7 @@ export default function SingleSelect(): JSX.Element {
         <CommandOptions class="bg-gray-50/50 rounded-lg overflow-hidden">
           <For each={people}>
             {(person): JSX.Element => (
-              <CommandOption class="focus:outline-none group" value={person()}>
+              <CommandOption class="focus:outline-none group" value={person}>
                 {({ isActive, isSelected, matches }): JSX.Element => (
                   <div
                     class={classNames(
@@ -55,7 +55,7 @@ export default function SingleSelect(): JSX.Element {
                         'block truncate',
                       )}
                     >
-                      {person().name}
+                      {person.name}
                     </span>
                     {isSelected() ? (
                       <span

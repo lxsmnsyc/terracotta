@@ -28,10 +28,10 @@ const plans = [
   },
 ];
 
-function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg viewBox="0 0 24 24" fill="none" {...props}>
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <circle cx={12} cy={12} r={12} fill="#fff" opacity="0.2" />
       <path
         d="M7 13l3 3 7-7"
@@ -62,11 +62,10 @@ export default function App(): JSX.Element {
                 <For each={plans}>
                   {(plan): JSX.Element => (
                     <RadioGroupOption
-                      value={plan()}
+                      value={plan}
                       class={classNames(
-                        isSelected(plan()) ? 'bg-sky-900/75 text-white' : 'bg-white',
-                        isActive(plan()) &&
-                          'ring-2 ring-offset-2 ring-offset-sky-300 ring-white/60',
+                        isSelected(plan) ? 'bg-sky-900/75 text-white' : 'bg-white',
+                        isActive(plan) && 'ring-2 ring-offset-2 ring-offset-sky-300 ring-white/60',
                         'relative rounded-lg shadow-md px-5 py-4 cursor-pointer flex focus:outline-none',
                       )}
                     >
@@ -78,14 +77,14 @@ export default function App(): JSX.Element {
                                 as="p"
                                 class={`font-medium ${checked() ? 'text-white' : 'text-gray-900'}`}
                               >
-                                {plan().name}
+                                {plan.name}
                               </RadioGroupLabel>
                               <RadioGroupDescription
                                 as="span"
                                 class={`inline ${checked() ? 'text-sky-100' : 'text-gray-500'}`}
                               >
-                                <span>{`${plan().ram}/${plan().cpus}`}</span>{' '}
-                                <span aria-hidden="true">&middot;</span> <span>{plan().disk}</span>
+                                <span>{`${plan.ram}/${plan.cpus}`}</span>{' '}
+                                <span aria-hidden="true">&middot;</span> <span>{plan.disk}</span>
                               </RadioGroupDescription>
                             </div>
                           </div>

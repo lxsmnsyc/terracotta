@@ -27,7 +27,7 @@ export default function MultipleExample(): JSX.Element {
               <For each={selected()} fallback={<span class="block truncate">No selected.</span>}>
                 {(item): JSX.Element => (
                   <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
-                    {item().name}
+                    {item.name}
                   </span>
                 )}
               </For>
@@ -53,7 +53,7 @@ export default function MultipleExample(): JSX.Element {
                 >
                   <For each={people}>
                     {(person): JSX.Element => (
-                      <ListboxOption class="focus:outline-none group" value={person()}>
+                      <ListboxOption class="focus:outline-none group" value={person}>
                         {({ isActive, isSelected }): JSX.Element => (
                           <div
                             class={classNames(
@@ -68,7 +68,7 @@ export default function MultipleExample(): JSX.Element {
                                 'block truncate',
                               )}
                             >
-                              {person().name}
+                              {person.name}
                             </span>
                             {isSelected() ? (
                               <span

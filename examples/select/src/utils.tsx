@@ -1,6 +1,6 @@
 import type { JSX } from '@solidjs/web';
 
-export function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+export function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -9,7 +9,7 @@ export function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title: string 
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M5 13l4 4L19 7" />
     </svg>
   );

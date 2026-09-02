@@ -46,7 +46,7 @@ export default function SingleExample(): JSX.Element {
           <For each={selected()} fallback={<span class="block truncate">No selected.</span>}>
             {(item): JSX.Element => (
               <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
-                {item().name}
+                {item.name}
               </span>
             )}
           </For>
@@ -73,7 +73,7 @@ export default function SingleExample(): JSX.Element {
               >
                 <For each={people}>
                   {(person): JSX.Element => (
-                    <ComboboxOption class="focus:outline-none group" value={person()}>
+                    <ComboboxOption class="focus:outline-none group" value={person}>
                       {({ isActive, isSelected, matches }): JSX.Element => (
                         <div
                           class={classNames(
@@ -89,7 +89,7 @@ export default function SingleExample(): JSX.Element {
                               'block truncate',
                             )}
                           >
-                            {person().name}
+                            {person.name}
                           </span>
                           {isSelected() ? (
                             <span

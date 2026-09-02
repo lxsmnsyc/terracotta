@@ -89,7 +89,7 @@ const solutions = [
   },
 ];
 
-function ChevronDownIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function ChevronDownIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +98,7 @@ function ChevronDownIcon(props: JSX.IntrinsicElements['svg'] & { title: string }
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M19 9l-7 7-7-7" />
     </svg>
   );
@@ -148,15 +148,15 @@ export default function App(): JSX.Element {
                     <For each={solutions}>
                       {(item): JSX.Element => (
                         <a
-                          href={item().href}
+                          href={item.href}
                           class="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
                         >
                           <div class="flex items-center justify-center shrink-0 w-10 h-10 text-white sm:h-12 sm:w-12">
-                            <Dynamic component={item().icon} aria-hidden="true" />
+                            <Dynamic component={item.icon} aria-hidden="true" />
                           </div>
                           <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-900">{item().name}</p>
-                            <p class="text-sm text-gray-500">{item().description}</p>
+                            <p class="text-sm font-medium text-gray-900">{item.name}</p>
+                            <p class="text-sm text-gray-500">{item.description}</p>
                           </div>
                         </a>
                       )}

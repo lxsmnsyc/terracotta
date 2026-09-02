@@ -10,10 +10,10 @@ import {
 } from 'terracotta/feed';
 import { Transition } from 'terracotta/transition';
 
-function SpinnerIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function SpinnerIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" {...props}>
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
       <path
         class="opacity-75"
@@ -167,11 +167,11 @@ export default function App(): JSX.Element {
                 class="p-2 m-2 flex flex-col space-y-1 bg-indigo-900/25 transition rounded focus:outline-none focus-visible:ring focus:bg-indigo-700 focus-visible:ring-indigo-500/75"
               >
                 <FeedArticleLabel class="text-lg text-white font-bold">
-                  {article().title}
+                  {article.title}
                 </FeedArticleLabel>
                 <Separator />
                 <FeedArticleDescription class="text-sm text-white">
-                  {article().description}
+                  {article.description}
                 </FeedArticleDescription>
               </FeedArticle>
             )}
