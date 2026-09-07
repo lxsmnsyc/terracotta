@@ -13,6 +13,7 @@ catalog:
   '@solidjs/web': 2.0.0-rc.5
   '@tailwindcss/postcss': ^4.1.18
   '@testing-library/jest-dom': ^7.0.0
+  '@vitest/browser-playwright': ^4.1.11
   '@types/node': ^25.5.0
   jsdom: ^30.0.1
   oxfmt: ^0.62.0

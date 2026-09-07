@@ -5,9 +5,9 @@ import { Dialog, DialogPanel } from '../src/components/dialog';
 import getFocusableElements from '../src/utils/focus-query';
 
 /**
- * The query approximates what the browser lets the user tab to. jsdom has no
- * opinion of its own about focusability, so these assert the approximation
- * itself rather than the browser behaviour behind it.
+ * The query approximates what the browser lets the user tab to, so it is tested
+ * in a real one. Under jsdom the platform side of it had to be stubbed, which
+ * left the approximation asserting against itself.
  */
 function build(markup: string): HTMLElement {
   const root = document.createElement('div');
@@ -90,24 +90,52 @@ describe('getFocusableElements', () => {
     expect(ids(root)).toEqual(['visible']);
   });
 
-  it('skips what `checkVisibility` rejects where the browser provides it', () => {
-    // jsdom has no `checkVisibility`, so CSS-hidden elements cannot be set up
-    // and asked about directly. Standing one in tests the part that is ours:
-    // that the query defers to the platform for anything hidden by CSS.
+  it('skips what CSS has hidden', () => {
     const root = build(`
       <button id="shown">shown</button>
-      <button id="css-hidden">hidden by CSS</button>
+      <button id="display-none" style="display: none">display</button>
+      <button id="visibility-hidden" style="visibility: hidden">visibility</button>
+      <div style="display: none"><button id="inside">inside a hidden parent</button></div>
     `);
-    function stub(this: Element): boolean {
-      return this.id !== 'css-hidden';
-    }
-    // oxlint-disable-next-line typescript/no-unsafe-type-assertion
-    (Element.prototype as { checkVisibility?: () => boolean }).checkVisibility = stub;
 
-    try {
-      expect(ids(root)).toEqual(['shown']);
-    } finally {
-      delete (Element.prototype as { checkVisibility?: () => boolean }).checkVisibility;
+    expect(ids(root)).toEqual(['shown']);
+  });
+
+  it('offers only elements the browser will actually focus', () => {
+    // The point of the query is to predict the browser. Asking the browser
+    // directly is the only assertion that checks the prediction rather than
+    // the selector that makes it.
+    const root = build(`
+      <a id="link" href="#">link</a>
+      <button id="button">button</button>
+      <input id="input" />
+      <select id="select"></select>
+      <textarea id="textarea"></textarea>
+      <div id="tabbable" tabindex="0"></div>
+      <div id="editable" contenteditable="true"></div>
+    `);
+
+    for (const element of getFocusableElements(root)) {
+      element.focus();
+      expect(document.activeElement).toBe(element);
+    }
+  });
+
+  it('leaves out elements the browser refuses to focus', () => {
+    // `tabindex="-1"` is deliberately absent: it leaves an element out of the
+    // tab order while `focus()` still works on it, so it is not something this
+    // assertion can distinguish.
+    const root = build(`
+      <button id="disabled" disabled>disabled</button>
+      <div inert><button id="inert-child">inert</button></div>
+      <button id="css-hidden" style="display: none">hidden</button>
+      <button id="invisible" style="visibility: hidden">invisible</button>
+    `);
+
+    expect(ids(root)).toEqual([]);
+    for (const element of root.querySelectorAll<HTMLElement>('[id]')) {
+      element.focus();
+      expect(document.activeElement).not.toBe(element);
     }
   });
 

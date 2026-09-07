@@ -79,6 +79,7 @@
     "@solidjs/web": "catalog:",
     "@testing-library/jest-dom": "catalog:",
     "@types/node": "catalog:",
+    "@vitest/browser-playwright": "catalog:",
     "jsdom": "catalog:",
     "solid-js": "catalog:",
     "tsdown": "catalog:",

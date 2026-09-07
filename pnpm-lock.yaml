@@ -33,6 +33,9 @@ catalogs:
     '@types/node':
       specifier: ^25.5.0
       version: 25.5.0
+    '@vitest/browser-playwright':
+      specifier: ^4.1.11
+      version: 4.1.11
     jsdom:
       specifier: ^30.0.1
       version: 30.0.1
@@ -110,7 +113,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -141,7 +144,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -172,7 +175,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -203,7 +206,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -234,7 +237,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -265,7 +268,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -296,7 +299,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -327,7 +330,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -358,7 +361,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -389,7 +392,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -420,7 +423,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -451,7 +454,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -482,7 +485,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -513,7 +516,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -544,7 +547,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -575,7 +578,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -606,7 +609,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -637,7 +640,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -668,7 +671,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -696,16 +699,19 @@ importers:
         version: 1.0.0-beta.2(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(solid-js@2.0.0-rc.5)
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
       '@solidjs/web':
         specifier: 'catalog:'
         version: 2.0.0-rc.5(solid-js@2.0.0-rc.5)
       '@testing-library/jest-dom':
         specifier: 'catalog:'
-        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1)))
+        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11)
       '@types/node':
         specifier: 'catalog:'
         version: 25.5.0
+      '@vitest/browser-playwright':
+        specifier: 'catalog:'
+        version: 4.1.11(playwright@1.62.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))(vitest@4.1.11)
       jsdom:
         specifier: 'catalog:'
         version: 30.0.1
@@ -726,7 +732,7 @@ importers:
         version: 8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1)
       vitest:
         specifier: 'catalog:'
-        version: 4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+        version: 4.1.11(@types/node@25.5.0)(@vitest/browser-playwright@4.1.11)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
 
 packages:
 
@@ -854,6 +860,9 @@ packages:
   '@babel/types@8.0.0-rc.2':
     resolution: {integrity: sha512-91gAaWRznDwSX4E2tZ1YjBuIfnQVOFDCQ2r0Toby0gu4XEbyF623kXLMA8d4ZbCu+fINcrudkmEcwSUHgDDkNw==}
     engines: {node: ^20.19.0 || >=22.12.0}
+
+  '@blazediff/core@1.9.1':
+    resolution: {integrity: sha512-ehg3jIkYKulZh+8om/O25vkvSsXXwC+skXmyA87FFx6A/45eqOkZsBltMw/TVteb0mloiGT8oGRTcjRAz66zaA==}
 
   '@bramus/specificity@2.4.2':
     resolution: {integrity: sha512-ctxtJ/eA+t+6q2++vj5j7FYX3nRu311q1wfYH3xjlLOsczhlhxAg2FWNUXhpGvAw3BWo1xBcvOV6/YLc2r5FJw==}
@@ -1476,6 +1485,9 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
+  '@polka/url@1.0.0-next.29':
+    resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
+
   '@quansync/fs@1.0.0':
     resolution: {integrity: sha512-4TJ3DFtlf1L5LDMaM6CanJ/0lckGNtJcMjQ1NAV6zDmA0tEHKZtxNKin8EgPaVX1YzljbxckyT2tJrpQKAtngQ==}
 
@@ -1892,6 +1904,17 @@ packages:
 
   '@types/node@25.5.0':
     resolution: {integrity: sha512-jp2P3tQMSxWugkCUKLRPVUpGaL5MVFwF8RDuSRztfwgN1wmqJeMSbKlnEtQqU8UrhTmzEmZdu2I6v2dpp7XIxw==}
+
+  '@vitest/browser-playwright@4.1.11':
+    resolution: {integrity: sha512-riLBxPqwnJ0lWs2DN2WeUfYeKLoAjbP2Xx8cLQdSddzMi20sksIa6K2mPz79DyMZKKVKH2ksOC2yJvtNcZg8cg==}
+    peerDependencies:
+      playwright: '*'
+      vitest: 4.1.11
+
+  '@vitest/browser@4.1.11':
+    resolution: {integrity: sha512-bwMovvAeuTFOK5kIFevw4VEf+1gVEICv4SYK4k3knJOxl6b1zEWud8mYKD73e1B0odAn174h1MofURy2TPWf3w==}
+    peerDependencies:
+      vitest: 4.1.11
 
   '@vitest/expect@4.1.11':
     resolution: {integrity: sha512-VX2x5vNJXET47KAFzwERI+KRMtTTCSWTfSMKsW7JsUsXV4psq++e3DvZpuTDOpHcxytiDs6p2nhVb2tVDiiUYw==}
@@ -2470,6 +2493,10 @@ packages:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
 
+  mrmime@2.0.1:
+    resolution: {integrity: sha512-Y3wQdFg2Va6etvQ5I82yUhGdsKrcYox6p7FfL1LbK2J4V01F9TGlepTIhnK24t7koZibmg82KGglhA1XK5IsLQ==}
+    engines: {node: '>=10'}
+
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
@@ -2594,6 +2621,10 @@ packages:
     resolution: {integrity: sha512-0M+L3LAD8/nm554LOla9Ayx0j0tmFZ0FBcoQ7F1VuVHpM/XpiC8RcDzBQB8W5+hA8L22THxELzeF+2WcUzvcLg==}
     engines: {node: '>=20'}
     hasBin: true
+
+  pngjs@7.0.0:
+    resolution: {integrity: sha512-LKWqWJRhstyYo9pGvgor/ivk2w94eSjE3RGVuzLGlr3NmD8bf7RcYGze1mNdEHRP6TRP6rMuDHk5t44hnTRyow==}
+    engines: {node: '>=14.19.0'}
 
   postcss@8.5.26:
     resolution: {integrity: sha512-u82N74LFzG8ca+dD8puPnplTXoGH4fTPpVGuIbt36G3qvNlkvfD0lEAZSxaly3KX8TS/L1A1gsCEmvKmBcVbkQ==}
@@ -2724,6 +2755,10 @@ packages:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
 
+  sirv@3.0.2:
+    resolution: {integrity: sha512-2wcC/oGxHis/BoHkkPwldgiPSYcpZK3JU28WoMVv55yHJgcZ8rlXvuG9iZggz+sU1d4bRgIGASwyWqjxu3FM0g==}
+    engines: {node: '>=18'}
+
   slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
@@ -2812,6 +2847,10 @@ packages:
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
+
+  totalist@3.0.1:
+    resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
+    engines: {node: '>=6'}
 
   tough-cookie@6.0.2:
     resolution: {integrity: sha512-exgYmnmL/sJpR3upZfXG5PoatXQii55xAiXGXzY+sROLZ/Y+SLcp9PgJNI9Vz37HpQ74WvDcLT8eqm+kV3FzrA==}
@@ -3016,6 +3055,18 @@ packages:
     engines: {node: '>=8'}
     hasBin: true
 
+  ws@8.21.3:
+    resolution: {integrity: sha512-201TZ/kPWxoPr/OKWjquZR1SWKXcvxdH+e1xrx89b3YbmzLMFCLfnaG1HFIgWzJOEWZ7MvpK++odZufgYR50Rw==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   xml-name-validator@5.0.0:
     resolution: {integrity: sha512-EvGK8EJ3DhaHfbRlETOWAS5pO9MZITeauHKJyb8wyajUfQUenkIg2MvLDTZ4T/TgIcm3HU0TFBgWWboAZ30UHg==}
     engines: {node: '>=18'}
@@ -3186,6 +3237,8 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 8.0.0-rc.2
       '@babel/helper-validator-identifier': 8.0.0-rc.2
+
+  '@blazediff/core@1.9.1': {}
 
   '@bramus/specificity@2.4.2':
     dependencies:
@@ -3683,6 +3736,8 @@ snapshots:
     dependencies:
       playwright: 1.62.1
 
+  '@polka/url@1.0.0-next.29': {}
+
   '@quansync/fs@1.0.0':
     dependencies:
       quansync: 1.0.0
@@ -3832,7 +3887,7 @@ snapshots:
       '@testing-library/dom': 10.4.1
       solid-js: 2.0.0-rc.5
 
-  '@solidjs/vite-plugin@3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))':
+  '@solidjs/vite-plugin@3.0.0-next.37(@solidjs/web@2.0.0-rc.5(solid-js@2.0.0-rc.5))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.5)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@babel/core': 7.28.5
@@ -3845,7 +3900,7 @@ snapshots:
       vite: 8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1)
       vitefu: 1.1.3(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
     optionalDependencies:
-      '@testing-library/jest-dom': 7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1)))
+      '@testing-library/jest-dom': 7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11)
     transitivePeerDependencies:
       - supports-color
 
@@ -3937,7 +3992,7 @@ snapshots:
       picocolors: 1.1.1
       pretty-format: 27.5.1
 
-  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1)))':
+  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11)':
     dependencies:
       '@adobe/css-tools': 4.5.0
       '@testing-library/dom': 10.4.1
@@ -3947,7 +4002,7 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
     optionalDependencies:
-      vitest: 4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+      vitest: 4.1.11(@types/node@25.5.0)(@vitest/browser-playwright@4.1.11)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
 
   '@tybys/wasm-util@0.10.1':
     dependencies:
@@ -3998,6 +4053,36 @@ snapshots:
   '@types/node@25.5.0':
     dependencies:
       undici-types: 7.18.2
+
+  '@vitest/browser-playwright@4.1.11(playwright@1.62.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))(vitest@4.1.11)':
+    dependencies:
+      '@vitest/browser': 4.1.11(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))(vitest@4.1.11)
+      '@vitest/mocker': 4.1.11(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+      playwright: 1.62.1
+      tinyrainbow: 3.1.1
+      vitest: 4.1.11(@types/node@25.5.0)(@vitest/browser-playwright@4.1.11)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+    transitivePeerDependencies:
+      - bufferutil
+      - msw
+      - utf-8-validate
+      - vite
+
+  '@vitest/browser@4.1.11(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))(vitest@4.1.11)':
+    dependencies:
+      '@blazediff/core': 1.9.1
+      '@vitest/mocker': 4.1.11(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+      '@vitest/utils': 4.1.11
+      magic-string: 0.30.21
+      pngjs: 7.0.0
+      sirv: 3.0.2
+      tinyrainbow: 3.1.1
+      vitest: 4.1.11(@types/node@25.5.0)(@vitest/browser-playwright@4.1.11)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
+      ws: 8.21.3
+    transitivePeerDependencies:
+      - bufferutil
+      - msw
+      - utf-8-validate
+      - vite
 
   '@vitest/expect@4.1.11':
     dependencies:
@@ -4504,6 +4589,8 @@ snapshots:
 
   mri@1.2.0: {}
 
+  mrmime@2.0.1: {}
+
   ms@2.1.3: {}
 
   nanoid@3.3.11: {}
@@ -4625,6 +4712,8 @@ snapshots:
       playwright-core: 1.62.1
     optionalDependencies:
       fsevents: 2.3.2
+
+  pngjs@7.0.0: {}
 
   postcss@8.5.26:
     dependencies:
@@ -4765,6 +4854,12 @@ snapshots:
 
   signal-exit@4.1.0: {}
 
+  sirv@3.0.2:
+    dependencies:
+      '@polka/url': 1.0.0-next.29
+      mrmime: 2.0.1
+      totalist: 3.0.1
+
   slash@3.0.0: {}
 
   solid-js@2.0.0-rc.5:
@@ -4836,6 +4931,8 @@ snapshots:
   to-regex-range@5.0.1:
     dependencies:
       is-number: 7.0.0
+
+  totalist@3.0.1: {}
 
   tough-cookie@6.0.2:
     dependencies:
@@ -4918,7 +5015,7 @@ snapshots:
     optionalDependencies:
       vite: 8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1)
 
-  vitest@4.1.11(@types/node@25.5.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1)):
+  vitest@4.1.11(@types/node@25.5.0)(@vitest/browser-playwright@4.1.11)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1)):
     dependencies:
       '@vitest/expect': 4.1.11
       '@vitest/mocker': 4.1.11(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))
@@ -4942,6 +5039,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 25.5.0
+      '@vitest/browser-playwright': 4.1.11(playwright@1.62.1)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.27.2)(jiti@2.6.1))(vitest@4.1.11)
       jsdom: 30.0.1
     transitivePeerDependencies:
       - msw
@@ -4978,6 +5076,8 @@ snapshots:
     dependencies:
       siginfo: 2.0.0
       stackback: 0.0.2
+
+  ws@8.21.3: {}
 
   xml-name-validator@5.0.0: {}
 
