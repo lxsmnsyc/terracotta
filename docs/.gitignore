@@ -8,3 +8,4 @@ playwright-report
 .output
 .nitro
 .vercel
+.content-typecheck

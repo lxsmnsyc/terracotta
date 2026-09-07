@@ -24,6 +24,8 @@ import { fileURLToPath } from 'node:url';
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const SOURCE = join(ROOT, 'docs/content');
 const TARGET = join(ROOT, 'plugin/skills/terracotta/references');
+const SKILL = join(ROOT, 'plugin/skills/terracotta/SKILL.md');
+const COMPONENTS = join(ROOT, 'packages/terracotta/src/components');
 
 const BANNER =
   '<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->\n\n';
@@ -54,6 +56,72 @@ async function read(path) {
 
 function withoutDemos(markdown) {
   return markdown.replace(DEMO_BLOCK, '').replace(/\n{3,}/g, '\n\n');
+}
+
+/** The `## Anatomy` sample, which is the component's shape with nothing else around it. */
+const ANATOMY = /^## Anatomy\n+```tsx\n([\s\S]*?)```/m;
+
+/** Where the generated catalogue goes in the skill. */
+const CATALOGUE_START = '<!-- catalogue:start -->';
+const CATALOGUE_END = '<!-- catalogue:end -->';
+
+/**
+ * Names a component folder exports and means for callers, which is everything
+ * but the context objects and the tag constants it shares internally.
+ */
+async function exportsOf(dir) {
+  const names = new Set();
+  for (const entry of await readdir(dir, { withFileTypes: true, recursive: true })) {
+    if (entry.isDirectory() || !/\.tsx?$/.test(entry.name)) {
+      continue;
+    }
+    const source = await readFile(join(entry.parentPath ?? entry.path, entry.name), 'utf8');
+    for (const [, name] of source.matchAll(
+      /export\s+(?:async\s+)?(?:function|const|class)\s+(\w+)/g,
+    )) {
+      const internal = name.endsWith('Context') || /^[A-Z0-9_]+$/.test(name);
+      if (!internal && /^([A-Z]|use[A-Z])/.test(name)) {
+        names.add(name);
+      }
+    }
+  }
+  return names;
+}
+
+/**
+ * The catalogue folded into the skill: each component's shape, taken from the
+ * page that documents it, under the subpath it is imported from.
+ *
+ * It lives in the skill rather than the references because it is what an agent
+ * needs before it opens anything, and it is generated because a hand-written
+ * copy of two dozen component shapes is a copy that goes stale.
+ */
+async function buildCatalogue(pages) {
+  const blocks = [];
+
+  for (const [path, markdown] of [...pages].sort()) {
+    if (!path.startsWith('components/')) {
+      continue;
+    }
+    const slug = path.slice('components/'.length, -'.md'.length);
+    const anatomy = ANATOMY.exec(markdown)?.[1];
+    if (anatomy === undefined) {
+      throw new Error(`${path} has no ## Anatomy block to build the catalogue from`);
+    }
+
+    const shown = new Set([...anatomy.matchAll(/<([A-Z]\w*)/g)].map(([, name]) => name));
+    const rest = [...(await exportsOf(join(COMPONENTS, slug)))]
+      .filter((name) => !shown.has(name))
+      .sort();
+
+    const lines = [`// terracotta/${slug}`, anatomy.trimEnd()];
+    if (rest.length > 0) {
+      lines.push(`// also exported: ${rest.join(', ')}`);
+    }
+    blocks.push(['```tsx', ...lines, '```'].join('\n'));
+  }
+
+  return blocks.join('\n\n');
 }
 
 /** The page's own `# ` heading, which is what the site titles it with. */
@@ -104,6 +172,15 @@ for (const source of sources) {
 }
 wanted.set('README.md', await buildIndex(wanted));
 
+const catalogue = await buildCatalogue(wanted);
+const skill = await readFile(SKILL, 'utf8');
+const start = skill.indexOf(CATALOGUE_START);
+const end = skill.indexOf(CATALOGUE_END);
+if (start < 0 || end < 0) {
+  throw new Error(`SKILL.md is missing its ${CATALOGUE_START} / ${CATALOGUE_END} markers`);
+}
+const wantedSkill = `${skill.slice(0, start + CATALOGUE_START.length)}\n\n${catalogue}\n\n${skill.slice(end)}`;
+
 if (check) {
   const stale = [];
   for (const [path, contents] of wanted) {
@@ -119,6 +196,10 @@ if (check) {
     }
   }
 
+  if (skill !== wantedSkill) {
+    stale.push(relative(ROOT, SKILL));
+  }
+
   if (stale.length > 0) {
     console.error(
       `The plugin's reference copy is out of date:\n${stale.map((path) => `  ${path}`).join('\n')}\n\nRun \`pnpm skill:sync\`.`,
@@ -127,11 +208,14 @@ if (check) {
   }
   console.log(`Plugin reference copy is current (${wanted.size} files).`);
 } else {
+  await writeFile(SKILL, wantedSkill);
   await rm(TARGET, { recursive: true, force: true });
   for (const [path, contents] of wanted) {
     const target = join(TARGET, path);
     await mkdir(dirname(target), { recursive: true });
     await writeFile(target, BANNER + contents);
   }
-  console.log(`Copied ${wanted.size} files into ${relative(ROOT, TARGET)}.`);
+  console.log(
+    `Copied ${wanted.size} files into ${relative(ROOT, TARGET)}, and rebuilt the skill's catalogue.`,
+  );
 }

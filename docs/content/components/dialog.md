@@ -89,7 +89,7 @@ or a `z-index`, and the stacking follows the markup again.
 escape a stacking or overflow context:
 
 ```tsx
-import { Portal } from 'solid-js/web';
+import { Portal } from '@solidjs/web';
 
 <Portal>
   <Dialog class="dialog" isOpen={open()} onClose={() => setOpen(false)}>…</Dialog>
