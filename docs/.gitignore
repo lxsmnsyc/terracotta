@@ -1,0 +1,10 @@
+node_modules
+dist
+.vite
+*.log
+.DS_Store
+test-results
+playwright-report
+.output
+.nitro
+.vercel

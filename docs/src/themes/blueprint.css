@@ -1,0 +1,362 @@
+/*
+ * Blueprint.
+ *
+ * A drawing sheet. Grid paper under everything, hairlines instead of shadows,
+ * stencil lettering on anything that labels a part, and sheet numbers down the
+ * left of the headings. Light is drafting vellum, dark is the cyanotype it
+ * gets printed as.
+ *
+ * The rule this theme follows is that a blueprint has no depth: nothing casts
+ * a shadow, nothing is rounded to speak of, and the only weight available is
+ * line weight. Everything below is written in the tokens from `_contract.css`
+ * plus the baseline's own class names. No component, demo or line of markup
+ * differs from any other theme.
+ */
+
+[data-theme='blueprint'] {
+  --surface-0: #f7fafd;
+  --surface-1: #eef4fa;
+  --surface-2: #e0eaf5;
+
+  --text-1: #0d2b45;
+  --text-2: #3d5f80;
+  --text-3: #7d97b3;
+
+  --border: #bcd0e3;
+  --border-strong: #8aa8c4;
+
+  --accent: #0b6fa4;
+  --accent-hover: #08557d;
+  --accent-contrast: #f7fafd;
+  --accent-soft: #d8e9f6;
+
+  --focus: #0b6fa4;
+  /* Corrections on a drawing are made in red. */
+  --danger: #c2361f;
+
+  --overlay: rgb(13 43 69 / 45%);
+
+  /* Line weight is the only weight. */
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+
+  --shadow-1: none;
+  --shadow-2: 0 0 0 1px var(--border-strong);
+
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Theme-private: the paper. */
+  --grid-minor: rgb(13 43 69 / 5%);
+  --grid-major: rgb(13 43 69 / 9%);
+  --paper: #f7fafd;
+}
+
+[data-theme='blueprint'].dark {
+  --surface-0: #0a1a30;
+  --surface-1: #0d2340;
+  --surface-2: #143054;
+
+  --text-1: #e8f2ff;
+  --text-2: #a9c6e8;
+  --text-3: #6d8db2;
+
+  --border: #234a75;
+  --border-strong: #3a6d9f;
+
+  --accent: #7fd4ff;
+  --accent-hover: #b3e6ff;
+  --accent-contrast: #06182d;
+  --accent-soft: #123553;
+
+  --focus: #7fd4ff;
+  --danger: #ff7a63;
+
+  --overlay: rgb(3 12 24 / 70%);
+
+  --shadow-2: 0 0 0 1px var(--border-strong);
+
+  --grid-minor: rgb(127 212 255 / 8%);
+  --grid-major: rgb(127 212 255 / 14%);
+  --paper: #071426;
+}
+
+/* ------------------------------------------------------------------ *
+ * The paper
+ *
+ * Two grids, fine over coarse. It goes on the root element with `body` left
+ * transparent, so the demo frames, which are separate documents carrying the
+ * same `data-theme`, are drawn on the same sheet without any component knowing.
+ * ------------------------------------------------------------------ */
+
+[data-theme='blueprint'] {
+  background-color: var(--paper);
+  background-image:
+    repeating-linear-gradient(to right, var(--grid-minor) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(to bottom, var(--grid-minor) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(to right, var(--grid-major) 0 1px, transparent 1px 80px),
+    repeating-linear-gradient(to bottom, var(--grid-major) 0 1px, transparent 1px 80px);
+  background-attachment: fixed;
+}
+
+[data-theme='blueprint'] body {
+  background: transparent;
+}
+
+/* ------------------------------------------------------------------ *
+ * Annotation
+ *
+ * Anything that names a part is stencilled: mono, tracked out, upper case,
+ * and small. Anything that *is* the part is left in the reading face.
+ * ------------------------------------------------------------------ */
+
+[data-theme='blueprint'] .listbox-label,
+[data-theme='blueprint'] .combobox-label,
+[data-theme='blueprint'] .radiogroup-label,
+[data-theme='blueprint'] .feed-label,
+[data-theme='blueprint'] .sidebar-section-title,
+[data-theme='blueprint'] .toc-title,
+[data-theme='blueprint'] .demo-tab,
+[data-theme='blueprint'] .demo-tool,
+[data-theme='blueprint'] .button,
+[data-theme='blueprint'] .control,
+[data-theme='blueprint'] .toggle,
+[data-theme='blueprint'] .tab {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+/*
+ * Headings are numbered the way sheets in a set are. The counter lives on
+ * `.prose`, and increments in document order even though each run of markdown
+ * arrives as its own wrapper `<div>`.
+ */
+[data-theme='blueprint'] .prose {
+  counter-reset: sheet;
+}
+
+[data-theme='blueprint'] .prose h2 {
+  counter-increment: sheet;
+  border-block-end-color: var(--border-strong);
+}
+
+[data-theme='blueprint'] .prose h2::before {
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  font-weight: 400;
+  content: counter(sheet, decimal-leading-zero) '\00a0\00a0';
+}
+
+[data-theme='blueprint'] .page-title,
+[data-theme='blueprint'] .hero-title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* A rule on a drawing is a dimension line, not a divider. */
+[data-theme='blueprint'] .prose hr {
+  border-block-start-color: var(--border-strong);
+  border-block-start-style: dashed;
+}
+
+/* ------------------------------------------------------------------ *
+ * Line work
+ * ------------------------------------------------------------------ */
+
+[data-theme='blueprint'] .panel,
+[data-theme='blueprint'] .listbox-options,
+[data-theme='blueprint'] .combobox-options,
+[data-theme='blueprint'] .command-options,
+[data-theme='blueprint'] .commandbar-panel,
+[data-theme='blueprint'] .contextmenu-panel,
+[data-theme='blueprint'] .popover-panel,
+[data-theme='blueprint'] .dialog-panel,
+[data-theme='blueprint'] .drawer-panel,
+[data-theme='blueprint'] .menu,
+[data-theme='blueprint'] .toast {
+  border-color: var(--border-strong);
+  background: var(--surface-0);
+  box-shadow: var(--shadow-2);
+}
+
+/* The demo is the drawing itself, so it gets the double rule a sheet has. */
+[data-theme='blueprint'] .demo-tabs {
+  border-color: var(--border-strong);
+  box-shadow:
+    inset 0 0 0 3px var(--surface-0),
+    inset 0 0 0 4px var(--border);
+}
+
+[data-theme='blueprint'] .demo-toolbar {
+  border-block-end-color: var(--border-strong);
+}
+
+/* Construction lines: anything provisional is dashed, anything real is solid.
+   Each side is named, because the baseline draws only one of them and
+   `border-style` alone would box the element in on all four. */
+[data-theme='blueprint'] .contextmenu-boundary {
+  border-style: dashed;
+}
+
+[data-theme='blueprint'] .toc-list {
+  border-inline-start-style: dashed;
+}
+
+/* A parts schedule is fully ruled. */
+[data-theme='blueprint'] .prose table {
+  border: 1px solid var(--border-strong);
+}
+
+[data-theme='blueprint'] .prose th,
+[data-theme='blueprint'] .prose td {
+  border: 1px solid var(--border);
+}
+
+[data-theme='blueprint'] .prose th {
+  background: var(--surface-1);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------------ *
+ * States
+ * ------------------------------------------------------------------ */
+
+[data-theme='blueprint'] .menu-item[tc-active],
+[data-theme='blueprint'] .listbox-option[tc-active],
+[data-theme='blueprint'] .select-option[tc-active],
+[data-theme='blueprint'] .combobox-option[tc-active],
+[data-theme='blueprint'] .command-option[tc-active],
+[data-theme='blueprint'] .sidebar-link[aria-current='page'] {
+  background: var(--accent-soft);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+/* A filled row repaints only itself; a child with its own colour would keep
+   it. Descendants follow the row. */
+[data-theme='blueprint'] .menu-item[tc-active] *,
+[data-theme='blueprint'] .listbox-option[tc-active] *,
+[data-theme='blueprint'] .select-option[tc-active] *,
+[data-theme='blueprint'] .combobox-option[tc-active] *,
+[data-theme='blueprint'] .command-option[tc-active] * {
+  color: inherit;
+}
+
+[data-theme='blueprint'] .tablist {
+  border-block-end-color: var(--border-strong);
+}
+
+[data-theme='blueprint'] .tab[tc-selected],
+[data-theme='blueprint'] .demo-tab[tc-selected] {
+  background: var(--accent-soft);
+  box-shadow: inset 0 -2px 0 var(--accent);
+  color: var(--text-1);
+}
+
+[data-theme='blueprint'] .button-primary,
+[data-theme='blueprint'] .control-primary {
+  background: var(--accent);
+  box-shadow: none;
+  color: var(--accent-contrast);
+}
+
+[data-theme='blueprint'] .button-primary:hover,
+[data-theme='blueprint'] .control-primary:hover {
+  background: var(--accent-hover);
+}
+
+/* Checked marks are drawn, not filled: a crosshair in a box. */
+[data-theme='blueprint'] .checkbox-box,
+[data-theme='blueprint'] .radio-dot {
+  border-color: var(--border-strong);
+  border-radius: 0;
+}
+
+[data-theme='blueprint'] .radio-dot {
+  border-radius: 999px;
+}
+
+[data-theme='blueprint'] .switch-track {
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: var(--surface-1);
+  padding: 0.15rem;
+}
+
+[data-theme='blueprint'] .switch-knob {
+  border: 1px solid var(--accent);
+  border-radius: 0;
+  background: var(--accent-soft);
+  box-shadow: none;
+}
+
+[data-theme='blueprint'] .switch-track[tc-checked=''] .switch-knob,
+[data-theme='blueprint'] [tc-pressed] .switch-knob {
+  background: var(--accent);
+}
+
+/* Chrome ------------------------------------------------------------ */
+
+[data-theme='blueprint'] .masthead {
+  border-block-end-color: var(--border-strong);
+  backdrop-filter: none;
+  background: var(--surface-0);
+}
+
+[data-theme='blueprint'] .brand {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+[data-theme='blueprint'] .brand-mark {
+  border: 1px solid var(--accent);
+  border-radius: 0;
+  background: none;
+}
+
+[data-theme='blueprint'] .sidebar-link {
+  border-inline-start: 1px solid transparent;
+}
+
+[data-theme='blueprint'] .hero-install,
+[data-theme='blueprint'] .shiki {
+  border-color: var(--border-strong);
+  background-color: var(--surface-1);
+}
+
+/*
+ * Shiki bakes an opaque background into the block and into every span, so both
+ * have to be cleared or the code sits on a slab that belongs to another
+ * design. The dark selector carries `:root` so that it out-specifies
+ * `:root.dark .shiki span` in `prose.css` outright. Without it the two tie at
+ * three classes and the winner is whichever stylesheet the bundler emits last.
+ */
+:root[data-theme='blueprint'].dark .shiki {
+  border-color: var(--border-strong);
+  background-color: var(--surface-1);
+}
+
+[data-theme='blueprint'] .shiki span,
+:root[data-theme='blueprint'].dark .shiki span {
+  background-color: transparent;
+}
+
+/* Focus is a registration mark: a hairline with air around it. */
+[data-theme='blueprint'] :focus-visible {
+  outline: 1px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* The chip that stands for this theme in the picker. Unscoped on purpose:
+   the picker shows every theme at once, whichever one is active. */
+.theme-swatch-blueprint {
+  background: linear-gradient(135deg, #0a1a30 0 50%, #7fd4ff 50% 100%);
+}

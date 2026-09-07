@@ -1,0 +1,70 @@
+/*
+ * Terracotta: the house theme.
+ *
+ * Warm neutrals, a clay accent, and the flat borders of a modern technical
+ * documentation site. Everything is scoped to `[data-theme='terracotta']`, so
+ * this file can be read as the worked example of the contract in
+ * `_contract.css`.
+ */
+
+[data-theme='terracotta'] {
+  --surface-0: #fdfcfb;
+  --surface-1: #f7f4f1;
+  --surface-2: #efe9e4;
+
+  --text-1: #1c1917;
+  --text-2: #57534e;
+  --text-3: #a8a29e;
+
+  --border: #e7e0da;
+  --border-strong: #d6cdc4;
+
+  --accent: #b4451f;
+  --accent-hover: #97381a;
+  --accent-contrast: #fdfcfb;
+  --accent-soft: #fbeee8;
+
+  --focus: #b4451f;
+  --danger: #b91c1c;
+
+  --overlay: rgb(28 25 23 / 45%);
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.875rem;
+
+  --shadow-1: 0 1px 2px rgb(28 25 23 / 6%);
+  --shadow-2: 0 12px 32px rgb(28 25 23 / 12%);
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+}
+
+[data-theme='terracotta'].dark {
+  --surface-0: #14100e;
+  --surface-1: #1e1917;
+  --surface-2: #2a2320;
+
+  --text-1: #f5f1ee;
+  --text-2: #b3a9a2;
+  --text-3: #7c7069;
+
+  --border: #2f2825;
+  --border-strong: #453b36;
+
+  --accent: #e8825c;
+  --accent-hover: #f09a78;
+  --accent-contrast: #14100e;
+  --accent-soft: #2c1f19;
+
+  --focus: #e8825c;
+  --danger: #f87171;
+
+  --overlay: rgb(10 7 6 / 70%);
+}
+
+/* The chip that stands for this theme in the picker. Unscoped on purpose:
+   the picker shows every theme at once, whichever one is active. */
+.theme-swatch-terracotta {
+  background: linear-gradient(135deg, #fdfcfb 0 50%, #b4451f 50% 100%);
+}
