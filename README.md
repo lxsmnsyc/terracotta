@@ -18,11 +18,26 @@ pnpm add terracotta
 
 ## Documentation
 
-- [Getting started](./docs/guides/getting-started.md)
-- [Guides](./docs/README.md#guides) — `as`, controlled state, styling, keyboard
-  and focus, SSR
-- [Component reference](./docs/README.md#components)
-- [State primitives](./docs/states.md)
+The documentation site lives in [`docs/`](./docs), and its prose is the source
+of truth for everything below.
+
+- [Getting started](./docs/content/guides/getting-started.md)
+- Guides: [rendering](./docs/content/guides/rendering.md),
+  [state](./docs/content/guides/state.md),
+  [styling](./docs/content/guides/styling.md),
+  [keyboard and focus](./docs/content/guides/keyboard-and-focus.md),
+  [server-side rendering](./docs/content/guides/ssr.md)
+- [Component reference](./docs/content/components)
+- [State primitives](./docs/content/states.md)
+
+Running the site locally takes a built library, since it consumes `terracotta`
+through the workspace:
+
+```bash
+pnpm install
+pnpm --filter terracotta build
+pnpm --filter @terracotta/docs dev
+```
 
 ## Note
 

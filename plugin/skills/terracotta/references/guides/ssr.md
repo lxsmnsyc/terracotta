@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Server-side rendering
 

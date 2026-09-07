@@ -1,9 +1,12 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # ColorScheme
 
-Light / dark / system colour-scheme management. `ColorSchemeProvider` keeps three
-things in sync:
+Light / dark / system colour-scheme management. `ColorSchemeProvider` holds the
+preference, resolves `'system'` against the operating system, and reflects the
+result as a `dark` class on the document element.
+
+It keeps three things in sync:
 
 - the preference, persisted in `localStorage` under the key `theme-preference`
 - the `dark` class on `<html>`, toggled to match the resolved scheme
@@ -34,7 +37,7 @@ read.
 ## Anatomy
 
 ```tsx
-<ColorSchemeProvider>{/* renders no element — context only */}
+<ColorSchemeProvider>{/* renders no element, context only */}
   {/* useColorScheme() / usePreferredColorScheme() work anywhere below */}
 </ColorSchemeProvider>
 ```
@@ -44,8 +47,12 @@ read.
 ### Provider and a picker
 
 ```tsx
-import type { JSX } from '@solidjs/web';
-import { ColorSchemeProvider, useColorScheme, type ColorScheme } from 'terracotta/color-scheme';
+import { type JSX } from 'solid-js';
+import {
+  ColorSchemeProvider,
+  useColorScheme,
+  type ColorScheme,
+} from 'terracotta/color-scheme';
 
 function SchemePicker(): JSX.Element {
   const [scheme, setScheme] = useColorScheme();
@@ -282,10 +289,10 @@ Renders no element of its own, only the context and its children.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `initialValue` | `ColorScheme` | — | Initial preference, uncontrolled. Mutually exclusive with `value`. |
-| `value` | `ColorScheme` | — | Current preference, controlled. Mutually exclusive with `initialValue`. |
-| `onChange` | `(scheme: ColorScheme) => void` | — | Called whenever the preference changes, including when it is restored from storage or synced from another tab. |
-| `children` | `JSX.Element` | — | The subtree that can read the scheme. |
+| `initialValue` | `ColorScheme` | none | Initial preference, uncontrolled. Mutually exclusive with `value`. |
+| `value` | `ColorScheme` | none | Current preference, controlled. Mutually exclusive with `initialValue`. |
+| `onChange` | `(scheme: ColorScheme) => void` | none | Called whenever the preference changes, including when it is restored from storage or synced from another tab. |
+| `children` | `JSX.Element` | none | The subtree that can read the scheme. |
 
 > A stored preference wins over `initialValue`. On mount the provider reads
 > `localStorage` and applies the stored value, or `'system'` when nothing is

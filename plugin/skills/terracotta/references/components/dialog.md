@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Dialog
 
@@ -43,73 +43,6 @@ import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 
 The usual shape. A button outside the dialog owns the signal.
 
-```tsx
-const [open, setOpen] = createSignal(false);
-
-<>
-  <button type="button" onClick={() => setOpen(true)}>Delete project</button>
-
-  <Dialog class="dialog" isOpen={open()} onClose={() => setOpen(false)}>
-    <DialogOverlay class="dialog-overlay" />
-    <DialogPanel class="dialog-panel">
-      <DialogTitle class="dialog-title">Delete project</DialogTitle>
-      <DialogDescription class="dialog-description">
-        This cannot be undone.
-      </DialogDescription>
-      <div class="dialog-actions">
-        <button type="button" onClick={() => setOpen(false)}>Cancel</button>
-        <button type="button" class="danger" onClick={() => remove()}>Delete</button>
-      </div>
-    </DialogPanel>
-  </Dialog>
-</>
-```
-
-```css
-.dialog {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
-  z-index: 50;
-}
-
-.dialog-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgb(0 0 0 / 0.4);
-}
-
-.dialog-panel {
-  position: relative;
-  inline-size: min(28rem, 100%);
-  border-radius: 0.75rem;
-  background: #ffffff;
-  padding: 1.5rem;
-  box-shadow: 0 20px 40px rgb(0 0 0 / 0.2);
-}
-
-.dialog-title {
-  margin: 0 0 0.5rem;
-  font-size: 1.125rem;
-}
-
-.dialog-description {
-  margin: 0;
-  color: #52525b;
-}
-
-.dialog-actions {
-  display: flex;
-  justify-content: end;
-  gap: 0.5rem;
-  margin-block-start: 1.5rem;
-}
-
-.danger { background: #dc2626; color: #ffffff; }
-```
-
 `onClose` fires for <kbd>Escape</kbd> and overlay clicks as well as your own
 calls. Wiring it to `setOpen(false)` is enough.
 
@@ -118,14 +51,14 @@ calls. Wiring it to `setOpen(false)` is enough.
 A `Popover`, `Listbox`, `Combobox` or `Menu` can live inside a dialog. The inner
 popup keeps the keys it handles to itself, so <kbd>Tab</kbd> cycles within an
 open popover rather than moving through the dialog behind it, and
-<kbd>Escape</kbd> closes one layer at a time — the popup first, the dialog once
+<kbd>Escape</kbd> closes one layer at a time: the popup first, the dialog once
 the popup is gone.
 
 ### Keeping the panel above the overlay
 
 `position: relative` on the panel is not decoration. The overlay is
 `position: fixed`, and a positioned element paints above an unpositioned sibling
-whatever their order in the markup — so an unstyled panel ends up *under* the
+whatever their order in the markup, so an unstyled panel ends up *under* the
 backdrop, dimmed and unclickable, and every click meant for it lands on the
 overlay and closes the dialog instead. Give the panel a `position` of its own,
 or a `z-index`, and the stacking follows the markup again.
@@ -150,7 +83,7 @@ or a `z-index`, and the stacking follows the markup again.
 escape a stacking or overflow context:
 
 ```tsx
-import { Portal } from '@solidjs/web';
+import { Portal } from 'solid-js/web';
 
 <Portal>
   <Dialog class="dialog" isOpen={open()} onClose={() => setOpen(false)}>…</Dialog>
@@ -202,20 +135,6 @@ Set `unmount={false}` so the element survives long enough to animate out. Let
 
 The behaviour is identical. Only the CSS changes:
 
-```css
-.dialog { position: fixed; inset: 0; z-index: 50; }
-
-.drawer-panel {
-  position: fixed;
-  inset-block: 0;
-  inset-inline-end: 0;
-  inline-size: min(24rem, 100%);
-  background: #ffffff;
-  padding: 1.5rem;
-  box-shadow: -8px 0 24px rgb(0 0 0 / 0.15);
-}
-```
-
 ### Choosing what receives focus
 
 The panel focuses its first focusable element. Put the safe choice first, or
@@ -241,8 +160,8 @@ loading has nothing to focus and is not asked again. See
 Terracotta does not touch the document's scroll. Do it in an effect:
 
 ```tsx
-createEffect(open, isOpen => {
-  document.body.style.overflow = isOpen ? 'hidden' : '';
+createEffect(() => {
+  document.body.style.overflow = open() ? 'hidden' : '';
   onCleanup(() => { document.body.style.overflow = ''; });
 });
 ```
@@ -330,15 +249,15 @@ by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `defaultOpen` | `boolean` | — | Initial state, uncontrolled. Mutually exclusive with `isOpen`. |
-| `isOpen` | `boolean` | — | Current state, controlled. Mutually exclusive with `defaultOpen`. |
+| `defaultOpen` | `boolean` | none | Initial state, uncontrolled. Mutually exclusive with `isOpen`. |
+| `isOpen` | `boolean` | none | Current state, controlled. Mutually exclusive with `defaultOpen`. |
 | `disabled` | `boolean` | `false` | Blocks opening and closing. |
-| `onChange` | `(state: boolean) => void` | — | Called with the new state on every change. |
-| `onOpen` | `() => void` | — | Called when it opens, before `onChange`. |
-| `onClose` | `() => void` | — | Called when it closes, including via <kbd>Escape</kbd> and overlay clicks. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the dialog behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `onChange` | `(state: boolean) => void` | none | Called with the new state on every change. |
+| `onOpen` | `() => void` | none | Called when it opens, before `onChange`. |
+| `onClose` | `() => void` | none | Called when it closes, including via <kbd>Escape</kbd> and overlay clicks. |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the dialog behaves while closed. See [`unmount`](../guides/rendering.md#unmount). |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="dialog"`, `aria-modal="true"`,
 `aria-labelledby` and `aria-describedby`.
@@ -353,9 +272,9 @@ keeps <kbd>Tab</kbd> inside itself, and closes on <kbd>Escape</kbd>. Renders a
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `disabled` | `boolean` | `false` | Stops the panel's own key handling (both the trap and <kbd>Escape</kbd>). |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<DialogOverlay>`
 
@@ -367,9 +286,9 @@ with it.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<DialogTitle>`
 
@@ -378,9 +297,9 @@ The accessible name. Renders an `<h2>` by default.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'h2'` | Element or component to render as. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Title text, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Title text, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<DialogDescription>`
 
@@ -390,7 +309,7 @@ Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'p'` | Element or component to render as. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Description text, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Description text, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Every descendant throws if rendered outside a `<Dialog>`.

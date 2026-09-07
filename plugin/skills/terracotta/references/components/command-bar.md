@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # CommandBar
 
@@ -35,69 +35,21 @@ import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 
 ## Examples
 
-### Uncontrolled — the shortcut just works
+### Uncontrolled, where the shortcut just works
 
 With `defaultOpen`, the bar owns its state and the global shortcut needs no
 wiring:
 
-```tsx
-<CommandBar class="commandbar" defaultOpen={false}>
-  <CommandBarOverlay class="commandbar-overlay" />
-  <CommandBarPanel class="commandbar-panel">
-    <CommandBarTitle class="visually-hidden">Command palette</CommandBarTitle>
-    <CommandBarDescription class="visually-hidden">
-      Search for an action and press Enter to run it.
-    </CommandBarDescription>
-    {/* … */}
-  </CommandBarPanel>
-</CommandBar>
-```
-
-```css
-.commandbar {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  justify-items: center;
-  align-content: start;
-  padding-block-start: 6rem;
-  padding-inline: 1rem;
-  z-index: 60;
-}
-
-.commandbar-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgb(0 0 0 / 0.4);
-}
-
-.commandbar-panel {
-  position: relative;
-  inline-size: min(32rem, 100%);
-  border-radius: 0.75rem;
-  background: #ffffff;
-  overflow: hidden;
-  box-shadow: 0 24px 48px rgb(0 0 0 / 0.25);
-}
-
-.visually-hidden {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-```
-
 ### Controlled, with a Command palette inside
 
 ```tsx
-import type { JSX } from '@solidjs/web';
-import { For, createSignal } from 'solid-js';
-import { Command, CommandInput, CommandOption, CommandOptions } from 'terracotta/command';
+import { For, createSignal, type JSX } from 'solid-js';
+import {
+  Command,
+  CommandInput,
+  CommandOption,
+  CommandOptions,
+} from 'terracotta/command';
 import {
   CommandBar,
   CommandBarDescription,
@@ -341,15 +293,15 @@ by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `defaultOpen` | `boolean` | — | Initial state, uncontrolled. Mutually exclusive with `isOpen`. |
-| `isOpen` | `boolean` | — | Current state, controlled. Mutually exclusive with `defaultOpen`. |
+| `defaultOpen` | `boolean` | none | Initial state, uncontrolled. Mutually exclusive with `isOpen`. |
+| `isOpen` | `boolean` | none | Current state, controlled. Mutually exclusive with `defaultOpen`. |
 | `disabled` | `boolean` | `false` | Blocks opening and closing, including via the shortcut. |
-| `onChange` | `(state: boolean) => void` | — | Called with the new state on every change. |
-| `onOpen` | `() => void` | — | Called when it opens, including from the keyboard shortcut. |
-| `onClose` | `() => void` | — | Called when it closes, including via <kbd>Escape</kbd> and overlay clicks. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the bar behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `onChange` | `(state: boolean) => void` | none | Called with the new state on every change. |
+| `onOpen` | `() => void` | none | Called when it opens, including from the keyboard shortcut. |
+| `onClose` | `() => void` | none | Called when it closes, including via <kbd>Escape</kbd> and overlay clicks. |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the bar behaves while closed. See [`unmount`](../guides/rendering.md#unmount). |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="dialog"`, `aria-modal="true"`,
 `aria-labelledby` and `aria-describedby`.
@@ -364,9 +316,9 @@ default.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `disabled` | `boolean` | `false` | Stops the panel's own key handling. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<CommandBarOverlay>`
 
@@ -375,9 +327,9 @@ The backdrop. Closes the bar when clicked. Renders a `<div>` by default.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<CommandBarTitle>`
 
@@ -387,8 +339,8 @@ it visually if the palette has no visible heading.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'h2'` | Element or component to render as. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Title text, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Title text, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<CommandBarDescription>`
 
@@ -397,7 +349,7 @@ Renders a `<p>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'p'` | Element or component to render as. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Description text, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Description text, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Every descendant throws if rendered outside a `<CommandBar>`.

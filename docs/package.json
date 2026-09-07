@@ -1,13 +1,8 @@
 {
-  "name": "terracotta-docs",
+  "name": "@terracotta/docs",
   "version": "0.0.0",
   "private": true,
   "description": "Documentation site for Terracotta, the headless UI library for SolidJS",
-  "license": "MIT",
-  "author": {
-    "name": "Alexis H. Munsayac",
-    "url": "https://github.com/lxsmnsyc"
-  },
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -24,27 +19,27 @@
   },
   "dependencies": {
     "@solidjs/router": "2.0.0-next.21",
-    "@solidjs/web": "2.0.0-rc.5",
-    "solid-js": "2.0.0-rc.5",
-    "terracotta": "2.0.0-next.9"
+    "@solidjs/web": "catalog:",
+    "solid-js": "catalog:",
+    "terracotta": "workspace:*"
   },
   "devDependencies": {
-    "@lxsmnsyc/oxlint-config": "^0.1.2",
-    "@playwright/test": "^1.62.1",
-    "@solidjs/vite-plugin": "3.0.0-next.37",
+    "@lxsmnsyc/oxlint-config": "catalog:",
+    "@playwright/test": "catalog:",
+    "@solidjs/vite-plugin": "catalog:",
     "@types/markdown-it": "^14.1.2",
-    "@types/node": "^25.5.0",
+    "@types/node": "catalog:",
     "h3": "^1.15.11",
     "markdown-it": "^15.0.1",
     "nitropack": "^2.13.4",
-    "oxfmt": "^0.62.0",
-    "oxlint": "^1.77.0",
-    "oxlint-tsgolint": "^7.0.2001",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "oxlint-tsgolint": "catalog:",
     "shiki": "^4.4.3",
-    "typescript": "^5.9.3",
-    "vite": "^8.2.2"
+    "typescript": "catalog:",
+    "vite": "catalog:"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.12"
   }
 }

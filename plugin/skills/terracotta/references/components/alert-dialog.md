@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # AlertDialog
 
@@ -32,7 +32,7 @@ import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
   <AlertDialogOverlay/>       {/* backdrop; closes on click */}
   <AlertDialogPanel>          {/* focus trap */}
     <AlertDialogTitle/>       {/* labels the dialog */}
-    <AlertDialogDescription/> {/* describes the dialog — announced */}
+    <AlertDialogDescription/> {/* describes the dialog, and is announced */}
   </AlertDialogPanel>
 </AlertDialog>
 ```
@@ -44,80 +44,11 @@ and it is what tells the user what they are agreeing to.
 
 ### Confirming a destructive action
 
-```tsx
-const [open, setOpen] = createSignal(false);
-
-<>
-  <button type="button" onClick={() => setOpen(true)}>Discard draft</button>
-
-  <AlertDialog class="alertdialog" isOpen={open()} onClose={() => setOpen(false)}>
-    <AlertDialogOverlay class="alertdialog-overlay" />
-    <AlertDialogPanel class="alertdialog-panel">
-      <AlertDialogTitle class="alertdialog-title">
-        Discard this draft?
-      </AlertDialogTitle>
-      <AlertDialogDescription class="alertdialog-description">
-        Your changes will be lost. This cannot be undone.
-      </AlertDialogDescription>
-      <div class="alertdialog-actions">
-        <button type="button" onClick={() => setOpen(false)}>Keep editing</button>
-        <button type="button" class="danger" onClick={() => discard()}>Discard</button>
-      </div>
-    </AlertDialogPanel>
-  </AlertDialog>
-</>
-```
-
-```css
-.alertdialog {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
-  z-index: 50;
-}
-
-.alertdialog-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgb(0 0 0 / 0.45);
-}
-
-.alertdialog-panel {
-  position: relative;
-  inline-size: min(26rem, 100%);
-  border-radius: 0.75rem;
-  background: #ffffff;
-  padding: 1.5rem;
-  box-shadow: 0 20px 40px rgb(0 0 0 / 0.25);
-}
-
-.alertdialog-title {
-  margin: 0 0 0.5rem;
-  font-size: 1.125rem;
-}
-
-.alertdialog-description {
-  margin: 0;
-  color: #52525b;
-}
-
-.alertdialog-actions {
-  display: flex;
-  justify-content: end;
-  gap: 0.5rem;
-  margin-block-start: 1.5rem;
-}
-
-.danger { background: #dc2626; color: #ffffff; }
-```
-
 ### Keeping the panel above the overlay
 
 `position: relative` on the panel is not decoration. The overlay is
 `position: fixed`, and a positioned element paints above an unpositioned sibling
-whatever their order in the markup — so an unstyled panel ends up *under* the
+whatever their order in the markup, so an unstyled panel ends up *under* the
 backdrop, dimmed and unclickable, and every click meant for it lands on the
 overlay and closes the dialog instead. Give the panel a `position` of its own,
 or a `z-index`, and the stacking follows the markup again.
@@ -129,7 +60,7 @@ therefore decides what <kbd>Enter</kbd> hits by default:
 
 ```tsx
 <div class="alertdialog-actions">
-  {/* Focused first — the safe option */}
+  {/* Focused first: the safe option */}
   <button type="button" onClick={() => setOpen(false)}>Cancel</button>
   <button type="button" class="danger" onClick={remove}>Delete permanently</button>
 </div>
@@ -300,15 +231,15 @@ by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `defaultOpen` | `boolean` | — | Initial state, uncontrolled. Mutually exclusive with `isOpen`. |
-| `isOpen` | `boolean` | — | Current state, controlled. Mutually exclusive with `defaultOpen`. |
+| `defaultOpen` | `boolean` | none | Initial state, uncontrolled. Mutually exclusive with `isOpen`. |
+| `isOpen` | `boolean` | none | Current state, controlled. Mutually exclusive with `defaultOpen`. |
 | `disabled` | `boolean` | `false` | Blocks opening and closing. |
-| `onChange` | `(state: boolean) => void` | — | Called with the new state on every change. |
-| `onOpen` | `() => void` | — | Called when it opens, before `onChange`. |
-| `onClose` | `() => void` | — | Called when it closes, including via <kbd>Escape</kbd> and overlay clicks. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the dialog behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `onChange` | `(state: boolean) => void` | none | Called with the new state on every change. |
+| `onOpen` | `() => void` | none | Called when it opens, before `onChange`. |
+| `onClose` | `() => void` | none | Called when it closes, including via <kbd>Escape</kbd> and overlay clicks. |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the dialog behaves while closed. See [`unmount`](../guides/rendering.md#unmount). |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="alertdialog"`, `aria-modal="true"`,
 `aria-labelledby` and `aria-describedby`.
@@ -321,9 +252,9 @@ The focus trap. Renders a `<div>` by default.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `disabled` | `boolean` | `false` | Stops the panel's own key handling. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<AlertDialogOverlay>`
 
@@ -332,9 +263,9 @@ The backdrop. Closes the dialog when clicked. Renders a `<div>` by default.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<AlertDialogTitle>`
 
@@ -343,9 +274,9 @@ The accessible name. Renders an `<h2>` by default.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'h2'` | Element or component to render as. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Title text, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Title text, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<AlertDialogDescription>`
 
@@ -354,7 +285,7 @@ The announced text. Renders a `<p>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'p'` | Element or component to render as. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Description text, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Description text, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Every descendant throws if rendered outside an `<AlertDialog>`.

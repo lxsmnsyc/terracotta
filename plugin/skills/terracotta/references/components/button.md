@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Button
 
@@ -25,64 +25,13 @@ import { Button } from 'terracotta/button';
 
 ### Basic
 
-```tsx
-<Button class="button" onClick={() => save()}>
-  Save
-</Button>
-```
-
-```css
-.button {
-  border: 1px solid #d4d4d8;
-  border-radius: 0.375rem;
-  background: #ffffff;
-  padding: 0.5rem 0.875rem;
-  font: inherit;
-  cursor: pointer;
-}
-
-.button:hover {
-  background: #f4f4f5;
-}
-
-.button:focus-visible {
-  outline: 2px solid #2563eb;
-  outline-offset: 2px;
-}
-```
-
 ### Disabled
-
-```tsx
-<Button class="button" disabled onClick={() => save()}>
-  Save
-</Button>
-```
-
-```css
-.button[tc-disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-```
 
 `disabled` removes the element from the tab order and marks it for assistive
 technology. It only *blocks clicks* on a natively disabled control, though. On a
 `<div>` or `<a>`, guard your own handler:
 
-```tsx
-<Button as="div" class="button" disabled={saving()} onClick={() => !saving() && save()}>
-  Save
-</Button>
-```
-
 ### As a link
-
-```tsx
-<Button as="a" href="/settings" class="button">
-  Settings
-</Button>
-```
 
 ### As a non-interactive element
 
@@ -175,9 +124,9 @@ Renders a `<button>` by default.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'button'` | Element or component to render as. Non-`<button>` elements get <kbd>Enter</kbd>/<kbd>Space</kbd> activation. |
 | `disabled` | `boolean` | `false` | Marks the button disabled: `tabindex` becomes `-1`, and `disabled`, `aria-disabled` and `tc-disabled` are set. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` | — | Button contents. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` | none | Button contents. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 #### Rendered attributes
 

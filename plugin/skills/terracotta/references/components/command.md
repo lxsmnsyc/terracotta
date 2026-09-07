@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Command
 
@@ -21,7 +21,10 @@ import {
   CommandOptions,
   CommandOption,
 } from 'terracotta/command';
-import { AutocompleteStateChild, useAutocompleteState } from 'terracotta/states';
+import {
+  AutocompleteStateChild,
+  useAutocompleteState,
+} from 'terracotta/states';
 ```
 
 ## Anatomy
@@ -50,98 +53,6 @@ Either way, keyboard navigation only visits matching, non-disabled options.
 ## Examples
 
 ### A palette of actions
-
-```tsx
-import type { JSX } from '@solidjs/web';
-import { For } from 'solid-js';
-import {
-  Command,
-  CommandInput,
-  CommandLabel,
-  CommandOption,
-  CommandOptions,
-} from 'terracotta/command';
-
-interface Action { id: string; label: string; run: () => void }
-
-export function Palette(props: { actions: Action[] }): JSX.Element {
-  return (
-    <Command<Action>
-      class="command"
-      defaultValue={undefined as unknown as Action}
-      by={(a, b) => a.id === b.id}
-      matchBy={(action, query) =>
-        action.label.toLowerCase().includes(query.toLowerCase())
-      }
-      onChange={action => action?.run()}
-    >
-      <CommandLabel class="visually-hidden">Commands</CommandLabel>
-      <CommandInput class="command-input" placeholder="Type a command…" />
-      <CommandOptions class="command-options">
-        <For each={props.actions}>
-          {action => (
-            <CommandOption class="command-option" value={action}>
-              {action.label}
-            </CommandOption>
-          )}
-        </For>
-      </CommandOptions>
-    </Command>
-  );
-}
-```
-
-```css
-.command {
-  inline-size: 24rem;
-  border: 1px solid #e4e4e7;
-  border-radius: 0.75rem;
-  background: #ffffff;
-  overflow: hidden;
-}
-
-.command-input {
-  inline-size: 100%;
-  border: none;
-  border-block-end: 1px solid #e4e4e7;
-  padding: 0.875rem 1rem;
-  font: inherit;
-}
-
-.command-input:focus { outline: none; }
-
-.command-options {
-  margin: 0;
-  padding: 0.25rem;
-  list-style: none;
-  max-block-size: 18rem;
-  overflow-y: auto;
-}
-
-.command-option {
-  border-radius: 0.375rem;
-  padding: 0.5rem 0.75rem;
-  cursor: pointer;
-}
-
-/* Entries that do not match the query */
-.command-option:not([tc-matches]) { display: none; }
-
-/* Virtual focus — DOM focus stays on the input */
-.command-option[tc-active]   { background: #f4f4f5; }
-.command-option[tc-selected] { font-weight: 600; }
-.command-option[tc-disabled] { color: #a1a1aa; cursor: not-allowed; }
-
-.visually-hidden {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-```
 
 Running the action from `onChange` is the usual pattern. `Command` tracks a
 *selected value*, and what you do with it is up to you.
@@ -353,7 +264,7 @@ reason `CommandInput` reports a constant `aria-expanded="true"`.
 /* Filtering */
 [tc-command-option]:not([tc-matches]) { display: none; }
 
-/* Virtual focus — the only highlight, since DOM focus stays on the input */
+/* Virtual focus: the only highlight, since DOM focus stays on the input */
 [tc-command-option][tc-active]   { background: #f4f4f5; }
 [tc-command-option][tc-selected] { font-weight: 600; }
 [tc-command-option][tc-disabled] { color: #a1a1aa; }
@@ -415,15 +326,15 @@ Owns an [autocomplete state](../states.md#autocomplete-state) and renders a
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `matchBy` | `(value: V, query: string) => boolean` | *required* | Decides whether an entry matches the current query. |
 | `multiple` | `boolean` | `false` | When `true`, `value` / `defaultValue` / `onChange` deal in arrays. |
-| `defaultValue` | `V` \| `V[]` | — | Initial selection, uncontrolled. Mutually exclusive with `value`. |
-| `value` | `V` \| `V[]` | — | Current selection, controlled. Mutually exclusive with `defaultValue`. |
-| `onChange` | `(value?: V) => void` \| `(value: V[]) => void` | — | Called with the new selection. |
+| `defaultValue` | `V` \| `V[]` | none | Initial selection, uncontrolled. Mutually exclusive with `value`. |
+| `value` | `V` \| `V[]` | none | Current selection, controlled. Mutually exclusive with `defaultValue`. |
+| `onChange` | `(value?: V) => void` \| `(value: V[]) => void` | none | Called with the new selection. |
 | `toggleable` | `boolean` | `false` | Selecting the already-selected value clears or removes it. |
 | `disabled` | `boolean` | `false` | Disables the whole palette. |
 | `by` | `(a: V, b: V) => boolean` | reference equality | Compares values. Needed for object values. |
-| `horizontal` | `boolean` | `false` | Accepted for symmetry with `Select`, but currently unused — the list is always navigated vertically. |
-| `children` | `JSX.Element` \| `(state: AutocompleteStateProperties<V>) => JSX.Element` | — | The label, input and options, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `horizontal` | `boolean` | `false` | Accepted for symmetry with `Select`, but currently unused: the list is always navigated vertically. |
+| `children` | `JSX.Element` \| `(state: AutocompleteStateProperties<V>) => JSX.Element` | none | The label, input and options, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<CommandLabel>`
 
@@ -433,8 +344,8 @@ Names the palette. Renders a `<label>` by default. It takes no `ref`, and its
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'label'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | Label text. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | Label text. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<CommandInput>`
 
@@ -444,8 +355,8 @@ The text field. Renders an `<input type="text">` by default.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'input'` | Element or component to render as. Query tracking only works on a real `<input>`. |
 | `disabled` | `boolean` | `false` | Disables the input's own handling. It is also disabled when the `Command` is. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element, including `placeholder` and `value`. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element, including `placeholder` and `value`. |
 
 Rendered attributes include `role="combobox"`, `type="text"`, `tabindex="0"`,
 `aria-controls`, `aria-expanded="true"` and `aria-activedescendant`.
@@ -458,9 +369,9 @@ order.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'ul'` | Element or component to render as. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: AutocompleteStateProperties<V>) => JSX.Element` | — | The entries, or a render prop receiving the autocomplete state. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: AutocompleteStateProperties<V>) => JSX.Element` | none | The entries, or a render prop receiving the autocomplete state. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="listbox"`, `aria-multiselectable`,
 `aria-orientation="vertical"` and `tabindex="-1"`.
@@ -475,9 +386,9 @@ One entry. A [`Button`](./button.md) with `role="option"`, rendered as an
 | `as` | `ValidConstructor` | `'li'` | Element or component to render as. |
 | `value` | `V` | *required* | The value this entry represents; also what `matchBy` receives. |
 | `disabled` | `boolean` | `false` | Disables this entry and removes it from navigation. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: AutocompleteOptionStateProperties) => JSX.Element` | — | Label, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: AutocompleteOptionStateProperties) => JSX.Element` | none | Label, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="option"`, `aria-selected`, `tabindex="-1"`,
 and a generated `id`, which is the one `aria-activedescendant` points at.

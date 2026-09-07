@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "buildCommand": "pnpm build",
+  "buildCommand": "pnpm --filter terracotta run build && pnpm build",
   "installCommand": "pnpm install --frozen-lockfile"
 }

@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Disclosure
 
@@ -10,7 +10,11 @@ the right base for FAQs, "show more" sections and collapsible sidebars.
 For several sections that behave as a set, use [`Accordion`](./accordion.md).
 
 ```tsx
-import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclosure';
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from 'terracotta/disclosure';
 import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 ```
 
@@ -25,121 +29,37 @@ import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 
 ## Examples
 
+Every demo below runs in its own document, wearing the theme selected in the
+header. None of the demos carry styles of their own: switch theme and the same
+markup renders differently.
+
 ### Uncontrolled
 
-```tsx
-<Disclosure class="disclosure" defaultOpen={false}>
-  <DisclosureButton class="disclosure-button">
-    What is a headless component?
-    <span class="disclosure-chevron" aria-hidden="true">▸</span>
-  </DisclosureButton>
-  <DisclosurePanel class="disclosure-panel">
-    One that ships behaviour and accessibility, but no styles.
-  </DisclosurePanel>
-</Disclosure>
-```
-
-```css
-.disclosure {
-  border: 1px solid #e4e4e7;
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-
-.disclosure-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  inline-size: 100%;
-  border: none;
-  background: #fafafa;
-  padding: 0.75rem 1rem;
-  font: inherit;
-  text-align: start;
-  cursor: pointer;
-}
-
-.disclosure-button:focus-visible {
-  outline: 2px solid #2563eb;
-  outline-offset: -2px;
-}
-
-/* The chevron turns when the section is open — no JS involved */
-.disclosure-chevron {
-  transition: rotate 150ms ease;
-}
-
-.disclosure-button[tc-expanded] .disclosure-chevron {
-  rotate: 90deg;
-}
-
-.disclosure-panel {
-  padding: 0.75rem 1rem;
-  border-block-start: 1px solid #e4e4e7;
-}
-```
+Pass `defaultOpen` and the disclosure owns its state. This is the whole
+component: a button, a panel, and an attribute that says which way round they
+are.
 
 ### Controlled
 
-```tsx
-const [open, setOpen] = createSignal(false);
-
-<Disclosure class="disclosure" isOpen={open()} onChange={setOpen}>
-  <DisclosureButton class="disclosure-button">Details</DisclosureButton>
-  <DisclosurePanel class="disclosure-panel">…</DisclosurePanel>
-</Disclosure>
-```
-
-Nothing moves until `setOpen` runs. In controlled mode the component only
+Swap `defaultOpen` for `isOpen` and `onChange` and the state moves into your
+code. Nothing moves until `setOpen` runs; in controlled mode the component only
 reports the state it wants to move to.
 
 ### Changing the label with the state
 
-```tsx
-<Disclosure class="disclosure" defaultOpen={false}>
-  {({ isOpen }) => (
-    <>
-      <DisclosureButton class="disclosure-button">
-        {isOpen() ? 'Hide' : 'Show'} details
-      </DisclosureButton>
-      <DisclosurePanel class="disclosure-panel">…</DisclosurePanel>
-    </>
-  )}
-</Disclosure>
-```
+`Disclosure`, `DisclosureButton` and `DisclosurePanel` all accept a render prop
+that receives the disclosure state, so markup can follow the state without a
+second source of truth.
 
 ### Closing from inside the panel
 
-```tsx
-<Disclosure class="disclosure" defaultOpen={false}>
-  <DisclosureButton class="disclosure-button">Filters</DisclosureButton>
-  <DisclosurePanel class="disclosure-panel">
-    {({ close }) => (
-      <>
-        <FilterFields />
-        <button type="button" onClick={close}>Apply</button>
-      </>
-    )}
-  </DisclosurePanel>
-</Disclosure>
-```
+The same render prop on the panel hands you `close`, which is what a "done" or
+"apply" button in a filter popover needs.
 
 ### Disabled
 
-```tsx
-<Disclosure class="disclosure" defaultOpen={false} disabled={!hasContent()}>
-  <DisclosureButton class="disclosure-button">Attachments</DisclosureButton>
-  <DisclosurePanel class="disclosure-panel">…</DisclosurePanel>
-</Disclosure>
-```
-
-```css
-.disclosure[tc-disabled] .disclosure-button {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-```
+`disabled` blocks opening and closing, and stamps `tc-disabled` on all three
+elements so the styling follows.
 
 ### Reacting to open and close
 
@@ -176,8 +96,8 @@ scroll position survive a collapse. You then own its visibility:
 
 `unmount="offscreen"` is the middle ground. The panel is built once and reused,
 but still detached while closed, so its state survives without leaving anything
-in the document. Its effects keep running while it is hidden — see
-[`unmount`](../guides/rendering.md#unmountoffscreen).
+in the document. Its effects keep running while it is hidden. See
+[`unmount`](../guides/rendering.md#unmount-offscreen).
 
 ### Loading the panel content
 
@@ -246,22 +166,55 @@ panel while open.
 
 ### Styling
 
+The demos above use these class names. Everything that changes as the
+disclosure opens is an attribute selector. There is no state in the CSS that
+Terracotta did not already put in the DOM.
+
 ```css
-/* State on the root cascades to anything inside it */
-[tc-disclosure][tc-expanded] { border-color: #2563eb; }
-
-/* Or style each part directly */
-[tc-disclosure-button][tc-expanded] { background: #eff6ff; }
-[tc-disclosure-button][tc-disabled] { opacity: 0.5; cursor: not-allowed; }
-
-/* Marker rotation, driven entirely by the attribute */
-[tc-disclosure-button]::after {
-  content: "+";
-  margin-inline-start: auto;
+.disclosure {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
-[tc-disclosure-button][tc-expanded]::after {
-  content: "−";
+
+.disclosure-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  inline-size: 100%;
+  border: none;
+  background: var(--surface-1);
+  padding: 0.7rem 0.9rem;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
 }
+
+/* The chevron turns when the section is open, with no JS involved */
+.disclosure-chevron {
+  transition: rotate 150ms ease;
+}
+
+.disclosure-button[tc-expanded] .disclosure-chevron {
+  rotate: 90deg;
+}
+
+.disclosure[tc-disabled] .disclosure-button {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.disclosure-panel {
+  border-block-start: 1px solid var(--border);
+  padding: 0.85rem 0.9rem;
+}
+```
+
+State on the root cascades, so a single rule can restyle the whole widget:
+
+```css
+[tc-disclosure][tc-expanded] { border-color: var(--accent); }
 ```
 
 The button carries `aria-expanded` too, so `[aria-expanded="true"]` works just
@@ -302,14 +255,14 @@ by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `defaultOpen` | `boolean` | — | Initial state, uncontrolled. Mutually exclusive with `isOpen`. |
-| `isOpen` | `boolean` | — | Current state, controlled. Mutually exclusive with `defaultOpen`. |
+| `defaultOpen` | `boolean` | none | Initial state, uncontrolled. Mutually exclusive with `isOpen`. |
+| `isOpen` | `boolean` | none | Current state, controlled. Mutually exclusive with `defaultOpen`. |
 | `disabled` | `boolean` | `false` | Blocks opening and closing. |
-| `onChange` | `(state: boolean) => void` | — | Called with the new state on every change. |
-| `onOpen` | `() => void` | — | Called when it opens, before `onChange`. |
-| `onClose` | `() => void` | — | Called when it closes, after `onChange`. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop receiving the state. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `onChange` | `(state: boolean) => void` | none | Called with the new state on every change. |
+| `onOpen` | `() => void` | none | Called when it opens, before `onChange`. |
+| `onClose` | `() => void` | none | Called when it closes, after `onChange`. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop receiving the state. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<DisclosureButton>`
 
@@ -320,9 +273,9 @@ default.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'button'` | Element or component to render as. |
 | `disabled` | `boolean` | `false` | Disables this button. It is also disabled when the `Disclosure` is. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Label, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Label, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Its `id` is generated and linked to the panel through `aria-controls`.
 
@@ -334,9 +287,9 @@ The content shown while open. Renders a `<div>` by default. Does not take a
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the panel behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the panel behaves while closed. See [`unmount`](../guides/rendering.md#unmount). |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 `DisclosureButton` and `DisclosurePanel` throw if rendered outside a
 `<Disclosure>`.

@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Select
 
@@ -10,7 +10,11 @@ wraps a disclosure around the same list.
 
 ```tsx
 import { Select, SelectOption } from 'terracotta/select';
-import { SelectStateChild, SelectOptionStateChild, useSelectState } from 'terracotta/states';
+import {
+  SelectStateChild,
+  SelectOptionStateChild,
+  useSelectState,
+} from 'terracotta/states';
 ```
 
 ## Anatomy
@@ -25,97 +29,10 @@ import { SelectStateChild, SelectOptionStateChild, useSelectState } from 'terrac
 
 ### Single selection
 
-```tsx
-interface Person { id: number; name: string }
-
-const people: Person[] = [
-  { id: 1, name: 'Wade Cooper' },
-  { id: 2, name: 'Arlene Mccoy' },
-  { id: 3, name: 'Devon Webb' },
-];
-
-<Select<Person>
-  class="select"
-  defaultValue={people[0]}
-  by={(a, b) => a.id === b.id}
->
-  <For each={people}>
-    {person => (
-      <SelectOption class="select-option" value={person}>
-        {person.name}
-      </SelectOption>
-    )}
-  </For>
-</Select>
-```
-
-```css
-.select {
-  margin: 0;
-  padding: 0.25rem;
-  list-style: none;
-  inline-size: 16rem;
-  border: 1px solid #d4d4d8;
-  border-radius: 0.5rem;
-  background: #ffffff;
-}
-
-.select[aria-orientation="horizontal"] {
-  display: flex;
-  gap: 0.25rem;
-  inline-size: auto;
-}
-
-.select-option {
-  border-radius: 0.375rem;
-  padding: 0.4375rem 0.625rem;
-  cursor: pointer;
-}
-
-/* The keyboard/pointer position */
-.select-option[tc-active] {
-  background: #f4f4f5;
-}
-
-/* The chosen value */
-.select-option[tc-selected] {
-  font-weight: 600;
-  color: #1d4ed8;
-}
-
-.select-option[tc-disabled] {
-  color: #a1a1aa;
-  cursor: not-allowed;
-}
-
-.select-option:focus-visible { outline: none; }
-```
-
 `by` matters here. The options are objects, and without it two structurally
 equal objects would not count as the same value.
 
 ### Multiple selection
-
-```tsx
-const [picked, setPicked] = createSignal<Person[]>([]);
-
-<Select<Person>
-  class="select"
-  multiple
-  toggleable
-  value={picked()}
-  onChange={setPicked}
-  by={(a, b) => a.id === b.id}
->
-  <For each={people}>
-    {person => (
-      <SelectOption class="select-option" value={person}>
-        {person.name}
-      </SelectOption>
-    )}
-  </For>
-</Select>
-```
 
 `multiple` switches `value`, `defaultValue` and `onChange` to arrays.
 `toggleable` lets a second click deselect, which is usually what you want in
@@ -277,7 +194,7 @@ and `aria-orientation`.
 [tc-select-option][tc-selected] { font-weight: 600; }
 [tc-select-option][tc-disabled] { color: #a1a1aa; cursor: not-allowed; }
 
-/* Both at once — the selected option is also the one being browsed */
+/* Both at once: the selected option is also the one being browsed */
 [tc-select-option][tc-selected][tc-active] { background: #dbeafe; }
 
 /* Container-level state */
@@ -290,7 +207,7 @@ and `aria-orientation`.
 
 ### Reading the state in code
 
-On the list — the [select state](../states.md#select-state):
+On the list, from the [select state](../states.md#select-state):
 
 | Member | Type | Description |
 | --- | --- | --- |
@@ -301,7 +218,7 @@ On the list — the [select state](../states.md#select-state):
 | `focus(value)` / `blur()` | `() => void` | Moves or clears the active value. |
 | `disabled()` | `boolean` | Whether the list is disabled. |
 
-Inside an option — the [select option state](../states.md#select-option-state):
+Inside an option, from the [select option state](../states.md#select-option-state):
 
 | Member | Type | Description |
 | --- | --- | --- |
@@ -338,16 +255,16 @@ Owns a [select state](../states.md#select-state) and renders a `<ul>` by default
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'ul'` | Element or component to render as. |
 | `multiple` | `boolean` | `false` | When `true`, `value` / `defaultValue` / `onChange` deal in arrays. |
-| `defaultValue` | `V` \| `V[]` | — | Initial selection, uncontrolled. Mutually exclusive with `value`. |
-| `value` | `V` \| `V[]` | — | Current selection, controlled. Mutually exclusive with `defaultValue`. |
-| `onChange` | `(value?: V) => void` \| `(value: V[]) => void` | — | Called with the new selection. |
+| `defaultValue` | `V` \| `V[]` | none | Initial selection, uncontrolled. Mutually exclusive with `value`. |
+| `value` | `V` \| `V[]` | none | Current selection, controlled. Mutually exclusive with `defaultValue`. |
+| `onChange` | `(value?: V) => void` \| `(value: V[]) => void` | none | Called with the new selection. |
 | `toggleable` | `boolean` | `false` | Selecting the already-selected value clears (single) or removes (multiple) it. |
 | `disabled` | `boolean` | `false` | Disables the whole list. |
 | `by` | `(a: V, b: V) => boolean` | reference equality | Compares values. Needed for object values. |
 | `horizontal` | `boolean` | `false` | Lays the list out horizontally: swaps the navigation keys and sets `aria-orientation`. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | — | The options, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | none | The options, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 #### Rendered attributes
 
@@ -356,7 +273,7 @@ Owns a [select state](../states.md#select-state) and renders a `<ul>` by default
 | `role` | `"listbox"` |
 | `aria-multiselectable` | Mirrors `multiple` |
 | `aria-orientation` | `"horizontal"` or `"vertical"` |
-| `tabindex` | `0`, or `-1` once an option is active — so focus moves down into the options |
+| `tabindex` | `0`, or `-1` once an option is active, so focus moves down into the options |
 
 ### `<SelectOption>`
 
@@ -368,9 +285,9 @@ One option. A [`Button`](./button.md) with `role="option"`, rendered as an
 | `as` | `ValidConstructor` | `'li'` | Element or component to render as. |
 | `value` | `V` | *required* | The value this option represents. |
 | `disabled` | `boolean` | `false` | Disables this option and removes it from navigation. It is also disabled when the `Select` is. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Label, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | Label, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="option"`, `aria-selected`, and `tabindex`,
 which is `0` while active and `-1` otherwise.

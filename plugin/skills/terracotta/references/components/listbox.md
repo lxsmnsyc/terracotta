@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Listbox
 
@@ -42,149 +42,10 @@ import { DisclosureStateChild, SelectStateChild } from 'terracotta/states';
 
 ### Single selection
 
-```tsx
-interface Person { id: number; name: string }
-
-const people: Person[] = [
-  { id: 1, name: 'Wade Cooper' },
-  { id: 2, name: 'Arlene Mccoy' },
-  { id: 3, name: 'Devon Webb' },
-];
-
-const [selected, setSelected] = createSignal(people[0]);
-
-<Listbox<Person>
-  class="listbox"
-  defaultOpen={false}
-  value={selected()}
-  onSelectChange={value => value && setSelected(value)}
-  by={(a, b) => a.id === b.id}
->
-  <ListboxLabel class="listbox-label">Assignee</ListboxLabel>
-  <ListboxButton class="listbox-button">
-    <span class="listbox-value">{selected().name}</span>
-    <span class="listbox-caret" aria-hidden="true">▾</span>
-  </ListboxButton>
-  <ListboxOptions class="listbox-options">
-    <For each={people}>
-      {person => (
-        <ListboxOption class="listbox-option" value={person}>
-          {person.name}
-        </ListboxOption>
-      )}
-    </For>
-  </ListboxOptions>
-</Listbox>
-```
-
-```css
-.listbox {
-  position: relative;
-  inline-size: 16rem;
-}
-
-.listbox-label {
-  display: block;
-  margin-block-end: 0.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.listbox-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  inline-size: 100%;
-  border: 1px solid #d4d4d8;
-  border-radius: 0.375rem;
-  background: #ffffff;
-  padding: 0.5rem 0.75rem;
-  font: inherit;
-  text-align: start;
-  cursor: pointer;
-}
-
-/* The caret follows the popup state — no extra signal needed */
-.listbox-caret { transition: rotate 150ms ease; }
-.listbox-button[tc-expanded] .listbox-caret { rotate: 180deg; }
-
-/* Dim the value while nothing has been chosen */
-.listbox-button:not([tc-has-selected]) .listbox-value { color: #a1a1aa; }
-
-.listbox-options {
-  position: absolute;
-  inset-block-start: calc(100% + 0.25rem);
-  inset-inline: 0;
-  margin: 0;
-  padding: 0.25rem;
-  list-style: none;
-  border: 1px solid #e4e4e7;
-  border-radius: 0.5rem;
-  background: #ffffff;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.12);
-  z-index: 10;
-}
-
-.listbox-option {
-  border-radius: 0.375rem;
-  padding: 0.4375rem 0.625rem;
-  cursor: pointer;
-}
-
-.listbox-option[tc-active]   { background: #eff6ff; }
-.listbox-option[tc-selected] { font-weight: 600; }
-.listbox-option[tc-disabled] { color: #a1a1aa; cursor: not-allowed; }
-```
-
 Selecting an option closes the popup. With `multiple` set, the popup stays open
 so several values can be picked.
 
 ### Multiple selection
-
-```tsx
-const [selected, setSelected] = createSignal<Person[]>([]);
-
-<Listbox<Person>
-  class="listbox"
-  multiple
-  toggleable
-  defaultOpen={false}
-  value={selected()}
-  onSelectChange={setSelected}
-  by={(a, b) => a.id === b.id}
->
-  <ListboxLabel class="listbox-label">Reviewers</ListboxLabel>
-  <ListboxButton class="listbox-button">
-    <span class="listbox-value">
-      {selected().length ? `${selected().length} selected` : 'Choose people'}
-    </span>
-  </ListboxButton>
-  <ListboxOptions class="listbox-options">
-    <For each={people}>
-      {person => (
-        <ListboxOption class="listbox-option listbox-option-check" value={person}>
-          <span class="listbox-mark" aria-hidden="true" />
-          {person.name}
-        </ListboxOption>
-      )}
-    </For>
-  </ListboxOptions>
-</Listbox>
-```
-
-```css
-.listbox-option-check {
-  display: grid;
-  grid-template-columns: 1rem 1fr;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.listbox-option[tc-selected] .listbox-mark::before {
-  content: "✓";
-  color: #1d4ed8;
-}
-```
 
 ### Controlling the popup too
 
@@ -332,7 +193,7 @@ and the placeholder dimming above work without touching a signal.
 
 Two states are in scope inside a `Listbox`.
 
-Popup — the [disclosure state](../states.md#disclosure-state), via
+The popup, from the [disclosure state](../states.md#disclosure-state), via
 `<DisclosureStateChild>` or `useDisclosureState()`:
 
 | Member | Type | Description |
@@ -340,7 +201,7 @@ Popup — the [disclosure state](../states.md#disclosure-state), via
 | `isOpen()` | `boolean` | Whether the popup is open. |
 | `open()` / `close()` / `toggle()` | `() => void` | Changes it. |
 
-Selection — the [select state](../states.md#select-state), via
+The selection, from the [select state](../states.md#select-state), via
 `<SelectStateChild>` or `useSelectState()`:
 
 | Member | Type | Description |
@@ -387,20 +248,20 @@ Renders a `<div>` by default. Does not take a `ref`.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `multiple` | `boolean` | `false` | When `true`, the value is an array and picking an option keeps the popup open. |
-| `defaultValue` | `V` \| `V[]` | — | Initial selection, uncontrolled. Mutually exclusive with `value`. |
-| `value` | `V` \| `V[]` | — | Current selection, controlled. Mutually exclusive with `defaultValue`. |
-| `onSelectChange` | `(value?: V) => void` \| `(value: V[]) => void` | — | Called with the new selection. |
-| `defaultOpen` | `boolean` | — | Initial popup state, uncontrolled. Mutually exclusive with `isOpen`. |
-| `isOpen` | `boolean` | — | Current popup state, controlled. Mutually exclusive with `defaultOpen`. |
-| `onDisclosureChange` | `(value: boolean) => void` | — | Called when the popup opens or closes. |
-| `onOpen` | `() => void` | — | Called when the popup opens. |
-| `onClose` | `() => void` | — | Called when the popup closes. |
+| `defaultValue` | `V` \| `V[]` | none | Initial selection, uncontrolled. Mutually exclusive with `value`. |
+| `value` | `V` \| `V[]` | none | Current selection, controlled. Mutually exclusive with `defaultValue`. |
+| `onSelectChange` | `(value?: V) => void` \| `(value: V[]) => void` | none | Called with the new selection. |
+| `defaultOpen` | `boolean` | none | Initial popup state, uncontrolled. Mutually exclusive with `isOpen`. |
+| `isOpen` | `boolean` | none | Current popup state, controlled. Mutually exclusive with `defaultOpen`. |
+| `onDisclosureChange` | `(value: boolean) => void` | none | Called when the popup opens or closes. |
+| `onOpen` | `() => void` | none | Called when the popup opens. |
+| `onClose` | `() => void` | none | Called when the popup closes. |
 | `toggleable` | `boolean` | `false` | Selecting the already-selected value clears or removes it. |
 | `disabled` | `boolean` | `false` | Disables the whole listbox. |
 | `by` | `(a: V, b: V) => boolean` | reference equality | Compares values. Needed for object values. |
 | `horizontal` | `boolean` | `false` | Lays the options out horizontally: swaps the navigation keys and sets `aria-orientation`. |
-| `children` | `JSX.Element` | — | The label, button and options. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The label, button and options. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 `Listbox` has no `onChange`. Use `onSelectChange` and `onDisclosureChange`.
 
@@ -411,8 +272,8 @@ Names the listbox. Renders a `<label>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'label'` | Element or component to render as. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Label text, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Label text, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<ListboxButton>`
 
@@ -423,9 +284,9 @@ default.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'button'` | Element or component to render as. |
 | `disabled` | `boolean` | `false` | Disables this button. It is also disabled when the `Listbox` is. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | — | Usually the current value, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Usually the current value, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `aria-haspopup="listbox"`, `aria-controls` and
 `aria-expanded`.
@@ -437,10 +298,10 @@ The popup list. Renders a `<ul>` by default.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'ul'` | Element or component to render as. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the list behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | — | The options, or a render prop receiving the select state. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the list behaves while closed. See [`unmount`](../guides/rendering.md#unmount). |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | none | The options, or a render prop receiving the select state. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="listbox"`, `aria-multiselectable`,
 `aria-labelledby` and `aria-orientation`.
@@ -455,9 +316,9 @@ One option. A [`Button`](./button.md) with `role="option"`, rendered as an
 | `as` | `ValidConstructor` | `'li'` | Element or component to render as. |
 | `value` | `V` | *required* | The value this option represents. |
 | `disabled` | `boolean` | `false` | Disables this option and removes it from navigation. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Label, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | Label, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Every descendant throws if rendered outside its required ancestor.
 `ListboxOption` needs a `ListboxOptions` around it, not only a `Listbox`.

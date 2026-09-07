@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Keyboard and focus
 
@@ -42,6 +42,6 @@ All five also trap <kbd>Tab</kbd> inside their panel while open, so focus wraps
 within the panel instead of escaping to the page behind it.
 
 The search for something to focus happens once, as the panel opens. A panel
-whose content arrives later — from a `Loading` boundary inside it, or any other
-async source — has nothing to offer at that moment, and is not asked again. See
+whose content arrives later, from a `Loading` boundary inside it or any other
+async source, has nothing to offer at that moment, and is not asked again. See
 [async content](./rendering.md#async-content) for what to do about it.
