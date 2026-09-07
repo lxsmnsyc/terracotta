@@ -21,11 +21,12 @@ from `terracotta`. Nothing else needs configuring.
 | Path                            | Contents                                                                                                   |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | `skills/terracotta/SKILL.md`    | The API shape and the conventions every component shares. Hand-written, and the only part not in the docs. |
-| `skills/terracotta/references/` | The whole of the repository's `docs/`, so per-component detail is available offline.                       |
+| `skills/terracotta/references/` | The prose the documentation site is built from, so per-component detail is available offline.               |
 
 The reference tree is **generated**, not maintained by hand: `pnpm skill:sync`
-copies `docs/` into it, and `pnpm skill:check` fails when the copy is stale.
-Edit `docs/`, never the copy.
+copies `docs/content` into it, dropping the site's demo directives and writing
+an index from its `nav.json`, and `pnpm skill:check` fails when the copy is
+stale. Edit `docs/content`, never the copy.
 
 ## Versions
 
