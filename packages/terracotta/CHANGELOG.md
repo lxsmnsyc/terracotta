@@ -1,5 +1,29 @@
 # terracotta
 
+## 1.3.0
+
+### Minor Changes
+
+- 04a04ec: Raise the build target to ES2020 and the minimum Node version to 20.
+
+  The published JavaScript now keeps optional chaining (`?.`) and nullish
+  coalescing (`??`) instead of compiling them away. A toolchain that cannot
+  parse ES2020 has to transpile the package itself.
+
+  The package is now built with tsdown. Its type declarations are bundled into a
+  single file, which fixes type resolution under `moduleResolution: "node16"`
+  and `"nodenext"`: the per-file declarations it replaces imported each other
+  without file extensions, which those modes cannot resolve.
+
+### Patch Changes
+
+- 8548e5d: Fix the types for CommonJS consumers.
+
+  `import` and `require` shared one `.d.ts`, which the package's `"type": "module"`
+  marks as ESM. TypeScript therefore described the CommonJS build as an ES module
+  under `moduleResolution: "node16"` and `"nodenext"`. Each condition now has its
+  own declaration file, `index.d.ts` for `import` and `index.d.cts` for `require`.
+
 ## 1.2.4
 
 ### Patch Changes
