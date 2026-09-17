@@ -51,6 +51,11 @@ jobs:
       # A release is only as good as the commit it is cut from.
       - run: pnpm --filter terracotta test
 
+      # Publishing builds again, but a build that breaks there would do so after
+      # the version pull request has merged, leaving a bumped version with
+      # nothing published. Failing here stops the release before that.
+      - run: pnpm --filter terracotta build
+
       - uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
           # Versions the packages and refreshes the lockfile to match, so the
