@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Alert
 
@@ -18,7 +18,7 @@ import { Alert } from 'terracotta/alert';
 ## Anatomy
 
 ```tsx
-<Alert/> {/* role="alert" — announced the moment it appears */}
+<Alert/> {/* role="alert": announced the moment it appears */}
 ```
 
 `Alert` has no state and no sub-components. It is the one Terracotta component
@@ -30,56 +30,6 @@ that is purely semantic.
 
 The alert is announced when it enters the DOM. Render it conditionally, rather
 than rendering an empty alert and filling it in later.
-
-```tsx
-import type { JSX } from '@solidjs/web';
-import { Show, createSignal } from 'solid-js';
-import { Alert } from 'terracotta/alert';
-
-export function SaveForm(): JSX.Element {
-  const [error, setError] = createSignal<string>();
-
-  async function submit(event: SubmitEvent): Promise<void> {
-    event.preventDefault();
-    setError(undefined);
-    try {
-      await save();
-    } catch {
-      setError('Could not reach the server. Your changes are not saved.');
-    }
-  }
-
-  return (
-    <form onSubmit={submit}>
-      <Show when={error()}>
-        {message => <Alert class="alert alert-error">{message()}</Alert>}
-      </Show>
-      <button type="submit">Save</button>
-    </form>
-  );
-}
-```
-
-```css
-.alert {
-  border: 1px solid;
-  border-radius: 0.375rem;
-  padding: 0.75rem 1rem;
-  margin-block-end: 1rem;
-}
-
-.alert-error {
-  border-color: #fca5a5;
-  background: #fef2f2;
-  color: #991b1b;
-}
-
-.alert-warning {
-  border-color: #fcd34d;
-  background: #fffbeb;
-  color: #92400e;
-}
-```
 
 ### Choosing a different element
 
@@ -107,17 +57,6 @@ const [failure, setFailure] = createSignal<{ id: number; message: string }>();
 
 Every prop you pass is forwarded, so a plain `data-*` attribute works if you
 would rather express severity as data:
-
-```tsx
-<Alert class="alert" data-severity="error">
-  Could not reach the server.
-</Alert>
-```
-
-```css
-.alert[data-severity="error"]   { background: #fef2f2; color: #991b1b; }
-.alert[data-severity="warning"] { background: #fffbeb; color: #92400e; }
-```
 
 ## State attributes
 
@@ -173,8 +112,8 @@ Renders a `<div>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | The message. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The message. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 #### Rendered attributes
 

@@ -5,13 +5,9 @@ export default defineConfig({
   // `docs/**` is prose. oxfmt rewrites the snippets inside it — quote style,
   // one-line CSS rules expanded, a stray semicolon appended to a JSX fragment
   // that is not a statement — which makes the examples worse, not consistent.
-  // The plugin's reference tree is a generated copy of `docs/`, so it has to be
-  // ignored on the same grounds — and reformatting it would fail
-  // `pnpm skill:check` against its source anyway.
-  ignorePatterns: [
-    'example.js',
-    'docs/**',
-    '.changeset/**',
-    'plugin/skills/terracotta/references/**',
-  ],
+  // The plugin's skill is prose around JSX fragments, and its reference tree is
+  // a generated copy of the docs, so both are ignored on the same grounds as
+  // `docs/**`. Formatting either would also fail `pnpm skill:check`, which
+  // compares them against the source they are generated from.
+  ignorePatterns: ['example.js', 'docs/**', '.changeset/**', 'plugin/skills/**'],
 });

@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Transition
 
@@ -54,8 +54,8 @@ class names.
 ## Interrupting
 
 A `show` change part-way through a transition takes effect immediately. The
-running transition stops at its next step — its `afterEnter` or `afterLeave`
-never fires — and the opposite one starts, clearing the classes the interrupted
+running transition stops at its next step, its `afterEnter` or `afterLeave`
+never fires, and the opposite one starts, clearing the classes the interrupted
 one left behind. So a panel shown again while it is fading out enters from
 `enterFrom` rather than easing back from wherever the fade had got to: the phase
 lives entirely in the classes, and there is no partial value to resume from.
@@ -63,40 +63,6 @@ lives entirely in the classes, and there is no partial value to resume from.
 ## Examples
 
 ### Fade
-
-```tsx
-const [show, setShow] = createSignal(true);
-
-<Transition
-  show={show()}
-  class="card"
-  enter="fade-enter"
-  enterFrom="fade-from"
-  enterTo="fade-to"
-  leave="fade-leave"
-  leaveFrom="fade-to"
-  leaveTo="fade-from"
->
-  Hello
-</Transition>
-```
-
-```css
-.card {
-  border: 1px solid #e4e4e7;
-  border-radius: 0.5rem;
-  background: #ffffff;
-  padding: 1rem;
-}
-
-/* The transition itself lives on `enter` / `leave` */
-.fade-enter { transition: opacity 200ms ease-out; }
-.fade-leave { transition: opacity 150ms ease-in; }
-
-/* The two endpoints */
-.fade-from { opacity: 0; }
-.fade-to   { opacity: 1; }
-```
 
 Reusing `fade-to` as `leaveFrom` and `fade-from` as `leaveTo` makes the leave a
 mirror of the enter. That is usually what you want.
@@ -202,31 +168,6 @@ nothing to animate.
 elements can therefore animate on different timings while still leaving
 together, because the parent waits for its children's leave transitions before
 finishing its own.
-
-```tsx
-<Transition show={open()}>
-  <TransitionChild
-    enter="fade-enter" enterFrom="fade-from" enterTo="fade-to"
-    leave="fade-leave" leaveFrom="fade-to" leaveTo="fade-from"
-  >
-    <DialogOverlay class="dialog-overlay" />
-  </TransitionChild>
-
-  <TransitionChild
-    enter="pop-enter" enterFrom="pop-from" enterTo="pop-to"
-    leave="pop-leave" leaveFrom="pop-to" leaveTo="pop-from"
-  >
-    <DialogPanel class="dialog-panel">…</DialogPanel>
-  </TransitionChild>
-</Transition>
-```
-
-```css
-.pop-enter { transition: opacity 200ms ease-out, scale 200ms ease-out; }
-.pop-leave { transition: opacity 150ms ease-in, scale 150ms ease-in; }
-.pop-from  { opacity: 0; scale: 0.95; }
-.pop-to    { opacity: 1; scale: 1; }
-```
 
 ### Running work around a transition
 
@@ -353,22 +294,22 @@ One transitioning element. Renders a `<div>` by default.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `enter` | `string` | — | Classes applied for the whole enter transition. Put the `transition` or `animation` declaration here. |
-| `enterFrom` | `string` | — | Starting state of the enter transition. |
-| `enterTo` | `string` | — | Ending state of the enter transition. |
-| `entered` | `string` | — | Classes applied once entering has finished, and removed when leaving starts. |
-| `leave` | `string` | — | Classes applied for the whole leave transition. |
-| `leaveFrom` | `string` | — | Starting state of the leave transition. |
-| `leaveTo` | `string` | — | Ending state of the leave transition. |
-| `beforeEnter` | `() => void` | — | Called just before entering starts. |
-| `afterEnter` | `() => void` | — | Called once entering has finished. |
-| `beforeLeave` | `() => void` | — | Called just before leaving starts. |
-| `afterLeave` | `() => void` | — | Called once leaving has finished and the element is hidden. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the element behaves while hidden — see [`unmount`](../guides/rendering.md#unmount). |
+| `enter` | `string` | none | Classes applied for the whole enter transition. Put the `transition` or `animation` declaration here. |
+| `enterFrom` | `string` | none | Starting state of the enter transition. |
+| `enterTo` | `string` | none | Ending state of the enter transition. |
+| `entered` | `string` | none | Classes applied once entering has finished, and removed when leaving starts. |
+| `leave` | `string` | none | Classes applied for the whole leave transition. |
+| `leaveFrom` | `string` | none | Starting state of the leave transition. |
+| `leaveTo` | `string` | none | Ending state of the leave transition. |
+| `beforeEnter` | `() => void` | none | Called just before entering starts. |
+| `afterEnter` | `() => void` | none | Called once entering has finished. |
+| `beforeLeave` | `() => void` | none | Called just before leaving starts. |
+| `afterLeave` | `() => void` | none | Called once leaving has finished and the element is hidden. |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the element behaves while hidden. See [`unmount`](../guides/rendering.md#unmount). |
 | `appear` | `boolean` | `false` | Mount and start entering on the very first render. It matters for a nested `TransitionChild`, which otherwise waits for its parent to finish entering before it mounts and runs its own enter. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` | — | The content. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` | none | The content. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 `TransitionChild` throws if rendered outside a `<Transition>`.
 
@@ -389,9 +330,9 @@ One transitioning element. Renders a `<div>` by default.
 - `unmount={true}` and `unmount="offscreen"` need no such treatment: both take
   the element out of the document once the leave transition has finished, so the
   content is already unreachable. The difference between them is only what
-  happens to the subtree behind the scenes — see
+  happens to the subtree behind the scenes. See
   [`unmount`](../guides/rendering.md#unmount).
-- Panels that move focus into themselves — `DialogPanel`, `PopoverPanel`,
-  `ContextMenuPanel`, `CommandBarPanel`, `ListboxOptions`, `ComboboxOptions` —
+- Panels that move focus into themselves, namely `DialogPanel`, `PopoverPanel`,
+  `ContextMenuPanel`, `CommandBarPanel`, `ListboxOptions` and `ComboboxOptions`,
   wait for the same animations to finish before focusing, so focus lands once the
   panel has settled rather than while it is still animating in.

@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Toolbar
 
@@ -26,44 +26,6 @@ import { Toolbar } from 'terracotta/toolbar';
 
 ### Horizontal (default)
 
-```tsx
-<Toolbar class="toolbar" aria-label="Text formatting">
-  <button type="button" class="toolbar-button">Bold</button>
-  <button type="button" class="toolbar-button">Italic</button>
-  <button type="button" class="toolbar-button">Underline</button>
-</Toolbar>
-```
-
-```css
-.toolbar {
-  display: flex;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  border: 1px solid #e4e4e7;
-  border-radius: 0.5rem;
-  background: #fafafa;
-}
-
-.toolbar[aria-orientation="vertical"] {
-  flex-direction: column;
-}
-
-.toolbar-button {
-  border: none;
-  border-radius: 0.25rem;
-  background: transparent;
-  padding: 0.375rem 0.625rem;
-  font: inherit;
-  cursor: pointer;
-}
-
-.toolbar-button:hover { background: #e4e4e7; }
-.toolbar-button:focus-visible {
-  outline: 2px solid #2563eb;
-  outline-offset: -2px;
-}
-```
-
 The orientation is published as `aria-orientation`. One CSS rule then keeps the
 layout and the semantics in step.
 
@@ -81,21 +43,6 @@ layout and the semantics in step.
 
 `Toggle` is a natural fit. Its `tc-pressed` attribute gives you the active state
 for free:
-
-```tsx
-<Toolbar class="toolbar" aria-label="Formatting">
-  <Toggle class="toolbar-button" defaultPressed={false}>Bold</Toggle>
-  <Toggle class="toolbar-button" defaultPressed={false}>Italic</Toggle>
-  <Toggle class="toolbar-button" defaultPressed={false}>Underline</Toggle>
-</Toolbar>
-```
-
-```css
-.toolbar-button[tc-pressed] {
-  background: #dbeafe;
-  color: #1d4ed8;
-}
-```
 
 ### With separators and groups
 
@@ -197,7 +144,7 @@ instead, such as [`Toggle`](./toggle.md)'s `pressed()`.
 | <kbd>→</kbd> / <kbd>←</kbd> | Next / previous control, when horizontal |
 | <kbd>↓</kbd> / <kbd>↑</kbd> | Next / previous control, when vertical |
 | <kbd>Home</kbd> / <kbd>End</kbd> | First / last control |
-| <kbd>Tab</kbd> | Enters or leaves the toolbar — it is a single tab stop |
+| <kbd>Tab</kbd> | Enters or leaves the toolbar, which is a single tab stop |
 
 Arrow navigation does not wrap around the ends. Focusing the toolbar itself
 restores the control that was focused last, or the first control if there is
@@ -213,9 +160,9 @@ Renders a `<div>` by default.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `horizontal` | `boolean` | `true` | Orientation. Decides which arrow keys navigate and what `aria-orientation` reports. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` | — | The controls. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` | none | The controls. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Give the toolbar an accessible name with `aria-label` or `aria-labelledby`. Both
 are forwarded like any other prop.

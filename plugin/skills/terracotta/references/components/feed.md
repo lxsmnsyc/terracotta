@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Feed
 
@@ -39,86 +39,6 @@ import {
 ## Examples
 
 ### A timeline
-
-```tsx
-import type { JSX } from '@solidjs/web';
-import { For, createSignal } from 'solid-js';
-import {
-  Feed,
-  FeedArticle,
-  FeedArticleDescription,
-  FeedArticleLabel,
-  FeedContent,
-  FeedLabel,
-} from 'terracotta/feed';
-
-interface Post { id: string; title: string; body: string }
-
-export function Timeline(props: { posts: Post[] }): JSX.Element {
-  const [loading, setLoading] = createSignal(false);
-
-  return (
-    <Feed class="feed" size={props.posts.length} busy={loading()}>
-      <FeedLabel class="feed-label">Latest posts</FeedLabel>
-
-      <FeedContent class="feed-content">
-        <For each={props.posts}>
-          {(post, index) => (
-            <FeedArticle class="feed-article" index={index()}>
-              <FeedArticleLabel class="feed-article-title">
-                {post.title}
-              </FeedArticleLabel>
-              <FeedArticleDescription class="feed-article-body">
-                {post.body}
-              </FeedArticleDescription>
-            </FeedArticle>
-          )}
-        </For>
-      </FeedContent>
-    </Feed>
-  );
-}
-```
-
-```css
-.feed {
-  inline-size: min(36rem, 100%);
-}
-
-.feed-label {
-  display: block;
-  margin-block-end: 0.75rem;
-  font-size: 1.125rem;
-  font-weight: 600;
-}
-
-.feed-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.feed-article {
-  border: 1px solid #e4e4e7;
-  border-radius: 0.5rem;
-  padding: 1rem;
-}
-
-.feed-article:focus-visible {
-  outline: 2px solid #2563eb;
-  outline-offset: 2px;
-}
-
-.feed-article-title {
-  display: block;
-  font-weight: 500;
-}
-
-.feed-article-body {
-  margin: 0.25rem 0 0;
-  color: #52525b;
-}
-```
 
 Where you know it, `size` should be the total number of articles in the feed,
 not the number currently rendered. That is what tells a screen reader "3 of
@@ -263,8 +183,8 @@ The same component with different semantics. Change the elements with `as`:
 ## State attributes
 
 `Feed` has no selection or open state, so the markers are the only `tc-`
-attributes it writes. Its live state — size, position and busy — goes through
-real ARIA attributes instead, because that is what assistive technology reads.
+attributes it writes. Its live state, meaning size, position and busy, goes
+through real ARIA attributes instead, because that is what assistive technology reads.
 
 | Element | Attribute | Present when |
 | --- | --- | --- |
@@ -273,8 +193,8 @@ real ARIA attributes instead, because that is what assistive technology reads.
 | `FeedContent` | `tc-feed-content` | Always |
 | `FeedContent` | `aria-busy` | `"true"` while `busy` is set on the `Feed` |
 | `FeedArticle` | `tc-feed-article` | Always |
-| `FeedArticle` | `tc-owner` | Always — ties the article to the feed's keyboard navigation |
-| `FeedArticle` | `aria-posinset`, `aria-setsize` | Always — one-based position, and the feed's `size` |
+| `FeedArticle` | `tc-owner` | Always. Ties the article to the feed's keyboard navigation |
+| `FeedArticle` | `aria-posinset`, `aria-setsize` | Always. One-based position, and the feed's `size` |
 | `FeedArticleLabel` | `tc-feed-article-label` | Always |
 | `FeedArticleDescription` | `tc-feed-article-description` | Always |
 
@@ -293,7 +213,7 @@ real ARIA attributes instead, because that is what assistive technology reads.
   padding: 1rem;
 }
 
-/* Busy is a real ARIA attribute — style from it directly */
+/* Busy is a real ARIA attribute, so style from it directly */
 [tc-feed-content][aria-busy="true"] { opacity: 0.6; }
 
 /* Position-aware styling, straight from the ARIA attribute */
@@ -337,9 +257,9 @@ the feed" behaviour. Renders a `<div>` by default.
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `size` | `number` | *required* | Total number of articles in the feed. Published on each article as `aria-setsize`. |
 | `busy` | `boolean` | `false` | Whether the feed is loading. Published on `FeedContent` as `aria-busy`. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` | — | The label and content. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` | none | The label and content. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<FeedLabel>`
 
@@ -349,8 +269,8 @@ Names the feed. `FeedContent`'s `aria-labelledby` points at it. Renders a
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'span'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | The label text. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The label text. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<FeedContent>`
 
@@ -360,9 +280,9 @@ The region that carries `role="feed"` and handles article navigation. Renders a
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` | — | The articles. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` | none | The articles. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<FeedArticle>`
 
@@ -373,9 +293,9 @@ One article. It is focusable and positioned within the set. Renders an
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'article'` | Element or component to render as. |
 | `index` | `number` | *required* | Zero-based position in the feed. Published as `aria-posinset` (one-based). |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` | — | The article's contents. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` | none | The article's contents. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `tabindex="0"`, `aria-labelledby` and
 `aria-describedby`.
@@ -387,8 +307,8 @@ Names the article. Renders a `<span>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'span'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | The label text. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The label text. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<FeedArticleDescription>`
 
@@ -397,8 +317,8 @@ Describes the article. Renders a `<p>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'p'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | The description. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The description. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 `FeedLabel`, `FeedContent` and `FeedArticle` throw outside a `<Feed>`.
 `FeedArticleLabel` and `FeedArticleDescription` throw outside a `<FeedArticle>`.

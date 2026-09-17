@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Accordion
 
@@ -36,88 +36,10 @@ import { SelectStateChild, SelectOptionStateChild } from 'terracotta/states';
 
 ### One section at a time
 
-```tsx
-<Accordion<string> class="accordion" defaultValue="shipping" toggleable>
-  <AccordionItem class="accordion-item" value="shipping">
-    <AccordionHeader class="accordion-header">
-      <AccordionButton class="accordion-button">
-        Shipping
-        <span class="accordion-marker" aria-hidden="true" />
-      </AccordionButton>
-    </AccordionHeader>
-    <AccordionPanel class="accordion-panel">Ships in 2–3 days.</AccordionPanel>
-  </AccordionItem>
-
-  <AccordionItem class="accordion-item" value="returns">
-    <AccordionHeader class="accordion-header">
-      <AccordionButton class="accordion-button">
-        Returns
-        <span class="accordion-marker" aria-hidden="true" />
-      </AccordionButton>
-    </AccordionHeader>
-    <AccordionPanel class="accordion-panel">30 days, no questions asked.</AccordionPanel>
-  </AccordionItem>
-</Accordion>
-```
-
-```css
-.accordion {
-  border: 1px solid #e4e4e7;
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-
-.accordion-item + .accordion-item {
-  border-block-start: 1px solid #e4e4e7;
-}
-
-.accordion-header { margin: 0; }
-
-.accordion-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  inline-size: 100%;
-  border: none;
-  background: #ffffff;
-  padding: 0.875rem 1rem;
-  font: inherit;
-  text-align: start;
-  cursor: pointer;
-}
-
-.accordion-button:hover { background: #fafafa; }
-
-.accordion-button:focus-visible {
-  outline: 2px solid #2563eb;
-  outline-offset: -2px;
-}
-
-/* Open section */
-.accordion-button[tc-expanded] {
-  font-weight: 600;
-  background: #f4f4f5;
-}
-
-/* Plus / minus marker driven purely by the attribute */
-.accordion-marker::before { content: "+"; }
-.accordion-button[tc-expanded] .accordion-marker::before { content: "−"; }
-
-.accordion-panel {
-  padding: 0 1rem 1rem;
-}
-```
-
 `toggleable` lets a user close the open section by clicking its button again.
 Without it, one section is always open.
 
 ### Several sections at once
-
-```tsx
-<Accordion<string> class="accordion" multiple defaultValue={['shipping']} toggleable>
-  {/* same items */}
-</Accordion>
-```
 
 In multiple mode, `value` and `defaultValue` are arrays, and `onChange` receives
 an array.
@@ -160,20 +82,6 @@ interface Section { id: string; title: string; body: string }
 ### Disabled sections
 
 Disable one item, or the whole accordion:
-
-```tsx
-<Accordion<string> class="accordion" defaultValue="shipping">
-  <AccordionItem class="accordion-item" value="shipping">…</AccordionItem>
-  <AccordionItem class="accordion-item" value="returns" disabled>…</AccordionItem>
-</Accordion>
-```
-
-```css
-.accordion-item[tc-disabled] .accordion-button {
-  color: #a1a1aa;
-  cursor: not-allowed;
-}
-```
 
 Disabled items cannot be clicked, and the arrow keys skip them.
 
@@ -300,7 +208,7 @@ can use whichever reads better. The button also carries `aria-expanded`, and
 
 ### Reading the state in code
 
-On the root — the [select state](../states.md#select-state):
+On the root, from the [select state](../states.md#select-state):
 
 | Member | Type | Description |
 | --- | --- | --- |
@@ -310,7 +218,7 @@ On the root — the [select state](../states.md#select-state):
 | `isActive(value)` / `hasActive()` | | Keyboard focus position. |
 | `disabled()` | `boolean` | Whether the accordion is disabled. |
 
-Inside an item — the [select option state](../states.md#select-option-state):
+Inside an item, from the [select option state](../states.md#select-option-state):
 
 | Member | Type | Description |
 | --- | --- | --- |
@@ -343,15 +251,15 @@ on the headers, buttons and panels.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `multiple` | `boolean` | `false` | When `true`, several items can be open, and `value` / `defaultValue` / `onChange` deal in arrays. |
-| `defaultValue` | `V` \| `V[]` | — | Initially open item(s), uncontrolled. Mutually exclusive with `value`. |
-| `value` | `V` \| `V[]` | — | Currently open item(s), controlled. Mutually exclusive with `defaultValue`. |
-| `onChange` | `(value?: V) => void` \| `(value: V[]) => void` | — | Called with the new selection. Array form in multiple mode. |
+| `defaultValue` | `V` \| `V[]` | none | Initially open item(s), uncontrolled. Mutually exclusive with `value`. |
+| `value` | `V` \| `V[]` | none | Currently open item(s), controlled. Mutually exclusive with `defaultValue`. |
+| `onChange` | `(value?: V) => void` \| `(value: V[]) => void` | none | Called with the new selection. Array form in multiple mode. |
 | `toggleable` | `boolean` | `false` | Allow closing the open item by selecting it again. |
 | `disabled` | `boolean` | `false` | Disables the whole accordion. |
 | `by` | `(a: V, b: V) => boolean` | reference equality | Compares values. Needed for object values. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | — | Items, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | none | Items, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<AccordionItem>`
 
@@ -362,8 +270,8 @@ One section. Renders a `<div>` by default. Does not take a `ref`.
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `value` | `V` | *required* | The value this section represents. |
 | `disabled` | `boolean` | `false` | Disables this section. It is also disabled when the `Accordion` is. |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | The header and panel, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | The header and panel, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<AccordionHeader>`
 
@@ -373,8 +281,8 @@ The heading that wraps the button. Renders an `<h3>` by default. Does not take a
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'h3'` | Element or component to render as. |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Usually an `AccordionButton`. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | Usually an `AccordionButton`. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<AccordionButton>`
 
@@ -385,9 +293,9 @@ the accordion's keyboard navigation. Renders a `<button>` by default.
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'button'` | Element or component to render as. |
 | `disabled` | `boolean` | `false` | Disables this button. It is also disabled when its item or the accordion is. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Label, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | Label, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<AccordionPanel>`
 
@@ -396,9 +304,9 @@ The revealed content. Renders a `<div>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `unmount` | `boolean \| 'offscreen'` | `true` | How the panel behaves while closed — see [`unmount`](../guides/rendering.md#unmount). |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `unmount` | `boolean \| 'offscreen'` | `true` | How the panel behaves while closed. See [`unmount`](../guides/rendering.md#unmount). |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 It is labelled by its button through `aria-labelledby`.
 

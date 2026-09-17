@@ -1,0 +1,333 @@
+/*
+ * Bloom.
+ *
+ * Every other theme in this set is drawn with lines: hairlines, 2px rules,
+ * dashes, grids, outlines. This one has none. Nothing is outlined and nothing
+ * is square: shapes are separated by fill and by a soft, tinted shadow, every
+ * interactive thing is a pill, and hovering lifts it a pixel off the page.
+ *
+ * The axis is shape and weight rather than colour, which is why the file spends
+ * most of its length replacing borders with backgrounds. Terracotta contributes
+ * no styles of its own, so a theme can take the whole visual language somewhere
+ * the baseline never anticipated without a single component or demo changing.
+ */
+
+[data-theme='bloom'] {
+  --surface-0: #fbfdfa;
+  --surface-1: #eef5ee;
+  --surface-2: #e0ece1;
+
+  --text-1: #16231b;
+  --text-2: #465347;
+  --text-3: #7d8c81;
+
+  /* Deliberately close to the surfaces: this theme draws almost nothing. */
+  --border: #e4eee5;
+  --border-strong: #d3e2d5;
+
+  --accent: #2f7d52;
+  --accent-hover: #24623f;
+  --accent-contrast: #ffffff;
+  --accent-soft: #dbefe1;
+
+  --focus: #2f7d52;
+  --danger: #b4453f;
+
+  --overlay: rgb(22 35 27 / 35%);
+
+  --radius-sm: 0.7rem;
+  --radius-md: 1.1rem;
+  --radius-lg: 1.75rem;
+
+  --shadow-1: 0 1px 2px rgb(22 35 27 / 6%);
+  --shadow-2: 0 18px 40px rgb(22 35 27 / 14%);
+
+  --font-sans: ui-rounded, 'SF Pro Rounded', 'Nunito', ui-sans-serif, system-ui,
+    -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+
+  --masthead-height: 4rem;
+
+  /* Theme-private. */
+  --pill: 999px;
+  --lift: 0 10px 24px rgb(22 35 27 / 12%);
+}
+
+[data-theme='bloom'].dark {
+  --surface-0: #0e1512;
+  --surface-1: #17211b;
+  --surface-2: #212e26;
+
+  --text-1: #e9f2ea;
+  --text-2: #adbfb2;
+  --text-3: #7b8d81;
+
+  --border: #1c2820;
+  --border-strong: #27352c;
+
+  --accent: #79d99b;
+  --accent-hover: #a4ebbc;
+  --accent-contrast: #0e1512;
+  --accent-soft: #1d3226;
+
+  --focus: #79d99b;
+  --danger: #f0908a;
+
+  --overlay: rgb(4 8 6 / 65%);
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 35%);
+  --shadow-2: 0 18px 40px rgb(0 0 0 / 55%);
+
+  --lift: 0 10px 24px rgb(0 0 0 / 45%);
+}
+
+/* ------------------------------------------------------------------ *
+ * No lines
+ *
+ * Everything the baseline outlines is filled instead. The selectors are the
+ * baseline's own class names; nothing here knows which component it styles.
+ * ------------------------------------------------------------------ */
+
+/* The filled variants are excluded: they carry their own colour and their own
+   label colour with it, and repainting the fill strands the text. */
+[data-theme='bloom'] .control:not(.control-primary),
+[data-theme='bloom'] .button:not(.button-primary, .button-danger),
+[data-theme='bloom'] .toggle,
+[data-theme='bloom'] .field,
+[data-theme='bloom'] .disclosure,
+[data-theme='bloom'] .accordion,
+[data-theme='bloom'] .listbox-button,
+[data-theme='bloom'] .combobox-input,
+[data-theme='bloom'] .command-input,
+[data-theme='bloom'] .select,
+[data-theme='bloom'] .radio-card,
+[data-theme='bloom'] .toolbar,
+[data-theme='bloom'] .feed-article,
+[data-theme='bloom'] .alert,
+[data-theme='bloom'] .transition-box,
+[data-theme='bloom'] .transition-card,
+[data-theme='bloom'] .checkbox-box,
+[data-theme='bloom'] .radio-dot,
+[data-theme='bloom'] .switch-track,
+[data-theme='bloom'] .theme-picker,
+[data-theme='bloom'] .scheme-picker,
+[data-theme='bloom'] .hero-install,
+[data-theme='bloom'] .demo-tabs,
+[data-theme='bloom'] .shiki {
+  border-color: transparent;
+  background-color: var(--surface-1);
+}
+
+[data-theme='bloom'] .panel,
+[data-theme='bloom'] .listbox-options,
+[data-theme='bloom'] .combobox-options,
+[data-theme='bloom'] .command-options,
+[data-theme='bloom'] .commandbar-panel,
+[data-theme='bloom'] .contextmenu-panel,
+[data-theme='bloom'] .popover-panel,
+[data-theme='bloom'] .dialog-panel,
+[data-theme='bloom'] .drawer-panel,
+[data-theme='bloom'] .menu,
+[data-theme='bloom'] .toast {
+  border-color: transparent;
+  background: var(--surface-0);
+  box-shadow: var(--shadow-2);
+}
+
+/* ------------------------------------------------------------------ *
+ * Everything you can touch is a pill
+ * ------------------------------------------------------------------ */
+
+[data-theme='bloom'] .control,
+[data-theme='bloom'] .button,
+[data-theme='bloom'] .toggle,
+[data-theme='bloom'] .field,
+[data-theme='bloom'] .listbox-button,
+[data-theme='bloom'] .combobox-input,
+[data-theme='bloom'] .command-input,
+[data-theme='bloom'] .toolbar-button,
+[data-theme='bloom'] .toolbar-toggle,
+[data-theme='bloom'] .listbox-option,
+[data-theme='bloom'] .select-option,
+[data-theme='bloom'] .combobox-option,
+[data-theme='bloom'] .command-option,
+[data-theme='bloom'] .menu-item,
+[data-theme='bloom'] .theme-swatch,
+[data-theme='bloom'] .scheme-picker-option,
+[data-theme='bloom'] .sidebar-link,
+[data-theme='bloom'] .tab,
+[data-theme='bloom'] .demo-tab,
+[data-theme='bloom'] .demo-tool {
+  border-radius: var(--pill);
+}
+
+[data-theme='bloom'] .button,
+[data-theme='bloom'] .control {
+  padding-inline: 1.1rem;
+}
+
+[data-theme='bloom'] .sidebar-link {
+  padding-inline: 0.85rem;
+}
+
+[data-theme='bloom'] .checkbox-box {
+  border-radius: 0.45rem;
+}
+
+/* ------------------------------------------------------------------ *
+ * Lift
+ *
+ * The only motion in the theme, and the reset drops it under
+ * `prefers-reduced-motion` along with every other transition on the site.
+ * ------------------------------------------------------------------ */
+
+[data-theme='bloom'] .button,
+[data-theme='bloom'] .control,
+[data-theme='bloom'] .radio-card,
+[data-theme='bloom'] .feed-article {
+  transition:
+    translate 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+[data-theme='bloom'] .button:not(.button-primary, .button-danger):hover,
+[data-theme='bloom'] .control:not(.control-primary):hover,
+[data-theme='bloom'] .radio-card:not([tc-checked]):hover {
+  background-color: var(--surface-2);
+  box-shadow: var(--lift);
+  translate: 0 -1px;
+}
+
+[data-theme='bloom'] .button-primary:hover,
+[data-theme='bloom'] .control-primary:hover,
+[data-theme='bloom'] .button-danger:hover {
+  box-shadow: var(--lift);
+  translate: 0 -1px;
+}
+
+/* ------------------------------------------------------------------ *
+ * States
+ * ------------------------------------------------------------------ */
+
+[data-theme='bloom'] .menu-item[tc-active],
+[data-theme='bloom'] .listbox-option[tc-active],
+[data-theme='bloom'] .select-option[tc-active],
+[data-theme='bloom'] .combobox-option[tc-active],
+[data-theme='bloom'] .command-option[tc-active],
+[data-theme='bloom'] .theme-picker-option[tc-active] {
+  background: var(--accent-soft);
+}
+
+/* A filled row repaints only itself; children carrying their own colour would
+   keep it and fall out of the fill. */
+[data-theme='bloom'] .menu-item[tc-active] *,
+[data-theme='bloom'] .listbox-option[tc-active] *,
+[data-theme='bloom'] .select-option[tc-active] *,
+[data-theme='bloom'] .combobox-option[tc-active] *,
+[data-theme='bloom'] .command-option[tc-active] * {
+  color: inherit;
+}
+
+[data-theme='bloom'] .sidebar-link[aria-current='page'] {
+  background: var(--accent-soft);
+}
+
+/* Tabs are pills that fill, not underlines. */
+[data-theme='bloom'] .tablist {
+  gap: 0.3rem;
+  border-block-end: 0;
+}
+
+[data-theme='bloom'] .tab[tc-selected],
+[data-theme='bloom'] .demo-tab[tc-selected] {
+  background: var(--accent-soft);
+  box-shadow: none;
+  color: var(--text-1);
+}
+
+[data-theme='bloom'] .switch-track {
+  block-size: 1.5rem;
+  inline-size: 2.6rem;
+}
+
+[data-theme='bloom'] .switch-knob {
+  inline-size: 1.15rem;
+  block-size: 1.15rem;
+  background: var(--surface-0);
+}
+
+[data-theme='bloom'] .switch-track[tc-checked=''] .switch-knob,
+[data-theme='bloom'] [tc-pressed] .switch-knob {
+  translate: 1.05rem 0;
+}
+
+/* Chrome ------------------------------------------------------------ */
+
+[data-theme='bloom'] .masthead {
+  border-block-end: 0;
+  backdrop-filter: none;
+  background: var(--surface-0);
+}
+
+[data-theme='bloom'] .brand-mark {
+  border-radius: var(--pill);
+}
+
+[data-theme='bloom'] .page-title,
+[data-theme='bloom'] .hero-title {
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+[data-theme='bloom'] .prose h2 {
+  border-block-end: 0;
+}
+
+[data-theme='bloom'] .prose hr {
+  border-block-start-color: var(--surface-2);
+}
+
+[data-theme='bloom'] .toc-list {
+  border-inline-start-color: var(--surface-2);
+}
+
+[data-theme='bloom'] .demo-toolbar {
+  border-block-end: 0;
+  background: transparent;
+}
+
+[data-theme='bloom'] .prose :not(pre) > code,
+[data-theme='bloom'] .page-lede code {
+  border-color: transparent;
+  border-radius: var(--radius-sm);
+  background: var(--surface-1);
+}
+
+/*
+ * Shiki bakes an opaque background into the block and into every span, so both
+ * are replaced with the theme's own fill. The dark selector carries `:root` so
+ * that it out-specifies `:root.dark .shiki span` in `prose.css` outright.
+ * Without it the two tie at three classes and the winner is whichever
+ * stylesheet the bundler emits last.
+ */
+:root[data-theme='bloom'].dark .shiki {
+  border-color: transparent;
+  background-color: var(--surface-1);
+}
+
+[data-theme='bloom'] .shiki span,
+:root[data-theme='bloom'].dark .shiki span {
+  background-color: transparent;
+}
+
+[data-theme='bloom'] :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* The chip that stands for this theme in the picker. Unscoped on purpose:
+   the picker shows every theme at once, whichever one is active. */
+.theme-swatch-bloom {
+  background: linear-gradient(135deg, #eef5ee 0 50%, #2f7d52 50% 100%);
+}

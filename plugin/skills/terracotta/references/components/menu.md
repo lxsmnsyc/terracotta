@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Menu
 
@@ -27,64 +27,10 @@ import { Menu, MenuItem, MenuChild } from 'terracotta/menu';
 
 ### Standalone
 
-```tsx
-<Menu as="ul" class="menu">
-  <MenuItem class="menu-item" onClick={() => duplicate()}>Duplicate</MenuItem>
-  <MenuItem class="menu-item" onClick={() => archive()}>Archive</MenuItem>
-  <MenuItem class="menu-item" disabled onClick={() => remove()}>Delete</MenuItem>
-</Menu>
-```
-
-```css
-.menu {
-  margin: 0;
-  padding: 0.25rem;
-  list-style: none;
-  inline-size: 14rem;
-  border: 1px solid #e4e4e7;
-  border-radius: 0.5rem;
-  background: #ffffff;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.12);
-}
-
-.menu-item {
-  border-radius: 0.375rem;
-  padding: 0.4375rem 0.625rem;
-  cursor: pointer;
-}
-
-.menu-item:hover { background: #f4f4f5; }
-
-.menu-item:focus-visible {
-  outline: none;
-  background: #eff6ff;
-}
-
-.menu-item[tc-disabled] {
-  color: #a1a1aa;
-  cursor: not-allowed;
-}
-
-.menu-item[tc-disabled]:hover { background: none; }
-```
-
 > `Menu` renders a `<div>` unless you pass `as`. `MenuItem` renders an `<li>`,
 > so pass `as="ul"` as above to keep the markup valid.
 
 ### As a dropdown
-
-```tsx
-<Popover class="popover" defaultOpen={false}>
-  <PopoverButton class="popover-button">Actions</PopoverButton>
-  <PopoverPanel class="popover-panel popover-panel-flush">
-    <Menu as="ul" class="menu">
-      <MenuItem class="menu-item" onClick={rename}>Rename</MenuItem>
-      <MenuItem class="menu-item" onClick={duplicate}>Duplicate</MenuItem>
-      <MenuItem class="menu-item" onClick={remove}>Delete</MenuItem>
-    </Menu>
-  </PopoverPanel>
-</Popover>
-```
 
 ### With separators and section labels
 
@@ -191,7 +137,7 @@ keys are on this item":
 | --- | --- | --- |
 | `Menu` | `tc-menu` | Always |
 | `MenuItem` | `tc-menu-item`, `tc-button` | Always |
-| `MenuItem` | `tc-owner` | Always — ties the item to its menu's keyboard navigation |
+| `MenuItem` | `tc-owner` | Always. Ties the item to its menu's keyboard navigation |
 | `MenuItem` | `tc-disabled` | The item is disabled |
 
 `tc-disabled` removes an item from arrow-key navigation and type-ahead, so it is
@@ -272,7 +218,7 @@ leaves focus where it was. Move focus yourself when the menu appears:
 ```
 
 An always-visible `Menu` that no popup owns falls outside the pattern
-entirely — the spec covers menubars and menus opened from a button. Give the
+entirely, since the spec covers menubars and menus opened from a button. Give the
 user a real control to move focus from, or reach for a
 [`Toolbar`](./toolbar.md), which is a single tab stop by design.
 
@@ -289,9 +235,9 @@ The container. It holds no state, so it has no value or change props.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` at runtime (typed as `'ul'`) | Element or component to render as. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` | — | The items. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` | none | The items. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes: `role="menu"`, a generated `id`, `tc-menu`.
 
@@ -299,16 +245,16 @@ Rendered attributes: `role="menu"`, a generated `id`, `tc-menu`.
 
 A [`Button`](./button.md) with `role="menuitem"`. Renders an `<li>` by default.
 It sits outside the tab order (`tabindex="-1"`), as the ARIA menu pattern
-requires. That means the menu has no tab stop at all — see [getting focus into
+requires. That means the menu has no tab stop at all. See [getting focus into
 the menu](#getting-focus-into-the-menu).
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'li'` | Element or component to render as. |
 | `disabled` | `boolean` | `false` | Disables the item and removes it from keyboard navigation. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: { disabled: () => boolean }) => JSX.Element` | — | Label, or a render prop receiving the item's disabled state. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. This is where `onClick` goes. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: { disabled: () => boolean }) => JSX.Element` | none | Label, or a render prop receiving the item's disabled state. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. This is where `onClick` goes. |
 
 `MenuItem` throws if rendered outside a `<Menu>`.
 
@@ -320,4 +266,4 @@ not read the parent `MenuItem`, so pass it the same value.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `disabled` | `boolean` | `false` | The value reported to the render prop. |
-| `children` | `JSX.Element` \| `(state: { disabled: () => boolean }) => JSX.Element` | — | Contents, or a render prop. |
+| `children` | `JSX.Element` \| `(state: { disabled: () => boolean }) => JSX.Element` | none | Contents, or a render prop. |

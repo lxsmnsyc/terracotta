@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # RadioGroup
 
@@ -41,111 +41,9 @@ group at the top level, or the option when nested inside one.
 
 ### Cards
 
-```tsx
-<RadioGroup<string> class="radiogroup" defaultValue="standard">
-  <RadioGroupLabel class="radiogroup-label">Delivery speed</RadioGroupLabel>
-
-  <RadioGroupOption class="radio-card" value="standard">
-    <RadioGroupLabel class="radio-card-title">Standard</RadioGroupLabel>
-    <RadioGroupDescription class="radio-card-hint">
-      3–5 business days, free
-    </RadioGroupDescription>
-  </RadioGroupOption>
-
-  <RadioGroupOption class="radio-card" value="express">
-    <RadioGroupLabel class="radio-card-title">Express</RadioGroupLabel>
-    <RadioGroupDescription class="radio-card-hint">
-      Next business day, £6
-    </RadioGroupDescription>
-  </RadioGroupOption>
-</RadioGroup>
-```
-
-```css
-.radiogroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  inline-size: 22rem;
-}
-
-.radiogroup-label {
-  font-weight: 600;
-}
-
-.radio-card {
-  border: 1px solid #d4d4d8;
-  border-radius: 0.5rem;
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-}
-
-/* The chosen option */
-.radio-card[tc-checked] {
-  border-color: #2563eb;
-  background: #eff6ff;
-}
-
-/* Where the keyboard is — often the same option, since focus selects */
-.radio-card[tc-active] {
-  box-shadow: 0 0 0 3px rgb(37 99 235 / 0.2);
-}
-
-.radio-card[tc-disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.radio-card:focus-visible {
-  outline: 2px solid #2563eb;
-  outline-offset: 2px;
-}
-
-.radio-card-title { display: block; font-weight: 500; }
-.radio-card-hint  { margin: 0.125rem 0 0; color: #52525b; font-size: 0.875rem; }
-```
-
 ### Classic radio dots
 
 The dot is CSS driven by `tc-checked`:
-
-```tsx
-<RadioGroupOption class="radio-row" value="standard">
-  <span class="radio-dot" aria-hidden="true" />
-  <RadioGroupLabel class="radio-row-label">Standard</RadioGroupLabel>
-</RadioGroupOption>
-```
-
-```css
-.radio-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-
-.radio-dot {
-  display: grid;
-  place-items: center;
-  inline-size: 1rem;
-  block-size: 1rem;
-  border: 1px solid #a1a1aa;
-  border-radius: 50%;
-}
-
-.radio-dot::after {
-  content: "";
-  inline-size: 0.5rem;
-  block-size: 0.5rem;
-  border-radius: 50%;
-  background: #2563eb;
-  scale: 0;
-  transition: scale 120ms ease;
-}
-
-.radio-row[tc-checked] .radio-dot { border-color: #2563eb; }
-.radio-row[tc-checked] .radio-dot::after { scale: 1; }
-```
 
 ### Controlled
 
@@ -295,7 +193,7 @@ well.
 
 ### Reading the state in code
 
-On the group — the [select state](../states.md#select-state):
+On the group, from the [select state](../states.md#select-state):
 
 | Member | Type | Description |
 | --- | --- | --- |
@@ -305,7 +203,7 @@ On the group — the [select state](../states.md#select-state):
 | `isActive(value)` / `hasActive()` | | Keyboard focus position. |
 | `disabled()` | `boolean` | Whether the group is disabled. |
 
-Inside an option — the [select option state](../states.md#select-option-state):
+Inside an option, from the [select option state](../states.md#select-option-state):
 
 | Member | Type | Description |
 | --- | --- | --- |
@@ -335,15 +233,15 @@ Owns a single-selection [select state](../states.md#select-state) and renders a
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `defaultValue` | `V` | — | Initially selected value, uncontrolled. Mutually exclusive with `value`. |
-| `value` | `V` | — | Currently selected value, controlled. Mutually exclusive with `defaultValue`. |
-| `onChange` | `(value?: V) => void` | — | Called with the new selection. |
+| `defaultValue` | `V` | none | Initially selected value, uncontrolled. Mutually exclusive with `value`. |
+| `value` | `V` | none | Currently selected value, controlled. Mutually exclusive with `defaultValue`. |
+| `onChange` | `(value?: V) => void` | none | Called with the new selection. |
 | `toggleable` | `boolean` | `false` | Allow clearing the selection by choosing the selected option again. |
 | `disabled` | `boolean` | `false` | Disables the whole group. |
 | `by` | `(a: V, b: V) => boolean` | reference equality | Compares values. Needed for object values. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | — | Label, description and options, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | none | Label, description and options, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="radiogroup"`, `aria-labelledby` and
 `aria-describedby`.
@@ -358,9 +256,9 @@ by default, so it can hold a label and a description.
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `value` | `V` | *required* | The value this option represents. |
 | `disabled` | `boolean` | `false` | Disables this option and removes it from navigation. It is also disabled when the group is. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | — | The option's contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | The option's contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="radio"`, `aria-checked`, `aria-labelledby`,
 `aria-describedby`, and `tabindex`. The `tabindex` is `0` while selected and
@@ -374,8 +272,8 @@ Names the nearest group or option. Renders a `<label>` by default. It takes no
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'label'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | Label text. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | Label text. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<RadioGroupDescription>`
 
@@ -385,8 +283,8 @@ take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | Description text. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | Description text. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 `RadioGroupOption` throws outside a `<RadioGroup>`. The label and description
 throw outside a `<RadioGroup>` or `<RadioGroupOption>`.

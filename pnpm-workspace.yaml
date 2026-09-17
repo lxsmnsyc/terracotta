@@ -4,6 +4,13 @@ packages:
   - docs
 onlyBuiltDependencies:
   - esbuild
+
+# pnpm 11 refuses to install any package published in the last day. The
+# toolchain here is on prereleases that are often hours old when the lockfile is
+# updated, and a deploy on the same day then fails the policy check rather than
+# the build. An hour keeps the guard against a release published minutes ago,
+# while letting a reviewed lockfile deploy the day it is written.
+minimumReleaseAge: 60
 catalog:
   '@changesets/cli': ^2.29.7
   '@lxsmnsyc/oxlint-config': ^0.1.2

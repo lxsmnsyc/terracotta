@@ -1,14 +1,14 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Toast
 
 Toast notifications are short, non-blocking messages. They appear in a corner of
 the screen and go away again. Terracotta splits this into three pieces:
 
-- `ToasterStore` — a framework-agnostic queue. Create it outside your components
+- `ToasterStore` is a framework-agnostic queue. Create it outside your components
   and push messages into it from anywhere.
-- `useToaster(store)` — subscribes to a store and returns a Solid accessor.
-- `<Toaster>` / `<Toast>` — the markup, with the right live-region roles.
+- `useToaster(store)` subscribes to a store and returns a Solid accessor.
+- `<Toaster>` and `<Toast>` are the markup, with the right live-region roles.
 
 The queue lives outside the component tree, so any code can raise a toast
 without prop drilling: a fetch handler, a router guard, a worker callback.
@@ -29,88 +29,7 @@ import { Toast, Toaster, ToasterStore, useToaster } from 'terracotta/toast';
 
 ### The store and the region
 
-```tsx
-import type { JSX } from '@solidjs/web';
-import { For } from 'solid-js';
-import { Toast, Toaster, ToasterStore, useToaster } from 'terracotta/toast';
-
-export interface Notice {
-  title: string;
-  tone: 'info' | 'success' | 'error';
-}
-
-// Created once, outside any component
-export const notices = new ToasterStore<Notice>();
-
-export function Notifications(): JSX.Element {
-  const queue = useToaster(notices);
-
-  return (
-    <Toaster class="toaster">
-      <For each={queue()}>
-        {item => (
-          <Toast class="toast" data-tone={item.data.tone}>
-            <p class="toast-title">{item.data.title}</p>
-            <button
-              type="button"
-              class="toast-dismiss"
-              aria-label="Dismiss"
-              onClick={() => notices.remove(item.id)}
-            >
-              ×
-            </button>
-          </Toast>
-        )}
-      </For>
-    </Toaster>
-  );
-}
-```
-
-```css
-.toaster {
-  position: fixed;
-  inset-block-end: 1rem;
-  inset-inline-end: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  inline-size: min(22rem, calc(100vw - 2rem));
-  z-index: 50;
-}
-
-.toast {
-  display: flex;
-  align-items: start;
-  gap: 0.75rem;
-  border: 1px solid #e4e4e7;
-  border-inline-start-width: 4px;
-  border-radius: 0.5rem;
-  background: #ffffff;
-  padding: 0.75rem 1rem;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
-}
-
-.toast[data-tone="success"] { border-inline-start-color: #16a34a; }
-.toast[data-tone="error"]   { border-inline-start-color: #dc2626; }
-.toast[data-tone="info"]    { border-inline-start-color: #2563eb; }
-
-.toast-title { margin: 0; flex: 1; }
-
-.toast-dismiss {
-  border: none;
-  background: none;
-  font-size: 1.25rem;
-  line-height: 1;
-  cursor: pointer;
-}
-```
-
 Anywhere else in the app:
-
-```tsx
-notices.create({ title: 'Project saved', tone: 'success' });
-```
 
 ### Auto-dismiss
 
@@ -276,8 +195,8 @@ one, and throws otherwise. Renders a `<div>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | The toasts. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The toasts. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes: `tc-toaster`.
 
@@ -288,8 +207,8 @@ A single notification. Renders a `<div>` by default. Does not take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `children` | `JSX.Element` | — | The message. Not a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` | none | The message. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 #### Rendered attributes
 

@@ -1,4 +1,4 @@
-<!-- Generated from docs/ by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
+<!-- Generated from docs/content by scripts/sync-plugin-docs.mjs. Edit the source, not this copy. -->
 
 # Checkbox
 
@@ -36,71 +36,6 @@ box.
 
 ### Uncontrolled
 
-```tsx
-<Checkbox class="checkbox" defaultChecked={false}>
-  <CheckboxIndicator class="checkbox-box">
-    {state => <Show when={state.checked()}><span aria-hidden="true">✓</span></Show>}
-  </CheckboxIndicator>
-  <div class="checkbox-text">
-    <CheckboxLabel class="checkbox-label">Email notifications</CheckboxLabel>
-    <CheckboxDescription class="checkbox-description">
-      We will only write when something needs your attention.
-    </CheckboxDescription>
-  </div>
-</Checkbox>
-```
-
-```css
-.checkbox {
-  display: flex;
-  align-items: start;
-  gap: 0.625rem;
-}
-
-.checkbox-box {
-  display: grid;
-  place-items: center;
-  inline-size: 1.125rem;
-  block-size: 1.125rem;
-  margin-block-start: 0.125rem;
-  border: 1px solid #a1a1aa;
-  border-radius: 0.25rem;
-  background: #ffffff;
-  color: #ffffff;
-  font-size: 0.75rem;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.checkbox-box:focus-visible {
-  outline: 2px solid #2563eb;
-  outline-offset: 2px;
-}
-
-/* Checked */
-.checkbox-box[tc-checked=""] {
-  background: #2563eb;
-  border-color: #2563eb;
-}
-
-/* Indeterminate */
-.checkbox-box[tc-checked="mixed"] {
-  background: #94a3b8;
-  border-color: #94a3b8;
-}
-
-.checkbox-label {
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.checkbox-description {
-  margin: 0.125rem 0 0;
-  color: #71717a;
-  font-size: 0.875rem;
-}
-```
-
 ### Controlled
 
 ```tsx
@@ -112,36 +47,10 @@ const [accepted, setAccepted] = createSignal<boolean | undefined>(false);
 </Checkbox>
 ```
 
-### Indeterminate — a "select all" parent
+### Indeterminate, a "select all" parent
 
 `undefined` is the indeterminate value. It renders as `aria-checked="mixed"` and
 `tc-checked="mixed"`.
-
-```tsx
-const [items, setItems] = createSignal([true, false, true]);
-
-const parentState = (): boolean | undefined => {
-  const all = items();
-  if (all.every(Boolean)) return true;
-  if (all.every(value => !value)) return false;
-  return undefined;
-};
-
-<Checkbox
-  class="checkbox"
-  checked={parentState()}
-  onChange={next => setItems(items().map(() => !!next))}
->
-  <CheckboxIndicator class="checkbox-box">
-    {state => (
-      <span aria-hidden="true">
-        {state.checked() === undefined ? '–' : state.checked() ? '✓' : ''}
-      </span>
-    )}
-  </CheckboxIndicator>
-  <CheckboxLabel class="checkbox-label">Select all</CheckboxLabel>
-</Checkbox>
-```
 
 Toggling from indeterminate produces `true`, which is what a "select all" needs.
 
@@ -202,52 +111,6 @@ The indicator's contents are yours, so the tick can be plain CSS:
 ### Switch layout
 
 The same state, laid out as a switch instead:
-
-```tsx
-<Checkbox class="switch-row" defaultChecked={false}>
-  <CheckboxLabel class="switch-label">Public profile</CheckboxLabel>
-  <CheckboxIndicator class="switch">
-    <span class="switch-thumb" />
-  </CheckboxIndicator>
-</Checkbox>
-```
-
-```css
-.switch-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.switch {
-  display: inline-flex;
-  align-items: center;
-  inline-size: 2.75rem;
-  block-size: 1.5rem;
-  padding: 0.125rem;
-  border: none;
-  border-radius: 999px;
-  background: #d4d4d8;
-  cursor: pointer;
-  transition: background 150ms ease;
-}
-
-.switch-thumb {
-  inline-size: 1.25rem;
-  block-size: 1.25rem;
-  border-radius: 50%;
-  background: #ffffff;
-  transition: translate 150ms ease;
-}
-
-.switch[tc-checked=""] { background: #16a34a; }
-.switch[tc-checked=""] .switch-thumb { translate: 1.25rem 0; }
-
-@media (prefers-reduced-motion: reduce) {
-  .switch, .switch-thumb { transition: none; }
-}
-```
 
 ### Reading the state from elsewhere
 
@@ -337,7 +200,7 @@ descendant. Full reference in [check state](../states.md#check-state).
 | Key | Action |
 | --- | --- |
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Toggles the checkbox, when the indicator has focus |
-| <kbd>Tab</kbd> | Focuses the indicator — the only focusable part |
+| <kbd>Tab</kbd> | Focuses the indicator, which is the only focusable part |
 
 The label is not a focus stop. Clicking it still toggles the box, through the
 native `<label for>` relationship.
@@ -353,12 +216,12 @@ indicator.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `defaultChecked` | `boolean \| undefined` | — | Initial value, uncontrolled. `undefined` starts indeterminate. Mutually exclusive with `checked`. |
-| `checked` | `boolean \| undefined` | — | Current value, controlled. Mutually exclusive with `defaultChecked`. |
+| `defaultChecked` | `boolean \| undefined` | none | Initial value, uncontrolled. `undefined` starts indeterminate. Mutually exclusive with `checked`. |
+| `checked` | `boolean \| undefined` | none | Current value, controlled. Mutually exclusive with `defaultChecked`. |
 | `disabled` | `boolean` | `false` | Blocks every state change. |
-| `onChange` | `(state?: boolean) => void` | — | Called with the new value; `undefined` means indeterminate. |
-| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | — | Contents, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `onChange` | `(state?: boolean) => void` | none | Called with the new value; `undefined` means indeterminate. |
+| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | none | Contents, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<CheckboxIndicator>`
 
@@ -368,9 +231,9 @@ Renders a `<button>` by default.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'button'` | Element or component to render as. |
-| `ref` | `DynamicNode<T>` \| `(el) => void` | — | Handle to the rendered element. |
-| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | — | The visual mark, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | none | The visual mark, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="checkbox"`, `aria-checked`,
 `aria-labelledby` and `aria-describedby`.
@@ -383,8 +246,8 @@ take a `ref`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'label'` | Element or component to render as. |
-| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | — | Label text, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | none | Label text, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<CheckboxDescription>`
 
@@ -394,8 +257,8 @@ Supporting text. The indicator's `aria-describedby` points at it. Renders a
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'p'` | Element or component to render as. |
-| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | — | Description text, or a render prop. |
-| *…rest* | props of `as` | — | Forwarded to the rendered element. |
+| `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | none | Description text, or a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 All three descendants must be rendered inside a `<Checkbox>`. Each throws with a
 message naming itself when it is not.

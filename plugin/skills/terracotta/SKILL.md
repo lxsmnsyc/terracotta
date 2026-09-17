@@ -37,35 +37,221 @@ import { createSignal, For } from 'solid-js';
 
 ## Component catalogue
 
-Subpath — exported parts. The first name in each row is the root that owns the
-state; the rest are its parts.
+Each component's shape, under the subpath it is imported from. Anything a block
+does not show is named after it.
 
-| Subpath                   | Exports                                                                                               |
-| ------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `terracotta/accordion`    | `Accordion`, `AccordionItem`, `AccordionHeader`, `AccordionButton`, `AccordionPanel`                  |
-| `terracotta/alert`        | `Alert`                                                                                               |
-| `terracotta/alert-dialog` | `AlertDialog`, `AlertDialogPanel`, `AlertDialogOverlay`, `AlertDialogTitle`, `AlertDialogDescription` |
-| `terracotta/button`       | `Button`                                                                                              |
-| `terracotta/checkbox`     | `Checkbox`, `CheckboxIndicator`, `CheckboxLabel`, `CheckboxDescription`                               |
-| `terracotta/color-scheme` | `ColorSchemeProvider`, `useColorScheme`, `useNativeColorScheme`, `usePreferredColorScheme`            |
-| `terracotta/combobox`     | `Combobox`, `ComboboxLabel`, `ComboboxInput`, `ComboboxOptions`, `ComboboxOption`                     |
-| `terracotta/command`      | `Command`, `CommandLabel`, `CommandInput`, `CommandOptions`, `CommandOption`                          |
-| `terracotta/command-bar`  | `CommandBar`, `CommandBarPanel`, `CommandBarOverlay`, `CommandBarTitle`, `CommandBarDescription`      |
-| `terracotta/context-menu` | `ContextMenu`, `ContextMenuBoundary`, `ContextMenuPanel`, `ContextMenuOverlay`                        |
-| `terracotta/dialog`       | `Dialog`, `DialogPanel`, `DialogOverlay`, `DialogTitle`, `DialogDescription`                          |
-| `terracotta/disclosure`   | `Disclosure`, `DisclosureButton`, `DisclosurePanel`                                                   |
-| `terracotta/feed`         | `Feed`, `FeedLabel`, `FeedContent`, `FeedArticle`, `FeedArticleLabel`, `FeedArticleDescription`       |
-| `terracotta/listbox`      | `Listbox`, `ListboxLabel`, `ListboxButton`, `ListboxOptions`, `ListboxOption`                         |
-| `terracotta/menu`         | `Menu`, `MenuItem`, `MenuChild`                                                                       |
-| `terracotta/popover`      | `Popover`, `PopoverButton`, `PopoverPanel`, `PopoverOverlay`                                          |
-| `terracotta/radio-group`  | `RadioGroup`, `RadioGroupLabel`, `RadioGroupDescription`, `RadioGroupOption`                          |
-| `terracotta/select`       | `Select`, `SelectOption`                                                                              |
-| `terracotta/tabs`         | `TabGroup`, `TabList`, `Tab`, `TabPanel`                                                              |
-| `terracotta/toast`        | `Toaster`, `Toast`, `ToasterStore`, `useToaster`                                                      |
-| `terracotta/toggle`       | `Toggle`                                                                                              |
-| `terracotta/toolbar`      | `Toolbar`                                                                                             |
-| `terracotta/transition`   | `Transition`, `TransitionChild`                                                                       |
-| `terracotta/states`       | State primitives — see [State primitives](#state-primitives)                                          |
+<!-- catalogue:start -->
+
+```tsx
+// terracotta/accordion
+<Accordion>             {/* owns the selection, handles arrow keys */}
+  <AccordionItem>       {/* one section, carries the value */}
+    <AccordionHeader>   {/* heading wrapper */}
+      <AccordionButton/>{/* selects this item */}
+    </AccordionHeader>
+    <AccordionPanel/>   {/* shown while this item is selected */}
+  </AccordionItem>
+</Accordion>
+```
+
+```tsx
+// terracotta/alert-dialog
+<AlertDialog>                 {/* role="alertdialog" aria-modal */}
+  <AlertDialogOverlay/>       {/* backdrop; closes on click */}
+  <AlertDialogPanel>          {/* focus trap */}
+    <AlertDialogTitle/>       {/* labels the dialog */}
+    <AlertDialogDescription/> {/* describes the dialog, and is announced */}
+  </AlertDialogPanel>
+</AlertDialog>
+```
+
+```tsx
+// terracotta/alert
+<Alert/> {/* role="alert": announced the moment it appears */}
+```
+
+```tsx
+// terracotta/button
+<Button/> {/* role="button", keyboard-activated, disabled-aware */}
+```
+
+```tsx
+// terracotta/checkbox
+<Checkbox>              {/* owns the check state */}
+  <CheckboxIndicator/>  {/* role="checkbox", toggles on click */}
+  <CheckboxLabel/>      {/* labels the indicator */}
+  <CheckboxDescription/>{/* describes the indicator */}
+</Checkbox>
+```
+
+```tsx
+// terracotta/color-scheme
+<ColorSchemeProvider>{/* renders no element, context only */}
+  {/* useColorScheme() / usePreferredColorScheme() work anywhere below */}
+</ColorSchemeProvider>
+// also exported: useColorScheme, useNativeColorScheme, usePreferredColorScheme
+```
+
+```tsx
+// terracotta/combobox
+<Combobox matchBy>{/* owns both states */}
+  <ComboboxLabel/> {/* names the combobox */}
+  <ComboboxInput/> {/* role="combobox", drives the query */}
+  <ComboboxOptions>{/* role="listbox" */}
+    <ComboboxOption/>
+  </ComboboxOptions>
+</Combobox>
+```
+
+```tsx
+// terracotta/command-bar
+<CommandBar>                 {/* role="dialog", Cmd/Ctrl+K opens it */}
+  <CommandBarOverlay/>       {/* backdrop; closes on click */}
+  <CommandBarPanel>          {/* focus trap */}
+    <CommandBarTitle/>       {/* labels the dialog */}
+    <CommandBarDescription/> {/* describes the dialog */}
+    {/* usually a <Command> here */}
+  </CommandBarPanel>
+</CommandBar>
+```
+
+```tsx
+// terracotta/command
+<Command matchBy>{/* owns the query and the selection */}
+  <CommandLabel/>{/* names the palette */}
+  <CommandInput/>{/* role="combobox", drives the query */}
+  <CommandOptions>{/* role="listbox", always visible */}
+    <CommandOption/>
+  </CommandOptions>
+</Command>
+```
+
+```tsx
+// terracotta/context-menu
+<ContextMenu>           {/* owns the open state */}
+  <ContextMenuBoundary/>{/* right-clicking here opens the menu */}
+  <ContextMenuOverlay/> {/* optional backdrop; closes on click */}
+  <ContextMenuPanel/>   {/* the menu content */}
+</ContextMenu>
+```
+
+```tsx
+// terracotta/dialog
+<Dialog>                 {/* role="dialog" aria-modal, owns open state */}
+  <DialogOverlay/>       {/* backdrop; closes on click */}
+  <DialogPanel>          {/* focus trap */}
+    <DialogTitle/>       {/* labels the dialog */}
+    <DialogDescription/> {/* describes the dialog */}
+  </DialogPanel>
+</Dialog>
+```
+
+```tsx
+// terracotta/disclosure
+<Disclosure>          {/* owns the open/closed state */}
+  <DisclosureButton/> {/* toggles it */}
+  <DisclosurePanel/>  {/* shown while open */}
+</Disclosure>
+```
+
+```tsx
+// terracotta/feed
+<Feed size busy>            {/* owns size/busy, focus in and out of the feed */}
+  <FeedLabel/>              {/* names the feed */}
+  <FeedContent>             {/* role="feed", handles PageUp/PageDown */}
+    <FeedArticle index>     {/* one article, focusable */}
+      <FeedArticleLabel/>   {/* names the article */}
+      <FeedArticleDescription/>
+    </FeedArticle>
+  </FeedContent>
+</Feed>
+```
+
+```tsx
+// terracotta/listbox
+<Listbox>          {/* owns both states */}
+  <ListboxLabel/>  {/* names the listbox */}
+  <ListboxButton/> {/* toggles the popup, shows the value */}
+  <ListboxOptions> {/* role="listbox", keyboard navigation */}
+    <ListboxOption/>
+  </ListboxOptions>
+</Listbox>
+```
+
+```tsx
+// terracotta/menu
+<Menu>       {/* role="menu", arrow keys and type-ahead */}
+  <MenuItem/>{/* role="menuitem" */}
+</Menu>
+// also exported: MenuChild
+```
+
+```tsx
+// terracotta/popover
+<Popover>          {/* owns the open state */}
+  <PopoverButton/> {/* toggles it, anchors the panel */}
+  <PopoverOverlay/>{/* optional backdrop; closes on click */}
+  <PopoverPanel/>  {/* the floating content */}
+</Popover>
+```
+
+```tsx
+// terracotta/radio-group
+<RadioGroup>                {/* role="radiogroup", owns the value */}
+  <RadioGroupLabel/>        {/* names the group */}
+  <RadioGroupDescription/>  {/* describes the group */}
+  <RadioGroupOption>        {/* role="radio" */}
+    <RadioGroupLabel/>      {/* names this option */}
+    <RadioGroupDescription/>{/* describes this option */}
+  </RadioGroupOption>
+</RadioGroup>
+```
+
+```tsx
+// terracotta/select
+<Select>         {/* role="listbox", owns the selection */}
+  <SelectOption/>{/* role="option" */}
+</Select>
+```
+
+```tsx
+// terracotta/tabs
+<TabGroup horizontal>{/* owns the selected value and the shared ids */}
+  <TabList>          {/* role="tablist", handles arrow keys */}
+    <Tab/>           {/* role="tab" */}
+  </TabList>
+  <TabPanel/>        {/* role="tabpanel", matched to a Tab by value */}
+</TabGroup>
+```
+
+```tsx
+// terracotta/toast
+<Toaster>  {/* the region that holds the queue */}
+  <Toast/> {/* role="status" aria-live="polite" */}
+</Toaster>
+// also exported: ToasterStore, useToaster
+```
+
+```tsx
+// terracotta/toggle
+<Toggle/> {/* role="button" aria-pressed, owns the pressed state */}
+```
+
+```tsx
+// terracotta/toolbar
+<Toolbar> {/* role="toolbar", one tab stop, arrow-key navigation */}
+  {/* any focusable controls */}
+</Toolbar>
+```
+
+```tsx
+// terracotta/transition
+<Transition show>  {/* provides `show` and transitions itself */}
+  <TransitionChild/>{/* optional: extra elements sharing the same show flag */}
+</Transition>
+```
+
+<!-- catalogue:end -->
 
 Pick by pattern, not by name: `Listbox` is a dropdown (button plus popup),
 `Select` is an always-visible listbox, `Command` is an always-visible filtered
