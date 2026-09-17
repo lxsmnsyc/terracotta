@@ -1,4 +1,5 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import type { Accessor } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -24,13 +25,13 @@ export interface CheckStateUncontrolledOptions {
 export type CheckStateOptions = CheckStateControlledOptions | CheckStateUncontrolledOptions;
 
 export interface CheckStateProperties {
-  checked: () => boolean | undefined;
-  setState: (newState?: boolean) => void;
-  disabled: () => boolean;
-  check: () => void;
-  uncheck: () => void;
-  reset: () => void;
-  toggle: () => void;
+  checked(): boolean | undefined;
+  setState(newState?: boolean): void;
+  disabled(): boolean;
+  check(): void;
+  uncheck(): void;
+  reset(): void;
+  toggle(): void;
 }
 
 /**
@@ -113,10 +114,10 @@ export interface CheckStateProviderProps extends CheckStateRenderProps {
   state: CheckStateProperties;
 }
 
-const CheckStateContext = createContext<CheckStateProperties>();
+const CheckStateContext = createContext<CheckStateProperties | null>(null);
 
 export function CheckStateProvider(props: CheckStateProviderProps): JSX.Element {
-  return createComponent(CheckStateContext.Provider, {
+  return createComponent(CheckStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

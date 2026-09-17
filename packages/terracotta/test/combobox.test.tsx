@@ -1,7 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { labelledBy, settle } from './aria';
-import { Combobox, ComboboxInput, ComboboxLabel, ComboboxOption, ComboboxOptions } from '../src';
+import { activeElement, labelledBy, settle } from './aria';
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxLabel,
+  ComboboxOption,
+  ComboboxOptions,
+} from '../src/components/combobox';
 
 const PEOPLE = ['ada', 'grace', 'katherine'];
 
@@ -99,14 +105,14 @@ describe('Combobox accessibility', () => {
     expect(getInput()).toHaveAttribute('aria-activedescendant', getOption('ada').id);
   });
 
-  it('keeps DOM focus on the input and tracks the active option virtually', () => {
+  it('keeps DOM focus on the input and tracks the active option virtually', async () => {
     renderCombobox({ open: true });
     const input = getInput();
 
     fireEvent.keyDown(input, { key: 'ArrowDown' });
 
     expect(input).toHaveAttribute('aria-activedescendant');
-    expect(document.activeElement).not.toBe(getOption('ada'));
+    expect(await activeElement()).not.toBe(getOption('ada'));
   });
 
   it('marks the selected option', () => {

@@ -1,28 +1,10 @@
 # terracotta
 
-## 1.2.4
+## 2.0.0-next.9
 
 ### Patch Changes
 
-- 86cb721: Fix a panel flashing at its final appearance before it enters.
-
-  The starting state and the class carrying the `transition` declaration were
-  applied in the same change, so whenever the element's style had already been
-  computed once, the browser treated the starting state as somewhere to animate
-  _to_: the panel appeared fully visible, faded out to its `enterFrom` state over
-  the whole duration, and only then entered. A `PopoverPanel` inside a
-  `Transition` hit this reliably, because opening the popover computes the panel's
-  style before the transition applies its classes.
-
-  The starting state is now committed on its own before the transition can act on
-  it, in both directions, so an enter begins from `enterFrom` and a leave from
-  `leaveFrom` however the element came to be on screen.
-
-## 1.2.3
-
-### Patch Changes
-
-- 7f254cb: Fix the query that finds focusable elements inside a panel.
+- c128bcf: Fix the query that finds focusable elements inside a panel.
 
   It now looks past the element it was given for anything that takes a subtree out
   of the tab order, so a panel is no longer offered content hidden by an `inert`
@@ -36,11 +18,34 @@
   since neither is tab-navigable, and `summary`, `audio[controls]` and
   `video[controls]` are now included.
 
-## 1.2.2
+- 19fb94b: Fix a panel flashing at its final appearance before it enters.
+
+  The starting state and the class carrying the `transition` declaration were
+  applied in the same change, so whenever the element's style had already been
+  computed once, the browser treated the starting state as somewhere to animate
+  _to_: the panel appeared fully visible, faded out to its `enterFrom` state over
+  the whole duration, and only then entered. A `PopoverPanel` inside a
+  `Transition` hit this reliably, because opening the popover computes the panel's
+  style before the transition applies its classes.
+
+  The starting state is now committed on its own before the transition can act on
+  it, in both directions, so an enter begins from `enterFrom` and a leave from
+  `leaveFrom` however the element came to be on screen.
+
+## 2.0.0-next.8
 
 ### Patch Changes
 
-- 2c7c625: Fix an infinite re-creation loop when a `Transition` or `TransitionChild` is
+- e6d20a0: Stop a nested popup from letting the panel around it act on the same keypress.
+
+  `DialogPanel`, `AlertDialogPanel`, `CommandBarPanel`, `ContextMenuPanel`,
+  `PopoverPanel`, `ListboxOptions` and `ComboboxInput` now stop the `Tab` and
+  `Escape` they handle from bubbling. A `Popover` inside a `Dialog` used to move
+  focus twice per `Tab` — once for its own trap, once for the dialog's — which
+  skipped an element and dropped focus outside the popover, closing it. One
+  `Escape` likewise closed the popup _and_ the dialog. Each now acts on one layer.
+
+- 13a3f49: Fix an infinite re-creation loop when a `Transition` or `TransitionChild` is
   paired with a disclosure component through the `as` prop — `<Transition
 as={PopoverPanel}>`, `<DialogPanel as={TransitionChild}>` and every combination
   of the two — or used as the sole child of one.
@@ -57,24 +62,11 @@ as={PopoverPanel}>`, `<DialogPanel as={TransitionChild}>` and every combination
   small `Offscreen` component for `unmount="offscreen"`. Behaviour of all three
   `unmount` modes is unchanged, and is now covered by tests.
 
-## 1.2.1
-
-### Patch Changes
-
-- 4a05c38: Stop a nested popup from letting the panel around it act on the same keypress.
-
-  `DialogPanel`, `AlertDialogPanel`, `CommandBarPanel`, `ContextMenuPanel`,
-  `PopoverPanel`, `ListboxOptions` and `ComboboxInput` now stop the `Tab` and
-  `Escape` they handle from bubbling. A `Popover` inside a `Dialog` used to move
-  focus twice per `Tab` — once for its own trap, once for the dialog's — which
-  skipped an element and dropped focus outside the popover, closing it. One
-  `Escape` likewise closed the popup _and_ the dialog. Each now acts on one layer.
-
-## 1.2.0
+## 2.0.0-next.7
 
 ### Minor Changes
 
-- 9902614: Drive transitions from a shared `TransitionState` that waits on the element's
+- 2bc2ae2: Drive transitions from a shared `TransitionState` that waits on the element's
   running animations (`Element.getAnimations()`) instead of listening for
   `transitionend`/`animationend`.
 
@@ -108,17 +100,47 @@ as={PopoverPanel}>`, `<DialogPanel as={TransitionChild}>` and every combination
   - `TransitionState` and its `TransitionClasses`, `TransitionHooks` and
     `TransitionStates` types are exported.
 
-## 1.1.2
+## 2.0.0-next.6
 
 ### Patch Changes
 
-- fix ref forwarding, tab group id, etc
+- fix JSX path
 
-## 1.1.1
+## 2.0.0-next.5
 
 ### Patch Changes
 
-- fix popover states closing on child refocus
+- beta.15 compat
+
+## 2.0.0-next.4
+
+### Patch Changes
+
+- e0ed99d: Fix transition orchestration
+
+## 2.0.0-next.3
+
+### Patch Changes
+
+- fix transition orchestration
+
+## 2.0.0-next.2
+
+### Patch Changes
+
+- ea215d4: fix dependencies
+
+## 2.0.0-next.1
+
+### Patch Changes
+
+- c6133fc: cleanup omitProps and context values
+
+## 2.0.0-next.0
+
+### Major Changes
+
+- Solid 2.0 support, multi-entry exports, transition fix
 
 ## 1.1.0
 

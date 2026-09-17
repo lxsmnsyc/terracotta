@@ -7,7 +7,7 @@ interface FeedArticleContextData {
   descriptionID: string;
 }
 
-export const FeedArticleContext = createContext<FeedArticleContextData>();
+export const FeedArticleContext = createContext<FeedArticleContextData | null>(null);
 
 /**
  * Reads the nearest `FeedArticle`'s internal context, which holds the

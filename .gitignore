@@ -76,3 +76,7 @@ typings/
 .fusebox/
 
 dist
+
+# Vitest browser mode writes these when a test fails
+**/__screenshots__
+**/.vitest-attachments

@@ -1,0 +1,391 @@
+/*
+ * Glass.
+ *
+ * Frosted panels floating over a coloured wash. Every surface token is
+ * translucent, so the layers actually stack: a popover over a panel over the
+ * page reads as three sheets of glass rather than three flat rectangles. The
+ * blur comes from `backdrop-filter`, which needs something behind it, so this
+ * theme is the one that paints the document itself.
+ *
+ * As with the other themes, no component and no demo changes. This file
+ * redefines the tokens in `_contract.css` and then reshapes the baseline
+ * vocabulary in `styles/demos.css` by its own class names.
+ */
+
+[data-theme='glass'] {
+  /* Surfaces are sheets of glass, front to back by opacity rather than by
+     lightness. `--surface-0` is the sheet a panel is cut from. */
+  --surface-0: rgb(255 255 255 / 58%);
+  --surface-1: rgb(255 255 255 / 34%);
+  --surface-2: rgb(255 255 255 / 78%);
+
+  --text-1: #101828;
+  --text-2: #445068;
+  --text-3: #8792ab;
+
+  --border: rgb(255 255 255 / 65%);
+  --border-strong: rgb(255 255 255 / 90%);
+
+  --accent: #0e7490;
+  --accent-hover: #0c5f77;
+  --accent-contrast: #ffffff;
+  --accent-soft: rgb(14 165 233 / 16%);
+
+  --focus: #0891b2;
+  --danger: #be123c;
+
+  --overlay: rgb(148 163 194 / 35%);
+
+  /* Glass is generously rounded: a sharp corner reads as paper. */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.85rem;
+  --radius-lg: 1.35rem;
+
+  --shadow-1: 0 1px 2px rgb(16 24 40 / 6%), inset 0 1px 0 rgb(255 255 255 / 60%);
+  --shadow-2: 0 18px 45px rgb(16 24 40 / 16%), inset 0 1px 0 rgb(255 255 255 / 70%);
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+
+  /* Theme-private. Not part of the contract; nothing outside this file uses
+     them, which is exactly what a theme is allowed to do. */
+  --glass-blur: blur(16px) saturate(180%);
+  --glass-blur-strong: blur(28px) saturate(190%);
+  --glass-sheen: inset 0 1px 0 rgb(255 255 255 / 65%);
+  --glass-wash: #eef2fb;
+  --glass-tint-a: rgb(56 189 248 / 45%);
+  --glass-tint-b: rgb(167 139 250 / 40%);
+  --glass-tint-c: rgb(251 146 190 / 32%);
+}
+
+[data-theme='glass'].dark {
+  --surface-0: rgb(255 255 255 / 9%);
+  --surface-1: rgb(255 255 255 / 5%);
+  --surface-2: rgb(255 255 255 / 16%);
+
+  --text-1: #f2f5fb;
+  --text-2: #b3bcd2;
+  --text-3: #7d879e;
+
+  --border: rgb(255 255 255 / 16%);
+  --border-strong: rgb(255 255 255 / 28%);
+
+  --accent: #67e8f9;
+  --accent-hover: #a5f3fc;
+  --accent-contrast: #04202b;
+  --accent-soft: rgb(103 232 249 / 16%);
+
+  --focus: #67e8f9;
+  --danger: #fb7185;
+
+  --overlay: rgb(4 8 18 / 55%);
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 35%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  --shadow-2: 0 20px 50px rgb(0 0 0 / 50%), inset 0 1px 0 rgb(255 255 255 / 14%);
+
+  --glass-sheen: inset 0 1px 0 rgb(255 255 255 / 12%);
+  --glass-wash: #070b18;
+  --glass-tint-a: rgb(14 116 144 / 55%);
+  --glass-tint-b: rgb(91 33 182 / 50%);
+  --glass-tint-c: rgb(190 24 93 / 35%);
+}
+
+/* ------------------------------------------------------------------ *
+ * The wash
+ *
+ * Blur needs something to blur. The gradient goes on the root element, not on
+ * `body`, so `body` can be transparent and every sheet above it, including
+ * the ones inside a demo frame, which is its own document with the same
+ * `data-theme`, has the same backdrop to sample.
+ * ------------------------------------------------------------------ */
+
+[data-theme='glass'] {
+  background-color: var(--glass-wash);
+  background-image:
+    radial-gradient(60rem 40rem at 12% -10%, var(--glass-tint-a), transparent 60%),
+    radial-gradient(50rem 38rem at 92% 4%, var(--glass-tint-b), transparent 62%),
+    radial-gradient(46rem 34rem at 48% 108%, var(--glass-tint-c), transparent 60%);
+  background-attachment: fixed;
+}
+
+[data-theme='glass'] body {
+  background: transparent;
+}
+
+/* ------------------------------------------------------------------ *
+ * Shape
+ *
+ * One rule frosts everything the baseline draws a box around. The selectors
+ * are the baseline's own class names; nothing here knows which component it
+ * is styling.
+ * ------------------------------------------------------------------ */
+
+[data-theme='glass'] .control,
+[data-theme='glass'] .panel,
+[data-theme='glass'] .button,
+[data-theme='glass'] .field,
+[data-theme='glass'] .toggle,
+[data-theme='glass'] .disclosure,
+[data-theme='glass'] .accordion,
+[data-theme='glass'] .listbox-button,
+[data-theme='glass'] .listbox-options,
+[data-theme='glass'] .combobox-input,
+[data-theme='glass'] .combobox-options,
+[data-theme='glass'] .command-input,
+[data-theme='glass'] .command-options,
+[data-theme='glass'] .commandbar-panel,
+[data-theme='glass'] .select,
+[data-theme='glass'] .radio-card,
+[data-theme='glass'] .toolbar,
+[data-theme='glass'] .menu,
+[data-theme='glass'] .contextmenu-panel,
+[data-theme='glass'] .contextmenu-boundary,
+[data-theme='glass'] .popover-panel,
+[data-theme='glass'] .dialog-panel,
+[data-theme='glass'] .drawer-panel,
+[data-theme='glass'] .toast,
+[data-theme='glass'] .feed-article,
+[data-theme='glass'] .alert,
+[data-theme='glass'] .transition-box,
+[data-theme='glass'] .transition-card,
+[data-theme='glass'] .checkbox-box,
+[data-theme='glass'] .switch-track,
+[data-theme='glass'] .demo-tabs,
+[data-theme='glass'] .hero-install {
+  border-color: var(--border);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-sheen);
+}
+
+/* Anything that floats gets the deep shadow and a heavier blur, so it
+   separates from whatever it is covering. */
+[data-theme='glass'] .panel,
+[data-theme='glass'] .listbox-options,
+[data-theme='glass'] .combobox-options,
+[data-theme='glass'] .command-options,
+[data-theme='glass'] .commandbar-panel,
+[data-theme='glass'] .contextmenu-panel,
+[data-theme='glass'] .popover-panel,
+[data-theme='glass'] .dialog-panel,
+[data-theme='glass'] .drawer-panel,
+[data-theme='glass'] .toast,
+[data-theme='glass'] .menu {
+  backdrop-filter: var(--glass-blur-strong);
+  box-shadow: var(--shadow-2);
+}
+
+/* Overlays frost the page instead of dimming it. */
+[data-theme='glass'] .dialog-overlay,
+[data-theme='glass'] .commandbar-overlay,
+[data-theme='glass'] .contextmenu-overlay,
+[data-theme='glass'] .transition-backdrop {
+  backdrop-filter: blur(6px);
+}
+
+/*
+ * Hover and active lift the sheet rather than tinting it, but only for the
+ * controls that are a sheet to begin with. A filled or already-checked control
+ * carries its own colour and its own text colour with it, and painting glass
+ * over it leaves the label stranded on the wrong ground.
+ */
+[data-theme='glass'] .button:not(.button-primary, .button-danger):hover,
+[data-theme='glass'] .control:not(.control-primary):hover,
+[data-theme='glass'] .toggle:not([tc-pressed]):hover,
+[data-theme='glass'] .toolbar-button:not([tc-pressed]):hover,
+[data-theme='glass'] .toolbar-toggle:not([tc-pressed]):hover,
+[data-theme='glass'] .radio-card:not([tc-checked]):hover {
+  background: var(--surface-2);
+}
+
+/* Background only: the list items that mean something by their colour, such as
+   a destructive menu item, keep it. */
+[data-theme='glass'] .menu-item[tc-active],
+[data-theme='glass'] .listbox-option[tc-active],
+[data-theme='glass'] .select-option[tc-active],
+[data-theme='glass'] .combobox-option[tc-active],
+[data-theme='glass'] .command-option[tc-active] {
+  background: var(--surface-2);
+}
+
+/* Checked things glow: the accent is a light source, not a fill. */
+[data-theme='glass'] .toggle[tc-pressed],
+[data-theme='glass'] .toolbar-toggle[tc-pressed],
+[data-theme='glass'] .radio-card[tc-checked],
+[data-theme='glass'] .scheme-picker-option[tc-checked],
+[data-theme='glass'] .sidebar-link[aria-current='page'] {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
+  /* The darker end of the accent in light, the lighter in dark: `--accent`
+     itself only just clears 4:1 on this ground. */
+  color: var(--accent-hover);
+}
+
+[data-theme='glass'] .checkbox-box[tc-checked=''],
+[data-theme='glass'] .checkbox-box[tc-checked='mixed'],
+[data-theme='glass'] .switch-track[tc-checked=''],
+[data-theme='glass'] [tc-pressed] .switch-track {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--accent) 80%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+[data-theme='glass'] .switch-knob {
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 1px 3px rgb(16 24 40 / 30%);
+}
+
+[data-theme='glass'] .radio-row[tc-checked] .radio-dot {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+/* A selected tab is a lit sheet under the label. */
+[data-theme='glass'] .tab[tc-selected],
+[data-theme='glass'] .demo-tab[tc-selected] {
+  background: var(--surface-2);
+  box-shadow: var(--shadow-1);
+  color: var(--text-1);
+}
+
+/*
+ * The filled variants stay filled. They are tinted glass rather than clear:
+ * enough transparency to belong to the theme, enough colour to keep white or
+ * contrast text legible, including on hover.
+ */
+[data-theme='glass'] .button-primary,
+[data-theme='glass'] .control-primary {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--accent) 88%, transparent);
+  backdrop-filter: var(--glass-blur);
+  box-shadow:
+    0 6px 18px color-mix(in srgb, var(--accent) 35%, transparent),
+    var(--glass-sheen);
+  color: var(--accent-contrast);
+}
+
+[data-theme='glass'] .button-primary:hover,
+[data-theme='glass'] .control-primary:hover {
+  background: var(--accent-hover);
+}
+
+[data-theme='glass'] .button-danger {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--danger) 88%, transparent);
+  backdrop-filter: var(--glass-blur);
+  box-shadow:
+    0 6px 18px color-mix(in srgb, var(--danger) 35%, transparent),
+    var(--glass-sheen);
+  color: var(--accent-contrast);
+}
+
+[data-theme='glass'] .button-danger:hover {
+  background: var(--danger);
+}
+
+/* Chrome ------------------------------------------------------------ */
+
+/*
+ * The masthead frosts through a pseudo-element rather than through itself.
+ * An element with `backdrop-filter` becomes a backdrop root: its descendants
+ * can only sample what is inside it, so the theme picker's popup, which hangs
+ * below the masthead and outside its box, had nothing to blur and rendered flat.
+ * Moving the filter to `::before` keeps the masthead frosted while leaving the
+ * popup free to sample the page behind it.
+ */
+[data-theme='glass'] .masthead {
+  position: sticky;
+  border-block-end-color: var(--border);
+  backdrop-filter: none;
+  background: transparent;
+}
+
+[data-theme='glass'] .masthead::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  backdrop-filter: var(--glass-blur-strong);
+  background: var(--surface-1);
+  content: '';
+}
+
+[data-theme='glass'] .brand-mark {
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+[data-theme='glass'] .page-title,
+[data-theme='glass'] .hero-title {
+  letter-spacing: -0.03em;
+}
+
+[data-theme='glass'] .demo-toolbar {
+  background: var(--surface-1);
+}
+
+[data-theme='glass'] .demo-frame {
+  background: transparent;
+}
+
+/*
+ * Shiki bakes an opaque background into both the block and every span, so the
+ * spans have to be cleared as well or they punch solid rectangles through the
+ * frost. The `.dark` compound is there to out-specify `:root.dark .shiki span`
+ * in `prose.css` rather than rely on stylesheet order.
+ */
+[data-theme='glass'] .shiki,
+:root[data-theme='glass'].dark .shiki {
+  border-color: var(--border);
+  backdrop-filter: var(--glass-blur);
+  background-color: var(--surface-1);
+}
+
+[data-theme='glass'] .shiki span,
+:root[data-theme='glass'].dark .shiki span {
+  background-color: transparent;
+}
+
+/*
+ * Inline code gets the translucent ground but *not* the blur. A `backdrop-
+ * filter` box takes everything painted behind it, and on a page with a couple
+ * of hundred inline code spans that meant a couple of hundred blur layers
+ * sampling a fixed background, which smeared visibly over the surrounding
+ * prose and cost a great deal to composite. Blur belongs on surfaces you can
+ * see through to something, not on a word in a sentence.
+ */
+[data-theme='glass'] .prose :not(pre) > code,
+[data-theme='glass'] .page-lede code {
+  background: var(--surface-1);
+}
+
+[data-theme='glass'] .prose blockquote {
+  border-inline-start-color: color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+/*
+ * `backdrop-filter` is expensive to animate and, on a page this dense, it is
+ * the one effect worth dropping when the machine is struggling or the user has
+ * asked for less motion.
+ */
+@media (prefers-reduced-transparency: reduce) {
+  [data-theme='glass'] * {
+    backdrop-filter: none !important;
+  }
+
+  [data-theme='glass'] {
+    --surface-0: #ffffff;
+    --surface-1: #f4f6fb;
+    --surface-2: #e8ecf5;
+  }
+
+  [data-theme='glass'].dark {
+    --surface-0: #121826;
+    --surface-1: #0d1220;
+    --surface-2: #1e2637;
+  }
+}
+
+/* The chip that stands for this theme in the picker. Unscoped on purpose:
+   the picker shows every theme at once, whichever one is active. */
+.theme-swatch-glass {
+  background: linear-gradient(135deg, #dbeafe 0 50%, #a78bfa 50% 100%);
+}

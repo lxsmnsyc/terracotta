@@ -1,4 +1,5 @@
-import type { JSX } from 'solid-js';
+import type { DynamicProps, JSX } from '@solidjs/web';
+import type { Element } from 'solid-js';
 import { Show, children, createComponent } from 'solid-js';
 import createDynamic from './create-dynamic';
 
@@ -13,20 +14,30 @@ export interface UnmountableProps {
 }
 
 interface OffscreenProps {
-  when?: boolean;
+  when: boolean;
   children: JSX.Element;
 }
 
-function Offscreen(props: OffscreenProps): JSX.Element {
-  const result = children(() => props.children);
+/**
+ * The shape `createUnmountable` renders through. `Show` is overloaded, so it
+ * only lines up with `Offscreen` once both are read as this one signature.
+ */
+type Conditional = (props: OffscreenProps) => JSX.Element;
 
-  return createComponent(Show, {
+function Offscreen(props: OffscreenProps): JSX.Element {
+  // Resolved eagerly, and here rather than inside the branch below: the
+  // subtree is then owned by `Offscreen` itself, so the condition going false
+  // detaches it instead of disposing it — which is what lets an offscreen
+  // element keep its state while hidden.
+  const result = children(() => props.children)();
+
+  return createComponent<{ when: boolean; keyed: true; children: Element }>(Show, {
     get when() {
       return props.when;
     },
     keyed: true,
-    get children() {
-      return result as unknown as JSX.Element;
+    get children(): Element {
+      return result;
     },
   });
 }
@@ -36,7 +47,7 @@ export function createUnmountable(
   shouldMount: () => boolean,
   render: () => JSX.Element,
 ): JSX.Element {
-  return createDynamic(() => (props.unmount === 'offscreen' ? Offscreen : Show), {
+  return createDynamic<Conditional>(() => (props.unmount === 'offscreen' ? Offscreen : Show), {
     get when() {
       // `unmount` defaults to true, so an omitted prop has to mean "remove me
       // while hidden". Only an explicit `false` keeps the children mounted
@@ -47,5 +58,7 @@ export function createUnmountable(
     get children() {
       return render();
     },
-  });
+    // `createDynamic` supplies `component` itself, which `DynamicProps`
+    // still asks for here.
+  } as DynamicProps<Conditional>);
 }

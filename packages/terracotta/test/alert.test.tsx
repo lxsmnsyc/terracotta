@@ -1,6 +1,7 @@
 import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { Alert, Toast, Toaster } from '../src';
+import { Alert } from '../src/components/alert';
+import { Toast, Toaster } from '../src/components/toast';
 
 const MISSING_TOASTER = /must be used inside a <Toaster>/;
 

@@ -1,4 +1,5 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import type { Accessor } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -29,12 +30,12 @@ export type DisclosureStateOptions =
   | DisclosureStateUncontrolledOptions;
 
 export interface DisclosureStateProperties {
-  isOpen: () => boolean;
-  setState: (newState: boolean) => void;
-  disabled: () => boolean;
-  close: () => void;
-  open: () => void;
-  toggle: () => void;
+  isOpen(): boolean;
+  setState(newState: boolean): void;
+  disabled(): boolean;
+  close(): void;
+  open(): void;
+  toggle(): void;
 }
 
 /**
@@ -119,10 +120,10 @@ export interface DisclosureStateProviderProps extends DisclosureStateRenderProps
   state: DisclosureStateProperties;
 }
 
-const DisclosureStateContext = createContext<DisclosureStateProperties>();
+const DisclosureStateContext = createContext<DisclosureStateProperties | null>(null);
 
 export function DisclosureStateProvider(props: DisclosureStateProviderProps): JSX.Element {
-  return createComponent(DisclosureStateContext.Provider, {
+  return createComponent(DisclosureStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

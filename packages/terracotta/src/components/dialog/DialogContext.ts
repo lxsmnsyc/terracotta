@@ -8,7 +8,7 @@ interface DialogContextData {
   descriptionID: string;
 }
 
-export const DialogContext = createContext<DialogContextData>();
+export const DialogContext = createContext<DialogContextData | null>(null);
 
 /**
  * Reads the nearest `Dialog`'s internal context, which holds the generated ids

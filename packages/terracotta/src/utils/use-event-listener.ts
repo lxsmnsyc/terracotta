@@ -1,33 +1,29 @@
-import { onCleanup } from 'solid-js';
-
-function useEventListener<K extends keyof HTMLElementEventMap>(
-  node: HTMLElement,
+function useEventListener<T extends HTMLElement, K extends keyof HTMLElementEventMap>(
+  node: T,
   type: K,
   listener: (ev: HTMLElementEventMap[K]) => void,
   options?: boolean | AddEventListenerOptions,
-): void;
-function useEventListener<K extends keyof WindowEventMap>(
-  node: Window,
+): () => void;
+function useEventListener<T extends Window, K extends keyof WindowEventMap>(
+  node: T,
   type: K,
   listener: (ev: WindowEventMap[K]) => void,
   options?: boolean | AddEventListenerOptions,
-): void;
-function useEventListener<K extends keyof DocumentEventMap>(
-  node: Document,
+): () => void;
+function useEventListener<T extends Document, K extends keyof DocumentEventMap>(
+  node: T,
   type: K,
   listener: (ev: DocumentEventMap[K]) => void,
   options?: boolean | AddEventListenerOptions,
-): void;
-function useEventListener(
-  node: HTMLElement | Window | Document,
-  type: string,
-  listener: EventListenerOrEventListenerObject,
+): () => void;
+function useEventListener<T extends Document, K extends keyof DocumentEventMap>(
+  node: T,
+  type: K,
+  listener: (ev: DocumentEventMap[K]) => void,
   options?: boolean | AddEventListenerOptions,
-): void {
+): () => void {
   node.addEventListener(type, listener, options);
-  onCleanup(() => {
-    node.removeEventListener(type, listener, options);
-  });
+  return (node.removeEventListener<K>).bind(node, type, listener, options);
 }
 
 export default useEventListener;

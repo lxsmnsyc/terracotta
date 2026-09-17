@@ -1,19 +1,18 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, createUniqueId, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createEffect, createUniqueId, merge, omit } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
 import {
-  DisclosureStateProvider,
   createDisclosureState,
+  DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -28,7 +27,7 @@ export type DialogControlledBaseProps = Prettify<
   DisclosureStateControlledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type DialogControlledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+export type DialogControlledProps<T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   DialogControlledBaseProps
 >;
@@ -37,16 +36,16 @@ export type DialogUncontrolledBaseProps = Prettify<
   DisclosureStateUncontrolledOptions & DisclosureStateRenderProps & UnmountableProps
 >;
 
-export type DialogUncontrolledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+export type DialogUncontrolledProps<T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   DialogUncontrolledBaseProps
 >;
 
-export type DialogProps<T extends ValidConstructor = 'div'> =
+export type DialogProps<T extends ValidComponent = 'div'> =
   | DialogControlledProps<T>
   | DialogUncontrolledProps<T>;
 
-function isDialogUncontrolled<T extends ValidConstructor = 'div'>(
+function isDialogUncontrolled<T extends ValidComponent = 'div'>(
   props: DialogProps<T>,
 ): props is DialogUncontrolledProps<T> {
   return 'defaultOpen' in props;
@@ -61,7 +60,7 @@ function isDialogUncontrolled<T extends ValidConstructor = 'div'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
  */
-export function Dialog<T extends ValidConstructor = 'div'>(props: DialogProps<T>): JSX.Element {
+export function Dialog<T extends ValidComponent = 'div'>(props: DialogProps<T>): JSX.Element {
   const ownerID = createUniqueId();
   const panelID = createUniqueId();
   const titleID = createUniqueId();
@@ -71,15 +70,18 @@ export function Dialog<T extends ValidConstructor = 'div'>(props: DialogProps<T>
 
   const state = createDisclosureState(props);
 
-  createEffect(() => {
-    if (state.isOpen()) {
-      fsp.save();
-    } else {
-      fsp.load();
-    }
-  });
+  createEffect(
+    () => state.isOpen(),
+    (flag) => {
+      if (flag) {
+        fsp.save();
+      } else {
+        fsp.load();
+      }
+    },
+  );
 
-  return createComponent(DialogContext.Provider, {
+  return createComponent(DialogContext, {
     value: {
       ownerID,
       panelID,
@@ -92,13 +94,13 @@ export function Dialog<T extends ValidConstructor = 'div'>(props: DialogProps<T>
         () => state.isOpen(),
         () =>
           createDynamic(
-            () => props.as ?? ('div' as T),
-            mergeProps(
+            () => props.as || ('div' as T),
+            merge(
               DIALOG_TAG,
               {
                 id: ownerID,
                 role: 'dialog',
-                'aria-modal': true,
+                'aria-modal': 'true',
                 'aria-labelledby': titleID,
                 'aria-describedby': descriptionID,
                 get children() {
@@ -114,7 +116,8 @@ export function Dialog<T extends ValidConstructor = 'div'>(props: DialogProps<T>
               createARIADisabledState(() => state.disabled()),
               createExpandedState(() => state.isOpen()),
               isDialogUncontrolled(props)
-                ? omitProps(props, [
+                ? omit(
+                    props,
                     'as',
                     'children',
                     'defaultOpen',
@@ -123,8 +126,9 @@ export function Dialog<T extends ValidConstructor = 'div'>(props: DialogProps<T>
                     'onClose',
                     'onOpen',
                     'unmount',
-                  ])
-                : omitProps(props, [
+                  )
+                : omit(
+                    props,
                     'as',
                     'children',
                     'isOpen',
@@ -133,8 +137,8 @@ export function Dialog<T extends ValidConstructor = 'div'>(props: DialogProps<T>
                     'onClose',
                     'onOpen',
                     'unmount',
-                  ]),
-            ) as DynamicProps<T>,
+                  ),
+            ) as ComponentProps<T>,
           ),
       );
     },

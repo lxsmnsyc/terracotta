@@ -1,12 +1,7 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createUniqueId, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createUniqueId, merge, omit } from 'solid-js';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusNext, focusPrev } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
@@ -18,7 +13,7 @@ export interface FeedBaseProps {
   busy?: boolean;
 }
 
-export type FeedProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<T, FeedBaseProps>;
+export type FeedProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<T, FeedBaseProps>;
 
 /**
  * A stream of articles with the feed keyboard pattern: <kbd>Page Down</kbd>
@@ -31,22 +26,22 @@ export type FeedProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
  */
-export function Feed<T extends ValidConstructor = 'div'>(props: FeedProps<T>): JSX.Element {
+export function Feed<T extends ValidComponent = 'div'>(props: FeedProps<T>): JSX.Element {
   const ownerID = createUniqueId();
   const labelID = createUniqueId();
   const contentID = createUniqueId();
 
   const [ref, setRef] = createForwardRef(props);
 
-  return createComponent(FeedContext.Provider, {
+  return createComponent(FeedContext, {
     value: {
       ownerID,
       labelID,
       contentID,
-      get size() {
+      getSize() {
         return props.size;
       },
-      get busy() {
+      isBusy() {
         return !!props.busy;
       },
       focusNext() {
@@ -64,15 +59,15 @@ export function Feed<T extends ValidConstructor = 'div'>(props: FeedProps<T>): J
     },
     get children() {
       return createDynamic(
-        () => props.as ?? ('div' as T),
-        mergeProps(
+        () => props.as || ('div' as T),
+        merge(
           FEED_TAG,
           {
             id: ownerID,
             ref: setRef,
           },
-          omitProps(props, ['as', 'busy', 'size']),
-        ) as DynamicProps<T>,
+          omit(props, 'as', 'busy', 'size'),
+        ) as ComponentProps<T>,
       );
     },
   });

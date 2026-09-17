@@ -1,35 +1,33 @@
-import type { JSX } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import {
   createComponent,
   createContext,
   createEffect,
   createMemo,
   createSignal,
-  mergeProps,
-  on,
+  createUniqueId,
+  merge,
+  omit,
   onCleanup,
   useContext,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
-import type { TransitionHooks, TransitionStates } from '../../states/create-transition-state';
-import { TransitionState } from '../../states/create-transition-state';
+import {
+  type TransitionHooks,
+  TransitionState,
+  type TransitionStates,
+} from '../../states/create-transition-state';
 import assert from '../../utils/assert';
+import { createDependencyList } from '../../utils/create-dependency-list';
 import createDynamic from '../../utils/create-dynamic';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
-import { createForwardRef } from '../../utils/dynamic-prop';
+import { createForwardRef, type HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import type { Prettify } from '../../utils/types';
-
 export interface TransitionRootBaseProps {
   show: boolean;
 }
 
-const TransitionRootContext = createContext<TransitionRootBaseProps>();
+const TransitionRootContext = createContext<TransitionRootBaseProps | null>(null);
 const TransitionStateContext = createContext<{ value?: TransitionState }>({});
 
 function useTransitionRootContext(componentName: string): TransitionRootBaseProps {
@@ -49,7 +47,7 @@ export interface TransitionBaseChildProps extends UnmountableProps, TransitionHo
   leaveTo?: string;
 }
 
-export type TransitionChildProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+export type TransitionChildProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
   T,
   TransitionBaseChildProps
 >;
@@ -74,7 +72,7 @@ function ignoreTransitionError(): void {
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/transition.md}
  */
-export function TransitionChild<T extends ValidConstructor = 'div'>(
+export function TransitionChild<T extends ValidComponent = 'div'>(
   props: TransitionChildProps<T>,
 ): JSX.Element {
   const root = useTransitionRootContext('TransitionChild');
@@ -123,9 +121,9 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
   const [ready, setReady] = createSignal(false);
 
   const state = new TransitionState(ready, {
-    onTransition(value) {
-      props.onTransition?.(value);
-      setCurrent(value);
+    onTransition(state) {
+      props.onTransition?.(state);
+      setCurrent(state);
     },
     beforeEnter() {
       props.beforeEnter?.();
@@ -161,17 +159,28 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
     return value === 'leave-from' || value === 'leave-to' ? true : undefined;
   }
 
-  createEffect(() => {
-    state.setClasses({
-      enter: getClassList(props.enter),
-      enterFrom: getClassList(props.enterFrom),
-      enterTo: getClassList(props.enterTo),
-      entered: getClassList(props.entered),
-      leave: getClassList(props.leave),
-      leaveFrom: getClassList(props.leaveFrom),
-      leaveTo: getClassList(props.leaveTo),
-    });
-  });
+  createEffect(
+    createDependencyList(() => [
+      props.enter,
+      props.enterFrom,
+      props.enterTo,
+      props.entered,
+      props.leave,
+      props.leaveFrom,
+      props.leaveTo,
+    ]),
+    ([enter, enterFrom, enterTo, entered, leave, leaveFrom, leaveTo]) => {
+      state.setClasses({
+        enter: getClassList(enter),
+        enterFrom: getClassList(enterFrom),
+        enterTo: getClassList(enterTo),
+        entered: getClassList(entered),
+        leave: getClassList(leave),
+        leaveFrom: getClassList(leaveFrom),
+        leaveTo: getClassList(leaveTo),
+      });
+    },
+  );
 
   if (parent) {
     parent.register(state);
@@ -179,18 +188,16 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
     onCleanup(() => {
       parent.unregister(state);
     });
-
-    createEffect(
-      on(internalRef, (element) => {
-        if (element instanceof HTMLElement && element.isConnected) {
-          state.setElement(element);
-        }
-      }),
-    );
+    createEffect(internalRef, (element) => {
+      if (element instanceof HTMLElement && element.isConnected) {
+        state.setElement(element);
+      }
+    });
   }
 
   createEffect(
-    on([internalRef, () => root.show], ([element, flag]) => {
+    createDependencyList(() => [internalRef(), root.show]),
+    ([element, flag]) => {
       // `unmount` throws the element away and builds a new one, and the ref
       // still holds the old one when `show` flips back to true. Transitioning
       // that detached element would put the classes somewhere invisible and
@@ -205,17 +212,23 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
           state.hide().catch(ignoreTransitionError);
         }
       }
-    }),
+    },
   );
 
-  return createComponent(TransitionStateContext.Provider, {
+  const id = createUniqueId();
+
+  return createComponent(TransitionStateContext, {
     value: { value: state },
     get children() {
       return createUnmountable(props, visible, () =>
         createDynamic(
-          () => props.as ?? ('div' as T),
-          mergeProps(
-            omitProps(props, [
+          () => props.as || ('div' as T),
+          merge(
+            {
+              id,
+            },
+            omit(
+              props,
               'as',
               'enter',
               'enterFrom',
@@ -232,7 +245,7 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
               'entered',
               'onTransition',
               'ref',
-            ]),
+            ),
             {
               ref: setInternalRef,
               get 'tc-transition'() {
@@ -242,14 +255,14 @@ export function TransitionChild<T extends ValidConstructor = 'div'>(
                 return isInert();
               },
             },
-          ) as DynamicProps<T>,
+          ) as ComponentProps<T>,
         ),
       );
     },
   });
 }
 
-export type TransitionProps<T extends ValidConstructor = 'div'> = Prettify<
+export type TransitionProps<T extends ValidComponent = 'div'> = Prettify<
   TransitionRootBaseProps & TransitionChildProps<T>
 >;
 
@@ -262,18 +275,18 @@ export type TransitionProps<T extends ValidConstructor = 'div'> = Prettify<
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/transition.md}
  */
-export function Transition<T extends ValidConstructor = 'div'>(
+export function Transition<T extends ValidComponent = 'div'>(
   props: TransitionProps<T>,
 ): JSX.Element {
-  return createComponent(TransitionRootContext.Provider, {
+  return createComponent(TransitionRootContext, {
     value: props,
     get children() {
-      return createComponent(TransitionStateContext.Provider, {
+      return createComponent(TransitionStateContext, {
         value: { value: undefined },
         get children() {
           return createComponent(
             TransitionChild,
-            omitProps(props, ['show']) as TransitionChildProps<T>,
+            omit(props, 'show') as unknown as TransitionChildProps<T>,
           );
         },
       });

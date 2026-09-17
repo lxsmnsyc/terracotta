@@ -1,4 +1,5 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { Accessor } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import {
   createComponent,
   createContext,
@@ -12,14 +13,14 @@ import isEqual from '../utils/is-equal';
 import type { Ref } from '../utils/types';
 
 export interface SelectStateProperties<T> {
-  isSelected: (value: T) => boolean;
-  select: (value: T) => void;
-  hasSelected: () => boolean;
-  isActive: (value: T) => boolean;
-  hasActive: () => boolean;
-  focus: (value: T) => void;
-  blur: () => void;
-  disabled: () => boolean;
+  isSelected(value: T): boolean;
+  select(value: T): void;
+  hasSelected(): boolean;
+  isActive(value: T): boolean;
+  hasActive(): boolean;
+  focus(value: T): void;
+  blur(): void;
+  disabled(): boolean;
 }
 
 export interface SingleSelectStateControlledOptions<T> {
@@ -64,10 +65,10 @@ export function createSingleSelectState<T>(
   let selectedValue: Accessor<T | undefined>;
   let setSelectedValue: (value: T | undefined) => void;
 
-  const equals = options.by ?? isEqual;
+  const equals = options.by || isEqual;
 
   if ('defaultValue' in options) {
-    const [selected, setSelected] = createSignal<T | undefined>(options.defaultValue);
+    const [selected, setSelected] = createSignal<T | undefined>(() => options.defaultValue);
     selectedValue = selected;
     setSelectedValue = (value): void => {
       setSelected(() => value);
@@ -164,7 +165,7 @@ export function createMultipleSelectState<T>(
   let selectedValues: Accessor<T[]>;
   let setSelectedValues: (value: T[]) => void;
 
-  const equals = options.by ?? isEqual;
+  const equals = options.by || isEqual;
 
   if ('defaultValue' in options) {
     const [selected, setSelected] = createSignal<T[]>(options.defaultValue);
@@ -257,13 +258,11 @@ export interface SelectStateProviderProps<T> extends SelectStateRenderProps<T> {
   state: SelectStateProperties<T>;
 }
 
-const SelectStateContext = createContext<SelectStateProperties<unknown>>();
+const SelectStateContext = createContext<SelectStateProperties<unknown> | null>(null);
 
 export function SelectStateProvider<T>(props: SelectStateProviderProps<T>): JSX.Element {
-  return createComponent(SelectStateContext.Provider, {
-    // The context erases the value type; every consumer re-applies its own `T`
-    // through `useSelectState`.
-    value: props.state as SelectStateProperties<unknown>,
+  return createComponent(SelectStateContext, {
+    value: props.state,
     get children() {
       const current = props.children;
       if (typeof current === 'function') {

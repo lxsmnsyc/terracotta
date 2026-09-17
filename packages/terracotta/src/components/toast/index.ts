@@ -1,18 +1,17 @@
-import type { JSX } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import {
   createComponent,
   createContext,
-  createEffect,
   createSignal,
   createUniqueId,
-  mergeProps,
-  onCleanup,
+  merge,
+  omit,
+  onSettled,
   useContext,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import assert from '../../utils/assert';
 import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 
 const TOAST_TAG = createTag('toast');
@@ -22,7 +21,7 @@ interface ToastContextData {
   ownerID: string;
 }
 
-const ToastContext = createContext<ToastContextData>();
+const ToastContext = createContext<ToastContextData | null>(null);
 
 function useToastContext(componentName: string): ToastContextData {
   const context = useContext(ToastContext);
@@ -30,7 +29,7 @@ function useToastContext(componentName: string): ToastContextData {
   return context;
 }
 
-export type ToastProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
+export type ToastProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
 
 /**
  * One notification inside a {@link Toaster}. Carries `role="status"`, so it is
@@ -40,23 +39,23 @@ export type ToastProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
  */
-export function Toast<T extends ValidConstructor = 'div'>(props: ToastProps<T>): JSX.Element {
+export function Toast<T extends ValidComponent = 'div'>(props: ToastProps<T>): JSX.Element {
   useToastContext('Toast');
 
   return createDynamic(
-    () => props.as ?? ('div' as T),
-    mergeProps(
+    () => props.as || ('div' as T),
+    merge(
       TOAST_TAG,
       {
         role: 'status',
         'aria-live': 'polite',
       },
-      omitProps(props, ['as']),
-    ) as DynamicProps<T>,
+      omit(props, 'as'),
+    ) as ComponentProps<T>,
   );
 }
 
-export type ToasterProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
+export type ToasterProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
 
 /**
  * The region that holds the toasts. It does not read the queue for you:
@@ -66,17 +65,17 @@ export type ToasterProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
  */
-export function Toaster<T extends ValidConstructor = 'div'>(props: ToasterProps<T>): JSX.Element {
+export function Toaster<T extends ValidComponent = 'div'>(props: ToasterProps<T>): JSX.Element {
   const ownerID = createUniqueId();
 
-  return createComponent(ToastContext.Provider, {
+  return createComponent(ToastContext, {
     value: {
       ownerID,
     },
     get children() {
       return createDynamic(
-        () => props.as ?? ('div' as T),
-        mergeProps(TOASTER_TAG, omitProps(props, ['as'])) as DynamicProps<T>,
+        () => props.as || ('div' as T),
+        merge(TOASTER_TAG, omit(props, 'as')) as ComponentProps<T>,
       );
     },
   });
@@ -98,11 +97,11 @@ export type ToasterListener<T> = (queue: ToastData<T>[]) => void;
 export class ToasterStore<T> {
   private static toasterID = 0;
 
-  private readonly id: number;
+  private id: number;
 
   private queue: ToastData<T>[] = [];
 
-  private readonly listeners = new Set<ToasterListener<T>>();
+  private listeners = new Set<ToasterListener<T>>();
 
   private toastID = 0;
 
@@ -161,13 +160,7 @@ export class ToasterStore<T> {
 export function useToaster<T>(toaster: ToasterStore<T>): () => ToastData<T>[] {
   const [signal, setSignal] = createSignal(toaster.getQueue());
 
-  createEffect(() => {
-    onCleanup(
-      toaster.subscribe((queue) => {
-        setSignal(queue);
-      }),
-    );
-  });
+  onSettled(() => toaster.subscribe(setSignal));
 
   return signal;
 }

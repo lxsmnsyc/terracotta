@@ -1,7 +1,12 @@
 import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { describedBy, labelledBy, pressKeyOnFocused } from './aria';
-import { RadioGroup, RadioGroupDescription, RadioGroupLabel, RadioGroupOption } from '../src';
+import { activeElement, describedBy, labelledBy, pressKeyOnFocused } from './aria';
+import {
+  RadioGroup,
+  RadioGroupDescription,
+  RadioGroupLabel,
+  RadioGroupOption,
+} from '../src/components/radio-group';
 
 const OPTIONS = ['small', 'medium', 'large'];
 
@@ -81,20 +86,20 @@ describe('RadioGroup accessibility', () => {
     expect(getOption('small')).toHaveAttribute('aria-checked', 'false');
   });
 
-  it('moves the checked option with the arrow keys', () => {
+  it('moves the checked option with the arrow keys', async () => {
     renderRadioGroup({ value: 'small' });
     getOption('small').focus();
 
     pressKeyOnFocused('ArrowDown');
-    expect(document.activeElement).toBe(getOption('medium'));
+    expect(await activeElement()).toBe(getOption('medium'));
     expect(getOption('medium')).toHaveAttribute('aria-checked', 'true');
 
     pressKeyOnFocused('ArrowUp');
-    expect(document.activeElement).toBe(getOption('small'));
+    expect(await activeElement()).toBe(getOption('small'));
     expect(getOption('small')).toHaveAttribute('aria-checked', 'true');
   });
 
-  it('marks disabled options and skips them while navigating', () => {
+  it('marks disabled options and skips them while navigating', async () => {
     renderRadioGroup({ value: 'small', disabled: ['medium'] });
     const disabled = getOption('medium');
 
@@ -104,7 +109,7 @@ describe('RadioGroup accessibility', () => {
     getOption('small').focus();
     pressKeyOnFocused('ArrowRight');
 
-    expect(document.activeElement).toBe(getOption('large'));
+    expect(await activeElement()).toBe(getOption('large'));
   });
 
   it('marks the whole group as disabled', () => {

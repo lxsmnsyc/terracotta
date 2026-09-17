@@ -1,6 +1,12 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { For, createSignal } from 'solid-js';
-import { Command, CommandInput, CommandLabel, CommandOption, CommandOptions } from 'terracotta';
+import {
+  Command,
+  CommandInput,
+  CommandLabel,
+  CommandOption,
+  CommandOptions,
+} from 'terracotta/command';
 import { CheckIcon, classNames } from './utils';
 
 const people = [
@@ -43,7 +49,7 @@ export default function MultipleSelect(): JSX.Element {
           </For>
         </div>
         <CommandInput
-          class="w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
+          class="w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
           placeholder="Select an item"
         />
         <CommandOptions class="bg-gray-50/50 rounded-lg overflow-hidden">

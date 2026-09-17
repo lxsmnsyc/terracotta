@@ -1,18 +1,13 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createUniqueId, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createUniqueId, merge, omit } from 'solid-js';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import { FeedArticleContext } from './FeedArticleContext';
 import { useFeedContext } from './FeedContext';
 import { FEED_ARTICLE_TAG } from './tags';
 
-export type FeedArticleProps<T extends ValidConstructor = 'article'> = HeadlessPropsWithRef<
+export type FeedArticleProps<T extends ValidComponent = 'article'> = HeadlessPropsWithRef<
   T,
   { index: number }
 >;
@@ -25,7 +20,7 @@ export type FeedArticleProps<T extends ValidConstructor = 'article'> = HeadlessP
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
  */
-export function FeedArticle<T extends ValidConstructor = 'article'>(
+export function FeedArticle<T extends ValidComponent = 'article'>(
   props: FeedArticleProps<T>,
 ): JSX.Element {
   const rootContext = useFeedContext('FeedArticle');
@@ -34,7 +29,7 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
   const labelID = createUniqueId();
   const descriptionID = createUniqueId();
 
-  return createComponent(FeedArticleContext.Provider, {
+  return createComponent(FeedArticleContext, {
     value: {
       ownerID,
       labelID,
@@ -42,8 +37,8 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
     },
     get children() {
       return createDynamic(
-        () => props.as ?? ('article' as T),
-        mergeProps(
+        () => props.as || ('article' as T),
+        merge(
           FEED_ARTICLE_TAG,
           createOwnerAttribute(rootContext.ownerID),
           {
@@ -55,11 +50,11 @@ export function FeedArticle<T extends ValidConstructor = 'article'>(
               return props.index + 1;
             },
             get 'aria-setsize'() {
-              return rootContext.size;
+              return rootContext.getSize();
             },
           },
-          omitProps(props, ['as']),
-        ) as DynamicProps<T>,
+          omit(props, 'as'),
+        ) as ComponentProps<T>,
       );
     },
   });

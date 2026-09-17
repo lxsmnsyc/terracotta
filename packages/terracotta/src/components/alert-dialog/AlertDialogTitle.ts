@@ -1,19 +1,14 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import { useAlertDialogContext } from './AlertDialogContext';
 import { ALERT_DIALOG_TITLE_TAG } from './tags';
 
-export type AlertDialogTitleProps<T extends ValidConstructor = 'h2'> = HeadlessPropsWithRef<
+export type AlertDialogTitleProps<T extends ValidComponent = 'h2'> = HeadlessPropsWithRef<
   T,
   DisclosureStateRenderProps
 >;
@@ -25,16 +20,16 @@ export type AlertDialogTitleProps<T extends ValidConstructor = 'h2'> = HeadlessP
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
  */
-export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
+export function AlertDialogTitle<T extends ValidComponent = 'h2'>(
   props: AlertDialogTitleProps<T>,
 ): JSX.Element {
   const context = useAlertDialogContext('AlertDialogTitle');
   const state = useDisclosureState();
 
   return createDynamic(
-    () => props.as ?? ('h2' as T),
-    mergeProps(
-      omitProps(props, ['as', 'children']),
+    () => props.as || ('h2' as T),
+    merge(
+      omit(props, 'as', 'children'),
       ALERT_DIALOG_TITLE_TAG,
       {
         id: context.titleID,
@@ -48,6 +43,6 @@ export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
       },
       createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

@@ -1,6 +1,5 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, createMemo, mergeProps, onCleanup } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createEffect, createMemo, merge, omit } from 'solid-js';
 import type {
   MultipleSelectStateControlledOptions,
   MultipleSelectStateUncontrolledOptions,
@@ -9,18 +8,15 @@ import type {
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
 import {
-  SelectStateProvider,
   createMultipleSelectState,
   createSingleSelectState,
+  SelectStateProvider,
 } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
 import createTypeAhead from '../../utils/create-type-ahead';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
 import { SELECTED_NODE } from '../../utils/namespace';
 import {
   createARIADisabledState,
@@ -30,7 +26,7 @@ import {
 } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
-import { SelectContext, createSelectOptionFocusNavigator } from './SelectContext';
+import { createSelectOptionFocusNavigator, SelectContext } from './SelectContext';
 import { SELECT_TAG } from './tags';
 
 export interface SelectBaseProps {
@@ -41,10 +37,10 @@ export type SingleSelectControlledBaseProps<V> = Prettify<
   SelectBaseProps & SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type SingleSelectControlledProps<
-  V,
-  T extends ValidConstructor = 'ul',
-> = HeadlessPropsWithRef<T, SingleSelectControlledBaseProps<V>>;
+export type SingleSelectControlledProps<V, T extends ValidComponent = 'ul'> = HeadlessPropsWithRef<
+  T,
+  SingleSelectControlledBaseProps<V>
+>;
 
 export type SingleSelectUncontrolledBaseProps<V> = Prettify<
   SelectBaseProps & SingleSelectStateUncontrolledOptions<V> & SelectStateRenderProps<V>
@@ -52,10 +48,10 @@ export type SingleSelectUncontrolledBaseProps<V> = Prettify<
 
 export type SingleSelectUncontrolledProps<
   V,
-  T extends ValidConstructor = 'ul',
+  T extends ValidComponent = 'ul',
 > = HeadlessPropsWithRef<T, SingleSelectUncontrolledBaseProps<V>>;
 
-export type SingleSelectProps<V, T extends ValidConstructor = 'ul'> =
+export type SingleSelectProps<V, T extends ValidComponent = 'ul'> =
   | SingleSelectControlledProps<V, T>
   | SingleSelectUncontrolledProps<V, T>;
 
@@ -65,7 +61,7 @@ export type MultipleSelectControlledBaseProps<V> = Prettify<
 
 export type MultipleSelectControlledProps<
   V,
-  T extends ValidConstructor = 'ul',
+  T extends ValidComponent = 'ul',
 > = HeadlessPropsWithRef<T, MultipleSelectControlledBaseProps<V>>;
 
 export type MultipleSelectUncontrolledBaseProps<V> = Prettify<
@@ -74,24 +70,24 @@ export type MultipleSelectUncontrolledBaseProps<V> = Prettify<
 
 export type MultipleSelectUncontrolledProps<
   V,
-  T extends ValidConstructor = 'ul',
+  T extends ValidComponent = 'ul',
 > = HeadlessPropsWithRef<T, MultipleSelectUncontrolledBaseProps<V>>;
 
-export type MultipleSelectProps<V, T extends ValidConstructor = 'ul'> =
+export type MultipleSelectProps<V, T extends ValidComponent = 'ul'> =
   | MultipleSelectControlledProps<V, T>
   | MultipleSelectUncontrolledProps<V, T>;
 
-export type SelectProps<V, T extends ValidConstructor = 'ul'> =
+export type SelectProps<V, T extends ValidComponent = 'ul'> =
   | SingleSelectProps<V, T>
   | MultipleSelectProps<V, T>;
 
-function isSelectMultiple<V, T extends ValidConstructor = 'ul'>(
+function isSelectMultiple<V, T extends ValidComponent = 'ul'>(
   props: SelectProps<V, T>,
 ): props is MultipleSelectProps<V, T> {
   return !!props.multiple;
 }
 
-function isSelectUncontrolled<V, T extends ValidConstructor = 'ul'>(
+function isSelectUncontrolled<V, T extends ValidComponent = 'ul'>(
   props: SelectProps<V, T>,
 ): props is SingleSelectUncontrolledProps<V, T> | MultipleSelectUncontrolledProps<V, T> {
   return 'defaultValue' in props;
@@ -105,9 +101,7 @@ function isSelectUncontrolled<V, T extends ValidConstructor = 'ul'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/select.md}
  */
-export function Select<V, T extends ValidConstructor = 'ul'>(
-  props: SelectProps<V, T>,
-): JSX.Element {
+export function Select<V, T extends ValidComponent = 'ul'>(props: SelectProps<V, T>): JSX.Element {
   return createMemo(() => {
     const controller = createSelectOptionFocusNavigator();
     const [ref, setRef] = createForwardRef(props);
@@ -119,100 +113,97 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
       controller.setFirstMatch(value);
     });
 
-    createEffect(() => {
-      const current = ref();
+    createEffect(ref, (current) => {
       if (current instanceof HTMLElement) {
         controller.setRef(current);
-        onCleanup(() => {
-          controller.clearRef();
-        });
-        useEventListener(current, 'keydown', (e) => {
-          if (!state.disabled()) {
-            switch (e.key) {
-              case 'ArrowUp': {
-                if (!props.horizontal) {
+        return mergeFunc(
+          () => {
+            controller.clearRef();
+          },
+          useEventListener(current, 'keydown', (e) => {
+            if (!state.disabled()) {
+              switch (e.key) {
+                case 'ArrowUp': {
+                  if (!props.horizontal) {
+                    e.preventDefault();
+                    controller.setPrevChecked(true);
+                  }
+                  break;
+                }
+                case 'ArrowLeft': {
+                  if (props.horizontal) {
+                    e.preventDefault();
+                    controller.setPrevChecked(true);
+                  }
+                  break;
+                }
+                case 'ArrowDown': {
+                  if (!props.horizontal) {
+                    e.preventDefault();
+                    controller.setNextChecked(true);
+                  }
+                  break;
+                }
+                case 'ArrowRight': {
+                  if (props.horizontal) {
+                    e.preventDefault();
+                    controller.setNextChecked(true);
+                  }
+                  break;
+                }
+                case 'Home': {
                   e.preventDefault();
-                  controller.setPrevChecked(true);
+                  controller.setFirstChecked();
+                  break;
                 }
-                break;
-              }
-              case 'ArrowLeft': {
-                if (props.horizontal) {
+                case 'End': {
                   e.preventDefault();
-                  controller.setPrevChecked(true);
+                  controller.setLastChecked();
+                  break;
                 }
-                break;
-              }
-              case 'ArrowDown': {
-                if (!props.horizontal) {
+                case ' ':
+                case 'Enter': {
                   e.preventDefault();
-                  controller.setNextChecked(true);
+                  break;
                 }
-                break;
-              }
-              case 'ArrowRight': {
-                if (props.horizontal) {
-                  e.preventDefault();
-                  controller.setNextChecked(true);
+                default: {
+                  if (e.key.length === 1) {
+                    pushCharacter(e.key);
+                  }
+                  break;
                 }
-                break;
-              }
-              case 'Home': {
-                e.preventDefault();
-                controller.setFirstChecked();
-                break;
-              }
-              case 'End': {
-                e.preventDefault();
-                controller.setLastChecked();
-                break;
-              }
-              case ' ':
-              case 'Enter': {
-                e.preventDefault();
-                break;
-              }
-              default: {
-                if (e.key.length === 1) {
-                  pushCharacter(e.key);
-                }
-                break;
               }
             }
-          }
-        });
-        useEventListener(current, 'focus', () => {
-          if (state.hasSelected()) {
-            controller.setFirstChecked(SELECTED_NODE);
-          } else {
-            controller.setFirstChecked();
-          }
-        });
-        useEventListener(current, 'focusin', (e) => {
-          if (e.target && e.target !== current) {
-            controller.setCurrent(e.target as HTMLElement);
-          }
-        });
+          }),
+          useEventListener(current, 'focus', () => {
+            if (state.hasSelected()) {
+              controller.setFirstChecked(SELECTED_NODE);
+            } else {
+              controller.setFirstChecked();
+            }
+          }),
+          useEventListener(current, 'focusin', (e) => {
+            if (e.target && e.target !== current) {
+              controller.setCurrent(e.target as HTMLElement);
+            }
+          }),
+        );
       }
+      return undefined;
     });
 
-    return createComponent(SelectContext.Provider, {
-      value: {
-        controller,
-        get horizontal() {
-          return !!props.horizontal;
-        },
-      },
+    return createComponent(SelectContext, {
+      value: controller,
       get children() {
         return createDynamic(
-          () => props.as ?? ('ul' as T),
-          mergeProps(
+          () => props.as || ('ul' as T),
+          merge(
             SELECT_TAG,
             {
               id: controller.getId(),
               role: 'listbox',
               get 'aria-multiselectable'() {
-                return props.multiple;
+                return props.multiple ? 'true' : 'false';
               },
               ref: setRef,
               get 'aria-orientation'() {
@@ -227,7 +218,8 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
             createHasSelectedState(() => state.hasSelected()),
             createHasActiveState(() => state.hasActive()),
             isSelectUncontrolled(props)
-              ? omitProps(props, [
+              ? omit(
+                  props,
                   'as',
                   'by',
                   'children',
@@ -238,8 +230,9 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
                   'onChange',
                   'ref',
                   'toggleable',
-                ])
-              : omitProps(props, [
+                )
+              : omit(
+                  props,
                   'as',
                   'by',
                   'children',
@@ -250,7 +243,7 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
                   'onChange',
                   'ref',
                   'toggleable',
-                ]),
+                ),
             {
               get children() {
                 return createComponent(SelectStateProvider, {
@@ -261,7 +254,7 @@ export function Select<V, T extends ValidConstructor = 'ul'>(
                 });
               },
             },
-          ) as DynamicProps<T>,
+          ) as ComponentProps<T>,
         );
       },
     });

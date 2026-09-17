@@ -1,17 +1,16 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createUniqueId, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createUniqueId, merge, omit } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
 import {
-  DisclosureStateProvider,
   createDisclosureState,
+  DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -25,7 +24,7 @@ export type DisclosureControlledBaseProps = Prettify<
   DisclosureStateControlledOptions & DisclosureStateRenderProps
 >;
 
-export type DisclosureControlledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+export type DisclosureControlledProps<T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   DisclosureControlledBaseProps
 >;
@@ -34,16 +33,16 @@ export type DisclosureUncontrolledBaseProps = Prettify<
   DisclosureStateUncontrolledOptions & DisclosureStateRenderProps
 >;
 
-export type DisclosureUncontrolledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+export type DisclosureUncontrolledProps<T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   DisclosureUncontrolledBaseProps
 >;
 
-export type DisclosureProps<T extends ValidConstructor = 'div'> =
+export type DisclosureProps<T extends ValidComponent = 'div'> =
   | DisclosureControlledProps<T>
   | DisclosureUncontrolledProps<T>;
 
-function isDisclosureUncontrolled<T extends ValidConstructor = 'div'>(
+function isDisclosureUncontrolled<T extends ValidComponent = 'div'>(
   props: DisclosureProps<T>,
 ): props is DisclosureUncontrolledProps<T> {
   return 'defaultOpen' in props;
@@ -57,7 +56,7 @@ function isDisclosureUncontrolled<T extends ValidConstructor = 'div'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/disclosure.md}
  */
-export function Disclosure<T extends ValidConstructor = 'div'>(
+export function Disclosure<T extends ValidComponent = 'div'>(
   props: DisclosureProps<T>,
 ): JSX.Element {
   const ownerID = createUniqueId();
@@ -65,7 +64,7 @@ export function Disclosure<T extends ValidConstructor = 'div'>(
   const panelID = createUniqueId();
   const state = createDisclosureState(props);
 
-  return createComponent(DisclosureContext.Provider, {
+  return createComponent(DisclosureContext, {
     value: {
       ownerID,
       buttonID,
@@ -73,14 +72,15 @@ export function Disclosure<T extends ValidConstructor = 'div'>(
     },
     get children() {
       return createDynamic(
-        () => props.as ?? 'div',
-        mergeProps(
+        () => props.as || 'div',
+        merge(
           DISCLOSURE_TAG,
           createDisabledState(() => state.disabled()),
           createARIADisabledState(() => state.disabled()),
           createExpandedState(() => state.isOpen()),
           isDisclosureUncontrolled(props)
-            ? omitProps(props, [
+            ? omit(
+                props,
                 'as',
                 'children',
                 'defaultOpen',
@@ -88,16 +88,8 @@ export function Disclosure<T extends ValidConstructor = 'div'>(
                 'onChange',
                 'onClose',
                 'onOpen',
-              ])
-            : omitProps(props, [
-                'as',
-                'children',
-                'isOpen',
-                'disabled',
-                'onChange',
-                'onClose',
-                'onOpen',
-              ]),
+              )
+            : omit(props, 'as', 'children', 'isOpen', 'disabled', 'onChange', 'onClose', 'onOpen'),
           {
             get children() {
               return createComponent(DisclosureStateProvider, {
@@ -108,7 +100,7 @@ export function Disclosure<T extends ValidConstructor = 'div'>(
               });
             },
           },
-        ) as DynamicProps<T>,
+        ) as ComponentProps<T>,
       );
     },
   });

@@ -9,7 +9,7 @@ interface PopoverContextData {
   anchor?: HTMLElement | null;
 }
 
-export const PopoverContext = createContext<PopoverContextData>();
+export const PopoverContext = createContext<PopoverContextData | null>(null);
 
 /**
  * Reads the nearest `Popover`'s internal context, which holds the generated

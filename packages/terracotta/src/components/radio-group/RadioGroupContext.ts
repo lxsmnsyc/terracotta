@@ -6,7 +6,7 @@ interface RadioGroupContextData {
   descriptionID: string;
 }
 
-export const RadioGroupContext = createContext<RadioGroupContextData>();
+export const RadioGroupContext = createContext<RadioGroupContextData | null>(null);
 
 /**
  * Reads the nearest `RadioGroupOption`'s internal context, which holds the

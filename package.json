@@ -6,22 +6,20 @@
     "examples/*",
     "docs"
   ],
-  "type": "module",
   "scripts": {
     "cs:ver": "changeset version",
     "cs:pub": "changeset publish",
     "cs:add": "changeset add",
-    "lint": "oxlint",
-    "lint:fix": "oxlint --fix",
-    "format": "oxfmt",
-    "format:check": "oxfmt --check"
+    "skill:sync": "node scripts/sync-plugin-docs.mjs",
+    "skill:check": "node scripts/sync-plugin-docs.mjs --check",
+    "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.29.7",
-    "@lxsmnsyc/oxlint-config": "^0.1.2",
-    "oxfmt": "^0.62.0",
-    "oxlint": "^1.77.0",
-    "oxlint-tsgolint": "^7.0.2001",
-    "typescript": "^5.9.3"
+    "@changesets/cli": "catalog:",
+    "@lxsmnsyc/oxlint-config": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "oxlint-tsgolint": "catalog:",
+    "typescript": "catalog:"
   }
 }

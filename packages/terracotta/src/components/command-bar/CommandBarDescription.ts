@@ -1,15 +1,14 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import { useCommandBarContext } from './CommandBarContext';
 import { COMMAND_BAR_DESCRIPTION_TAG } from './tags';
 
-export type CommandBarDescriptionProps<T extends ValidConstructor = 'p'> = HeadlessProps<
+export type CommandBarDescriptionProps<T extends ValidComponent = 'p'> = HeadlessProps<
   T,
   DisclosureStateRenderProps
 >;
@@ -22,14 +21,14 @@ export type CommandBarDescriptionProps<T extends ValidConstructor = 'p'> = Headl
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command-bar.md}
  */
-export function CommandBarDescription<T extends ValidConstructor = 'p'>(
+export function CommandBarDescription<T extends ValidComponent = 'p'>(
   props: CommandBarDescriptionProps<T>,
 ): JSX.Element {
   const context = useCommandBarContext('CommandBarDescription');
   const state = useDisclosureState();
   return createDynamic(
-    () => props.as ?? ('p' as T),
-    mergeProps(
+    () => props.as || ('p' as T),
+    merge(
       COMMAND_BAR_DESCRIPTION_TAG,
       {
         id: context.descriptionID,
@@ -42,8 +41,8 @@ export function CommandBarDescription<T extends ValidConstructor = 'p'>(
         },
       },
       createDisabledState(() => state.disabled()),
-      omitProps(props, ['as', 'children']),
+      omit(props, 'as', 'children'),
       createExpandedState(() => state.isOpen()),
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

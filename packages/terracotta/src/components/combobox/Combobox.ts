@@ -1,13 +1,13 @@
-import type { JSX } from 'solid-js';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
 import {
   createComponent,
   createEffect,
   createMemo,
   createSignal,
   createUniqueId,
-  mergeProps,
+  merge,
+  omit,
 } from 'solid-js';
-import { omitProps } from 'solid-use/props';
 import type {
   MultipleAutocompleteStateControlledOptions,
   MultipleAutocompleteStateUncontrolledOptions,
@@ -24,11 +24,11 @@ import type {
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
 import {
-  DisclosureStateProvider,
   createDisclosureState,
+  DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -62,7 +62,7 @@ export type ComboboxSCSCDBaseProps<V> = Prettify<
     }
 >;
 
-export type ComboboxSCSCDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+export type ComboboxSCSCDProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   ComboboxSCSCDBaseProps<V>
 >;
@@ -77,7 +77,7 @@ export type ComboboxSCSUDBaseProps<V> = Prettify<
     }
 >;
 
-export type ComboboxSCSUDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+export type ComboboxSCSUDProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   ComboboxSCSUDBaseProps<V>
 >;
@@ -92,7 +92,7 @@ export type ComboboxSUSCDBaseProps<V> = Prettify<
     }
 >;
 
-export type ComboboxSUSCDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+export type ComboboxSUSCDProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   ComboboxSUSCDBaseProps<V>
 >;
@@ -107,12 +107,12 @@ export type ComboboxSUSUDBaseProps<V> = Prettify<
     }
 >;
 
-export type ComboboxSUSUDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+export type ComboboxSUSUDProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   ComboboxSUSUDBaseProps<V>
 >;
 
-export type ComboboxSingleProps<V, T extends ValidConstructor = 'div'> =
+export type ComboboxSingleProps<V, T extends ValidComponent = 'div'> =
   | ComboboxSCSCDProps<V, T>
   | ComboboxSCSUDProps<V, T>
   | ComboboxSUSCDProps<V, T>
@@ -128,7 +128,7 @@ export type ComboboxMCSCDBaseProps<V> = Prettify<
     }
 >;
 
-export type ComboboxMCSCDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+export type ComboboxMCSCDProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   ComboboxMCSCDBaseProps<V>
 >;
@@ -143,7 +143,7 @@ export type ComboboxMCSUDBaseProps<V> = Prettify<
     }
 >;
 
-export type ComboboxMCSUDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+export type ComboboxMCSUDProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   ComboboxMCSUDBaseProps<V>
 >;
@@ -158,7 +158,7 @@ export type ComboboxMUSCDBaseProps<V> = Prettify<
     }
 >;
 
-export type ComboboxMUSCDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+export type ComboboxMUSCDProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   ComboboxMUSCDBaseProps<V>
 >;
@@ -173,57 +173,58 @@ export type ComboboxMUSUDBaseProps<V> = Prettify<
     }
 >;
 
-export type ComboboxMUSUDProps<V, T extends ValidConstructor = 'div'> = HeadlessProps<
+export type ComboboxMUSUDProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   ComboboxMUSUDBaseProps<V>
 >;
 
-export type ComboboxMultipleProps<V, T extends ValidConstructor = 'div'> =
+export type ComboboxMultipleProps<V, T extends ValidComponent = 'div'> =
   | ComboboxMCSCDProps<V, T>
   | ComboboxMCSUDProps<V, T>
   | ComboboxMUSCDProps<V, T>
   | ComboboxMUSUDProps<V, T>;
 
-type ComboboxSelectUncontrolledProps<V, T extends ValidConstructor = 'div'> =
+type ComboboxSelectUncontrolledProps<V, T extends ValidComponent = 'div'> =
   | ComboboxMUSCDProps<V, T>
   | ComboboxMUSUDProps<V, T>
   | ComboboxSUSCDProps<V, T>
   | ComboboxSUSUDProps<V, T>;
 
-type ComboboxDisclosureUncontrolledProps<V, T extends ValidConstructor = 'div'> =
+type ComboboxDisclosureUncontrolledProps<V, T extends ValidComponent = 'div'> =
   | ComboboxMCSUDProps<V, T>
   | ComboboxMUSUDProps<V, T>
   | ComboboxSCSUDProps<V, T>
   | ComboboxSUSUDProps<V, T>;
 
-export type ComboboxProps<V, T extends ValidConstructor = 'div'> =
+export type ComboboxProps<V, T extends ValidComponent = 'div'> =
   | ComboboxMultipleProps<V, T>
   | ComboboxSingleProps<V, T>;
 
-function isComboboxMultiple<V, T extends ValidConstructor = 'div'>(
+function isComboboxMultiple<V, T extends ValidComponent = 'div'>(
   props: ComboboxProps<V, T>,
 ): props is ComboboxMultipleProps<V, T> {
   return !!props.multiple;
 }
 
-function isComboboxSelectUncontrolled<V, T extends ValidConstructor = 'div'>(
+function isComboboxSelectUncontrolled<V, T extends ValidComponent = 'div'>(
   props: ComboboxProps<V, T>,
 ): props is ComboboxSelectUncontrolledProps<V, T> {
   return 'defaultValue' in props;
 }
 
-function isComboboxDisclosureUncontrolled<V, T extends ValidConstructor = 'div'>(
+function isComboboxDisclosureUncontrolled<V, T extends ValidComponent = 'div'>(
   props: ComboboxProps<V, T>,
 ): props is ComboboxDisclosureUncontrolledProps<V, T> {
   return 'defaultOpen' in props;
 }
 
-function getProps<V, T extends ValidConstructor = 'div'>(
+function getProps<V, T extends ValidComponent = 'div'>(
   props: ComboboxProps<V, T>,
-): DynamicProps<T> {
+): ComponentProps<T> {
   if (isComboboxSelectUncontrolled(props)) {
     if (isComboboxDisclosureUncontrolled(props)) {
-      return omitProps(props, [
+      return omit(
+        props,
         'as',
         'by',
         'children',
@@ -237,9 +238,10 @@ function getProps<V, T extends ValidConstructor = 'div'>(
         'onOpen',
         'onSelectChange',
         'toggleable',
-      ]) as DynamicProps<T>;
+      ) as ComponentProps<T>;
     }
-    return omitProps(props, [
+    return omit(
+      props,
       'as',
       'by',
       'children',
@@ -253,10 +255,11 @@ function getProps<V, T extends ValidConstructor = 'div'>(
       'onOpen',
       'onSelectChange',
       'toggleable',
-    ]) as DynamicProps<T>;
+    ) as ComponentProps<T>;
   }
   if (isComboboxDisclosureUncontrolled(props)) {
-    return omitProps(props, [
+    return omit(
+      props,
       'as',
       'by',
       'children',
@@ -270,9 +273,10 @@ function getProps<V, T extends ValidConstructor = 'div'>(
       'onSelectChange',
       'toggleable',
       'value',
-    ]) as DynamicProps<T>;
+    ) as ComponentProps<T>;
   }
-  return omitProps(props, [
+  return omit(
+    props,
     'as',
     'by',
     'children',
@@ -286,7 +290,7 @@ function getProps<V, T extends ValidConstructor = 'div'>(
     'onSelectChange',
     'toggleable',
     'value',
-  ]) as DynamicProps<T>;
+  ) as ComponentProps<T>;
 }
 
 /**
@@ -299,7 +303,7 @@ function getProps<V, T extends ValidConstructor = 'div'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
  */
-export function Combobox<V, T extends ValidConstructor = 'div'>(
+export function Combobox<V, T extends ValidComponent = 'div'>(
   props: ComboboxProps<V, T>,
 ): JSX.Element {
   return createMemo(() => {
@@ -308,7 +312,7 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
     const optionsID = createUniqueId();
 
     const disclosureState = createDisclosureState(
-      mergeProps(props, {
+      merge(props, {
         onChange(value: boolean) {
           if (props.onDisclosureChange) {
             props.onDisclosureChange(value);
@@ -319,7 +323,7 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
 
     const autocompleteState = isComboboxMultiple(props)
       ? createMultipleAutocompleteState(
-          mergeProps(props, {
+          merge(props, {
             onChange(value: V[]) {
               if (props.onSelectChange) {
                 props.onSelectChange(value);
@@ -328,7 +332,7 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
           }),
         )
       : createSingleAutocompleteState(
-          mergeProps(props, {
+          merge(props, {
             onChange(value?: V) {
               if (props.onSelectChange) {
                 props.onSelectChange(value);
@@ -346,13 +350,16 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
       },
     );
 
-    createEffect(() => {
-      if (!autocompleteState.hasActive()) {
-        setActiveDescendant(undefined);
-      }
-    });
+    createEffect(
+      () => !autocompleteState.hasActive(),
+      (value) => {
+        if (value) {
+          setActiveDescendant(undefined);
+        }
+      },
+    );
 
-    return createComponent(ComboboxContext.Provider, {
+    return createComponent(ComboboxContext, {
       value: {
         get multiple() {
           return props.multiple;
@@ -363,18 +370,10 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
         controller,
         inputHovering: false,
         optionsHovering: false,
-        get activeDescendant() {
-          return activeDescendant();
-        },
-        set activeDescendant(value: string | undefined) {
-          setActiveDescendant(value);
-        },
-        get selectedDescendant() {
-          return selectedDescendant();
-        },
-        set selectedDescendant(value: string | undefined) {
-          setSelectedDescendant(value);
-        },
+        getActiveDescendant: activeDescendant,
+        setActiveDescendant,
+        getSelectedDescendant: selectedDescendant,
+        setSelectedDescendant,
       },
       get children() {
         return createComponent(AutocompleteStateProvider, {
@@ -384,8 +383,8 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
               state: disclosureState,
               get children() {
                 return createDynamic(
-                  () => props.as ?? 'div',
-                  mergeProps(
+                  () => props.as || 'div',
+                  merge(
                     COMBOBOX_TAG,
                     {
                       'aria-labelledby': labelID,
@@ -399,7 +398,7 @@ export function Combobox<V, T extends ValidConstructor = 'div'>(
                     createHasActiveState(() => autocompleteState.hasActive()),
                     createExpandedState(() => disclosureState.isOpen()),
                     getProps(props),
-                  ) as DynamicProps<T>,
+                  ) as ComponentProps<T>,
                 );
               },
             });

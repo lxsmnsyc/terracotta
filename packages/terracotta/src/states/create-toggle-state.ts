@@ -1,4 +1,4 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { Accessor } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -7,6 +7,7 @@ import {
   untrack,
   useContext,
 } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import assert from '../utils/assert';
 
 export interface ToggleStateControlledOptions {
@@ -24,12 +25,12 @@ export interface ToggleStateUncontrolledOptions {
 export type ToggleStateOptions = ToggleStateControlledOptions | ToggleStateUncontrolledOptions;
 
 export interface ToggleStateProperties {
-  pressed: () => boolean;
-  setState: (newState: boolean) => void;
-  disabled: () => boolean;
-  check: () => void;
-  uncheck: () => void;
-  toggle: () => void;
+  pressed(): boolean;
+  setState(newState: boolean): void;
+  disabled(): boolean;
+  check(): void;
+  uncheck(): void;
+  toggle(): void;
 }
 
 /**
@@ -106,10 +107,10 @@ export interface ToggleStateProviderProps extends ToggleStateRenderProps {
   state: ToggleStateProperties;
 }
 
-const ToggleStateContext = createContext<ToggleStateProperties>();
+const ToggleStateContext = createContext<ToggleStateProperties | null>(null);
 
 export function ToggleStateProvider(props: ToggleStateProviderProps): JSX.Element {
-  return createComponent(ToggleStateContext.Provider, {
+  return createComponent(ToggleStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

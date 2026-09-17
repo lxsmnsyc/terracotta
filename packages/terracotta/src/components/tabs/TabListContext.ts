@@ -2,7 +2,7 @@ import { createContext, createUniqueId, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 import FocusNavigator from '../../utils/focus-navigator';
 
-export const TabListContext = createContext<FocusNavigator>();
+export const TabListContext = createContext<FocusNavigator | null>(null);
 
 /**
  * Reads the nearest `TabList`'s internal context, which holds the focus

@@ -1,7 +1,7 @@
 import { render, screen } from '@solidjs/testing-library';
-import { createSignal } from 'solid-js';
+import { createSignal, flush } from 'solid-js';
 import { describe, expect, it, vi } from 'vitest';
-import { Transition, TransitionChild } from '../src';
+import { Transition, TransitionChild } from '../src/components/transition';
 
 const CLASSES = {
   enter: 'enter',
@@ -29,15 +29,17 @@ async function settle(): Promise<void> {
 }
 
 /**
- * Advances the transition by one step.
+ * Advancing the transition is written out at each site rather than wrapped in a
+ * helper, because awaiting a helper costs a microtask of its own and that extra
+ * tick lands mid-phase.
  *
- * A step costs two microtasks with nothing animating: one for the yield the
+ * A phase costs two microtasks with nothing animating: one for the yield the
  * state takes before it reads the element's animations, and one for resuming
- * the caller of this helper.
+ * the step. A leave opens with one microtask instead, for the `Promise.all`
+ * that lets any nested children leave first. `tc-transition` is written from a
+ * signal on top of that, so the attribute only reaches the DOM on the flush
+ * that follows.
  */
-async function nextStep(): Promise<void> {
-  await Promise.resolve();
-}
 
 const MISSING_ROOT = /must be used inside a <Transition>/;
 
@@ -109,7 +111,9 @@ describe('Transition', () => {
     ));
     const panel = screen.getByText('Panel');
 
-    await nextStep();
+    await Promise.resolve();
+    await Promise.resolve();
+    flush();
 
     expect(panel).not.toHaveClass('enter-from');
     expect(panel).toHaveClass('enter', 'enter-to');
@@ -159,16 +163,20 @@ describe('Transition', () => {
     await settle();
 
     setShow(false);
+    flush();
     // The leave waits on `waitForTransition`, so its classes land a step later
     // rather than in the same tick as the signal write.
-    await nextStep();
+    await Promise.resolve();
+    flush();
 
     expect(panel).toBeInTheDocument();
     expect(panel).not.toHaveClass('entered');
     expect(panel).toHaveClass('leave', 'leave-from');
     expect(panel).toHaveAttribute('tc-transition', 'leave-from');
 
-    await nextStep();
+    await Promise.resolve();
+    await Promise.resolve();
+    flush();
 
     expect(panel).not.toHaveClass('leave-from');
     expect(panel).toHaveClass('leave', 'leave-to');
@@ -186,6 +194,7 @@ describe('Transition', () => {
     await settle();
 
     setShow(false);
+    flush();
 
     expect(screen.getByText('Panel')).toBeInTheDocument();
     expect(afterLeave).not.toHaveBeenCalled();
@@ -209,6 +218,7 @@ describe('Transition', () => {
     expect(beforeLeave).not.toHaveBeenCalled();
 
     setShow(false);
+    flush();
 
     expect(beforeLeave).toHaveBeenCalled();
   });
@@ -223,9 +233,11 @@ describe('Transition', () => {
     const panel = screen.getByText('Panel');
     await settle();
     setShow(false);
+    flush();
     await settle();
 
     setShow(true);
+    flush();
 
     expect(panel).toHaveClass('enter', 'enter-from');
   });
@@ -239,10 +251,12 @@ describe('Transition', () => {
     ));
     await settle();
     setShow(false);
+    flush();
     await settle();
     expect(screen.queryByText('Panel')).not.toBeInTheDocument();
 
     setShow(true);
+    flush();
 
     // The element that mounts is a new one, so the transition has to run
     // against it rather than the detached element the ref still held.
@@ -265,14 +279,15 @@ describe('Transition', () => {
     expect(panel).toHaveClass('entered');
 
     setEnter('enter-slow');
+    flush();
 
     expect(panel).toHaveClass('entered');
     expect(panel).not.toHaveClass('enter-from');
   });
 
-  // jsdom has no `inert` support, so Solid's property assignment lands as a
-  // plain property rather than reflecting to an attribute. The browser-level
-  // behaviour is covered by `e2e/specs/transition.spec.ts`.
+  // jsdom has no `inert` support, so nothing here is actually made
+  // non-interactive: the assertions check that the attribute is written, and
+  // the browser-level behaviour is covered by `e2e/specs/transition.spec.ts`.
   it('marks an element that is mounted but hidden as inert', () => {
     render(() => (
       <Transition show={false} unmount={false} {...CLASSES}>
@@ -280,7 +295,7 @@ describe('Transition', () => {
       </Transition>
     ));
 
-    expect(screen.getByText('Panel').inert).toBe(true);
+    expect(screen.getByText('Panel')).toHaveAttribute('inert');
   });
 
   it('stays interactive while entering and once entered', async () => {
@@ -291,11 +306,11 @@ describe('Transition', () => {
     ));
     const panel = screen.getByText('Panel');
 
-    expect(panel.inert).toBeFalsy();
+    expect(panel).not.toHaveAttribute('inert');
 
     await settle();
 
-    expect(panel.inert).toBeFalsy();
+    expect(panel).not.toHaveAttribute('inert');
   });
 
   it('goes inert while leaving and stays inert once hidden', async () => {
@@ -309,13 +324,15 @@ describe('Transition', () => {
     await settle();
 
     setShow(false);
-    await nextStep();
+    flush();
+    await Promise.resolve();
+    flush();
 
-    expect(panel.inert).toBe(true);
+    expect(panel).toHaveAttribute('inert');
 
     await settle();
 
-    expect(panel.inert).toBe(true);
+    expect(panel).toHaveAttribute('inert');
   });
 
   it('reverses a leave that is still running', async () => {
@@ -330,15 +347,18 @@ describe('Transition', () => {
     await settle();
 
     setShow(false);
-    await nextStep();
+    flush();
+    await Promise.resolve();
+    flush();
     expect(panel).toHaveAttribute('tc-transition', 'leave-from');
 
     setShow(true);
+    flush();
 
     // The leave stops where it is instead of finishing and unmounting.
     expect(panel).toHaveAttribute('tc-transition', 'enter-from');
     expect(panel).not.toHaveClass('leave', 'leave-from', 'leave-to');
-    expect(panel.inert).toBeFalsy();
+    expect(panel).not.toHaveAttribute('inert');
 
     await settle();
 
@@ -358,18 +378,40 @@ describe('Transition', () => {
     expect(panel).toHaveAttribute('tc-transition', 'enter-from');
 
     setShow(false);
+    flush();
     // The leave starts by letting any nested children leave first, so its own
     // classes land a step later.
-    await nextStep();
+    await Promise.resolve();
+    flush();
 
     expect(panel).toHaveAttribute('tc-transition', 'leave-from');
     expect(panel).not.toHaveClass('enter', 'enter-from', 'enter-to');
-    expect(panel.inert).toBe(true);
+    expect(panel).toHaveAttribute('inert');
 
     await settle();
 
     expect(afterEnter).not.toHaveBeenCalled();
     expect(screen.queryByText('Panel')).not.toBeInTheDocument();
+  });
+
+  it('reports each phase through onTransition without binding it to the DOM', async () => {
+    const onTransition = vi.fn<(state: string) => void>();
+    render(() => (
+      <Transition show appear onTransition={onTransition} {...CLASSES}>
+        Panel
+      </Transition>
+    ));
+    const panel = screen.getByText('Panel');
+    await settle();
+
+    expect(onTransition.mock.calls.flat()).toEqual(['enter-from', 'enter-to', 'entered']);
+
+    // The prop is named like an event handler, so leaving it on the props that
+    // reach the element would have Solid bind it as a listener for a DOM
+    // `transition` event and call it with that event in place of a phase.
+    panel.dispatchEvent(new CustomEvent('transition'));
+
+    expect(onTransition).toHaveBeenCalledTimes(3);
   });
 
   it('renders as another element when asked', () => {
@@ -408,6 +450,7 @@ describe('TransitionChild', () => {
     await settle();
 
     setShow(false);
+    flush();
 
     expect(screen.getByText('Child')).toBeInTheDocument();
 
@@ -428,12 +471,13 @@ describe('TransitionChild', () => {
     const child = screen.getByText('Child');
     await settle();
 
-    expect(child.inert).toBeFalsy();
+    expect(child).not.toHaveAttribute('inert');
 
     setShow(false);
+    flush();
     await settle();
 
-    expect(child.inert).toBe(true);
+    expect(child).toHaveAttribute('inert');
   });
 
   it('requires a surrounding Transition', () => {

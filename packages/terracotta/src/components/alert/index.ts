@@ -1,13 +1,12 @@
-import type { JSX } from 'solid-js';
-import { createUniqueId, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createUniqueId, merge, omit } from 'solid-js';
 import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 
 const ALERT_TAG = createTag('alert');
 
-export type AlertProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
+export type AlertProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
 
 /**
  * A live region for a message that needs attention as soon as it appears, such
@@ -18,20 +17,20 @@ export type AlertProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert.md}
  */
-export function Alert<T extends ValidConstructor = 'div'>(props: AlertProps<T>): JSX.Element {
+export function Alert<T extends ValidComponent = 'div'>(props: AlertProps<T>): JSX.Element {
   const alertID = createUniqueId();
 
   return createDynamic(
-    () => props.as ?? ('div' as T),
-    mergeProps(
+    () => props.as || ('div' as T),
+    merge(
       {
         id: alertID,
       },
-      omitProps(props, ['as']),
+      omit(props, 'as'),
       ALERT_TAG,
       {
         role: 'alert',
       },
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

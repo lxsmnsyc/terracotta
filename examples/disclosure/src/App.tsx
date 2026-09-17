@@ -1,7 +1,7 @@
-import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta';
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclosure';
 
-function ChevronUpIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function ChevronUpIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,7 +10,7 @@ function ChevronUpIcon(props: JSX.IntrinsicElements['svg'] & { title: string }):
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
     </svg>
   );
@@ -35,10 +35,12 @@ export default function App(): JSX.Element {
               </>
             )}
           </DisclosureButton>
-          <DisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
-            If you're unhappy with your purchase for any reason, email us within 90 days and we'll
-            refund you in full, no questions asked.
-          </DisclosurePanel>
+          <div>
+            <DisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
+              If you're unhappy with your purchase for any reason, email us within 90 days and we'll
+              refund you in full, no questions asked.
+            </DisclosurePanel>
+          </div>
         </Disclosure>
         <Disclosure defaultOpen as="div">
           <DisclosureButton class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">

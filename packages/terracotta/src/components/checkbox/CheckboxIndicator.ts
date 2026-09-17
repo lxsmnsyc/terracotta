@@ -1,9 +1,8 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { CheckStateRenderProps } from '../../states/create-check-state';
 import { CheckStateChild, useCheckState } from '../../states/create-check-state';
-import type { HeadlessPropsWithRef, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIACheckedState,
@@ -17,7 +16,7 @@ import { Button } from '../button';
 import { useCheckboxContext } from './CheckboxContext';
 import { CHECKBOX_INDICATOR } from './tags';
 
-export type CheckboxIndicatorProps<T extends ValidConstructor = 'button'> = HeadlessPropsWithRef<
+export type CheckboxIndicatorProps<T extends ValidComponent = 'button'> = HeadlessPropsWithRef<
   T,
   CheckStateRenderProps
 >;
@@ -30,7 +29,7 @@ export type CheckboxIndicatorProps<T extends ValidConstructor = 'button'> = Head
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/checkbox.md}
  */
-export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
+export function CheckboxIndicator<T extends ValidComponent = 'button'>(
   props: CheckboxIndicatorProps<T>,
 ): JSX.Element {
   const context = useCheckboxContext('CheckboxIndicator');
@@ -38,19 +37,19 @@ export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(() => {
-    const current = internalRef();
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
-      useEventListener(current, 'click', () => {
+      return useEventListener(current, 'click', () => {
         state.toggle();
       });
     }
+    return undefined;
   });
 
   return createComponent(
     Button,
-    mergeProps(
-      omitProps(props, ['children', 'ref']),
+    merge(
+      omit(props, 'children', 'ref'),
       CHECKBOX_INDICATOR,
       {
         id: context.indicatorID,

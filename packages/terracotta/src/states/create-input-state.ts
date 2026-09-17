@@ -1,4 +1,5 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import type { Accessor } from 'solid-js';
 import { createComponent, createContext, createMemo, createSignal, useContext } from 'solid-js';
 import assert from '../utils/assert';
 
@@ -17,9 +18,9 @@ export interface InputStateUncontrolledOptions {
 export type InputStateOptions = InputStateControlledOptions | InputStateUncontrolledOptions;
 
 export interface InputStateProperties {
-  value: () => string | undefined;
-  setState: (newState?: string) => void;
-  disabled: () => boolean;
+  value(): string | undefined;
+  setState(newState?: string): void;
+  disabled(): boolean;
 }
 
 /**
@@ -74,7 +75,7 @@ export interface InputStateProviderProps extends InputStateRenderProps {
   state: InputStateProperties;
 }
 
-const InputStateContext = createContext<InputStateProperties>();
+const InputStateContext = createContext<InputStateProperties | null>(null);
 
 /**
  * Publishes an input state to its descendants, so `useInputState` and
@@ -84,7 +85,7 @@ const InputStateContext = createContext<InputStateProperties>();
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#input-state}
  */
 export function InputStateProvider(props: InputStateProviderProps): JSX.Element {
-  return createComponent(InputStateContext.Provider, {
+  return createComponent(InputStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

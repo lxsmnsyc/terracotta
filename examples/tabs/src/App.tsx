@@ -1,6 +1,6 @@
-import { Tab, TabGroup, TabList, TabPanel } from 'terracotta';
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { For } from 'solid-js';
+import { Tab, TabGroup, TabList, TabPanel } from 'terracotta/tabs';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -72,7 +72,7 @@ function random(max: number): number {
 }
 
 function loadData(count: number): { title: string; description: string }[] {
-  const data: Article[] = Array.from({ length: count });
+  const data = new Array<Article>(count);
   for (let i = 0; i < count; i += 1) {
     data[i] = {
       title: `${adjectives[random(adjectives.length)]} ${

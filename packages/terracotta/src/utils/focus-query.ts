@@ -80,7 +80,13 @@ function isBlocked(node: Element, cache: Map<Element, boolean>): boolean {
  * anything Terracotta hides carries `inert` or `hidden` regardless.
  */
 function isVisible(node: Element): boolean {
-  return typeof node.checkVisibility === 'function' ? node.checkVisibility() : true;
+  // `visibilityProperty` has to be asked for: a bare `checkVisibility()` only
+  // rules out what is not rendered at all, and `visibility: hidden` leaves the
+  // element in the layout. It is still unfocusable, so the query has to skip
+  // it too.
+  return typeof node.checkVisibility === 'function'
+    ? node.checkVisibility({ visibilityProperty: true })
+    : true;
 }
 
 export default function getFocusableElements(

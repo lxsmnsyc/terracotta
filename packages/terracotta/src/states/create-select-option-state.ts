@@ -1,4 +1,4 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { createComponent, createContext, createMemo, untrack, useContext } from 'solid-js';
 import assert from '../utils/assert';
 import { useSelectState } from './create-select-state';
@@ -9,12 +9,12 @@ export interface SelectOptionStateOptions<T> {
 }
 
 export interface SelectOptionStateProperties {
-  isSelected: () => boolean;
-  select: () => void;
-  isActive: () => boolean;
-  focus: () => void;
-  blur: () => void;
-  disabled: () => boolean;
+  isSelected(): boolean;
+  select(): void;
+  isActive(): boolean;
+  focus(): void;
+  blur(): void;
+  disabled(): boolean;
 }
 
 /**
@@ -27,13 +27,10 @@ export function createSelectOptionState<T>(
   options: SelectOptionStateOptions<T>,
 ): SelectOptionStateProperties {
   const state = useSelectState<T>();
-  // `disabled` is optional, so it is coerced before the logical OR: `??` would
-  // wrongly stop at an explicit `false` instead of falling back to the parent.
-  const isDisabled = createMemo(() => !!options.disabled || state.disabled());
-  const isActive = createMemo(() => state.isActive(options.value));
+  const isDisabled = createMemo(() => options.disabled || state.disabled());
   return {
     isSelected: createMemo(() => state.isSelected(options.value)),
-    isActive,
+    isActive: createMemo(() => state.isActive(options.value)),
     select(): void {
       if (!untrack(isDisabled)) {
         state.select(options.value);
@@ -45,7 +42,7 @@ export function createSelectOptionState<T>(
       }
     },
     blur(): void {
-      if (!untrack(isDisabled) && isActive()) {
+      if (!untrack(isDisabled) && this.isActive()) {
         state.blur();
       }
     },
@@ -61,10 +58,10 @@ export interface SelectOptionStateProviderProps extends SelectOptionStateRenderP
   state: SelectOptionStateProperties;
 }
 
-const SelectOptionStateContext = createContext<SelectOptionStateProperties>();
+const SelectOptionStateContext = createContext<SelectOptionStateProperties | null>(null);
 
 export function SelectOptionStateProvider(props: SelectOptionStateProviderProps): JSX.Element {
-  return createComponent(SelectOptionStateContext.Provider, {
+  return createComponent(SelectOptionStateContext, {
     value: props.state,
     get children() {
       const current = props.children;

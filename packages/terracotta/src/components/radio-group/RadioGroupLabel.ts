@@ -1,12 +1,11 @@
-import type { JSX } from 'solid-js';
-import { mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { merge, omit } from 'solid-js';
 import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { useRadioGroupContext } from './RadioGroupContext';
 import { RADIO_GROUP_LABEL_TAG } from './tags';
 
-export type RadioGroupLabelProps<T extends ValidConstructor = 'label'> = HeadlessProps<T>;
+export type RadioGroupLabelProps<T extends ValidComponent = 'label'> = HeadlessProps<T>;
 
 /**
  * The accessible name of a `RadioGroup` or of one `RadioGroupOption`,
@@ -16,19 +15,19 @@ export type RadioGroupLabelProps<T extends ValidConstructor = 'label'> = Headles
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
  */
-export function RadioGroupLabel<T extends ValidConstructor = 'label'>(
+export function RadioGroupLabel<T extends ValidComponent = 'label'>(
   props: RadioGroupLabelProps<T>,
 ): JSX.Element {
   const context = useRadioGroupContext('RadioGroupLabel');
 
   return createDynamic(
-    () => props.as ?? ('label' as T),
-    mergeProps(
+    () => props.as || ('label' as T),
+    merge(
       RADIO_GROUP_LABEL_TAG,
       {
         id: context.labelID,
       },
-      omitProps(props, ['as']),
-    ) as DynamicProps<T>,
+      omit(props, 'as'),
+    ) as ComponentProps<T>,
   );
 }

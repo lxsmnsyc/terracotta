@@ -1,7 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
 import { labelledBy } from './aria';
-import { Command, CommandInput, CommandLabel, CommandOption, CommandOptions } from '../src';
+import {
+  Command,
+  CommandInput,
+  CommandLabel,
+  CommandOption,
+  CommandOptions,
+} from '../src/components/command';
 
 const ACTIONS = ['open file', 'close file', 'rename file'];
 

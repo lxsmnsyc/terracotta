@@ -2,7 +2,7 @@ import { createContext, createUniqueId, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 import FocusNavigator from '../../utils/focus-navigator';
 
-export const AccordionContext = createContext<FocusNavigator>();
+export const AccordionContext = createContext<FocusNavigator | null>(null);
 
 /**
  * Reads the nearest `Accordion`'s internal context, which holds the focus

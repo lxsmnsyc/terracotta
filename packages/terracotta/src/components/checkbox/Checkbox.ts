@@ -1,6 +1,5 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createUniqueId, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createUniqueId, merge, omit } from 'solid-js';
 import type {
   CheckStateControlledOptions,
   CheckStateRenderProps,
@@ -8,7 +7,7 @@ import type {
 } from '../../states/create-check-state';
 import { CheckStateProvider, createCheckState } from '../../states/create-check-state';
 import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createCheckedState,
@@ -22,7 +21,7 @@ export type CheckboxControlledBaseProps = Prettify<
   CheckStateControlledOptions & CheckStateRenderProps
 >;
 
-export type CheckboxControlledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+export type CheckboxControlledProps<T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   CheckboxControlledBaseProps
 >;
@@ -31,16 +30,16 @@ export type CheckboxUncontrolledBaseProps = Prettify<
   CheckStateUncontrolledOptions & CheckStateRenderProps
 >;
 
-export type CheckboxUncontrolledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+export type CheckboxUncontrolledProps<T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   CheckboxUncontrolledBaseProps
 >;
 
-export type CheckboxProps<T extends ValidConstructor = 'div'> =
+export type CheckboxProps<T extends ValidComponent = 'div'> =
   | CheckboxControlledProps<T>
   | CheckboxUncontrolledProps<T>;
 
-function isCheckboxUncontrolled<T extends ValidConstructor = 'div'>(
+function isCheckboxUncontrolled<T extends ValidComponent = 'div'>(
   props: CheckboxProps<T>,
 ): props is CheckboxUncontrolledProps<T> {
   return 'defaultChecked' in props;
@@ -55,7 +54,7 @@ function isCheckboxUncontrolled<T extends ValidConstructor = 'div'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/checkbox.md}
  */
-export function Checkbox<T extends ValidConstructor = 'div'>(props: CheckboxProps<T>): JSX.Element {
+export function Checkbox<T extends ValidComponent = 'div'>(props: CheckboxProps<T>): JSX.Element {
   const ownerID = createUniqueId();
   const labelID = createUniqueId();
   const indicatorID = createUniqueId();
@@ -63,7 +62,7 @@ export function Checkbox<T extends ValidConstructor = 'div'>(props: CheckboxProp
 
   const state = createCheckState(props);
 
-  return createComponent(CheckboxContext.Provider, {
+  return createComponent(CheckboxContext, {
     value: {
       ownerID,
       labelID,
@@ -72,15 +71,15 @@ export function Checkbox<T extends ValidConstructor = 'div'>(props: CheckboxProp
     },
     get children() {
       return createDynamic(
-        () => props.as ?? 'div',
-        mergeProps(
+        () => props.as || 'div',
+        merge(
           CHECKBOX_TAG,
           createDisabledState(() => state.disabled()),
           createARIADisabledState(() => state.disabled()),
           createCheckedState(() => state.checked()),
           isCheckboxUncontrolled(props)
-            ? omitProps(props, ['as', 'children', 'defaultChecked', 'disabled', 'onChange'])
-            : omitProps(props, ['as', 'children', 'checked', 'disabled', 'onChange']),
+            ? omit(props, 'as', 'children', 'defaultChecked', 'disabled', 'onChange')
+            : omit(props, 'as', 'children', 'checked', 'disabled', 'onChange'),
           {
             get children() {
               return createComponent(CheckStateProvider, {
@@ -91,7 +90,7 @@ export function Checkbox<T extends ValidConstructor = 'div'>(props: CheckboxProp
               });
             },
           },
-        ) as DynamicProps<T>,
+        ) as ComponentProps<T>,
       );
     },
   });

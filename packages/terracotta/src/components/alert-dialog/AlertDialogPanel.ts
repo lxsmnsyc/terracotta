@@ -1,14 +1,10 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
+import { createDependencyList } from '../../utils/create-dependency-list';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
@@ -17,7 +13,7 @@ import useEventListener from '../../utils/use-event-listener';
 import { useAlertDialogContext } from './AlertDialogContext';
 import { ALERT_DIALOG_PANEL_TAG } from './tags';
 
-export type AlertDialogPanelProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+export type AlertDialogPanelProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
   T,
   DisclosureStateRenderProps
 >;
@@ -30,7 +26,7 @@ export type AlertDialogPanelProps<T extends ValidConstructor = 'div'> = Headless
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
  */
-export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
+export function AlertDialogPanel<T extends ValidComponent = 'div'>(
   props: AlertDialogPanelProps<T>,
 ): JSX.Element {
   const context = useAlertDialogContext('AlertDialogPanel');
@@ -38,42 +34,45 @@ export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(() => {
-    const current = internalRef();
-    if (current instanceof HTMLElement) {
-      if (state.isOpen()) {
-        focusFirst(getFocusableElements(current), false);
+  createEffect(
+    createDependencyList(() => [internalRef(), state.isOpen()] as const),
+    ([current, isOpen]) => {
+      if (current instanceof HTMLElement) {
+        if (isOpen) {
+          focusFirst(getFocusableElements(current), false);
 
-        useEventListener(current, 'keydown', (e) => {
-          if (!props.disabled) {
-            // Keys this panel acts on are not passed on: a `Dialog` or another panel
-            // around this one traps `Tab` and closes on `Escape` too, and would
-            // otherwise move focus a second time or close both layers at once.
-            switch (e.key) {
-              case 'Tab': {
-                e.preventDefault();
-                e.stopPropagation();
-                lockFocus(current, e.shiftKey, false);
-                break;
+          return useEventListener(current, 'keydown', (e) => {
+            if (!props.disabled) {
+              // Keys this panel acts on are not passed on: a `Dialog` or another panel
+              // around this one traps `Tab` and closes on `Escape` too, and would
+              // otherwise move focus a second time or close both layers at once.
+              switch (e.key) {
+                case 'Tab': {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  lockFocus(current, e.shiftKey, false);
+                  break;
+                }
+                case 'Escape': {
+                  e.stopPropagation();
+                  state.close();
+                  break;
+                }
+                default:
+                  break;
               }
-              case 'Escape': {
-                e.stopPropagation();
-                state.close();
-                break;
-              }
-              default:
-                break;
             }
-          }
-        });
+          });
+        }
       }
-    }
-  });
+      return undefined;
+    },
+  );
 
   return createDynamic(
-    () => props.as ?? ('div' as T),
-    mergeProps(
-      omitProps(props, ['as', 'children', 'ref']),
+    () => props.as || ('div' as T),
+    merge(
+      omit(props, 'as', 'children', 'ref'),
       ALERT_DIALOG_PANEL_TAG,
       {
         id: context.panelID,
@@ -88,6 +87,6 @@ export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
       },
       createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

@@ -1,15 +1,14 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import { useDialogContext } from './DialogContext';
 import { DIALOG_DESCRIPTION_TAG } from './tags';
 
-export type DialogDescriptionProps<T extends ValidConstructor = 'p'> = HeadlessProps<
+export type DialogDescriptionProps<T extends ValidComponent = 'p'> = HeadlessProps<
   T,
   DisclosureStateRenderProps
 >;
@@ -22,14 +21,14 @@ export type DialogDescriptionProps<T extends ValidConstructor = 'p'> = HeadlessP
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
  */
-export function DialogDescription<T extends ValidConstructor = 'p'>(
+export function DialogDescription<T extends ValidComponent = 'p'>(
   props: DialogDescriptionProps<T>,
 ): JSX.Element {
   const context = useDialogContext('DialogDescription');
   const state = useDisclosureState();
   return createDynamic(
-    () => props.as ?? ('p' as T),
-    mergeProps(
+    () => props.as || ('p' as T),
+    merge(
       DIALOG_DESCRIPTION_TAG,
       {
         id: context.descriptionID,
@@ -43,7 +42,7 @@ export function DialogDescription<T extends ValidConstructor = 'p'>(
       },
       createDisabledState(() => state.disabled()),
       createExpandedState(() => state.isOpen()),
-      omitProps(props, ['as', 'children']),
-    ) as DynamicProps<T>,
+      omit(props, 'as', 'children'),
+    ) as ComponentProps<T>,
   );
 }

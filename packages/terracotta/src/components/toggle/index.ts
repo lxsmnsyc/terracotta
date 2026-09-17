@@ -1,17 +1,12 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import type {
   ToggleStateControlledOptions,
   ToggleStateRenderProps,
   ToggleStateUncontrolledOptions,
 } from '../../states/create-toggle-state';
-import { ToggleStateProvider, createToggleState } from '../../states/create-toggle-state';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import { createToggleState, ToggleStateProvider } from '../../states/create-toggle-state';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 import {
@@ -31,7 +26,7 @@ export type ToggleControlledBaseProps = Prettify<
   ToggleStateControlledOptions & ToggleStateRenderProps
 >;
 
-export type ToggleControlledProps<T extends ValidConstructor = 'button'> = HeadlessPropsWithRef<
+export type ToggleControlledProps<T extends ValidComponent = 'button'> = HeadlessPropsWithRef<
   T,
   OmitAndMerge<ToggleControlledBaseProps, ButtonProps<T>>
 >;
@@ -40,16 +35,16 @@ export type ToggleUncontrolledBaseProps = Prettify<
   ToggleStateUncontrolledOptions & ToggleStateRenderProps
 >;
 
-export type ToggleUncontrolledProps<T extends ValidConstructor = 'button'> = HeadlessPropsWithRef<
+export type ToggleUncontrolledProps<T extends ValidComponent = 'button'> = HeadlessPropsWithRef<
   T,
   OmitAndMerge<ToggleUncontrolledBaseProps, ButtonProps<T>>
 >;
 
-export type ToggleProps<T extends ValidConstructor = 'button'> =
+export type ToggleProps<T extends ValidComponent = 'button'> =
   | ToggleControlledProps<T>
   | ToggleUncontrolledProps<T>;
 
-function isToggleUncontrolled<T extends ValidConstructor = 'button'>(
+function isToggleUncontrolled<T extends ValidComponent = 'button'>(
   props: ToggleProps<T>,
 ): props is ToggleUncontrolledProps<T> {
   return 'defaultPressed' in props;
@@ -64,22 +59,22 @@ function isToggleUncontrolled<T extends ValidConstructor = 'button'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toggle.md}
  */
-export function Toggle<T extends ValidConstructor = 'button'>(props: ToggleProps<T>): JSX.Element {
+export function Toggle<T extends ValidComponent = 'button'>(props: ToggleProps<T>): JSX.Element {
   const [ref, setRef] = createForwardRef(props);
   const state = createToggleState(props);
 
-  createEffect(() => {
-    const current = ref();
+  createEffect(ref, (current) => {
     if (current instanceof HTMLElement) {
-      useEventListener(current, 'click', () => {
+      return useEventListener(current, 'click', () => {
         state.toggle();
       });
     }
+    return undefined;
   });
 
   return createComponent(
     Button,
-    mergeProps(
+    merge(
       TOGGLE_TAG,
       {
         ref: setRef,
@@ -97,8 +92,8 @@ export function Toggle<T extends ValidConstructor = 'button'>(props: ToggleProps
       createDisabledState(() => state.disabled()),
       createARIADisabledState(() => state.disabled()),
       isToggleUncontrolled(props)
-        ? omitProps(props, ['onChange', 'defaultPressed', 'ref', 'disabled', 'children'])
-        : omitProps(props, ['onChange', 'pressed', 'ref', 'disabled', 'children']),
-    ) as DynamicProps<T>,
+        ? omit(props, 'onChange', 'defaultPressed', 'ref', 'disabled', 'children')
+        : omit(props, 'onChange', 'pressed', 'ref', 'disabled', 'children'),
+    ) as ComponentProps<T>,
   );
 }

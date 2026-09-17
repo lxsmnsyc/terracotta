@@ -6,17 +6,22 @@ import { MATCHES_NODE } from '../../utils/namespace';
 interface ComboboxContextData {
   multiple?: boolean;
   controller: FocusNavigator;
-  activeDescendant: string | undefined;
-  selectedDescendant: string | undefined;
   inputID: string;
   labelID: string;
   optionsID: string;
   anchor?: HTMLElement | null;
+
+  // TODO use triangle algorithm
   inputHovering: boolean;
   optionsHovering: boolean;
+
+  getActiveDescendant(): string | undefined;
+  setActiveDescendant(current: string | undefined): void;
+  getSelectedDescendant(): string | undefined;
+  setSelectedDescendant(current: string | undefined): void;
 }
 
-export const ComboboxContext = createContext<ComboboxContextData>();
+export const ComboboxContext = createContext<ComboboxContextData | null>(null);
 
 /**
  * Reads the nearest `Combobox`'s internal context, which holds the generated

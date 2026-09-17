@@ -2,7 +2,7 @@ import { createContext, createUniqueId, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 import FocusNavigator from '../../utils/focus-navigator';
 
-export const MenuContext = createContext<FocusNavigator>();
+export const MenuContext = createContext<FocusNavigator | null>(null);
 
 /**
  * Reads the nearest `Menu`'s internal context, which holds the focus navigator

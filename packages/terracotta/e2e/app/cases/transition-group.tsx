@@ -1,6 +1,6 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { createSignal } from 'solid-js';
-import { Transition, TransitionChild } from 'terracotta';
+import { Transition, TransitionChild } from 'terracotta/transition';
 
 // Two children of one transition, on the same deliberately slow fade: a
 // sibling that lags is then a whole fade behind, which a spec can catch with a

@@ -1,25 +1,21 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, createUniqueId, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createEffect, createUniqueId, merge, omit } from 'solid-js';
 import type {
   SelectOptionStateOptions,
   SelectOptionStateRenderProps,
 } from '../../states/create-select-option-state';
 import {
-  SelectOptionStateProvider,
   createSelectOptionState,
+  SelectOptionStateProvider,
 } from '../../states/create-select-option-state';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
+import { mergeFunc } from '../../utils/merge-func';
 import {
+  createActiveState,
   createARIACheckedState,
   createARIADisabledState,
-  createActiveState,
   createCheckedState,
   createDisabledState,
 } from '../../utils/state-props';
@@ -34,7 +30,7 @@ export type RadioGroupOptionBaseProps<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps
 >;
 
-export type RadioGroupOptionProps<V, T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+export type RadioGroupOptionProps<V, T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
   T,
   RadioGroupOptionBaseProps<V>
 >;
@@ -47,7 +43,7 @@ export type RadioGroupOptionProps<V, T extends ValidConstructor = 'div'> = Headl
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
  */
-export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
+export function RadioGroupOption<V, T extends ValidComponent = 'div'>(
   props: RadioGroupOptionProps<V, T>,
 ): JSX.Element {
   const context = useRadioGroupRootContext('RadioGroupOption');
@@ -58,33 +54,35 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
   const [internalRef, setInternalRef] = createForwardRef(props);
   const state = createSelectOptionState(props);
 
-  createEffect(() => {
-    const current = internalRef();
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
-      useEventListener(current, 'click', () => {
-        state.select();
-      });
-      useEventListener(current, 'focus', () => {
-        state.focus();
-        state.select();
-      });
-      useEventListener(current, 'blur', () => {
-        state.blur();
-      });
+      return mergeFunc(
+        useEventListener(current, 'click', () => {
+          state.select();
+        }),
+        useEventListener(current, 'focus', () => {
+          state.focus();
+          state.select();
+        }),
+        useEventListener(current, 'blur', () => {
+          state.blur();
+        }),
+      );
     }
+    return undefined;
   });
 
-  return createComponent(RadioGroupContext.Provider, {
+  return createComponent(RadioGroupContext, {
     value: { descriptionID, labelID },
     get children() {
       return createComponent(
         Button,
-        mergeProps(
+        merge(
           RADIO_GROUP_OPTION_TAG,
           createOwnerAttribute(context.getId()),
           {
             get as() {
-              return props.as ?? ('div' as T);
+              return props.as || ('div' as T);
             },
             role: 'radio',
             'aria-labelledby': labelID,
@@ -100,7 +98,7 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
           createCheckedState(() => state.isSelected()),
           createARIACheckedState(() => state.isSelected()),
           createActiveState(() => state.isActive()),
-          omitProps(props, ['as', 'children', 'value', 'disabled', 'ref']),
+          omit(props, 'as', 'children', 'value', 'disabled', 'ref'),
           {
             get children() {
               return createComponent(SelectOptionStateProvider, {
@@ -111,7 +109,7 @@ export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
               });
             },
           },
-        ) as DynamicProps<T>,
+        ) as ComponentProps<T>,
       );
     },
   });

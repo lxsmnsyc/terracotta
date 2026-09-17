@@ -1,11 +1,6 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, merge, omit } from 'solid-js';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import { createARIADisabledState, createDisabledState } from '../../utils/state-props';
@@ -15,7 +10,7 @@ import { MenuChild } from './MenuChild';
 import { useMenuContext } from './MenuContext';
 import { MENU_ITEM_TAG } from './tags';
 
-export type MenuItemProps<T extends ValidConstructor = 'li'> = HeadlessPropsWithRef<
+export type MenuItemProps<T extends ValidComponent = 'li'> = HeadlessPropsWithRef<
   T,
   MenuChildProps
 >;
@@ -27,19 +22,19 @@ export type MenuItemProps<T extends ValidConstructor = 'li'> = HeadlessPropsWith
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
  */
-export function MenuItem<T extends ValidConstructor = 'li'>(props: MenuItemProps<T>): JSX.Element {
+export function MenuItem<T extends ValidComponent = 'li'>(props: MenuItemProps<T>): JSX.Element {
   const context = useMenuContext('MenuItem');
 
   const [, setInternalRef] = createForwardRef(props);
 
   return createComponent(
     Button,
-    mergeProps(
+    merge(
       MENU_ITEM_TAG,
       createOwnerAttribute(context.getId()),
       {
         get as() {
-          return props.as ?? ('li' as T);
+          return props.as || ('li' as T);
         },
         role: 'menuitem',
         tabindex: -1,
@@ -47,7 +42,7 @@ export function MenuItem<T extends ValidConstructor = 'li'>(props: MenuItemProps
       },
       createDisabledState(() => props.disabled),
       createARIADisabledState(() => props.disabled),
-      omitProps(props, ['as', 'disabled', 'ref', 'children']),
+      omit(props, 'as', 'disabled', 'ref', 'children'),
       {
         get children() {
           return createComponent(MenuChild, {
@@ -60,6 +55,6 @@ export function MenuItem<T extends ValidConstructor = 'li'>(props: MenuItemProps
           });
         },
       },
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

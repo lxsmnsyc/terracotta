@@ -1,12 +1,11 @@
-import type { JSX } from 'solid-js';
-import { mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { merge, omit } from 'solid-js';
 import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { useRadioGroupContext } from './RadioGroupContext';
 import { RADIO_GROUP_DESCRIPTION_TAG } from './tags';
 
-export type RadioGroupDescriptionProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
+export type RadioGroupDescriptionProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
 
 /**
  * The accessible description of a `RadioGroup` or of one `RadioGroupOption`,
@@ -16,19 +15,19 @@ export type RadioGroupDescriptionProps<T extends ValidConstructor = 'div'> = Hea
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
  */
-export function RadioGroupDescription<T extends ValidConstructor = 'div'>(
+export function RadioGroupDescription<T extends ValidComponent = 'div'>(
   props: RadioGroupDescriptionProps<T>,
 ): JSX.Element {
   const context = useRadioGroupContext('RadioGroupDescription');
 
   return createDynamic(
-    () => props.as ?? ('div' as T),
-    mergeProps(
+    () => props.as || ('div' as T),
+    merge(
       RADIO_GROUP_DESCRIPTION_TAG,
       {
         id: context.descriptionID,
       },
-      omitProps(props, ['as']),
-    ) as DynamicProps<T>,
+      omit(props, 'as'),
+    ) as ComponentProps<T>,
   );
 }

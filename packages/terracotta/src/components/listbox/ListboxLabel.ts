@@ -1,11 +1,10 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, merge, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import { useSelectState } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createDisabledState,
   createExpandedState,
@@ -15,7 +14,7 @@ import {
 import { useListboxContext } from './ListboxContext';
 import { LISTBOX_LABEL_TAG } from './tags';
 
-export type ListboxLabelProps<T extends ValidConstructor = 'label'> = HeadlessProps<
+export type ListboxLabelProps<T extends ValidComponent = 'label'> = HeadlessProps<
   T,
   DisclosureStateRenderProps
 >;
@@ -27,7 +26,7 @@ export type ListboxLabelProps<T extends ValidConstructor = 'label'> = HeadlessPr
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
  */
-export function ListboxLabel<T extends ValidConstructor = 'label'>(
+export function ListboxLabel<T extends ValidComponent = 'label'>(
   props: ListboxLabelProps<T>,
 ): JSX.Element {
   const context = useListboxContext('ListboxLabel');
@@ -35,8 +34,8 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
   const selectState = useSelectState();
 
   return createDynamic(
-    () => props.as ?? ('label' as T),
-    mergeProps(
+    () => props.as || ('label' as T),
+    merge(
       LISTBOX_LABEL_TAG,
       {
         id: context.labelID,
@@ -52,7 +51,7 @@ export function ListboxLabel<T extends ValidConstructor = 'label'>(
       createExpandedState(() => disclosureState.isOpen()),
       createHasSelectedState(() => selectState.hasSelected()),
       createHasActiveState(() => selectState.hasActive()),
-      omitProps(props, ['as', 'children']),
-    ) as DynamicProps<T>,
+      omit(props, 'as', 'children'),
+    ) as ComponentProps<T>,
   );
 }

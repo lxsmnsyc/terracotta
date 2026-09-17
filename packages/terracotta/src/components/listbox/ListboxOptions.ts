@@ -1,19 +1,16 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, mergeProps, onCleanup, onMount, untrack } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createEffect, merge, omit } from 'solid-js';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
 import { SelectStateProvider, useSelectState } from '../../states/create-select-state';
+import { createDependencyList } from '../../utils/create-dependency-list';
 import createDynamic from '../../utils/create-dynamic';
 import createTypeAhead from '../../utils/create-type-ahead';
 import type { UnmountableProps } from '../../utils/create-unmountable';
 import { createUnmountable } from '../../utils/create-unmountable';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
 import { SELECTED_NODE } from '../../utils/namespace';
 import {
   createARIADisabledState,
@@ -26,12 +23,12 @@ import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
 import { afterTransition } from '../../utils/wait-for-transition';
 import { useListboxContext } from './ListboxContext';
-import { ListboxOptionsContext, createListboxOptionsFocusNavigator } from './ListboxOptionsContext';
+import { createListboxOptionsFocusNavigator, ListboxOptionsContext } from './ListboxOptionsContext';
 import { LISTBOX_OPTIONS_TAG } from './tags';
 
 export type ListboxOptionsBaseProps<V> = Prettify<UnmountableProps & SelectStateRenderProps<V>>;
 
-export type ListboxOptionsProps<V, T extends ValidConstructor = 'ul'> = HeadlessPropsWithRef<
+export type ListboxOptionsProps<V, T extends ValidComponent = 'ul'> = HeadlessPropsWithRef<
   T,
   ListboxOptionsBaseProps<V>
 >;
@@ -44,7 +41,7 @@ export type ListboxOptionsProps<V, T extends ValidConstructor = 'ul'> = Headless
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
  */
-export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
+export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
   props: ListboxOptionsProps<V, T>,
 ): JSX.Element {
   const context = useListboxContext('ListboxOptions');
@@ -63,131 +60,135 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
   // the ListboxOptions is focusing too early in such
   // a way that the ListboxOption has yet to register
   // the focus event
-  onMount(() => {
-    createEffect(() => {
-      const current = internalRef();
-      if (current instanceof HTMLElement && disclosureState.isOpen()) {
+  createEffect(
+    createDependencyList(() => [internalRef(), disclosureState.isOpen()]),
+    ([current, isOpen]) => {
+      if (current instanceof HTMLElement && isOpen) {
         controller.setRef(current);
-        onCleanup(() => {
-          controller.clearRef();
-        });
 
         afterTransition(current, () => {
-          if (untrack(() => selectState.hasSelected())) {
+          if (selectState.hasSelected()) {
             controller.setFirstChecked(SELECTED_NODE);
           } else {
             controller.setFirstChecked();
           }
         });
 
-        useEventListener(current, 'keydown', (e) => {
-          if (!selectState.disabled()) {
-            // Keys this panel acts on are not passed on: a `Dialog` or another panel
-            // around this one traps `Tab` and closes on `Escape` too, and would
-            // otherwise move focus a second time or close both layers at once.
-            switch (e.key) {
-              case 'Escape': {
-                e.stopPropagation();
-                disclosureState.close();
-                break;
-              }
-              case 'ArrowLeft': {
-                if (context.horizontal) {
+        return mergeFunc(
+          () => {
+            controller.clearRef();
+          },
+
+          useEventListener(current, 'keydown', (e) => {
+            if (!selectState.disabled()) {
+              // Keys this panel acts on are not passed on: a `Dialog` or another panel
+              // around this one traps `Tab` and closes on `Escape` too, and would
+              // otherwise move focus a second time or close both layers at once.
+              switch (e.key) {
+                case 'Escape': {
+                  e.stopPropagation();
+                  disclosureState.close();
+                  break;
+                }
+                case 'ArrowLeft': {
+                  if (context.isHorizontal()) {
+                    e.preventDefault();
+                    controller.setPrevChecked(true);
+                  }
+                  break;
+                }
+                case 'ArrowUp': {
+                  if (!context.isHorizontal()) {
+                    e.preventDefault();
+                    controller.setPrevChecked(true);
+                  }
+                  break;
+                }
+                case 'ArrowRight': {
+                  if (context.isHorizontal()) {
+                    e.preventDefault();
+                    controller.setNextChecked(true);
+                  }
+                  break;
+                }
+                case 'ArrowDown': {
+                  if (!context.isHorizontal()) {
+                    e.preventDefault();
+                    controller.setNextChecked(true);
+                  }
+                  break;
+                }
+                case 'Home': {
                   e.preventDefault();
-                  controller.setPrevChecked(true);
+                  controller.setFirstChecked();
+                  break;
                 }
-                break;
-              }
-              case 'ArrowUp': {
-                if (!context.horizontal) {
+                case 'End': {
                   e.preventDefault();
-                  controller.setPrevChecked(true);
+                  controller.setLastChecked();
+                  break;
                 }
-                break;
-              }
-              case 'ArrowRight': {
-                if (context.horizontal) {
+                case ' ':
+                case 'Enter': {
                   e.preventDefault();
-                  controller.setNextChecked(true);
+                  break;
                 }
-                break;
-              }
-              case 'ArrowDown': {
-                if (!context.horizontal) {
-                  e.preventDefault();
-                  controller.setNextChecked(true);
+                default: {
+                  if (e.key.length === 1) {
+                    pushCharacter(e.key);
+                  }
+                  break;
                 }
-                break;
-              }
-              case 'Home': {
-                e.preventDefault();
-                controller.setFirstChecked();
-                break;
-              }
-              case 'End': {
-                e.preventDefault();
-                controller.setLastChecked();
-                break;
-              }
-              case ' ':
-              case 'Enter': {
-                e.preventDefault();
-                break;
-              }
-              default: {
-                if (e.key.length === 1) {
-                  pushCharacter(e.key);
-                }
-                break;
               }
             }
-          }
-        });
-        useEventListener(current, 'focusout', (e) => {
-          if (context.buttonHovering || context.optionsHovering) {
-            return;
-          }
-          if (
-            (e.relatedTarget && !current.contains(e.relatedTarget as Node)) ||
-            (e.target && !current.contains(e.target as Node))
-          ) {
-            disclosureState.close();
-          }
-        });
-        useEventListener(current, 'focusin', (e) => {
-          if (e.target && e.target !== current) {
-            controller.setCurrent(e.target as HTMLElement);
-          }
-        });
-        useEventListener(current, 'mouseenter', () => {
-          context.optionsHovering = true;
-        });
-        useEventListener(current, 'mouseleave', () => {
-          context.optionsHovering = false;
-        });
+          }),
+          useEventListener(current, 'focusout', (e) => {
+            if (context.buttonHovering || context.optionsHovering) {
+              return;
+            }
+            if (
+              (e.relatedTarget && !current.contains(e.relatedTarget as Node)) ||
+              (e.target && !current.contains(e.target as Node))
+            ) {
+              disclosureState.close();
+            }
+          }),
+          useEventListener(current, 'focusin', (e) => {
+            if (e.target && e.target !== current) {
+              controller.setCurrent(e.target as HTMLElement);
+            }
+          }),
+          useEventListener(current, 'mouseenter', () => {
+            context.optionsHovering = true;
+          }),
+          useEventListener(current, 'mouseleave', () => {
+            context.optionsHovering = false;
+          }),
+        );
       }
-    });
-  });
+      return undefined;
+    },
+  );
 
   return createUnmountable(
     props,
     () => disclosureState.isOpen(),
     () =>
-      createComponent(ListboxOptionsContext.Provider, {
+      createComponent(ListboxOptionsContext, {
         value: controller,
         get children() {
           return createDynamic(
-            () => props.as ?? ('ul' as T),
-            mergeProps(
+            () => props.as || ('ul' as T),
+            merge(
               LISTBOX_OPTIONS_TAG,
               {
                 id: context.optionsID,
                 role: 'listbox',
-                'aria-multiselectable': context.multiple,
+                'aria-multiselectable': context.multiple ? 'true' : 'false',
                 'aria-labelledby': context.buttonID,
                 ref: setInternalRef,
                 get 'aria-orientation'() {
-                  return context.horizontal ? 'horizontal' : 'vertical';
+                  return context.isHorizontal() ? 'horizontal' : 'vertical';
                 },
                 get tabindex() {
                   return selectState.disabled() ? -1 : 0;
@@ -198,7 +199,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
               createExpandedState(() => disclosureState.isOpen()),
               createHasSelectedState(() => selectState.hasSelected()),
               createHasActiveState(() => selectState.hasActive()),
-              omitProps(props, ['as', 'children', 'ref']),
+              omit(props, 'as', 'children', 'ref'),
               {
                 get children() {
                   return createComponent(SelectStateProvider, {
@@ -209,7 +210,7 @@ export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
                   });
                 },
               },
-            ) as DynamicProps<T>,
+            ) as ComponentProps<T>,
           );
         },
       }),

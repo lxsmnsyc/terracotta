@@ -1,12 +1,7 @@
-import type { JSX } from 'solid-js';
-import { createEffect, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createEffect, merge, omit } from 'solid-js';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 import { createARIADisabledState, createDisabledState } from '../../utils/state-props';
@@ -18,7 +13,7 @@ interface ButtonBaseProps {
   disabled?: boolean;
 }
 
-export type ButtonProps<T extends ValidConstructor = 'button'> = HeadlessPropsWithRef<
+export type ButtonProps<T extends ValidComponent = 'button'> = HeadlessPropsWithRef<
   T,
   ButtonBaseProps
 >;
@@ -32,15 +27,14 @@ export type ButtonProps<T extends ValidConstructor = 'button'> = HeadlessPropsWi
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/button.md}
  */
-export function Button<T extends ValidConstructor = 'button'>(props: ButtonProps<T>): JSX.Element {
+export function Button<T extends ValidComponent = 'button'>(props: ButtonProps<T>): JSX.Element {
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(() => {
-    const current = internalRef();
+  createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       // This behavior is redundant for buttons
       if (current.tagName !== 'BUTTON') {
-        useEventListener(current, 'keydown', (e) => {
+        return useEventListener(current, 'keydown', (e) => {
           switch (e.key) {
             case 'Enter':
             case ' ': {
@@ -51,11 +45,12 @@ export function Button<T extends ValidConstructor = 'button'>(props: ButtonProps
         });
       }
     }
+    return undefined;
   });
 
   return createDynamic(
-    () => props.as ?? ('button' as T),
-    mergeProps(
+    () => props.as || ('button' as T),
+    merge(
       BUTTON_TAG,
       {
         get tabindex() {
@@ -65,10 +60,10 @@ export function Button<T extends ValidConstructor = 'button'>(props: ButtonProps
       },
       createDisabledState(() => props.disabled),
       createARIADisabledState(() => props.disabled),
-      omitProps(props, ['as', 'ref']),
+      omit(props, 'as', 'ref'),
       {
         ref: setInternalRef,
       },
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

@@ -1,5 +1,5 @@
 import { render, screen } from '@solidjs/testing-library';
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { createComponent } from 'solid-js';
 import { describe, expect, it } from 'vitest';
 import { settle } from './aria';
@@ -9,32 +9,17 @@ import {
   AccordionHeader,
   AccordionItem,
   AccordionPanel,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogPanel,
-  Combobox,
-  ComboboxOptions,
-  CommandBar,
-  CommandBarPanel,
-  ContextMenu,
-  ContextMenuPanel,
-  Dialog,
-  DialogOverlay,
-  DialogPanel,
-  Disclosure,
-  DisclosurePanel,
-  Listbox,
-  ListboxOptions,
-  Popover,
-  PopoverOverlay,
-  PopoverPanel,
-  Tab,
-  TabGroup,
-  TabList,
-  TabPanel,
-  Transition,
-  TransitionChild,
-} from '../src';
+} from '../src/components/accordion';
+import { AlertDialog, AlertDialogOverlay, AlertDialogPanel } from '../src/components/alert-dialog';
+import { Combobox, ComboboxOptions } from '../src/components/combobox';
+import { CommandBar, CommandBarPanel } from '../src/components/command-bar';
+import { ContextMenu, ContextMenuPanel } from '../src/components/context-menu';
+import { Dialog, DialogOverlay, DialogPanel } from '../src/components/dialog';
+import { Disclosure, DisclosurePanel } from '../src/components/disclosure';
+import { Listbox, ListboxOptions } from '../src/components/listbox';
+import { Popover, PopoverOverlay, PopoverPanel } from '../src/components/popover';
+import { Tab, TabGroup, TabList, TabPanel } from '../src/components/tabs';
+import { Transition, TransitionChild } from '../src/components/transition';
 
 const CLASSES = {
   enter: 'enter',

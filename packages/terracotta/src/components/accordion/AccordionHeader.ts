@@ -1,13 +1,12 @@
-import type { JSX } from 'solid-js';
-import { createComponent, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, merge, omit } from 'solid-js';
 import type { SelectOptionStateRenderProps } from '../../states/create-select-option-state';
 import {
   SelectOptionStateChild,
   useSelectOptionState,
 } from '../../states/create-select-option-state';
 import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createActiveState,
   createDisabledState,
@@ -17,7 +16,7 @@ import {
 import { useAccordionItemContext } from './AccordionItemContext';
 import { ACCORDION_HEADER_TAG } from './tags';
 
-export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> = HeadlessProps<
+export type AccordionHeaderProps<T extends ValidComponent = 'h3'> = HeadlessProps<
   T,
   SelectOptionStateRenderProps
 >;
@@ -30,15 +29,15 @@ export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> = HeadlessPr
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
  */
-export function AccordionHeader<T extends ValidConstructor = 'h3'>(
+export function AccordionHeader<T extends ValidComponent = 'h3'>(
   props: AccordionHeaderProps<T>,
 ): JSX.Element {
   useAccordionItemContext('AccordionHeader');
   const state = useSelectOptionState();
   return createDynamic<T>(
-    () => props.as ?? ('h3' as T),
-    mergeProps(
-      omitProps(props, ['as', 'children']),
+    () => props.as || ('h3' as T),
+    merge(
+      omit(props, 'as', 'children'),
       ACCORDION_HEADER_TAG,
       createDisabledState(() => state.disabled()),
       createSelectedState(() => state.isSelected()),
@@ -53,6 +52,6 @@ export function AccordionHeader<T extends ValidConstructor = 'h3'>(
           });
         },
       },
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

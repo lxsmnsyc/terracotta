@@ -1,18 +1,13 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createMemo, createUniqueId, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createMemo, createUniqueId, merge, omit } from 'solid-js';
 import type {
   SelectStateRenderProps,
   SingleSelectStateControlledOptions,
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
-import { SelectStateProvider, createSingleSelectState } from '../../states/create-select-state';
+import { createSingleSelectState, SelectStateProvider } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
@@ -32,7 +27,7 @@ export type TabGroupControlledBaseProps<V> = Prettify<
   TabGroupBaseProps & SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type TabGroupControlledProps<V, T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+export type TabGroupControlledProps<V, T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
   T,
   TabGroupControlledBaseProps<V>
 >;
@@ -41,16 +36,16 @@ export type TabGroupUncontrolledBaseProps<V> = Prettify<
   TabGroupBaseProps & SingleSelectStateUncontrolledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type TabGroupUncontrolledProps<V, T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+export type TabGroupUncontrolledProps<V, T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
   T,
   TabGroupUncontrolledBaseProps<V>
 >;
 
-export type TabGroupProps<V, T extends ValidConstructor = 'div'> =
+export type TabGroupProps<V, T extends ValidComponent = 'div'> =
   | TabGroupControlledProps<V, T>
   | TabGroupUncontrolledProps<V, T>;
 
-function isTabGroupUncontrolled<V, T extends ValidConstructor = 'div'>(
+function isTabGroupUncontrolled<V, T extends ValidComponent = 'div'>(
   props: TabGroupProps<V, T>,
 ): props is TabGroupUncontrolledProps<V, T> {
   return 'defaultValue' in props;
@@ -65,7 +60,7 @@ function isTabGroupUncontrolled<V, T extends ValidConstructor = 'div'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/tabs.md}
  */
-export function TabGroup<V, T extends ValidConstructor = 'div'>(
+export function TabGroup<V, T extends ValidComponent = 'div'>(
   props: TabGroupProps<V, T>,
 ): JSX.Element {
   return createMemo(() => {
@@ -75,9 +70,9 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
 
     const ids = new Map<V, number>();
 
-    return createComponent(TabGroupContext.Provider, {
+    return createComponent(TabGroupContext, {
       value: {
-        get horizontal() {
+        isHorizontal() {
           return props.horizontal;
         },
         getId(kind: string, value: V): string {
@@ -91,8 +86,8 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
       },
       get children() {
         return createDynamic(
-          () => props.as ?? ('div' as T),
-          mergeProps(
+          () => props.as || ('div' as T),
+          merge(
             TAB_GROUP_TAG,
             createDisabledState(() => state.disabled()),
             createARIADisabledState(() => state.disabled()),
@@ -110,7 +105,8 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
               },
             },
             isTabGroupUncontrolled(props)
-              ? omitProps(props, [
+              ? omit(
+                  props,
                   'as',
                   'children',
                   'defaultValue',
@@ -120,8 +116,9 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
                   'ref',
                   'toggleable',
                   'horizontal',
-                ])
-              : omitProps(props, [
+                )
+              : omit(
+                  props,
                   'as',
                   'children',
                   'value',
@@ -131,8 +128,8 @@ export function TabGroup<V, T extends ValidConstructor = 'div'>(
                   'ref',
                   'toggleable',
                   'horizontal',
-                ]),
-          ) as DynamicProps<T>,
+                ),
+          ) as ComponentProps<T>,
         );
       },
     });

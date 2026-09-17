@@ -1,9 +1,8 @@
-import type { JSX } from 'solid-js';
-import { mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { merge, omit } from 'solid-js';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createDisabledState,
   createHasActiveState,
@@ -13,7 +12,7 @@ import {
 import { useCommandContext } from './CommandContext';
 import { COMMAND_LABEL_TAG } from './tags';
 
-export type CommandLabelProps<T extends ValidConstructor = 'label'> = HeadlessProps<T>;
+export type CommandLabelProps<T extends ValidComponent = 'label'> = HeadlessProps<T>;
 
 /**
  * The accessible name of a `Command`, wired up through `aria-labelledby`.
@@ -22,16 +21,16 @@ export type CommandLabelProps<T extends ValidConstructor = 'label'> = HeadlessPr
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
  */
-export function CommandLabel<T extends ValidConstructor = 'label'>(
+export function CommandLabel<T extends ValidComponent = 'label'>(
   props: CommandLabelProps<T>,
 ): JSX.Element {
   const context = useCommandContext('CommandLabel');
   const state = useAutocompleteState();
 
   return createDynamic(
-    () => props.as ?? ('label' as T),
-    mergeProps(
-      omitProps(props, ['as']),
+    () => props.as || ('label' as T),
+    merge(
+      omit(props, 'as'),
       COMMAND_LABEL_TAG,
       {
         id: context.labelID,
@@ -40,6 +39,6 @@ export function CommandLabel<T extends ValidConstructor = 'label'>(
       createHasSelectedState(() => state.hasSelected()),
       createHasActiveState(() => state.hasActive()),
       createHasQueryState(() => state.hasQuery()),
-    ) as DynamicProps<T>,
+    ) as ComponentProps<T>,
   );
 }

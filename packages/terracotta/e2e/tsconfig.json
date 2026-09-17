@@ -7,7 +7,7 @@
     "declaration": false,
     "declarationMap": false,
     "jsx": "preserve",
-    "jsxImportSource": "solid-js",
+    "jsxImportSource": "@solidjs/web",
     "types": ["node"],
     "paths": {
       "terracotta": ["../src/index.ts"]

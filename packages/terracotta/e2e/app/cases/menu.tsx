@@ -1,6 +1,6 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { createSignal } from 'solid-js';
-import { Menu, MenuItem } from 'terracotta';
+import { Menu, MenuItem } from 'terracotta/menu';
 
 const ITEMS = ['Cut', 'Copy', 'Paste', 'Delete'];
 

@@ -1,12 +1,12 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { createSignal } from 'solid-js';
 import {
   Checkbox,
   CheckboxDescription,
   CheckboxIndicator,
   CheckboxLabel,
-  Toggle,
-} from 'terracotta';
+} from 'terracotta/checkbox';
+import { Toggle } from 'terracotta/toggle';
 
 export default function CheckboxCase(): JSX.Element {
   const [checked, setChecked] = createSignal(false);

@@ -5,13 +5,13 @@ interface FeedContextData {
   ownerID: string;
   labelID: string;
   contentID: string;
-  size: number;
-  busy: boolean;
+  getSize(): number;
+  isBusy(): boolean;
   focusPrev: () => void;
   focusNext: () => void;
 }
 
-export const FeedContext = createContext<FeedContextData>();
+export const FeedContext = createContext<FeedContextData | null>(null);
 
 /**
  * Reads the nearest `Feed`'s internal context, which holds the generated ids

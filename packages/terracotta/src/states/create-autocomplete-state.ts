@@ -1,4 +1,5 @@
-import type { Accessor, JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import type { Accessor } from 'solid-js';
 import {
   createComponent,
   createContext,
@@ -13,18 +14,18 @@ import isEqual from '../utils/is-equal';
 import type { Ref } from '../utils/types';
 
 export interface AutocompleteStateProperties<T> {
-  isSelected: (value: T) => boolean;
-  select: (value: T) => void;
-  hasSelected: () => boolean;
-  isActive: (value: T) => boolean;
-  hasActive: () => boolean;
-  focus: (value: T) => void;
-  blur: () => void;
-  disabled: () => boolean;
-  query: () => string;
-  setQuery: (value: string) => void;
-  matches: (value: T) => boolean;
-  hasQuery: () => boolean;
+  isSelected(value: T): boolean;
+  select(value: T): void;
+  hasSelected(): boolean;
+  isActive(value: T): boolean;
+  hasActive(): boolean;
+  focus(value: T): void;
+  blur(): void;
+  disabled(): boolean;
+  query(): string;
+  setQuery(value: string): void;
+  matches(value: T): boolean;
+  hasQuery(): boolean;
 }
 
 export interface SingleAutocompleteStateControlledOptions<T> {
@@ -70,10 +71,10 @@ export function createSingleAutocompleteState<T>(
   let selectedValue: Accessor<T | undefined>;
   let setSelectedValue: (value: T | undefined) => void;
 
-  const equals = options.by ?? isEqual;
+  const equals = options.by || isEqual;
 
   if ('defaultValue' in options) {
-    const [selected, setSelected] = createSignal<T | undefined>(options.defaultValue);
+    const [selected, setSelected] = createSignal<T | undefined>(() => options.defaultValue);
     selectedValue = selected;
     setSelectedValue = (value): void => {
       setSelected(() => value);
@@ -186,7 +187,7 @@ export function createMultipleAutocompleteState<T>(
   let selectedValues: Accessor<T[]>;
   let setSelectedValues: (value: T[]) => void;
 
-  const equals = options.by ?? isEqual;
+  const equals = options.by || isEqual;
 
   if ('defaultValue' in options) {
     const [selected, setSelected] = createSignal<T[]>(options.defaultValue);
@@ -291,15 +292,13 @@ export interface AutocompleteStateProviderProps<T> extends AutocompleteStateRend
   state: AutocompleteStateProperties<T>;
 }
 
-const AutocompleteStateContext = createContext<AutocompleteStateProperties<unknown>>();
+const AutocompleteStateContext = createContext<AutocompleteStateProperties<unknown> | null>(null);
 
 export function AutocompleteStateProvider<T>(
   props: AutocompleteStateProviderProps<T>,
 ): JSX.Element {
-  return createComponent(AutocompleteStateContext.Provider, {
-    // The context erases the value type; every consumer re-applies its own `T`
-    // through `useAutocompleteState`.
-    value: props.state as AutocompleteStateProperties<unknown>,
+  return createComponent(AutocompleteStateContext, {
+    value: props.state,
     get children() {
       const current = props.children;
       if (typeof current === 'function') {

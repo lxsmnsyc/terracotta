@@ -1,6 +1,6 @@
 import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { Disclosure, DisclosureButton, DisclosurePanel } from '../src';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '../src/components/disclosure';
 
 function renderDisclosure(
   props: { open?: boolean; disabled?: boolean } = {},

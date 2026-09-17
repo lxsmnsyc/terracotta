@@ -1,9 +1,11 @@
 import { render, screen } from '@solidjs/testing-library';
-import type { JSX } from 'solid-js';
-import { createEffect, createSignal, onCleanup } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import { createEffect, createSignal, flush, onCleanup } from 'solid-js';
 import { describe, expect, it } from 'vitest';
 import { settle } from './aria';
-import { Dialog, Popover, PopoverButton, PopoverPanel, Transition, TransitionChild } from '../src';
+import { Dialog } from '../src/components/dialog';
+import { Popover, PopoverButton, PopoverPanel } from '../src/components/popover';
+import { Transition, TransitionChild } from '../src/components/transition';
 import type { UnmountableProps } from '../src/utils/create-unmountable';
 import { createUnmountable } from '../src/utils/create-unmountable';
 
@@ -39,6 +41,7 @@ function setup(mode?: boolean | 'offscreen'): {
   return {
     show: (value: boolean): void => {
       setShown(value);
+      flush();
     },
     builds: () => builds,
     disposals: () => disposals,
@@ -100,8 +103,7 @@ describe('createUnmountable', () => {
 
     render(() =>
       createUnmountable({ unmount: 'offscreen' }, shown, () => {
-        createEffect(() => {
-          tick();
+        createEffect(tick, () => {
           runs += 1;
         });
         return <div data-testid="body">body</div>;
@@ -112,6 +114,7 @@ describe('createUnmountable', () => {
 
     setShown(false);
     setTick(1);
+    flush();
 
     // Detached is not disposed, so the subtree keeps reacting to its sources
     // while nothing of it is on screen. Documented as the cost of the mode.

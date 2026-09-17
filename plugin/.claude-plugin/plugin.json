@@ -1,0 +1,21 @@
+{
+  "name": "terracotta",
+  "description": "Build accessible UI with Terracotta, the headless component library for SolidJS. Component catalogue and part names, subpath imports, controlled vs uncontrolled state, render props, the `as` prop and prop passthrough, `tc-*` styling attributes, `unmount`, transitions, and keyboard and focus behaviour. Use when writing, reviewing or debugging SolidJS code that imports from `terracotta`.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Alexis H. Munsayac",
+    "url": "https://github.com/lxsmnsyc"
+  },
+  "homepage": "https://github.com/lxsmnsyc/terracotta",
+  "repository": "https://github.com/lxsmnsyc/terracotta",
+  "license": "MIT",
+  "keywords": [
+    "terracotta",
+    "solid-js",
+    "solidjs",
+    "headless-ui",
+    "accessibility",
+    "wai-aria",
+    "components"
+  ]
+}

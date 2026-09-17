@@ -3,5 +3,34 @@ packages:
   - examples/**/*
   - docs
 onlyBuiltDependencies:
-  - '@biomejs/biome'
   - esbuild
+
+# pnpm 11 refuses to install any package published in the last day. The
+# toolchain here is on prereleases that are often hours old when the lockfile is
+# updated, and a deploy on the same day then fails the policy check rather than
+# the build. An hour keeps the guard against a release published minutes ago,
+# while letting a reviewed lockfile deploy the day it is written.
+minimumReleaseAge: 60
+catalog:
+  '@changesets/cli': ^2.29.7
+  '@lxsmnsyc/oxlint-config': ^0.1.2
+  '@playwright/test': ^1.62.1
+  '@solidjs/testing-library': 1.0.0-beta.2
+  '@solidjs/vite-plugin': 3.0.0-next.37
+  '@solidjs/web': 2.0.0-rc.5
+  '@tailwindcss/postcss': ^4.1.18
+  '@testing-library/jest-dom': ^7.0.0
+  '@vitest/browser-playwright': ^4.1.11
+  '@types/node': ^25.5.0
+  jsdom: ^30.0.1
+  oxfmt: ^0.62.0
+  oxlint: ^1.77.0
+  oxlint-tsgolint: ^7.0.2001
+  postcss: ^8.5.3
+  solid-js: 2.0.0-rc.5
+  tailwindcss: ^4.1.18
+  tsdown: ^0.21.2
+  tslib: ^2.8.1
+  typescript: ^5.9.3
+  vite: ^8.2.2
+  vitest: ^4.1.10

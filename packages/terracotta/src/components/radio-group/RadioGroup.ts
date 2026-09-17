@@ -1,19 +1,15 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, createUniqueId, mergeProps, onCleanup } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createEffect, createUniqueId, merge, omit } from 'solid-js';
 import type {
   SelectStateRenderProps,
   SingleSelectStateControlledOptions,
   SingleSelectStateUncontrolledOptions,
 } from '../../states/create-select-state';
-import { SelectStateProvider, createSingleSelectState } from '../../states/create-select-state';
+import { createSingleSelectState, SelectStateProvider } from '../../states/create-select-state';
 import createDynamic from '../../utils/create-dynamic';
-import type {
-  DynamicProps,
-  HeadlessPropsWithRef,
-  ValidConstructor,
-} from '../../utils/dynamic-prop';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -24,8 +20,8 @@ import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
 import { RadioGroupContext } from './RadioGroupContext';
 import {
-  RadioGroupRootContext,
   createRadioGroupOptionFocusNavigator,
+  RadioGroupRootContext,
 } from './RadioGroupRootContext';
 import { RADIO_GROUP_TAG } from './tags';
 
@@ -33,7 +29,7 @@ export type RadioGroupControlledBaseProps<V> = Prettify<
   SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type RadioGroupControlledProps<V, T extends ValidConstructor = 'div'> = HeadlessPropsWithRef<
+export type RadioGroupControlledProps<V, T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
   T,
   RadioGroupControlledBaseProps<V>
 >;
@@ -42,16 +38,16 @@ export type RadioGroupUncontrolledBaseProps<V> = Prettify<
   SingleSelectStateUncontrolledOptions<V> & SelectStateRenderProps<V>
 >;
 
-export type RadioGroupUncontrolledProps<
-  V,
-  T extends ValidConstructor = 'div',
-> = HeadlessPropsWithRef<T, RadioGroupUncontrolledBaseProps<V>>;
+export type RadioGroupUncontrolledProps<V, T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
+  T,
+  RadioGroupUncontrolledBaseProps<V>
+>;
 
-export type RadioGroupProps<V, T extends ValidConstructor = 'div'> =
+export type RadioGroupProps<V, T extends ValidComponent = 'div'> =
   | RadioGroupControlledProps<V, T>
   | RadioGroupUncontrolledProps<V, T>;
 
-function isRadioGroupUncontrolled<V, T extends ValidConstructor = 'div'>(
+function isRadioGroupUncontrolled<V, T extends ValidComponent = 'div'>(
   props: RadioGroupProps<V, T>,
 ): props is RadioGroupUncontrolledProps<V, T> {
   return 'defaultValue' in props;
@@ -65,7 +61,7 @@ function isRadioGroupUncontrolled<V, T extends ValidConstructor = 'div'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
  */
-export function RadioGroup<V, T extends ValidConstructor = 'div'>(
+export function RadioGroup<V, T extends ValidComponent = 'div'>(
   props: RadioGroupProps<V, T>,
 ): JSX.Element {
   const controller = createRadioGroupOptionFocusNavigator();
@@ -75,51 +71,53 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
 
   const [ref, setRef] = createForwardRef(props);
 
-  createEffect(() => {
-    const current = ref();
+  createEffect(ref, (current) => {
     if (current instanceof HTMLElement) {
       controller.setRef(current);
-      onCleanup(() => {
-        controller.clearRef();
-      });
-      useEventListener(current, 'keydown', (e) => {
-        if (!state.disabled()) {
-          switch (e.key) {
-            case 'ArrowLeft':
-            case 'ArrowUp': {
-              e.preventDefault();
-              controller.setPrevChecked(true);
-              break;
-            }
-            case 'ArrowRight':
-            case 'ArrowDown': {
-              e.preventDefault();
-              controller.setNextChecked(true);
-              break;
+      return mergeFunc(
+        () => {
+          controller.clearRef();
+        },
+        useEventListener(current, 'keydown', (e) => {
+          if (!state.disabled()) {
+            switch (e.key) {
+              case 'ArrowLeft':
+              case 'ArrowUp': {
+                e.preventDefault();
+                controller.setPrevChecked(true);
+                break;
+              }
+              case 'ArrowRight':
+              case 'ArrowDown': {
+                e.preventDefault();
+                controller.setNextChecked(true);
+                break;
+              }
             }
           }
-        }
-      });
-      useEventListener(current, 'focusin', (e) => {
-        if (e.target && e.target !== current) {
-          controller.setCurrent(e.target as HTMLElement);
-        }
-      });
+        }),
+        useEventListener(current, 'focusin', (e) => {
+          if (e.target && e.target !== current) {
+            controller.setCurrent(e.target as HTMLElement);
+          }
+        }),
+      );
     }
+    return undefined;
   });
 
-  return createComponent(RadioGroupRootContext.Provider, {
+  return createComponent(RadioGroupRootContext, {
     value: controller,
     get children() {
-      return createComponent(RadioGroupContext.Provider, {
+      return createComponent(RadioGroupContext, {
         value: {
           descriptionID,
           labelID,
         },
         get children() {
           return createDynamic(
-            () => props.as ?? ('div' as T),
-            mergeProps(
+            () => props.as || ('div' as T),
+            merge(
               RADIO_GROUP_TAG,
               {
                 role: 'radiogroup',
@@ -132,7 +130,8 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
               createHasActiveState(() => state.hasActive()),
               createHasSelectedState(() => state.hasSelected()),
               isRadioGroupUncontrolled(props)
-                ? omitProps(props, [
+                ? omit(
+                    props,
                     'as',
                     'by',
                     'children',
@@ -142,8 +141,9 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
                     'onChange',
                     'ref',
                     'toggleable',
-                  ])
-                : omitProps(props, [
+                  )
+                : omit(
+                    props,
                     'as',
                     'by',
                     'children',
@@ -153,7 +153,7 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
                     'onChange',
                     'ref',
                     'toggleable',
-                  ]),
+                  ),
               {
                 get children() {
                   return createComponent(SelectStateProvider, {
@@ -164,7 +164,7 @@ export function RadioGroup<V, T extends ValidConstructor = 'div'>(
                   });
                 },
               },
-            ) as DynamicProps<T>,
+            ) as ComponentProps<T>,
           );
         },
       });

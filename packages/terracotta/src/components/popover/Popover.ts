@@ -1,17 +1,16 @@
-import type { JSX } from 'solid-js';
-import { createComponent, createEffect, createUniqueId, mergeProps } from 'solid-js';
-import { omitProps } from 'solid-use/props';
+import type { ComponentProps, JSX, ValidComponent } from '@solidjs/web';
+import { createComponent, createEffect, createUniqueId, merge, omit } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
   DisclosureStateUncontrolledOptions,
 } from '../../states/create-disclosure-state';
 import {
-  DisclosureStateProvider,
   createDisclosureState,
+  DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
 import createDynamic from '../../utils/create-dynamic';
-import type { DynamicProps, HeadlessProps, ValidConstructor } from '../../utils/dynamic-prop';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createARIADisabledState,
   createDisabledState,
@@ -26,7 +25,7 @@ export type PopoverControlledBaseProps = Prettify<
   DisclosureStateRenderProps & DisclosureStateControlledOptions
 >;
 
-export type PopoverControlledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+export type PopoverControlledProps<T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   PopoverControlledBaseProps
 >;
@@ -35,16 +34,16 @@ export type PopoverUncontrolledBaseProps = Prettify<
   DisclosureStateRenderProps & DisclosureStateUncontrolledOptions
 >;
 
-export type PopoverUncontrolledProps<T extends ValidConstructor = 'div'> = HeadlessProps<
+export type PopoverUncontrolledProps<T extends ValidComponent = 'div'> = HeadlessProps<
   T,
   PopoverUncontrolledBaseProps
 >;
 
-export type PopoverProps<T extends ValidConstructor = 'div'> =
+export type PopoverProps<T extends ValidComponent = 'div'> =
   | PopoverControlledProps<T>
   | PopoverUncontrolledProps<T>;
 
-function isPopoverUncontrolled<T extends ValidConstructor = 'div'>(
+function isPopoverUncontrolled<T extends ValidComponent = 'div'>(
   props: PopoverProps<T>,
 ): props is PopoverUncontrolledProps<T> {
   return 'defaultOpen' in props;
@@ -59,7 +58,7 @@ function isPopoverUncontrolled<T extends ValidConstructor = 'div'>(
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/popover.md}
  */
-export function Popover<T extends ValidConstructor = 'div'>(props: PopoverProps<T>): JSX.Element {
+export function Popover<T extends ValidComponent = 'div'>(props: PopoverProps<T>): JSX.Element {
   const ownerID = createUniqueId();
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
@@ -68,15 +67,18 @@ export function Popover<T extends ValidConstructor = 'div'>(props: PopoverProps<
 
   const state = createDisclosureState(props);
 
-  createEffect(() => {
-    if (state.isOpen()) {
-      fsp.save();
-    } else {
-      fsp.load();
-    }
-  });
+  createEffect(
+    () => state.isOpen(),
+    (flag) => {
+      if (flag) {
+        fsp.save();
+      } else {
+        fsp.load();
+      }
+    },
+  );
 
-  return createComponent(PopoverContext.Provider, {
+  return createComponent(PopoverContext, {
     value: {
       ownerID,
       buttonID,
@@ -85,14 +87,15 @@ export function Popover<T extends ValidConstructor = 'div'>(props: PopoverProps<
     },
     get children() {
       return createDynamic(
-        () => props.as ?? ('div' as T),
-        mergeProps(
+        () => props.as || ('div' as T),
+        merge(
           POPOVER_TAG,
           createDisabledState(() => state.disabled()),
           createARIADisabledState(() => state.disabled()),
           createExpandedState(() => state.isOpen()),
           isPopoverUncontrolled(props)
-            ? omitProps(props, [
+            ? omit(
+                props,
                 'as',
                 'children',
                 'defaultOpen',
@@ -100,16 +103,8 @@ export function Popover<T extends ValidConstructor = 'div'>(props: PopoverProps<
                 'onChange',
                 'onClose',
                 'onOpen',
-              ])
-            : omitProps(props, [
-                'as',
-                'children',
-                'isOpen',
-                'disabled',
-                'onChange',
-                'onClose',
-                'onOpen',
-              ]),
+              )
+            : omit(props, 'as', 'children', 'isOpen', 'disabled', 'onChange', 'onClose', 'onOpen'),
           {
             get children() {
               return createComponent(DisclosureStateProvider, {
@@ -120,7 +115,7 @@ export function Popover<T extends ValidConstructor = 'div'>(props: PopoverProps<
               });
             },
           },
-        ) as DynamicProps<T>,
+        ) as ComponentProps<T>,
       );
     },
   });
