@@ -12,7 +12,7 @@ import { type UserConfig, defineConfig } from 'tsdown';
 const shared: UserConfig = {
   entry: { index: 'src/index.ts' },
   platform: 'neutral',
-  target: 'es2018',
+  target: 'es2020',
   // One stable file name per directory; the paths are part of the contract.
   hash: false,
   dts: false,
