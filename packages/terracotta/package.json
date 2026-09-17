@@ -31,13 +31,24 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
       "development": {
-        "require": "./dist/cjs/development/index.cjs",
-        "import": "./dist/esm/development/index.mjs"
+        "import": {
+          "types": "./dist/types/index.d.ts",
+          "default": "./dist/esm/development/index.mjs"
+        },
+        "require": {
+          "types": "./dist/types/index.d.cts",
+          "default": "./dist/cjs/development/index.cjs"
+        }
       },
-      "require": "./dist/cjs/production/index.cjs",
-      "import": "./dist/esm/production/index.mjs"
+      "import": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/esm/production/index.mjs"
+      },
+      "require": {
+        "types": "./dist/types/index.d.cts",
+        "default": "./dist/cjs/production/index.cjs"
+      }
     }
   },
   "publishConfig": {

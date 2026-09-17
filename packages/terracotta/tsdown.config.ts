@@ -16,7 +16,32 @@ const shared: UserConfig = {
   // One stable file name per directory; the paths are part of the contract.
   hash: false,
   dts: false,
+  // `prebuild` clears `dist` once up front. Cleaning per config would let the
+  // two declaration builds, which share `dist/types`, delete each other's
+  // output.
+  clean: false,
 };
+
+/**
+ * Declarations only, bundled into one file. They are built twice, identical
+ * apart from the extension: a `.d.ts` for `import` and a `.d.cts` for
+ * `require`. Under `"type": "module"` a `.d.ts` reads as ESM, so a single file
+ * shared by both would describe the CommonJS build as ESM to TypeScript.
+ *
+ * Both go through the ESM declarations pass. TypeScript takes a declaration
+ * file's module format from its extension alone, so the `.d.cts` is CommonJS
+ * however it was produced. A `cjs` format build would not do: tsdown always
+ * emits the CommonJS JavaScript for it, and `emitDtsOnly` only reaches ESM.
+ */
+function declarations(extension: '.d.ts' | '.d.cts'): UserConfig {
+  return {
+    ...shared,
+    format: 'esm',
+    outDir: 'dist/types',
+    dts: { emitDtsOnly: true, sourcemap: true },
+    outExtensions: () => ({ dts: extension }),
+  };
+}
 
 function bundle(format: 'esm' | 'cjs', mode: 'development' | 'production'): UserConfig {
   return {
@@ -34,14 +59,6 @@ export default defineConfig([
   bundle('esm', 'production'),
   bundle('cjs', 'development'),
   bundle('cjs', 'production'),
-  {
-    ...shared,
-    format: 'esm',
-    outDir: 'dist/types',
-    // Declarations only, bundled into the single `index.d.ts` that `types`
-    // names. Nothing reaches the per-file declarations behind it: `exports`
-    // only publishes the package root.
-    dts: { emitDtsOnly: true, sourcemap: true },
-    outExtensions: () => ({ dts: '.d.ts' }),
-  },
+  declarations('.d.ts'),
+  declarations('.d.cts'),
 ]);
