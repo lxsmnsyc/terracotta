@@ -5,16 +5,19 @@
 ## Install
 
 ```bash
-npm i terracotta
+npm i terracotta@next
 ```
 
 ```bash
-yarn add terracotta
+yarn add terracotta@next
 ```
 
 ```bash
-pnpm add terracotta
+pnpm add terracotta@next
 ```
+
+Terracotta 2 is published under the `next` tag while it is a release candidate.
+The `latest` tag still points at the 1.x line, which targets Solid 1.
 
 ## Documentation
 
@@ -41,7 +44,7 @@ pnpm --filter @terracotta/docs dev
 
 ## Note
 
-The project is still in development, as I aim to implement the [WAI-ARIA Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.1/).
+The project is still in development, as I aim to implement the [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/).
 
 Here's the current components:
 
