@@ -9,7 +9,12 @@ import { defineConfig } from 'vitest/config';
 const BROWSER_TESTS = ['test/focus-query.test.tsx'];
 
 const shared = {
-  plugins: [solid()],
+  // The library is JSX now, so the Solid plugin compiles it here, and by
+  // default adds its HMR wrappers to every component it compiles. Consumers
+  // never get those on Terracotta: the plugin skips them for anything under
+  // `node_modules`. Leaving them on would test wrapped components no one
+  // ships, and they change ownership enough to break an offscreen transition.
+  plugins: [solid({ refresh: { disabled: true } })],
   resolve: {
     conditions: ['development', 'browser'],
   },

@@ -1,0 +1,194 @@
+import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { createEffect, createMemo, omit } from 'solid-js';
+import type {
+  MultipleSelectStateControlledOptions,
+  MultipleSelectStateUncontrolledOptions,
+  SelectStateRenderProps,
+  SingleSelectStateControlledOptions,
+  SingleSelectStateUncontrolledOptions,
+} from '../../states/create-select-state';
+import {
+  createMultipleSelectState,
+  createSingleSelectState,
+  SelectStateProvider,
+} from '../../states/create-select-state';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
+import {
+  createARIADisabledState,
+  createDisabledState,
+  createHasActiveState,
+  createHasSelectedState,
+} from '../../utils/state-props';
+import type { Prettify } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
+import { AccordionContext, createAccordionFocusNavigator } from './AccordionContext';
+import { ACCORDION_TAG } from './tags';
+
+export type AccordionSingleControlledBaseProps<V> = Prettify<
+  SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
+>;
+
+export type AccordionSingleControlledProps<
+  V,
+  T extends ValidComponent = 'div',
+> = HeadlessPropsWithRef<T, AccordionSingleControlledBaseProps<V>>;
+
+export type AccordionSingleUncontrolledBaseProps<V> = Prettify<
+  SingleSelectStateUncontrolledOptions<V> & SelectStateRenderProps<V>
+>;
+
+export type AccordionSingleUncontrolledProps<
+  V,
+  T extends ValidComponent = 'div',
+> = HeadlessPropsWithRef<T, AccordionSingleUncontrolledBaseProps<V>>;
+
+export type AccordionMultipleControlledBaseProps<V> = Prettify<
+  MultipleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
+>;
+
+export type AccordionMultipleControlledProps<
+  V,
+  T extends ValidComponent = 'div',
+> = HeadlessPropsWithRef<T, AccordionMultipleControlledBaseProps<V>>;
+
+export type AccordionMultipleUncontrolledBaseProps<V> = Prettify<
+  MultipleSelectStateUncontrolledOptions<V> & SelectStateRenderProps<V>
+>;
+
+export type AccordionMultipleUncontrolledProps<
+  V,
+  T extends ValidComponent = 'div',
+> = HeadlessPropsWithRef<T, AccordionMultipleUncontrolledBaseProps<V>>;
+
+export type AccordionProps<V, T extends ValidComponent = 'div'> =
+  | AccordionSingleControlledProps<V, T>
+  | AccordionSingleUncontrolledProps<V, T>
+  | AccordionMultipleControlledProps<V, T>
+  | AccordionMultipleUncontrolledProps<V, T>;
+
+function isAccordionUncontrolled<V, T extends ValidComponent = 'div'>(
+  props: AccordionProps<V, T>,
+): props is AccordionSingleUncontrolledProps<V, T> | AccordionMultipleUncontrolledProps<V, T> {
+  return 'defaultValue' in props;
+}
+
+function isAccordionMultiple<V, T extends ValidComponent = 'div'>(
+  props: AccordionProps<V, T>,
+): props is AccordionMultipleUncontrolledProps<V, T> | AccordionMultipleControlledProps<V, T> {
+  return !!props.multiple;
+}
+
+/**
+ * A set of vertically stacked sections, each of which can be expanded to
+ * reveal its content. Wraps a select state, so `defaultValue`/`value` hold the
+ * id of the open section, or an array of ids when `multiple` is set.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ */
+export function Accordion<V, T extends ValidComponent = 'div'>(
+  props: AccordionProps<V, T>,
+): JSX.Element {
+  return createMemo(() => {
+    const state = isAccordionMultiple(props)
+      ? createMultipleSelectState(props)
+      : createSingleSelectState(props);
+    const controller = createAccordionFocusNavigator();
+    const [ref, setRef] = createForwardRef(props);
+
+    createEffect(ref, (current) => {
+      if (current instanceof HTMLElement) {
+        controller.setRef(current);
+
+        return mergeFunc(
+          () => controller.clearRef(),
+          useEventListener(current, 'keydown', (e) => {
+            if (!state.disabled()) {
+              switch (e.key) {
+                case 'ArrowUp': {
+                  e.preventDefault();
+                  controller.setPrevChecked(true);
+                  break;
+                }
+                case 'ArrowDown': {
+                  e.preventDefault();
+                  controller.setNextChecked(true);
+                  break;
+                }
+                case 'Home': {
+                  e.preventDefault();
+                  controller.setFirstChecked();
+                  break;
+                }
+                case 'End': {
+                  e.preventDefault();
+                  controller.setLastChecked();
+                  break;
+                }
+                default:
+                  break;
+              }
+            }
+          }),
+          useEventListener(current, 'focusin', (e) => {
+            if (e.target && e.target !== current) {
+              controller.setCurrent(e.target as HTMLElement);
+            }
+          }),
+        );
+      }
+      return undefined;
+    });
+
+    const rest = isAccordionUncontrolled(props)
+      ? omit(
+          props,
+          'as',
+          'by',
+          'children',
+          'defaultValue',
+          'disabled',
+          'multiple',
+          'onChange',
+          'ref',
+          'toggleable',
+        )
+      : omit(
+          props,
+          'as',
+          'by',
+          'children',
+          'value',
+          'disabled',
+          'multiple',
+          'onChange',
+          'ref',
+          'toggleable',
+        );
+    const controllerId = controller.getId();
+    const disabledState = createDisabledState(() => state.disabled());
+    const ariaDisabledState = createARIADisabledState(() => state.disabled());
+    const hasSelectedState = createHasSelectedState(() => state.hasSelected());
+    const hasActiveState = createHasActiveState(() => state.hasActive());
+    return (
+      <AccordionContext value={controller}>
+        <Dynamic
+          component={props.as || 'div'}
+          {...rest}
+          {...ACCORDION_TAG}
+          ref={setRef}
+          id={controllerId}
+          {...disabledState}
+          {...ariaDisabledState}
+          {...hasSelectedState}
+          {...hasActiveState}
+        >
+          <SelectStateProvider state={state}>{props.children}</SelectStateProvider>
+        </Dynamic>
+      </AccordionContext>
+    );
+  }) as unknown as JSX.Element;
+}

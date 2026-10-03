@@ -28,31 +28,131 @@
     "*": {}
   },
   "exports": {
-    "./accordion": "./dist/accordion.js",
-    "./alert": "./dist/alert.js",
-    "./alert-dialog": "./dist/alert-dialog.js",
-    "./button": "./dist/button.js",
-    "./checkbox": "./dist/checkbox.js",
-    "./color-scheme": "./dist/color-scheme.js",
-    "./combobox": "./dist/combobox.js",
-    "./command": "./dist/command.js",
-    "./command-bar": "./dist/command-bar.js",
-    "./context-menu": "./dist/context-menu.js",
-    "./dialog": "./dist/dialog.js",
-    "./disclosure": "./dist/disclosure.js",
-    "./feed": "./dist/feed.js",
-    "./listbox": "./dist/listbox.js",
-    "./menu": "./dist/menu.js",
-    "./popover": "./dist/popover.js",
-    "./radio-group": "./dist/radio-group.js",
-    "./select": "./dist/select.js",
-    "./states": "./dist/states.js",
-    "./tabs": "./dist/tabs.js",
-    "./toast": "./dist/toast.js",
-    "./toggle": "./dist/toggle.js",
-    "./toolbar": "./dist/toolbar.js",
-    "./transition": "./dist/transition.js",
-    "./utils": "./dist/utils.js",
+    "./accordion": {
+      "types": "./dist/accordion.d.ts",
+      "solid": "./dist/accordion.jsx",
+      "default": "./dist/accordion.jsx"
+    },
+    "./alert": {
+      "types": "./dist/alert.d.ts",
+      "solid": "./dist/alert.jsx",
+      "default": "./dist/alert.jsx"
+    },
+    "./alert-dialog": {
+      "types": "./dist/alert-dialog.d.ts",
+      "solid": "./dist/alert-dialog.jsx",
+      "default": "./dist/alert-dialog.jsx"
+    },
+    "./button": {
+      "types": "./dist/button.d.ts",
+      "solid": "./dist/button.jsx",
+      "default": "./dist/button.jsx"
+    },
+    "./checkbox": {
+      "types": "./dist/checkbox.d.ts",
+      "solid": "./dist/checkbox.jsx",
+      "default": "./dist/checkbox.jsx"
+    },
+    "./color-scheme": {
+      "types": "./dist/color-scheme.d.ts",
+      "solid": "./dist/color-scheme.jsx",
+      "default": "./dist/color-scheme.jsx"
+    },
+    "./combobox": {
+      "types": "./dist/combobox.d.ts",
+      "solid": "./dist/combobox.jsx",
+      "default": "./dist/combobox.jsx"
+    },
+    "./command": {
+      "types": "./dist/command.d.ts",
+      "solid": "./dist/command.jsx",
+      "default": "./dist/command.jsx"
+    },
+    "./command-bar": {
+      "types": "./dist/command-bar.d.ts",
+      "solid": "./dist/command-bar.jsx",
+      "default": "./dist/command-bar.jsx"
+    },
+    "./context-menu": {
+      "types": "./dist/context-menu.d.ts",
+      "solid": "./dist/context-menu.jsx",
+      "default": "./dist/context-menu.jsx"
+    },
+    "./dialog": {
+      "types": "./dist/dialog.d.ts",
+      "solid": "./dist/dialog.jsx",
+      "default": "./dist/dialog.jsx"
+    },
+    "./disclosure": {
+      "types": "./dist/disclosure.d.ts",
+      "solid": "./dist/disclosure.jsx",
+      "default": "./dist/disclosure.jsx"
+    },
+    "./feed": {
+      "types": "./dist/feed.d.ts",
+      "solid": "./dist/feed.jsx",
+      "default": "./dist/feed.jsx"
+    },
+    "./listbox": {
+      "types": "./dist/listbox.d.ts",
+      "solid": "./dist/listbox.jsx",
+      "default": "./dist/listbox.jsx"
+    },
+    "./menu": {
+      "types": "./dist/menu.d.ts",
+      "solid": "./dist/menu.jsx",
+      "default": "./dist/menu.jsx"
+    },
+    "./popover": {
+      "types": "./dist/popover.d.ts",
+      "solid": "./dist/popover.jsx",
+      "default": "./dist/popover.jsx"
+    },
+    "./radio-group": {
+      "types": "./dist/radio-group.d.ts",
+      "solid": "./dist/radio-group.jsx",
+      "default": "./dist/radio-group.jsx"
+    },
+    "./select": {
+      "types": "./dist/select.d.ts",
+      "solid": "./dist/select.jsx",
+      "default": "./dist/select.jsx"
+    },
+    "./states": {
+      "types": "./dist/states.d.ts",
+      "solid": "./dist/states.jsx",
+      "default": "./dist/states.jsx"
+    },
+    "./tabs": {
+      "types": "./dist/tabs.d.ts",
+      "solid": "./dist/tabs.jsx",
+      "default": "./dist/tabs.jsx"
+    },
+    "./toast": {
+      "types": "./dist/toast.d.ts",
+      "solid": "./dist/toast.jsx",
+      "default": "./dist/toast.jsx"
+    },
+    "./toggle": {
+      "types": "./dist/toggle.d.ts",
+      "solid": "./dist/toggle.jsx",
+      "default": "./dist/toggle.jsx"
+    },
+    "./toolbar": {
+      "types": "./dist/toolbar.d.ts",
+      "solid": "./dist/toolbar.jsx",
+      "default": "./dist/toolbar.jsx"
+    },
+    "./transition": {
+      "types": "./dist/transition.d.ts",
+      "solid": "./dist/transition.jsx",
+      "default": "./dist/transition.jsx"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "solid": "./dist/utils.jsx",
+      "default": "./dist/utils.jsx"
+    },
     "./package.json": "./package.json"
   },
   "publishConfig": {

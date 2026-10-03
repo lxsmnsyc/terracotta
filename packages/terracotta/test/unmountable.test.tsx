@@ -6,8 +6,7 @@ import { settle } from './aria';
 import { Dialog } from '../src/components/dialog';
 import { Popover, PopoverButton, PopoverPanel } from '../src/components/popover';
 import { Transition, TransitionChild } from '../src/components/transition';
-import type { UnmountableProps } from '../src/utils/create-unmountable';
-import { createUnmountable } from '../src/utils/create-unmountable';
+import { Unmountable, type UnmountableProps } from '../src/utils/unmountable';
 
 /**
  * `unmount` decides what happens to the children of a hidden disclosure, and
@@ -33,7 +32,11 @@ function setup(mode?: boolean | 'offscreen'): {
   }
 
   function Harness(props: UnmountableProps): JSX.Element {
-    return createUnmountable(props, shown, () => <Body />);
+    return (
+      <Unmountable unmount={props.unmount} when={shown()}>
+        <Body />
+      </Unmountable>
+    );
   }
 
   render(() => <Harness unmount={mode} />);
@@ -50,7 +53,7 @@ function setup(mode?: boolean | 'offscreen'): {
 
 const mounted = (): boolean => screen.queryByTestId('body') !== null;
 
-describe('createUnmountable', () => {
+describe('Unmountable', () => {
   it.each([undefined, true] as const)(
     'removes and rebuilds the children with unmount=%s',
     (mode) => {
@@ -101,14 +104,18 @@ describe('createUnmountable', () => {
     const [tick, setTick] = createSignal(0);
     let runs = 0;
 
-    render(() =>
-      createUnmountable({ unmount: 'offscreen' }, shown, () => {
-        createEffect(tick, () => {
-          runs += 1;
-        });
-        return <div data-testid="body">body</div>;
-      }),
-    );
+    function Body(): JSX.Element {
+      createEffect(tick, () => {
+        runs += 1;
+      });
+      return <div data-testid="body">body</div>;
+    }
+
+    render(() => (
+      <Unmountable unmount="offscreen" when={shown()}>
+        <Body />
+      </Unmountable>
+    ));
 
     expect(runs).toBe(1);
 

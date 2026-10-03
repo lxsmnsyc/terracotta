@@ -1,0 +1,194 @@
+import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { createEffect, createMemo, createSignal, createUniqueId, omit } from 'solid-js';
+import type {
+  AutocompleteStateRenderProps,
+  MultipleAutocompleteStateControlledOptions,
+  MultipleAutocompleteStateUncontrolledOptions,
+  SingleAutocompleteStateControlledOptions,
+  SingleAutocompleteStateUncontrolledOptions,
+} from '../../states/create-autocomplete-state';
+import {
+  AutocompleteStateProvider,
+  createMultipleAutocompleteState,
+  createSingleAutocompleteState,
+} from '../../states/create-autocomplete-state';
+import type { HeadlessProps } from '../../utils/dynamic-prop';
+import {
+  createARIADisabledState,
+  createDisabledState,
+  createHasActiveState,
+  createHasQueryState,
+  createHasSelectedState,
+} from '../../utils/state-props';
+import type { Prettify } from '../../utils/types';
+import { CommandContext, createCommandOptionFocusNavigator } from './CommandContext';
+import { COMMAND_TAG } from './tags';
+
+export interface CommandBaseProps {
+  horizontal?: boolean;
+}
+
+export type SingleCommandControlledBaseProps<V> = Prettify<
+  CommandBaseProps & SingleAutocompleteStateControlledOptions<V> & AutocompleteStateRenderProps<V>
+>;
+
+export type SingleCommandControlledProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  SingleCommandControlledBaseProps<V>
+>;
+
+export type SingleCommandUncontrolledBaseProps<V> = Prettify<
+  CommandBaseProps & SingleAutocompleteStateUncontrolledOptions<V> & AutocompleteStateRenderProps<V>
+>;
+
+export type SingleCommandUncontrolledProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  SingleCommandUncontrolledBaseProps<V>
+>;
+
+export type SingleCommandProps<V, T extends ValidComponent = 'div'> =
+  | SingleCommandControlledProps<V, T>
+  | SingleCommandUncontrolledProps<V, T>;
+
+export type MultipleCommandControlledBaseProps<V> = Prettify<
+  CommandBaseProps & MultipleAutocompleteStateControlledOptions<V> & AutocompleteStateRenderProps<V>
+>;
+
+export type MultipleCommandControlledProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  MultipleCommandControlledBaseProps<V>
+>;
+
+export type MultipleCommandUncontrolledBaseProps<V> = Prettify<
+  CommandBaseProps &
+    MultipleAutocompleteStateUncontrolledOptions<V> &
+    AutocompleteStateRenderProps<V>
+>;
+
+export type MultipleCommandUncontrolledProps<V, T extends ValidComponent = 'div'> = HeadlessProps<
+  T,
+  MultipleCommandUncontrolledBaseProps<V>
+>;
+
+export type MultipleCommandProps<V, T extends ValidComponent = 'div'> =
+  | MultipleCommandControlledProps<V, T>
+  | MultipleCommandUncontrolledProps<V, T>;
+
+export type CommandProps<V, T extends ValidComponent = 'div'> =
+  | SingleCommandProps<V, T>
+  | MultipleCommandProps<V, T>;
+
+function isCommandMultiple<V, T extends ValidComponent = 'div'>(
+  props: CommandProps<V, T>,
+): props is MultipleCommandProps<V, T> {
+  return !!props.multiple;
+}
+
+function isCommandUncontrolled<V, T extends ValidComponent = 'div'>(
+  props: CommandProps<V, T>,
+): props is SingleCommandUncontrolledProps<V, T> | MultipleCommandUncontrolledProps<V, T> {
+  return 'defaultValue' in props;
+}
+
+/**
+ * An always-visible filtered listbox — the body of a command palette. Same
+ * autocomplete state as `Combobox`, but with no popup of its own, so it can be
+ * dropped inside a `CommandBar` or rendered inline.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
+ */
+export function Command<V, T extends ValidComponent = 'div'>(
+  props: CommandProps<V, T>,
+): JSX.Element {
+  return createMemo(() => {
+    const controller = createCommandOptionFocusNavigator();
+    const state = isCommandMultiple(props)
+      ? createMultipleAutocompleteState(props)
+      : createSingleAutocompleteState(props);
+    const [activeDescendant, setActiveDescendant] = createSignal<string>();
+    const [selectedDescendant, setSelectedDescendant] = createSignal<string | undefined>(
+      undefined,
+      {
+        equals: false,
+      },
+    );
+
+    const inputID = createUniqueId();
+    const optionsID = createUniqueId();
+    const labelID = createUniqueId();
+
+    createEffect(
+      () => !state.hasActive(),
+      (flag) => {
+        if (flag) {
+          setActiveDescendant(undefined);
+        }
+      },
+    );
+
+    const controllerId = controller.getId();
+    const disabledState = createDisabledState(() => state.disabled());
+    const ariaDisabledState = createARIADisabledState(() => state.disabled());
+    const hasSelectedState = createHasSelectedState(() => state.hasSelected());
+    const hasActiveState = createHasActiveState(() => state.hasActive());
+    const hasQueryState = createHasQueryState(() => state.hasQuery());
+    const rest = isCommandUncontrolled(props)
+      ? omit(
+          props,
+          'as',
+          'by',
+          'children',
+          'defaultValue',
+          'disabled',
+          'horizontal',
+          'multiple',
+          'onChange',
+          'toggleable',
+        )
+      : omit(
+          props,
+          'as',
+          'by',
+          'children',
+          'value',
+          'disabled',
+          'horizontal',
+          'multiple',
+          'onChange',
+          'toggleable',
+        );
+    return (
+      <CommandContext
+        value={{
+          multiple: !!props.multiple,
+          controller,
+          inputID,
+          optionsID,
+          labelID,
+          optionsHovering: false,
+          getActiveDescendant: activeDescendant,
+          setActiveDescendant,
+          getSelectedDescendant: selectedDescendant,
+          setSelectedDescendant,
+        }}
+      >
+        <Dynamic
+          component={props.as || 'div'}
+          {...COMMAND_TAG}
+          id={controllerId}
+          aria-labelledby={labelID}
+          {...disabledState}
+          {...ariaDisabledState}
+          {...hasSelectedState}
+          {...hasActiveState}
+          {...hasQueryState}
+          {...rest}
+        >
+          <AutocompleteStateProvider state={state}>{props.children}</AutocompleteStateProvider>
+        </Dynamic>
+      </CommandContext>
+    );
+  }) as unknown as JSX.Element;
+}

@@ -33,7 +33,7 @@ const CLASSES = {
 
 /**
  * Every one of these is an unmountable: it decides whether to render through
- * `createUnmountable`, exactly as a transition does. Pairing two of them in the
+ * `Unmountable`, exactly as a transition does. Pairing two of them in the
  * same position — either through `as`, or by making one the sole child of the
  * other — used to leave the transition re-creating itself forever, because the
  * mount condition was read by the computation that had just built it.

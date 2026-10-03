@@ -1,0 +1,65 @@
+import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { createUniqueId, omit } from 'solid-js';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
+import { focusNext, focusPrev } from '../../utils/focus-navigation';
+import getFocusableElements from '../../utils/focus-query';
+import { FeedContext } from './FeedContext';
+import { FEED_TAG } from './tags';
+
+export interface FeedBaseProps {
+  size: number;
+  busy?: boolean;
+}
+
+export type FeedProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<T, FeedBaseProps>;
+
+/**
+ * A stream of articles with the feed keyboard pattern: <kbd>Page Down</kbd>
+ * and <kbd>Page Up</kbd> move between articles,
+ * <kbd>Ctrl</kbd>+<kbd>Home</kbd> and <kbd>Ctrl</kbd>+<kbd>End</kbd> jump to
+ * the ends. Set `size` to the total number of articles, or `-1` when it is
+ * unknown, and `busy` while more are loading.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
+ */
+export function Feed<T extends ValidComponent = 'div'>(props: FeedProps<T>): JSX.Element {
+  const ownerID = createUniqueId();
+  const labelID = createUniqueId();
+  const contentID = createUniqueId();
+
+  const [ref, setRef] = createForwardRef(props);
+
+  const rest = omit(props, 'as', 'busy', 'size');
+  return (
+    <FeedContext
+      value={{
+        ownerID,
+        labelID,
+        contentID,
+        getSize() {
+          return props.size;
+        },
+        isBusy() {
+          return !!props.busy;
+        },
+        focusNext() {
+          const current = ref();
+          if (current instanceof HTMLElement) {
+            focusNext(getFocusableElements(document.documentElement), current, false, false);
+          }
+        },
+        focusPrev() {
+          const current = ref();
+          if (current instanceof HTMLElement) {
+            focusPrev(getFocusableElements(document.documentElement), current, false, false);
+          }
+        },
+      }}
+    >
+      <Dynamic component={props.as || 'div'} {...FEED_TAG} id={ownerID} ref={setRef} {...rest} />
+    </FeedContext>
+  );
+}
