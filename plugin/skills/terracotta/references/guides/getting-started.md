@@ -21,7 +21,7 @@ The `latest` tag still points at the 1.x line, which targets Solid 1 and is
 imported from the package root rather than one entry per component.
 
 `solid-js` and `@solidjs/web` are peer dependencies. Terracotta 2 targets
-Solid 2 (`^2.0.0-rc.0`).
+Solid 2 (`^2.0.0-rc.13`).
 
 The published code needs Node 20 or later, and uses syntax up to ES2022, such as
 class static blocks. A toolchain that cannot parse that has to transpile the

@@ -10,7 +10,7 @@ handling and ARIA wiring, and no styles. You own the markup and the CSS; the
 library owns the accessibility.
 
 This skill describes **Terracotta 2.x**, which requires **Solid 2**
-(`solid-js` and `@solidjs/web`, both `^2.0.0-rc.0`, as peer dependencies).
+(`solid-js` and `@solidjs/web`, both `^2.0.0-rc.13`, as peer dependencies).
 For Terracotta 1.x on Solid 1, see [1.x differences](#1x-differences).
 
 ## Importing

@@ -33,7 +33,7 @@ either is stale. Edit `docs/content`, never the copy.
 ## Versions
 
 This plugin documents **Terracotta 2.x**, which needs Solid 2 (`solid-js` and
-`@solidjs/web` at `^2.0.0-rc.0`). It notes where Terracotta 1.x on Solid 1
+`@solidjs/web` at `^2.0.0-rc.13`). It notes where Terracotta 1.x on Solid 1
 differs — chiefly that 1.x has a package root entry, so `import { Dialog } from
 'terracotta'` is correct there.
 
