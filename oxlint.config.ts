@@ -27,9 +27,10 @@ export default defineConfig({
     {
       // Every component forwards its element with `ref={setInternalRef}`, a
       // Solid setter, which returns the value it wrote where `ref` expects a
-      // callback that returns nothing. That is the idiomatic Solid ref, and
-      // `Dynamic`'s ref type accepts the setter but not a plain void callback
-      // over the generic element, so the rule has no fix that type-checks.
+      // callback that returns nothing. That is the idiomatic Solid ref, and the
+      // ref type of a `dynamic()` element accepts the setter but not a plain
+      // void callback over the generic element, so the rule has no fix that
+      // type-checks.
       files: ['packages/*/src/**/*.tsx'],
       rules: {
         'typescript/strict-void-return': 'off',

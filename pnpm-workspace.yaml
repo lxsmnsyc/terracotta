@@ -12,7 +12,7 @@ onlyBuiltDependencies:
 # while letting a reviewed lockfile deploy the day it is written.
 minimumReleaseAge: 60
 catalog:
-  '@changesets/cli': ^2.29.7
+  '@changesets/cli': ^3.0.3
   '@lxsmnsyc/oxlint-config': ^0.1.2
   '@playwright/test': ^1.62.1
   '@solidjs/testing-library': 1.0.0-beta.3
