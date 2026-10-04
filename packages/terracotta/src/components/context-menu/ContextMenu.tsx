@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, createUniqueId, omit } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
@@ -85,6 +85,7 @@ export function ContextMenu<T extends ValidComponent = 'div'>(
   const rest = isContextMenuUncontrolled(props)
     ? omit(props, 'as', 'children', 'defaultOpen', 'disabled', 'onChange', 'onClose', 'onOpen')
     : omit(props, 'as', 'children', 'isOpen', 'disabled', 'onChange', 'onClose', 'onOpen');
+  const Root = dynamic(() => props.as || 'div');
   return (
     <ContextMenuContext
       value={{
@@ -93,8 +94,7 @@ export function ContextMenu<T extends ValidComponent = 'div'>(
         panelID,
       }}
     >
-      <Dynamic
-        component={props.as || 'div'}
+      <Root
         {...CONTEXT_MENU_TAG}
         {...disabledState}
         {...ariaDisabledState}
@@ -102,7 +102,7 @@ export function ContextMenu<T extends ValidComponent = 'div'>(
         {...rest}
       >
         <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
-      </Dynamic>
+      </Root>
     </ContextMenuContext>
   );
 }

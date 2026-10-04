@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createMemo, createUniqueId, omit } from 'solid-js';
 import type {
   SelectStateRenderProps,
@@ -98,6 +98,7 @@ export function TabGroup<V, T extends ValidComponent = 'div'>(
           'toggleable',
           'horizontal',
         );
+    const Root = dynamic(() => props.as || 'div');
     return (
       <TabGroupContext
         value={{
@@ -114,8 +115,7 @@ export function TabGroup<V, T extends ValidComponent = 'div'>(
           },
         }}
       >
-        <Dynamic
-          component={props.as || 'div'}
+        <Root
           {...TAB_GROUP_TAG}
           {...disabledState}
           {...ariaDisabledState}
@@ -125,7 +125,7 @@ export function TabGroup<V, T extends ValidComponent = 'div'>(
           {...rest}
         >
           <SelectStateProvider state={state}>{props.children}</SelectStateProvider>
-        </Dynamic>
+        </Root>
       </TabGroupContext>
     );
   }) as unknown as JSX.Element;

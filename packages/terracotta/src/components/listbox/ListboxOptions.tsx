@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, omit } from 'solid-js';
 import { useDisclosureState } from '../../states/create-disclosure-state';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
@@ -174,11 +174,11 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
   const hasSelectedState = createHasSelectedState(() => selectState.hasSelected());
   const hasActiveState = createHasActiveState(() => selectState.hasActive());
   const rest = omit(props, 'as', 'children', 'ref');
+  const Root = dynamic(() => props.as || 'ul');
   return (
     <Unmountable unmount={props.unmount} when={disclosureState.isOpen()}>
       <ListboxOptionsContext value={controller}>
-        <Dynamic
-          component={props.as || 'ul'}
+        <Root
           {...LISTBOX_OPTIONS_TAG}
           id={context.optionsID}
           role="listbox"
@@ -195,7 +195,7 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
           {...rest}
         >
           <SelectStateProvider state={selectState}>{props.children}</SelectStateProvider>
-        </Dynamic>
+        </Root>
       </ListboxOptionsContext>
     </Unmountable>
   );

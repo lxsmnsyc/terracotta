@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
@@ -33,18 +33,12 @@ export function DisclosurePanel<T extends ValidComponent = 'div'>(
   const expanded = createExpandedState(() => state.isOpen());
   const rest = omit(props, 'as', 'unmount', 'children');
 
+  const Root = dynamic(() => props.as || 'div');
   return (
     <Unmountable unmount={props.unmount} when={state.isOpen()}>
-      <Dynamic
-        component={props.as || 'div'}
-        {...DISCLOSURE_PANEL_TAG}
-        id={context.panelID}
-        {...disabled}
-        {...expanded}
-        {...rest}
-      >
+      <Root {...DISCLOSURE_PANEL_TAG} id={context.panelID} {...disabled} {...expanded} {...rest}>
         <DisclosureStateChild>{props.children}</DisclosureStateChild>
-      </Dynamic>
+      </Root>
     </Unmountable>
   );
 }

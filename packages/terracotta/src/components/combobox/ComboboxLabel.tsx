@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { omit } from 'solid-js';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import { useDisclosureState } from '../../states/create-disclosure-state';
@@ -35,9 +35,9 @@ export function ComboboxLabel<T extends ValidComponent = 'label'>(
   const hasActiveState = createHasActiveState(() => autocompleteState.hasActive());
   const hasQueryState = createHasQueryState(() => autocompleteState.hasQuery());
   const rest = omit(props, 'as');
+  const Root = dynamic(() => props.as || 'label');
   return (
-    <Dynamic
-      component={props.as || 'label'}
+    <Root
       {...COMBOBOX_LABEL_TAG}
       id={context.labelID}
       {...disabledState}

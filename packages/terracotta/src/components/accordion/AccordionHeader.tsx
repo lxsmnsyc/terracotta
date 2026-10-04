@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { omit } from 'solid-js';
 import type { SelectOptionStateRenderProps } from '../../states/create-select-option-state';
 import {
@@ -38,9 +38,9 @@ export function AccordionHeader<T extends ValidComponent = 'h3'>(
   const selectedState = createSelectedState(() => state.isSelected());
   const expandedState = createExpandedState(() => state.isSelected());
   const activeState = createActiveState(() => state.isActive());
+  const Root = dynamic(() => props.as || 'h3');
   return (
-    <Dynamic
-      component={props.as || 'h3'}
+    <Root
       {...rest}
       {...ACCORDION_HEADER_TAG}
       {...disabledState}
@@ -49,6 +49,6 @@ export function AccordionHeader<T extends ValidComponent = 'h3'>(
       {...activeState}
     >
       <SelectOptionStateChild>{props.children}</SelectOptionStateChild>
-    </Dynamic>
+    </Root>
   );
 }

@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, createMemo, omit } from 'solid-js';
 import type {
   MultipleSelectStateControlledOptions,
@@ -173,10 +173,10 @@ export function Accordion<V, T extends ValidComponent = 'div'>(
     const ariaDisabledState = createARIADisabledState(() => state.disabled());
     const hasSelectedState = createHasSelectedState(() => state.hasSelected());
     const hasActiveState = createHasActiveState(() => state.hasActive());
+    const Root = dynamic(() => props.as || 'div');
     return (
       <AccordionContext value={controller}>
-        <Dynamic
-          component={props.as || 'div'}
+        <Root
           {...rest}
           {...ACCORDION_TAG}
           ref={setRef}
@@ -187,7 +187,7 @@ export function Accordion<V, T extends ValidComponent = 'div'>(
           {...hasActiveState}
         >
           <SelectStateProvider state={state}>{props.children}</SelectStateProvider>
-        </Dynamic>
+        </Root>
       </AccordionContext>
     );
   }) as unknown as JSX.Element;

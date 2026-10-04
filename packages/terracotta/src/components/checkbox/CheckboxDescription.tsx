@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { omit } from 'solid-js';
 import type { CheckStateRenderProps } from '../../states/create-check-state';
 import { CheckStateChild, useCheckState } from '../../states/create-check-state';
@@ -28,9 +28,9 @@ export function CheckboxDescription<T extends ValidComponent = 'p'>(
   const rest = omit(props, 'as', 'children');
   const disabledState = createDisabledState(() => state.disabled());
   const checkedState = createCheckedState(() => state.checked());
+  const Root = dynamic(() => props.as || 'p');
   return (
-    <Dynamic
-      component={props.as || 'p'}
+    <Root
       {...rest}
       {...CHECKBOX_DESCRIPTION}
       id={context.descriptionID}
@@ -38,6 +38,6 @@ export function CheckboxDescription<T extends ValidComponent = 'p'>(
       {...checkedState}
     >
       <CheckStateChild>{props.children}</CheckStateChild>
-    </Dynamic>
+    </Root>
   );
 }

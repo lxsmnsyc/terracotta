@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { omit } from 'solid-js';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { useRadioGroupContext } from './RadioGroupContext';
@@ -20,12 +20,6 @@ export function RadioGroupDescription<T extends ValidComponent = 'div'>(
   const context = useRadioGroupContext('RadioGroupDescription');
 
   const rest = omit(props, 'as');
-  return (
-    <Dynamic
-      component={props.as || 'div'}
-      {...RADIO_GROUP_DESCRIPTION_TAG}
-      id={context.descriptionID}
-      {...rest}
-    />
-  );
+  const Root = dynamic(() => props.as || 'div');
+  return <Root {...RADIO_GROUP_DESCRIPTION_TAG} id={context.descriptionID} {...rest} />;
 }

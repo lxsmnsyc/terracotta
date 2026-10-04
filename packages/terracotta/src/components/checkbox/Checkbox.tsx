@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createUniqueId, omit } from 'solid-js';
 import type {
   CheckStateControlledOptions,
@@ -67,6 +67,7 @@ export function Checkbox<T extends ValidComponent = 'div'>(props: CheckboxProps<
   const rest = isCheckboxUncontrolled(props)
     ? omit(props, 'as', 'children', 'defaultChecked', 'disabled', 'onChange')
     : omit(props, 'as', 'children', 'checked', 'disabled', 'onChange');
+  const Root = dynamic(() => props.as || 'div');
   return (
     <CheckboxContext
       value={{
@@ -76,16 +77,9 @@ export function Checkbox<T extends ValidComponent = 'div'>(props: CheckboxProps<
         descriptionID,
       }}
     >
-      <Dynamic
-        component={props.as || 'div'}
-        {...CHECKBOX_TAG}
-        {...disabledState}
-        {...ariaDisabledState}
-        {...checkedState}
-        {...rest}
-      >
+      <Root {...CHECKBOX_TAG} {...disabledState} {...ariaDisabledState} {...checkedState} {...rest}>
         <CheckStateProvider state={state}>{props.children}</CheckStateProvider>
-      </Dynamic>
+      </Root>
     </CheckboxContext>
   );
 }

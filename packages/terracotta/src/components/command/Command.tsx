@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, createMemo, createSignal, createUniqueId, omit } from 'solid-js';
 import type {
   AutocompleteStateRenderProps,
@@ -159,6 +159,7 @@ export function Command<V, T extends ValidComponent = 'div'>(
           'onChange',
           'toggleable',
         );
+    const Root = dynamic(() => props.as || 'div');
     return (
       <CommandContext
         value={{
@@ -174,8 +175,7 @@ export function Command<V, T extends ValidComponent = 'div'>(
           setSelectedDescendant,
         }}
       >
-        <Dynamic
-          component={props.as || 'div'}
+        <Root
           {...COMMAND_TAG}
           id={controllerId}
           aria-labelledby={labelID}
@@ -187,7 +187,7 @@ export function Command<V, T extends ValidComponent = 'div'>(
           {...rest}
         >
           <AutocompleteStateProvider state={state}>{props.children}</AutocompleteStateProvider>
-        </Dynamic>
+        </Root>
       </CommandContext>
     );
   }) as unknown as JSX.Element;

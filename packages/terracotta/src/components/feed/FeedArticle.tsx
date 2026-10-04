@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createUniqueId, omit } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
@@ -30,6 +30,7 @@ export function FeedArticle<T extends ValidComponent = 'article'>(
 
   const ownerAttribute = createOwnerAttribute(rootContext.ownerID);
   const rest = omit(props, 'as');
+  const Root = dynamic(() => props.as || 'article');
   return (
     <FeedArticleContext
       value={{
@@ -38,8 +39,7 @@ export function FeedArticle<T extends ValidComponent = 'article'>(
         descriptionID,
       }}
     >
-      <Dynamic
-        component={props.as || 'article'}
+      <Root
         {...FEED_ARTICLE_TAG}
         {...ownerAttribute}
         id={ownerID}

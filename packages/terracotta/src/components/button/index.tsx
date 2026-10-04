@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, omit } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
@@ -50,9 +50,9 @@ export function Button<T extends ValidComponent = 'button'>(props: ButtonProps<T
   const disabledState = createDisabledState(() => props.disabled);
   const ariaDisabledState = createARIADisabledState(() => props.disabled);
   const rest = omit(props, 'as', 'ref');
+  const Root = dynamic(() => props.as || 'button');
   return (
-    <Dynamic
-      component={props.as || 'button'}
+    <Root
       {...BUTTON_TAG}
       tabindex={props.disabled ? -1 : 0}
       role="button"

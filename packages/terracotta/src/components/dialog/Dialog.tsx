@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, createUniqueId, omit } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
@@ -105,6 +105,7 @@ export function Dialog<T extends ValidComponent = 'div'>(props: DialogProps<T>):
         'onOpen',
         'unmount',
       );
+  const Root = dynamic(() => props.as || 'div');
   return (
     <DialogContext
       value={{
@@ -115,8 +116,7 @@ export function Dialog<T extends ValidComponent = 'div'>(props: DialogProps<T>):
       }}
     >
       <Unmountable unmount={props.unmount} when={state.isOpen()}>
-        <Dynamic
-          component={props.as || 'div'}
+        <Root
           {...DIALOG_TAG}
           id={ownerID}
           role="dialog"
@@ -129,7 +129,7 @@ export function Dialog<T extends ValidComponent = 'div'>(props: DialogProps<T>):
           {...rest}
         >
           <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
-        </Dynamic>
+        </Root>
       </Unmountable>
     </DialogContext>
   );

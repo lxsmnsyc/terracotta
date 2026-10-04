@@ -1,4 +1,4 @@
-import { Dynamic, type JSX } from '@solidjs/web';
+import { dynamic, type JSX } from '@solidjs/web';
 import { Show, children } from 'solid-js';
 
 // An `unmountable` is a kind of component
@@ -48,15 +48,15 @@ export interface UnmountableComponentProps extends UnmountableProps {
  * detaching them while keeping them alive (`'offscreen'`).
  */
 export function Unmountable(props: UnmountableComponentProps): JSX.Element {
+  const Root = dynamic<Conditional>(() => (props.unmount === 'offscreen' ? Offscreen : Show));
   return (
-    <Dynamic<Conditional>
-      component={props.unmount === 'offscreen' ? Offscreen : Show}
+    <Root
       // `unmount` defaults to true, so an omitted prop has to mean "remove me
       // while hidden". Only an explicit `false` keeps the children mounted
       // regardless of the condition.
       when={(props.unmount ?? true) === false || props.when}
     >
       {props.children}
-    </Dynamic>
+    </Root>
   );
 }

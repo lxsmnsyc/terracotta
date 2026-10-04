@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { omit } from 'solid-js';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { useRadioGroupContext } from './RadioGroupContext';
@@ -20,12 +20,6 @@ export function RadioGroupLabel<T extends ValidComponent = 'label'>(
   const context = useRadioGroupContext('RadioGroupLabel');
 
   const rest = omit(props, 'as');
-  return (
-    <Dynamic
-      component={props.as || 'label'}
-      {...RADIO_GROUP_LABEL_TAG}
-      id={context.labelID}
-      {...rest}
-    />
-  );
+  const Root = dynamic(() => props.as || 'label');
+  return <Root {...RADIO_GROUP_LABEL_TAG} id={context.labelID} {...rest} />;
 }

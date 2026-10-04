@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
@@ -37,9 +37,9 @@ export function ListboxLabel<T extends ValidComponent = 'label'>(
   const hasSelectedState = createHasSelectedState(() => selectState.hasSelected());
   const hasActiveState = createHasActiveState(() => selectState.hasActive());
   const rest = omit(props, 'as', 'children');
+  const Root = dynamic(() => props.as || 'label');
   return (
-    <Dynamic
-      component={props.as || 'label'}
+    <Root
       {...LISTBOX_LABEL_TAG}
       id={context.labelID}
       {...disabledState}
@@ -49,6 +49,6 @@ export function ListboxLabel<T extends ValidComponent = 'label'>(
       {...rest}
     >
       <DisclosureStateChild>{props.children}</DisclosureStateChild>
-    </Dynamic>
+    </Root>
   );
 }

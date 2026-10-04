@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { omit } from 'solid-js';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
@@ -31,9 +31,9 @@ export function CommandLabel<T extends ValidComponent = 'label'>(
   const hasSelectedState = createHasSelectedState(() => state.hasSelected());
   const hasActiveState = createHasActiveState(() => state.hasActive());
   const hasQueryState = createHasQueryState(() => state.hasQuery());
+  const Root = dynamic(() => props.as || 'label');
   return (
-    <Dynamic
-      component={props.as || 'label'}
+    <Root
       {...rest}
       {...COMMAND_LABEL_TAG}
       id={context.labelID}

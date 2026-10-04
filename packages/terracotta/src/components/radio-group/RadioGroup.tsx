@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, createUniqueId, omit } from 'solid-js';
 import type {
   SelectStateRenderProps,
@@ -134,6 +134,7 @@ export function RadioGroup<V, T extends ValidComponent = 'div'>(
         'ref',
         'toggleable',
       );
+  const Root = dynamic(() => props.as || 'div');
   return (
     <RadioGroupRootContext value={controller}>
       <RadioGroupContext
@@ -142,8 +143,7 @@ export function RadioGroup<V, T extends ValidComponent = 'div'>(
           labelID,
         }}
       >
-        <Dynamic
-          component={props.as || 'div'}
+        <Root
           {...RADIO_GROUP_TAG}
           role="radiogroup"
           aria-labelledby={labelID}
@@ -156,7 +156,7 @@ export function RadioGroup<V, T extends ValidComponent = 'div'>(
           {...rest}
         >
           <SelectStateProvider state={state}>{props.children}</SelectStateProvider>
-        </Dynamic>
+        </Root>
       </RadioGroupContext>
     </RadioGroupRootContext>
   );

@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, omit } from 'solid-js';
 import createTypeAhead from '../../utils/create-type-ahead';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
@@ -87,16 +87,10 @@ export function Menu<T extends ValidComponent = 'ul'>(props: MenuProps<T>): JSX.
 
   const controllerId = controller.getId();
   const rest = omit(props, 'as', 'ref');
+  const Root = dynamic(() => props.as || 'div');
   return (
     <MenuContext value={controller}>
-      <Dynamic
-        component={props.as || 'div'}
-        {...MENU_TAG}
-        id={controllerId}
-        role="menu"
-        ref={setRef}
-        {...rest}
-      />
+      <Root {...MENU_TAG} id={controllerId} role="menu" ref={setRef} {...rest} />
     </MenuContext>
   );
 }

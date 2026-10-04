@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import {
   createContext,
   createEffect,
@@ -232,17 +232,11 @@ export function TransitionChild<T extends ValidComponent = 'div'>(
     'onTransition',
     'ref',
   );
+  const Root = dynamic(() => props.as || 'div');
   return (
     <TransitionStateContext value={{ value: state }}>
       <Unmountable unmount={props.unmount} when={visible()}>
-        <Dynamic
-          component={props.as || 'div'}
-          id={id}
-          {...rest}
-          ref={setInternalRef}
-          tc-transition={current()}
-          inert={isInert()}
-        />
+        <Root id={id} {...rest} ref={setInternalRef} tc-transition={current()} inert={isInert()} />
       </Unmountable>
     </TransitionStateContext>
   );

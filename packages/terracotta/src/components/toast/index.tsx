@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createContext, createSignal, createUniqueId, omit, onSettled, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
@@ -33,15 +33,8 @@ export function Toast<T extends ValidComponent = 'div'>(props: ToastProps<T>): J
   useToastContext('Toast');
 
   const rest = omit(props, 'as');
-  return (
-    <Dynamic
-      component={props.as || 'div'}
-      {...TOAST_TAG}
-      role="status"
-      aria-live="polite"
-      {...rest}
-    />
-  );
+  const Root = dynamic(() => props.as || 'div');
+  return <Root {...TOAST_TAG} role="status" aria-live="polite" {...rest} />;
 }
 
 export type ToasterProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
@@ -58,13 +51,14 @@ export function Toaster<T extends ValidComponent = 'div'>(props: ToasterProps<T>
   const ownerID = createUniqueId();
 
   const rest2 = omit(props, 'as');
+  const Root = dynamic(() => props.as || 'div');
   return (
     <ToastContext
       value={{
         ownerID,
       }}
     >
-      <Dynamic component={props.as || 'div'} {...TOASTER_TAG} {...rest2} />
+      <Root {...TOASTER_TAG} {...rest2} />
     </ToastContext>
   );
 }

@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, createUniqueId, omit, onSettled } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
@@ -115,6 +115,7 @@ export function CommandBar<T extends ValidComponent = 'div'>(
         'onOpen',
         'unmount',
       );
+  const Root = dynamic(() => props.as || 'div');
   return (
     <CommandBarContext
       value={{
@@ -125,8 +126,7 @@ export function CommandBar<T extends ValidComponent = 'div'>(
       }}
     >
       <Unmountable unmount={props.unmount} when={state.isOpen()}>
-        <Dynamic
-          component={props.as || 'div'}
+        <Root
           {...COMMAND_BAR_TAG}
           {...disabledState}
           {...ariaDisabledState}
@@ -139,7 +139,7 @@ export function CommandBar<T extends ValidComponent = 'div'>(
           {...rest}
         >
           <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
-        </Dynamic>
+        </Root>
       </Unmountable>
     </CommandBarContext>
   );

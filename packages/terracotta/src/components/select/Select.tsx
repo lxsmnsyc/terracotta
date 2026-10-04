@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, createMemo, omit } from 'solid-js';
 import type {
   MultipleSelectStateControlledOptions,
@@ -223,10 +223,10 @@ export function Select<V, T extends ValidComponent = 'ul'>(props: SelectProps<V,
           'ref',
           'toggleable',
         );
+    const Root = dynamic(() => props.as || 'ul');
     return (
       <SelectContext value={controller}>
-        <Dynamic
-          component={props.as || 'ul'}
+        <Root
           {...SELECT_TAG}
           id={controllerId}
           role="listbox"
@@ -241,7 +241,7 @@ export function Select<V, T extends ValidComponent = 'ul'>(props: SelectProps<V,
           {...rest}
         >
           <SelectStateProvider state={state}>{props.children}</SelectStateProvider>
-        </Dynamic>
+        </Root>
       </SelectContext>
     );
   }) as unknown as JSX.Element;

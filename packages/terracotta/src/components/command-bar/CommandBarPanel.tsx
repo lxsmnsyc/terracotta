@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
@@ -74,9 +74,9 @@ export function CommandBarPanel<T extends ValidComponent = 'div'>(
   const disabledState = createDisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
   const rest = omit(props, 'as', 'children', 'ref');
+  const Root = dynamic(() => props.as || 'div');
   return (
-    <Dynamic
-      component={props.as || 'div'}
+    <Root
       {...COMMAND_BAR_PANEL_TAG}
       id={context.panelID}
       ref={setInternalRef}
@@ -85,6 +85,6 @@ export function CommandBarPanel<T extends ValidComponent = 'div'>(
       {...rest}
     >
       <DisclosureStateChild>{props.children}</DisclosureStateChild>
-    </Dynamic>
+    </Root>
   );
 }

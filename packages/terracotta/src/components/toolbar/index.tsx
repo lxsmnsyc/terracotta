@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, omit } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
@@ -118,9 +118,9 @@ export function Toolbar<T extends ValidComponent = 'div'>(props: ToolbarProps<T>
   });
 
   const rest = omit(props, 'as', 'horizontal', 'ref');
+  const Root = dynamic(() => props.as || 'div');
   return (
-    <Dynamic
-      component={props.as || 'div'}
+    <Root
       {...TOOLBAR_TAG}
       role="toolbar"
       tabindex={0}

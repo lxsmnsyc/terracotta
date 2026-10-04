@@ -1,4 +1,4 @@
-import { type ComponentProps, Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { type ComponentProps, dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, createMemo, createSignal, createUniqueId, merge, omit } from 'solid-js';
 import type {
   MultipleAutocompleteStateControlledOptions,
@@ -356,6 +356,7 @@ export function Combobox<V, T extends ValidComponent = 'div'>(
     const hasActiveState = createHasActiveState(() => autocompleteState.hasActive());
     const expandedState = createExpandedState(() => disclosureState.isOpen());
     const rest: Record<string, unknown> = getProps(props);
+    const Root = dynamic(() => props.as || 'div');
     return (
       <ComboboxContext
         value={{
@@ -376,8 +377,7 @@ export function Combobox<V, T extends ValidComponent = 'div'>(
       >
         <AutocompleteStateProvider state={autocompleteState}>
           <DisclosureStateProvider state={disclosureState}>
-            <Dynamic
-              component={props.as || 'div'}
+            <Root
               {...COMBOBOX_TAG}
               aria-labelledby={labelID}
               {...disabledState}
@@ -388,7 +388,7 @@ export function Combobox<V, T extends ValidComponent = 'div'>(
               {...rest}
             >
               {props.children}
-            </Dynamic>
+            </Root>
           </DisclosureStateProvider>
         </AutocompleteStateProvider>
       </ComboboxContext>

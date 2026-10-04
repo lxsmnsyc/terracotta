@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, omit } from 'solid-js';
 import { useAutocompleteState } from '../../states/create-autocomplete-state';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
@@ -117,9 +117,9 @@ export function CommandInput<T extends ValidComponent = 'input'>(
   const hasActiveState = createHasActiveState(() => state.hasActive());
   const hasQueryState = createHasQueryState(() => state.hasQuery());
   const rest = omit(props, 'as', 'ref');
+  const Root = dynamic(() => props.as || 'input');
   return (
-    <Dynamic
-      component={props.as || 'input'}
+    <Root
       {...COMMAND_INPUT_TAG}
       id={context.inputID}
       ref={setInternalRef}

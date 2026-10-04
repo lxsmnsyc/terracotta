@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createUniqueId, omit } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
@@ -69,6 +69,7 @@ export function Disclosure<T extends ValidComponent = 'div'>(
   const rest = isDisclosureUncontrolled(props)
     ? omit(props, 'as', 'children', 'defaultOpen', 'disabled', 'onChange', 'onClose', 'onOpen')
     : omit(props, 'as', 'children', 'isOpen', 'disabled', 'onChange', 'onClose', 'onOpen');
+  const Root = dynamic(() => props.as || 'div');
   return (
     <DisclosureContext
       value={{
@@ -77,8 +78,7 @@ export function Disclosure<T extends ValidComponent = 'div'>(
         panelID,
       }}
     >
-      <Dynamic
-        component={props.as || 'div'}
+      <Root
         {...DISCLOSURE_TAG}
         {...disabledState}
         {...ariaDisabledState}
@@ -86,7 +86,7 @@ export function Disclosure<T extends ValidComponent = 'div'>(
         {...rest}
       >
         <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
-      </Dynamic>
+      </Root>
     </DisclosureContext>
   );
 }

@@ -1,5 +1,4 @@
 import type { JSX } from '@solidjs/web';
-import { Dynamic } from '@solidjs/web';
 import { For } from 'solid-js';
 import { Popover, PopoverButton, PopoverPanel } from 'terracotta/popover';
 import { Transition } from 'terracotta/transition';
@@ -152,7 +151,7 @@ export default function App(): JSX.Element {
                           class="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
                         >
                           <div class="flex items-center justify-center shrink-0 w-10 h-10 text-white sm:h-12 sm:w-12">
-                            <Dynamic component={item.icon} aria-hidden="true" />
+                            <item.icon aria-hidden="true" />
                           </div>
                           <div class="ml-4">
                             <p class="text-sm font-medium text-gray-900">{item.name}</p>

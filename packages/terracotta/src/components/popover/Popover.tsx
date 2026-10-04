@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, createUniqueId, omit } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
@@ -83,6 +83,7 @@ export function Popover<T extends ValidComponent = 'div'>(props: PopoverProps<T>
   const rest = isPopoverUncontrolled(props)
     ? omit(props, 'as', 'children', 'defaultOpen', 'disabled', 'onChange', 'onClose', 'onOpen')
     : omit(props, 'as', 'children', 'isOpen', 'disabled', 'onChange', 'onClose', 'onOpen');
+  const Root = dynamic(() => props.as || 'div');
   return (
     <PopoverContext
       value={{
@@ -92,16 +93,9 @@ export function Popover<T extends ValidComponent = 'div'>(props: PopoverProps<T>
         hovering: false,
       }}
     >
-      <Dynamic
-        component={props.as || 'div'}
-        {...POPOVER_TAG}
-        {...disabledState}
-        {...ariaDisabledState}
-        {...expandedState}
-        {...rest}
-      >
+      <Root {...POPOVER_TAG} {...disabledState} {...ariaDisabledState} {...expandedState} {...rest}>
         <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
-      </Dynamic>
+      </Root>
     </PopoverContext>
   );
 }

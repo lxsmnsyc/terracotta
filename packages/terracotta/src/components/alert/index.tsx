@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createUniqueId, omit } from 'solid-js';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
@@ -20,7 +20,6 @@ export function Alert<T extends ValidComponent = 'div'>(props: AlertProps<T>): J
   const alertID = createUniqueId();
 
   const rest = omit(props, 'as');
-  return (
-    <Dynamic component={props.as || 'div'} id={alertID} {...rest} {...ALERT_TAG} role="alert" />
-  );
+  const Root = dynamic(() => props.as || 'div');
+  return <Root id={alertID} {...rest} {...ALERT_TAG} role="alert" />;
 }

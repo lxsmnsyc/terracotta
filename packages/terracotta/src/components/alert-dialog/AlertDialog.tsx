@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createTrackedEffect, createUniqueId, omit } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
@@ -104,6 +104,7 @@ export function AlertDialog<T extends ValidComponent = 'div'>(
   const disabledState = createDisabledState(() => state.disabled());
   const ariaDisabledState = createARIADisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
+  const Root = dynamic(() => props.as || 'div');
   return (
     <AlertDialogContext
       value={{
@@ -114,8 +115,7 @@ export function AlertDialog<T extends ValidComponent = 'div'>(
       }}
     >
       <Unmountable unmount={props.unmount} when={state.isOpen()}>
-        <Dynamic
-          component={props.as || 'div'}
+        <Root
           {...rest}
           {...ALERT_DIALOG_TAG}
           id={ownerID}
@@ -128,7 +128,7 @@ export function AlertDialog<T extends ValidComponent = 'div'>(
           {...expandedState}
         >
           <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
-        </Dynamic>
+        </Root>
       </Unmountable>
     </AlertDialogContext>
   );

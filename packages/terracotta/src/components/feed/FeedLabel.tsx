@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { omit } from 'solid-js';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { useFeedContext } from './FeedContext';
@@ -18,7 +18,6 @@ export function FeedLabel<T extends ValidComponent = 'span'>(
 ): JSX.Element {
   const context = useFeedContext('FeedLabel');
   const rest = omit(props, 'as');
-  return (
-    <Dynamic component={props.as || 'span'} {...FEED_LABEL_TAG} id={context.labelID} {...rest} />
-  );
+  const Root = dynamic(() => props.as || 'span');
+  return <Root {...FEED_LABEL_TAG} id={context.labelID} {...rest} />;
 }

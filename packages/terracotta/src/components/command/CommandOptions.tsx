@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, omit } from 'solid-js';
 import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
 import {
@@ -72,9 +72,9 @@ export function CommandOptions<V, T extends ValidComponent = 'ul'>(
   const hasActiveState = createHasActiveState(() => state.hasActive());
   const hasQueryState = createHasQueryState(() => state.hasQuery());
   const rest = omit(props, 'as', 'children', 'ref');
+  const Root = dynamic(() => props.as || 'ul');
   return (
-    <Dynamic
-      component={props.as || 'ul'}
+    <Root
       {...COMMAND_OPTIONS_TAG}
       id={context.optionsID}
       role="listbox"
@@ -90,6 +90,6 @@ export function CommandOptions<V, T extends ValidComponent = 'ul'>(
       {...rest}
     >
       <AutocompleteStateChild>{props.children}</AutocompleteStateChild>
-    </Dynamic>
+    </Root>
   );
 }

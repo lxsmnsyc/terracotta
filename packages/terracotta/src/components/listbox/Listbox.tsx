@@ -1,4 +1,4 @@
-import { type ComponentProps, Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { type ComponentProps, dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, createMemo, createUniqueId, merge, omit } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
@@ -352,6 +352,7 @@ export function Listbox<V, T extends ValidComponent = 'div'>(
     const hasActiveState = createHasActiveState(() => selectState.hasActive());
     const expandedState = createExpandedState(() => disclosureState.isOpen());
     const rest: Record<string, unknown> = getProps(props);
+    const Root = dynamic(() => props.as || 'div');
     return (
       <ListboxContext
         value={{
@@ -369,8 +370,7 @@ export function Listbox<V, T extends ValidComponent = 'div'>(
       >
         <SelectStateProvider state={selectState}>
           <DisclosureStateProvider state={disclosureState}>
-            <Dynamic
-              component={props.as || 'div'}
+            <Root
               {...LISTBOX_TAG}
               id={ownerID}
               aria-labelledby={labelID}
@@ -382,7 +382,7 @@ export function Listbox<V, T extends ValidComponent = 'div'>(
               {...rest}
             >
               {props.children}
-            </Dynamic>
+            </Root>
           </DisclosureStateProvider>
         </SelectStateProvider>
       </ListboxContext>

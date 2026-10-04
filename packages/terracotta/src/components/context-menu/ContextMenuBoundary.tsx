@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
@@ -53,9 +53,9 @@ export function ContextMenuBoundary<T extends ValidComponent = 'div'>(
   const expandedState = createExpandedState(() => state.isOpen());
   const ariaExpandedState = createARIAExpandedState(() => state.isOpen());
   const rest = omit(props, 'as', 'children', 'ref');
+  const Root = dynamic(() => props.as || 'div');
   return (
-    <Dynamic
-      component={props.as || 'div'}
+    <Root
       {...CONTEXT_MENU_BOUNDARY_TAG}
       id={context.boundaryID}
       ref={setInternalRef}
@@ -67,6 +67,6 @@ export function ContextMenuBoundary<T extends ValidComponent = 'div'>(
       {...rest}
     >
       <DisclosureStateChild>{props.children}</DisclosureStateChild>
-    </Dynamic>
+    </Root>
   );
 }

@@ -1,5 +1,5 @@
 import { useParams } from '@solidjs/router';
-import { Dynamic, type JSX, Loading, isServer } from '@solidjs/web';
+import { type JSX, Loading, dynamic, isServer } from '@solidjs/web';
 import {
   type Component,
   Show,
@@ -122,7 +122,10 @@ export default function DemoHost(): JSX.Element {
           when={demo()}
           fallback={<p class="demo-stage-missing">No demo registered as “{params.id}”.</p>}
         >
-          {(component) => <Dynamic component={component()} />}
+          {(component) => {
+            const Demo = dynamic(component);
+            return <Demo />;
+          }}
         </Show>
       </Loading>
     </div>

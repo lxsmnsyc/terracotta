@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, omit } from 'solid-js';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
 import { SelectStateChild, useSelectState } from '../../states/create-select-state';
@@ -96,10 +96,10 @@ export function TabList<V, T extends ValidComponent = 'div'>(
   const hasSelectedState = createHasSelectedState(() => state.hasSelected());
   const hasActiveState = createHasActiveState(() => state.hasActive());
   const rest = omit(props, 'as', 'ref', 'children');
+  const Root = dynamic(() => props.as || 'div');
   return (
     <TabListContext value={controller}>
-      <Dynamic
-        component={props.as || 'div'}
+      <Root
         {...TAB_LIST_TAG}
         role="tablist"
         aria-orientation={rootContext.isHorizontal() ? 'horizontal' : 'vertical'}
@@ -109,7 +109,7 @@ export function TabList<V, T extends ValidComponent = 'div'>(
         {...rest}
       >
         <SelectStateChild>{props.children}</SelectStateChild>
-      </Dynamic>
+      </Root>
     </TabListContext>
   );
 }

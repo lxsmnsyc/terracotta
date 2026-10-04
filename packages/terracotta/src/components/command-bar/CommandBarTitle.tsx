@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
@@ -27,9 +27,9 @@ export function CommandBarTitle<T extends ValidComponent = 'h2'>(
   const disabledState = createDisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
   const rest = omit(props, 'as', 'children');
+  const Root = dynamic(() => props.as || 'h2');
   return (
-    <Dynamic
-      component={props.as || 'h2'}
+    <Root
       {...COMMAND_BAR_TITLE_TAG}
       id={context.titleID}
       {...disabledState}
@@ -37,6 +37,6 @@ export function CommandBarTitle<T extends ValidComponent = 'h2'>(
       {...rest}
     >
       <DisclosureStateChild>{props.children}</DisclosureStateChild>
-    </Dynamic>
+    </Root>
   );
 }

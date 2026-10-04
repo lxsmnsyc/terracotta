@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
@@ -42,9 +42,9 @@ export function CommandBarOverlay<T extends ValidComponent = 'p'>(
   const disabledState = createDisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
   const rest = omit(props, 'as', 'children', 'ref');
+  const Root = dynamic(() => props.as || 'div');
   return (
-    <Dynamic
-      component={props.as || 'div'}
+    <Root
       {...COMMAND_BAR_OVERLAY_TAG}
       ref={setInternalRef}
       {...disabledState}
@@ -52,6 +52,6 @@ export function CommandBarOverlay<T extends ValidComponent = 'p'>(
       {...rest}
     >
       <DisclosureStateChild>{props.children}</DisclosureStateChild>
-    </Dynamic>
+    </Root>
   );
 }

@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, omit } from 'solid-js';
 import type { AutocompleteStateRenderProps } from '../../states/create-autocomplete-state';
 import {
@@ -111,10 +111,10 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
   const hasActiveState = createHasActiveState(() => autocompleteState.hasActive());
   const hasQueryState = createHasQueryState(() => autocompleteState.hasQuery());
   const rest = omit(props, 'as', 'children', 'ref');
+  const Root = dynamic(() => props.as || 'ul');
   return (
     <Unmountable unmount={props.unmount} when={disclosureState.isOpen()}>
-      <Dynamic
-        component={props.as || 'ul'}
+      <Root
         {...COMBOBOX_OPTIONS_TAG}
         id={context.optionsID}
         role="listbox"
@@ -131,7 +131,7 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
         {...rest}
       >
         <AutocompleteStateChild>{props.children}</AutocompleteStateChild>
-      </Dynamic>
+      </Root>
     </Unmountable>
   );
 }

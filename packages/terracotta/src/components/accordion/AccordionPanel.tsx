@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { omit } from 'solid-js';
 import type { SelectOptionStateRenderProps } from '../../states/create-select-option-state';
 import {
@@ -43,10 +43,10 @@ export function AccordionPanel<T extends ValidComponent = 'div'>(
   const selectedState = createSelectedState(() => state.isSelected());
   const expandedState = createExpandedState(() => state.isSelected());
   const activeState = createActiveState(() => state.isActive());
+  const Root = dynamic(() => props.as || 'div');
   return (
     <Unmountable unmount={props.unmount} when={state.isSelected()}>
-      <Dynamic
-        component={props.as || 'div'}
+      <Root
         {...rest}
         {...ACCORDION_PANEL_TAG}
         id={context.panelID}
@@ -57,7 +57,7 @@ export function AccordionPanel<T extends ValidComponent = 'div'>(
         {...activeState}
       >
         <SelectOptionStateChild>{props.children}</SelectOptionStateChild>
-      </Dynamic>
+      </Root>
     </Unmountable>
   );
 }

@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { omit } from 'solid-js';
 import type { SelectOptionStateOptions } from '../../states/create-select-option-state';
 import {
@@ -37,10 +37,10 @@ export function TabPanel<V, T extends ValidComponent = 'div'>(
   const selectedState = createSelectedState(() => state.isSelected());
   const activeState = createActiveState(() => state.isActive());
   const rest = omit(props, 'as', 'disabled', 'unmount', 'value');
+  const Root = dynamic(() => props.as || 'div');
   return (
     <Unmountable unmount={props.unmount} when={state.isSelected()}>
-      <Dynamic
-        component={props.as || 'div'}
+      <Root
         {...TAB_PANEL_TAG}
         role="tabpanel"
         tabindex={state.isSelected() ? 0 : -1}

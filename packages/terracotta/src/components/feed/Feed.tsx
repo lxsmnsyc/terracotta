@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createUniqueId, omit } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
@@ -33,6 +33,7 @@ export function Feed<T extends ValidComponent = 'div'>(props: FeedProps<T>): JSX
   const [ref, setRef] = createForwardRef(props);
 
   const rest = omit(props, 'as', 'busy', 'size');
+  const Root = dynamic(() => props.as || 'div');
   return (
     <FeedContext
       value={{
@@ -59,7 +60,7 @@ export function Feed<T extends ValidComponent = 'div'>(props: FeedProps<T>): JSX
         },
       }}
     >
-      <Dynamic component={props.as || 'div'} {...FEED_TAG} id={ownerID} ref={setRef} {...rest} />
+      <Root {...FEED_TAG} id={ownerID} ref={setRef} {...rest} />
     </FeedContext>
   );
 }

@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, omit } from 'solid-js';
 import type { DisclosureStateRenderProps } from '../../states/create-disclosure-state';
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
@@ -71,9 +71,9 @@ export function AlertDialogPanel<T extends ValidComponent = 'div'>(
   const rest = omit(props, 'as', 'children', 'ref');
   const disabledState = createDisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
+  const Root = dynamic(() => props.as || 'div');
   return (
-    <Dynamic
-      component={props.as || 'div'}
+    <Root
       {...rest}
       {...ALERT_DIALOG_PANEL_TAG}
       id={context.panelID}
@@ -82,6 +82,6 @@ export function AlertDialogPanel<T extends ValidComponent = 'div'>(
       {...expandedState}
     >
       <DisclosureStateChild>{props.children}</DisclosureStateChild>
-    </Dynamic>
+    </Root>
   );
 }

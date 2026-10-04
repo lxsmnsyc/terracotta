@@ -1,4 +1,4 @@
-import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createUniqueId, omit } from 'solid-js';
 import type {
   SelectOptionStateOptions,
@@ -52,10 +52,10 @@ export function AccordionItem<V, T extends ValidComponent = 'div'>(
   const selectedState = createSelectedState(() => state.isSelected());
   const expandedState = createExpandedState(() => state.isSelected());
   const activeState = createActiveState(() => state.isActive());
+  const Root = dynamic(() => props.as || 'div');
   return (
     <AccordionItemContext value={{ buttonID, panelID }}>
-      <Dynamic
-        component={props.as || 'div'}
+      <Root
         {...rest}
         {...ACCORDION_ITEM_TAG}
         {...disabledState}
@@ -65,7 +65,7 @@ export function AccordionItem<V, T extends ValidComponent = 'div'>(
         {...activeState}
       >
         <SelectOptionStateProvider state={state}>{props.children}</SelectOptionStateProvider>
-      </Dynamic>
+      </Root>
     </AccordionItemContext>
   );
 }
