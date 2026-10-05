@@ -46,6 +46,10 @@ jobs:
       # The focus query unit tests and the end-to-end tests run in Chromium.
       - run: pnpm --filter terracotta exec playwright install --with-deps chromium
 
+      # The docs site and the examples read Terracotta's types from its build
+      # output, so build before type checking.
+      - run: pnpm --filter terracotta build
+
       - run: pnpm typecheck
 
       - run: pnpm skill:check
@@ -53,8 +57,6 @@ jobs:
       - run: pnpm --filter terracotta test
 
       - run: pnpm --filter terracotta test:e2e
-
-      - run: pnpm --filter terracotta build
 
   release:
     needs: test

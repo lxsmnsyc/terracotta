@@ -164,7 +164,11 @@ describe('Combobox accessibility', () => {
 
   it('leaves out aria-labelledby when there is no label', async () => {
     render(() => (
-      <Combobox defaultOpen={true} matchBy={(value: string, query) => value.includes(query)}>
+      <Combobox
+        defaultOpen={true}
+        defaultValue={undefined as string | undefined}
+        matchBy={(value: string, query) => value.includes(query)}
+      >
         <ComboboxInput aria-label="Assignee" />
         <ComboboxOptions aria-label="People">
           <ComboboxOption value="ada">ada</ComboboxOption>
@@ -183,6 +187,7 @@ describe('Combobox accessibility', () => {
         data-testid="root"
         disabled={true}
         defaultOpen={false}
+        defaultValue={undefined as string | undefined}
         matchBy={(value: string, query) => value.includes(query)}
       >
         <ComboboxLabel>Assignee</ComboboxLabel>
@@ -212,7 +217,11 @@ describe('Combobox accessibility', () => {
 
   it('clears aria-activedescendant when the popup closes but stays mounted', async () => {
     render(() => (
-      <Combobox defaultOpen={true} matchBy={(value: string, query) => value.includes(query)}>
+      <Combobox
+        defaultOpen={true}
+        defaultValue={undefined as string | undefined}
+        matchBy={(value: string, query) => value.includes(query)}
+      >
         <ComboboxLabel>Assignee</ComboboxLabel>
         <ComboboxInput />
         <ComboboxOptions unmount={false}>
@@ -256,7 +265,11 @@ describe('Combobox accessibility', () => {
           reached += 1;
         }}
       >
-        <Combobox defaultOpen={false} matchBy={(value: string, query) => value.includes(query)}>
+        <Combobox
+          defaultOpen={false}
+          defaultValue={undefined as string | undefined}
+          matchBy={(value: string, query) => value.includes(query)}
+        >
           <ComboboxInput />
         </Combobox>
       </div>
@@ -275,7 +288,11 @@ describe('Combobox accessibility', () => {
           reached += 1;
         }}
       >
-        <Combobox defaultOpen={true} matchBy={(value: string, query) => value.includes(query)}>
+        <Combobox
+          defaultOpen={true}
+          defaultValue={undefined as string | undefined}
+          matchBy={(value: string, query) => value.includes(query)}
+        >
           <ComboboxInput />
         </Combobox>
       </div>

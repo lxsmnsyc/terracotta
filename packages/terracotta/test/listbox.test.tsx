@@ -102,7 +102,7 @@ describe('Listbox accessibility', () => {
 
   it('names the option list from the trigger when there is no label', async () => {
     render(() => (
-      <Listbox defaultOpen={true}>
+      <Listbox defaultOpen={true} defaultValue={undefined}>
         <ListboxButton>Pick one</ListboxButton>
         <ListboxOptions>
           <ListboxOption value="apple">apple</ListboxOption>
@@ -118,7 +118,7 @@ describe('Listbox accessibility', () => {
 
   it('keeps naming and disabled attributes off the generic root', async () => {
     render(() => (
-      <Listbox data-testid="root" disabled={true}>
+      <Listbox data-testid="root" disabled={true} defaultOpen={false} defaultValue={undefined}>
         <ListboxLabel>Fruit</ListboxLabel>
         <ListboxButton>Pick one</ListboxButton>
       </Listbox>

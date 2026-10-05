@@ -133,7 +133,7 @@ describe('getFocusableElements', () => {
     `);
 
     expect(ids(root)).toEqual([]);
-    for (const element of root.querySelectorAll<HTMLElement>('[id]')) {
+    for (const element of Array.from(root.querySelectorAll<HTMLElement>('[id]'))) {
       element.focus();
       expect(document.activeElement).not.toBe(element);
     }

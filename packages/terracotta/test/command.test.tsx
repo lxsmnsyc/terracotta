@@ -73,7 +73,10 @@ describe('Command accessibility', () => {
 
   it('leaves out aria-labelledby when there is no label', async () => {
     render(() => (
-      <Command matchBy={(value: string, query) => value.includes(query)}>
+      <Command
+        defaultValue={undefined as string | undefined}
+        matchBy={(value: string, query) => value.includes(query)}
+      >
         <CommandInput aria-label="Search" />
         <CommandOptions aria-label="Results">
           <CommandOption value="open">open</CommandOption>
@@ -91,6 +94,7 @@ describe('Command accessibility', () => {
       <Command
         data-testid="palette"
         disabled={true}
+        defaultValue={undefined as string | undefined}
         matchBy={(value: string, query) => value.includes(query)}
       >
         <CommandLabel>Command palette</CommandLabel>
