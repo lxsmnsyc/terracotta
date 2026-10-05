@@ -6,7 +6,8 @@ import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
 import { DATA_SET_NAMESPACE, DISABLED_NODE } from '../../utils/namespace';
 import useEventListener from '../../utils/use-event-listener';
-import { createMenuItemFocusNavigator, MenuContext } from './MenuContext';
+import type FocusNavigator from '../../utils/focus-navigator';
+import { createMenuItemFocusNavigator, MenubarContext, MenuContext } from './MenuContext';
 import { MENU_TAG } from './tags';
 
 const OWNER_ATTRIBUTE = `${DATA_SET_NAMESPACE}-owner`;
@@ -39,24 +40,23 @@ function findMatch(root: HTMLElement, ownerID: string, value: string): HTMLEleme
   return undefined;
 }
 
-export type MenuProps<T extends ValidComponent = 'ul'> = HeadlessPropsWithRef<T>;
+export interface MenuKeyboardOptions {
+  /**
+   * Which arrow keys move between items. A menu takes both pairs. A menubar
+   * takes only the pair that matches its orientation.
+   */
+  orientation: () => 'both' | 'horizontal' | 'vertical';
+}
 
 /**
- * A menu of actions, navigated with the arrow keys and type-ahead. It has no
- * open state of its own; put it inside a `Popover` or `ContextMenu` for that.
- *
- * Per the ARIA menu pattern every item sits at `tabindex="-1"`, so the menu has
- * no tab stop and you must move focus to an item yourself when it appears.
- *
- * Renders a `<div>` by default.
- *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
+ * Wires the keyboard of a menu or menubar root: the arrow keys, Home and End,
+ * and type-ahead.
  */
-export function Menu<T extends ValidComponent = 'ul'>(props: MenuProps<T>): JSX.Element {
-  const controller = createMenuItemFocusNavigator();
-
-  const [ref, setRef] = createForwardRef(props);
-
+export function createMenuKeyboard(
+  ref: () => unknown,
+  controller: FocusNavigator,
+  options: MenuKeyboardOptions,
+): void {
   const pushCharacter = createTypeAhead((value) => {
     const current = ref();
     if (current instanceof HTMLElement) {
@@ -66,6 +66,11 @@ export function Menu<T extends ValidComponent = 'ul'>(props: MenuProps<T>): JSX.
       }
     }
   });
+
+  function accepts(axis: 'horizontal' | 'vertical'): boolean {
+    const orientation = options.orientation();
+    return orientation === 'both' || orientation === axis;
+  }
 
   createEffect(ref, (current) => {
     if (current instanceof HTMLElement) {
@@ -79,14 +84,18 @@ export function Menu<T extends ValidComponent = 'ul'>(props: MenuProps<T>): JSX.
           switch (e.key) {
             case 'ArrowUp':
             case 'ArrowLeft': {
-              e.preventDefault();
-              controller.setPrevChecked(true);
+              if (accepts(e.key === 'ArrowUp' ? 'vertical' : 'horizontal')) {
+                e.preventDefault();
+                controller.setPrevChecked(true);
+              }
               break;
             }
             case 'ArrowDown':
             case 'ArrowRight': {
-              e.preventDefault();
-              controller.setNextChecked(true);
+              if (accepts(e.key === 'ArrowDown' ? 'vertical' : 'horizontal')) {
+                e.preventDefault();
+                controller.setNextChecked(true);
+              }
               break;
             }
             case 'Home': {
@@ -122,13 +131,38 @@ export function Menu<T extends ValidComponent = 'ul'>(props: MenuProps<T>): JSX.
     }
     return undefined;
   });
+}
+
+export type MenuProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<T>;
+
+/**
+ * A menu of actions, navigated with the arrow keys and type-ahead. It has no
+ * open state of its own; put it inside a `Popover` or `ContextMenu` for that.
+ *
+ * Per the ARIA menu pattern every item sits at `tabindex="-1"`, so the menu has
+ * no tab stop. `Popover` and `ContextMenu` move focus to its first item when
+ * they open. For a list of actions that stays on screen, use `Menubar`.
+ *
+ * Renders a `<div>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
+ */
+export function Menu<T extends ValidComponent = 'div'>(props: MenuProps<T>): JSX.Element {
+  const controller = createMenuItemFocusNavigator();
+
+  const [ref, setRef] = createForwardRef(props);
+
+  createMenuKeyboard(ref, controller, { orientation: () => 'both' });
 
   const controllerId = controller.getId();
   const rest = omit(props, 'as', 'ref');
   const Root = dynamic(() => props.as || 'div');
   return (
     <MenuContext value={controller}>
-      <Root {...MENU_TAG} id={controllerId} role="menu" ref={setRef} {...rest} />
+      {/* A menu nested in a menubar keeps its items out of the tab sequence. */}
+      <MenubarContext value={null}>
+        <Root {...MENU_TAG} id={controllerId} role="menu" ref={setRef} {...rest} />
+      </MenubarContext>
     </MenuContext>
   );
 }

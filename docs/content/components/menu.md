@@ -3,17 +3,19 @@
 An [ARIA menu](https://www.w3.org/WAI/ARIA/apg/patterns/menu/) is a list of
 actions. Arrow keys move through it, and typing jumps to an item.
 
-:::hero menu/basic
+:::hero menu/as-dropdown
 :::
 
 `Menu` is stateless. It tracks no selection, because menu items *do* things
 instead of representing values. Wire an `onClick` to each item.
 
-`Menu` renders the list only. Pair it with [`Popover`](./popover.md) for a
-dropdown, or [`ContextMenu`](./context-menu.md) for a right-click menu.
+`Menu` is a popup. It renders the list only. Pair it with
+[`Popover`](./popover.md) for a dropdown, or
+[`ContextMenu`](./context-menu.md) for a right-click menu. For a list of
+actions that stays on screen, use `Menubar`.
 
 ```tsx
-import { Menu, MenuItem, MenuChild } from 'terracotta/menu';
+import { Menu, Menubar, MenuItem, MenuChild } from 'terracotta/menu';
 ```
 
 ## Anatomy
@@ -22,21 +24,40 @@ import { Menu, MenuItem, MenuChild } from 'terracotta/menu';
 <Menu>       {/* role="menu", arrow keys and type-ahead */}
   <MenuItem/>{/* role="menuitem" */}
 </Menu>
+
+<Menubar>    {/* role="menubar", one tab stop */}
+  <MenuItem/>
+</Menubar>
 ```
 
 ## Examples
 
-### Standalone
-
-> `Menu` renders a `<div>` unless you pass `as`. `MenuItem` renders an `<li>`,
-> so pass `as="ul"` as above to keep the markup valid.
-
-:::demo menu/basic
-:::
+> `Menu` and `Menubar` render a `<div>` unless you pass `as`. `MenuItem`
+> renders an `<li>`, so pass `as="ul"` to keep the markup valid.
 
 ### As a dropdown
 
+Put the `Menu` in a `PopoverPanel`, and pass `aria-haspopup="menu"` to the
+`PopoverButton`. The popover then follows the
+[menu button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/):
+
+- Opening it focuses the first item.
+- <kbd>↓</kbd> on the button opens it on the first item, and <kbd>↑</kbd> on
+  the last.
+- <kbd>Tab</kbd>, <kbd>Escape</kbd> and activating an item close it. Focus
+  returns to the button.
+
 :::demo menu/as-dropdown
+:::
+
+### Always on screen
+
+A `Menu` is never in the tab sequence, so one that stays on screen cannot be
+reached from the keyboard. Use `Menubar` instead. It takes the same
+`MenuItem`s, and is one stop in the tab sequence. <kbd>Tab</kbd> moves focus
+to the item that last had it, or to the first enabled item.
+
+:::demo menu/basic
 :::
 
 ### With separators and section labels
@@ -186,12 +207,12 @@ through its render prop or `<MenuChild>`:
 
 ## Keyboard
 
-Handled on the `Menu` root, across its `MenuItem` descendants:
+Handled on the `Menu` or `Menubar` root, across its `MenuItem` descendants:
 
 | Key | Action |
 | --- | --- |
-| <kbd>↓</kbd> / <kbd>→</kbd> | Next item, wrapping around |
-| <kbd>↑</kbd> / <kbd>←</kbd> | Previous item, wrapping around |
+| <kbd>↓</kbd> / <kbd>→</kbd> | Next item, wrapping around. A `Menubar` takes only the key that matches its orientation. |
+| <kbd>↑</kbd> / <kbd>←</kbd> | Previous item, wrapping around. A `Menubar` takes only the key that matches its orientation. |
 | <kbd>Home</kbd> / <kbd>End</kbd> | First / last item |
 | Printable characters | Type-ahead: jumps to the next item whose text starts with what you typed, wrapping around. Keystrokes are collected for 250 ms, so typing several letters quickly matches a longer prefix. Keys pressed with <kbd>Ctrl</kbd>, <kbd>Meta</kbd> or <kbd>Alt</kbd> are ignored. |
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Activates the focused item; the root suppresses the browser's default scroll or submit |
@@ -200,39 +221,23 @@ Both the arrow keys and type-ahead skip disabled items. A disabled item cannot
 be activated by a click or a key.
 
 `Menu` has no open state, so it cannot close itself. Inside a
-`ContextMenuPanel`, activating an item closes the panel. Inside a
-`PopoverPanel`, close the popover from the item's `onClick`.
+`ContextMenuPanel` or a `PopoverPanel`, activating an item closes the panel.
 
 ### Getting focus into the menu
 
-Every item carries `tabindex="-1"`, and the `Menu` root has no `tabindex` of
-its own. That matches the [WAI-ARIA menu
-pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/), which puts every
-item at `tabindex="-1"` outside a menubar, and says <kbd>Tab</kbd> does not
-move focus into a menu at all. The spec puts the responsibility on you:
-"authors are responsible for ensuring focus moves to an item inside of a menu
-when the menu opens."
+Every item in a `Menu` carries `tabindex="-1"`, and the root has no `tabindex`
+of its own. That matches the [WAI-ARIA menu
+pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/), which says
+<kbd>Tab</kbd> does not move focus into a menu, and that "authors are
+responsible for ensuring focus moves to an item inside of a menu when the menu
+opens."
 
-`ContextMenuPanel` focuses the first enabled menu item when it opens.
-`PopoverPanel` focuses its first *tabbable* child on open, and a menu item is
-deliberately not tabbable, so a popover whose only content is a `Menu` leaves
-focus where it was. Move focus yourself when the menu appears:
+`PopoverPanel` and `ContextMenuPanel` do this for you. They focus the first
+enabled menu item when they open.
 
-```tsx
-<PopoverPanel
-  ref={panel => {
-    // Items are focusable programmatically even at tabindex="-1".
-    queueMicrotask(() => panel.querySelector<HTMLElement>('[role="menuitem"]')?.focus());
-  }}
->
-  <Menu as="ul">…</Menu>
-</PopoverPanel>
-```
-
-An always-visible `Menu` that no popup owns falls outside the pattern
-entirely, since the spec covers menubars and menus opened from a button. Give the
-user a real control to move focus from, or reach for a
-[`Toolbar`](./toolbar.md), which is a single tab stop by design.
+In a `Menubar`, exactly one item has `tabindex="0"`, as the pattern requires
+for a menubar. A `Menu` nested inside a `Menubar` keeps its own items at
+`tabindex="-1"`.
 
 ## API
 
@@ -240,25 +245,37 @@ user a real control to move focus from, or reach for a
 
 The container. It holds no state, so it has no value or change props.
 
-> **Note:** the type default for `as` is `'ul'`, but the implementation falls
-> back to a `<div>` when `as` is not given. Pass `as="ul"` explicitly to get a
-> list element, which also matches the `<li>` that `MenuItem` renders.
-
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `as` | `ValidConstructor` | `'div'` at runtime (typed as `'ul'`) | Element or component to render as. |
+| `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
 | `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
 | `children` | `JSX.Element` | none | The items. Not a render prop. |
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes: `role="menu"`, a generated `id`, `tc-menu`.
 
+### `<Menubar>`
+
+A container for actions that stay on screen. It is one stop in the tab
+sequence.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
+| `horizontal` | `boolean` | `true` | Whether <kbd>←</kbd>/<kbd>→</kbd> or <kbd>↑</kbd>/<kbd>↓</kbd> move between items. |
+| `ref` | `DynamicNode<T>` \| `(el) => void` | none | Handle to the rendered element. |
+| `children` | `JSX.Element` | none | The items. Not a render prop. |
+| *…rest* | props of `as` | none | Forwarded to the rendered element. Give it an `aria-label` or `aria-labelledby`. |
+
+Rendered attributes: `role="menubar"`, `aria-orientation`, a generated `id`,
+`tc-menubar`.
+
 ### `<MenuItem>`
 
 A [`Button`](./button.md) with `role="menuitem"`. Renders an `<li>` by default.
-It sits outside the tab order (`tabindex="-1"`), as the ARIA menu pattern
-requires. That means the menu has no tab stop at all. See [getting focus into
-the menu](#getting-focus-into-the-menu).
+In a `Menu` it sits outside the tab order (`tabindex="-1"`), as the ARIA menu
+pattern requires. In a `Menubar`, one item has `tabindex="0"`. See [getting
+focus into the menu](#getting-focus-into-the-menu).
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -268,7 +285,7 @@ the menu](#getting-focus-into-the-menu).
 | `children` | `JSX.Element` \| `(state: { disabled: () => boolean }) => JSX.Element` | none | Label, or a render prop receiving the item's disabled state. |
 | *…rest* | props of `as` | none | Forwarded to the rendered element. This is where `onClick` goes. |
 
-`MenuItem` throws if rendered outside a `<Menu>`.
+`MenuItem` throws if rendered outside a `<Menu>` or `<Menubar>`.
 
 ### `<MenuChild>`
 

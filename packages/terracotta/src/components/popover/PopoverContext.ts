@@ -6,6 +6,11 @@ interface PopoverContextData {
   buttonID: string;
   panelID: string;
   hovering: boolean;
+  /**
+   * Set by the button when Up Arrow opens the panel. A menu in the panel then
+   * starts on its last item instead of its first.
+   */
+  focusLast: boolean;
   anchor?: HTMLElement | null;
 }
 

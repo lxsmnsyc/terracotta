@@ -1,7 +1,8 @@
 import { fireEvent, render, screen, waitFor } from '@solidjs/testing-library';
 import { describe, expect, it, vi } from 'vitest';
-import { activeElement, pressKeyOnFocused } from './aria';
-import { Menu, MenuChild, MenuItem } from '../src/components/menu';
+import { activeElement, pressKeyOnFocused, settle } from './aria';
+import { Menu, Menubar, MenuChild, MenuItem } from '../src/components/menu';
+import { Popover, PopoverButton, PopoverPanel } from '../src/components/popover';
 
 const ITEMS = ['Cut', 'Copy', 'Paste'];
 
@@ -216,5 +217,141 @@ describe('Disabled menu items', () => {
     fireEvent.click(item);
 
     expect(onClick).not.toHaveBeenCalled();
+  });
+});
+
+describe('Menubar', () => {
+  function renderMenubar(props: { disabled?: string[]; horizontal?: boolean } = {}): void {
+    render(() => (
+      <Menubar aria-label="Main" horizontal={props.horizontal}>
+        {ITEMS.map((item) => (
+          <MenuItem disabled={props.disabled?.includes(item)}>{item}</MenuItem>
+        ))}
+      </Menubar>
+    ));
+  }
+
+  it('uses the menubar role with an orientation', () => {
+    renderMenubar();
+
+    expect(screen.getByRole('menubar')).toHaveAttribute('aria-orientation', 'horizontal');
+  });
+
+  it('can be vertical', () => {
+    renderMenubar({ horizontal: false });
+
+    expect(screen.getByRole('menubar')).toHaveAttribute('aria-orientation', 'vertical');
+  });
+
+  it('gives the first enabled item the only tab stop', async () => {
+    renderMenubar({ disabled: ['Cut'] });
+    await settle();
+
+    expect(getItem('Cut')).toHaveAttribute('tabindex', '-1');
+    expect(getItem('Copy')).toHaveAttribute('tabindex', '0');
+    expect(getItem('Paste')).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('moves the tab stop to the focused item', async () => {
+    renderMenubar();
+    await settle();
+    getItem('Cut').focus();
+
+    pressKeyOnFocused('ArrowRight');
+    await settle();
+
+    expect(await activeElement()).toBe(getItem('Copy'));
+    expect(getItem('Copy')).toHaveAttribute('tabindex', '0');
+    expect(getItem('Cut')).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('only takes the arrow keys of its orientation', async () => {
+    renderMenubar();
+    await settle();
+    getItem('Cut').focus();
+
+    pressKeyOnFocused('ArrowDown');
+
+    expect(await activeElement()).toBe(getItem('Cut'));
+  });
+
+  it('keeps the items of a nested menu out of the tab sequence', async () => {
+    render(() => (
+      <Menubar aria-label="Main">
+        <MenuItem>File</MenuItem>
+        <Menu>
+          <MenuItem>New</MenuItem>
+        </Menu>
+      </Menubar>
+    ));
+    await settle();
+
+    expect(getItem('File')).toHaveAttribute('tabindex', '0');
+    expect(getItem('New')).toHaveAttribute('tabindex', '-1');
+  });
+});
+
+describe('Menu in a Popover', () => {
+  function renderMenuButton(onClick?: () => void): void {
+    render(() => (
+      <Popover defaultOpen={false}>
+        <PopoverButton aria-haspopup="menu">Actions</PopoverButton>
+        <PopoverPanel>
+          <Menu>
+            {ITEMS.map((item) => (
+              <MenuItem onClick={onClick}>{item}</MenuItem>
+            ))}
+          </Menu>
+        </PopoverPanel>
+      </Popover>
+    ));
+  }
+
+  it('focuses the first item when it opens', async () => {
+    renderMenuButton();
+    fireEvent.click(screen.getByRole('button', { name: 'Actions' }));
+    await settle();
+
+    await waitFor(async () => {
+      expect(await activeElement()).toBe(getItem('Cut'));
+    });
+  });
+
+  it('opens on the last item with Up', async () => {
+    renderMenuButton();
+    screen.getByRole('button', { name: 'Actions' }).focus();
+    pressKeyOnFocused('ArrowUp');
+    await settle();
+
+    await waitFor(async () => {
+      expect(await activeElement()).toBe(getItem('Paste'));
+    });
+  });
+
+  it('closes on Tab', async () => {
+    renderMenuButton();
+    fireEvent.click(screen.getByRole('button', { name: 'Actions' }));
+    await settle();
+    await waitFor(async () => {
+      expect(await activeElement()).toBe(getItem('Cut'));
+    });
+
+    pressKeyOnFocused('Tab');
+    await settle();
+
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+  });
+
+  it('closes when an item is activated', async () => {
+    const onClick = vi.fn();
+    renderMenuButton(onClick);
+    fireEvent.click(screen.getByRole('button', { name: 'Actions' }));
+    await settle();
+
+    fireEvent.click(getItem('Copy'));
+    await settle();
+
+    expect(onClick).toHaveBeenCalledOnce();
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
   });
 });

@@ -8,6 +8,7 @@ import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
+import { focusMenuItem, hasMenu, isMenuItemActivation } from '../../utils/menu-popup';
 import { mergeFunc } from '../../utils/merge-func';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
@@ -24,8 +25,15 @@ export type PopoverPanelProps<T extends ValidComponent = 'div'> = HeadlessPropsW
 >;
 
 /**
- * The floating panel of a `Popover`. Position it yourself — the library sets
- * no coordinates.
+ * The floating panel of a `Popover`. Position it yourself. The library sets no
+ * coordinates.
+ *
+ * When it holds a `Menu`, it follows the ARIA menu button pattern:
+ * - Opening it focuses the first menu item.
+ * - <kbd>Tab</kbd> closes it.
+ * - Activating a menu item closes it.
+ *
+ * Otherwise it keeps <kbd>Tab</kbd> inside.
  *
  * Renders a `<div>` by default.
  *
@@ -43,8 +51,12 @@ export function PopoverPanel<T extends ValidComponent = 'div'>(
     createDependencyList(() => [internalRef(), state.isOpen()] as const),
     ([current, isOpen]) => {
       if (current instanceof HTMLElement && isOpen) {
+        const focusLast = context.focusLast;
+        context.focusLast = false;
         afterTransition(current, () => {
-          focusFirst(getFocusableElements(current), false);
+          if (!focusMenuItem(current, focusLast)) {
+            focusFirst(getFocusableElements(current), false);
+          }
         });
 
         return mergeFunc(
@@ -57,7 +69,13 @@ export function PopoverPanel<T extends ValidComponent = 'div'>(
                 case 'Tab': {
                   e.preventDefault();
                   e.stopPropagation();
-                  lockFocus(current, e.shiftKey, false);
+                  // In a menu, Tab closes the menu, and focus returns to the
+                  // button. Other panels keep Tab inside.
+                  if (hasMenu(current)) {
+                    state.close();
+                  } else {
+                    lockFocus(current, e.shiftKey, false);
+                  }
                   break;
                 }
                 case 'Escape': {
@@ -66,6 +84,11 @@ export function PopoverPanel<T extends ValidComponent = 'div'>(
                   break;
                 }
               }
+            }
+          }),
+          useEventListener(current, 'click', (e) => {
+            if (isMenuItemActivation(current, e.target)) {
+              state.close();
             }
           }),
           useEventListener(current, 'focusout', (e) => {

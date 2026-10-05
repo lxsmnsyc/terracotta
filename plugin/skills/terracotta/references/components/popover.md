@@ -75,11 +75,19 @@ inside the render prop when you want it only while open:
 
 ### As a dropdown menu
 
-Pair it with [`Menu`](./menu.md) when the panel contains actions:
+Pair it with [`Menu`](./menu.md) when the panel contains actions, and pass
+`aria-haspopup="menu"` to the button. The popover then follows the
+[menu button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/):
+
+- Opening it focuses the first menu item.
+- <kbd>↓</kbd> on the button opens it on the first item, and <kbd>↑</kbd> on
+  the last.
+- <kbd>Tab</kbd> and activating an item close it, instead of keeping focus in
+  the panel.
 
 ```tsx
 <Popover class="popover" defaultOpen={false}>
-  <PopoverButton class="popover-button">Actions</PopoverButton>
+  <PopoverButton class="popover-button" aria-haspopup="menu">Actions</PopoverButton>
   <PopoverPanel class="popover-panel popover-panel-flush">
     <Menu as="ul" class="menu">
       <MenuItem class="menu-item" onClick={rename}>Rename</MenuItem>
@@ -232,10 +240,13 @@ any descendant. Full reference in
 | Click on `PopoverButton` | Toggles the popover |
 | <kbd>Enter</kbd> / <kbd>Space</kbd> on the button | Same |
 | <kbd>Escape</kbd> | Closes it |
-| <kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> | Cycles focus within the panel |
+| <kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> | Cycles focus within the panel. Closes it when the panel holds a `Menu`. |
+| <kbd>↓</kbd> / <kbd>↑</kbd> on a button with `aria-haspopup="menu"` | Opens it on the first / last menu item |
+| Activating a menu item in the panel | Closes it |
 | Focus leaves the panel | Closes it, unless the pointer is hovering the button, so a click on the button reads as a toggle rather than a close-then-reopen |
 
-The panel focuses its first focusable element when it opens. Focus returns to
+The panel focuses its first menu item when it opens, or else its first
+focusable element. Focus returns to
 where it was when the popover closes.
 
 ## API

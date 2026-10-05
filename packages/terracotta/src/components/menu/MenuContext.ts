@@ -1,4 +1,4 @@
-import { createContext, createUniqueId, useContext } from 'solid-js';
+import { type Accessor, createContext, createUniqueId, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 import FocusNavigator from '../../utils/focus-navigator';
 
@@ -19,3 +19,20 @@ export function useMenuContext(componentName: string): FocusNavigator {
 export function createMenuItemFocusNavigator(): FocusNavigator {
   return new FocusNavigator(createUniqueId());
 }
+
+/**
+ * The roving tab stop of a `Menubar`. Exactly one of its items has
+ * `tabindex="0"`, so the menubar is one stop in the tab sequence.
+ */
+export interface MenubarTabStop {
+  /** The item that has `tabindex="0"`. */
+  stop: Accessor<HTMLElement | undefined>;
+  /** Adds an item until the returned function is called. */
+  register: (element: HTMLElement, disabled: () => boolean) => () => void;
+}
+
+/**
+ * Set by `Menubar`, and reset to `null` by a `Menu` inside it, so only the
+ * menubar's own items take part in the tab sequence.
+ */
+export const MenubarContext = createContext<MenubarTabStop | null>(null);

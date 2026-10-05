@@ -1,5 +1,5 @@
 import type { JSX, ValidComponent } from '@solidjs/web';
-import { omit } from 'solid-js';
+import { createEffect, omit, useContext } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
@@ -7,7 +7,7 @@ import { createARIADisabledState, createDisabledState } from '../../utils/state-
 import { Button, type ButtonProps } from '../button';
 import type { MenuChildProps } from './MenuChild';
 import { MenuChild } from './MenuChild';
-import { useMenuContext } from './MenuContext';
+import { MenubarContext, useMenuContext } from './MenuContext';
 import { MENU_ITEM_TAG } from './tags';
 
 export type MenuItemProps<T extends ValidComponent = 'li'> = HeadlessPropsWithRef<
@@ -16,7 +16,8 @@ export type MenuItemProps<T extends ValidComponent = 'li'> = HeadlessPropsWithRe
 >;
 
 /**
- * One action in a `Menu`. The arrow keys and type-ahead skip disabled items.
+ * One action in a `Menu` or `Menubar`. The arrow keys and type-ahead skip
+ * disabled items.
  *
  * Renders an `<li>` by default.
  *
@@ -25,7 +26,17 @@ export type MenuItemProps<T extends ValidComponent = 'li'> = HeadlessPropsWithRe
 export function MenuItem<T extends ValidComponent = 'li'>(props: MenuItemProps<T>): JSX.Element {
   const context = useMenuContext('MenuItem');
 
-  const [, setInternalRef] = createForwardRef(props);
+  const tabStop = useContext(MenubarContext);
+
+  const [internalRef, setInternalRef] = createForwardRef(props);
+
+  // In a menubar, the item takes part in choosing the tab stop.
+  createEffect(internalRef, (current) => {
+    if (tabStop && current instanceof HTMLElement) {
+      return tabStop.register(current, () => !!props.disabled);
+    }
+    return undefined;
+  });
 
   const ownerAttribute = createOwnerAttribute(context.getId());
   const disabledState = createDisabledState(() => props.disabled);
@@ -37,7 +48,7 @@ export function MenuItem<T extends ValidComponent = 'li'>(props: MenuItemProps<T
       {...ownerAttribute}
       as={props.as || ('li' as T)}
       role="menuitem"
-      tabindex={-1}
+      tabindex={tabStop && tabStop.stop() === internalRef() ? 0 : -1}
       ref={setInternalRef}
       {...disabledState}
       {...ariaDisabledState}

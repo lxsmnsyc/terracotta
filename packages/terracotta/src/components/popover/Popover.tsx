@@ -86,6 +86,7 @@ export function Popover<T extends ValidComponent = 'div'>(props: PopoverProps<T>
         buttonID,
         panelID,
         hovering: false,
+        focusLast: false,
       }}
     >
       <Root {...POPOVER_TAG} {...disabledState} {...expandedState} {...rest}>

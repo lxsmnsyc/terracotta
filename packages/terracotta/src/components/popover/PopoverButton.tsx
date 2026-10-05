@@ -4,6 +4,7 @@ import type { DisclosureStateRenderProps } from '../../states/create-disclosure-
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import { focusMenuItem } from '../../utils/menu-popup';
 import { mergeFunc } from '../../utils/merge-func';
 import {
   createARIADisabledState,
@@ -27,6 +28,9 @@ export type PopoverButtonProps<T extends ValidComponent = 'button'> = HeadlessPr
  * The trigger of a `Popover`. Carries `aria-expanded`, and `aria-controls`
  * while the panel is mounted.
  *
+ * For a menu button, pass `aria-haspopup="menu"`. <kbd>Down</kbd> then opens
+ * the panel on the first menu item, and <kbd>Up</kbd> on the last.
+ *
  * Renders a `<button>` by default.
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/popover.md}
@@ -49,6 +53,23 @@ export function PopoverButton<T extends ValidComponent = 'button'>(
         useEventListener(current, 'click', () => {
           if (!isDisabled()) {
             state.toggle();
+          }
+        }),
+        useEventListener(current, 'keydown', (e) => {
+          const popup = current.getAttribute('aria-haspopup');
+          if (
+            (e.key === 'ArrowDown' || e.key === 'ArrowUp') &&
+            (popup === 'menu' || popup === 'true') &&
+            !isDisabled()
+          ) {
+            e.preventDefault();
+            const panel = state.isOpen() ? document.getElementById(context.panelID) : null;
+            if (panel) {
+              focusMenuItem(panel, e.key === 'ArrowUp');
+            } else {
+              context.focusLast = e.key === 'ArrowUp';
+              state.open();
+            }
           }
         }),
         useEventListener(current, 'mouseenter', () => {

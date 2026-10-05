@@ -183,6 +183,10 @@ does not show is named after it.
 <Menu>       {/* role="menu", arrow keys and type-ahead */}
   <MenuItem/>{/* role="menuitem" */}
 </Menu>
+
+<Menubar>    {/* role="menubar", one tab stop */}
+  <MenuItem/>
+</Menubar>
 // also exported: MenuChild
 ```
 

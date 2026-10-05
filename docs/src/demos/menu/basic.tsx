@@ -1,13 +1,17 @@
 import type { JSX } from '@solidjs/web';
 import { createSignal } from 'solid-js';
-import { Menu, MenuItem } from 'terracotta/menu';
+import { Menubar, MenuItem } from 'terracotta/menu';
 
+/**
+ * A list of actions that stays on screen is a `Menubar`: one tab stop, with
+ * the arrow keys moving between items.
+ */
 export default function BasicMenu(): JSX.Element {
   const [chosen, setChosen] = createSignal<string>();
 
   return (
     <div class="stack">
-      <Menu class="menu">
+      <Menubar class="menu" horizontal={false} aria-label="File actions">
         <MenuItem class="menu-item" onClick={() => setChosen('Duplicate')}>
           Duplicate
         </MenuItem>
@@ -20,9 +24,9 @@ export default function BasicMenu(): JSX.Element {
         <MenuItem class="menu-item menu-item-danger" onClick={() => setChosen('Delete')}>
           Delete
         </MenuItem>
-      </Menu>
+      </Menubar>
       <p class="hint">
-        {chosen() ? `Chose: ${chosen()}` : 'Arrow keys move; typing jumps to a matching item.'}
+        {chosen() ? `Chose: ${chosen()}` : 'Tab in, then arrow keys move; typing jumps to a matching item.'}
       </p>
     </div>
   );

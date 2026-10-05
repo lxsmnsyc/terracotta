@@ -8,6 +8,8 @@ import ContextMenuCase from './cases/context-menu';
 import DialogCase from './cases/dialog';
 import ListboxCase from './cases/listbox';
 import MenuCase from './cases/menu';
+import MenuButtonCase from './cases/menu-button';
+import MenubarCase from './cases/menubar';
 import ModalCase from './cases/modal';
 import NestingCase from './cases/nesting';
 import PopoverCase from './cases/popover';
@@ -29,6 +31,8 @@ const CASES: Record<string, () => JSX.Element> = {
   dialog: DialogCase,
   listbox: ListboxCase,
   menu: MenuCase,
+  'menu-button': MenuButtonCase,
+  menubar: MenubarCase,
   modal: ModalCase,
   nesting: NestingCase,
   popover: PopoverCase,

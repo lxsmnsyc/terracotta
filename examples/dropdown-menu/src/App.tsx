@@ -37,6 +37,7 @@ export default function App(): JSX.Element {
         {({ isOpen }): JSX.Element => (
           <>
             <PopoverButton
+              aria-haspopup="menu"
               class={classNames(
                 isOpen() ? 'text-white/90' : 'text-white',
                 'group bg-purple-700 px-3 py-2 rounded-md inline-flex items-center text-base font-medium hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75',

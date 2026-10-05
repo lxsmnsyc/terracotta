@@ -9,18 +9,13 @@ import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
 import { mergeFunc } from '../../utils/merge-func';
-import { DISABLED_NODE } from '../../utils/namespace';
+import { focusMenuItem, hasMenu, isMenuItemActivation } from '../../utils/menu-popup';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
 import { afterTransition } from '../../utils/wait-for-transition';
 import { useContextMenuContext } from './ContextMenuContext';
 import { CONTEXT_MENU_PANEL_TAG } from './tags';
-
-// The first enabled item of a menu inside the panel.
-const MENU_ITEM = ['menuitem', 'menuitemcheckbox', 'menuitemradio']
-  .map((role) => `[role="${role}"]:not(${DISABLED_NODE}):not([aria-disabled="true"])`)
-  .join(', ');
 
 export type ContextMenuPanelBaseProps = Prettify<DisclosureStateRenderProps & UnmountableProps>;
 
@@ -53,11 +48,7 @@ export function ContextMenuPanel<T extends ValidComponent = 'div'>(
       if (current instanceof HTMLElement) {
         if (isOpen) {
           afterTransition(current, () => {
-            // Menu items sit at `tabindex="-1"`, so the focusable query skips them.
-            const item = current.querySelector<HTMLElement>(MENU_ITEM);
-            if (item) {
-              item.focus();
-            } else if (!focusFirst(getFocusableElements(current), false)) {
+            if (!focusMenuItem(current) && !focusFirst(getFocusableElements(current), false)) {
               current.focus();
             }
           });
@@ -74,7 +65,7 @@ export function ContextMenuPanel<T extends ValidComponent = 'div'>(
                     e.stopPropagation();
                     // In a menu, Tab closes the menu. Focus then returns to where
                     // it was before the menu opened. Other panels keep Tab inside.
-                    if (current.querySelector('[role="menu"]')) {
+                    if (hasMenu(current)) {
                       state.close();
                     } else {
                       lockFocus(current, e.shiftKey, false);
@@ -94,17 +85,8 @@ export function ContextMenuPanel<T extends ValidComponent = 'div'>(
             // Activating a menu item closes the menu. A disabled item never gets
             // here, since `Button` stops the click.
             useEventListener(current, 'click', (e) => {
-              const target = e.target;
-              if (target instanceof Element) {
-                const item = target.closest('[role="menuitem"]');
-                if (
-                  item &&
-                  current.contains(item) &&
-                  !item.matches(DISABLED_NODE) &&
-                  !item.hasAttribute('aria-haspopup')
-                ) {
-                  state.close();
-                }
+              if (isMenuItemActivation(current, e.target)) {
+                state.close();
               }
             }),
             useEventListener(document, 'click', (e) => {
