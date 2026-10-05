@@ -225,10 +225,14 @@ Inside an option, from the [select option state](../states.md#select-option-stat
 | --- | --- |
 | <kbd>↓</kbd> / <kbd>→</kbd> | Next option, wrapping around |
 | <kbd>↑</kbd> / <kbd>←</kbd> | Previous option, wrapping around |
-| <kbd>Tab</kbd> | Enters or leaves the group; only the selected option is in the tab order |
+| <kbd>Tab</kbd> | Enters or leaves the group. Only one option is in the tab order. |
 
-Focusing an option selects it. That is what makes arrow navigation change the
-value. Disabled options are skipped.
+The option in the tab order is the checked one. When nothing is checked, or the
+checked option is disabled, it is the first enabled option.
+
+The arrow keys check the option they move to. Focus alone does not check an
+option, so <kbd>Tab</kbd> into a group with nothing checked leaves it
+unchecked. Disabled options are skipped.
 
 ## API
 
@@ -250,8 +254,10 @@ Owns a single-selection [select state](../states.md#select-state) and renders a
 | `children` | `JSX.Element` \| `(state: SelectStateProperties<V>) => JSX.Element` | none | Label, description and options, or a render prop. |
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
-Rendered attributes include `role="radiogroup"`, `aria-labelledby` and
-`aria-describedby`.
+Rendered attributes include `role="radiogroup"`. `aria-labelledby` and
+`aria-describedby` are set only while a `RadioGroupLabel` or
+`RadioGroupDescription` is rendered directly in the group. Your own values for
+them take precedence.
 
 ### `<RadioGroupOption>`
 
@@ -267,9 +273,11 @@ by default, so it can hold a label and a description.
 | `children` | `JSX.Element` \| `(state: SelectOptionStateProperties) => JSX.Element` | none | The option's contents, or a render prop. |
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
-Rendered attributes include `role="radio"`, `aria-checked`, `aria-labelledby`,
-`aria-describedby`, and `tabindex`. The `tabindex` is `0` while selected and
-`-1` otherwise, which is what makes the group a single tab stop.
+Rendered attributes include `role="radio"`, `aria-checked` and `tabindex`.
+`aria-labelledby` and `aria-describedby` are set only while the option renders
+its own `RadioGroupLabel` or `RadioGroupDescription`. Your own values for them
+take precedence. The `tabindex` is `0` on one option and `-1` on the rest,
+which is what makes the group a single tab stop.
 
 ### `<RadioGroupLabel>`
 

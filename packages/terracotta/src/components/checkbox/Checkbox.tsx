@@ -7,14 +7,11 @@ import type {
 } from '../../states/create-check-state';
 import { CheckStateProvider, createCheckState } from '../../states/create-check-state';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
-import {
-  createARIADisabledState,
-  createCheckedState,
-  createDisabledState,
-} from '../../utils/state-props';
+import { createCheckedState, createDisabledState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import { CheckboxContext } from './CheckboxContext';
 import { CHECKBOX_TAG } from './tags';
+import { createPresence } from '../../utils/create-presence';
 
 export type CheckboxControlledBaseProps = Prettify<
   CheckStateControlledOptions & CheckStateRenderProps
@@ -58,11 +55,12 @@ export function Checkbox<T extends ValidComponent = 'div'>(props: CheckboxProps<
   const labelID = createUniqueId();
   const indicatorID = createUniqueId();
   const descriptionID = createUniqueId();
+  const label = createPresence();
+  const description = createPresence();
 
   const state = createCheckState(props);
 
   const disabledState = createDisabledState(() => state.disabled());
-  const ariaDisabledState = createARIADisabledState(() => state.disabled());
   const checkedState = createCheckedState(() => state.checked());
   const rest = isCheckboxUncontrolled(props)
     ? omit(props, 'as', 'children', 'defaultChecked', 'disabled', 'onChange')
@@ -75,9 +73,11 @@ export function Checkbox<T extends ValidComponent = 'div'>(props: CheckboxProps<
         labelID,
         indicatorID,
         descriptionID,
+        label,
+        description,
       }}
     >
-      <Root {...CHECKBOX_TAG} {...disabledState} {...ariaDisabledState} {...checkedState} {...rest}>
+      <Root {...CHECKBOX_TAG} {...disabledState} {...checkedState} {...rest}>
         <CheckStateProvider state={state}>{props.children}</CheckStateProvider>
       </Root>
     </CheckboxContext>

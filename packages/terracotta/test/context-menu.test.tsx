@@ -3,6 +3,7 @@ import { flush } from 'solid-js';
 import { describe, expect, it, vi } from 'vitest';
 import { activeElement, pressKeyOnFocused, settle } from './aria';
 import { Button } from '../src/components/button';
+import { Menu, MenuItem } from '../src/components/menu';
 import {
   ContextMenu,
   ContextMenuBoundary,
@@ -34,11 +35,14 @@ function getBoundary(): HTMLElement {
 }
 
 describe('ContextMenu accessibility', () => {
-  it('marks the boundary as collapsed while closed', async () => {
+  it('puts no `aria-expanded` on the boundary, which has no role', async () => {
     renderContextMenu();
     await settle();
 
-    expect(getBoundary()).toHaveAttribute('aria-expanded', 'false');
+    // `aria-expanded` is not allowed on a generic element. `tc-expanded` is the
+    // styling hook instead.
+    expect(getBoundary()).not.toHaveAttribute('aria-expanded');
+    expect(getBoundary()).not.toHaveAttribute('tc-expanded');
   });
 
   it('keeps the panel out of the accessibility tree while closed', async () => {
@@ -60,7 +64,7 @@ describe('ContextMenu accessibility', () => {
     await settle();
 
     expect(getBoundary()).toHaveAttribute('aria-controls', screen.getByTestId('panel').id);
-    expect(getBoundary()).toHaveAttribute('aria-expanded', 'true');
+    expect(getBoundary()).toHaveAttribute('tc-expanded');
   });
 
   it('opens on right-click', async () => {
@@ -70,7 +74,7 @@ describe('ContextMenu accessibility', () => {
     fireEvent.contextMenu(getBoundary());
 
     expect(screen.getByTestId('panel')).toBeInTheDocument();
-    expect(getBoundary()).toHaveAttribute('aria-expanded', 'true');
+    expect(getBoundary()).toHaveAttribute('tc-expanded');
   });
 
   it('suppresses the browser menu when it opens its own', async () => {
@@ -96,11 +100,16 @@ describe('ContextMenu accessibility', () => {
     expect(screen.queryByTestId('panel')).not.toBeInTheDocument();
   });
 
-  it('marks the boundary as disabled for assistive technology', async () => {
+  it('marks a disabled boundary with `tc-disabled` only', async () => {
     renderContextMenu({ disabled: true });
     await settle();
 
-    expect(getBoundary()).toHaveAttribute('aria-disabled', 'true');
+    // `aria-disabled` and `disabled` are not allowed on a generic element.
+    expect(getBoundary()).toHaveAttribute('tc-disabled');
+    expect(getBoundary()).not.toHaveAttribute('aria-disabled');
+    expect(getBoundary()).not.toHaveAttribute('disabled');
+    expect(getBoundary().parentElement).not.toHaveAttribute('aria-disabled');
+    expect(getBoundary().parentElement).not.toHaveAttribute('disabled');
   });
 
   it('moves focus into the panel when opened', async () => {
@@ -194,5 +203,84 @@ describe('ContextMenu accessibility', () => {
     expect(() => render(() => <ContextMenuPanel>Orphan</ContextMenuPanel>)).toThrow(
       /must be used inside a <ContextMenu>/,
     );
+  });
+});
+
+describe('ContextMenu with a Menu inside', () => {
+  function renderWithMenu(
+    props: { onCut?: () => void; disabled?: string[] } = {},
+  ): ReturnType<typeof render> {
+    return render(() => (
+      <ContextMenu defaultOpen={true}>
+        <ContextMenuBoundary>Right-click here</ContextMenuBoundary>
+        <ContextMenuPanel data-testid="panel">
+          <Menu>
+            <MenuItem disabled={props.disabled?.includes('Cut')} onClick={() => props.onCut?.()}>
+              Cut
+            </MenuItem>
+            <MenuItem>Copy</MenuItem>
+          </Menu>
+        </ContextMenuPanel>
+      </ContextMenu>
+    ));
+  }
+
+  it('focuses the first menu item when opened', async () => {
+    renderWithMenu();
+    await settle();
+
+    expect(await activeElement()).toBe(screen.getByRole('menuitem', { name: 'Cut' }));
+  });
+
+  it('skips a disabled first item when opened', async () => {
+    renderWithMenu({ disabled: ['Cut'] });
+    await settle();
+
+    expect(await activeElement()).toBe(screen.getByRole('menuitem', { name: 'Copy' }));
+  });
+
+  it('focuses the panel itself when it has nothing focusable', async () => {
+    render(() => (
+      <ContextMenu defaultOpen={true}>
+        <ContextMenuBoundary>Right-click here</ContextMenuBoundary>
+        <ContextMenuPanel data-testid="panel">Nothing to do</ContextMenuPanel>
+      </ContextMenu>
+    ));
+    await settle();
+
+    expect(await activeElement()).toBe(screen.getByTestId('panel'));
+  });
+
+  it('closes on Tab instead of keeping focus inside', async () => {
+    renderWithMenu();
+    await settle();
+
+    pressKeyOnFocused('Tab');
+    flush();
+
+    expect(screen.queryByTestId('panel')).not.toBeInTheDocument();
+  });
+
+  it('closes when an item is activated with Enter', async () => {
+    const onCut = vi.fn<() => void>();
+    renderWithMenu({ onCut });
+    await settle();
+
+    pressKeyOnFocused('Enter');
+    flush();
+
+    expect(onCut).toHaveBeenCalledTimes(1);
+    expect(screen.queryByTestId('panel')).not.toBeInTheDocument();
+  });
+
+  it('stays open when a disabled item is clicked', async () => {
+    const onCut = vi.fn<() => void>();
+    renderWithMenu({ onCut, disabled: ['Cut'] });
+    await settle();
+
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Cut' }));
+
+    expect(onCut).not.toHaveBeenCalled();
+    expect(screen.getByTestId('panel')).toBeInTheDocument();
   });
 });

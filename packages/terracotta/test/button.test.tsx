@@ -38,9 +38,82 @@ describe('Button accessibility', () => {
     expect(button).toHaveAttribute('tabindex', '0');
 
     fireEvent.keyDown(button, { key: 'Enter' });
-    fireEvent.keyDown(button, { key: ' ' });
+    expect(onClick).toHaveBeenCalledTimes(1);
 
+    // Space activates on release, as on a native button.
+    fireEvent.keyDown(button, { key: ' ' });
+    expect(onClick).toHaveBeenCalledTimes(1);
+    fireEvent.keyUp(button, { key: ' ' });
     expect(onClick).toHaveBeenCalledTimes(2);
+  });
+
+  it('stops Space from scrolling the page', () => {
+    render(() => <Button as="div">Save</Button>);
+    const button = screen.getByRole('button', { name: 'Save' });
+    const event = new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true });
+
+    button.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(true);
+  });
+
+  it('does not activate a disabled non-button element', () => {
+    const onClick = vi.fn();
+    render(() => (
+      <Button
+        as="div"
+        disabled
+        onClick={() => {
+          onClick();
+        }}
+      >
+        Save
+      </Button>
+    ));
+    const button = screen.getByRole('button', { name: 'Save' });
+
+    fireEvent.keyDown(button, { key: 'Enter' });
+    fireEvent.keyDown(button, { key: ' ' });
+    fireEvent.keyUp(button, { key: ' ' });
+    fireEvent.click(button);
+
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
+  it('blocks the default action of a disabled link', () => {
+    render(() => (
+      <Button as="a" href="#next" disabled>
+        Next
+      </Button>
+    ));
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+
+    screen.getByRole('button', { name: 'Next' }).dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(true);
+  });
+
+  it('leaves Enter to a link, which already clicks on Enter', () => {
+    const onClick = vi.fn();
+    render(() => (
+      <Button
+        as="a"
+        href="#next"
+        onClick={(e: MouseEvent) => {
+          e.preventDefault();
+          onClick();
+        }}
+      >
+        Next
+      </Button>
+    ));
+    const link = screen.getByRole('button', { name: 'Next' });
+    const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true });
+
+    link.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(false);
+    expect(onClick).not.toHaveBeenCalled();
   });
 
   it('does not synthesize keyboard clicks on a native button', () => {

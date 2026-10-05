@@ -9,12 +9,18 @@ import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
 import { mergeFunc } from '../../utils/merge-func';
+import { DISABLED_NODE } from '../../utils/namespace';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
 import { afterTransition } from '../../utils/wait-for-transition';
 import { useContextMenuContext } from './ContextMenuContext';
 import { CONTEXT_MENU_PANEL_TAG } from './tags';
+
+// The first enabled item of a menu inside the panel.
+const MENU_ITEM = ['menuitem', 'menuitemcheckbox', 'menuitemradio']
+  .map((role) => `[role="${role}"]:not(${DISABLED_NODE}):not([aria-disabled="true"])`)
+  .join(', ');
 
 export type ContextMenuPanelBaseProps = Prettify<DisclosureStateRenderProps & UnmountableProps>;
 
@@ -24,8 +30,10 @@ export type ContextMenuPanelProps<T extends ValidComponent = 'div'> = HeadlessPr
 >;
 
 /**
- * The floating panel of a `ContextMenu`. Traps `Tab` while open and closes on
- * <kbd>Escape</kbd>. Position it yourself — the library sets no coordinates.
+ * The floating panel of a `ContextMenu`. Closes on <kbd>Escape</kbd>. When it
+ * holds a `Menu`, <kbd>Tab</kbd> and activating an item also close it.
+ * Otherwise it keeps <kbd>Tab</kbd> inside. Position it yourself. The library
+ * sets no coordinates.
  *
  * Renders a `<div>` by default.
  *
@@ -45,7 +53,13 @@ export function ContextMenuPanel<T extends ValidComponent = 'div'>(
       if (current instanceof HTMLElement) {
         if (isOpen) {
           afterTransition(current, () => {
-            focusFirst(getFocusableElements(current), false);
+            // Menu items sit at `tabindex="-1"`, so the focusable query skips them.
+            const item = current.querySelector<HTMLElement>(MENU_ITEM);
+            if (item) {
+              item.focus();
+            } else if (!focusFirst(getFocusableElements(current), false)) {
+              current.focus();
+            }
           });
 
           return mergeFunc(
@@ -58,7 +72,13 @@ export function ContextMenuPanel<T extends ValidComponent = 'div'>(
                   case 'Tab': {
                     e.preventDefault();
                     e.stopPropagation();
-                    lockFocus(current, e.shiftKey, false);
+                    // In a menu, Tab closes the menu. Focus then returns to where
+                    // it was before the menu opened. Other panels keep Tab inside.
+                    if (current.querySelector('[role="menu"]')) {
+                      state.close();
+                    } else {
+                      lockFocus(current, e.shiftKey, false);
+                    }
                     break;
                   }
                   case 'Escape': {
@@ -68,6 +88,22 @@ export function ContextMenuPanel<T extends ValidComponent = 'div'>(
                   }
                   default:
                     break;
+                }
+              }
+            }),
+            // Activating a menu item closes the menu. A disabled item never gets
+            // here, since `Button` stops the click.
+            useEventListener(current, 'click', (e) => {
+              const target = e.target;
+              if (target instanceof Element) {
+                const item = target.closest('[role="menuitem"]');
+                if (
+                  item &&
+                  current.contains(item) &&
+                  !item.matches(DISABLED_NODE) &&
+                  !item.hasAttribute('aria-haspopup')
+                ) {
+                  state.close();
                 }
               }
             }),
@@ -92,6 +128,7 @@ export function ContextMenuPanel<T extends ValidComponent = 'div'>(
       <Root
         {...CONTEXT_MENU_PANEL_TAG}
         id={context.panelID}
+        tabindex={-1}
         ref={setInternalRef}
         {...disabledState}
         {...expandedState}

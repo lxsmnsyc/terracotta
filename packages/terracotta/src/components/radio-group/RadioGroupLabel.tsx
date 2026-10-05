@@ -18,6 +18,7 @@ export function RadioGroupLabel<T extends ValidComponent = 'label'>(
   props: RadioGroupLabelProps<T>,
 ): JSX.Element {
   const context = useRadioGroupContext('RadioGroupLabel');
+  context.label.register();
 
   const rest = omit(props, 'as');
   const Root = dynamic(() => props.as || 'label');

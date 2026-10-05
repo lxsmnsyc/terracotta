@@ -24,6 +24,7 @@ export function CheckboxLabel<T extends ValidComponent = 'label'>(
 ): JSX.Element {
   const context = useCheckboxContext('CheckboxLabel');
   const state = useCheckState();
+  context.label.register();
   const rest = omit(props, 'as', 'children');
   const disabledState = createDisabledState(() => state.disabled());
   const checkedState = createCheckedState(() => state.checked());

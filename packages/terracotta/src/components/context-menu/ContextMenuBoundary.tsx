@@ -4,12 +4,7 @@ import type { DisclosureStateRenderProps } from '../../states/create-disclosure-
 import { DisclosureStateChild, useDisclosureState } from '../../states/create-disclosure-state';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
-import {
-  createARIADisabledState,
-  createARIAExpandedState,
-  createDisabledState,
-  createExpandedState,
-} from '../../utils/state-props';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
 import { useContextMenuContext } from './ContextMenuContext';
 import { CONTEXT_MENU_BOUNDARY_TAG } from './tags';
@@ -49,9 +44,7 @@ export function ContextMenuBoundary<T extends ValidComponent = 'div'>(
   });
 
   const disabledState = createDisabledState(() => state.disabled());
-  const ariaDisabledState = createARIADisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
-  const ariaExpandedState = createARIAExpandedState(() => state.isOpen());
   const rest = omit(props, 'as', 'children', 'ref');
   const Root = dynamic(() => props.as || 'div');
   return (
@@ -61,9 +54,7 @@ export function ContextMenuBoundary<T extends ValidComponent = 'div'>(
       ref={setInternalRef}
       aria-controls={state.isOpen() ? context.panelID : undefined}
       {...disabledState}
-      {...ariaDisabledState}
       {...expandedState}
-      {...ariaExpandedState}
       {...rest}
     >
       <DisclosureStateChild>{props.children}</DisclosureStateChild>

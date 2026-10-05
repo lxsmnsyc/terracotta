@@ -20,9 +20,11 @@ import useEventListener from '../../utils/use-event-listener';
 import { RadioGroupContext } from './RadioGroupContext';
 import {
   createRadioGroupOptionFocusNavigator,
+  createRadioGroupRoot,
   RadioGroupRootContext,
 } from './RadioGroupRootContext';
 import { RADIO_GROUP_TAG } from './tags';
+import { createPresence } from '../../utils/create-presence';
 
 export type RadioGroupControlledBaseProps<V> = Prettify<
   SingleSelectStateControlledOptions<V> & SelectStateRenderProps<V>
@@ -66,6 +68,9 @@ export function RadioGroup<V, T extends ValidComponent = 'div'>(
   const controller = createRadioGroupOptionFocusNavigator();
   const descriptionID = createUniqueId();
   const labelID = createUniqueId();
+  const label = createPresence();
+  const description = createPresence();
+  const root = createRadioGroupRoot(controller);
   const state = createSingleSelectState(props);
 
   const [ref, setRef] = createForwardRef(props);
@@ -73,6 +78,16 @@ export function RadioGroup<V, T extends ValidComponent = 'div'>(
   createEffect(ref, (current) => {
     if (current instanceof HTMLElement) {
       controller.setRef(current);
+
+      // Arrow keys check the option they move to. Focus alone does not check
+      // an option, so Tab can enter a group that has nothing checked yet.
+      const checkFocused = (): void => {
+        const focused = document.activeElement;
+        if (focused instanceof HTMLElement && focused !== current && current.contains(focused)) {
+          focused.click();
+        }
+      };
+
       return mergeFunc(
         () => {
           controller.clearRef();
@@ -84,12 +99,14 @@ export function RadioGroup<V, T extends ValidComponent = 'div'>(
               case 'ArrowUp': {
                 e.preventDefault();
                 controller.setPrevChecked(true);
+                checkFocused();
                 break;
               }
               case 'ArrowRight':
               case 'ArrowDown': {
                 e.preventDefault();
                 controller.setNextChecked(true);
+                checkFocused();
                 break;
               }
             }
@@ -136,18 +153,20 @@ export function RadioGroup<V, T extends ValidComponent = 'div'>(
       );
   const Root = dynamic(() => props.as || 'div');
   return (
-    <RadioGroupRootContext value={controller}>
+    <RadioGroupRootContext value={root}>
       <RadioGroupContext
         value={{
           descriptionID,
           labelID,
+          label,
+          description,
         }}
       >
         <Root
           {...RADIO_GROUP_TAG}
           role="radiogroup"
-          aria-labelledby={labelID}
-          aria-describedby={descriptionID}
+          aria-labelledby={label.isPresent() ? labelID : undefined}
+          aria-describedby={description.isPresent() ? descriptionID : undefined}
           ref={setRef}
           {...disabledState}
           {...ariaDisabledState}

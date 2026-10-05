@@ -235,8 +235,12 @@ Renders a `<button>` by default.
 | `children` | `JSX.Element` \| `(state: CheckStateProperties) => JSX.Element` | none | The visual mark, or a render prop. |
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
-Rendered attributes include `role="checkbox"`, `aria-checked`,
-`aria-labelledby` and `aria-describedby`.
+Rendered attributes include `role="checkbox"` and `aria-checked`.
+`aria-labelledby` and `aria-describedby` are set only while a `CheckboxLabel` or
+`CheckboxDescription` is rendered. Your own values for them take precedence.
+
+The `Checkbox` wrapper has no role, so it carries no `aria-disabled`. Use
+`tc-disabled` to style it.
 
 ### `<CheckboxLabel>`
 

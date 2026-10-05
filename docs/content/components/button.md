@@ -32,8 +32,9 @@ import { Button } from 'terracotta/button';
 ### Disabled
 
 `disabled` removes the element from the tab order and marks it for assistive
-technology. It only *blocks clicks* on a natively disabled control, though. On a
-`<div>` or `<a>`, guard your own handler:
+technology. It also blocks activation. On a `<button>` the browser does this.
+On any other element, Terracotta ignores <kbd>Enter</kbd> and <kbd>Space</kbd>
+and stops click events before your handlers run:
 
 :::demo button/disabled
 :::
@@ -46,9 +47,11 @@ The second one renders a `<div>`. Terracotta gives it the keyboard behaviour a b
 
 ### As a non-interactive element
 
-When `as` renders anything other than a `<button>`, Terracotta attaches a
-`keydown` listener that clicks the element on <kbd>Enter</kbd> or
-<kbd>Space</kbd>. Keyboard users get native button behaviour back.
+When `as` renders anything other than a `<button>`, Terracotta clicks the
+element on <kbd>Enter</kbd> and on the release of <kbd>Space</kbd>, as a native
+button does. <kbd>Space</kbd> does not scroll the page. A link with an `href`
+already clicks on <kbd>Enter</kbd>, so Terracotta does not click it a second
+time.
 
 ```tsx
 <Button as="div" class="card-button">
@@ -121,8 +124,8 @@ example.
 
 | Key | Action |
 | --- | --- |
-| <kbd>Enter</kbd> | Activates the button. Native on `<button>`; synthesised by Terracotta on any other element. |
-| <kbd>Space</kbd> | Same. |
+| <kbd>Enter</kbd> | Activates the button. Native on `<button>` and on a link with an `href`. Synthesised by Terracotta on any other element. |
+| <kbd>Space</kbd> | Activates the button when the key is released. Synthesised by Terracotta on any element other than `<button>`. |
 | <kbd>Tab</kbd> | Focuses the button, unless it is disabled. |
 
 ## API

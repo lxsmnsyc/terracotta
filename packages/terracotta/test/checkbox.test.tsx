@@ -1,6 +1,6 @@
 import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { describedBy, labelledBy } from './aria';
+import { describedBy, labelledBy, settle } from './aria';
 import {
   Checkbox,
   CheckboxDescription,
@@ -106,5 +106,53 @@ describe('Checkbox accessibility', () => {
 
     indicator.click();
     expect(indicator).not.toHaveAttribute('tc-checked');
+  });
+});
+
+describe('Checkbox IDREFs', () => {
+  it('omits `aria-labelledby` and `aria-describedby` when the parts are not rendered', async () => {
+    render(() => (
+      <Checkbox defaultChecked={false}>
+        <CheckboxIndicator aria-label="Notify me" />
+      </Checkbox>
+    ));
+    await settle();
+    const indicator = screen.getByRole('checkbox', { name: 'Notify me' });
+
+    expect(indicator).not.toHaveAttribute('aria-labelledby');
+    expect(indicator).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('lets the consumer override `aria-labelledby` and `aria-describedby`', async () => {
+    render(() => (
+      <>
+        <span id="own-label">Own label</span>
+        <span id="own-description">Own description</span>
+        <Checkbox defaultChecked={false}>
+          <CheckboxLabel>Notify me</CheckboxLabel>
+          <CheckboxIndicator aria-labelledby="own-label" aria-describedby="own-description" />
+          <CheckboxDescription>Send an email on every reply</CheckboxDescription>
+        </Checkbox>
+      </>
+    ));
+    await settle();
+    const indicator = screen.getByRole('checkbox');
+
+    expect(labelledBy(indicator)).toHaveTextContent('Own label');
+    expect(describedBy(indicator)).toHaveTextContent('Own description');
+  });
+
+  it('puts no ARIA state on the wrapper element', async () => {
+    render(() => (
+      <Checkbox defaultChecked={false} disabled data-testid="root">
+        <CheckboxIndicator aria-label="Notify me" />
+      </Checkbox>
+    ));
+    await settle();
+    const root = screen.getByTestId('root');
+
+    expect(root).not.toHaveAttribute('aria-disabled');
+    expect(root).not.toHaveAttribute('disabled');
+    expect(root).toHaveAttribute('tc-disabled');
   });
 });

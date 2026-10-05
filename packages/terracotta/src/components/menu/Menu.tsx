@@ -4,9 +4,40 @@ import createTypeAhead from '../../utils/create-type-ahead';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
+import { DATA_SET_NAMESPACE, DISABLED_NODE } from '../../utils/namespace';
 import useEventListener from '../../utils/use-event-listener';
 import { createMenuItemFocusNavigator, MenuContext } from './MenuContext';
 import { MENU_TAG } from './tags';
+
+const OWNER_ATTRIBUTE = `${DATA_SET_NAMESPACE}-owner`;
+
+/**
+ * Finds the next enabled item whose text starts with `value`.
+ * - A single character searches from the item after the focused one, so
+ *   pressing it again moves to the next match.
+ * - A longer string searches from the focused item, so it stays put while it
+ *   still matches.
+ * - The search wraps around to the first item.
+ */
+function findMatch(root: HTMLElement, ownerID: string, value: string): HTMLElement | undefined {
+  const items = Array.from(
+    root.querySelectorAll<HTMLElement>(`[${OWNER_ATTRIBUTE}="${ownerID}"]:not(${DISABLED_NODE})`),
+  );
+  const focused = document.activeElement;
+  const index = items.findIndex((item) => item === focused || item.contains(focused));
+  let start = 0;
+  if (index !== -1) {
+    start = value.length === 1 ? index + 1 : index;
+  }
+  const query = value.toLowerCase();
+  for (let i = 0, len = items.length; i < len; i += 1) {
+    const item = items[(start + i) % len];
+    if (item.textContent.trim().toLowerCase().startsWith(query)) {
+      return item;
+    }
+  }
+  return undefined;
+}
 
 export type MenuProps<T extends ValidComponent = 'ul'> = HeadlessPropsWithRef<T>;
 
@@ -27,7 +58,13 @@ export function Menu<T extends ValidComponent = 'ul'>(props: MenuProps<T>): JSX.
   const [ref, setRef] = createForwardRef(props);
 
   const pushCharacter = createTypeAhead((value) => {
-    controller.setFirstMatch(value);
+    const current = ref();
+    if (current instanceof HTMLElement) {
+      const match = findMatch(current, controller.getId(), value);
+      if (match) {
+        controller.setChecked(match);
+      }
+    }
   });
 
   createEffect(ref, (current) => {
@@ -68,7 +105,8 @@ export function Menu<T extends ValidComponent = 'ul'>(props: MenuProps<T>): JSX.
               break;
             }
             default: {
-              if (e.key.length === 1) {
+              // Shortcuts such as Ctrl+C are not type-ahead.
+              if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
                 pushCharacter(e.key);
               }
               break;

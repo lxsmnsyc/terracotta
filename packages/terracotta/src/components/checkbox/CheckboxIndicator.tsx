@@ -53,12 +53,12 @@ export function CheckboxIndicator<T extends ValidComponent = 'button'>(
   const ariaCheckedState = createARIACheckedState(() => state.checked());
   return (
     <Button
+      aria-labelledby={context.label.isPresent() ? context.labelID : undefined}
+      aria-describedby={context.description.isPresent() ? context.descriptionID : undefined}
       {...rest}
       {...CHECKBOX_INDICATOR}
       id={context.indicatorID}
       role="checkbox"
-      aria-labelledby={context.labelID}
-      aria-describedby={context.descriptionID}
       ref={setInternalRef}
       {...disabledState}
       {...ariaDisabledState}

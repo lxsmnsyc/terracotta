@@ -25,6 +25,7 @@ export function CheckboxDescription<T extends ValidComponent = 'p'>(
 ): JSX.Element {
   const context = useCheckboxContext('CheckboxDescription');
   const state = useCheckState();
+  context.description.register();
   const rest = omit(props, 'as', 'children');
   const disabledState = createDisabledState(() => state.disabled());
   const checkedState = createCheckedState(() => state.checked());

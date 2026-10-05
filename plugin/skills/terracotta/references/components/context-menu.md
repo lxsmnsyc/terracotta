@@ -4,8 +4,9 @@
 
 A right-click menu. `ContextMenuBoundary` marks the region that responds to the
 `contextmenu` event. Opening it suppresses the browser's own menu and shows
-`ContextMenuPanel` instead. The panel traps <kbd>Tab</kbd>, closes on
-<kbd>Escape</kbd>, and closes on any click outside itself.
+`ContextMenuPanel` instead. The panel closes on <kbd>Escape</kbd> and on any
+click outside itself. With a `Menu` inside, it also closes on <kbd>Tab</kbd>
+and when an item is activated.
 
 The panel is a dialog-style container, not an ARIA menu, so you can put anything
 you like in it. That includes a [`Menu`](./menu.md), when you do want menu
@@ -50,8 +51,8 @@ import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 </ContextMenu>
 ```
 
-Arrow-key navigation and type-ahead come from `Menu`. The trap and the dismissal
-come from `ContextMenuPanel`.
+Arrow-key navigation and type-ahead come from `Menu`. Focus on open and the
+dismissal come from `ContextMenuPanel`.
 
 ### Positioning at the cursor
 
@@ -198,8 +199,9 @@ appears as usual:
 | `ContextMenuOverlay` | `tc-context-menu-overlay` | Always |
 | `ContextMenuOverlay` | `tc-expanded`, `tc-disabled` | Mirrors the menu |
 
-The boundary also carries `aria-expanded`, and `aria-controls` pointing at the
-panel while open.
+The boundary also carries `aria-controls` pointing at the panel while open. It
+has no role, so it carries no `aria-expanded` or `aria-disabled`. The same goes
+for the `ContextMenu` root. Use `tc-expanded` and `tc-disabled` to style them.
 
 ### Styling
 
@@ -239,11 +241,13 @@ in any descendant. Full reference in
 | --- | --- |
 | Right-click inside `ContextMenuBoundary` | Opens the menu and calls `preventDefault()` on the native event. A disabled menu does nothing and lets the browser menu through. |
 | <kbd>Escape</kbd> | Closes the menu |
-| <kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> | Cycles focus within the panel |
+| <kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> | Closes the menu when the panel holds a `Menu`. Otherwise cycles focus within the panel. |
+| <kbd>Enter</kbd> or click on a `MenuItem` | Activates the item and closes the menu. Disabled items do nothing. |
 | Click outside the panel | Closes the menu |
 
-The panel focuses its first focusable child when it opens. Focus returns to
-where it was when the menu closes.
+When the panel opens, it focuses the first enabled menu item. Without one, it
+focuses the first focusable child, and failing that the panel itself, which
+carries `tabindex="-1"`. Focus returns to where it was when the menu closes.
 
 ## API
 
@@ -277,7 +281,7 @@ The region that listens for `contextmenu`. Renders a `<div>` by default.
 
 ### `<ContextMenuPanel>`
 
-The menu content, with the focus trap and outside-click handling. Renders a
+The menu content, with focus handling and outside-click handling. Renders a
 `<div>` by default.
 
 | Prop | Type | Default | Description |

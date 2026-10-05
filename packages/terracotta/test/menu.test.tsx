@@ -143,3 +143,78 @@ describe('MenuChild', () => {
     expect(item).toHaveTextContent('Cut');
   });
 });
+
+describe('Menu type-ahead', () => {
+  function renderLetters(): void {
+    render(() => (
+      <Menu>
+        <MenuItem>Cut</MenuItem>
+        <MenuItem>Copy</MenuItem>
+        <MenuItem>Paste</MenuItem>
+        <MenuItem>Crop</MenuItem>
+      </Menu>
+    ));
+  }
+
+  it('starts the search after the focused item', async () => {
+    renderLetters();
+    getItem('Cut').focus();
+
+    pressKeyOnFocused('c');
+
+    await waitFor(async () => {
+      expect(await activeElement()).toBe(getItem('Copy'));
+    });
+  });
+
+  it('wraps around to the first item', async () => {
+    renderLetters();
+    getItem('Crop').focus();
+
+    pressKeyOnFocused('c');
+
+    await waitFor(async () => {
+      expect(await activeElement()).toBe(getItem('Cut'));
+    });
+  });
+
+  it('ignores keys pressed with Ctrl, Meta or Alt', async () => {
+    renderLetters();
+    getItem('Cut').focus();
+
+    fireEvent.keyDown(getItem('Cut'), { key: 'p', ctrlKey: true });
+    fireEvent.keyDown(getItem('Cut'), { key: 'p', metaKey: true });
+    fireEvent.keyDown(getItem('Cut'), { key: 'p', altKey: true });
+
+    await new Promise<void>((resolve) => {
+      setTimeout(resolve, 400);
+    });
+    expect(await activeElement()).toBe(getItem('Cut'));
+  });
+});
+
+describe('Disabled menu items', () => {
+  it('cannot be activated with Enter, Space or a click', () => {
+    const onClick = vi.fn();
+    render(() => (
+      <Menu>
+        <MenuItem
+          disabled
+          onClick={() => {
+            onClick();
+          }}
+        >
+          Cut
+        </MenuItem>
+      </Menu>
+    ));
+    const item = getItem('Cut');
+
+    fireEvent.keyDown(item, { key: 'Enter' });
+    fireEvent.keyDown(item, { key: ' ' });
+    fireEvent.keyUp(item, { key: ' ' });
+    fireEvent.click(item);
+
+    expect(onClick).not.toHaveBeenCalled();
+  });
+});

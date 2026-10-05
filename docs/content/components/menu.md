@@ -193,10 +193,15 @@ Handled on the `Menu` root, across its `MenuItem` descendants:
 | <kbd>↓</kbd> / <kbd>→</kbd> | Next item, wrapping around |
 | <kbd>↑</kbd> / <kbd>←</kbd> | Previous item, wrapping around |
 | <kbd>Home</kbd> / <kbd>End</kbd> | First / last item |
-| Printable characters | Type-ahead: jumps to the first item whose text starts with what you typed. Keystrokes are collected for 250 ms, so typing several letters quickly matches a longer prefix. |
+| Printable characters | Type-ahead: jumps to the next item whose text starts with what you typed, wrapping around. Keystrokes are collected for 250 ms, so typing several letters quickly matches a longer prefix. Keys pressed with <kbd>Ctrl</kbd>, <kbd>Meta</kbd> or <kbd>Alt</kbd> are ignored. |
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Activates the focused item; the root suppresses the browser's default scroll or submit |
 
-Both the arrow keys and type-ahead skip disabled items.
+Both the arrow keys and type-ahead skip disabled items. A disabled item cannot
+be activated by a click or a key.
+
+`Menu` has no open state, so it cannot close itself. Inside a
+`ContextMenuPanel`, activating an item closes the panel. Inside a
+`PopoverPanel`, close the popover from the item's `onClick`.
 
 ### Getting focus into the menu
 
@@ -208,10 +213,10 @@ move focus into a menu at all. The spec puts the responsibility on you:
 "authors are responsible for ensuring focus moves to an item inside of a menu
 when the menu opens."
 
-Terracotta does not do that for you, and neither do the panels. `PopoverPanel`
-and `ContextMenuPanel` focus their first *tabbable* child on open, and a menu
-item is deliberately not tabbable, so a panel whose only content is a `Menu`
-leaves focus where it was. Move focus yourself when the menu appears:
+`ContextMenuPanel` focuses the first enabled menu item when it opens.
+`PopoverPanel` focuses its first *tabbable* child on open, and a menu item is
+deliberately not tabbable, so a popover whose only content is a `Menu` leaves
+focus where it was. Move focus yourself when the menu appears:
 
 ```tsx
 <PopoverPanel

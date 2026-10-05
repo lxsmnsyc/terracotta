@@ -10,11 +10,7 @@ import {
   DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
-import {
-  createARIADisabledState,
-  createDisabledState,
-  createExpandedState,
-} from '../../utils/state-props';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import { ContextMenuContext } from './ContextMenuContext';
@@ -80,7 +76,6 @@ export function ContextMenu<T extends ValidComponent = 'div'>(
   );
 
   const disabledState = createDisabledState(() => state.disabled());
-  const ariaDisabledState = createARIADisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
   const rest = isContextMenuUncontrolled(props)
     ? omit(props, 'as', 'children', 'defaultOpen', 'disabled', 'onChange', 'onClose', 'onOpen')
@@ -94,13 +89,7 @@ export function ContextMenu<T extends ValidComponent = 'div'>(
         panelID,
       }}
     >
-      <Root
-        {...CONTEXT_MENU_TAG}
-        {...disabledState}
-        {...ariaDisabledState}
-        {...expandedState}
-        {...rest}
-      >
+      <Root {...CONTEXT_MENU_TAG} {...disabledState} {...expandedState} {...rest}>
         <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
       </Root>
     </ContextMenuContext>

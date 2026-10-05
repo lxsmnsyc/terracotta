@@ -18,6 +18,7 @@ export function RadioGroupDescription<T extends ValidComponent = 'div'>(
   props: RadioGroupDescriptionProps<T>,
 ): JSX.Element {
   const context = useRadioGroupContext('RadioGroupDescription');
+  context.description.register();
 
   const rest = omit(props, 'as');
   const Root = dynamic(() => props.as || 'div');

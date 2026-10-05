@@ -25,6 +25,7 @@ import { Button, type ButtonProps } from '../button';
 import { RadioGroupContext } from './RadioGroupContext';
 import { useRadioGroupRootContext } from './RadioGroupRootContext';
 import { RADIO_GROUP_OPTION_TAG } from './tags';
+import { createPresence } from '../../utils/create-presence';
 
 export type RadioGroupOptionBaseProps<V> = Prettify<
   SelectOptionStateOptions<V> & SelectOptionStateRenderProps
@@ -50,6 +51,8 @@ export function RadioGroupOption<V, T extends ValidComponent = 'div'>(
 
   const descriptionID = createUniqueId();
   const labelID = createUniqueId();
+  const label = createPresence();
+  const description = createPresence();
 
   const [internalRef, setInternalRef] = createForwardRef(props);
   const state = createSelectOptionState(props);
@@ -57,12 +60,16 @@ export function RadioGroupOption<V, T extends ValidComponent = 'div'>(
   createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       return mergeFunc(
+        context.register({
+          element: current,
+          disabled: state.disabled,
+          checked: state.isSelected,
+        }),
         useEventListener(current, 'click', () => {
           state.select();
         }),
         useEventListener(current, 'focus', () => {
           state.focus();
-          state.select();
         }),
         useEventListener(current, 'blur', () => {
           state.blur();
@@ -72,7 +79,7 @@ export function RadioGroupOption<V, T extends ValidComponent = 'div'>(
     return undefined;
   });
 
-  const ownerAttribute = createOwnerAttribute(context.getId());
+  const ownerAttribute = createOwnerAttribute(context.controller.getId());
   const disabledState = createDisabledState(() => state.disabled());
   const ariaDisabledState = createARIADisabledState(() => state.disabled());
   const checkedState = createCheckedState(() => state.isSelected());
@@ -87,16 +94,16 @@ export function RadioGroupOption<V, T extends ValidComponent = 'div'>(
     'ref',
   ) as unknown as ButtonProps<T>;
   return (
-    <RadioGroupContext value={{ descriptionID, labelID }}>
+    <RadioGroupContext value={{ descriptionID, labelID, label, description }}>
       <Button
+        aria-labelledby={label.isPresent() ? labelID : undefined}
+        aria-describedby={description.isPresent() ? descriptionID : undefined}
         {...RADIO_GROUP_OPTION_TAG}
         {...ownerAttribute}
         as={props.as || ('div' as T)}
         role="radio"
-        aria-labelledby={labelID}
-        aria-describedby={descriptionID}
         ref={setInternalRef}
-        tabindex={state.disabled() || !state.isSelected() ? -1 : 0}
+        tabindex={context.tabStop() !== undefined && context.tabStop() === internalRef() ? 0 : -1}
         {...disabledState}
         {...ariaDisabledState}
         {...checkedState}
