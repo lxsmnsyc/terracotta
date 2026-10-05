@@ -131,14 +131,19 @@ being missed.
 
 **Focus is taken once, when the panel opens.** Dialog, AlertDialog, Popover,
 ContextMenu and CommandBar look through the panel for something focusable as
-they open. A panel showing a fallback usually has nothing to offer, so focus
-stays where it was, and the content that arrives a moment later does not get
-focus either, and no second look is taken. The
+they open. A panel showing a fallback usually has nothing to offer.
+
+- Dialog, AlertDialog, CommandBar and ContextMenu then focus the panel itself.
+  Escape and Tab still work, but the content that arrives later does not get
+  focus.
+- Popover leaves focus where it was.
+
+No second look is taken. The
 [dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/) expects
-focus to be inside the dialog, so this is worth designing around. An async read
-defers even when its value has already settled, so a boundary always shows its
-fallback for the render the panel looks at, so having the data ready in advance
-does not help.
+focus on an element inside the dialog, so this is worth designing around. An
+async read defers even when its value has already settled, so a boundary always
+shows its fallback for the render the panel looks at. Having the data ready in
+advance does not help.
 
 Two ways to keep focus where it belongs:
 

@@ -26,16 +26,12 @@ export function CommandBarTitle<T extends ValidComponent = 'h2'>(
   const state = useDisclosureState();
   const disabledState = createDisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
+  const id = (): string => (props as { id?: string }).id ?? context.titleID;
+  context.registerTitle(id);
   const rest = omit(props, 'as', 'children');
   const Root = dynamic(() => props.as || 'h2');
   return (
-    <Root
-      {...COMMAND_BAR_TITLE_TAG}
-      id={context.titleID}
-      {...disabledState}
-      {...expandedState}
-      {...rest}
-    >
+    <Root {...COMMAND_BAR_TITLE_TAG} id={id()} {...disabledState} {...expandedState} {...rest}>
       <DisclosureStateChild>{props.children}</DisclosureStateChild>
     </Root>
   );

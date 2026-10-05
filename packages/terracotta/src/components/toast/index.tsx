@@ -22,8 +22,9 @@ function useToastContext(componentName: string): ToastContextData {
 export type ToastProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
 
 /**
- * One notification inside a {@link Toaster}. Carries `role="status"`, so it is
- * announced without stealing focus.
+ * One notification inside a {@link Toaster}. It has no live role of its own:
+ * the `Toaster` around it is the live region, so the toast is announced when
+ * it is added.
  *
  * Renders a `<div>` by default.
  *
@@ -34,7 +35,7 @@ export function Toast<T extends ValidComponent = 'div'>(props: ToastProps<T>): J
 
   const rest = omit(props, 'as');
   const Root = dynamic(() => props.as || 'div');
-  return <Root {...TOAST_TAG} role="status" aria-live="polite" {...rest} />;
+  return <Root {...TOAST_TAG} {...rest} />;
 }
 
 export type ToasterProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
@@ -42,6 +43,10 @@ export type ToasterProps<T extends ValidComponent = 'div'> = HeadlessProps<T>;
 /**
  * The region that holds the toasts. It does not read the queue for you:
  * subscribe with {@link useToaster} and map over the result yourself.
+ *
+ * It is a polite live region (`role="status"`). Keep it mounted, even while it
+ * is empty. Screen readers only announce changes inside a live region that
+ * already exists, so a toast that brings its own region is often missed.
  *
  * Renders a `<div>` by default.
  *
@@ -58,7 +63,16 @@ export function Toaster<T extends ValidComponent = 'div'>(props: ToasterProps<T>
         ownerID,
       }}
     >
-      <Root {...TOASTER_TAG} {...rest2} />
+      <Root
+        {...TOASTER_TAG}
+        role="status"
+        aria-live="polite"
+        // `status` reads the whole region by default. Each new toast is read on
+        // its own instead of repeating the ones already shown.
+        aria-atomic="false"
+        aria-relevant="additions text"
+        {...rest2}
+      />
     </ToastContext>
   );
 }

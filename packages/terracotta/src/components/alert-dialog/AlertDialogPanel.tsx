@@ -5,10 +5,11 @@ import { DisclosureStateChild, useDisclosureState } from '../../states/create-di
 import { createDependencyList } from '../../utils/create-dependency-list';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
-import { focusFirst, lockFocus } from '../../utils/focus-navigation';
-import getFocusableElements from '../../utils/focus-query';
+import { lockFocus } from '../../utils/focus-navigation';
+import { mergeFunc } from '../../utils/merge-func';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
+import { focusPanelAfterTransition } from '../../utils/modal';
 import { useAlertDialogContext } from './AlertDialogContext';
 import { ALERT_DIALOG_PANEL_TAG } from './tags';
 
@@ -38,30 +39,31 @@ export function AlertDialogPanel<T extends ValidComponent = 'div'>(
     ([current, isOpen]) => {
       if (current instanceof HTMLElement) {
         if (isOpen) {
-          focusFirst(getFocusableElements(current), false);
-
-          return useEventListener(current, 'keydown', (e) => {
-            if (!props.disabled) {
-              // Keys this panel acts on are not passed on: a `Dialog` or another panel
-              // around this one traps `Tab` and closes on `Escape` too, and would
-              // otherwise move focus a second time or close both layers at once.
-              switch (e.key) {
-                case 'Tab': {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  lockFocus(current, e.shiftKey, false);
-                  break;
+          return mergeFunc(
+            focusPanelAfterTransition(current),
+            useEventListener(current, 'keydown', (e) => {
+              if (!props.disabled) {
+                // Keys this panel acts on are not passed on: a `Dialog` or another panel
+                // around this one traps `Tab` and closes on `Escape` too, and would
+                // otherwise move focus a second time or close both layers at once.
+                switch (e.key) {
+                  case 'Tab': {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    lockFocus(current, e.shiftKey, false);
+                    break;
+                  }
+                  case 'Escape': {
+                    e.stopPropagation();
+                    state.close();
+                    break;
+                  }
+                  default:
+                    break;
                 }
-                case 'Escape': {
-                  e.stopPropagation();
-                  state.close();
-                  break;
-                }
-                default:
-                  break;
               }
-            }
-          });
+            }),
+          );
         }
       }
       return undefined;

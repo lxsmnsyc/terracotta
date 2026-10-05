@@ -10,11 +10,7 @@ import {
   DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
-import {
-  createARIADisabledState,
-  createDisabledState,
-  createExpandedState,
-} from '../../utils/state-props';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import { PopoverContext } from './PopoverContext';
@@ -78,7 +74,6 @@ export function Popover<T extends ValidComponent = 'div'>(props: PopoverProps<T>
   );
 
   const disabledState = createDisabledState(() => state.disabled());
-  const ariaDisabledState = createARIADisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
   const rest = isPopoverUncontrolled(props)
     ? omit(props, 'as', 'children', 'defaultOpen', 'disabled', 'onChange', 'onClose', 'onOpen')
@@ -93,7 +88,7 @@ export function Popover<T extends ValidComponent = 'div'>(props: PopoverProps<T>
         hovering: false,
       }}
     >
-      <Root {...POPOVER_TAG} {...disabledState} {...ariaDisabledState} {...expandedState} {...rest}>
+      <Root {...POPOVER_TAG} {...disabledState} {...expandedState} {...rest}>
         <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
       </Root>
     </PopoverContext>

@@ -9,7 +9,7 @@ the screen and go away again. Terracotta splits this into three pieces:
 - `ToasterStore` is a framework-agnostic queue. Create it outside your components
   and push messages into it from anywhere.
 - `useToaster(store)` subscribes to a store and returns a Solid accessor.
-- `<Toaster>` and `<Toast>` are the markup, with the right live-region roles.
+- `<Toaster>` and `<Toast>` are the markup. The `Toaster` is the live region.
 
 The queue lives outside the component tree, so any code can raise a toast
 without prop drilling: a fetch handler, a router guard, a worker callback.
@@ -21,10 +21,14 @@ import { Toast, Toaster, ToasterStore, useToaster } from 'terracotta/toast';
 ## Anatomy
 
 ```tsx
-<Toaster>  {/* the region that holds the queue */}
-  <Toast/> {/* role="status" aria-live="polite" */}
+<Toaster>  {/* role="status" aria-live="polite"; holds the queue */}
+  <Toast/> {/* one message; no live role of its own */}
 </Toaster>
 ```
+
+Keep the `Toaster` mounted, even while the queue is empty. Screen readers only
+announce changes inside a live region that already exists. A toast added to it
+is then announced.
 
 ## Examples
 
@@ -202,7 +206,20 @@ one, and throws otherwise. Renders a `<div>` by default. Does not take a `ref`.
 | `children` | `JSX.Element` | none | The toasts. Not a render prop. |
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
-Rendered attributes: `tc-toaster`.
+#### Rendered attributes
+
+| Attribute | Value |
+| --- | --- |
+| `role` | `"status"` |
+| `aria-live` | `"polite"` |
+| `aria-atomic` | `"false"` |
+| `aria-relevant` | `"additions text"` |
+| `tc-toaster` | `""` |
+
+The region is polite, so a toast is announced without interrupting the user.
+`aria-atomic="false"` reads each new toast on its own, not the whole queue
+again. Your own props are applied last, so you can change any of these. For
+example, pass `aria-live="assertive"` for a region of urgent messages.
 
 ### `<Toast>`
 
@@ -218,9 +235,7 @@ A single notification. Renders a `<div>` by default. Does not take a `ref`.
 
 | Attribute | Value |
 | --- | --- |
-| `role` | `"status"` |
-| `aria-live` | `"polite"` |
 | `tc-toast` | `""` |
 
-`role="status"` announces the toast without interrupting the user. For a message
+A toast has no live role. The `Toaster` around it announces it. For a message
 that must interrupt, use [`Alert`](./alert.md) instead.

@@ -26,13 +26,15 @@ export function CommandBarDescription<T extends ValidComponent = 'p'>(
   const context = useCommandBarContext('CommandBarDescription');
   const state = useDisclosureState();
   const disabledState = createDisabledState(() => state.disabled());
+  const id = (): string => (props as { id?: string }).id ?? context.descriptionID;
+  context.registerDescription(id);
   const rest = omit(props, 'as', 'children');
   const expandedState = createExpandedState(() => state.isOpen());
   const Root = dynamic(() => props.as || 'p');
   return (
     <Root
       {...COMMAND_BAR_DESCRIPTION_TAG}
-      id={context.descriptionID}
+      id={id()}
       {...disabledState}
       {...rest}
       {...expandedState}

@@ -25,6 +25,8 @@ export function AlertDialogDescription<T extends ValidComponent = 'p'>(
 ): JSX.Element {
   const context = useAlertDialogContext('AlertDialogDescription');
   const state = useDisclosureState();
+  const id = (): string => (props as { id?: string }).id ?? context.descriptionID;
+  context.registerDescription(id);
   const rest = omit(props, 'as', 'children');
   const disabledState = createDisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
@@ -33,7 +35,7 @@ export function AlertDialogDescription<T extends ValidComponent = 'p'>(
     <Root
       {...rest}
       {...ALERT_DIALOG_DESCRIPTION_TAG}
-      id={context.descriptionID}
+      id={id()}
       {...disabledState}
       {...expandedState}
     >

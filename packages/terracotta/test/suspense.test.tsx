@@ -236,7 +236,7 @@ describe('Suspense and panel focus', () => {
 
     render(() => (
       <Dialog isOpen>
-        <DialogPanel>
+        <DialogPanel data-testid="panel">
           <Loading fallback={<span data-testid="fallback">loading</span>}>
             <button type="button" data-testid="async">
               {content.read()}
@@ -249,17 +249,16 @@ describe('Suspense and panel focus', () => {
     await settle();
 
     // A panel looks for something to focus once, as it opens. The fallback
-    // holds nothing focusable, so there is nothing to move to.
-    expect(document.activeElement).toBe(document.body);
+    // holds nothing focusable, so the panel takes focus itself.
+    expect(document.activeElement).toBe(screen.getByTestId('panel'));
 
     content.resolve();
     await settle();
 
-    // The button that arrives with the resource does not get focus either: no
-    // second look is taken. The WAI-ARIA dialog pattern asks for focus inside
-    // the dialog when it opens, so an async panel is left outside it.
+    // The button that arrives with the resource does not get focus: no second
+    // look is taken. Focus is still inside the dialog, on the panel.
     expect(screen.getByTestId('async')).toBeInTheDocument();
-    expect(document.activeElement).toBe(document.body);
+    expect(document.activeElement).toBe(screen.getByTestId('panel'));
   });
 
   it('focuses a panel that arrives with the boundary it was behind', async () => {
@@ -299,7 +298,7 @@ describe('Suspense and panel focus', () => {
 
     render(() => (
       <Dialog isOpen>
-        <DialogPanel>
+        <DialogPanel data-testid="panel">
           <Loading fallback={<span data-testid="fallback">loading</span>}>
             <button type="button" data-testid="async">
               {content.read()}
@@ -312,10 +311,11 @@ describe('Suspense and panel focus', () => {
     await settle();
 
     // An async read always defers, settled or not, so the boundary shows its
-    // fallback for the render the panel takes its one look at. Resolving the
+    // fallback for the render the panel takes its one look at. The panel then
+    // focuses itself, as it does whenever nothing inside it can. Resolving the
     // value before mounting does not buy the panel anything: hoisting the
     // boundary above the `Dialog` is what does, as the case above shows.
     expect(screen.getByTestId('async')).toHaveTextContent('loaded');
-    expect(document.activeElement).toBe(document.body);
+    expect(document.activeElement).toBe(screen.getByTestId('panel'));
   });
 });

@@ -1,3 +1,4 @@
+import type { Accessor } from 'solid-js';
 import { createContext, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 
@@ -6,6 +7,8 @@ interface AlertDialogContextData {
   panelID: string;
   titleID: string;
   descriptionID: string;
+  registerTitle: (id: Accessor<string>) => void;
+  registerDescription: (id: Accessor<string>) => void;
 }
 
 export const AlertDialogContext = createContext<AlertDialogContextData | null>(null);

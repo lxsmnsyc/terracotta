@@ -1,5 +1,5 @@
 import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
-import { createEffect, createUniqueId, omit, onSettled } from 'solid-js';
+import { createUniqueId, omit, onSettled } from 'solid-js';
 import type {
   DisclosureStateControlledOptions,
   DisclosureStateRenderProps,
@@ -10,15 +10,12 @@ import {
   DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
 import { Unmountable, type UnmountableProps } from '../../utils/unmountable';
-import type { HeadlessProps } from '../../utils/dynamic-prop';
-import {
-  createARIADisabledState,
-  createDisabledState,
-  createExpandedState,
-} from '../../utils/state-props';
+import type { HeadlessProps, WithRef } from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
-import useFocusStartPoint from '../../utils/use-focus-start-point';
+import { createModalFocus, createMountedID } from '../../utils/modal';
 import { CommandBarContext } from './CommandBarContext';
 import { COMMAND_BAR_TAG } from './tags';
 export type CommandBarControlledBaseProps = Prettify<
@@ -65,20 +62,14 @@ export function CommandBar<T extends ValidComponent = 'div'>(
   const panelID = createUniqueId();
   const titleID = createUniqueId();
   const descriptionID = createUniqueId();
-  const fsp = useFocusStartPoint();
+  const title = createMountedID(titleID);
+  const description = createMountedID(descriptionID);
 
   const state = createDisclosureState(props);
 
-  createEffect(
-    () => state.isOpen(),
-    (flag) => {
-      if (flag) {
-        fsp.save();
-      } else {
-        fsp.load();
-      }
-    },
-  );
+  // `ref` is not a declared prop, but one passed anyway is still called.
+  const [root, setRoot] = createForwardRef(props as WithRef<T>);
+  createModalFocus(state, root);
 
   onSettled(() =>
     useEventListener(window, 'keydown', (e) => {
@@ -90,7 +81,6 @@ export function CommandBar<T extends ValidComponent = 'div'>(
   );
 
   const disabledState = createDisabledState(() => state.disabled());
-  const ariaDisabledState = createARIADisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
   const rest = isCommandBarUncontrolled(props)
     ? omit(
@@ -123,20 +113,27 @@ export function CommandBar<T extends ValidComponent = 'div'>(
         panelID,
         titleID,
         descriptionID,
+        registerTitle: title.register,
+        registerDescription: description.register,
       }}
     >
       <Unmountable unmount={props.unmount} when={state.isOpen()}>
         <Root
           {...COMMAND_BAR_TAG}
-          {...disabledState}
-          {...ariaDisabledState}
-          {...expandedState}
           id={ownerID}
           role="dialog"
-          aria-modal="true"
-          aria-labelledby={titleID}
-          aria-describedby={descriptionID}
+          aria-modal={state.isOpen() ? 'true' : undefined}
+          aria-labelledby={title.id()}
+          aria-describedby={description.id()}
+          // A closed command bar kept mounted with `unmount={false}` leaves the
+          // accessibility tree and the tab order, but stays visible to CSS.
+          aria-hidden={state.isOpen() ? undefined : 'true'}
+          inert={!state.isOpen()}
+          {...disabledState}
+          {...expandedState}
           {...rest}
+          // After `rest`, so a `ref` in it does not replace this one.
+          ref={setRoot}
         >
           <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
         </Root>

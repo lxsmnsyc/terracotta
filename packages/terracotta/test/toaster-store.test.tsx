@@ -147,18 +147,21 @@ describe('useToaster', () => {
       );
     });
 
-    expect(screen.queryAllByRole('status')).toHaveLength(0);
+    // The region is there before any toast, so the first one is announced.
+    const region = screen.getByRole('status');
+    expect(region).toBeEmptyDOMElement();
 
     const id = store.create({ title: 'Saved' });
     // The store notifies a signal, and Solid 2 defers the render that follows.
     flush();
 
-    expect(screen.getByRole('status')).toHaveTextContent('Saved');
+    expect(region).toHaveTextContent('Saved');
 
     store.remove(id);
     flush();
 
-    expect(screen.queryAllByRole('status')).toHaveLength(0);
+    expect(region).toBeEmptyDOMElement();
+    expect(screen.getByRole('status')).toBe(region);
   });
 
   it('stops listening once the owning root is disposed', () => {

@@ -309,14 +309,28 @@ by default. Does not take a `ref`.
 | `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
-Rendered attributes include `role="dialog"`, `aria-modal="true"`,
-`aria-labelledby` and `aria-describedby`.
+Rendered attributes:
+
+- `role="dialog"`.
+- `aria-modal="true"` while open.
+- `aria-labelledby` and `aria-describedby`, each only while its `CommandBarTitle` or
+  `CommandBarDescription` is mounted. Without a title, pass `aria-label`.
+- `inert` and `aria-hidden="true"` while closed. This only shows with
+  `unmount={false}`, where the closed command bar stays in the DOM.
+
+Your own props are applied last, so they override any of these.
+
+While it is open, everything outside the command bar gets `inert`. Live regions,
+such as a `Toaster`, are left out so they can still announce. Content you made
+inert yourself is left as it is. Stacked command bars each restore only what they
+changed, in any order.
 
 ### `<CommandBarPanel>`
 
 The focus trap. It focuses its first focusable child when the bar opens, so put
-the `CommandInput` first and typing starts immediately. Renders a `<div>` by
-default.
+the `CommandInput` first and typing starts immediately. With no focusable child,
+it gets `tabindex="-1"` and focuses itself, so <kbd>Escape</kbd> still works.
+Renders a `<div>` by default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

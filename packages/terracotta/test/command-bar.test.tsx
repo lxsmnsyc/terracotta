@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
-import { flush } from 'solid-js';
+import { createSignal, flush } from 'solid-js';
 import { describe, expect, it, vi } from 'vitest';
 import { activeElement, describedBy, labelledBy, pressKeyOnFocused, settle } from './aria';
 import { Button } from '../src/components/button';
@@ -178,6 +178,94 @@ describe('CommandBar accessibility', () => {
     pressKeyOnFocused('Escape');
 
     expect(await activeElement()).toBe(trigger);
+  });
+
+  it('omits aria-labelledby and aria-describedby without a title or description', async () => {
+    render(() => (
+      <CommandBar defaultOpen aria-label="Commands">
+        <CommandBarPanel>
+          <Button>Open file</Button>
+        </CommandBarPanel>
+      </CommandBar>
+    ));
+    await settle();
+    const dialog = screen.getByRole('dialog', { name: 'Commands' });
+
+    expect(dialog).not.toHaveAttribute('aria-labelledby');
+    expect(dialog).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('does not expose aria-disabled or disabled while disabled', async () => {
+    renderCommandBar({ open: true, disabled: true });
+    await settle();
+    const dialog = screen.getByRole('dialog');
+
+    expect(dialog).not.toHaveAttribute('aria-disabled');
+    expect(dialog).not.toHaveAttribute('disabled');
+    expect(dialog).toHaveAttribute('tc-disabled');
+  });
+
+  it('focuses the panel when nothing inside can take focus, so Escape works', async () => {
+    const onClose = vi.fn<() => void>();
+    render(() => (
+      <CommandBar defaultOpen onClose={onClose}>
+        <CommandBarPanel data-testid="panel">
+          <CommandBarTitle>No commands</CommandBarTitle>
+        </CommandBarPanel>
+      </CommandBar>
+    ));
+    await settle();
+    const panel = screen.getByTestId('panel');
+
+    expect(await activeElement()).toBe(panel);
+    expect(panel).toHaveAttribute('tabindex', '-1');
+
+    pressKeyOnFocused('Escape');
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('hides a closed command bar kept mounted with `unmount={false}`', async () => {
+    render(() => (
+      <CommandBar data-testid="dialog" defaultOpen={false} unmount={false}>
+        <CommandBarPanel>
+          <CommandBarTitle>Command palette</CommandBarTitle>
+        </CommandBarPanel>
+      </CommandBar>
+    ));
+    await settle();
+    const dialog = screen.getByTestId('dialog');
+
+    expect(dialog).not.toHaveAttribute('aria-modal');
+    expect(dialog).toHaveAttribute('aria-hidden', 'true');
+    expect(dialog).toHaveAttribute('inert');
+  });
+
+  it('makes the content outside inert while open, and restores it', async () => {
+    const [open, setOpen] = createSignal(true);
+    render(() => (
+      <>
+        <div data-testid="outside">Outside</div>
+        <CommandBar
+          isOpen={open()}
+          onClose={() => {
+            setOpen(false);
+          }}
+        >
+          <CommandBarPanel>
+            <CommandBarTitle>Command palette</CommandBarTitle>
+          </CommandBarPanel>
+        </CommandBar>
+      </>
+    ));
+    await settle();
+    const outside = screen.getByTestId('outside');
+    expect(outside).toHaveAttribute('inert');
+
+    setOpen(false);
+    flush();
+
+    expect(outside).not.toHaveAttribute('inert');
   });
 
   it('requires a surrounding CommandBar', () => {

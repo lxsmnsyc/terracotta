@@ -25,18 +25,14 @@ export function AlertDialogTitle<T extends ValidComponent = 'h2'>(
   const context = useAlertDialogContext('AlertDialogTitle');
   const state = useDisclosureState();
 
+  const id = (): string => (props as { id?: string }).id ?? context.titleID;
+  context.registerTitle(id);
   const rest = omit(props, 'as', 'children');
   const disabledState = createDisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
   const Root = dynamic(() => props.as || 'h2');
   return (
-    <Root
-      {...rest}
-      {...ALERT_DIALOG_TITLE_TAG}
-      id={context.titleID}
-      {...disabledState}
-      {...expandedState}
-    >
+    <Root {...rest} {...ALERT_DIALOG_TITLE_TAG} id={id()} {...disabledState} {...expandedState}>
       <DisclosureStateChild>{props.children}</DisclosureStateChild>
     </Root>
   );

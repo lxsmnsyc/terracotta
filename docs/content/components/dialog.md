@@ -36,7 +36,9 @@ import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 ```
 
 `DialogTitle` and `DialogDescription` wire themselves to the dialog's
-`aria-labelledby` and `aria-describedby`. You never pass ids.
+`aria-labelledby` and `aria-describedby`. You never pass ids. The dialog only
+points at them while they are mounted. A dialog without a `DialogTitle` needs an
+`aria-label`, because every dialog must have an accessible name.
 
 ## Examples
 
@@ -160,9 +162,20 @@ give an element `tabindex="0"` and place it at the top:
 </DialogPanel>
 ```
 
-The search runs once, as the panel opens, so a panel whose content is still
-loading has nothing to focus and is not asked again. See
+When nothing inside can take focus, the panel gets `tabindex="-1"` and takes
+focus itself. <kbd>Escape</kbd> still closes the dialog, and <kbd>Tab</kbd>
+stays on the panel. A `tabindex` you set on the panel is kept.
+
+The search runs once, as the panel opens. A panel whose content is still
+loading focuses itself and is not asked again. See
 [async content](../guides/rendering.md#async-content).
+
+### The page behind the dialog
+
+While the dialog is open, everything outside it gets `inert`. The page cannot
+be clicked, focused or read by a screen reader, as `aria-modal` asks. This works
+whether or not the dialog is in a `Portal`. Live regions such as a `Toaster`
+stay usable so they can still announce.
 
 ### Locking page scroll
 
@@ -202,7 +215,8 @@ function CloseButton(): JSX.Element {
 
 With the default `unmount`, the dialog is in the DOM only while open.
 `tc-expanded` therefore matters when you set `unmount={false}`, where it becomes
-the hook for hiding and showing.
+the hook for hiding and showing. The closed dialog is `inert` and
+`aria-hidden`, so hiding it visually is all that is left to you.
 
 ### Styling
 
@@ -268,13 +282,27 @@ by default. Does not take a `ref`.
 | `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
-Rendered attributes include `role="dialog"`, `aria-modal="true"`,
-`aria-labelledby` and `aria-describedby`.
+Rendered attributes:
+
+- `role="dialog"`.
+- `aria-modal="true"` while open.
+- `aria-labelledby` and `aria-describedby`, each only while its `DialogTitle` or
+  `DialogDescription` is mounted. Without a title, pass `aria-label`.
+- `inert` and `aria-hidden="true"` while closed. This only shows with
+  `unmount={false}`, where the closed dialog stays in the DOM.
+
+Your own props are applied last, so they override any of these.
+
+While it is open, everything outside the dialog gets `inert`. Live regions,
+such as a `Toaster`, are left out so they can still announce. Content you made
+inert yourself is left as it is. Stacked dialogs each restore only what they
+changed, in any order.
 
 ### `<DialogPanel>`
 
 The focus trap. While the dialog is open it focuses its first focusable child,
-keeps <kbd>Tab</kbd> inside itself, and closes on <kbd>Escape</kbd>. Renders a
+keeps <kbd>Tab</kbd> inside itself, and closes on <kbd>Escape</kbd>. With no
+focusable child, it focuses itself. Renders a
 `<div>` by default.
 
 | Prop | Type | Default | Description |

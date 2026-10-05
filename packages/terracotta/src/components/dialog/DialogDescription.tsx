@@ -27,16 +27,12 @@ export function DialogDescription<T extends ValidComponent = 'p'>(
   const state = useDisclosureState();
   const disabledState = createDisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
+  const id = (): string => (props as { id?: string }).id ?? context.descriptionID;
+  context.registerDescription(id);
   const rest = omit(props, 'as', 'children');
   const Root = dynamic(() => props.as || 'p');
   return (
-    <Root
-      {...DIALOG_DESCRIPTION_TAG}
-      id={context.descriptionID}
-      {...disabledState}
-      {...expandedState}
-      {...rest}
-    >
+    <Root {...DIALOG_DESCRIPTION_TAG} id={id()} {...disabledState} {...expandedState} {...rest}>
       <DisclosureStateChild>{props.children}</DisclosureStateChild>
     </Root>
   );

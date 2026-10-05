@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
+import { createSignal, flush } from 'solid-js';
 import { describe, expect, it, vi } from 'vitest';
 import { activeElement, describedBy, labelledBy, pressKeyOnFocused, settle } from './aria';
 import {
@@ -130,6 +131,152 @@ describe('AlertDialog accessibility', () => {
     ));
 
     expect(screen.getByText('Payment failed')).toBeInTheDocument();
+  });
+
+  it('returns focus to the trigger when it closes', async () => {
+    const [open, setOpen] = createSignal(false);
+    render(() => (
+      <>
+        <button
+          type="button"
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          Pay
+        </button>
+        <AlertDialog
+          isOpen={open()}
+          onClose={() => {
+            setOpen(false);
+          }}
+        >
+          <AlertDialogPanel>
+            <AlertDialogTitle>Payment failed</AlertDialogTitle>
+            <Button>Dismiss</Button>
+          </AlertDialogPanel>
+        </AlertDialog>
+      </>
+    ));
+    const trigger = screen.getByRole('button', { name: 'Pay' });
+    trigger.focus();
+    trigger.click();
+    expect(await activeElement()).toBe(screen.getByRole('button', { name: 'Dismiss' }));
+
+    pressKeyOnFocused('Escape');
+
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+    expect(await activeElement()).toBe(trigger);
+  });
+
+  it('omits aria-labelledby and aria-describedby without a title or description', async () => {
+    render(() => (
+      <AlertDialog defaultOpen aria-label="Payment failed">
+        <AlertDialogPanel>
+          <Button>Dismiss</Button>
+        </AlertDialogPanel>
+      </AlertDialog>
+    ));
+    await settle();
+    const dialog = screen.getByRole('alertdialog', { name: 'Payment failed' });
+
+    expect(dialog).not.toHaveAttribute('aria-labelledby');
+    expect(dialog).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('lets the consumer override the attributes it sets', async () => {
+    render(() => (
+      <>
+        <span id="external">External name</span>
+        <AlertDialog defaultOpen aria-labelledby="external">
+          <AlertDialogPanel>
+            <AlertDialogTitle>Payment failed</AlertDialogTitle>
+          </AlertDialogPanel>
+        </AlertDialog>
+      </>
+    ));
+    await settle();
+
+    expect(screen.getByRole('alertdialog', { name: 'External name' })).toBeInTheDocument();
+  });
+
+  it('does not expose aria-disabled or disabled while disabled', async () => {
+    render(() => (
+      <AlertDialog defaultOpen disabled>
+        <AlertDialogPanel>
+          <AlertDialogTitle>Payment failed</AlertDialogTitle>
+        </AlertDialogPanel>
+      </AlertDialog>
+    ));
+    await settle();
+    const dialog = screen.getByRole('alertdialog');
+
+    expect(dialog).not.toHaveAttribute('aria-disabled');
+    expect(dialog).not.toHaveAttribute('disabled');
+    expect(dialog).toHaveAttribute('tc-disabled');
+  });
+
+  it('focuses the panel when nothing inside can take focus, so Escape works', async () => {
+    const onClose = vi.fn<() => void>();
+    render(() => (
+      <AlertDialog defaultOpen onClose={onClose}>
+        <AlertDialogPanel data-testid="panel">
+          <AlertDialogTitle>Payment failed</AlertDialogTitle>
+        </AlertDialogPanel>
+      </AlertDialog>
+    ));
+    await settle();
+    const panel = screen.getByTestId('panel');
+
+    expect(await activeElement()).toBe(panel);
+    expect(panel).toHaveAttribute('tabindex', '-1');
+
+    pressKeyOnFocused('Escape');
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('hides a closed dialog kept mounted with `unmount={false}`', async () => {
+    render(() => (
+      <AlertDialog data-testid="dialog" defaultOpen={false} unmount={false}>
+        <AlertDialogPanel>
+          <AlertDialogTitle>Payment failed</AlertDialogTitle>
+        </AlertDialogPanel>
+      </AlertDialog>
+    ));
+    await settle();
+    const dialog = screen.getByTestId('dialog');
+
+    expect(dialog).not.toHaveAttribute('aria-modal');
+    expect(dialog).toHaveAttribute('aria-hidden', 'true');
+    expect(dialog).toHaveAttribute('inert');
+  });
+
+  it('makes the content outside inert while open, and restores it', async () => {
+    const [open, setOpen] = createSignal(true);
+    render(() => (
+      <>
+        <div data-testid="outside">Outside</div>
+        <AlertDialog
+          isOpen={open()}
+          onClose={() => {
+            setOpen(false);
+          }}
+        >
+          <AlertDialogPanel>
+            <AlertDialogTitle>Payment failed</AlertDialogTitle>
+          </AlertDialogPanel>
+        </AlertDialog>
+      </>
+    ));
+    await settle();
+    const outside = screen.getByTestId('outside');
+    expect(outside).toHaveAttribute('inert');
+
+    setOpen(false);
+    flush();
+
+    expect(outside).not.toHaveAttribute('inert');
   });
 
   it('requires a surrounding AlertDialog', () => {

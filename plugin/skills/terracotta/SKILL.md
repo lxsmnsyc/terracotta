@@ -118,7 +118,7 @@ does not show is named after it.
 ```tsx
 // terracotta/command
 <Command matchBy>{/* owns the query and the selection */}
-  <CommandLabel/>{/* names the palette */}
+  <CommandLabel/>{/* names the input and the list */}
   <CommandInput/>{/* role="combobox", drives the query */}
   <CommandOptions>{/* role="listbox", always visible */}
     <CommandOption/>
@@ -226,8 +226,8 @@ does not show is named after it.
 
 ```tsx
 // terracotta/toast
-<Toaster>  {/* the region that holds the queue */}
-  <Toast/> {/* role="status" aria-live="polite" */}
+<Toaster>  {/* role="status" aria-live="polite"; holds the queue */}
+  <Toast/> {/* one message; no live role of its own */}
 </Toaster>
 // also exported: ToasterStore, useToaster
 ```

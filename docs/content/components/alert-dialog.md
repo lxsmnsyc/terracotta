@@ -41,6 +41,9 @@ import { DisclosureStateChild, useDisclosureState } from 'terracotta/states';
 An alert dialog should always have a description. Screen readers announce it,
 and it is what tells the user what they are agreeing to.
 
+The dialog only points `aria-labelledby` and `aria-describedby` at a title or
+description that is mounted. Without an `AlertDialogTitle`, pass `aria-label`.
+
 ## Examples
 
 ### Confirming a destructive action
@@ -246,12 +249,27 @@ by default. Does not take a `ref`.
 | `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Contents, or a render prop. |
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
-Rendered attributes include `role="alertdialog"`, `aria-modal="true"`,
-`aria-labelledby` and `aria-describedby`.
+Rendered attributes:
+
+- `role="alertdialog"`.
+- `aria-modal="true"` while open.
+- `aria-labelledby` and `aria-describedby`, each only while its `AlertDialogTitle` or
+  `AlertDialogDescription` is mounted. Without a title, pass `aria-label`.
+- `inert` and `aria-hidden="true"` while closed. This only shows with
+  `unmount={false}`, where the closed dialog stays in the DOM.
+
+Your own props are applied last, so they override any of these.
+
+While it is open, everything outside the dialog gets `inert`. Live regions,
+such as a `Toaster`, are left out so they can still announce. Content you made
+inert yourself is left as it is. Stacked dialogs each restore only what they
+changed, in any order.
 
 ### `<AlertDialogPanel>`
 
-The focus trap. Renders a `<div>` by default.
+The focus trap. It focuses its first focusable child. With no focusable child,
+it gets `tabindex="-1"` and focuses itself, so <kbd>Escape</kbd> still works.
+Renders a `<div>` by default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

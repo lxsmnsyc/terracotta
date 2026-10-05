@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
-import { activeElement, settle } from './aria';
+import { activeElement, pressKeyOnFocused, settle } from './aria';
 import { describe, expect, it } from 'vitest';
 import { Button } from '../src/components/button';
 import { Popover, PopoverButton, PopoverOverlay, PopoverPanel } from '../src/components/popover';
@@ -106,6 +106,34 @@ describe('Popover accessibility', () => {
     button.click();
 
     expect(button).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('returns focus to the button when it closes on Escape', async () => {
+    renderPopover();
+    await settle();
+    const button = screen.getByRole('button', { name: 'Options' });
+    button.focus();
+    button.click();
+    expect(await activeElement()).toBe(screen.getByRole('button', { name: 'Rename' }));
+
+    pressKeyOnFocused('Escape');
+
+    expect(button).toHaveAttribute('aria-expanded', 'false');
+    expect(await activeElement()).toBe(button);
+  });
+
+  it('does not put aria-disabled or disabled on the root while disabled', async () => {
+    render(() => (
+      <Popover data-testid="root" defaultOpen={false} disabled>
+        <PopoverButton>Options</PopoverButton>
+      </Popover>
+    ));
+    await settle();
+    const root = screen.getByTestId('root');
+
+    expect(root).not.toHaveAttribute('aria-disabled');
+    expect(root).not.toHaveAttribute('disabled');
+    expect(root).toHaveAttribute('tc-disabled');
   });
 });
 

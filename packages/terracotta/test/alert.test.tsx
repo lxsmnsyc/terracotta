@@ -27,16 +27,39 @@ describe('Alert accessibility', () => {
 });
 
 describe('Toast accessibility', () => {
-  it('announces politely through the status role', () => {
+  it('makes the Toaster the polite live region', () => {
+    render(() => <Toaster data-testid="toaster" />);
+    const region = screen.getByTestId('toaster');
+
+    // The region exists while empty, so the first toast added is announced.
+    expect(region).toHaveAttribute('role', 'status');
+    expect(region).toHaveAttribute('aria-live', 'polite');
+    expect(region).toHaveAttribute('aria-atomic', 'false');
+    expect(region).toHaveAttribute('aria-relevant', 'additions text');
+  });
+
+  it('gives the toast no live role of its own', () => {
     render(() => (
       <Toaster>
-        <Toast>Copied to clipboard</Toast>
+        <Toast data-testid="toast">Copied to clipboard</Toast>
       </Toaster>
     ));
-    const toast = screen.getByRole('status');
+    const toast = screen.getByTestId('toast');
 
-    expect(toast).toHaveAttribute('aria-live', 'polite');
-    expect(toast).toHaveTextContent('Copied to clipboard');
+    expect(toast).not.toHaveAttribute('role');
+    expect(toast).not.toHaveAttribute('aria-live');
+    expect(screen.getByRole('status')).toContainElement(toast);
+  });
+
+  it('lets the consumer change the live region', () => {
+    render(() => (
+      <Toaster role="log" aria-live="assertive">
+        <Toast role="alert">Upload failed</Toast>
+      </Toaster>
+    ));
+
+    expect(screen.getByRole('log')).toHaveAttribute('aria-live', 'assertive');
+    expect(screen.getByRole('alert')).toHaveTextContent('Upload failed');
   });
 
   it('requires a surrounding Toaster', () => {
