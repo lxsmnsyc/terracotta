@@ -17,6 +17,7 @@ export function FeedArticleLabel<T extends ValidComponent = 'span'>(
   props: FeedArticleLabelProps<T>,
 ): JSX.Element {
   const context = useFeedArticleContext('FeedArticleLabel');
+  context.registerLabel();
   const rest = omit(props, 'as');
   const Root = dynamic(() => props.as || 'span');
   return <Root {...FEED_ARTICLE_LABEL_TAG} id={context.labelID} {...rest} />;

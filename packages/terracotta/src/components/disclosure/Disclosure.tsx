@@ -10,11 +10,7 @@ import {
   DisclosureStateProvider,
 } from '../../states/create-disclosure-state';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
-import {
-  createARIADisabledState,
-  createDisabledState,
-  createExpandedState,
-} from '../../utils/state-props';
+import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import { DisclosureContext } from './DisclosureContext';
 import { DISCLOSURE_TAG } from './tags';
@@ -64,7 +60,6 @@ export function Disclosure<T extends ValidComponent = 'div'>(
   const state = createDisclosureState(props);
 
   const disabledState = createDisabledState(() => state.disabled());
-  const ariaDisabledState = createARIADisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
   const rest = isDisclosureUncontrolled(props)
     ? omit(props, 'as', 'children', 'defaultOpen', 'disabled', 'onChange', 'onClose', 'onOpen')
@@ -78,13 +73,7 @@ export function Disclosure<T extends ValidComponent = 'div'>(
         panelID,
       }}
     >
-      <Root
-        {...DISCLOSURE_TAG}
-        {...disabledState}
-        {...ariaDisabledState}
-        {...expandedState}
-        {...rest}
-      >
+      <Root {...DISCLOSURE_TAG} {...disabledState} {...expandedState} {...rest}>
         <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
       </Root>
     </DisclosureContext>

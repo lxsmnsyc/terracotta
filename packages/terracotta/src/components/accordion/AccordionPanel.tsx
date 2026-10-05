@@ -38,6 +38,10 @@ export function AccordionPanel<T extends ValidComponent = 'div'>(
   const context = useAccordionItemContext('AccordionPanel');
   const state = useSelectOptionState();
 
+  // `unmount={false}` keeps the panel in the DOM. Otherwise it is only there
+  // while expanded.
+  context.registerPanel(() => props.unmount === false || state.isSelected());
+
   const rest = omit(props, 'as', 'children', 'unmount');
   const disabledState = createDisabledState(() => state.disabled());
   const selectedState = createSelectedState(() => state.isSelected());
@@ -47,6 +51,7 @@ export function AccordionPanel<T extends ValidComponent = 'div'>(
   return (
     <Unmountable unmount={props.unmount} when={state.isSelected()}>
       <Root
+        role="region"
         {...rest}
         {...ACCORDION_PANEL_TAG}
         id={context.panelID}

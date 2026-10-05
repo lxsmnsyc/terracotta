@@ -2,7 +2,13 @@ import { createContext, createUniqueId, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 import FocusNavigator from '../../utils/focus-navigator';
 
-export const AccordionContext = createContext<FocusNavigator | null>(null);
+interface AccordionContextData {
+  navigator: FocusNavigator;
+  /** Whether an expanded section can be collapsed again. */
+  isToggleable(): boolean;
+}
+
+export const AccordionContext = createContext<AccordionContextData | null>(null);
 
 /**
  * Reads the nearest `Accordion`'s internal context, which holds the focus
@@ -10,7 +16,7 @@ export const AccordionContext = createContext<FocusNavigator | null>(null);
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
  */
-export function useAccordionContext(componentName: string): FocusNavigator {
+export function useAccordionContext(componentName: string): AccordionContextData {
   const context = useContext(AccordionContext);
   assert(context, new Error(`<${componentName}> must be used inside a <Accordion>`));
   return context;

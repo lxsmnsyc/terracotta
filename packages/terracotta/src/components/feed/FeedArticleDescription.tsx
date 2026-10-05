@@ -18,6 +18,7 @@ export function FeedArticleDescription<T extends ValidComponent = 'p'>(
   props: FeedArticleDescriptionProps<T>,
 ): JSX.Element {
   const context = useFeedArticleContext('FeedArticleDescription');
+  context.registerDescription();
   const rest = omit(props, 'as');
   const Root = dynamic(() => props.as || 'p');
   return <Root {...FEED_ARTICLE_DESCRIPTION_TAG} id={context.descriptionID} {...rest} />;

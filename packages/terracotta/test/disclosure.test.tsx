@@ -81,4 +81,17 @@ describe('Disclosure accessibility', () => {
 
     expect(screen.getByText('Panel body')).toBeInTheDocument();
   });
+
+  it('marks a disabled root with the data attribute only', () => {
+    const result = render(() => (
+      <Disclosure defaultOpen={false} disabled={true}>
+        <DisclosureButton>Details</DisclosureButton>
+      </Disclosure>
+    ));
+    const root = result.container.querySelector('[tc-disclosure]');
+
+    expect(root).toHaveAttribute('tc-disabled');
+    expect(root).not.toHaveAttribute('aria-disabled');
+    expect(root).not.toHaveAttribute('disabled');
+  });
 });

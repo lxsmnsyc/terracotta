@@ -15,8 +15,8 @@ import {
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
+import { DATA_SET_NAMESPACE } from '../../utils/namespace';
 import {
-  createARIADisabledState,
   createDisabledState,
   createHasActiveState,
   createHasSelectedState,
@@ -98,6 +98,11 @@ export function Accordion<V, T extends ValidComponent = 'div'>(
       : createSingleSelectState(props);
     const controller = createAccordionFocusNavigator();
     const [ref, setRef] = createForwardRef(props);
+    const ownerQuery = `[${DATA_SET_NAMESPACE}-owner="${controller.getId()}"]`;
+
+    function isHeaderButton(target: EventTarget | null): boolean {
+      return target instanceof Element && target.matches(ownerQuery);
+    }
 
     createEffect(ref, (current) => {
       if (current instanceof HTMLElement) {
@@ -106,7 +111,9 @@ export function Accordion<V, T extends ValidComponent = 'div'>(
         return mergeFunc(
           () => controller.clearRef(),
           useEventListener(current, 'keydown', (e) => {
-            if (!state.disabled()) {
+            // Only the header buttons navigate. Keys pressed inside a panel,
+            // such as in a text field, keep their own behaviour.
+            if (!state.disabled() && isHeaderButton(e.target)) {
               switch (e.key) {
                 case 'ArrowUp': {
                   e.preventDefault();
@@ -170,19 +177,24 @@ export function Accordion<V, T extends ValidComponent = 'div'>(
         );
     const controllerId = controller.getId();
     const disabledState = createDisabledState(() => state.disabled());
-    const ariaDisabledState = createARIADisabledState(() => state.disabled());
     const hasSelectedState = createHasSelectedState(() => state.hasSelected());
     const hasActiveState = createHasActiveState(() => state.hasActive());
     const Root = dynamic(() => props.as || 'div');
     return (
-      <AccordionContext value={controller}>
+      <AccordionContext
+        value={{
+          navigator: controller,
+          isToggleable(): boolean {
+            return !!props.toggleable;
+          },
+        }}
+      >
         <Root
           {...rest}
           {...ACCORDION_TAG}
           ref={setRef}
           id={controllerId}
           {...disabledState}
-          {...ariaDisabledState}
           {...hasSelectedState}
           {...hasActiveState}
         >

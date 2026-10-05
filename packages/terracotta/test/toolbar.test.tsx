@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { activeElement } from './aria';
+import { createSignal, flush, Show } from 'solid-js';
 import { describe, expect, it } from 'vitest';
 import { Button } from '../src/components/button';
 import { Toolbar } from '../src/components/toolbar';
@@ -39,18 +40,72 @@ describe('Toolbar accessibility', () => {
     expect(screen.getByRole('toolbar')).toHaveAttribute('aria-orientation', 'vertical');
   });
 
-  it('is a single tab stop', () => {
+  it('is not a tab stop itself', () => {
     renderToolbar();
 
-    expect(screen.getByRole('toolbar')).toHaveAttribute('tabindex', '0');
+    expect(screen.getByRole('toolbar')).not.toHaveAttribute('tabindex');
   });
 
-  it('focuses the first action when the toolbar itself is focused', async () => {
+  it('leaves only the first action in the tab sequence', () => {
     renderToolbar();
 
-    fireEvent.focus(screen.getByRole('toolbar'));
+    expect(getAction('Bold')).toHaveAttribute('tabindex', '0');
+    expect(getAction('Italic')).toHaveAttribute('tabindex', '-1');
+    expect(getAction('Underline')).toHaveAttribute('tabindex', '-1');
+  });
 
-    expect(await activeElement()).toBe(getAction('Bold'));
+  it('skips disabled actions when picking the tab stop', () => {
+    render(() => (
+      <Toolbar>
+        <Button disabled>Bold</Button>
+        <Button>Italic</Button>
+      </Toolbar>
+    ));
+
+    expect(getAction('Italic')).toHaveAttribute('tabindex', '0');
+  });
+
+  it('moves the tab stop with focus', async () => {
+    renderToolbar();
+    getAction('Bold').focus();
+
+    fireEvent.keyDown(screen.getByRole('toolbar'), { key: 'End' });
+    expect(await activeElement()).toBe(getAction('Underline'));
+
+    expect(getAction('Underline')).toHaveAttribute('tabindex', '0');
+    expect(getAction('Bold')).toHaveAttribute('tabindex', '-1');
+    expect(getAction('Italic')).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('keeps the last focused action as the tab stop after focus leaves', async () => {
+    renderToolbar();
+    getAction('Italic').focus();
+    getAction('Italic').blur();
+    await activeElement();
+
+    expect(getAction('Italic')).toHaveAttribute('tabindex', '0');
+    expect(getAction('Bold')).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('moves the tab stop when the focused action is removed', async () => {
+    const [show, setShow] = createSignal(true);
+    render(() => (
+      <Toolbar>
+        <Button>Bold</Button>
+        <Show when={show()}>
+          <Button>Italic</Button>
+        </Show>
+      </Toolbar>
+    ));
+    getAction('Italic').focus();
+    getAction('Italic').blur();
+
+    setShow(false);
+    flush();
+    // MutationObserver callbacks run as a microtask.
+    await activeElement();
+
+    expect(getAction('Bold')).toHaveAttribute('tabindex', '0');
   });
 
   it('moves focus with ArrowRight and ArrowLeft when horizontal', async () => {

@@ -3,10 +3,31 @@ import { createEffect, omit } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
+import getFocusableElements from '../../utils/focus-query';
 import useEventListener from '../../utils/use-event-listener';
 import { createFeedArticleFocusNavigator, FeedContentContext } from './FeedContentContext';
 import { useFeedContext } from './FeedContext';
 import { FEED_CONTENT_TAG } from './tags';
+
+const enum Direction {
+  Before = 0,
+  After = 1,
+}
+
+/**
+ * Focuses the nearest focusable element before or after the feed. Elements
+ * inside the feed are skipped.
+ */
+function focusOutside(feed: HTMLElement, direction: Direction): void {
+  const nodes = getFocusableElements(document.documentElement, feed);
+  const position =
+    direction === Direction.Before
+      ? Node.DOCUMENT_POSITION_PRECEDING
+      : Node.DOCUMENT_POSITION_FOLLOWING;
+  const candidates = nodes.filter((node) => feed.compareDocumentPosition(node) & position);
+  const target = direction === Direction.Before ? candidates.at(-1) : candidates.at(0);
+  target?.focus();
+}
 
 export type FeedContentProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<T>;
 
@@ -39,12 +60,12 @@ export function FeedContent<T extends ValidComponent = 'div'>(
             switch (e.key) {
               case 'Home': {
                 e.preventDefault();
-                context.focusPrev();
+                focusOutside(current, Direction.Before);
                 break;
               }
               case 'End': {
                 e.preventDefault();
-                context.focusNext();
+                focusOutside(current, Direction.After);
                 break;
               }
               default:
@@ -76,7 +97,7 @@ export function FeedContent<T extends ValidComponent = 'div'>(
     return undefined;
   });
 
-  const rest = omit(props, 'as');
+  const rest = omit(props, 'as', 'ref');
   const Root = dynamic(() => props.as || 'div');
   return (
     <FeedContentContext value={controller}>
@@ -84,7 +105,7 @@ export function FeedContent<T extends ValidComponent = 'div'>(
         {...FEED_CONTENT_TAG}
         id={context.contentID}
         role="feed"
-        aria-labelledby={context.labelID}
+        aria-labelledby={context.hasLabel() ? context.labelID : undefined}
         aria-busy={context.isBusy() ? 'true' : 'false'}
         ref={setInternalRef}
         {...rest}

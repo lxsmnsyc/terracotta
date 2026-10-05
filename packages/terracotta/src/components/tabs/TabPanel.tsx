@@ -34,6 +34,10 @@ export function TabPanel<V, T extends ValidComponent = 'div'>(
   const rootContext = useTabGroupContext('TabPanel');
   const state = createSelectOptionState(props);
 
+  // `unmount={false}` keeps the panel in the DOM. Otherwise it is only there
+  // while selected.
+  rootContext.registerPanel(props.value, () => props.unmount === false || state.isSelected());
+
   const selectedState = createSelectedState(() => state.isSelected());
   const activeState = createActiveState(() => state.isActive());
   const rest = omit(props, 'as', 'disabled', 'unmount', 'value');

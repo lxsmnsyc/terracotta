@@ -1,5 +1,5 @@
 import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
-import { createUniqueId, omit } from 'solid-js';
+import { createSignal, createUniqueId, omit, onSettled } from 'solid-js';
 import type {
   SelectOptionStateOptions,
   SelectOptionStateRenderProps,
@@ -11,7 +11,6 @@ import {
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
   createActiveState,
-  createARIADisabledState,
   createDisabledState,
   createExpandedState,
   createSelectedState,
@@ -45,21 +44,36 @@ export function AccordionItem<V, T extends ValidComponent = 'div'>(
   const buttonID = createUniqueId();
   const panelID = createUniqueId();
   const state = createSelectOptionState(props);
+  const [panels, setPanels] = createSignal<(() => boolean)[]>([]);
 
   const rest = omit(props, 'as', 'children', 'value', 'disabled');
   const disabledState = createDisabledState(() => state.disabled());
-  const ariaDisabledState = createARIADisabledState(() => state.disabled());
   const selectedState = createSelectedState(() => state.isSelected());
   const expandedState = createExpandedState(() => state.isSelected());
   const activeState = createActiveState(() => state.isActive());
   const Root = dynamic(() => props.as || 'div');
   return (
-    <AccordionItemContext value={{ buttonID, panelID }}>
+    <AccordionItemContext
+      value={{
+        buttonID,
+        panelID,
+        hasPanel(): boolean {
+          return panels().some((present) => present());
+        },
+        registerPanel(present): void {
+          onSettled(() => {
+            setPanels((list) => [...list, present]);
+            return () => {
+              setPanels((list) => list.filter((item) => item !== present));
+            };
+          });
+        },
+      }}
+    >
       <Root
         {...rest}
         {...ACCORDION_ITEM_TAG}
         {...disabledState}
-        {...ariaDisabledState}
         {...selectedState}
         {...expandedState}
         {...activeState}

@@ -27,7 +27,8 @@ import { TabGroup, TabList, Tab, TabPanel } from 'terracotta/tabs';
 `Tab` and `TabPanel` are linked by their `value`, not by their position. The
 group derives a stable pair of ids from each value, then wires `aria-controls`
 and `aria-labelledby` from them. Panels therefore need not sit inside the tab
-list, or even in the same order.
+list, or even in the same order. A tab only carries `aria-controls` while its
+panel is in the DOM, so an unmounted panel leaves no broken reference.
 
 ## Examples
 
@@ -220,9 +221,12 @@ Handled on `TabList`:
 | <kbd>→</kbd> / <kbd>←</kbd> | Next / previous tab, wrapping around (horizontal) |
 | <kbd>↓</kbd> / <kbd>↑</kbd> | Next / previous tab, wrapping around (vertical) |
 | <kbd>Home</kbd> / <kbd>End</kbd> | First / last tab |
-| <kbd>Tab</kbd> | Leaves the tab list, since only the selected tab is in the tab order |
+| <kbd>Tab</kbd> | Leaves the tab list, since only one tab is in the tab order |
 
 Moving focus to a tab selects it. Disabled tabs are skipped.
+
+The tab in the tab order is the selected tab. When no tab is selected, or the
+selected tab is disabled, it is the first enabled tab instead.
 
 ## API
 

@@ -4,6 +4,7 @@ import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createOwnerAttribute } from '../../utils/focus-navigator';
 import { FeedArticleContext } from './FeedArticleContext';
 import { useFeedContext } from './FeedContext';
+import { createPresence } from '../../utils/create-presence';
 import { FEED_ARTICLE_TAG } from './tags';
 
 export type FeedArticleProps<T extends ValidComponent = 'article'> = HeadlessPropsWithRef<
@@ -27,9 +28,11 @@ export function FeedArticle<T extends ValidComponent = 'article'>(
   const ownerID = createUniqueId();
   const labelID = createUniqueId();
   const descriptionID = createUniqueId();
+  const label = createPresence();
+  const description = createPresence();
 
   const ownerAttribute = createOwnerAttribute(rootContext.ownerID);
-  const rest = omit(props, 'as');
+  const rest = omit(props, 'as', 'index');
   const Root = dynamic(() => props.as || 'article');
   return (
     <FeedArticleContext
@@ -37,14 +40,19 @@ export function FeedArticle<T extends ValidComponent = 'article'>(
         ownerID,
         labelID,
         descriptionID,
+        hasLabel: label.isPresent,
+        registerLabel: label.register,
+        hasDescription: description.isPresent,
+        registerDescription: description.register,
       }}
     >
       <Root
         {...FEED_ARTICLE_TAG}
         {...ownerAttribute}
+        role="article"
         id={ownerID}
-        aria-labelledby={labelID}
-        aria-describedby={descriptionID}
+        aria-labelledby={label.isPresent() ? labelID : undefined}
+        aria-describedby={description.isPresent() ? descriptionID : undefined}
         tabindex={0}
         aria-posinset={props.index + 1}
         aria-setsize={rootContext.getSize()}

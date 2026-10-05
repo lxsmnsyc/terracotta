@@ -1,6 +1,6 @@
-import { render, screen } from '@solidjs/testing-library';
+import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { describedBy, labelledBy } from './aria';
+import { activeElement, describedBy, labelledBy } from './aria';
 import {
   Feed,
   FeedArticle,
@@ -76,5 +76,63 @@ describe('Feed accessibility', () => {
     for (const article of screen.getAllByRole('article')) {
       expect(article).toHaveAttribute('tabindex', '0');
     }
+  });
+
+  it('keeps the article role when rendered as another element', () => {
+    render(() => (
+      <Feed size={1}>
+        <FeedContent>
+          <FeedArticle as="div" index={0}>
+            post
+          </FeedArticle>
+        </FeedContent>
+      </Feed>
+    ));
+
+    expect(screen.getByRole('article')).toHaveTextContent('post');
+  });
+
+  it('omits the label and description references when those parts are missing', () => {
+    render(() => (
+      <Feed size={1}>
+        <FeedContent>
+          <FeedArticle index={0}>post</FeedArticle>
+        </FeedContent>
+      </Feed>
+    ));
+
+    expect(screen.getByRole('feed')).not.toHaveAttribute('aria-labelledby');
+    expect(screen.getByRole('article')).not.toHaveAttribute('aria-labelledby');
+    expect(screen.getByRole('article')).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('moves focus out of the feed with Ctrl+Home and Ctrl+End', async () => {
+    render(() => (
+      <>
+        <button type="button">before</button>
+        <Feed size={POSTS.length}>
+          <FeedLabel>Recent activity</FeedLabel>
+          <FeedContent>
+            {POSTS.map((post, index) => (
+              <FeedArticle index={index}>
+                <FeedArticleLabel>{post}</FeedArticleLabel>
+                <button type="button">{post} action</button>
+              </FeedArticle>
+            ))}
+          </FeedContent>
+          <button type="button">load more</button>
+        </Feed>
+        <button type="button">after</button>
+      </>
+    ));
+    const articles = screen.getAllByRole('article');
+
+    articles[1].focus();
+    fireEvent.keyDown(articles[1], { key: 'End', ctrlKey: true });
+    expect(await activeElement()).toBe(screen.getByRole('button', { name: 'load more' }));
+
+    articles[1].focus();
+    fireEvent.keyDown(articles[1], { key: 'Home', ctrlKey: true });
+    expect(await activeElement()).toBe(screen.getByRole('button', { name: 'before' }));
   });
 });

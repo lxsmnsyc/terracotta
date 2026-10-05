@@ -1,5 +1,5 @@
 import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
-import { createMemo, createUniqueId, omit } from 'solid-js';
+import { createMemo, createSignal, createUniqueId, omit, onSettled } from 'solid-js';
 import type {
   SelectStateRenderProps,
   SingleSelectStateControlledOptions,
@@ -8,8 +8,8 @@ import type {
 import { createSingleSelectState, SelectStateProvider } from '../../states/create-select-state';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
+import isEqual from '../../utils/is-equal';
 import {
-  createARIADisabledState,
   createDisabledState,
   createHasActiveState,
   createHasSelectedState,
@@ -68,9 +68,9 @@ export function TabGroup<V, T extends ValidComponent = 'div'>(
     const [, setInternalRef] = createForwardRef(props);
 
     const ids = new Map<V, number>();
+    const [panels, setPanels] = createSignal<{ value: V; present: () => boolean }[]>([]);
 
     const disabledState = createDisabledState(() => state.disabled());
-    const ariaDisabledState = createARIADisabledState(() => state.disabled());
     const hasSelectedState = createHasSelectedState(() => state.hasSelected());
     const hasActiveState = createHasActiveState(() => state.hasActive());
     const rest = isTabGroupUncontrolled(props)
@@ -113,12 +113,23 @@ export function TabGroup<V, T extends ValidComponent = 'div'>(
             }
             return `${ownerID}__${kind}-${currentID}`;
           },
+          hasPanel(value: V): boolean {
+            return panels().some((panel) => isEqual(panel.value, value) && panel.present());
+          },
+          registerPanel(value: V, present: () => boolean): void {
+            const panel = { value, present };
+            onSettled(() => {
+              setPanels((list) => [...list, panel]);
+              return () => {
+                setPanels((list) => list.filter((item) => item !== panel));
+              };
+            });
+          },
         }}
       >
         <Root
           {...TAB_GROUP_TAG}
           {...disabledState}
-          {...ariaDisabledState}
           {...hasSelectedState}
           {...hasActiveState}
           ref={setInternalRef}

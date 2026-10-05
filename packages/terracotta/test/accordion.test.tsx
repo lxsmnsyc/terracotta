@@ -1,6 +1,6 @@
 import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { activeElement, pressKeyOnFocused } from './aria';
+import { activeElement, labelledBy, pressKeyOnFocused, referencedBy } from './aria';
 import {
   Accordion,
   AccordionButton,
@@ -158,5 +158,118 @@ describe('Accordion accessibility', () => {
     expect(getButton('first')).toHaveAttribute('aria-expanded', 'true');
     expect(getButton('second')).toHaveAttribute('aria-expanded', 'true');
     expect(getButton('third')).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('marks every panel as a region named by its button', () => {
+    renderAccordion({ value: 'second' });
+    const region = screen.getByRole('region');
+
+    expect(region).toHaveTextContent('second panel');
+    expect(labelledBy(region)).toBe(getButton('second'));
+  });
+
+  it('leaves arrow keys alone inside a panel', async () => {
+    render(() => (
+      <Accordion defaultValue="first">
+        <AccordionItem value="first">
+          <AccordionHeader>
+            <AccordionButton>first header</AccordionButton>
+          </AccordionHeader>
+          <AccordionPanel>
+            <input aria-label="name" />
+          </AccordionPanel>
+        </AccordionItem>
+        <AccordionItem value="second">
+          <AccordionHeader>
+            <AccordionButton>second header</AccordionButton>
+          </AccordionHeader>
+          <AccordionPanel>second panel</AccordionPanel>
+        </AccordionItem>
+      </Accordion>
+    ));
+    const input = screen.getByRole('textbox', { name: 'name' });
+    input.focus();
+
+    for (const key of ['ArrowDown', 'ArrowUp', 'Home', 'End']) {
+      const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
+      input.dispatchEvent(event);
+      expect(event.defaultPrevented).toBe(false);
+    }
+    expect(await activeElement()).toBe(input);
+  });
+
+  it('reports an expanded section that cannot collapse as disabled', () => {
+    render(() => (
+      <Accordion defaultValue="first">
+        {ITEMS.map((item) => (
+          <AccordionItem value={item}>
+            <AccordionHeader>
+              <AccordionButton>{item} header</AccordionButton>
+            </AccordionHeader>
+            <AccordionPanel>{item} panel</AccordionPanel>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    ));
+
+    expect(getButton('first')).toHaveAttribute('aria-disabled', 'true');
+    expect(getButton('first')).not.toHaveAttribute('disabled');
+    expect(getButton('second')).toHaveAttribute('aria-disabled', 'false');
+
+    getButton('second').click();
+
+    expect(getButton('first')).toHaveAttribute('aria-disabled', 'false');
+    expect(getButton('second')).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  it('keeps an expanded toggleable section enabled', () => {
+    renderAccordion({ value: 'first' });
+
+    expect(getButton('first')).toHaveAttribute('aria-disabled', 'false');
+  });
+
+  it('keeps `aria-controls` while collapsed when the panel stays mounted', () => {
+    render(() => (
+      <Accordion defaultValue={undefined} toggleable={true}>
+        <AccordionItem value="first">
+          <AccordionHeader>
+            <AccordionButton>first header</AccordionButton>
+          </AccordionHeader>
+          <AccordionPanel unmount={false}>first panel</AccordionPanel>
+        </AccordionItem>
+      </Accordion>
+    ));
+    const button = getButton('first');
+
+    expect(button).toHaveAttribute('aria-expanded', 'false');
+    expect(referencedBy(button, 'aria-controls')).toHaveTextContent('first panel');
+  });
+
+  it('drops `aria-controls` when the panel unmounts', () => {
+    renderAccordion({ value: 'first' });
+
+    getButton('first').click();
+
+    expect(getButton('first')).not.toHaveAttribute('aria-controls');
+  });
+
+  it('marks disabled containers with the data attribute only', () => {
+    const result = render(() => (
+      <Accordion defaultValue={undefined} disabled={true}>
+        <AccordionItem value="first" disabled={true}>
+          <AccordionHeader>
+            <AccordionButton>first header</AccordionButton>
+          </AccordionHeader>
+        </AccordionItem>
+      </Accordion>
+    ));
+    const root = result.container.querySelector('[tc-accordion]');
+    const item = result.container.querySelector('[tc-accordion-item]');
+
+    for (const element of [root, item]) {
+      expect(element).toHaveAttribute('tc-disabled');
+      expect(element).not.toHaveAttribute('aria-disabled');
+      expect(element).not.toHaveAttribute('disabled');
+    }
   });
 });

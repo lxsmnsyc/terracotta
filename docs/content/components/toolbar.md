@@ -132,11 +132,6 @@ one, because it is a genuine ARIA property.
 [tc-toolbar][aria-orientation="vertical"] {
   flex-direction: column;
 }
-
-/* The toolbar itself is focusable; do not double up the focus ring
-   when focus has already moved to a control inside it. */
-[tc-toolbar]:focus { outline: none; }
-[tc-toolbar]:focus-visible { outline: 2px solid #2563eb; }
 ```
 
 ### Reading the state in code
@@ -151,11 +146,18 @@ instead, such as [`Toggle`](./toggle.md)'s `pressed()`.
 | <kbd>→</kbd> / <kbd>←</kbd> | Next / previous control, when horizontal |
 | <kbd>↓</kbd> / <kbd>↑</kbd> | Next / previous control, when vertical |
 | <kbd>Home</kbd> / <kbd>End</kbd> | First / last control |
-| <kbd>Tab</kbd> | Enters or leaves the toolbar, which is a single tab stop |
+| <kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> | Enters or leaves the toolbar, which is a single tab stop |
 
-Arrow navigation does not wrap around the ends. Focusing the toolbar itself
-restores the control that was focused last, or the first control if there is
-none. Returning to a toolbar puts you back where you left off.
+Arrow navigation does not wrap around the ends.
+
+The toolbar uses a roving tabindex:
+
+- The toolbar element itself is not focusable.
+- One control has `tabindex="0"`. Every other control gets `tabindex="-1"`.
+- The control with `tabindex="0"` is the one focused last, or the first enabled control if none has been focused yet.
+- The toolbar keeps this up to date when controls are added, removed or disabled.
+
+Returning to a toolbar puts you back where you left off.
 
 ## API
 

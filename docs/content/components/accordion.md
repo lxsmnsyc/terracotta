@@ -199,7 +199,13 @@ Disabled items cannot be clicked, and the arrow keys skip them.
 
 `tc-selected` and `tc-expanded` always agree on an accordion. Both exist so you
 can use whichever reads better. The button also carries `aria-expanded`, and
-`aria-controls` while open.
+`aria-controls` while its panel is in the DOM. That is while open, or always
+with `unmount={false}`.
+
+An open section that cannot be closed, because `toggleable` is off, has
+`aria-disabled="true"` on its button. The button stays focusable. Only the
+button and the panel get ARIA attributes. The `Accordion` and `AccordionItem`
+elements mark disabled state with `tc-disabled` only.
 
 ### Styling
 
@@ -251,7 +257,9 @@ Handled on the `Accordion` root, across its `AccordionButton` descendants:
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Opens the focused section |
 | <kbd>Tab</kbd> | Moves through every enabled button, and into an open panel |
 
-Disabled items are skipped.
+Disabled items are skipped. The arrow keys, <kbd>Home</kbd> and <kbd>End</kbd>
+only navigate while focus is on a button. Inside a panel they keep their usual
+behaviour, so text fields and other controls work as normal.
 
 ## API
 
@@ -313,6 +321,10 @@ the accordion's keyboard navigation. Renders a `<button>` by default.
 ### `<AccordionPanel>`
 
 The revealed content. Renders a `<div>` by default. Does not take a `ref`.
+
+The panel has `role="region"` and is named by its button through
+`aria-labelledby`. With many panels open at once, the regions can crowd the
+landmark list. Pass `role="group"` or another role to replace it.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

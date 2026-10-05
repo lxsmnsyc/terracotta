@@ -1,5 +1,5 @@
 import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
-import { createEffect, omit } from 'solid-js';
+import { createEffect, createMemo, createSignal, omit, onSettled } from 'solid-js';
 import type { SelectStateRenderProps } from '../../states/create-select-state';
 import { SelectStateChild, useSelectState } from '../../states/create-select-state';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
@@ -8,7 +8,7 @@ import { mergeFunc } from '../../utils/merge-func';
 import { createHasActiveState, createHasSelectedState } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
 import { useTabGroupContext } from './TabGroupContext';
-import { createTabFocusNavigator, TabListContext } from './TabListContext';
+import { createTabFocusNavigator, type TabEntry, TabListContext } from './TabListContext';
 import { TAB_LIST_TAG } from './tags';
 
 export type TabListProps<V, T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
@@ -31,6 +31,28 @@ export function TabList<V, T extends ValidComponent = 'div'>(
   const controller = createTabFocusNavigator();
   const state = useSelectState();
   const [ref, setRef] = createForwardRef(props);
+  const [tabs, setTabs] = createSignal<TabEntry[]>([]);
+
+  // Without an enabled, selected tab, the first enabled tab keeps the list in
+  // the tab sequence.
+  const fallbackTab = createMemo(() => {
+    const list = tabs();
+    if (list.some((tab) => tab.isSelected() && !tab.disabled())) {
+      return undefined;
+    }
+    let first: Element | undefined;
+    for (const tab of list) {
+      const element = tab.ref();
+      if (
+        !tab.disabled() &&
+        element instanceof Element &&
+        (!first || first.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_PRECEDING)
+      ) {
+        first = element;
+      }
+    }
+    return first;
+  });
 
   createEffect(ref, (current) => {
     if (current instanceof HTMLElement) {
@@ -98,7 +120,20 @@ export function TabList<V, T extends ValidComponent = 'div'>(
   const rest = omit(props, 'as', 'ref', 'children');
   const Root = dynamic(() => props.as || 'div');
   return (
-    <TabListContext value={controller}>
+    <TabListContext
+      value={{
+        navigator: controller,
+        registerTab(tab): void {
+          onSettled(() => {
+            setTabs((list) => [...list, tab]);
+            return () => {
+              setTabs((list) => list.filter((item) => item !== tab));
+            };
+          });
+        },
+        getFallbackTab: fallbackTab,
+      }}
+    >
       <Root
         {...TAB_LIST_TAG}
         role="tablist"

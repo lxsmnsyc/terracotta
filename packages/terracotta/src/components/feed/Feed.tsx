@@ -2,9 +2,8 @@ import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createUniqueId, omit } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
-import { focusNext, focusPrev } from '../../utils/focus-navigation';
-import getFocusableElements from '../../utils/focus-query';
 import { FeedContext } from './FeedContext';
+import { createPresence } from '../../utils/create-presence';
 import { FEED_TAG } from './tags';
 
 export interface FeedBaseProps {
@@ -30,9 +29,10 @@ export function Feed<T extends ValidComponent = 'div'>(props: FeedProps<T>): JSX
   const labelID = createUniqueId();
   const contentID = createUniqueId();
 
-  const [ref, setRef] = createForwardRef(props);
+  const [, setRef] = createForwardRef(props);
+  const label = createPresence();
 
-  const rest = omit(props, 'as', 'busy', 'size');
+  const rest = omit(props, 'as', 'busy', 'size', 'ref');
   const Root = dynamic(() => props.as || 'div');
   return (
     <FeedContext
@@ -46,18 +46,8 @@ export function Feed<T extends ValidComponent = 'div'>(props: FeedProps<T>): JSX
         isBusy() {
           return !!props.busy;
         },
-        focusNext() {
-          const current = ref();
-          if (current instanceof HTMLElement) {
-            focusNext(getFocusableElements(document.documentElement), current, false, false);
-          }
-        },
-        focusPrev() {
-          const current = ref();
-          if (current instanceof HTMLElement) {
-            focusPrev(getFocusableElements(document.documentElement), current, false, false);
-          }
-        },
+        hasLabel: label.isPresent,
+        registerLabel: label.register,
       }}
     >
       <Root {...FEED_TAG} id={ownerID} ref={setRef} {...rest} />

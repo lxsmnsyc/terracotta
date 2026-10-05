@@ -241,20 +241,21 @@ Keep them in your own signals, as in the "loading more" example above.
 | --- | --- |
 | <kbd>Page Down</kbd> | Next article |
 | <kbd>Page Up</kbd> | Previous article |
-| <kbd>Ctrl</kbd>+<kbd>End</kbd> | Moves focus past the feed, to the next focusable element on the page |
-| <kbd>Ctrl</kbd>+<kbd>Home</kbd> | Moves focus before the feed, to the previous focusable element on the page |
+| <kbd>Ctrl</kbd>+<kbd>End</kbd> | Moves focus to the first focusable element after `FeedContent` |
+| <kbd>Ctrl</kbd>+<kbd>Home</kbd> | Moves focus to the last focusable element before `FeedContent` |
 | <kbd>Tab</kbd> | Moves through every article and every focusable element inside them |
 
 Article navigation does not wrap. <kbd>Page Down</kbd> on the last article stays
 put. The Ctrl shortcuts search the whole document, which is what lets a user
-escape a long feed without tabbing through it.
+escape a long feed without tabbing through it. They skip everything inside
+`FeedContent`, so a load-more button placed after it is the target of
+<kbd>Ctrl</kbd>+<kbd>End</kbd>.
 
 ## API
 
 ### `<Feed>`
 
-The outer container. It owns `size` and `busy`, and provides the "jump out of
-the feed" behaviour. Renders a `<div>` by default.
+The outer container. It owns `size` and `busy`. Renders a `<div>` by default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -267,8 +268,8 @@ the feed" behaviour. Renders a `<div>` by default.
 
 ### `<FeedLabel>`
 
-Names the feed. `FeedContent`'s `aria-labelledby` points at it. Renders a
-`<span>` by default. Does not take a `ref`.
+Names the feed. `FeedContent`'s `aria-labelledby` points at it while it is
+mounted. Renders a `<span>` by default. Does not take a `ref`.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -278,8 +279,8 @@ Names the feed. `FeedContent`'s `aria-labelledby` points at it. Renders a
 
 ### `<FeedContent>`
 
-The region that carries `role="feed"` and handles article navigation. Renders a
-`<div>` by default.
+The region that carries `role="feed"`. It handles article navigation and the
+<kbd>Ctrl</kbd> shortcuts. Renders a `<div>` by default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -301,8 +302,10 @@ One article. It is focusable and positioned within the set. Renders an
 | `children` | `JSX.Element` | none | The article's contents. Not a render prop. |
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
-Rendered attributes include `tabindex="0"`, `aria-labelledby` and
-`aria-describedby`.
+Rendered attributes include `role="article"` and `tabindex="0"`. The role is
+set even on the default `<article>`, so `as="div"` keeps it. `aria-labelledby`
+and `aria-describedby` are set only while a `FeedArticleLabel` or
+`FeedArticleDescription` is mounted inside the article.
 
 ### `<FeedArticleLabel>`
 

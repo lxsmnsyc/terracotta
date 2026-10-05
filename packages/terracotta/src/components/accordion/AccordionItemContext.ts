@@ -4,6 +4,10 @@ import assert from '../../utils/assert';
 interface AccordionItemContextData {
   buttonID: string;
   panelID: string;
+  /** Whether the panel element is in the DOM. */
+  hasPanel(): boolean;
+  /** Called by the panel. `present` tells whether its element is in the DOM. */
+  registerPanel(present: () => boolean): void;
 }
 
 export const AccordionItemContext = createContext<AccordionItemContextData | null>(null);

@@ -49,6 +49,9 @@ export function AccordionButton<T extends ValidComponent = 'button'>(
   const [internalRef, setInternalRef] = createForwardRef<T>(props);
 
   const isDisabled = (): boolean | undefined => state.disabled() || props.disabled;
+  // An expanded section that cannot collapse stays focusable, but reports
+  // that it cannot be activated.
+  const isLocked = (): boolean => state.isSelected() && !rootContext.isToggleable();
 
   createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
@@ -74,7 +77,7 @@ export function AccordionButton<T extends ValidComponent = 'button'>(
   });
 
   const rest = omit(props, 'children', 'ref', 'disabled') as ButtonProps<T>;
-  const ownerAttribute = createOwnerAttribute(rootContext.getId());
+  const ownerAttribute = createOwnerAttribute(rootContext.navigator.getId());
   const disabledState = createDisabledState(isDisabled);
   const ariaDisabledState = createARIADisabledState(isDisabled);
   const selectedState = createSelectedState(() => state.isSelected());
@@ -87,10 +90,11 @@ export function AccordionButton<T extends ValidComponent = 'button'>(
       {...ACCORDION_BUTTON_TAG}
       id={itemContext.buttonID}
       ref={setInternalRef}
-      aria-controls={state.isSelected() ? itemContext.panelID : undefined}
+      aria-controls={itemContext.hasPanel() ? itemContext.panelID : undefined}
       {...ownerAttribute}
       {...disabledState}
       {...ariaDisabledState}
+      aria-disabled={isDisabled() || isLocked() ? 'true' : 'false'}
       {...selectedState}
       {...expandedState}
       {...ariaExpandedState}
