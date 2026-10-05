@@ -23,10 +23,6 @@
     "src"
   ],
   "type": "module",
-  "types": "./dist/types/index.d.ts",
-  "typesVersions": {
-    "*": {}
-  },
   "exports": {
     "./accordion": {
       "types": "./dist/accordion.d.ts",
