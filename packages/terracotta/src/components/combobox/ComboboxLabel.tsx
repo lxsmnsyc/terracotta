@@ -29,6 +29,9 @@ export function ComboboxLabel<T extends ValidComponent = 'label'>(
   const autocompleteState = useAutocompleteState();
   const disclosureState = useDisclosureState();
 
+  // The input and the popup only point at the label while it is mounted.
+  context.registerLabel();
+
   const disabledState = createDisabledState(() => autocompleteState.disabled());
   const expandedState = createExpandedState(() => disclosureState.isOpen());
   const hasSelectedState = createHasSelectedState(() => autocompleteState.hasSelected());

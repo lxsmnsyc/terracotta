@@ -14,7 +14,6 @@ import {
 } from '../../states/create-autocomplete-state';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
-  createARIADisabledState,
   createDisabledState,
   createHasActiveState,
   createHasQueryState,
@@ -23,6 +22,7 @@ import {
 import type { Prettify } from '../../utils/types';
 import { CommandContext, createCommandOptionFocusNavigator } from './CommandContext';
 import { COMMAND_TAG } from './tags';
+import { createPresence } from '../../utils/create-presence';
 
 export interface CommandBaseProps {
   horizontal?: boolean;
@@ -128,9 +128,10 @@ export function Command<V, T extends ValidComponent = 'div'>(
       },
     );
 
+    const label = createPresence();
+
     const controllerId = controller.getId();
     const disabledState = createDisabledState(() => state.disabled());
-    const ariaDisabledState = createARIADisabledState(() => state.disabled());
     const hasSelectedState = createHasSelectedState(() => state.hasSelected());
     const hasActiveState = createHasActiveState(() => state.hasActive());
     const hasQueryState = createHasQueryState(() => state.hasQuery());
@@ -173,14 +174,14 @@ export function Command<V, T extends ValidComponent = 'div'>(
           setActiveDescendant,
           getSelectedDescendant: selectedDescendant,
           setSelectedDescendant,
+          hasLabel: label.isPresent,
+          registerLabel: label.register,
         }}
       >
         <Root
           {...COMMAND_TAG}
           id={controllerId}
-          aria-labelledby={labelID}
           {...disabledState}
-          {...ariaDisabledState}
           {...hasSelectedState}
           {...hasActiveState}
           {...hasQueryState}

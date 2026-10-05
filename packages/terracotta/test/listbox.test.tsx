@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
-import { activeElement, settle } from './aria';
+import { activeElement, labelledBy, settle } from './aria';
 import { describe, expect, it } from 'vitest';
 import {
   Listbox,
@@ -46,7 +46,7 @@ describe('Listbox accessibility', () => {
   it('marks the trigger as a listbox popup owner', async () => {
     renderListbox();
     await settle();
-    const button = screen.getByRole('button', { name: 'Pick one' });
+    const button = screen.getByRole('button', { name: 'Fruit Pick one' });
 
     expect(button).toHaveAttribute('aria-haspopup', 'listbox');
     expect(button).toHaveAttribute('aria-expanded', 'false');
@@ -63,7 +63,7 @@ describe('Listbox accessibility', () => {
   it('opens on click and marks the trigger as expanded', async () => {
     renderListbox();
     await settle();
-    const button = screen.getByRole('button', { name: 'Pick one' });
+    const button = screen.getByRole('button', { name: 'Fruit Pick one' });
 
     button.click();
 
@@ -74,23 +74,62 @@ describe('Listbox accessibility', () => {
   it('opens with ArrowDown on the trigger', async () => {
     renderListbox();
     await settle();
-    const button = screen.getByRole('button', { name: 'Pick one' });
+    const button = screen.getByRole('button', { name: 'Fruit Pick one' });
 
     fireEvent.keyDown(button, { key: 'ArrowDown' });
 
     expect(button).toHaveAttribute('aria-expanded', 'true');
   });
 
-  it('names the option list from the trigger and reports orientation', async () => {
+  it('names the option list from the label and reports orientation', async () => {
     renderListbox({ open: true });
     await settle();
     const list = screen.getByRole('listbox');
 
-    expect(list).toHaveAttribute(
-      'aria-labelledby',
-      screen.getByRole('button', { name: 'Pick one' }).id,
-    );
+    expect(labelledBy(list)).toHaveTextContent('Fruit');
+    expect(labelledBy(list)).toHaveAttribute('tc-listbox-label');
     expect(list).toHaveAttribute('aria-orientation', 'vertical');
+  });
+
+  it('names the trigger from the label and its own text', async () => {
+    renderListbox();
+    await settle();
+    const button = screen.getByRole('button', { name: 'Fruit Pick one' });
+    const label = screen.getByText('Fruit');
+
+    expect(button).toHaveAttribute('aria-labelledby', `${label.id} ${button.id}`);
+  });
+
+  it('names the option list from the trigger when there is no label', async () => {
+    render(() => (
+      <Listbox defaultOpen={true}>
+        <ListboxButton>Pick one</ListboxButton>
+        <ListboxOptions>
+          <ListboxOption value="apple">apple</ListboxOption>
+        </ListboxOptions>
+      </Listbox>
+    ));
+    await settle();
+    const button = screen.getByRole('button', { name: 'Pick one' });
+
+    expect(button).not.toHaveAttribute('aria-labelledby');
+    expect(screen.getByRole('listbox')).toHaveAttribute('aria-labelledby', button.id);
+  });
+
+  it('keeps naming and disabled attributes off the generic root', async () => {
+    render(() => (
+      <Listbox data-testid="root" disabled={true}>
+        <ListboxLabel>Fruit</ListboxLabel>
+        <ListboxButton>Pick one</ListboxButton>
+      </Listbox>
+    ));
+    await settle();
+    const root = screen.getByTestId('root');
+
+    expect(root).not.toHaveAttribute('aria-labelledby');
+    expect(root).not.toHaveAttribute('aria-disabled');
+    expect(root).not.toHaveAttribute('disabled');
+    expect(root).toHaveAttribute('tc-disabled');
   });
 
   it('reports a horizontal option list when asked', async () => {
@@ -156,7 +195,7 @@ describe('Listbox accessibility', () => {
     getOption('banana').click();
 
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Pick one' })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'Fruit Pick one' })).toHaveAttribute(
       'aria-expanded',
       'false',
     );

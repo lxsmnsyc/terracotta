@@ -21,7 +21,6 @@ import {
 } from '../../states/create-select-state';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
-  createARIADisabledState,
   createDisabledState,
   createExpandedState,
   createHasActiveState,
@@ -31,6 +30,7 @@ import type { Prettify } from '../../utils/types';
 import useFocusStartPoint from '../../utils/use-focus-start-point';
 import { ListboxContext } from './ListboxContext';
 import { LISTBOX_TAG } from './tags';
+import { createPresence } from '../../utils/create-presence';
 
 export interface ListboxBaseProps {
   horizontal?: boolean;
@@ -346,8 +346,9 @@ export function Listbox<V, T extends ValidComponent = 'div'>(
         }
       },
     );
+    const label = createPresence();
+
     const disabledState = createDisabledState(() => selectState.disabled());
-    const ariaDisabledState = createARIADisabledState(() => selectState.disabled());
     const hasSelectedState = createHasSelectedState(() => selectState.hasSelected());
     const hasActiveState = createHasActiveState(() => selectState.hasActive());
     const expandedState = createExpandedState(() => disclosureState.isOpen());
@@ -366,6 +367,8 @@ export function Listbox<V, T extends ValidComponent = 'div'>(
           isHorizontal() {
             return props.horizontal;
           },
+          hasLabel: label.isPresent,
+          registerLabel: label.register,
         }}
       >
         <SelectStateProvider state={selectState}>
@@ -373,9 +376,7 @@ export function Listbox<V, T extends ValidComponent = 'div'>(
             <Root
               {...LISTBOX_TAG}
               id={ownerID}
-              aria-labelledby={labelID}
               {...disabledState}
-              {...ariaDisabledState}
               {...hasSelectedState}
               {...hasActiveState}
               {...expandedState}

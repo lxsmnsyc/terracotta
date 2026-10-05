@@ -32,7 +32,7 @@ import {
 
 ```tsx
 <Command matchBy>{/* owns the query and the selection */}
-  <CommandLabel/>{/* names the palette */}
+  <CommandLabel/>{/* names the input and the list */}
   <CommandInput/>{/* role="combobox", drives the query */}
   <CommandOptions>{/* role="listbox", always visible */}
     <CommandOption/>
@@ -342,8 +342,10 @@ Owns an [autocomplete state](../states.md#autocomplete-state) and renders a
 
 ### `<CommandLabel>`
 
-Names the palette. Renders a `<label>` by default. It takes no `ref`, and its
-`children` is not a render prop.
+Names the input and the list through `aria-labelledby`. Both drop the attribute
+when no `CommandLabel` is rendered, so name them yourself with `aria-label` in
+that case. Renders a `<label>` by default. It takes no `ref`, and its `children`
+is not a render prop.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -363,7 +365,8 @@ The text field. Renders an `<input type="text">` by default.
 | *…rest* | props of `as` | none | Forwarded to the rendered element, including `placeholder` and `value`. |
 
 Rendered attributes include `role="combobox"`, `type="text"`, `tabindex="0"`,
-`aria-controls`, `aria-expanded="true"` and `aria-activedescendant`.
+`aria-autocomplete="list"`, `aria-controls`, `aria-labelledby`,
+`aria-expanded="true"` and `aria-activedescendant`.
 
 ### `<CommandOptions>`
 
@@ -378,7 +381,7 @@ order.
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="listbox"`, `aria-multiselectable`,
-`aria-orientation="vertical"` and `tabindex="-1"`.
+`aria-labelledby`, `aria-orientation="vertical"` and `tabindex="-1"`.
 
 ### `<CommandOption>`
 

@@ -32,6 +32,9 @@ export function ListboxLabel<T extends ValidComponent = 'label'>(
   const disclosureState = useDisclosureState();
   const selectState = useSelectState();
 
+  // The button and the popup only point at the label while it is mounted.
+  context.registerLabel();
+
   const disabledState = createDisabledState(() => disclosureState.disabled());
   const expandedState = createExpandedState(() => disclosureState.isOpen());
   const hasSelectedState = createHasSelectedState(() => selectState.hasSelected());

@@ -81,6 +81,9 @@ export function ListboxButton<T extends ValidComponent = 'button'>(
     return undefined;
   });
 
+  // The name is the label followed by the button's own text, which shows the value.
+  const labelledBy = (): string | undefined =>
+    context.hasLabel() ? `${context.labelID} ${context.buttonID}` : undefined;
   const disabledState = createDisabledState(isDisabled);
   const ariaDisabledState = createARIADisabledState(isDisabled);
   const expandedState = createExpandedState(() => disclosureState.isOpen());
@@ -94,6 +97,7 @@ export function ListboxButton<T extends ValidComponent = 'button'>(
       id={context.buttonID}
       aria-haspopup="listbox"
       aria-controls={context.optionsID}
+      aria-labelledby={labelledBy()}
       ref={setInternalRef}
       {...disabledState}
       {...ariaDisabledState}

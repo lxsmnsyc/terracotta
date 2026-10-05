@@ -141,4 +141,162 @@ describe('Combobox accessibility', () => {
       expect(getOption(person)).toHaveAttribute('tabindex', '-1');
     }
   });
+
+  it('declares list autocompletion on the input', () => {
+    renderCombobox();
+
+    expect(getInput()).toHaveAttribute('aria-autocomplete', 'list');
+  });
+
+  it('carries its own input tag', () => {
+    renderCombobox();
+
+    expect(getInput()).toHaveAttribute('tc-combobox-input');
+    expect(getInput()).not.toHaveAttribute('tc-command-input');
+  });
+
+  it('names the option list from the label', async () => {
+    renderCombobox({ open: true });
+    await settle();
+
+    expect(labelledBy(screen.getByRole('listbox'))).toHaveTextContent('Assignee');
+  });
+
+  it('leaves out aria-labelledby when there is no label', async () => {
+    render(() => (
+      <Combobox defaultOpen={true} matchBy={(value: string, query) => value.includes(query)}>
+        <ComboboxInput aria-label="Assignee" />
+        <ComboboxOptions aria-label="People">
+          <ComboboxOption value="ada">ada</ComboboxOption>
+        </ComboboxOptions>
+      </Combobox>
+    ));
+    await settle();
+
+    expect(getInput()).not.toHaveAttribute('aria-labelledby');
+    expect(screen.getByRole('listbox')).not.toHaveAttribute('aria-labelledby');
+  });
+
+  it('keeps naming and disabled attributes off the generic root', async () => {
+    render(() => (
+      <Combobox
+        data-testid="root"
+        disabled={true}
+        defaultOpen={false}
+        matchBy={(value: string, query) => value.includes(query)}
+      >
+        <ComboboxLabel>Assignee</ComboboxLabel>
+        <ComboboxInput />
+      </Combobox>
+    ));
+    await settle();
+    const root = screen.getByTestId('root');
+
+    expect(root).not.toHaveAttribute('aria-labelledby');
+    expect(root).not.toHaveAttribute('aria-disabled');
+    expect(root).not.toHaveAttribute('disabled');
+    expect(root).toHaveAttribute('tc-disabled');
+  });
+
+  it('clears aria-activedescendant when the popup closes', async () => {
+    renderCombobox({ open: true });
+    await settle();
+    const input = getInput();
+    expect(input).toHaveAttribute('aria-activedescendant', getOption('ada').id);
+
+    fireEvent.keyDown(input, { key: 'Escape' });
+    await settle();
+
+    expect(input).not.toHaveAttribute('aria-activedescendant');
+  });
+
+  it('clears aria-activedescendant when the popup closes but stays mounted', async () => {
+    render(() => (
+      <Combobox defaultOpen={true} matchBy={(value: string, query) => value.includes(query)}>
+        <ComboboxLabel>Assignee</ComboboxLabel>
+        <ComboboxInput />
+        <ComboboxOptions unmount={false}>
+          {PEOPLE.map((person) => (
+            <ComboboxOption value={person}>{person}</ComboboxOption>
+          ))}
+        </ComboboxOptions>
+      </Combobox>
+    ));
+    await settle();
+    const input = getInput();
+    expect(input).toHaveAttribute('aria-activedescendant');
+
+    fireEvent.keyDown(input, { key: 'Escape' });
+    await settle();
+
+    expect(input).not.toHaveAttribute('aria-activedescendant');
+    expect(document.querySelector('[tc-active]')).toBeNull();
+  });
+
+  it('clears aria-activedescendant when nothing matches the query', async () => {
+    renderCombobox({ open: true });
+    await settle();
+    const input = getInput();
+    expect(input).toHaveAttribute('aria-activedescendant');
+
+    fireEvent.input(input, { target: { value: 'zzz' } });
+
+    await waitFor(() => {
+      expect(getOption('ada')).not.toHaveAttribute('tc-matches');
+    });
+    await settle();
+    expect(input).not.toHaveAttribute('aria-activedescendant');
+  });
+
+  it('lets Escape reach outer handlers while the popup is closed', () => {
+    let reached = 0;
+    render(() => (
+      <div
+        onKeyDown={() => {
+          reached += 1;
+        }}
+      >
+        <Combobox defaultOpen={false} matchBy={(value: string, query) => value.includes(query)}>
+          <ComboboxInput />
+        </Combobox>
+      </div>
+    ));
+
+    fireEvent.keyDown(getInput(), { key: 'Escape' });
+
+    expect(reached).toBe(1);
+  });
+
+  it('stops Escape from reaching outer handlers while the popup is open', () => {
+    let reached = 0;
+    render(() => (
+      <div
+        onKeyDown={() => {
+          reached += 1;
+        }}
+      >
+        <Combobox defaultOpen={true} matchBy={(value: string, query) => value.includes(query)}>
+          <ComboboxInput />
+        </Combobox>
+      </div>
+    ));
+
+    fireEvent.keyDown(getInput(), { key: 'Escape' });
+
+    expect(reached).toBe(0);
+    expect(getInput()).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('leaves Enter alone while the popup is closed so forms can submit', () => {
+    renderCombobox();
+
+    // `fireEvent` returns false when the event was cancelled.
+    expect(fireEvent.keyDown(getInput(), { key: 'Enter' })).toBe(true);
+  });
+
+  it('takes Enter while the popup is open', () => {
+    renderCombobox({ open: true });
+
+    expect(fireEvent.keyDown(getInput(), { key: 'Enter' })).toBe(false);
+  });
 });

@@ -15,8 +15,9 @@ import {
   createHasSelectedState,
 } from '../../utils/state-props';
 import useEventListener from '../../utils/use-event-listener';
-import { COMMAND_INPUT_TAG } from '../command/tags';
+import { DISABLED_NODE, MATCHES_NODE } from '../../utils/namespace';
 import { useComboboxContext } from './ComboboxContext';
+import { COMBOBOX_INPUT_TAG } from './tags';
 
 export type ComboboxInputProps<T extends ValidComponent = 'input'> = HeadlessPropsWithRef<T>;
 
@@ -53,13 +54,14 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
           }),
         useEventListener(current, 'keydown', (e) => {
           if (!isDisabled()) {
-            // Keys this panel acts on are not passed on: a `Dialog` or another panel
-            // around this one traps `Tab` and closes on `Escape` too, and would
-            // otherwise move focus a second time or close both layers at once.
             switch (e.key) {
               case 'Escape': {
-                e.stopPropagation();
-                disclosureState.close();
+                // Only stop `Escape` while the popup is open.
+                // A `Dialog` around a closed combobox still closes on it.
+                if (disclosureState.isOpen()) {
+                  e.stopPropagation();
+                  disclosureState.close();
+                }
                 break;
               }
               case 'ArrowUp': {
@@ -81,8 +83,9 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
                 break;
               }
               case 'Enter': {
-                e.preventDefault();
+                // Enter submits the form while the popup is closed.
                 if (disclosureState.isOpen()) {
+                  e.preventDefault();
                   context.setSelectedDescendant(context.getActiveDescendant());
                 }
                 break;
@@ -98,7 +101,6 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
           }
         }),
         useEventListener(current, 'blur', (e) => {
-          console.log(context.inputHovering, context.optionsHovering);
           if (context.inputHovering || context.optionsHovering) {
             return;
           }
@@ -130,6 +132,12 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
       if (query !== '') {
         if (disclosureState.isOpen()) {
           context.controller.setFirstChecked();
+          // When nothing matches, no option stays active.
+          const options = document.getElementById(context.optionsID);
+          if (!options?.querySelector(`${MATCHES_NODE}:not(${DISABLED_NODE})`)) {
+            autocompleteState.blur();
+            context.setActiveDescendant(undefined);
+          }
         } else {
           disclosureState.open();
         }
@@ -160,7 +168,7 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
   const Root = dynamic(() => props.as || 'input');
   return (
     <Root
-      {...COMMAND_INPUT_TAG}
+      {...COMBOBOX_INPUT_TAG}
       id={context.inputID}
       ref={setInternalRef}
       type="text"
@@ -168,8 +176,9 @@ export function ComboboxInput<T extends ValidComponent = 'input'>(
       role="combobox"
       aria-haspopup="listbox"
       aria-controls={context.optionsID}
-      aria-labelledby={context.labelID}
-      aria-activedescendant={context.getActiveDescendant()}
+      aria-autocomplete="list"
+      aria-labelledby={context.hasLabel() ? context.labelID : undefined}
+      aria-activedescendant={disclosureState.isOpen() ? context.getActiveDescendant() : undefined}
       {...disabledState}
       {...ariaDisabledState}
       {...expandedState}

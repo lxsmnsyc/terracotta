@@ -251,7 +251,7 @@ debounced.
 | `Combobox` | `tc-disabled` | The combobox is disabled |
 | `ComboboxLabel` | `tc-combobox-label` | Always |
 | `ComboboxLabel` | `tc-expanded`, `tc-has-selected`, `tc-has-active`, `tc-has-query`, `tc-disabled` | Mirrors the combobox |
-| `ComboboxInput` | `tc-command-input` | Always. See the note below |
+| `ComboboxInput` | `tc-combobox-input` | Always |
 | `ComboboxInput` | `tc-expanded`, `tc-has-selected`, `tc-has-active`, `tc-has-query`, `tc-disabled` | Mirrors the combobox |
 | `ComboboxOptions` | `tc-combobox-options` | Always (whenever rendered) |
 | `ComboboxOptions` | `tc-expanded`, `tc-has-selected`, `tc-has-active`, `tc-has-query`, `tc-disabled` | Mirrors the combobox |
@@ -260,10 +260,6 @@ debounced.
 | `ComboboxOption` | `tc-selected` | This option is selected |
 | `ComboboxOption` | `tc-active` | This option is virtually focused |
 | `ComboboxOption` | `tc-disabled` | This option or the combobox is disabled |
-
-> `ComboboxInput` carries **`tc-command-input`**, not `tc-combobox-input`. It
-> shares the marker with [`Command`](./command.md)'s input. Select on
-> `tc-command-input`, or give the input your own class.
 
 `tc-has-query` is the container-level counterpart of `tc-matches`. It is present
 whenever the query is non-empty, which makes "clear" affordances easy.
@@ -280,7 +276,7 @@ whenever the query is non-empty, which makes "clear" affordances easy.
 [tc-combobox-option][tc-disabled] { color: #a1a1aa; }
 
 /* Popup state on the input */
-[tc-command-input][tc-expanded] { border-end-start-radius: 0; border-end-end-radius: 0; }
+[tc-combobox-input][tc-expanded] { border-end-start-radius: 0; border-end-end-radius: 0; }
 
 /* Show a clear button only while there is a query */
 [tc-combobox]:not([tc-has-query]) .combobox-clear { display: none; }
@@ -327,8 +323,11 @@ All of this is handled on `ComboboxInput`, since focus never leaves it:
 | Typing | Updates the query (debounced 250 ms) and opens the popup |
 | <kbd>↓</kbd> | Opens the popup, or moves to the next matching option |
 | <kbd>↑</kbd> | Opens the popup, or moves to the previous matching option |
-| <kbd>Enter</kbd> | Selects the active option |
-| <kbd>Escape</kbd> | Closes the popup |
+| <kbd>Enter</kbd> | Selects the active option while the popup is open. While it is closed, the key is left alone so a form can submit |
+| <kbd>Escape</kbd> | Closes the popup. While it is closed, the key is passed on, so a surrounding `Dialog` can close |
+
+`aria-activedescendant` is removed while the popup is closed and while no option
+matches the query.
 
 Clicking the input toggles the popup. Blurring the input closes it, unless the
 pointer is over the options list. That exception is what stops a click on an
@@ -364,8 +363,10 @@ There is no `horizontal` option either, because the list is always vertical.
 
 ### `<ComboboxLabel>`
 
-Names the combobox. Renders a `<label>` by default. It takes no `ref`, and its
-`children` is not a render prop.
+Names the input and the popup list through `aria-labelledby`. Both drop the
+attribute when no `ComboboxLabel` is rendered, so name them yourself with
+`aria-label` in that case. Renders a `<label>` by default. It takes no `ref`,
+and its `children` is not a render prop.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -388,8 +389,8 @@ control what the input displays.
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="combobox"`, `type="text"`, `tabindex="0"`,
-`aria-haspopup="listbox"`, `aria-controls`, `aria-labelledby`, `aria-expanded`
-and `aria-activedescendant`.
+`aria-haspopup="listbox"`, `aria-autocomplete="list"`, `aria-controls`,
+`aria-labelledby`, `aria-expanded` and `aria-activedescendant`.
 
 ### `<ComboboxOptions>`
 
@@ -405,7 +406,7 @@ focus stays on the input.
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="listbox"`, `aria-multiselectable`,
-`aria-orientation="vertical"` and `tabindex="-1"`.
+`aria-labelledby`, `aria-orientation="vertical"` and `tabindex="-1"`.
 
 ### `<ComboboxOption>`
 

@@ -14,6 +14,8 @@ interface ListboxContextData {
 
   multiple?: boolean;
   isHorizontal(): boolean | undefined;
+  hasLabel(): boolean;
+  registerLabel(): void;
 }
 
 export const ListboxContext = createContext<ListboxContextData | null>(null);

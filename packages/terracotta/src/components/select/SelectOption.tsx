@@ -68,8 +68,9 @@ export function SelectOption<V, T extends ValidComponent = 'li'>(
           }
         }),
         useEventListener(current, 'mouseleave', () => {
+          // Clear the highlight only. Blurring would drop keyboard focus to the page.
           if (!state.disabled()) {
-            current.blur();
+            state.blur();
           }
         }),
       );

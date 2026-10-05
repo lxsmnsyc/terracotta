@@ -243,7 +243,8 @@ or `useSelectOptionState()`.
 
 Focusing the list jumps to the selected option, or to the first option when
 nothing is selected. Disabled options are skipped. Hovering an option focuses
-it, which is why mouse and keyboard highlight the same way.
+it, which is why mouse and keyboard highlight the same way. Moving the pointer
+off an option clears its highlight but keeps focus where it is.
 
 ## API
 

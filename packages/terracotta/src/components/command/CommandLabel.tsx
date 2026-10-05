@@ -26,6 +26,9 @@ export function CommandLabel<T extends ValidComponent = 'label'>(
   const context = useCommandContext('CommandLabel');
   const state = useAutocompleteState();
 
+  // The input and the list only point at the label while it is mounted.
+  context.registerLabel();
+
   const rest = omit(props, 'as');
   const disabledState = createDisabledState(() => state.disabled());
   const hasSelectedState = createHasSelectedState(() => state.hasSelected());

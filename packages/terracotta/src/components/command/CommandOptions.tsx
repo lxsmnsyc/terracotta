@@ -78,6 +78,7 @@ export function CommandOptions<V, T extends ValidComponent = 'ul'>(
       {...COMMAND_OPTIONS_TAG}
       id={context.optionsID}
       role="listbox"
+      aria-labelledby={context.hasLabel() ? context.labelID : undefined}
       aria-multiselectable={context.multiple ? 'true' : 'false'}
       ref={setInternalRef}
       aria-orientation="vertical"

@@ -145,4 +145,19 @@ describe('Select accessibility', () => {
     expect(getOption('blue')).toHaveAttribute('aria-selected', 'true');
     expect(getOption('green')).toHaveAttribute('aria-selected', 'false');
   });
+
+  it('keeps keyboard focus on the option when the pointer leaves it', async () => {
+    renderSelect();
+    await settle();
+    const option = getOption('green');
+
+    fireEvent.mouseEnter(option);
+    expect(await activeElement()).toBe(option);
+    expect(option).toHaveAttribute('tc-active');
+
+    fireEvent.mouseLeave(option);
+
+    expect(await activeElement()).toBe(option);
+    expect(option).not.toHaveAttribute('tc-active');
+  });
 });

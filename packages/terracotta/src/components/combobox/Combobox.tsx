@@ -21,7 +21,6 @@ import {
 } from '../../states/create-disclosure-state';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import {
-  createARIADisabledState,
   createDisabledState,
   createExpandedState,
   createHasActiveState,
@@ -30,6 +29,7 @@ import {
 import type { Prettify } from '../../utils/types';
 import { ComboboxContext, createComboboxOptionFocusNavigator } from './ComboboxContext';
 import { COMBOBOX_TAG } from './tags';
+import { createPresence } from '../../utils/create-presence';
 
 export interface ComboboxBaseProps {
   onDisclosureChange?: (value: boolean) => void;
@@ -350,8 +350,21 @@ export function Combobox<V, T extends ValidComponent = 'div'>(
       },
     );
 
+    // The options unmount when the popup closes by default.
+    // Clear the active option so `aria-activedescendant` does not point at a missing element.
+    createEffect(
+      () => !disclosureState.isOpen(),
+      (closed) => {
+        if (closed) {
+          autocompleteState.blur();
+          setActiveDescendant(undefined);
+        }
+      },
+    );
+
+    const label = createPresence();
+
     const disabledState = createDisabledState(() => autocompleteState.disabled());
-    const ariaDisabledState = createARIADisabledState(() => autocompleteState.disabled());
     const hasSelectedState = createHasSelectedState(() => autocompleteState.hasSelected());
     const hasActiveState = createHasActiveState(() => autocompleteState.hasActive());
     const expandedState = createExpandedState(() => disclosureState.isOpen());
@@ -373,15 +386,15 @@ export function Combobox<V, T extends ValidComponent = 'div'>(
           setActiveDescendant,
           getSelectedDescendant: selectedDescendant,
           setSelectedDescendant,
+          hasLabel: label.isPresent,
+          registerLabel: label.register,
         }}
       >
         <AutocompleteStateProvider state={autocompleteState}>
           <DisclosureStateProvider state={disclosureState}>
             <Root
               {...COMBOBOX_TAG}
-              aria-labelledby={labelID}
               {...disabledState}
-              {...ariaDisabledState}
               {...hasSelectedState}
               {...hasActiveState}
               {...expandedState}

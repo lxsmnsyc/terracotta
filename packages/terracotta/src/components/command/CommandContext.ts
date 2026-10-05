@@ -16,6 +16,8 @@ interface CommandContextData {
   setActiveDescendant(current: string | undefined): void;
   getSelectedDescendant(): string | undefined;
   setSelectedDescendant(current: string | undefined): void;
+  hasLabel(): boolean;
+  registerLabel(): void;
 }
 
 export const CommandContext = createContext<CommandContextData | null>(null);

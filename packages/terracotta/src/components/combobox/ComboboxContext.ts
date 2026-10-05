@@ -19,6 +19,8 @@ interface ComboboxContextData {
   setActiveDescendant(current: string | undefined): void;
   getSelectedDescendant(): string | undefined;
   setSelectedDescendant(current: string | undefined): void;
+  hasLabel(): boolean;
+  registerLabel(): void;
 }
 
 export const ComboboxContext = createContext<ComboboxContextData | null>(null);

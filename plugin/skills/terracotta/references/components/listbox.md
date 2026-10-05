@@ -267,7 +267,8 @@ Renders a `<div>` by default. Does not take a `ref`.
 
 ### `<ListboxLabel>`
 
-Names the listbox. Renders a `<label>` by default. Does not take a `ref`.
+Names the button and the popup list through `aria-labelledby`. Renders a
+`<label>` by default. Does not take a `ref`.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -288,8 +289,10 @@ default.
 | `children` | `JSX.Element` \| `(state: DisclosureStateProperties) => JSX.Element` | none | Usually the current value, or a render prop. |
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
-Rendered attributes include `aria-haspopup="listbox"`, `aria-controls` and
-`aria-expanded`.
+Rendered attributes include `aria-haspopup="listbox"`, `aria-controls`,
+`aria-expanded` and `aria-labelledby`. The button's name is the label followed
+by its own text, so a screen reader hears both the label and the current value.
+Without a `ListboxLabel`, the button has no `aria-labelledby`.
 
 ### `<ListboxOptions>`
 
@@ -304,7 +307,8 @@ The popup list. Renders a `<ul>` by default.
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 Rendered attributes include `role="listbox"`, `aria-multiselectable`,
-`aria-labelledby` and `aria-orientation`.
+`aria-labelledby` and `aria-orientation`. The list is named by the
+`ListboxLabel`, or by the button when there is no label.
 
 ### `<ListboxOption>`
 

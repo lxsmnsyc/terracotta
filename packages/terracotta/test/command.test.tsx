@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { labelledBy } from './aria';
+import { labelledBy, settle } from './aria';
 import {
   Command,
   CommandInput,
@@ -57,10 +57,53 @@ describe('Command accessibility', () => {
     }
   });
 
-  it('names the palette from its label', () => {
+  it('names the input and the option list from the label', async () => {
+    renderCommand();
+    await settle();
+
+    expect(labelledBy(getInput())).toHaveTextContent('Command palette');
+    expect(labelledBy(screen.getByRole('listbox'))).toHaveTextContent('Command palette');
+  });
+
+  it('declares list autocompletion on the input', () => {
     renderCommand();
 
-    expect(labelledBy(screen.getByTestId('palette'))).toHaveTextContent('Command palette');
+    expect(getInput()).toHaveAttribute('aria-autocomplete', 'list');
+  });
+
+  it('leaves out aria-labelledby when there is no label', async () => {
+    render(() => (
+      <Command matchBy={(value: string, query) => value.includes(query)}>
+        <CommandInput aria-label="Search" />
+        <CommandOptions aria-label="Results">
+          <CommandOption value="open">open</CommandOption>
+        </CommandOptions>
+      </Command>
+    ));
+    await settle();
+
+    expect(getInput()).not.toHaveAttribute('aria-labelledby');
+    expect(screen.getByRole('listbox')).not.toHaveAttribute('aria-labelledby');
+  });
+
+  it('keeps naming and disabled attributes off the generic root', async () => {
+    render(() => (
+      <Command
+        data-testid="palette"
+        disabled={true}
+        matchBy={(value: string, query) => value.includes(query)}
+      >
+        <CommandLabel>Command palette</CommandLabel>
+        <CommandInput />
+      </Command>
+    ));
+    await settle();
+    const root = screen.getByTestId('palette');
+
+    expect(root).not.toHaveAttribute('aria-labelledby');
+    expect(root).not.toHaveAttribute('aria-disabled');
+    expect(root).not.toHaveAttribute('disabled');
+    expect(root).toHaveAttribute('tc-disabled');
   });
 
   it('marks the selected option', () => {

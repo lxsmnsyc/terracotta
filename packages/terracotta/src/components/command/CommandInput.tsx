@@ -128,6 +128,8 @@ export function CommandInput<T extends ValidComponent = 'input'>(
       role="combobox"
       aria-controls={context.optionsID}
       aria-expanded="true"
+      aria-autocomplete="list"
+      aria-labelledby={context.hasLabel() ? context.labelID : undefined}
       aria-activedescendant={context.getActiveDescendant()}
       {...disabledState}
       {...ariaDisabledState}
