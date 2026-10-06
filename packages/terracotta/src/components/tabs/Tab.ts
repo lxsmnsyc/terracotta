@@ -52,19 +52,34 @@ export function Tab<V, T extends ValidConstructor = 'div'>(props: TabProps<V, T>
   const [internalRef, setInternalRef] = createForwardRef(props);
   const state = createSelectOptionState(props);
 
+  // Whether the tab was selected when the pointer went down. Pressing a tab
+  // focuses it, and focus selects it, so the click that follows must not
+  // select it again. With `toggleable`, that would deselect it.
+  let selectedBeforePointer: boolean | undefined;
+
   createEffect(() => {
     const current = internalRef();
     if (current instanceof HTMLElement) {
-      useEventListener(current, 'click', () => {
-        state.select();
+      useEventListener(current, 'pointerdown', () => {
+        selectedBeforePointer = state.isSelected();
       });
+      useEventListener(current, 'click', () => {
+        const selectedByFocus = selectedBeforePointer === false && state.isSelected();
+        selectedBeforePointer = undefined;
+        if (!selectedByFocus) {
+          state.select();
+        }
+      });
+      // Focus selects the tab. A tab that loses focus does not select itself:
+      // the tab that gains focus already does.
       useEventListener(current, 'focus', () => {
         state.focus();
-        state.select();
+        if (!state.isSelected()) {
+          state.select();
+        }
       });
       useEventListener(current, 'blur', () => {
         state.blur();
-        state.select();
       });
     }
   });
