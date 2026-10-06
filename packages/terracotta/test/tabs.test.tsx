@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { activeElement, pressKeyOnFocused, referencedBy } from './aria';
+import { activeElement, pressKeyOnFocused, referencedBy, settle } from './aria';
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '../src/components/listbox';
 import { Tab, TabGroup, TabList, TabPanel } from '../src/components/tabs';
 
 const TABS = ['alpha', 'beta', 'gamma'];
@@ -234,5 +235,42 @@ describe('Tabs accessibility', () => {
     expect(root).toHaveAttribute('tc-disabled');
     expect(root).not.toHaveAttribute('aria-disabled');
     expect(root).not.toHaveAttribute('disabled');
+  });
+});
+
+// https://github.com/lxsmnsyc/terracotta/issues/47
+describe('Tabs with a Listbox in a panel', () => {
+  it('keeps the new tab selected when the closing panel holds a Listbox', async () => {
+    const tabs = ['alpha', 'beta'];
+    render(() => (
+      <TabGroup defaultValue="beta" horizontal={true}>
+        <TabList>
+          {tabs.map((tab) => (
+            <Tab value={tab}>{tab} tab</Tab>
+          ))}
+        </TabList>
+        <TabPanel value="alpha">
+          <Listbox defaultOpen={false} defaultValue="one">
+            <ListboxButton>Pick</ListboxButton>
+            <ListboxOptions>
+              <ListboxOption value="one">one</ListboxOption>
+            </ListboxOptions>
+          </Listbox>
+        </TabPanel>
+        <TabPanel value="beta">beta panel</TabPanel>
+      </TabGroup>
+    ));
+    const getTab = (name: string): HTMLElement => screen.getByRole('tab', { name: `${name} tab` });
+
+    // Alpha's panel, and its Listbox, are built while tab alpha has focus.
+    getTab('alpha').focus();
+    await settle();
+    expect(screen.getByRole('button', { name: 'Pick' })).toBeInTheDocument();
+
+    getTab('beta').focus();
+    await settle();
+
+    expect(getTab('beta')).toHaveAttribute('aria-selected', 'true');
+    expect(await activeElement()).toBe(getTab('beta'));
   });
 });

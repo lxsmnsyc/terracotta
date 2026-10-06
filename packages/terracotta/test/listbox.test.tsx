@@ -245,3 +245,29 @@ describe('Listbox accessibility', () => {
     expect(getOption('banana')).toHaveAttribute('aria-selected', 'false');
   });
 });
+
+describe('Listbox focus return', () => {
+  it('does not move focus when it unmounts without having opened', async () => {
+    const before = document.createElement('button');
+    const after = document.createElement('button');
+    document.body.append(before, after);
+    before.focus();
+
+    const { unmount } = render(() => (
+      <Listbox defaultOpen={false} defaultValue="one">
+        <ListboxButton>Pick</ListboxButton>
+        <ListboxOptions>
+          <ListboxOption value="one">one</ListboxOption>
+        </ListboxOptions>
+      </Listbox>
+    ));
+    await settle();
+    after.focus();
+
+    unmount();
+
+    expect(await activeElement()).toBe(after);
+    before.remove();
+    after.remove();
+  });
+});
