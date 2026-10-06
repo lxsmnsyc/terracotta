@@ -1,5 +1,79 @@
 # terracotta
 
+## 2.0.0-next.10
+
+### Major Changes
+
+- bebcb25: Ship the components as JSX instead of compiled JavaScript.
+
+  - Every entry now resolves to a `.jsx` file under both the `solid` and `default` conditions.
+  - Your app's Solid compiler builds Terracotta for your target, so the same package works for client and server rendering.
+  - A bundler that does not run Solid's JSX compiler on dependencies can no longer import the package. `@solidjs/vite-plugin` does this by default.
+
+### Minor Changes
+
+- 8614da8: Add `Menubar` for a list of actions that stays on screen.
+  It takes `MenuItem`s like `Menu`, and is one stop in the tab sequence.
+
+### Patch Changes
+
+- 26b3fb9: The arrow keys, Home and End now only navigate when focus is on an `AccordionButton`, so inputs inside a panel work.
+  `AccordionPanel` has `role="region"`, and an open section that cannot be closed reports `aria-disabled="true"` on its button.
+  `AccordionButton` keeps `aria-controls` while its panel stays mounted, and `Accordion` and `AccordionItem` no longer set `aria-disabled` or `disabled`.
+- 4676246: `AlertDialog` only sets `aria-labelledby` and `aria-describedby` while a title or description is mounted, and your own props now override the ones it sets.
+  While open, everything outside it is `inert`, and a panel with nothing focusable focuses itself so Escape works.
+  A closed dialog kept with `unmount={false}` is `inert` and `aria-hidden`, and it no longer sets `aria-disabled` or `disabled`.
+- b81c62b: A disabled `Button` rendered as a `<div>`, `<li>` or `<a>` can no longer be activated by click, Enter or Space.
+  Space now activates on key release and no longer scrolls the page.
+  A link with an `href` no longer fires twice on Enter.
+- b81c62b: `CheckboxIndicator` now sets `aria-labelledby` and `aria-describedby` only when `CheckboxLabel` and `CheckboxDescription` are rendered, and your own values take precedence.
+  The `Checkbox` root no longer carries `aria-disabled` or `disabled`.
+- 0663940: `ComboboxInput` now sets `aria-autocomplete="list"`, carries `tc-combobox-input` instead of `tc-command-input`, and clears `aria-activedescendant` when the popup closes or nothing matches. `ComboboxOptions` is named by the label, and the root no longer carries `aria-labelledby` or `aria-disabled`. <kbd>Escape</kbd> and <kbd>Enter</kbd> are passed on while the popup is closed, so a surrounding dialog can close and a form can submit.
+- 0663940: `CommandInput` and `CommandOptions` are now named by `CommandLabel`, and the input sets `aria-autocomplete="list"`. The root no longer carries `aria-labelledby` or `aria-disabled`.
+- 4676246: `CommandBar` only sets `aria-labelledby` and `aria-describedby` while a title or description is mounted, and no longer sets `aria-disabled` or `disabled`.
+  While open, everything outside it is `inert`, and a panel with nothing focusable focuses itself so Escape works.
+  A closed bar kept with `unmount={false}` is `inert` and `aria-hidden`, and drops `aria-modal`.
+- b81c62b: `ContextMenuPanel` now focuses the first menu item when it opens, and closes on Tab or when a menu item is activated.
+  The boundary and root no longer carry `aria-expanded`, `aria-disabled` or `disabled`, which are not allowed on elements without a role.
+- 4676246: `Dialog` only sets `aria-labelledby` and `aria-describedby` while a `DialogTitle` or `DialogDescription` is mounted, and no longer sets `aria-disabled` or `disabled`.
+  While open, everything outside the dialog is `inert`, and a `DialogPanel` with nothing focusable focuses itself so Escape works.
+  A closed dialog kept with `unmount={false}` is `inert` and `aria-hidden`, and drops `aria-modal`.
+- 26b3fb9: The `Disclosure` root no longer sets `aria-disabled` or `disabled`, which do not apply to a plain container. It still sets `tc-disabled`.
+- 26b3fb9: Ctrl+Home and Ctrl+End in a `Feed` now move focus to the elements before and after `FeedContent`.
+  `FeedArticle` sets `role="article"`, so it keeps the role with `as="div"`.
+  The feed and its articles set `aria-labelledby` and `aria-describedby` only when the label and description parts are rendered.
+- 7e4d0db: Fix a tab switching back when the closing panel holds a `Listbox` (#47).
+  `Listbox`, `Popover`, `ContextMenu`, `Dialog`, `AlertDialog` and `CommandBar` only move focus back on close or unmount if they were opened.
+- d7ca181: Skip elements hidden by `visibility: hidden` when looking for something to
+  focus.
+
+  `checkVisibility()` only rules out what is not rendered at all unless it is
+  asked for more, so an element left in the layout by `visibility: hidden` was
+  still offered to a panel as a focus target. The browser refuses to focus it, so
+  focus stayed where it was.
+
+- 0663940: `ListboxButton` is now named by the label followed by its own text, and `ListboxOptions` is named by the label. The root no longer carries `aria-labelledby` or `aria-disabled`.
+- b81c62b: `Menu` type-ahead now searches from the item after the focused one and wraps around.
+  Keys pressed with Ctrl, Meta or Alt no longer trigger type-ahead.
+  Disabled `MenuItem`s can no longer be activated.
+- 4676246: `Popover` no longer sets `aria-disabled` or `disabled` on its root element. The `tc-disabled` attribute is still there for styling.
+- 8614da8: A `Popover` holding a `Menu` now follows the menu button pattern.
+  - Opening it focuses the first menu item.
+  - With `aria-haspopup="menu"` on the button, Down and Up open it on the first and last item.
+  - Tab and activating a menu item close it.
+- b81c62b: When no option is checked, the first enabled `RadioGroupOption` is now in the tab order, and focusing it no longer checks it.
+  `aria-labelledby` and `aria-describedby` are set only when a label or description is rendered, and your own values take precedence.
+- 0663940: Moving the pointer off a `SelectOption` no longer blurs it. It clears the highlight and keeps keyboard focus on the option.
+- 4f5fbe7: Require Solid 2.0.0-rc.13 or later.
+  The peer ranges for `solid-js` and `@solidjs/web` are now `^2.0.0-rc.13`.
+- 26b3fb9: When no enabled tab is selected, the first enabled `Tab` is now in the tab order.
+  Pressing a `toggleable` tab no longer deselects it right away, and leaving a tab no longer changes the selection.
+  A `Tab` sets `aria-controls` only while its panel is in the DOM, and `TabGroup` no longer sets `aria-disabled` or `disabled`.
+- 4676246: `Toaster` is now the live region, with `role="status"` and `aria-live="polite"`, so a toast added to it is announced.
+  `Toast` no longer has a live role of its own. Keep the `Toaster` mounted while it is empty.
+- 26b3fb9: `Toolbar` now uses a roving tabindex, so Tab and Shift+Tab enter and leave it in one step.
+  The toolbar element is no longer focusable, and only the last focused control, or the first enabled one, is in the tab order.
+
 ## 2.0.0-next.9
 
 ### Patch Changes
