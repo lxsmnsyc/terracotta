@@ -18,6 +18,7 @@ const entries = Object.fromEntries([
     'feed',
     'listbox',
     'menu',
+    'meter',
     'popover',
     'radio-group',
     'select',

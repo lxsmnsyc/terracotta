@@ -104,6 +104,11 @@
       "solid": "./dist/menu.jsx",
       "default": "./dist/menu.jsx"
     },
+    "./meter": {
+      "types": "./dist/meter.d.ts",
+      "solid": "./dist/meter.jsx",
+      "default": "./dist/meter.jsx"
+    },
     "./popover": {
       "types": "./dist/popover.d.ts",
       "solid": "./dist/popover.jsx",

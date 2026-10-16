@@ -207,6 +207,13 @@ does not show is named after it.
 ```
 
 ```tsx
+// terracotta/meter
+<Meter>        {/* role="meter", the value and range */}
+  <MeterLabel/>{/* optional; names the meter */}
+</Meter>
+```
+
+```tsx
 // terracotta/popover
 <Popover>          {/* owns the open state */}
   <PopoverButton/> {/* toggles it, anchors the panel */}

@@ -29,6 +29,7 @@
       "components/feed",
       "components/listbox",
       "components/menu",
+      "components/meter",
       "components/popover",
       "components/radio-group",
       "components/select",
