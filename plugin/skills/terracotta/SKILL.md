@@ -230,6 +230,17 @@ does not show is named after it.
 ```
 
 ```tsx
+// terracotta/spinbutton
+<Spinbutton>             {/* owns the value, limits and step */}
+  <SpinbuttonLabel/>     {/* optional; names the field */}
+  <SpinbuttonDecrement/> {/* optional; out of the tab sequence */}
+  <SpinbuttonInput/>     {/* role="spinbutton", the only tab stop */}
+  <SpinbuttonIncrement/> {/* optional; out of the tab sequence */}
+</Spinbutton>
+// also exported: SpinbuttonStateChild, useSpinbuttonState
+```
+
+```tsx
 // terracotta/switch
 <Switch/> {/* role="switch" aria-checked, owns the checked state */}
 ```

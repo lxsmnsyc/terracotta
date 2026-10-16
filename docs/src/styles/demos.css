@@ -950,6 +950,65 @@ a.button {
   opacity: 0.5;
 }
 
+/* Spinbutton ------------------------------------------------------- */
+
+.spinbutton {
+  display: grid;
+  gap: 0.4rem;
+  justify-items: start;
+}
+
+.spinbutton-label {
+  color: var(--text-1);
+  font-weight: 500;
+}
+
+.spinbutton-group {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  overflow: hidden;
+}
+
+.spinbutton-group:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.spinbutton-input {
+  inline-size: 3.5rem;
+  border: none;
+  background: none;
+  color: var(--text-1);
+  text-align: center;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.spinbutton-input:focus {
+  outline: none;
+}
+
+.spinbutton-input[aria-invalid='true'] {
+  color: #b91c1c;
+}
+
+.spinbutton-button {
+  inline-size: 2rem;
+  border: none;
+  background: var(--surface-1);
+  color: var(--text-1);
+  font: inherit;
+  cursor: pointer;
+}
+
+.spinbutton-button:disabled {
+  color: var(--text-3);
+  cursor: not-allowed;
+}
+
 /* Tooltip ---------------------------------------------------------- */
 
 .tooltip {

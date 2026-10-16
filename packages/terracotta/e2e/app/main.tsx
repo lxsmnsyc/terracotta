@@ -16,6 +16,7 @@ import PopoverCase from './cases/popover';
 import PopoverTransitionCase from './cases/popover-transition';
 import RadioGroupCase from './cases/radio-group';
 import SliderCase from './cases/slider';
+import SpinbuttonCase from './cases/spinbutton';
 import SwitchCase from './cases/switch';
 import TabsCase from './cases/tabs';
 import TransitionCase from './cases/transition';
@@ -42,6 +43,7 @@ const CASES: Record<string, () => JSX.Element> = {
   'popover-transition': PopoverTransitionCase,
   'radio-group': RadioGroupCase,
   slider: SliderCase,
+  spinbutton: SpinbuttonCase,
   switch: SwitchCase,
   tabs: TabsCase,
   transition: TransitionCase,
