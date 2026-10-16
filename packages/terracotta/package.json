@@ -94,6 +94,11 @@
       "solid": "./dist/feed.jsx",
       "default": "./dist/feed.jsx"
     },
+    "./grid": {
+      "types": "./dist/grid.d.ts",
+      "solid": "./dist/grid.jsx",
+      "default": "./dist/grid.jsx"
+    },
     "./listbox": {
       "types": "./dist/listbox.d.ts",
       "solid": "./dist/listbox.jsx",
