@@ -40,7 +40,8 @@
       "components/toggle",
       "components/toolbar",
       "components/tooltip",
-      "components/transition"
+      "components/transition",
+      "components/tree"
     ]
   },
   {
