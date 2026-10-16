@@ -1,5 +1,5 @@
 import type { JSX } from '@solidjs/web';
-import { createContext, useContext } from 'solid-js';
+import { createContext, createMemo, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 import type { Presence } from '../../utils/create-presence';
 import { renderChildren } from '../../utils/render-children';
@@ -82,5 +82,7 @@ export interface SpinbuttonStateRenderProps {
  */
 export function SpinbuttonStateChild(props: SpinbuttonStateRenderProps): JSX.Element {
   const state = useSpinbuttonState();
-  return renderChildren(props.children, state);
+  // A memo, so a render prop that returns text, such as a label that depends on
+  // the state, updates with it.
+  return createMemo(() => renderChildren(props.children, state)) as unknown as JSX.Element;
 }
