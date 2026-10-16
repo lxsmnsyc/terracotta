@@ -10,7 +10,8 @@ export type SliderLabelProps<T extends ValidComponent = 'label'> = HeadlessProps
 
 /**
  * The visible label of a `Slider`. The thumb points `aria-labelledby` at it,
- * and clicking it moves focus to the thumb.
+ * and clicking it moves focus to the thumb. With several thumbs, it names the
+ * group instead, and clicking it focuses the first thumb.
  *
  * Renders a `<label>` by default.
  *
@@ -27,7 +28,7 @@ export function SliderLabel<T extends ValidComponent = 'label'>(
   createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
       return useEventListener(current, 'click', () => {
-        context.focusThumb();
+        context.focusThumb(0);
       });
     }
     return undefined;

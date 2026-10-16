@@ -9,14 +9,25 @@ import type { SliderStateRenderProps } from './SliderContext';
 import { SliderStateChild, useSliderContext } from './SliderContext';
 import { SLIDER_THUMB_TAG } from './tags';
 
+export interface SliderThumbOptions {
+  /**
+   * Which value the thumb sets, from 0. Only needed when the slider has more
+   * than one thumb.
+   */
+  index?: number;
+}
+
 export type SliderThumbProps<T extends ValidComponent = 'div'> = HeadlessPropsWithRef<
   T,
-  SliderStateRenderProps
+  SliderThumbOptions & SliderStateRenderProps
 >;
 
 /**
  * The part the user moves, with `role="slider"`. It holds focus and takes the
- * keyboard. Position it yourself from the slider's `percent()`.
+ * keyboard. Position it yourself from the slider's `percent(index)`.
+ *
+ * With several thumbs, give each an `index` and a name of its own, such as
+ * `aria-label="Minimum price"`.
  *
  * Renders a `<div>` by default.
  *
@@ -27,15 +38,17 @@ export function SliderThumb<T extends ValidComponent = 'div'>(
 ): JSX.Element {
   const context = useSliderContext('SliderThumb');
   const state = context.state;
+  const index = (): number => props.index ?? 0;
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
   createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
-      context.setThumb(current);
+      const position = index();
+      context.setThumb(position, current);
       return mergeFunc(
         () => {
-          context.setThumb(undefined);
+          context.setThumb(position, undefined);
         },
         useEventListener(current, 'keydown', (e) => {
           if (state.disabled()) {
@@ -44,23 +57,23 @@ export function SliderThumb<T extends ValidComponent = 'div'>(
           switch (e.key) {
             case 'ArrowRight':
             case 'ArrowUp':
-              state.increment();
+              state.increment(1, index());
               break;
             case 'ArrowLeft':
             case 'ArrowDown':
-              state.decrement();
+              state.decrement(1, index());
               break;
             case 'PageUp':
-              state.increment(context.largeStep());
+              state.increment(context.largeStep(), index());
               break;
             case 'PageDown':
-              state.decrement(context.largeStep());
+              state.decrement(context.largeStep(), index());
               break;
             case 'Home':
-              state.setValue(state.min());
+              state.setThumbValue(index(), state.thumbMin(index()));
               break;
             case 'End':
-              state.setValue(state.max());
+              state.setThumbValue(index(), state.thumbMax(index()));
               break;
             default:
               return;
@@ -75,20 +88,22 @@ export function SliderThumb<T extends ValidComponent = 'div'>(
 
   const disabledState = createDisabledState(() => state.disabled());
   const ariaDisabledState = createARIADisabledState(() => state.disabled());
-  const rest = omit(props, 'as', 'children', 'ref');
+  const rest = omit(props, 'as', 'children', 'ref', 'index');
   const Root = dynamic(() => props.as || 'div');
   return (
     <Root
       {...SLIDER_THUMB_TAG}
-      id={context.thumbID}
+      id={context.thumbID(index())}
       role="slider"
       tabindex={state.disabled() ? -1 : 0}
-      aria-valuenow={state.value()}
-      aria-valuemin={state.min()}
-      aria-valuemax={state.max()}
-      aria-valuetext={context.valueText()}
+      aria-valuenow={state.values()[index()]}
+      aria-valuemin={state.thumbMin(index())}
+      aria-valuemax={state.thumbMax(index())}
+      aria-valuetext={context.valueText(index())}
       aria-orientation={context.isVertical() ? 'vertical' : undefined}
-      aria-labelledby={context.label.isPresent() ? context.labelID : undefined}
+      aria-labelledby={
+        !context.isGroup() && context.label.isPresent() ? context.labelID : undefined
+      }
       ref={setInternalRef}
       {...disabledState}
       {...ariaDisabledState}

@@ -19,6 +19,8 @@ export type SliderTrackProps<T extends ValidComponent = 'div'> = HeadlessPropsWi
  * and moves focus to the thumb, and dragging keeps setting it. Put the
  * `SliderThumb` inside it, so dragging the thumb works the same way.
  *
+ * With several thumbs, a press moves the thumb nearest the pointer.
+ *
  * Renders a `<div>` by default.
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/slider.md}
@@ -35,8 +37,9 @@ export function SliderTrack<T extends ValidComponent = 'div'>(
     if (current instanceof HTMLElement) {
       const track = current;
       let pointer: number | undefined;
+      let active = 0;
 
-      function setFromPointer(e: PointerEvent): void {
+      function valueFromPointer(e: PointerEvent): number {
         const rect = track.getBoundingClientRect();
         let ratio: number;
         if (context.isVertical()) {
@@ -49,7 +52,22 @@ export function SliderTrack<T extends ValidComponent = 'div'>(
           }
         }
         ratio = Math.min(1, Math.max(0, ratio));
-        state.setValue(state.min() + ratio * (state.max() - state.min()));
+        return state.min() + ratio * (state.max() - state.min());
+      }
+
+      // The thumb nearest the value. When thumbs share a value, the pointer
+      // picks the one on its side, so it can always pull them apart.
+      function nearest(value: number): number {
+        const values = state.values();
+        let best = 0;
+        for (let i = 1; i < values.length; i += 1) {
+          const distance = Math.abs(values[i] - value);
+          const bestDistance = Math.abs(values[best] - value);
+          if (distance < bestDistance || (distance === bestDistance && value > values[i])) {
+            best = i;
+          }
+        }
+        return best;
       }
 
       return mergeFunc(
@@ -60,16 +78,18 @@ export function SliderTrack<T extends ValidComponent = 'div'>(
           // Keeps the press from selecting text or moving focus to the track.
           e.preventDefault();
           pointer = e.pointerId;
+          const value = valueFromPointer(e);
+          active = nearest(value);
           // jsdom has no pointer capture.
           if ('setPointerCapture' in current) {
             current.setPointerCapture(e.pointerId);
           }
-          setFromPointer(e);
-          context.focusThumb();
+          state.setThumbValue(active, value);
+          context.focusThumb(active);
         }),
         useEventListener(current, 'pointermove', (e) => {
           if (pointer === e.pointerId) {
-            setFromPointer(e);
+            state.setThumbValue(active, valueFromPointer(e));
           }
         }),
         useEventListener(current, 'pointerup', (e) => {
