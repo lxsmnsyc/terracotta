@@ -220,3 +220,110 @@ describe('Slider state', () => {
     expect(screen.getByRole('slider', { name: 'Zoom' })).toHaveTextContent('40%');
   });
 });
+
+describe('Slider with several thumbs', () => {
+  function renderRange(onChange?: (value: readonly number[]) => void): void {
+    render(() => (
+      <Slider defaultValue={[20, 80]} onChange={onChange} name="price">
+        <SliderLabel>Price</SliderLabel>
+        <SliderTrack data-testid="track">
+          <SliderThumb index={0} aria-label="Minimum price" />
+          <SliderThumb index={1} aria-label="Maximum price" />
+        </SliderTrack>
+      </Slider>
+    ));
+  }
+
+  function getMin(): HTMLElement {
+    return screen.getByRole('slider', { name: 'Minimum price' });
+  }
+
+  function getMax(): HTMLElement {
+    return screen.getByRole('slider', { name: 'Maximum price' });
+  }
+
+  it('names the group with the label, and each thumb by itself', () => {
+    renderRange();
+
+    const group = screen.getByRole('group', { name: 'Price' });
+    expect(group).toContainElement(getMin());
+    expect(getMin()).not.toHaveAttribute('aria-labelledby');
+  });
+
+  it('limits each thumb by its neighbour', () => {
+    renderRange();
+
+    expect(getMin()).toHaveAttribute('aria-valuemin', '0');
+    expect(getMin()).toHaveAttribute('aria-valuemax', '80');
+    expect(getMax()).toHaveAttribute('aria-valuemin', '20');
+    expect(getMax()).toHaveAttribute('aria-valuemax', '100');
+  });
+
+  it('updates the neighbour limits as a thumb moves', () => {
+    renderRange();
+    getMin().focus();
+
+    pressKeyOnFocused('ArrowRight');
+
+    expect(getMin()).toHaveAttribute('aria-valuenow', '21');
+    expect(getMax()).toHaveAttribute('aria-valuemin', '21');
+  });
+
+  it('stops a thumb at its neighbour', () => {
+    renderRange();
+    getMin().focus();
+
+    pressKeyOnFocused('End');
+
+    expect(getMin()).toHaveAttribute('aria-valuenow', '80');
+
+    pressKeyOnFocused('ArrowRight');
+
+    expect(getMin()).toHaveAttribute('aria-valuenow', '80');
+  });
+
+  it('reports every value through onChange', () => {
+    const onChange = vi.fn<(value: readonly number[]) => void>();
+    renderRange(onChange);
+    getMax().focus();
+
+    pressKeyOnFocused('ArrowLeft');
+
+    expect(onChange).toHaveBeenCalledWith([20, 79]);
+  });
+
+  it('moves the thumb nearest a press on the track', () => {
+    renderRange();
+    const track = screen.getByTestId('track');
+    vi.spyOn(track, 'getBoundingClientRect').mockReturnValue(
+      DOMRect.fromRect({ x: 0, y: 0, width: 100, height: 10 }),
+    );
+
+    fireEvent.pointerDown(track, { button: 0, pointerId: 1, clientX: 70, clientY: 5 });
+
+    expect(getMax()).toHaveAttribute('aria-valuenow', '70');
+    expect(getMin()).toHaveAttribute('aria-valuenow', '20');
+    expect(document.activeElement).toBe(getMax());
+  });
+
+  it('submits one input per thumb', () => {
+    renderRange();
+
+    const inputs = document.querySelectorAll<HTMLInputElement>('input[name="price"]');
+    expect(Array.from(inputs, (input) => input.value)).toEqual(['20', '80']);
+  });
+
+  it('sorts a starting value given out of order', () => {
+    render(() => (
+      <Slider defaultValue={[60, 10]}>
+        <SliderTrack>
+          <SliderThumb index={0} aria-label="Low" />
+          <SliderThumb index={1} aria-label="High" />
+        </SliderTrack>
+      </Slider>
+    ));
+
+    expect(screen.getByRole('slider', { name: 'Low' })).toHaveAttribute('aria-valuenow', '10');
+    expect(screen.getByRole('slider', { name: 'High' })).toHaveAttribute('aria-valuenow', '60');
+  });
+});

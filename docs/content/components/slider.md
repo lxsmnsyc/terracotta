@@ -3,7 +3,8 @@
 Picks a number from a range, following the
 [ARIA slider pattern](https://www.w3.org/WAI/ARIA/apg/patterns/slider/). The
 thumb carries `role="slider"` and the value, and takes the keyboard. The track
-takes the pointer.
+takes the pointer. An array value gives one thumb per value, following the
+[multi-thumb slider pattern](https://www.w3.org/WAI/ARIA/apg/patterns/slider-multithumb/).
 
 :::hero slider/basic
 :::
@@ -99,9 +100,42 @@ Leave out `SliderLabel` and name the thumb directly:
 <SliderThumb aria-label="Zoom" />
 ```
 
+### Several thumbs
+
+Pass an array as the value, and render one `SliderThumb` per value with its
+`index`:
+
+:::demo slider/range
+:::
+
+- The thumbs cannot pass each other. Each thumb's `aria-valuemin` and
+  `aria-valuemax` are the values of the thumbs beside it, and they update as
+  those thumbs move.
+- Each thumb is in the tab sequence, in `index` order, wherever it is on
+  screen.
+- `SliderLabel` names the group, which gets `role="group"`. Give each thumb a
+  name of its own, such as `aria-label="Minimum price"`.
+- A press on the track moves the thumb nearest the pointer.
+- `onChange` receives the whole array. `getValueText` receives each thumb's
+  value and `index`.
+- A starting value given out of order is sorted.
+
+```tsx
+<Slider defaultValue={[200, 650]} max={1000} step={10}>
+  {state => (
+    <SliderTrack class="slider-track">
+      <SliderThumb index={0} aria-label="Minimum price"
+        style={{ 'inset-inline-start': `${state.percent(0)}%` }} />
+      <SliderThumb index={1} aria-label="Maximum price"
+        style={{ 'inset-inline-start': `${state.percent(1)}%` }} />
+    </SliderTrack>
+  )}
+</Slider>
+```
+
 ### In a form
 
-`name` adds a hidden input that carries the value:
+`name` adds a hidden input that carries the value, one per thumb:
 
 ```tsx
 <Slider defaultValue={40} name="volume">…</Slider>
@@ -122,12 +156,15 @@ Leave out `SliderLabel` and name the thumb directly:
 
 | Member | Type | Description |
 | --- | --- | --- |
-| `value()` | `number` | The current value. |
+| `value()` | `number` | The value of the first thumb. |
+| `values()` | `number[]` | The values of every thumb. |
 | `min()` / `max()` / `step()` | `number` | The range and step. |
-| `percent()` | `number` | Where the value sits in the range, from 0 to 100. |
+| `percent(index?)` | `number` | Where a thumb's value sits in the range, from 0 to 100. |
 | `disabled()` | `boolean` | Whether the slider is disabled. |
-| `setValue(value)` | `(number) => void` | Sets the value, snapped to the step and kept in range. |
-| `increment(steps?)` / `decrement(steps?)` | `(number?) => void` | Moves by a number of steps, 1 by default. |
+| `setValue(value)` | `(number) => void` | Sets the first thumb's value, snapped to the step and kept in range. |
+| `setThumbValue(index, value)` | `(number, number) => void` | Sets one thumb's value, kept between its neighbours. |
+| `thumbMin(index)` / `thumbMax(index)` | `number` | The range a thumb can move in. |
+| `increment(steps?, index?)` / `decrement(steps?, index?)` | `(number?, number?) => void` | Moves a thumb by a number of steps, 1 by default. |
 
 You can reach this state as the render-prop argument on `Slider`,
 `SliderTrack` or `SliderThumb`, through `<SliderStateChild>`, or with
@@ -142,49 +179,58 @@ Handled on the thumb:
 | <kbd>→</kbd> / <kbd>↑</kbd> | Increases the value by one step |
 | <kbd>←</kbd> / <kbd>↓</kbd> | Decreases the value by one step |
 | <kbd>Page Up</kbd> / <kbd>Page Down</kbd> | Changes the value by `largeStep` steps |
-| <kbd>Home</kbd> / <kbd>End</kbd> | Sets the minimum / maximum |
+| <kbd>Home</kbd> / <kbd>End</kbd> | Sets the lowest / highest value the thumb can take |
 
 ## API
 
 ### `<Slider>`
 
 Renders a `<div>` by default. Pass exactly one of `defaultValue` or `value`.
+Both take a number, or an array for several thumbs.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ValidConstructor` | `'div'` | Element or component to render as. |
-| `defaultValue` | `number` | none | Initial value, uncontrolled. |
-| `value` | `number` | none | Current value, controlled. |
+| `defaultValue` | `number` \| `number[]` | none | Initial value, uncontrolled. |
+| `value` | `number` \| `number[]` | none | Current value, controlled. |
 | `min` | `number` | `0` | The lowest value. |
 | `max` | `number` | `100` | The highest value. |
 | `step` | `number` | `1` | The distance between allowed values. |
 | `largeStep` | `number` | `10` | Steps moved by <kbd>Page Up</kbd> and <kbd>Page Down</kbd>. |
 | `vertical` | `boolean` | `false` | Runs the slider from bottom to top. |
 | `disabled` | `boolean` | `false` | Blocks changes. |
-| `getValueText` | `(value: number) => string` | none | Text for `aria-valuetext`. |
-| `name` | `string` | none | Submits the value with a form. |
-| `onChange` | `(value: number) => void` | none | Called with the new value. |
+| `getValueText` | `(value: number, index: number) => string` | none | Text for each thumb's `aria-valuetext`. |
+| `name` | `string` | none | Submits the value with a form, one input per thumb. |
+| `onChange` | `(value: number \| number[]) => void` | none | Called with the new value, in the same shape as `value`. |
 | `children` | `JSX.Element` \| `(state: SliderStateProperties) => JSX.Element` | none | Contents, or a render prop. |
 | *…rest* | props of `as` | none | Forwarded to the rendered element. |
 
 ### `<SliderLabel>`
 
 Renders a `<label>` by default. The thumb points `aria-labelledby` at it while
-it is mounted. Clicking it focuses the thumb.
+it is mounted. Clicking it focuses the thumb. With several thumbs, the slider
+gets `role="group"` and the label names the group instead.
 
 ### `<SliderTrack>`
 
 Renders a `<div>` by default. Pressing it sets the value under the pointer and
 focuses the thumb. Dragging keeps setting it until the pointer is released.
+With several thumbs, the press moves the thumb nearest the pointer.
 
 ### `<SliderThumb>`
 
 Renders a `<div>` by default.
 
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `index` | `number` | `0` | Which value the thumb sets, with several thumbs. |
+
 Rendered attributes: `role="slider"`, `tabindex="0"` (`-1` while disabled),
-`aria-valuenow`, `aria-valuemin`, `aria-valuemax`, `aria-valuetext` when
+`aria-valuenow`, `aria-valuemin` and `aria-valuemax` (limited by the
+neighbouring thumbs), `aria-valuetext` when
 `getValueText` is set, `aria-orientation="vertical"` when vertical,
-`aria-labelledby` while a `SliderLabel` is mounted, `aria-disabled`,
+`aria-labelledby` while a `SliderLabel` is mounted and there is one thumb,
+`aria-disabled`,
 `tc-slider-thumb`.
 
 All three parts take `as`, `ref`, `children` (or a render prop) and forward
