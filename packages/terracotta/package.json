@@ -44,11 +44,6 @@
       "solid": "./dist/button.jsx",
       "default": "./dist/button.jsx"
     },
-    "./carousel": {
-      "types": "./dist/carousel.d.ts",
-      "solid": "./dist/carousel.jsx",
-      "default": "./dist/carousel.jsx"
-    },
     "./checkbox": {
       "types": "./dist/checkbox.d.ts",
       "solid": "./dist/checkbox.jsx",

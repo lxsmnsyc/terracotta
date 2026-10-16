@@ -187,3 +187,23 @@ describe('Splitter state', () => {
     expect(screen.getByTestId('pane')).toHaveStyle({ 'flex-basis': '40%' });
   });
 });
+
+describe('SplitterStateChild', () => {
+  it('updates a render prop that returns text', () => {
+    render(() => (
+      <Splitter defaultValue={30}>
+        <SplitterPane />
+        <SplitterSeparator aria-label="Sidebar">
+          {(state) => (state.collapsed() ? 'Show' : 'Hide')}
+        </SplitterSeparator>
+      </Splitter>
+    ));
+    const separator = screen.getByRole('separator', { name: 'Sidebar' });
+    expect(separator).toHaveTextContent('Hide');
+
+    separator.focus();
+    pressKeyOnFocused('Enter');
+
+    expect(separator).toHaveTextContent('Show');
+  });
+});
