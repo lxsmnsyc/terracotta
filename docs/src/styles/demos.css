@@ -1022,6 +1022,17 @@ a.button {
   padding: 0.25rem;
 }
 
+/* Treegrid --------------------------------------------------------- */
+
+.treegrid-row:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.treegrid-indent {
+  padding-inline-start: 2.25rem;
+}
+
 /* Meter ------------------------------------------------------------ */
 
 .meter {
