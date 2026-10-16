@@ -300,6 +300,19 @@ does not show is named after it.
 </Transition>
 ```
 
+```tsx
+// terracotta/tree
+<Tree>              {/* role="tree", owns selection and expansion */}
+  <TreeItem>        {/* role="treeitem" */}
+    <TreeItemLabel/>{/* names the item */}
+    <TreeGroup>     {/* role="group"; makes the item a parent */}
+      <TreeItem/>
+    </TreeGroup>
+  </TreeItem>
+</Tree>
+// also exported: useParentTreeItem
+```
+
 <!-- catalogue:end -->
 
 Pick by pattern, not by name: `Listbox` is a dropdown (button plus popup),

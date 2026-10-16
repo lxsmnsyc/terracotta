@@ -52,6 +52,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclo
 - [Toolbar](./components/toolbar.md)
 - [Tooltip](./components/tooltip.md)
 - [Transition](./components/transition.md)
+- [Tree](./components/tree.md)
 
 ## Reference
 
