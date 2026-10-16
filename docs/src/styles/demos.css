@@ -893,6 +893,39 @@ a.button {
   padding: 0.25rem;
 }
 
+/* Meter ------------------------------------------------------------ */
+
+.meter {
+  display: grid;
+  gap: 0.4rem;
+  inline-size: min(100%, 18rem);
+}
+
+.meter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.meter-label {
+  color: var(--text-1);
+  font-weight: 500;
+}
+
+.meter-track {
+  display: block;
+  block-size: 0.5rem;
+  border-radius: 999px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.meter-fill {
+  display: block;
+  block-size: 100%;
+  background: var(--accent);
+}
+
 /* Slider ----------------------------------------------------------- */
 
 .slider {
