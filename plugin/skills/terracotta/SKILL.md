@@ -87,22 +87,6 @@ does not show is named after it.
 ```
 
 ```tsx
-// terracotta/carousel
-<Carousel>                  {/* role="region", aria-roledescription="carousel" */}
-  <CarouselRotation/>       {/* optional; first in the tab sequence */}
-  <CarouselPrevious/>       {/* optional */}
-  <CarouselNext/>           {/* optional */}
-  <CarouselSlides>          {/* the live region */}
-    <CarouselSlide index/>  {/* role="group", aria-roledescription="slide" */}
-  </CarouselSlides>
-  <CarouselPicker>          {/* optional; role="group" */}
-    <CarouselPickerButton index/>
-  </CarouselPicker>
-</Carousel>
-// also exported: CarouselStateChild, useCarouselState
-```
-
-```tsx
 // terracotta/checkbox
 <Checkbox>              {/* owns the check state */}
   <CheckboxIndicator/>  {/* role="checkbox", toggles on click */}

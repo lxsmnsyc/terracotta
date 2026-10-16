@@ -7,7 +7,6 @@ const entries = Object.fromEntries([
     'alert-dialog',
     'breadcrumb',
     'button',
-    'carousel',
     'checkbox',
     'color-scheme',
     'combobox',
