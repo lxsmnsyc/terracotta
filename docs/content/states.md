@@ -35,7 +35,8 @@ exactly one parameter. A zero-parameter function is rendered as-is.
 ## Disclosure state
 
 Open/closed state. Backs `Disclosure`, `Dialog`, `AlertDialog`, `Popover`,
-`ContextMenu`, `CommandBar` and the popup half of `Listbox` and `Combobox`.
+`ContextMenu`, `CommandBar`, `Tooltip` and the popup half of `Listbox` and
+`Combobox`.
 
 `createDisclosureState(options)` · `useDisclosureState()` · `<DisclosureStateChild>`
 

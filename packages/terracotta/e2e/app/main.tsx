@@ -20,6 +20,7 @@ import TabsCase from './cases/tabs';
 import TransitionCase from './cases/transition';
 import TransitionGroupCase from './cases/transition-group';
 import ToolbarCase from './cases/toolbar';
+import TooltipCase from './cases/tooltip';
 
 // Each spec navigates to `/?case=<name>`; keeping one bundle avoids a router
 // dependency and keeps the harness startup cheap.
@@ -44,6 +45,7 @@ const CASES: Record<string, () => JSX.Element> = {
   transition: TransitionCase,
   'transition-group': TransitionGroupCase,
   toolbar: ToolbarCase,
+  tooltip: TooltipCase,
 };
 
 function App(): JSX.Element {

@@ -144,6 +144,11 @@
       "solid": "./dist/toolbar.jsx",
       "default": "./dist/toolbar.jsx"
     },
+    "./tooltip": {
+      "types": "./dist/tooltip.d.ts",
+      "solid": "./dist/tooltip.jsx",
+      "default": "./dist/tooltip.jsx"
+    },
     "./transition": {
       "types": "./dist/transition.d.ts",
       "solid": "./dist/transition.jsx",

@@ -254,6 +254,14 @@ does not show is named after it.
 ```
 
 ```tsx
+// terracotta/tooltip
+<Tooltip>          {/* owns the open state and the delays */}
+  <TooltipTrigger/>{/* the described control */}
+  <TooltipPanel/>  {/* role="tooltip" */}
+</Tooltip>
+```
+
+```tsx
 // terracotta/transition
 <Transition show>  {/* provides `show` and transitions itself */}
   <TransitionChild/>{/* optional: extra elements sharing the same show flag */}
