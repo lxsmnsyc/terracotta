@@ -20,6 +20,7 @@ const entries = Object.fromEntries([
     'popover',
     'radio-group',
     'select',
+    'slider',
     'tabs',
     'toast',
     'switch',

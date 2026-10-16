@@ -219,6 +219,17 @@ does not show is named after it.
 ```
 
 ```tsx
+// terracotta/slider
+<Slider>          {/* owns the value, min, max and step */}
+  <SliderLabel/>  {/* optional; names the thumb */}
+  <SliderTrack>   {/* press and drag to set the value */}
+    <SliderThumb/>{/* role="slider", focusable */}
+  </SliderTrack>
+</Slider>
+// also exported: SliderStateChild, useSliderState
+```
+
+```tsx
 // terracotta/switch
 <Switch/> {/* role="switch" aria-checked, owns the checked state */}
 ```
