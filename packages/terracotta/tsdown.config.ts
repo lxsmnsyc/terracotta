@@ -17,6 +17,7 @@ const entries = Object.fromEntries([
     'dialog',
     'disclosure',
     'feed',
+    'grid',
     'listbox',
     'menu',
     'meter',

@@ -7,6 +7,7 @@ import ComboboxCase from './cases/combobox';
 import CommandCase from './cases/command';
 import ContextMenuCase from './cases/context-menu';
 import DialogCase from './cases/dialog';
+import GridCase from './cases/grid';
 import ListboxCase from './cases/listbox';
 import MenuCase from './cases/menu';
 import MenuButtonCase from './cases/menu-button';
@@ -37,6 +38,7 @@ const CASES: Record<string, () => JSX.Element> = {
   command: CommandCase,
   'context-menu': ContextMenuCase,
   dialog: DialogCase,
+  grid: GridCase,
   listbox: ListboxCase,
   menu: MenuCase,
   'menu-button': MenuButtonCase,
