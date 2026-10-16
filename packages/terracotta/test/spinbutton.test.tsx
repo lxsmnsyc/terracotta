@@ -252,3 +252,23 @@ describe('Spinbutton state', () => {
     expect(field).toHaveValue('8 kg');
   });
 });
+
+describe('SpinbuttonStateChild', () => {
+  it('updates a render prop that returns text', () => {
+    render(() => (
+      <Spinbutton defaultValue={1} min={0} max={1}>
+        <SpinbuttonInput aria-label="Rooms" />
+        <SpinbuttonIncrement aria-label="More rooms">
+          {(state) => (state.canIncrement() ? '+' : 'Full')}
+        </SpinbuttonIncrement>
+        <SpinbuttonDecrement aria-label="Fewer rooms">−</SpinbuttonDecrement>
+      </Spinbutton>
+    ));
+    const more = screen.getByRole('button', { name: 'More rooms' });
+    expect(more).toHaveTextContent('Full');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Fewer rooms' }));
+
+    expect(more).toHaveTextContent('+');
+  });
+});
