@@ -348,6 +348,23 @@ does not show is named after it.
 // also exported: useParentTreeItem
 ```
 
+```tsx
+// terracotta/treegrid
+<TreeGrid>                  {/* <table role="treegrid">, owns expansion */}
+  <thead>
+    <TreeGridHeaderRow>     {/* a header row; does not take focus */}
+      <TreeGridColumnHeader/>
+    </TreeGridHeaderRow>
+  </thead>
+  <tbody>
+    <TreeGridRow value level expandable>{/* role="row", takes focus */}
+      <TreeGridCell/>       {/* role="gridcell" */}
+    </TreeGridRow>
+  </tbody>
+</TreeGrid>
+// also exported: TreeGridStateChild, useTreeGridState
+```
+
 <!-- catalogue:end -->
 
 Pick by pattern, not by name: `Listbox` is a dropdown (button plus popup),

@@ -34,6 +34,7 @@ const entries = Object.fromEntries([
     'tooltip',
     'transition',
     'tree',
+    'treegrid',
   ].map((value) => [value, `./src/components/${value}`]),
   ['states', './src/states/index.ts'],
   ['utils', './src/utils/index.ts'],
