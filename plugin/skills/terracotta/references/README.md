@@ -27,6 +27,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclo
 - [Accordion](./components/accordion.md)
 - [Alert](./components/alert.md)
 - [AlertDialog](./components/alert-dialog.md)
+- [Breadcrumb](./components/breadcrumb.md)
 - [Button](./components/button.md)
 - [Carousel](./components/carousel.md)
 - [Checkbox](./components/checkbox.md)

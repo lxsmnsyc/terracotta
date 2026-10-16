@@ -39,6 +39,11 @@
       "solid": "./dist/alert-dialog.jsx",
       "default": "./dist/alert-dialog.jsx"
     },
+    "./breadcrumb": {
+      "types": "./dist/breadcrumb.d.ts",
+      "solid": "./dist/breadcrumb.jsx",
+      "default": "./dist/breadcrumb.jsx"
+    },
     "./button": {
       "types": "./dist/button.d.ts",
       "solid": "./dist/button.jsx",
