@@ -112,6 +112,9 @@ The indicator's contents are yours, so the tick can be plain CSS:
 
 The same state, laid out as a switch instead:
 
+This is still a checkbox to a screen reader. For a control that reads as "on"
+and "off", use [`Switch`](./switch.md).
+
 ### Reading the state from elsewhere
 
 ```tsx

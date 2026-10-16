@@ -124,6 +124,9 @@ The same state, laid out as a switch instead:
 :::demo checkbox/switch
 :::
 
+This is still a checkbox to a screen reader. For a control that reads as "on"
+and "off", use [`Switch`](./switch.md).
+
 ### Reading the state from elsewhere
 
 ```tsx

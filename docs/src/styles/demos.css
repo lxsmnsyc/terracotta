@@ -239,12 +239,14 @@
 }
 
 /* One attribute drives the whole animation, from either component. */
+[tc-switch][tc-checked=''] .switch-track,
 [tc-pressed] .switch-track,
 [tc-checked=''] .switch-track,
 .switch-track[tc-checked=''] {
   background: var(--accent);
 }
 
+[tc-switch][tc-checked=''] .switch-knob,
 [tc-pressed] .switch-knob,
 [tc-checked=''] .switch-knob,
 .switch-track[tc-checked=''] .switch-knob {
