@@ -327,3 +327,24 @@ describe('Slider with several thumbs', () => {
     expect(screen.getByRole('slider', { name: 'High' })).toHaveAttribute('aria-valuenow', '60');
   });
 });
+
+describe('SliderStateChild', () => {
+  it('updates a render prop that returns text', () => {
+    render(() => (
+      <Slider defaultValue={1} max={3}>
+        <SliderTrack>
+          <SliderThumb aria-label="Speed">
+            {(state) => (state.value() > 1 ? 'Fast' : 'Slow')}
+          </SliderThumb>
+        </SliderTrack>
+      </Slider>
+    ));
+    const thumb = screen.getByRole('slider', { name: 'Speed' });
+    expect(thumb).toHaveTextContent('Slow');
+
+    thumb.focus();
+    pressKeyOnFocused('ArrowRight');
+
+    expect(thumb).toHaveTextContent('Fast');
+  });
+});
