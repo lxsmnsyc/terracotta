@@ -298,62 +298,6 @@ a.button {
   pointer-events: none;
 }
 
-/* Carousel --------------------------------------------------------- */
-
-.carousel {
-  display: grid;
-  gap: 0.75rem;
-  inline-size: min(100%, 22rem);
-}
-
-.carousel-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.carousel-slides {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--surface-1);
-  min-block-size: 6rem;
-}
-
-.carousel-slide {
-  padding: 1rem;
-}
-
-.carousel-title {
-  margin: 0 0 0.25rem;
-  color: var(--text-1);
-  font-weight: 600;
-}
-
-.carousel-picker {
-  display: flex;
-  gap: 0.4rem;
-  justify-content: center;
-}
-
-.carousel-dot {
-  inline-size: 0.6rem;
-  block-size: 0.6rem;
-  border: none;
-  border-radius: 999px;
-  background: var(--surface-2);
-  padding: 0;
-  cursor: pointer;
-}
-
-.carousel-dot[tc-current] {
-  background: var(--accent);
-  cursor: default;
-}
-
-.carousel [tc-disabled] {
-  opacity: 0.5;
-}
-
 /* Checkbox --------------------------------------------------------- */
 
 .checkbox {
