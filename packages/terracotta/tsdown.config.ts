@@ -22,6 +22,7 @@ const entries = Object.fromEntries([
     'select',
     'tabs',
     'toast',
+    'switch',
     'toggle',
     'toolbar',
     'transition',

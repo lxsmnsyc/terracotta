@@ -31,6 +31,7 @@
       "components/popover",
       "components/radio-group",
       "components/select",
+      "components/switch",
       "components/tabs",
       "components/toast",
       "components/toggle",

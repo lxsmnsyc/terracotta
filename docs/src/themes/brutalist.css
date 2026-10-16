@@ -184,6 +184,7 @@
 [data-theme='brutalist'] .checkbox-box[tc-checked=''],
 [data-theme='brutalist'] .checkbox-box[tc-checked='mixed'],
 [data-theme='brutalist'] .switch-track[tc-checked=''],
+[data-theme='brutalist'] [tc-switch][tc-checked=''] .switch-track,
 [data-theme='brutalist'] [tc-pressed] .switch-track {
   background: var(--accent-soft);
   color: var(--text-1);

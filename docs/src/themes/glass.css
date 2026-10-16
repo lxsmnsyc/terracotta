@@ -224,6 +224,7 @@
 [data-theme='glass'] .checkbox-box[tc-checked=''],
 [data-theme='glass'] .checkbox-box[tc-checked='mixed'],
 [data-theme='glass'] .switch-track[tc-checked=''],
+[data-theme='glass'] [tc-switch][tc-checked=''] .switch-track,
 [data-theme='glass'] [tc-pressed] .switch-track {
   border-color: transparent;
   background: color-mix(in srgb, var(--accent) 80%, transparent);

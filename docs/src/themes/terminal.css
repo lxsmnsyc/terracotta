@@ -261,6 +261,7 @@
 }
 
 [data-theme='terminal'] .switch-track[tc-checked=''],
+[data-theme='terminal'] [tc-switch][tc-checked=''] .switch-track,
 [data-theme='terminal'] [tc-pressed] .switch-track {
   background: var(--accent-soft);
 }
