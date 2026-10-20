@@ -1,8 +1,10 @@
 import type { JSX } from '@solidjs/web';
 import {
   TreeGrid,
+  TreeGridBody,
   TreeGridCell,
   TreeGridColumnHeader,
+  TreeGridHead,
   TreeGridHeaderRow,
   TreeGridRow,
 } from 'terracotta/treegrid';
@@ -14,13 +16,13 @@ export default function TreeGridCase(): JSX.Element {
       <TreeGrid aria-label="Mail" defaultExpanded={[] as string[]}>
         {(state) => (
           <>
-            <thead>
+            <TreeGridHead>
               <TreeGridHeaderRow>
                 <TreeGridColumnHeader>Folder</TreeGridColumnHeader>
                 <TreeGridColumnHeader>Actions</TreeGridColumnHeader>
               </TreeGridHeaderRow>
-            </thead>
-            <tbody>
+            </TreeGridHead>
+            <TreeGridBody>
               <TreeGridRow value="inbox" expandable aria-label="Inbox">
                 <TreeGridCell>Inbox</TreeGridCell>
                 <TreeGridCell>
@@ -36,7 +38,7 @@ export default function TreeGridCase(): JSX.Element {
                   </TreeGridCell>
                 </TreeGridRow>
               )}
-            </tbody>
+            </TreeGridBody>
           </>
         )}
       </TreeGrid>

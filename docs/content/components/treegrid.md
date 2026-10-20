@@ -14,8 +14,11 @@ Use a [`Tree`](./tree.md) when each node is a single item, and a
 ```tsx
 import {
   TreeGrid,
+  TreeGridBody,
   TreeGridCell,
   TreeGridColumnHeader,
+  TreeGridFoot,
+  TreeGridHead,
   TreeGridHeaderRow,
   TreeGridRow,
   TreeGridRowHeader,
@@ -28,21 +31,22 @@ import {
 
 ```tsx
 <TreeGrid>                  {/* <table role="treegrid">, owns expansion */}
-  <thead>
+  <TreeGridHead>            {/* <thead role="rowgroup"> */}
     <TreeGridHeaderRow>     {/* a header row; does not take focus */}
       <TreeGridColumnHeader/>
     </TreeGridHeaderRow>
-  </thead>
-  <tbody>
+  </TreeGridHead>
+  <TreeGridBody>            {/* <tbody role="rowgroup"> */}
     <TreeGridRow value level expandable>{/* role="row", takes focus */}
       <TreeGridCell/>       {/* role="gridcell" */}
     </TreeGridRow>
-  </tbody>
+  </TreeGridBody>
 </TreeGrid>
 ```
 
-The cell parts are the same components as `GridCell`, `GridColumnHeader`,
-`GridRowHeader` and `GridRow` from [`Grid`](./grid.md), under treegrid names.
+The row group, header row and cell parts are the same components as the
+[`Grid`](./grid.md) parts, under treegrid names. `TreeGridFoot` is there too,
+for footer rows.
 
 ## Examples
 
@@ -66,12 +70,12 @@ which. Declare it on each row:
 ```tsx
 <TreeGrid aria-label="Inbox" defaultExpanded={['trip']}>
   {state => (
-    <tbody>
+    <TreeGridBody>
       <TreeGridRow value="trip" expandable aria-label="Trip in June">…</TreeGridRow>
       {state.isExpanded('trip') && (
         <TreeGridRow value="trip-1" level={2} aria-label="Re: Trip in June">…</TreeGridRow>
       )}
-    </tbody>
+    </TreeGridBody>
   )}
 </TreeGrid>
 ```
@@ -178,8 +182,16 @@ Renders a `<tr>` by default.
 Rendered attributes: `role="row"`, `aria-level`, `aria-expanded` on parent
 rows, `tabindex`.
 
-### Cells and header rows
+### Row groups, header rows and cells
 
-`TreeGridCell`, `TreeGridColumnHeader`, `TreeGridRowHeader` and
-`TreeGridHeaderRow` are the [`Grid`](./grid.md) parts. They render `<td>`,
-`<th>`, `<th>` and `<tr>` with the matching roles.
+These are the [`Grid`](./grid.md) parts under treegrid names:
+
+| Component | Renders | Role |
+| --- | --- | --- |
+| `<TreeGridHead>` | `<thead>` | `rowgroup` |
+| `<TreeGridBody>` | `<tbody>` | `rowgroup` |
+| `<TreeGridFoot>` | `<tfoot>` | `rowgroup` |
+| `<TreeGridHeaderRow>` | `<tr>` | `row`, which does not take focus |
+| `<TreeGridCell>` | `<td>` | `gridcell` |
+| `<TreeGridColumnHeader>` | `<th>` | `columnheader` |
+| `<TreeGridRowHeader>` | `<th>` | `rowheader` |

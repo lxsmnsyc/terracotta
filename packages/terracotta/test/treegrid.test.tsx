@@ -3,8 +3,10 @@ import type { JSX } from '@solidjs/web';
 import { describe, expect, it, vi } from 'vitest';
 import {
   TreeGrid,
+  TreeGridBody,
   TreeGridCell,
   TreeGridColumnHeader,
+  TreeGridHead,
   TreeGridHeaderRow,
   TreeGridRow,
   useTreeGridState,
@@ -14,7 +16,7 @@ import { pressKeyOnFocused, settle } from './aria';
 function Rows(): JSX.Element {
   const state = useTreeGridState<string>();
   return (
-    <tbody>
+    <TreeGridBody>
       <TreeGridRow value="inbox" expandable aria-label="Inbox">
         <TreeGridCell>Inbox</TreeGridCell>
         <TreeGridCell>3</TreeGridCell>
@@ -31,7 +33,7 @@ function Rows(): JSX.Element {
         <TreeGridCell>Sent</TreeGridCell>
         <TreeGridCell>0</TreeGridCell>
       </TreeGridRow>
-    </tbody>
+    </TreeGridBody>
   );
 }
 
@@ -44,12 +46,12 @@ function renderTreeGrid(
       defaultExpanded={options.expanded}
       onExpandedChange={options.onExpandedChange}
     >
-      <thead>
+      <TreeGridHead>
         <TreeGridHeaderRow>
           <TreeGridColumnHeader>Folder</TreeGridColumnHeader>
           <TreeGridColumnHeader>Unread</TreeGridColumnHeader>
         </TreeGridHeaderRow>
-      </thead>
+      </TreeGridHead>
       <Rows />
     </TreeGrid>
   ));

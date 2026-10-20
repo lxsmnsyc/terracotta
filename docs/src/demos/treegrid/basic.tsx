@@ -1,8 +1,10 @@
 import type { JSX } from '@solidjs/web';
 import {
   TreeGrid,
+  TreeGridBody,
   TreeGridCell,
   TreeGridColumnHeader,
+  TreeGridHead,
   TreeGridHeaderRow,
   TreeGridRow,
   type TreeGridRowProperties,
@@ -44,13 +46,13 @@ export default function BasicTreeGrid(): JSX.Element {
     <TreeGrid class="grid" aria-label="Inbox" defaultExpanded={['trip']}>
       {(state) => (
         <>
-          <thead>
+          <TreeGridHead>
             <TreeGridHeaderRow>
               <TreeGridColumnHeader class="grid-header">Subject</TreeGridColumnHeader>
               <TreeGridColumnHeader class="grid-header">From</TreeGridColumnHeader>
             </TreeGridHeaderRow>
-          </thead>
-          <tbody>
+          </TreeGridHead>
+          <TreeGridBody>
             {THREADS.map((thread) => (
               <>
                 <TreeGridRow
@@ -85,7 +87,7 @@ export default function BasicTreeGrid(): JSX.Element {
                   ))}
               </>
             ))}
-          </tbody>
+          </TreeGridBody>
         </>
       )}
     </TreeGrid>

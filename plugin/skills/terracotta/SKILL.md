@@ -352,16 +352,16 @@ does not show is named after it.
 ```tsx
 // terracotta/treegrid
 <TreeGrid>                  {/* <table role="treegrid">, owns expansion */}
-  <thead>
+  <TreeGridHead>            {/* <thead role="rowgroup"> */}
     <TreeGridHeaderRow>     {/* a header row; does not take focus */}
       <TreeGridColumnHeader/>
     </TreeGridHeaderRow>
-  </thead>
-  <tbody>
+  </TreeGridHead>
+  <TreeGridBody>            {/* <tbody role="rowgroup"> */}
     <TreeGridRow value level expandable>{/* role="row", takes focus */}
       <TreeGridCell/>       {/* role="gridcell" */}
     </TreeGridRow>
-  </tbody>
+  </TreeGridBody>
 </TreeGrid>
 // also exported: TreeGridStateChild, useTreeGridState
 ```
