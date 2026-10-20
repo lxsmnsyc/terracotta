@@ -1,5 +1,13 @@
 import type { JSX } from '@solidjs/web';
-import { Grid, GridCell, GridColumnHeader, GridRow, GridRowHeader } from 'terracotta/grid';
+import {
+  Grid,
+  GridBody,
+  GridCell,
+  GridColumnHeader,
+  GridHead,
+  GridRow,
+  GridRowHeader,
+} from 'terracotta/grid';
 
 const PEOPLE = [
   { name: 'Ada', role: 'Engineer' },
@@ -11,14 +19,14 @@ export default function GridCase(): JSX.Element {
     <div>
       <button type="button">Before</button>
       <Grid aria-label="People">
-        <thead>
+        <GridHead>
           <GridRow>
             <GridColumnHeader>Name</GridColumnHeader>
             <GridColumnHeader>Role</GridColumnHeader>
             <GridColumnHeader>Profile</GridColumnHeader>
           </GridRow>
-        </thead>
-        <tbody>
+        </GridHead>
+        <GridBody>
           {PEOPLE.map((person) => (
             <GridRow>
               <GridRowHeader>{person.name}</GridRowHeader>
@@ -28,7 +36,7 @@ export default function GridCase(): JSX.Element {
               </GridCell>
             </GridRow>
           ))}
-        </tbody>
+        </GridBody>
       </Grid>
       <button type="button">After</button>
     </div>

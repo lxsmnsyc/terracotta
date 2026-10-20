@@ -14,8 +14,11 @@ moving cell by cell helps.
 ```tsx
 import {
   Grid,
+  GridBody,
   GridCell,
   GridColumnHeader,
+  GridFoot,
+  GridHead,
   GridRow,
   GridRowHeader,
 } from 'terracotta/grid';
@@ -24,20 +27,24 @@ import {
 ## Anatomy
 
 ```tsx
-<Grid>                  {/* <table role="grid">, the tab stop */}
-  <thead>
-    <GridRow>           {/* <tr role="row"> */}
-      <GridColumnHeader/>{/* <th role="columnheader"> */}
+<Grid>                    {/* <table role="grid">, the tab stop */}
+  <GridHead>              {/* <thead role="rowgroup"> */}
+    <GridRow>             {/* <tr role="row"> */}
+      <GridColumnHeader/> {/* <th role="columnheader"> */}
     </GridRow>
-  </thead>
-  <tbody>
+  </GridHead>
+  <GridBody>              {/* <tbody role="rowgroup"> */}
     <GridRow>
-      <GridRowHeader/>  {/* <th role="rowheader"> */}
-      <GridCell/>       {/* <td role="gridcell"> */}
+      <GridRowHeader/>    {/* <th role="rowheader"> */}
+      <GridCell/>         {/* <td role="gridcell"> */}
     </GridRow>
-  </tbody>
+  </GridBody>
+  <GridFoot/>             {/* optional; <tfoot role="rowgroup"> */}
 </Grid>
 ```
+
+The parts render table elements by default, so the grid lays out its rows and
+columns with no CSS. Rows can also sit directly in the `Grid`, without a group.
 
 ## Examples
 
@@ -72,7 +79,8 @@ wrapping is disorienting.
 ### Other elements
 
 Every part takes `as`, so a grid can be built from `div`s. The roles are set
-on every part, so this works the same:
+on every part, so this works the same, though the layout is then yours to
+write:
 
 ```tsx
 <Grid as="div" aria-label="Recipients" wrap>
@@ -87,6 +95,7 @@ on every part, so this works the same:
 | Element | Attribute | Present when |
 | --- | --- | --- |
 | `Grid` | `tc-grid` | Always |
+| `GridHead`, `GridBody`, `GridFoot` | `tc-grid-head`, `tc-grid-body`, `tc-grid-foot` | Always |
 | `GridRow` | `tc-grid-row` | Always |
 | `GridCell` | `tc-grid-cell` | Always |
 | `GridColumnHeader` | `tc-grid-column-header` | Always |
@@ -123,10 +132,13 @@ Renders a `<table>` by default, with `role="grid"`.
 The grid sets `tabindex` on the cells, and on the widgets inside them, to keep
 one tab stop. A widget's own `tabindex` is put back when it leaves the grid.
 
-### Rows and cells
+### Row groups, rows and cells
 
 | Component | Renders | Role |
 | --- | --- | --- |
+| `<GridHead>` | `<thead>` | `rowgroup` |
+| `<GridBody>` | `<tbody>` | `rowgroup` |
+| `<GridFoot>` | `<tfoot>` | `rowgroup` |
 | `<GridRow>` | `<tr>` | `row` |
 | `<GridCell>` | `<td>` | `gridcell` |
 | `<GridColumnHeader>` | `<th>` | `columnheader` |
