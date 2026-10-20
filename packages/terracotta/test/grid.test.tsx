@@ -1,6 +1,14 @@
 import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { Grid, GridCell, GridColumnHeader, GridRow, GridRowHeader } from '../src/components/grid';
+import {
+  Grid,
+  GridBody,
+  GridCell,
+  GridColumnHeader,
+  GridHead,
+  GridRow,
+  GridRowHeader,
+} from '../src/components/grid';
 import { pressKeyOnFocused, settle } from './aria';
 
 const PEOPLE = [
@@ -12,14 +20,14 @@ const PEOPLE = [
 function renderGrid(options: { wrap?: boolean; pageSize?: number } = {}): void {
   render(() => (
     <Grid aria-label="People" wrap={options.wrap} pageSize={options.pageSize}>
-      <thead>
+      <GridHead>
         <GridRow>
           <GridColumnHeader>Name</GridColumnHeader>
           <GridColumnHeader>Role</GridColumnHeader>
           <GridColumnHeader>Profile</GridColumnHeader>
         </GridRow>
-      </thead>
-      <tbody>
+      </GridHead>
+      <GridBody>
         {PEOPLE.map((person) => (
           <GridRow>
             <GridRowHeader>{person.name}</GridRowHeader>
@@ -29,7 +37,7 @@ function renderGrid(options: { wrap?: boolean; pageSize?: number } = {}): void {
             </GridCell>
           </GridRow>
         ))}
-      </tbody>
+      </GridBody>
     </Grid>
   ));
 }
@@ -46,6 +54,34 @@ describe('Grid accessibility', () => {
     expect(screen.getAllByRole('row')).toHaveLength(4);
     expect(screen.getAllByRole('columnheader')).toHaveLength(3);
     expect(screen.getAllByRole('rowheader')).toHaveLength(3);
+  });
+
+  it('groups the rows with rowgroup', () => {
+    renderGrid();
+
+    const groups = screen.getAllByRole('rowgroup');
+    expect(groups).toHaveLength(2);
+    expect(groups[0]).toContainElement(screen.getByRole('columnheader', { name: 'Name' }));
+  });
+
+  it('keeps the roles when built from divs', async () => {
+    render(() => (
+      <Grid as="div" aria-label="Recipients">
+        <GridBody as="div">
+          <GridRow as="div">
+            <GridCell as="div">Ada</GridCell>
+            <GridCell as="div">Grace</GridCell>
+          </GridRow>
+        </GridBody>
+      </Grid>
+    ));
+    await settle();
+
+    expect(screen.getByRole('grid', { name: 'Recipients' })).toBeInTheDocument();
+    expect(screen.getByRole('rowgroup')).toBeInTheDocument();
+    screen.getByRole('gridcell', { name: 'Ada' }).focus();
+    pressKeyOnFocused('ArrowRight');
+    expect(document.activeElement).toBe(screen.getByRole('gridcell', { name: 'Grace' }));
   });
 
   it('is one tab stop, on the first cell', async () => {
@@ -154,14 +190,14 @@ describe('Grid keyboard', () => {
   it('leaves the arrow keys to a text field in a cell', async () => {
     render(() => (
       <Grid aria-label="Edit">
-        <tbody>
+        <GridBody>
           <GridRow>
             <GridCell>
               <input aria-label="Note" />
             </GridCell>
             <GridCell>Done</GridCell>
           </GridRow>
-        </tbody>
+        </GridBody>
       </Grid>
     ));
     await settle();

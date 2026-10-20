@@ -3,10 +3,59 @@ import { omit } from 'solid-js';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
 import { createTag } from '../../utils/namespace';
 
+const GRID_HEAD_TAG = createTag('grid-head');
+const GRID_BODY_TAG = createTag('grid-body');
+const GRID_FOOT_TAG = createTag('grid-foot');
 const GRID_ROW_TAG = createTag('grid-row');
 const GRID_CELL_TAG = createTag('grid-cell');
 const GRID_COLUMN_HEADER_TAG = createTag('grid-column-header');
 const GRID_ROW_HEADER_TAG = createTag('grid-row-header');
+
+export type GridHeadProps<T extends ValidComponent = 'thead'> = HeadlessProps<T>;
+
+/**
+ * The group of header rows of a `Grid`, with `role="rowgroup"`.
+ *
+ * Renders a `<thead>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/grid.md}
+ */
+export function GridHead<T extends ValidComponent = 'thead'>(props: GridHeadProps<T>): JSX.Element {
+  const rest = omit(props, 'as');
+  const Root = dynamic(() => props.as || 'thead');
+  return <Root {...GRID_HEAD_TAG} role="rowgroup" {...rest} />;
+}
+
+export type GridBodyProps<T extends ValidComponent = 'tbody'> = HeadlessProps<T>;
+
+/**
+ * The group of body rows of a `Grid`, with `role="rowgroup"`.
+ *
+ * Renders a `<tbody>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/grid.md}
+ */
+export function GridBody<T extends ValidComponent = 'tbody'>(props: GridBodyProps<T>): JSX.Element {
+  const rest = omit(props, 'as');
+  const Root = dynamic(() => props.as || 'tbody');
+  return <Root {...GRID_BODY_TAG} role="rowgroup" {...rest} />;
+}
+
+export type GridFootProps<T extends ValidComponent = 'tfoot'> = HeadlessProps<T>;
+
+/**
+ * The group of footer rows of a `Grid`, such as totals, with
+ * `role="rowgroup"`.
+ *
+ * Renders a `<tfoot>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/grid.md}
+ */
+export function GridFoot<T extends ValidComponent = 'tfoot'>(props: GridFootProps<T>): JSX.Element {
+  const rest = omit(props, 'as');
+  const Root = dynamic(() => props.as || 'tfoot');
+  return <Root {...GRID_FOOT_TAG} role="rowgroup" {...rest} />;
+}
 
 export type GridRowProps<T extends ValidComponent = 'tr'> = HeadlessProps<T>;
 

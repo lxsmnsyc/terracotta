@@ -180,18 +180,19 @@ does not show is named after it.
 
 ```tsx
 // terracotta/grid
-<Grid>                  {/* <table role="grid">, the tab stop */}
-  <thead>
-    <GridRow>           {/* <tr role="row"> */}
-      <GridColumnHeader/>{/* <th role="columnheader"> */}
+<Grid>                    {/* <table role="grid">, the tab stop */}
+  <GridHead>              {/* <thead role="rowgroup"> */}
+    <GridRow>             {/* <tr role="row"> */}
+      <GridColumnHeader/> {/* <th role="columnheader"> */}
     </GridRow>
-  </thead>
-  <tbody>
+  </GridHead>
+  <GridBody>              {/* <tbody role="rowgroup"> */}
     <GridRow>
-      <GridRowHeader/>  {/* <th role="rowheader"> */}
-      <GridCell/>       {/* <td role="gridcell"> */}
+      <GridRowHeader/>    {/* <th role="rowheader"> */}
+      <GridCell/>         {/* <td role="gridcell"> */}
     </GridRow>
-  </tbody>
+  </GridBody>
+  <GridFoot/>             {/* optional; <tfoot role="rowgroup"> */}
 </Grid>
 ```
 

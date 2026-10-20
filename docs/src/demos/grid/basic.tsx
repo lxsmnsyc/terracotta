@@ -1,5 +1,13 @@
 import type { JSX } from '@solidjs/web';
-import { Grid, GridCell, GridColumnHeader, GridRow, GridRowHeader } from 'terracotta/grid';
+import {
+  Grid,
+  GridBody,
+  GridCell,
+  GridColumnHeader,
+  GridHead,
+  GridRow,
+  GridRowHeader,
+} from 'terracotta/grid';
 
 const PEOPLE = [
   { name: 'Ada Lovelace', role: 'Engineer', email: 'ada@example.com' },
@@ -15,7 +23,7 @@ export default function BasicGrid(): JSX.Element {
   return (
     <div class="stack">
       <Grid class="grid" aria-label="People">
-        <thead>
+        <GridHead>
           <GridRow>
             <GridColumnHeader class="grid-header" aria-sort="ascending">
               Name
@@ -23,8 +31,8 @@ export default function BasicGrid(): JSX.Element {
             <GridColumnHeader class="grid-header">Role</GridColumnHeader>
             <GridColumnHeader class="grid-header">Email</GridColumnHeader>
           </GridRow>
-        </thead>
-        <tbody>
+        </GridHead>
+        <GridBody>
           {PEOPLE.map((person) => (
             <GridRow>
               <GridRowHeader class="grid-cell grid-row-header">{person.name}</GridRowHeader>
@@ -36,11 +44,11 @@ export default function BasicGrid(): JSX.Element {
               </GridCell>
             </GridRow>
           ))}
-        </tbody>
+        </GridBody>
       </Grid>
       <p class="hint">
-        Tab in once, then use the arrow keys, <kbd>Home</kbd>, <kbd>End</kbd> and{' '}
-        <kbd>Ctrl</kbd>+<kbd>Home</kbd>.
+        Tab in once, then use the arrow keys, <kbd>Home</kbd>, <kbd>End</kbd> and <kbd>Ctrl</kbd>+
+        <kbd>Home</kbd>.
       </p>
     </div>
   );
