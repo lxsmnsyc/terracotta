@@ -137,6 +137,26 @@ describe('Spinbutton keyboard', () => {
 
     expect(getField()).toHaveValue('0.3');
   });
+
+  it('keeps the decimals of a fractional minimum', () => {
+    renderSpinbutton({ value: 0.25, min: 0.25, max: 2, step: 0.5 });
+    getField().focus();
+
+    expect(getField()).toHaveAttribute('aria-valuenow', '0.25');
+
+    pressKeyOnFocused('ArrowUp');
+
+    expect(getField()).toHaveAttribute('aria-valuenow', '0.75');
+  });
+
+  it('reaches the maximum with End when it is not on the step grid', () => {
+    renderSpinbutton({ value: 0, min: 0, max: 10, step: 3 });
+    getField().focus();
+
+    pressKeyOnFocused('End');
+
+    expect(getField()).toHaveAttribute('aria-valuenow', '10');
+  });
 });
 
 describe('Spinbutton typing', () => {
@@ -222,6 +242,19 @@ describe('Spinbutton state', () => {
 
     expect(value()).toBe(5);
     expect(field).toHaveValue('5');
+  });
+
+  it('keeps a controlled value in range', () => {
+    render(() => (
+      <Spinbutton value={50} min={0} max={10}>
+        <SpinbuttonInput aria-label="Children" />
+      </Spinbutton>
+    ));
+
+    expect(screen.getByRole('spinbutton', { name: 'Children' })).toHaveAttribute(
+      'aria-valuenow',
+      '10',
+    );
   });
 
   it('does not change while disabled', () => {
