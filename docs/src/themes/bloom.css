@@ -258,6 +258,7 @@
 }
 
 [data-theme='bloom'] .switch-track[tc-checked=''] .switch-knob,
+[data-theme='bloom'] [tc-switch][tc-checked=''] .switch-knob,
 [data-theme='bloom'] [tc-pressed] .switch-knob {
   translate: 1.05rem 0;
 }

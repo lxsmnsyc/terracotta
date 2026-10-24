@@ -10,7 +10,8 @@ It is a [`Button`](./button.md) wired to a
 
 Use `Toggle` when the control turns something on and off in place, such as bold
 in an editor or mute on a call. If the control represents a form value, use
-[`Checkbox`](./checkbox.md) instead.
+[`Checkbox`](./checkbox.md) instead. For an on/off setting, use
+[`Switch`](./switch.md).
 
 ```tsx
 import { ToggleStateChild, useToggleState } from 'terracotta/states';
@@ -73,6 +74,10 @@ beyond the toggle itself:
 :::demo toggle/switch
 Same component, different CSS. The knob slides because the theme styles `[tc-pressed]`.
 :::
+
+A screen reader still announces this as a pressed button. For a control that
+reads as "on" and "off", use [`Switch`](./switch.md), which has
+`role="switch"`.
 
 ### Reading the state from a descendant
 

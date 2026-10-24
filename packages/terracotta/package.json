@@ -119,6 +119,11 @@
       "solid": "./dist/states.jsx",
       "default": "./dist/states.jsx"
     },
+    "./switch": {
+      "types": "./dist/switch.d.ts",
+      "solid": "./dist/switch.jsx",
+      "default": "./dist/switch.jsx"
+    },
     "./tabs": {
       "types": "./dist/tabs.d.ts",
       "solid": "./dist/tabs.jsx",

@@ -297,6 +297,7 @@
 }
 
 [data-theme='blueprint'] .switch-track[tc-checked=''] .switch-knob,
+[data-theme='blueprint'] [tc-switch][tc-checked=''] .switch-knob,
 [data-theme='blueprint'] [tc-pressed] .switch-knob {
   background: var(--accent);
 }

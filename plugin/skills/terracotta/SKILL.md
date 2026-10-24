@@ -219,6 +219,11 @@ does not show is named after it.
 ```
 
 ```tsx
+// terracotta/switch
+<Switch/> {/* role="switch" aria-checked, owns the checked state */}
+```
+
+```tsx
 // terracotta/tabs
 <TabGroup horizontal>{/* owns the selected value and the shared ids */}
   <TabList>          {/* role="tablist", handles arrow keys */}
