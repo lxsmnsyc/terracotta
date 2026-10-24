@@ -33,6 +33,7 @@
       "components/select",
       "components/slider",
       "components/spinbutton",
+      "components/splitter",
       "components/switch",
       "components/tabs",
       "components/toast",

@@ -241,6 +241,16 @@ does not show is named after it.
 ```
 
 ```tsx
+// terracotta/splitter
+<Splitter>             {/* owns the size of the primary pane */}
+  <SplitterPane/>      {/* the primary pane */}
+  <SplitterSeparator/> {/* role="separator", focusable, draggable */}
+  <div/>               {/* the other pane; no component needed */}
+</Splitter>
+// also exported: SplitterStateChild, useSplitterState
+```
+
+```tsx
 // terracotta/switch
 <Switch/> {/* role="switch" aria-checked, owns the checked state */}
 ```

@@ -64,6 +64,7 @@ Here's the current components:
 - `Radio Group` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/radiogroup)
 - `Slider`
 - `Spinbutton`
+- `Splitter (Window Splitter)`
 - `Switch`
 - `Toolbar` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/toolbar)
 - `Tooltip`
