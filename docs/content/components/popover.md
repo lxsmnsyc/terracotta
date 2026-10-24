@@ -127,7 +127,44 @@ above, or use the CSS anchor positioning API where it is supported:
 ```
 
 For a full-featured solution, pass a `ref` to `PopoverButton` and
-`PopoverPanel`, then hand both elements to a positioning library.
+`PopoverPanel`, then hand both elements to a positioning library. Put the panel
+in a `Portal` so a parent's `overflow` cannot clip it, and use the `fixed`
+strategy:
+
+```tsx
+import { Portal } from '@solidjs/web';
+import { autoUpdate, flip, offset } from '@floating-ui/dom';
+import { useFloating } from 'solid-floating-ui';
+
+const [button, setButton] = createSignal<HTMLElement>();
+const [panel, setPanel] = createSignal<HTMLElement>();
+const position = useFloating(button, panel, {
+  strategy: 'fixed',
+  placement: 'bottom-start',
+  middleware: [offset(4), flip()],
+  whileElementsMounted: autoUpdate,
+});
+
+<Popover>
+  <PopoverButton ref={setButton}>Options</PopoverButton>
+  <Portal>
+    <PopoverPanel
+      ref={setPanel}
+      style={{
+        position: position.strategy,
+        top: `${position.y ?? 0}px`,
+        left: `${position.x ?? 0}px`,
+      }}
+    >
+      …
+    </PopoverPanel>
+  </Portal>
+</Popover>
+```
+
+A panel in a portal still counts as inside the panel it opened from. Focus can
+move into a nested popover without closing the outer one. See
+[Portals](../guides/rendering.md#portals).
 
 ### Aligning to the end of the button
 

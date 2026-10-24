@@ -15,6 +15,7 @@ import { createForwardRef } from '../../utils/dynamic-prop';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import { createModalFocus, createMountedID } from '../../utils/modal';
+import { createPanelNode, PanelTreeContext } from '../../utils/panel-tree';
 import { AlertDialogContext } from './AlertDialogContext';
 import { ALERT_DIALOG_TAG } from './tags';
 
@@ -70,7 +71,8 @@ export function AlertDialog<T extends ValidComponent = 'div'>(
 
   // `ref` is not a declared prop, but one passed anyway is still called.
   const [root, setRoot] = createForwardRef(props as WithRef<T>);
-  createModalFocus(state, root);
+  const [node, panelRef] = createPanelNode(setRoot);
+  createModalFocus(state, root, node);
 
   const rest = isAlertDialogUncontrolled(props)
     ? omit(
@@ -125,9 +127,11 @@ export function AlertDialog<T extends ValidComponent = 'div'>(
           {...expandedState}
           {...rest}
           // After `rest`, so a `ref` in it does not replace this one.
-          ref={setRoot}
+          ref={panelRef}
         >
-          <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
+          <PanelTreeContext value={node}>
+            <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
+          </PanelTreeContext>
         </Root>
       </Unmountable>
     </AlertDialogContext>

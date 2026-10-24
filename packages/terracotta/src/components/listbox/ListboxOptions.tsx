@@ -9,6 +9,7 @@ import { Unmountable, type UnmountableProps } from '../../utils/unmountable';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
+import { createPanelNode, onFocusLeave, PanelTreeContext } from '../../utils/panel-tree';
 import { SELECTED_NODE } from '../../utils/namespace';
 import {
   createARIADisabledState,
@@ -47,6 +48,7 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
   const disclosureState = useDisclosureState();
 
   const [internalRef, setInternalRef] = createForwardRef(props);
+  const [node, panelRef] = createPanelNode(setInternalRef);
 
   const controller = createListboxOptionsFocusNavigator(context.optionsID);
 
@@ -140,14 +142,8 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
               }
             }
           }),
-          useEventListener(current, 'focusout', (e) => {
-            if (context.buttonHovering || context.optionsHovering) {
-              return;
-            }
-            if (
-              (e.relatedTarget && !current.contains(e.relatedTarget as Node)) ||
-              (e.target && !current.contains(e.target as Node))
-            ) {
+          onFocusLeave(node, () => {
+            if (!context.buttonHovering && !context.optionsHovering) {
               disclosureState.close();
             }
           }),
@@ -184,7 +180,7 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
           role="listbox"
           aria-multiselectable={context.multiple ? 'true' : 'false'}
           aria-labelledby={context.hasLabel() ? context.labelID : context.buttonID}
-          ref={setInternalRef}
+          ref={panelRef}
           aria-orientation={context.isHorizontal() ? 'horizontal' : 'vertical'}
           tabindex={selectState.disabled() ? -1 : 0}
           {...disabledState}
@@ -194,7 +190,9 @@ export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
           {...hasActiveState}
           {...rest}
         >
-          <SelectStateProvider state={selectState}>{props.children}</SelectStateProvider>
+          <PanelTreeContext value={node}>
+            <SelectStateProvider state={selectState}>{props.children}</SelectStateProvider>
+          </PanelTreeContext>
         </Root>
       </ListboxOptionsContext>
     </Unmountable>
