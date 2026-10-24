@@ -21,6 +21,7 @@ const entries = Object.fromEntries([
     'radio-group',
     'select',
     'slider',
+    'spinbutton',
     'tabs',
     'toast',
     'switch',

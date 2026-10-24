@@ -119,6 +119,11 @@
       "solid": "./dist/slider.jsx",
       "default": "./dist/slider.jsx"
     },
+    "./spinbutton": {
+      "types": "./dist/spinbutton.d.ts",
+      "solid": "./dist/spinbutton.jsx",
+      "default": "./dist/spinbutton.jsx"
+    },
     "./states": {
       "types": "./dist/states.d.ts",
       "solid": "./dist/states.jsx",
