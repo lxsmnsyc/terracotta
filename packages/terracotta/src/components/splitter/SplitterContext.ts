@@ -1,4 +1,5 @@
 import type { JSX } from '@solidjs/web';
+import type { PartID } from '../../utils/create-part-id';
 import { createContext, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 import { renderChildren } from '../../utils/render-children';
@@ -23,7 +24,7 @@ export interface SplitterStateProperties {
 
 export interface SplitterContextData {
   state: SplitterStateProperties;
-  paneID: string;
+  pane: PartID;
   isHorizontal(): boolean;
   root(): HTMLElement | undefined;
 }
