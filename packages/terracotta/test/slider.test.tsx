@@ -127,6 +127,35 @@ describe('Slider keyboard', () => {
     expect(getThumb()).toHaveAttribute('aria-valuenow', '0.3');
   });
 
+  it('keeps the decimals of a fractional minimum', () => {
+    renderSlider({ value: 0.25, min: 0.25, max: 2, step: 0.5 });
+    getThumb().focus();
+
+    expect(getThumb()).toHaveAttribute('aria-valuenow', '0.25');
+
+    pressKeyOnFocused('ArrowRight');
+
+    expect(getThumb()).toHaveAttribute('aria-valuenow', '0.75');
+  });
+
+  it('keeps the decimals of a step written with an exponent', () => {
+    renderSlider({ value: 0, min: 0, max: 1, step: 1e-7 });
+    getThumb().focus();
+
+    pressKeyOnFocused('ArrowRight');
+
+    expect(getThumb()).toHaveAttribute('aria-valuenow', '1e-7');
+  });
+
+  it('reaches the maximum with End when it is not on the step grid', () => {
+    renderSlider({ value: 0, min: 0, max: 10, step: 3 });
+    getThumb().focus();
+
+    pressKeyOnFocused('End');
+
+    expect(getThumb()).toHaveAttribute('aria-valuenow', '10');
+  });
+
   it('does not move while disabled', () => {
     renderSlider({ disabled: true });
     getThumb().focus();
