@@ -9,6 +9,7 @@ import { createForwardRef } from '../../utils/dynamic-prop';
 import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
 import { mergeFunc } from '../../utils/merge-func';
+import { createPanelNode, PanelTreeContext } from '../../utils/panel-tree';
 import { focusMenuItem, hasMenu, isMenuItemActivation } from '../../utils/menu-popup';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
@@ -41,6 +42,7 @@ export function ContextMenuPanel<T extends ValidComponent = 'div'>(
   const state = useDisclosureState();
 
   const [internalRef, setInternalRef] = createForwardRef(props);
+  const [node, panelRef] = createPanelNode(setInternalRef);
 
   createEffect(
     createDependencyList(() => [internalRef(), state.isOpen()] as const),
@@ -89,8 +91,10 @@ export function ContextMenuPanel<T extends ValidComponent = 'div'>(
                 state.close();
               }
             }),
+            // A click in a panel nested in this one, even one rendered into
+            // a `Portal`, is not outside.
             useEventListener(document, 'click', (e) => {
-              if (!current.contains(e.target as Node)) {
+              if (!node.contains(e.target as Node)) {
                 state.close();
               }
             }),
@@ -111,12 +115,14 @@ export function ContextMenuPanel<T extends ValidComponent = 'div'>(
         {...CONTEXT_MENU_PANEL_TAG}
         id={context.panelID}
         tabindex={-1}
-        ref={setInternalRef}
+        ref={panelRef}
         {...disabledState}
         {...expandedState}
         {...rest}
       >
-        <DisclosureStateChild>{props.children}</DisclosureStateChild>
+        <PanelTreeContext value={node}>
+          <DisclosureStateChild>{props.children}</DisclosureStateChild>
+        </PanelTreeContext>
       </Root>
     </Unmountable>
   );
