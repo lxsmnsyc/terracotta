@@ -16,6 +16,7 @@ import { createDisabledState, createExpandedState } from '../../utils/state-prop
 import type { Prettify } from '../../utils/types';
 import { DialogContext } from './DialogContext';
 import { createModalFocus, createMountedID } from '../../utils/modal';
+import { createPanelNode, PanelTreeContext } from '../../utils/panel-tree';
 import { DIALOG_TAG } from './tags';
 
 export type DialogControlledBaseProps = Prettify<
@@ -68,7 +69,8 @@ export function Dialog<T extends ValidComponent = 'div'>(props: DialogProps<T>):
 
   // `ref` is not a declared prop, but one passed anyway is still called.
   const [root, setRoot] = createForwardRef(props as WithRef<T>);
-  createModalFocus(state, root);
+  const [node, panelRef] = createPanelNode(setRoot);
+  createModalFocus(state, root, node);
 
   const disabledState = createDisabledState(() => state.disabled());
   const expandedState = createExpandedState(() => state.isOpen());
@@ -123,9 +125,11 @@ export function Dialog<T extends ValidComponent = 'div'>(props: DialogProps<T>):
           {...expandedState}
           {...rest}
           // After `rest`, so a `ref` in it does not replace this one.
-          ref={setRoot}
+          ref={panelRef}
         >
-          <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
+          <PanelTreeContext value={node}>
+            <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
+          </PanelTreeContext>
         </Root>
       </Unmountable>
     </DialogContext>
