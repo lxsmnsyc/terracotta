@@ -1,0 +1,157 @@
+/*
+ * Rendered markdown. The demo blocks are components, not markup, so nothing
+ * here has to reach inside them.
+ */
+
+/*
+ * A page is a list of blocks, and each run of markdown arrives as one `<div>`
+ * of rendered HTML. So the flow content (paragraphs, lists, code blocks,
+ * tables) is a *grandchild* of `.prose`, not a child, and a plain
+ * `> * + *` rule silently matched nothing but the wrappers themselves.
+ */
+.prose > * + *,
+.prose > div > * + * {
+  margin-block-start: 1.1rem;
+}
+
+.prose h2 {
+  margin-block-start: 2.75rem;
+  padding-block-end: 0.35rem;
+  border-block-end: 1px solid var(--border);
+  font-size: 1.45rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  scroll-margin-block-start: calc(var(--masthead-height) + 1rem);
+}
+
+.prose h3 {
+  margin-block-start: 2rem;
+  font-size: 1.1rem;
+  font-weight: 650;
+  scroll-margin-block-start: calc(var(--masthead-height) + 1rem);
+}
+
+.prose p,
+.prose li {
+  color: var(--text-2);
+}
+
+.prose strong {
+  color: var(--text-1);
+  font-weight: 620;
+}
+
+.prose ul,
+.prose ol {
+  padding-inline-start: 1.4rem;
+}
+
+.prose li + li {
+  margin-block-start: 0.3rem;
+}
+
+.prose blockquote {
+  border-inline-start: 3px solid var(--border-strong);
+  padding-inline-start: 1rem;
+  color: var(--text-2);
+  font-style: italic;
+}
+
+.prose :not(pre) > code {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-1);
+  padding: 0.1em 0.35em;
+  color: var(--text-1);
+}
+
+.prose kbd {
+  border: 1px solid var(--border-strong);
+  border-block-end-width: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-1);
+  padding: 0.05em 0.4em;
+  font-size: 0.8em;
+}
+
+/* A rule separates two sections, so it needs matching air on both sides. The
+   generic `* + *` step is far too tight for that, and the `h2` that usually
+   follows brings its own large top margin, which made the gap lopsided. */
+.prose hr {
+  margin-block: 3rem;
+  border: 0;
+  border-block-start: 1px solid var(--border);
+}
+
+.prose hr + h2,
+.prose hr + h3 {
+  margin-block-start: 0;
+}
+
+.prose table {
+  display: block;
+  border-collapse: collapse;
+  inline-size: 100%;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+
+.prose th,
+.prose td {
+  border-block-end: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  text-align: start;
+  vertical-align: top;
+}
+
+.prose th {
+  color: var(--text-1);
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.prose td {
+  color: var(--text-2);
+}
+
+/* Shiki ------------------------------------------------------------ *
+ * Both themes are baked into the markup as custom properties, so the colour
+ * scheme switches without re-highlighting anything.
+ * ------------------------------------------------------------------ */
+
+/* A code block is a figure in the flow, not a line of prose: it gets its own
+   air on both sides rather than the paragraph step. */
+.prose .shiki {
+  margin-block: 1.5rem;
+}
+
+.shiki {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+.shiki,
+.shiki span {
+  background-color: var(--shiki-light-bg);
+  color: var(--shiki-light);
+}
+
+:root.dark .shiki,
+:root.dark .shiki span {
+  background-color: var(--shiki-dark-bg);
+  color: var(--shiki-dark);
+}
+
+/* Inside a demo's Code tab the block is the panel, so it keeps neither the
+   border nor the margins it has in running prose. */
+.demo-code .shiki,
+.prose .demo-code .shiki {
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+}

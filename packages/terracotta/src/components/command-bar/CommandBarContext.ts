@@ -1,3 +1,4 @@
+import type { Accessor } from 'solid-js';
 import { createContext, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 
@@ -6,11 +7,13 @@ interface CommandBarContextData {
   panelID: string;
   titleID: string;
   descriptionID: string;
+  registerTitle: (id: Accessor<string>) => void;
+  registerDescription: (id: Accessor<string>) => void;
   onOpen?: () => void;
   onClose?: () => void;
 }
 
-export const CommandBarContext = createContext<CommandBarContextData>();
+export const CommandBarContext = createContext<CommandBarContextData | null>(null);
 
 /**
  * Reads the nearest `CommandBar`'s internal context, which holds the generated

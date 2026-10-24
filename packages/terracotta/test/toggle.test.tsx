@@ -1,6 +1,6 @@
 import { render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { Toggle } from '../src';
+import { Toggle } from '../src/components/toggle';
 
 describe('Toggle accessibility', () => {
   it('exposes the pressed state through `aria-pressed`', () => {

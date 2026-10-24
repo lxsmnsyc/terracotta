@@ -91,3 +91,33 @@ test('leaves the input in the tab order', async ({ page }) => {
 
   await expect(page.getByRole('combobox')).toBeFocused();
 });
+
+test('names the input and the popup from the label', async ({ page }) => {
+  const input = page.getByRole('combobox');
+  await input.click();
+
+  await expect(input).toHaveAccessibleName('Assignee');
+  await expect(page.getByRole('listbox')).toHaveAccessibleName('Assignee');
+});
+
+test('drops aria-activedescendant when the popup closes', async ({ page }) => {
+  const input = page.getByRole('combobox');
+  await input.click();
+  await expect(input).toHaveAttribute('aria-activedescendant', /.+/);
+
+  await page.keyboard.press('Escape');
+
+  await expect(page.getByRole('listbox')).toBeHidden();
+  await expect(input).not.toHaveAttribute('aria-activedescendant');
+});
+
+test('drops aria-activedescendant when nothing matches the query', async ({ page }) => {
+  const input = page.getByRole('combobox');
+  await input.click();
+  await expect(input).toHaveAttribute('aria-activedescendant', /.+/);
+
+  await input.pressSequentially('zzz');
+
+  await expect(page.getByRole('option', { name: 'ada' })).not.toHaveAttribute('tc-matches', '');
+  await expect(input).not.toHaveAttribute('aria-activedescendant');
+});

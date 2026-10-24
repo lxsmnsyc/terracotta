@@ -1,7 +1,8 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
+import { activeElement, pressKeyOnFocused, settle } from './aria';
 import { describe, expect, it } from 'vitest';
-import { Button, Popover, PopoverButton, PopoverOverlay, PopoverPanel } from '../src';
-import { activeElement, settle } from './aria';
+import { Button } from '../src/components/button';
+import { Popover, PopoverButton, PopoverOverlay, PopoverPanel } from '../src/components/popover';
 
 function renderPopover(
   props: { open?: boolean; disabled?: boolean } = {},
@@ -18,8 +19,9 @@ function renderPopover(
 }
 
 describe('Popover accessibility', () => {
-  it('marks the trigger as collapsed while closed', () => {
+  it('marks the trigger as collapsed while closed', async () => {
     renderPopover();
+    await settle();
 
     expect(screen.getByRole('button', { name: 'Options' })).toHaveAttribute(
       'aria-expanded',
@@ -27,20 +29,23 @@ describe('Popover accessibility', () => {
     );
   });
 
-  it('does not render the panel while closed', () => {
+  it('does not render the panel while closed', async () => {
     renderPopover();
+    await settle();
 
     expect(screen.queryByRole('button', { name: 'Rename' })).not.toBeInTheDocument();
   });
 
-  it('omits `aria-controls` while closed instead of pointing at a missing id', () => {
+  it('omits `aria-controls` while closed instead of pointing at a missing id', async () => {
     renderPopover();
+    await settle();
 
     expect(screen.getByRole('button', { name: 'Options' })).not.toHaveAttribute('aria-controls');
   });
 
-  it('marks the trigger as expanded and links it to the panel once open', () => {
+  it('marks the trigger as expanded and links it to the panel once open', async () => {
     renderPopover({ open: true });
+    await settle();
     const button = screen.getByRole('button', { name: 'Options' });
     const panel = screen.getByTestId('panel');
 
@@ -50,6 +55,7 @@ describe('Popover accessibility', () => {
 
   it('moves focus into the panel when opened', async () => {
     renderPopover({ open: true });
+    await settle();
 
     expect(await activeElement()).toBe(screen.getByRole('button', { name: 'Rename' }));
   });
@@ -62,11 +68,12 @@ describe('Popover accessibility', () => {
 
     fireEvent.keyDown(rename, { key: 'Tab' });
 
-    expect(document.activeElement).toBe(duplicate);
+    expect(await activeElement()).toBe(duplicate);
   });
 
-  it('closes on Escape', () => {
+  it('closes on Escape', async () => {
     renderPopover({ open: true });
+    await settle();
 
     fireEvent.keyDown(screen.getByRole('button', { name: 'Rename' }), {
       key: 'Escape',
@@ -78,8 +85,9 @@ describe('Popover accessibility', () => {
     );
   });
 
-  it('opens on click', () => {
+  it('opens on click', async () => {
     renderPopover();
+    await settle();
     const button = screen.getByRole('button', { name: 'Options' });
 
     button.click();
@@ -87,8 +95,9 @@ describe('Popover accessibility', () => {
     expect(button).toHaveAttribute('aria-expanded', 'true');
   });
 
-  it('does not open while disabled', () => {
+  it('does not open while disabled', async () => {
     renderPopover({ disabled: true });
+    await settle();
     const button = screen.getByRole('button', { name: 'Options' });
 
     expect(button).toHaveAttribute('aria-disabled', 'true');
@@ -97,6 +106,34 @@ describe('Popover accessibility', () => {
     button.click();
 
     expect(button).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('returns focus to the button when it closes on Escape', async () => {
+    renderPopover();
+    await settle();
+    const button = screen.getByRole('button', { name: 'Options' });
+    button.focus();
+    button.click();
+    expect(await activeElement()).toBe(screen.getByRole('button', { name: 'Rename' }));
+
+    pressKeyOnFocused('Escape');
+
+    expect(button).toHaveAttribute('aria-expanded', 'false');
+    expect(await activeElement()).toBe(button);
+  });
+
+  it('does not put aria-disabled or disabled on the root while disabled', async () => {
+    render(() => (
+      <Popover data-testid="root" defaultOpen={false} disabled>
+        <PopoverButton>Options</PopoverButton>
+      </Popover>
+    ));
+    await settle();
+    const root = screen.getByTestId('root');
+
+    expect(root).not.toHaveAttribute('aria-disabled');
+    expect(root).not.toHaveAttribute('disabled');
+    expect(root).toHaveAttribute('tc-disabled');
   });
 });
 

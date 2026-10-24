@@ -1,6 +1,7 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { createSignal } from 'solid-js';
-import { Button, Transition } from 'terracotta';
+import { Button } from 'terracotta/button';
+import { Transition } from 'terracotta/transition';
 
 // A slow fade, so a spec can observe the leave phase rather than race it.
 const STYLES = `

@@ -5,28 +5,46 @@
 ## Install
 
 ```bash
-npm i terracotta
+npm i terracotta@next
 ```
 
 ```bash
-yarn add terracotta
+yarn add terracotta@next
 ```
 
 ```bash
-pnpm add terracotta
+pnpm add terracotta@next
 ```
+
+Terracotta 2 is published under the `next` tag while it is a release candidate.
+The `latest` tag still points at the 1.x line, which targets Solid 1.
 
 ## Documentation
 
-- [Getting started](./docs/guides/getting-started.md)
-- [Guides](./docs/README.md#guides) — `as`, controlled state, styling, keyboard
-  and focus, SSR
-- [Component reference](./docs/README.md#components)
-- [State primitives](./docs/states.md)
+The documentation site lives in [`docs/`](./docs), and its prose is the source
+of truth for everything below.
+
+- [Getting started](./docs/content/guides/getting-started.md)
+- Guides: [rendering](./docs/content/guides/rendering.md),
+  [state](./docs/content/guides/state.md),
+  [styling](./docs/content/guides/styling.md),
+  [keyboard and focus](./docs/content/guides/keyboard-and-focus.md),
+  [server-side rendering](./docs/content/guides/ssr.md)
+- [Component reference](./docs/content/components)
+- [State primitives](./docs/content/states.md)
+
+Running the site locally takes a built library, since it consumes `terracotta`
+through the workspace:
+
+```bash
+pnpm install
+pnpm --filter terracotta build
+pnpm --filter @terracotta/docs dev
+```
 
 ## Note
 
-The project is still in development, as I aim to implement the [WAI-ARIA Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.1/).
+The project is still in development, as I aim to implement the [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/).
 
 Here's the current components:
 

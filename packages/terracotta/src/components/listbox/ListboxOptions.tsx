@@ -1,0 +1,200 @@
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { createEffect, omit } from 'solid-js';
+import { useDisclosureState } from '../../states/create-disclosure-state';
+import type { SelectStateRenderProps } from '../../states/create-select-state';
+import { SelectStateProvider, useSelectState } from '../../states/create-select-state';
+import { createDependencyList } from '../../utils/create-dependency-list';
+import createTypeAhead from '../../utils/create-type-ahead';
+import { Unmountable, type UnmountableProps } from '../../utils/unmountable';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
+import { createPanelNode, onFocusLeave, PanelTreeContext } from '../../utils/panel-tree';
+import { SELECTED_NODE } from '../../utils/namespace';
+import {
+  createARIADisabledState,
+  createDisabledState,
+  createExpandedState,
+  createHasActiveState,
+  createHasSelectedState,
+} from '../../utils/state-props';
+import type { Prettify } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
+import { afterTransition } from '../../utils/wait-for-transition';
+import { useListboxContext } from './ListboxContext';
+import { createListboxOptionsFocusNavigator, ListboxOptionsContext } from './ListboxOptionsContext';
+import { LISTBOX_OPTIONS_TAG } from './tags';
+
+export type ListboxOptionsBaseProps<V> = Prettify<UnmountableProps & SelectStateRenderProps<V>>;
+
+export type ListboxOptionsProps<V, T extends ValidComponent = 'ul'> = HeadlessPropsWithRef<
+  T,
+  ListboxOptionsBaseProps<V>
+>;
+
+/**
+ * The popup list of a `Listbox`. Unmounts while closed unless
+ * `unmount={false}` is set.
+ *
+ * Renders a `<ul>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
+ */
+export function ListboxOptions<V, T extends ValidComponent = 'ul'>(
+  props: ListboxOptionsProps<V, T>,
+): JSX.Element {
+  const context = useListboxContext('ListboxOptions');
+  const selectState = useSelectState();
+  const disclosureState = useDisclosureState();
+
+  const [internalRef, setInternalRef] = createForwardRef(props);
+  const [node, panelRef] = createPanelNode(setInternalRef);
+
+  const controller = createListboxOptionsFocusNavigator(context.optionsID);
+
+  const pushCharacter = createTypeAhead((value) => {
+    controller.setFirstMatch(value);
+  });
+
+  // This is a potential bug. The reason is that
+  // the ListboxOptions is focusing too early in such
+  // a way that the ListboxOption has yet to register
+  // the focus event
+  createEffect(
+    createDependencyList(() => [internalRef(), disclosureState.isOpen()]),
+    ([current, isOpen]) => {
+      if (current instanceof HTMLElement && isOpen) {
+        controller.setRef(current);
+
+        afterTransition(current, () => {
+          if (selectState.hasSelected()) {
+            controller.setFirstChecked(SELECTED_NODE);
+          } else {
+            controller.setFirstChecked();
+          }
+        });
+
+        return mergeFunc(
+          () => {
+            controller.clearRef();
+          },
+
+          useEventListener(current, 'keydown', (e) => {
+            if (!selectState.disabled()) {
+              // Keys this panel acts on are not passed on: a `Dialog` or another panel
+              // around this one traps `Tab` and closes on `Escape` too, and would
+              // otherwise move focus a second time or close both layers at once.
+              switch (e.key) {
+                case 'Escape': {
+                  e.stopPropagation();
+                  disclosureState.close();
+                  break;
+                }
+                case 'ArrowLeft': {
+                  if (context.isHorizontal()) {
+                    e.preventDefault();
+                    controller.setPrevChecked(true);
+                  }
+                  break;
+                }
+                case 'ArrowUp': {
+                  if (!context.isHorizontal()) {
+                    e.preventDefault();
+                    controller.setPrevChecked(true);
+                  }
+                  break;
+                }
+                case 'ArrowRight': {
+                  if (context.isHorizontal()) {
+                    e.preventDefault();
+                    controller.setNextChecked(true);
+                  }
+                  break;
+                }
+                case 'ArrowDown': {
+                  if (!context.isHorizontal()) {
+                    e.preventDefault();
+                    controller.setNextChecked(true);
+                  }
+                  break;
+                }
+                case 'Home': {
+                  e.preventDefault();
+                  controller.setFirstChecked();
+                  break;
+                }
+                case 'End': {
+                  e.preventDefault();
+                  controller.setLastChecked();
+                  break;
+                }
+                case ' ':
+                case 'Enter': {
+                  e.preventDefault();
+                  break;
+                }
+                default: {
+                  if (e.key.length === 1) {
+                    pushCharacter(e.key);
+                  }
+                  break;
+                }
+              }
+            }
+          }),
+          onFocusLeave(node, () => {
+            if (!context.buttonHovering && !context.optionsHovering) {
+              disclosureState.close();
+            }
+          }),
+          useEventListener(current, 'focusin', (e) => {
+            if (e.target && e.target !== current) {
+              controller.setCurrent(e.target as HTMLElement);
+            }
+          }),
+          useEventListener(current, 'mouseenter', () => {
+            context.optionsHovering = true;
+          }),
+          useEventListener(current, 'mouseleave', () => {
+            context.optionsHovering = false;
+          }),
+        );
+      }
+      return undefined;
+    },
+  );
+
+  const disabledState = createDisabledState(() => selectState.disabled());
+  const ariaDisabledState = createARIADisabledState(() => selectState.disabled());
+  const expandedState = createExpandedState(() => disclosureState.isOpen());
+  const hasSelectedState = createHasSelectedState(() => selectState.hasSelected());
+  const hasActiveState = createHasActiveState(() => selectState.hasActive());
+  const rest = omit(props, 'as', 'children', 'ref');
+  const Root = dynamic(() => props.as || 'ul');
+  return (
+    <Unmountable unmount={props.unmount} when={disclosureState.isOpen()}>
+      <ListboxOptionsContext value={controller}>
+        <Root
+          {...LISTBOX_OPTIONS_TAG}
+          id={context.optionsID}
+          role="listbox"
+          aria-multiselectable={context.multiple ? 'true' : 'false'}
+          aria-labelledby={context.hasLabel() ? context.labelID : context.buttonID}
+          ref={panelRef}
+          aria-orientation={context.isHorizontal() ? 'horizontal' : 'vertical'}
+          tabindex={selectState.disabled() ? -1 : 0}
+          {...disabledState}
+          {...ariaDisabledState}
+          {...expandedState}
+          {...hasSelectedState}
+          {...hasActiveState}
+          {...rest}
+        >
+          <PanelTreeContext value={node}>
+            <SelectStateProvider state={selectState}>{props.children}</SelectStateProvider>
+          </PanelTreeContext>
+        </Root>
+      </ListboxOptionsContext>
+    </Unmountable>
+  );
+}

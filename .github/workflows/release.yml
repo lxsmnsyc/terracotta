@@ -1,12 +1,20 @@
 name: Release
 
-# Every push to `main` either opens (or updates) a "Version Packages" pull
-# request from the pending changesets, or, once that pull request is merged,
-# publishes whatever versions are not on npm yet.
+# The 2.x line ships prereleases from `2.x` while `.changeset/pre.json` keeps
+# Changesets in pre mode, so versions come out as `2.0.0-next.N` under the
+# `next` dist-tag.
+#
+# Pull requests into `2.x` run the tests. Every push to `2.x` runs them too, and
+# then either opens (or updates) a "Version Packages" pull request from the
+# pending changesets, or, once that pull request is merged, publishes whatever
+# versions are not on npm yet.
 on:
   push:
     branches:
-      - main
+      - 2.x
+  pull_request:
+    branches:
+      - 2.x
 
 # Two releases racing each other could both try to publish the same version.
 concurrency:
@@ -14,16 +22,51 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write # push release tags and open GitHub releases
-  pull-requests: write # open the Version Packages pull request
-  id-token: write # authenticate to npm through trusted publishing
+  contents: read
 
 jobs:
-  release:
+  test:
     runs-on: ubuntu-latest
     steps:
       # Third-party actions are pinned to a commit rather than a tag, since this
-      # job can publish to npm.
+      # workflow can publish to npm.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: 10
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # The focus query unit tests and the end-to-end tests run in Chromium.
+      - run: pnpm --filter terracotta exec playwright install --with-deps chromium
+
+      # The docs site and the examples read Terracotta's types from its build
+      # output, so build before type checking.
+      - run: pnpm --filter terracotta build
+
+      - run: pnpm typecheck
+
+      - run: pnpm skill:check
+
+      - run: pnpm --filter terracotta test
+
+      - run: pnpm --filter terracotta test:e2e
+
+  release:
+    needs: test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push release tags and open GitHub releases
+      pull-requests: write # open the Version Packages pull request
+      id-token: write # authenticate to npm through trusted publishing
+    steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # `changeset git-tag` only tags versions without a tag, so it needs the
@@ -48,9 +91,6 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # A release is only as good as the commit it is cut from.
-      - run: pnpm --filter terracotta test
-
       # Publishing builds again, but a build that breaks there would do so after
       # the version pull request has merged, leaving a bumped version with
       # nothing published. Failing here stops the release before that.
@@ -61,6 +101,8 @@ jobs:
           # Versions the packages and refreshes the lockfile to match, so the
           # merged pull request still installs with `--frozen-lockfile`.
           version-script: pnpm cs:ver
+          # Publishes each new version under its prerelease tag (`next`), not
+          # `latest`. See `scripts/publish.ts`.
           publish-script: pnpm release
-          commit-message: 'chore: version packages'
-          pr-title: 'chore: version packages'
+          commit-message: 'chore: version packages (next)'
+          pr-title: 'chore: version packages (next)'

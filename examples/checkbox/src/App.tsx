@@ -1,8 +1,13 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { Match, Switch, createSignal } from 'solid-js';
-import { Checkbox, CheckboxDescription, CheckboxIndicator, CheckboxLabel } from 'terracotta';
+import {
+  Checkbox,
+  CheckboxDescription,
+  CheckboxIndicator,
+  CheckboxLabel,
+} from 'terracotta/checkbox';
 
-function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,13 +16,13 @@ function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
     </svg>
   );
 }
 
-function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +31,7 @@ function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -37,7 +42,7 @@ function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX
   );
 }
 
-function UndefinedIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function UndefinedIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +51,7 @@ function UndefinedIcon(props: JSX.IntrinsicElements['svg'] & { title: string }):
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
     </svg>
   );
@@ -63,7 +68,7 @@ export default function App(): JSX.Element {
         as="div"
         class="flex flex-row justify-between items-center space-x-4"
       >
-        <CheckboxIndicator class="flex-none w-6 h-6 p-1 text-white bg-fuchsia-900/25 bg-fuchsia-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
+        <CheckboxIndicator class="flex-none w-6 h-6 p-1 text-white bg-fuchsia-900/25 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
           <Switch>
             <Match when={checked() === undefined}>
               <span class="sr-only">Mixed</span>
