@@ -25,6 +25,18 @@ describe('Meter accessibility', () => {
     expect(screen.getByRole('meter', { name: 'Signal' })).toHaveAttribute('aria-valuemax', '5');
   });
 
+  it('is named by a label given its own id', async () => {
+    render(() => (
+      <Meter value={3} min={0} max={5}>
+        <MeterLabel id="signal-label">Signal</MeterLabel>
+      </Meter>
+    ));
+    await settle();
+
+    const meter = screen.getByRole('meter', { name: 'Signal' });
+    expect(meter).toHaveAttribute('aria-labelledby', 'signal-label');
+  });
+
   it('describes the value with aria-valuetext', () => {
     render(() => (
       <Meter value={50} aria-label="Battery" getValueText={(value) => `${value}%, 6 hours left`} />
