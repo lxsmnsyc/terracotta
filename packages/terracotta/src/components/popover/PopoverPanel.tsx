@@ -10,6 +10,7 @@ import { focusFirst, lockFocus } from '../../utils/focus-navigation';
 import getFocusableElements from '../../utils/focus-query';
 import { focusMenuItem, hasMenu, isMenuItemActivation } from '../../utils/menu-popup';
 import { mergeFunc } from '../../utils/merge-func';
+import { createPanelNode, onFocusLeave, PanelTreeContext } from '../../utils/panel-tree';
 import { createDisabledState, createExpandedState } from '../../utils/state-props';
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
@@ -46,6 +47,7 @@ export function PopoverPanel<T extends ValidComponent = 'div'>(
   const state = useDisclosureState();
 
   const [internalRef, setInternalRef] = createForwardRef(props);
+  const [node, panelRef] = createPanelNode(setInternalRef);
 
   createEffect(
     createDependencyList(() => [internalRef(), state.isOpen()] as const),
@@ -91,14 +93,8 @@ export function PopoverPanel<T extends ValidComponent = 'div'>(
               state.close();
             }
           }),
-          useEventListener(current, 'focusout', (e) => {
-            if (context.hovering) {
-              return;
-            }
-            if (
-              (e.relatedTarget && !current.contains(e.relatedTarget as Node)) ||
-              (e.target && !current.contains(e.target as Node))
-            ) {
+          onFocusLeave(node, () => {
+            if (!context.hovering) {
               state.close();
             }
           }),
@@ -117,12 +113,14 @@ export function PopoverPanel<T extends ValidComponent = 'div'>(
       <Root
         {...POPOVER_PANEL_TAG}
         id={context.panelID}
-        ref={setInternalRef}
+        ref={panelRef}
         {...disabledState}
         {...expandedState}
         {...rest}
       >
-        <DisclosureStateChild>{props.children}</DisclosureStateChild>
+        <PanelTreeContext value={node}>
+          <DisclosureStateChild>{props.children}</DisclosureStateChild>
+        </PanelTreeContext>
       </Root>
     </Unmountable>
   );
