@@ -98,6 +98,41 @@ Measurements are the other thing to watch. A detached element has no layout, so
 `getBoundingClientRect()` reads zeroes and `offsetWidth` is `0` until it is
 attached again. Measure after it becomes visible, not while it is hidden.
 
+## Portals
+
+Terracotta renders every part where you put it. It never moves a panel into a
+portal for you. Wrap a panel in Solid's `<Portal>` when it needs to escape a
+parent's `overflow`, `transform` or stacking context.
+
+```tsx
+import { Portal } from '@solidjs/web';
+
+<Popover>
+  <PopoverButton>Options</PopoverButton>
+  <Portal>
+    <PopoverPanel class="popover-panel">…</PopoverPanel>
+  </Portal>
+</Popover>
+```
+
+A panel in a portal still belongs to the panel it was opened from. Terracotta
+tracks nesting through the component tree, not the DOM. This applies to
+`Dialog`, `AlertDialog`, `CommandBar`, `PopoverPanel`, `ContextMenuPanel`,
+`ListboxOptions` and `ComboboxOptions`.
+
+- Moving focus into a nested panel does not close the panel around it.
+- Moving focus from a nested panel to the page closes both.
+- A click in a nested panel is not a click outside a `ContextMenuPanel`.
+- An open modal does not make its nested panels inert.
+
+Positioning stays yours. A panel in a portal is no longer next to its button,
+so `position: absolute` relative to the button stops working. Use
+`position: fixed` with a positioning library such as `solid-floating-ui`. See
+[Popover positioning](../components/popover.md#positioning).
+
+To stack nested panels, render each one later in the DOM than its parent with
+the same `z-index`, or give it a higher one.
+
 ## Async content
 
 Panels hold whatever you put in them, `Loading` included, and a boundary inside

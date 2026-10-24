@@ -92,6 +92,11 @@ import { Portal } from '@solidjs/web';
 </Portal>
 ```
 
+Panels opened inside the dialog can use a `Portal` too. A popover, listbox or
+nested dialog in a portal still counts as part of this dialog, so it stays
+usable while everything else is inert. See
+[Portals](../guides/rendering.md#portals).
+
 ### With transitions
 
 Set `unmount={false}` so the element survives long enough to animate out. Let
