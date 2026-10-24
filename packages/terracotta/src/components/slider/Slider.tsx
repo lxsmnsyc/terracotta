@@ -229,10 +229,11 @@ export function Slider<V extends SliderValue = number, T extends ValidComponent 
         focusThumb(index): void {
           thumbs.get(index)?.focus();
         },
-        setThumb(index, element): void {
-          if (element) {
-            thumbs.set(index, element);
-          } else {
+        addThumb(index, element): void {
+          thumbs.set(index, element);
+        },
+        removeThumb(index, element): void {
+          if (thumbs.get(index) === element) {
             thumbs.delete(index);
           }
         },
