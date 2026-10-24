@@ -32,6 +32,7 @@
       "components/radio-group",
       "components/select",
       "components/slider",
+      "components/spinbutton",
       "components/switch",
       "components/tabs",
       "components/toast",
