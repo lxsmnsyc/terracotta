@@ -59,7 +59,8 @@ The pattern names two cell designs that work best, and the grid supports both:
   button, a checkbox or a switch. Focus lands on the widget, so screen readers
   announce it as a widget.
 
-A cell with several widgets, or with a text field, takes focus itself. The
+A cell with several widgets, or with a text field, takes focus itself.
+<kbd>Tab</kbd> then moves to the widgets inside it, and on out of the grid. The
 arrow keys are left to a text field, select or editable content inside a
 cell, so its caret still moves. Entering and leaving a cell with
 <kbd>Enter</kbd> and <kbd>F2</kbd> is not included.

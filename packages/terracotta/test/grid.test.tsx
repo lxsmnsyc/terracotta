@@ -177,6 +177,17 @@ describe('Grid keyboard', () => {
     expect(document.activeElement).toBe(screen.getByRole('link', { name: "Ada's profile" }));
   });
 
+  it('stops at the bottom of the last column in a layout grid', async () => {
+    renderGrid({ wrap: true });
+    await settle();
+    const last = screen.getAllByRole('link').at(-1);
+    last?.focus();
+
+    pressKeyOnFocused('ArrowDown');
+
+    expect(document.activeElement).toBe(last);
+  });
+
   it('moves the tab stop with focus', async () => {
     renderGrid();
     await settle();
@@ -185,6 +196,38 @@ describe('Grid keyboard', () => {
 
     expect(cell('Admiral')).toHaveAttribute('tabindex', '0');
     expect(screen.getByRole('columnheader', { name: 'Name' })).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('keeps the widgets of a cell that takes focus itself in the tab sequence', async () => {
+    render(() => (
+      <Grid aria-label="Edit">
+        <GridBody>
+          <GridRow>
+            <GridCell>
+              <input aria-label="Note" />
+            </GridCell>
+            <GridCell>
+              <button type="button">Save</button>
+              <button type="button">Delete</button>
+            </GridCell>
+          </GridRow>
+        </GridBody>
+      </Grid>
+    ));
+    await settle();
+    const [noteCell, actionsCell] = screen.getAllByRole('gridcell');
+
+    expect(noteCell).toHaveAttribute('tabindex', '0');
+    expect(screen.getByRole('textbox', { name: 'Note' })).not.toHaveAttribute('tabindex', '-1');
+
+    noteCell.focus();
+    pressKeyOnFocused('ArrowRight');
+    await settle();
+
+    expect(document.activeElement).toBe(actionsCell);
+    expect(screen.getByRole('button', { name: 'Save' })).not.toHaveAttribute('tabindex', '-1');
+    expect(screen.getByRole('button', { name: 'Delete' })).not.toHaveAttribute('tabindex', '-1');
+    expect(screen.getByRole('textbox', { name: 'Note' })).toHaveAttribute('tabindex', '-1');
   });
 
   it('leaves the arrow keys to a text field in a cell', async () => {
