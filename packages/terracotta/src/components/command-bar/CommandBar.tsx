@@ -16,6 +16,7 @@ import { createDisabledState, createExpandedState } from '../../utils/state-prop
 import type { Prettify } from '../../utils/types';
 import useEventListener from '../../utils/use-event-listener';
 import { createModalFocus, createMountedID } from '../../utils/modal';
+import { createPanelNode, PanelTreeContext } from '../../utils/panel-tree';
 import { CommandBarContext } from './CommandBarContext';
 import { COMMAND_BAR_TAG } from './tags';
 export type CommandBarControlledBaseProps = Prettify<
@@ -69,7 +70,8 @@ export function CommandBar<T extends ValidComponent = 'div'>(
 
   // `ref` is not a declared prop, but one passed anyway is still called.
   const [root, setRoot] = createForwardRef(props as WithRef<T>);
-  createModalFocus(state, root);
+  const [node, panelRef] = createPanelNode(setRoot);
+  createModalFocus(state, root, node);
 
   onSettled(() =>
     useEventListener(window, 'keydown', (e) => {
@@ -133,9 +135,11 @@ export function CommandBar<T extends ValidComponent = 'div'>(
           {...expandedState}
           {...rest}
           // After `rest`, so a `ref` in it does not replace this one.
-          ref={setRoot}
+          ref={panelRef}
         >
-          <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
+          <PanelTreeContext value={node}>
+            <DisclosureStateProvider state={state}>{props.children}</DisclosureStateProvider>
+          </PanelTreeContext>
         </Root>
       </Unmountable>
     </CommandBarContext>

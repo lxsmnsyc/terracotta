@@ -5,6 +5,7 @@ import type { DisclosureStateProperties } from '../states/create-disclosure-stat
 import { createDependencyList } from './create-dependency-list';
 import { focusFirst } from './focus-navigation';
 import getFocusableElements from './focus-query';
+import type { PanelNode } from './panel-tree';
 import useFocusStartPoint from './use-focus-start-point';
 import { afterTransition } from './wait-for-transition';
 
@@ -40,7 +41,12 @@ const CLOSED_MODAL = [
  */
 const LIVE_REGION = '[aria-live], [role="status"], [role="alert"], [role="log"]';
 
-function claim(el: HTMLElement, claimed: HTMLElement[]): void {
+function claim(el: HTMLElement, claimed: HTMLElement[], kept: HTMLElement[]): void {
+  // A panel nested in the modal can be rendered into a `Portal` outside it.
+  // It is part of the modal, so it stays usable.
+  if (kept.some((panel) => panel === el || panel.contains(el))) {
+    return;
+  }
   const tracked = el as HTMLElement & InertTracked;
   const count = tracked[INERT_COUNT] ?? 0;
   if (count === 0) {
@@ -48,12 +54,13 @@ function claim(el: HTMLElement, claimed: HTMLElement[]): void {
     if (el.hasAttribute('inert') || el.matches(LIVE_REGION)) {
       return;
     }
-    // A live region deeper inside, such as a `Toaster` in the app root, is
-    // kept out by marking the children around it instead.
-    if (el.querySelector(LIVE_REGION)) {
+    // A live region deeper inside, such as a `Toaster` in the app root, and a
+    // nested panel deeper inside, are kept out by marking the children around
+    // them instead.
+    if (el.querySelector(LIVE_REGION) || kept.some((panel) => el.contains(panel))) {
       for (const child of Array.from(el.children)) {
         if (child instanceof HTMLElement) {
-          claim(child, claimed);
+          claim(child, claimed, kept);
         }
       }
       return;
@@ -82,17 +89,20 @@ function release(el: HTMLElement): void {
  * walks from `modal` up to `<body>` and marks the siblings at each level, so
  * it works wherever the modal is rendered, portal or not.
  *
+ * The elements in `kept` are left alone. They are the panels nested in the
+ * modal, which can be rendered into a `Portal` outside it.
+ *
  * Returns a function that undoes it. Each element counts how many modals
  * claimed it, so stacked modals can close in any order.
  */
-export function inertOutside(modal: HTMLElement): () => void {
+export function inertOutside(modal: HTMLElement, kept: HTMLElement[] = []): () => void {
   const claimed: HTMLElement[] = [];
   let current: HTMLElement = modal;
   while (current !== document.body && current.parentElement) {
     const parent: HTMLElement = current.parentElement;
     for (const sibling of Array.from(parent.children)) {
       if (sibling !== current && sibling instanceof HTMLElement) {
-        claim(sibling, claimed);
+        claim(sibling, claimed, kept);
       }
     }
     current = parent;
@@ -186,8 +196,15 @@ export function createMountedID(fallback: string): MountedID {
  * Both run from one effect because the order matters. The focused element is
  * saved before the page around it turns inert, and the page is no longer inert
  * when focus moves back to it.
+ *
+ * The panels nested in the modal stay usable, even when they are rendered into
+ * a `Portal` outside it.
  */
-export function createModalFocus(state: DisclosureStateProperties, root: Accessor<unknown>): void {
+export function createModalFocus(
+  state: DisclosureStateProperties,
+  root: Accessor<unknown>,
+  node: PanelNode,
+): void {
   let inertRoot: HTMLElement | undefined;
   let releaseInert: (() => void) | undefined;
 
@@ -219,11 +236,11 @@ export function createModalFocus(state: DisclosureStateProperties, root: Accesso
           // A modal inside a `Portal` can reach the document a moment after
           // this runs, and there is no page around it to mark before then.
           if (current.isConnected) {
-            releaseInert = inertOutside(current);
+            releaseInert = inertOutside(current, node.descendants());
           } else {
             queueMicrotask(() => {
               if (inertRoot === current && !releaseInert && current.isConnected) {
-                releaseInert = inertOutside(current);
+                releaseInert = inertOutside(current, node.descendants());
               }
             });
           }
