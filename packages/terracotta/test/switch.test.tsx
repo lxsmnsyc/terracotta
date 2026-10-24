@@ -56,6 +56,36 @@ describe('Switch accessibility', () => {
   });
 });
 
+describe('Switch in a form', () => {
+  it('does not submit the form when flipped', () => {
+    const onSubmit = vi.fn((event: SubmitEvent) => {
+      event.preventDefault();
+    });
+    render(() => (
+      <form onSubmit={onSubmit}>
+        <Switch defaultChecked={false}>Aeroplane mode</Switch>
+      </form>
+    ));
+
+    expect(getSwitch()).toHaveAttribute('type', 'button');
+
+    getSwitch().click();
+
+    expect(onSubmit).not.toHaveBeenCalled();
+    expect(getSwitch()).toHaveAttribute('aria-checked', 'true');
+  });
+
+  it('keeps a type that is passed in', () => {
+    render(() => (
+      <Switch defaultChecked={false} type="submit">
+        Aeroplane mode
+      </Switch>
+    ));
+
+    expect(getSwitch()).toHaveAttribute('type', 'submit');
+  });
+});
+
 describe('Switch state', () => {
   it('reports the new value through `onChange`', () => {
     const onChange = vi.fn();

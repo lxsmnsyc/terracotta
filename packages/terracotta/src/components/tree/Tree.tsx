@@ -133,6 +133,7 @@ export function Tree<V, T extends ValidComponent = 'ul'>(props: TreeProps<V, T>)
   }
 
   const [entries, setEntries] = createSignal<TreeItemEntry[]>([]);
+  let serverTabStopClaimed = false;
   const [focused, setFocused] = createSignal<HTMLElement>();
 
   // The one item in the tab sequence: the focused one, else the first
@@ -303,6 +304,13 @@ export function Tree<V, T extends ValidComponent = 'ul'>(props: TreeProps<V, T>)
           };
         },
         tabStop,
+        claimServerTabStop(): boolean {
+          if (serverTabStopClaimed) {
+            return false;
+          }
+          serverTabStopClaimed = true;
+          return true;
+        },
         setFocused,
       }}
     >
