@@ -42,6 +42,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclo
 - [Popover](./components/popover.md)
 - [RadioGroup](./components/radio-group.md)
 - [Select](./components/select.md)
+- [Slider](./components/slider.md)
 - [Switch](./components/switch.md)
 - [Tabs](./components/tabs.md)
 - [Toast](./components/toast.md)
