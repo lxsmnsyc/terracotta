@@ -893,6 +893,30 @@ a.button {
   padding: 0.25rem;
 }
 
+/* Tooltip ---------------------------------------------------------- */
+
+.tooltip {
+  position: relative;
+  display: inline-flex;
+}
+
+.tooltip-panel {
+  position: absolute;
+  z-index: 10;
+  inset-block-start: 100%;
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  margin-block-start: 0.35rem;
+  inline-size: max-content;
+  max-inline-size: 14rem;
+  border-radius: var(--radius-md);
+  background: var(--text-1);
+  color: var(--surface-0);
+  padding: 0.3rem 0.55rem;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+}
+
 /* Menu ------------------------------------------------------------- */
 
 /*

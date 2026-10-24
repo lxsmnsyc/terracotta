@@ -34,8 +34,8 @@ export interface DisclosureStateProperties {
 
 /**
  * Creates an open/closed state. Backs `Disclosure`, `Dialog`, `AlertDialog`,
- * `Popover`, `ContextMenu`, `CommandBar` and the popups of `Listbox` and
- * `Combobox`.
+ * `Popover`, `ContextMenu`, `CommandBar`, `Tooltip` and the popups of `Listbox`
+ * and `Combobox`.
  *
  * Pass `defaultOpen` for uncontrolled state or `isOpen` for controlled; the
  * two are mutually exclusive.

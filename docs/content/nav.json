@@ -36,6 +36,7 @@
       "components/toast",
       "components/toggle",
       "components/toolbar",
+      "components/tooltip",
       "components/transition"
     ]
   },
