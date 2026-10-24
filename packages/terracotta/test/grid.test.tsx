@@ -1,4 +1,5 @@
 import { render, screen } from '@solidjs/testing-library';
+import { createSignal, Show } from 'solid-js';
 import { describe, expect, it } from 'vitest';
 import {
   Grid,
@@ -228,6 +229,38 @@ describe('Grid keyboard', () => {
     expect(screen.getByRole('button', { name: 'Save' })).not.toHaveAttribute('tabindex', '-1');
     expect(screen.getByRole('button', { name: 'Delete' })).not.toHaveAttribute('tabindex', '-1');
     expect(screen.getByRole('textbox', { name: 'Note' })).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('gives cells their own tabindex back when the grid goes away', async () => {
+    // Rows built outside the grid, so they outlive it.
+    const row = document.createElement('div');
+    row.setAttribute('role', 'row');
+    const cells = ['One', 'Two'].map((text) => {
+      const element = document.createElement('div');
+      element.setAttribute('role', 'gridcell');
+      element.textContent = text;
+      row.append(element);
+      return element;
+    });
+    cells[1].setAttribute('tabindex', '0');
+    const [shown, setShown] = createSignal(true);
+    render(() => (
+      <Show when={shown()} fallback={row}>
+        <Grid as="div" aria-label="Numbers">
+          {row}
+        </Grid>
+      </Show>
+    ));
+    await settle();
+
+    expect(cells[0]).toHaveAttribute('tabindex', '0');
+    expect(cells[1]).toHaveAttribute('tabindex', '-1');
+
+    setShown(false);
+    await settle();
+
+    expect(cells[0]).not.toHaveAttribute('tabindex');
+    expect(cells[1]).toHaveAttribute('tabindex', '0');
   });
 
   it('leaves the arrow keys to a text field in a cell', async () => {

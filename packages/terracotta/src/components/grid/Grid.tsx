@@ -52,6 +52,8 @@ export function Grid<T extends ValidComponent = 'table'>(props: GridProps<T>): J
     // Widgets inside cells that were set to `tabindex="-1"`, with the value
     // they had before, so they can be put back.
     const demoted = new Map<HTMLElement, string | null>();
+    // The `tabindex` each cell had before the grid first set it.
+    const cellTabIndexes = new Map<HTMLElement, string | null>();
 
     function owns(element: Element): boolean {
       return element.closest('[role="grid"]') === root;
@@ -67,15 +69,28 @@ export function Grid<T extends ValidComponent = 'table'>(props: GridProps<T>): J
       );
     }
 
+    function setTabIndex(element: HTMLElement, value: string | null): void {
+      if (value == null) {
+        element.removeAttribute('tabindex');
+      } else {
+        element.setAttribute('tabindex', value);
+      }
+    }
+
     function restore(): void {
       for (const [element, value] of demoted) {
-        if (value == null) {
-          element.removeAttribute('tabindex');
-        } else {
-          element.setAttribute('tabindex', value);
-        }
+        setTabIndex(element, value);
       }
       demoted.clear();
+    }
+
+    function restoreCells(keep: HTMLElement[] = []): void {
+      for (const [cell, value] of cellTabIndexes) {
+        if (!keep.includes(cell)) {
+          setTabIndex(cell, value);
+          cellTabIndexes.delete(cell);
+        }
+      }
     }
 
     // The element that takes focus for a cell: its one widget, or the cell.
@@ -97,7 +112,12 @@ export function Grid<T extends ValidComponent = 'table'>(props: GridProps<T>): J
       if (!stopCell || !all.includes(stopCell)) {
         stopCell = all.at(0);
       }
+      // A cell that left the grid gets its own `tabindex` back.
+      restoreCells(all);
       for (const cell of all) {
+        if (!cellTabIndexes.has(cell)) {
+          cellTabIndexes.set(cell, cell.getAttribute('tabindex'));
+        }
         const target = targetOf(cell);
         const inner = getFocusableElements(cell).filter((element) => element !== cell);
         for (const element of inner) {
@@ -144,6 +164,7 @@ export function Grid<T extends ValidComponent = 'table'>(props: GridProps<T>): J
       () => {
         observer.disconnect();
         restore();
+        restoreCells();
       },
       useEventListener(root, 'focusin', (e) => {
         const cell = cellOf(e.target);
