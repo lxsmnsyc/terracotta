@@ -158,6 +158,13 @@ export function Tooltip<T extends ValidComponent = 'div'>(props: TooltipProps<T>
           );
         },
         scheduleClose(): void {
+          // The pointer leaving does not hide the tooltip of a focused
+          // trigger. It stays until focus leaves, which closes it on blur.
+          const trigger = document.getElementById(triggerID);
+          if (trigger && trigger.contains(document.activeElement)) {
+            cancel();
+            return;
+          }
           schedule(
             false,
             untrack(() => props.closeDelay ?? DEFAULT_CLOSE_DELAY),
