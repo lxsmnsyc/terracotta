@@ -1,5 +1,12 @@
 # terracotta
 
+## 2.0.0-next.11
+
+### Minor Changes
+
+- 79db046: Panels rendered into a `Portal` now still count as inside the panel they opened from.
+  Moving focus into a nested popover, listbox or combobox no longer closes the panel around it, and an open modal no longer makes its nested panels inert.
+
 ## 2.0.0-next.10
 
 ### Major Changes
