@@ -26,6 +26,11 @@ export interface TreeContextData<V> {
   register(entry: TreeItemEntry): () => void;
   /** The item that has `tabindex="0"`. */
   tabStop: Accessor<HTMLElement | undefined>;
+  /**
+   * Returns `true` for the first caller only. On the server no item registers,
+   * so the first root item claims the tab stop this way.
+   */
+  claimServerTabStop(): boolean;
   setFocused(element: HTMLElement): void;
 }
 

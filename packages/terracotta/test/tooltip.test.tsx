@@ -57,6 +57,22 @@ describe('Tooltip behaviour', () => {
     vi.useRealTimers();
   });
 
+  it('stays open while the trigger has focus and the pointer leaves', async () => {
+    renderTooltip();
+
+    getTrigger().focus();
+    await tick();
+    fireEvent.pointerEnter(getTrigger());
+    fireEvent.pointerLeave(getTrigger());
+    await vi.advanceTimersByTimeAsync(1000);
+    flush();
+    expect(screen.getByRole('tooltip')).toBeInTheDocument();
+
+    getTrigger().blur();
+    await tick();
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+  });
+
   it('opens when the trigger is focused, and closes on blur', async () => {
     renderTooltip();
 

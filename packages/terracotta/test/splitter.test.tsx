@@ -206,4 +206,23 @@ describe('SplitterStateChild', () => {
 
     expect(separator).toHaveTextContent('Show');
   });
+
+  it('keeps the elements of a render prop that returns JSX', () => {
+    render(() => (
+      <Splitter defaultValue={30}>
+        <SplitterPane />
+        <SplitterSeparator aria-label="Sidebar">
+          {(state) => <span data-testid="handle" data-value={state.value()} />}
+        </SplitterSeparator>
+      </Splitter>
+    ));
+    const separator = screen.getByRole('separator', { name: 'Sidebar' });
+    const handle = screen.getByTestId('handle');
+
+    separator.focus();
+    pressKeyOnFocused('ArrowRight');
+
+    expect(screen.getByTestId('handle')).toBe(handle);
+    expect(handle).not.toHaveAttribute('data-value', '30');
+  });
 });
