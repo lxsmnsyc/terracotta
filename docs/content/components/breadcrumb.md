@@ -42,15 +42,22 @@ leave out `BreadcrumbLink` there.
 
 ### Separators
 
-Draw separators in CSS, as the demo does, so screen readers do not read them:
+Screen readers read the separators unless you hide them. Two ways to do it:
 
-```css
-.breadcrumb-item + .breadcrumb-item::before {
-  content: '/';
-}
-```
+- Draw them in CSS with empty alternative text, as the demo does. In
+  `content: '/' / ''`, the string after the second slash is what screen readers
+  read. Browsers without this syntax skip that declaration and use the first
+  one, which screen readers still read.
 
-If you put a separator in the markup instead, give it `aria-hidden="true"`.
+  ```css
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: '/';
+    content: '/' / '';
+  }
+  ```
+
+- Put them in the markup with `aria-hidden="true"`. This hides them in every
+  browser.
 
 ### Naming
 

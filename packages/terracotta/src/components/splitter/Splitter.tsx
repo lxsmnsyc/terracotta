@@ -1,5 +1,6 @@
 import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
-import { createMemo, createSignal, createUniqueId, omit, untrack } from 'solid-js';
+import { createMemo, createSignal, omit, untrack } from 'solid-js';
+import { createPartID } from '../../utils/create-part-id';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { renderChildren } from '../../utils/render-children';
@@ -64,7 +65,7 @@ const SPLITTER_OPTIONS = ['min', 'max', 'step', 'horizontal', 'disabled', 'onCha
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/splitter.md}
  */
 export function Splitter<T extends ValidComponent = 'div'>(props: SplitterProps<T>): JSX.Element {
-  const paneID = createUniqueId();
+  const pane = createPartID();
 
   const [ref, setRef] = createForwardRef(props);
 
@@ -136,7 +137,7 @@ export function Splitter<T extends ValidComponent = 'div'>(props: SplitterProps<
     <SplitterContext
       value={{
         state,
-        paneID,
+        pane,
         isHorizontal: () => !!props.horizontal,
         root: () => {
           const current = ref();

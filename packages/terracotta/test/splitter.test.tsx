@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { createSignal } from 'solid-js';
 import { describe, expect, it, vi } from 'vitest';
 import { Splitter, SplitterPane, SplitterSeparator } from '../src/components/splitter';
-import { pressKeyOnFocused } from './aria';
+import { pressKeyOnFocused, settle } from './aria';
 
 type Options = {
   value?: number;
@@ -50,6 +50,19 @@ describe('Splitter accessibility', () => {
     renderSplitter();
 
     expect(getSeparator()).toHaveAttribute('aria-controls', screen.getByText('Contents').id);
+  });
+
+  it('points aria-controls at an id given to the pane', async () => {
+    render(() => (
+      <Splitter defaultValue={30}>
+        <SplitterPane id="contents">Contents</SplitterPane>
+        <SplitterSeparator aria-label="Contents" />
+      </Splitter>
+    ));
+    await settle();
+
+    expect(document.getElementById('contents')).toBeInTheDocument();
+    expect(getSeparator()).toHaveAttribute('aria-controls', 'contents');
   });
 
   it('is horizontal when the panes are stacked', () => {

@@ -1,6 +1,7 @@
 import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, omit } from 'solid-js';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
+import { createDependencyList } from '../../utils/create-dependency-list';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
 import { createARIADisabledState, createDisabledState } from '../../utils/state-props';
@@ -42,49 +43,53 @@ export function SliderThumb<T extends ValidComponent = 'div'>(
 
   const [internalRef, setInternalRef] = createForwardRef(props);
 
-  createEffect(internalRef, (current) => {
-    if (current instanceof HTMLElement) {
-      const position = index();
-      context.setThumb(position, current);
-      return mergeFunc(
-        () => {
-          context.setThumb(position, undefined);
-        },
-        useEventListener(current, 'keydown', (e) => {
-          if (state.disabled()) {
-            return;
-          }
-          switch (e.key) {
-            case 'ArrowRight':
-            case 'ArrowUp':
-              state.increment(1, index());
-              break;
-            case 'ArrowLeft':
-            case 'ArrowDown':
-              state.decrement(1, index());
-              break;
-            case 'PageUp':
-              state.increment(context.largeStep(), index());
-              break;
-            case 'PageDown':
-              state.decrement(context.largeStep(), index());
-              break;
-            case 'Home':
-              state.setThumbValue(index(), state.thumbMin(index()));
-              break;
-            case 'End':
-              state.setThumbValue(index(), state.thumbMax(index()));
-              break;
-            default:
+  // Registers again when `index` changes, so a press on the track focuses the
+  // thumb that now holds that index.
+  createEffect(
+    createDependencyList(() => [internalRef(), index()] as const),
+    ([current, position]) => {
+      if (current instanceof HTMLElement) {
+        context.addThumb(position, current);
+        return mergeFunc(
+          () => {
+            context.removeThumb(position, current);
+          },
+          useEventListener(current, 'keydown', (e) => {
+            if (state.disabled()) {
               return;
-          }
-          // The keys would otherwise scroll the page.
-          e.preventDefault();
-        }),
-      );
-    }
-    return undefined;
-  });
+            }
+            switch (e.key) {
+              case 'ArrowRight':
+              case 'ArrowUp':
+                state.increment(1, index());
+                break;
+              case 'ArrowLeft':
+              case 'ArrowDown':
+                state.decrement(1, index());
+                break;
+              case 'PageUp':
+                state.increment(context.largeStep(), index());
+                break;
+              case 'PageDown':
+                state.decrement(context.largeStep(), index());
+                break;
+              case 'Home':
+                state.setThumbValue(index(), state.thumbMin(index()));
+                break;
+              case 'End':
+                state.setThumbValue(index(), state.thumbMax(index()));
+                break;
+              default:
+                return;
+            }
+            // The keys would otherwise scroll the page.
+            e.preventDefault();
+          }),
+        );
+      }
+      return undefined;
+    },
+  );
 
   const disabledState = createDisabledState(() => state.disabled());
   const ariaDisabledState = createARIADisabledState(() => state.disabled());
