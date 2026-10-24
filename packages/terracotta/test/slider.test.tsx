@@ -127,6 +127,35 @@ describe('Slider keyboard', () => {
     expect(getThumb()).toHaveAttribute('aria-valuenow', '0.3');
   });
 
+  it('keeps the decimals of a fractional minimum', () => {
+    renderSlider({ value: 0.25, min: 0.25, max: 2, step: 0.5 });
+    getThumb().focus();
+
+    expect(getThumb()).toHaveAttribute('aria-valuenow', '0.25');
+
+    pressKeyOnFocused('ArrowRight');
+
+    expect(getThumb()).toHaveAttribute('aria-valuenow', '0.75');
+  });
+
+  it('keeps the decimals of a step written with an exponent', () => {
+    renderSlider({ value: 0, min: 0, max: 1, step: 1e-7 });
+    getThumb().focus();
+
+    pressKeyOnFocused('ArrowRight');
+
+    expect(getThumb()).toHaveAttribute('aria-valuenow', '1e-7');
+  });
+
+  it('reaches the maximum with End when it is not on the step grid', () => {
+    renderSlider({ value: 0, min: 0, max: 10, step: 3 });
+    getThumb().focus();
+
+    pressKeyOnFocused('End');
+
+    expect(getThumb()).toHaveAttribute('aria-valuenow', '10');
+  });
+
   it('does not move while disabled', () => {
     renderSlider({ disabled: true });
     getThumb().focus();
@@ -304,6 +333,38 @@ describe('Slider with several thumbs', () => {
     expect(getMax()).toHaveAttribute('aria-valuenow', '70');
     expect(getMin()).toHaveAttribute('aria-valuenow', '20');
     expect(document.activeElement).toBe(getMax());
+  });
+
+  function renderTied(): HTMLElement {
+    render(() => (
+      <Slider defaultValue={[50, 50]}>
+        <SliderTrack data-testid="track">
+          <SliderThumb index={0} aria-label="Low" />
+          <SliderThumb index={1} aria-label="High" />
+        </SliderTrack>
+      </Slider>
+    ));
+    const track = screen.getByTestId('track');
+    vi.spyOn(track, 'getBoundingClientRect').mockReturnValue(
+      DOMRect.fromRect({ x: 0, y: 0, width: 100, height: 10 }),
+    );
+    return track;
+  }
+
+  it.each([
+    ['up', 70, 'High', ['50', '70']],
+    ['down', 30, 'Low', ['30', '50']],
+  ])('pulls thumbs that share a value apart when dragged %s', (_, to, moved, expected) => {
+    const track = renderTied();
+
+    fireEvent.pointerDown(track, { button: 0, pointerId: 1, clientX: 50, clientY: 5 });
+    fireEvent.pointerMove(track, { pointerId: 1, clientX: to, clientY: 5 });
+
+    const values = ['Low', 'High'].map((name) =>
+      screen.getByRole('slider', { name }).getAttribute('aria-valuenow'),
+    );
+    expect(values).toEqual(expected);
+    expect(document.activeElement).toBe(screen.getByRole('slider', { name: moved }));
   });
 
   it('submits one input per thumb', () => {

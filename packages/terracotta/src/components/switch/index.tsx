@@ -105,6 +105,9 @@ export function Switch<T extends ValidComponent = 'button'>(props: SwitchProps<T
     <Button
       {...SWITCH_TAG}
       ref={setRef}
+      // A `<button>` defaults to `type="submit"`, which would submit the form
+      // around the switch on every flip. `rest` can still set another type.
+      type={(props.as ?? 'button') === 'button' ? 'button' : undefined}
       role="switch"
       aria-checked={isChecked() ? 'true' : 'false'}
       {...checkedState}
