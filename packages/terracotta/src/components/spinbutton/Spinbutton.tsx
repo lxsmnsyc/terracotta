@@ -222,6 +222,7 @@ export function Spinbutton<T extends ValidComponent = 'div'>(
         valueText: () => props.getValueText?.(value()),
         format: (current) => (props.formatValue ?? String)(current),
         parse: parseText,
+        snap: (current) => untrack(() => snap(current)),
         draft,
         setDraft,
         commit,
