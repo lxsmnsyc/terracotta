@@ -335,6 +335,38 @@ describe('Slider with several thumbs', () => {
     expect(document.activeElement).toBe(getMax());
   });
 
+  function renderTied(): HTMLElement {
+    render(() => (
+      <Slider defaultValue={[50, 50]}>
+        <SliderTrack data-testid="track">
+          <SliderThumb index={0} aria-label="Low" />
+          <SliderThumb index={1} aria-label="High" />
+        </SliderTrack>
+      </Slider>
+    ));
+    const track = screen.getByTestId('track');
+    vi.spyOn(track, 'getBoundingClientRect').mockReturnValue(
+      DOMRect.fromRect({ x: 0, y: 0, width: 100, height: 10 }),
+    );
+    return track;
+  }
+
+  it.each([
+    ['up', 70, 'High', ['50', '70']],
+    ['down', 30, 'Low', ['30', '50']],
+  ])('pulls thumbs that share a value apart when dragged %s', (_, to, moved, expected) => {
+    const track = renderTied();
+
+    fireEvent.pointerDown(track, { button: 0, pointerId: 1, clientX: 50, clientY: 5 });
+    fireEvent.pointerMove(track, { pointerId: 1, clientX: to, clientY: 5 });
+
+    const values = ['Low', 'High'].map((name) =>
+      screen.getByRole('slider', { name }).getAttribute('aria-valuenow'),
+    );
+    expect(values).toEqual(expected);
+    expect(document.activeElement).toBe(screen.getByRole('slider', { name: moved }));
+  });
+
   it('submits one input per thumb', () => {
     renderRange();
 
