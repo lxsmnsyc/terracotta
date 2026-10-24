@@ -57,9 +57,10 @@ export function SpinbuttonInput<T extends ValidComponent = 'input'>(
           const text = current.value;
           context.setDraft(text);
           const parsed = context.parse(text);
-          // A finished value updates at once. Text on its way to one, such as
-          // "1." or "-", waits for the commit.
-          if (Number.isFinite(parsed) && inRange(parsed)) {
+          // A value in range and on a step updates at once. Other text, such as
+          // "1." or the "3" of "35" with a step of 5, waits for the commit, so
+          // the value is not snapped while the user is still typing.
+          if (Number.isFinite(parsed) && inRange(parsed) && context.snap(parsed) === parsed) {
             state.setValue(parsed);
           }
         }),

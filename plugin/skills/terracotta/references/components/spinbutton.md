@@ -39,7 +39,7 @@ import {
 The field is a normal text field, so editing keys work as the browser provides
 them.
 
-- Text that is a value in range sets the value as it is typed.
+- Text that is a value in range and on a step sets the value as it is typed.
 - Text on its way to a value, such as `1.` or `-`, waits.
 - Text that is not a number, or is out of range, sets `aria-invalid="true"`.
 - On blur and <kbd>Enter</kbd>, the text becomes the value: snapped to the
