@@ -55,8 +55,8 @@ export function SliderTrack<T extends ValidComponent = 'div'>(
         return state.min() + ratio * (state.max() - state.min());
       }
 
-      // The thumb nearest the value. When thumbs share a value, the pointer
-      // picks the one on its side, so it can always pull them apart.
+      // The thumb nearest the value. When thumbs share a value, `towards`
+      // settles which of them moves.
       function nearest(value: number): number {
         const values = state.values();
         let best = 0;
@@ -70,6 +70,30 @@ export function SliderTrack<T extends ValidComponent = 'div'>(
         return best;
       }
 
+      // Thumbs that share a value block each other: the lower one cannot pass
+      // the upper one. So among the thumbs at the active thumb's value, the
+      // pointer moves the last one when it goes up and the first one when it
+      // goes down. A press exactly on the shared value moves none of them, and
+      // the first movement after it decides.
+      function towards(value: number): void {
+        const values = state.values();
+        const current = values[active];
+        let next = active;
+        if (value > current) {
+          while (next + 1 < values.length && values[next + 1] === current) {
+            next += 1;
+          }
+        } else if (value < current) {
+          while (next > 0 && values[next - 1] === current) {
+            next -= 1;
+          }
+        }
+        if (next !== active) {
+          active = next;
+          context.focusThumb(active);
+        }
+      }
+
       return mergeFunc(
         useEventListener(current, 'pointerdown', (e) => {
           if (state.disabled() || e.button !== 0) {
@@ -80,6 +104,7 @@ export function SliderTrack<T extends ValidComponent = 'div'>(
           pointer = e.pointerId;
           const value = valueFromPointer(e);
           active = nearest(value);
+          towards(value);
           // jsdom has no pointer capture.
           if ('setPointerCapture' in current) {
             current.setPointerCapture(e.pointerId);
@@ -89,7 +114,9 @@ export function SliderTrack<T extends ValidComponent = 'div'>(
         }),
         useEventListener(current, 'pointermove', (e) => {
           if (pointer === e.pointerId) {
-            state.setThumbValue(active, valueFromPointer(e));
+            const value = valueFromPointer(e);
+            towards(value);
+            state.setThumbValue(active, value);
           }
         }),
         useEventListener(current, 'pointerup', (e) => {

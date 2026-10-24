@@ -70,11 +70,15 @@ const SPINBUTTON_OPTIONS = [
   'onChange',
 ] as const;
 
-/** The number of decimals in `step`, so stepped values do not drift. */
-function decimalsOf(step: number): number {
-  const text = String(step);
-  const index = text.indexOf('.');
-  return index === -1 ? 0 : text.length - index - 1;
+/**
+ * The number of decimals in `value`, so stepped values do not drift. It reads
+ * exponent forms such as `1e-7` too.
+ */
+function decimalsOf(value: number): number {
+  const [mantissa, exponent] = String(value).split('e');
+  const index = mantissa.indexOf('.');
+  const digits = index === -1 ? 0 : mantissa.length - index - 1;
+  return Math.max(0, digits - Number(exponent ?? 0));
 }
 
 function defaultParse(text: string): number {
@@ -121,18 +125,26 @@ export function Spinbutton<T extends ValidComponent = 'div'>(
 
   // Snaps to the step counted from the minimum, or from 0 without one.
   function snap(value: number): number {
+    const hi = max();
+    // The maximum is always a stop, even when it is not on the step grid, so
+    // End reaches it.
+    if (hi != null && value >= hi) {
+      return hi;
+    }
     const base = min() ?? 0;
     const size = step();
     const snapped = Math.round((value - base) / size) * size + base;
-    return Number(clamp(snapped).toFixed(decimalsOf(size)));
+    // The grid starts at `base`, so its decimals count as much as the step's.
+    return Number(clamp(snapped).toFixed(Math.max(decimalsOf(base), decimalsOf(size))));
   }
 
   const [internal, setInternal] = createSignal(
     untrack(() => snap(isSpinbuttonUncontrolled(props) ? props.defaultValue : props.value)),
   );
 
+  // A controlled value is snapped too, so `aria-valuenow` stays in range.
   const value = createMemo((): number =>
-    isSpinbuttonUncontrolled(props) ? internal() : props.value,
+    isSpinbuttonUncontrolled(props) ? internal() : snap(props.value),
   );
 
   // Returns the value it settled on.
