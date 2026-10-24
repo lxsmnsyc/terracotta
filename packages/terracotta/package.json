@@ -114,6 +114,11 @@
       "solid": "./dist/select.jsx",
       "default": "./dist/select.jsx"
     },
+    "./slider": {
+      "types": "./dist/slider.d.ts",
+      "solid": "./dist/slider.jsx",
+      "default": "./dist/slider.jsx"
+    },
     "./states": {
       "types": "./dist/states.d.ts",
       "solid": "./dist/states.jsx",
