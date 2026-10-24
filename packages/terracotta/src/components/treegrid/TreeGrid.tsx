@@ -93,6 +93,8 @@ export function TreeGrid<V, T extends ValidComponent = 'table'>(
     // The row or cell holding the tab stop.
     let stop: HTMLElement | undefined;
     const demoted = new Map<HTMLElement, string | null>();
+    // The `tabindex` each row and cell had before the tree grid first set it.
+    const ownTabIndexes = new Map<HTMLElement, string | null>();
 
     function owns(element: Element): boolean {
       return element.closest('[role="treegrid"]') === root;
@@ -112,15 +114,34 @@ export function TreeGrid<V, T extends ValidComponent = 'table'>(
       );
     }
 
+    function setTabIndex(element: HTMLElement, value: string | null): void {
+      if (value == null) {
+        element.removeAttribute('tabindex');
+      } else {
+        element.setAttribute('tabindex', value);
+      }
+    }
+
     function restore(): void {
       for (const [element, value] of demoted) {
-        if (value == null) {
-          element.removeAttribute('tabindex');
-        } else {
-          element.setAttribute('tabindex', value);
-        }
+        setTabIndex(element, value);
       }
       demoted.clear();
+    }
+
+    function restoreOwn(keep: HTMLElement[] = []): void {
+      for (const [element, value] of ownTabIndexes) {
+        if (!keep.includes(element)) {
+          setTabIndex(element, value);
+          ownTabIndexes.delete(element);
+        }
+      }
+    }
+
+    function record(element: HTMLElement): void {
+      if (!ownTabIndexes.has(element)) {
+        ownTabIndexes.set(element, element.getAttribute('tabindex'));
+      }
     }
 
     function widgetsOf(cell: HTMLElement): HTMLElement[] {
@@ -152,10 +173,14 @@ export function TreeGrid<V, T extends ValidComponent = 'table'>(
         stop = rows.at(0) ?? cells.at(0);
       }
       const activeRow = stop ? rowOf(stop) : undefined;
+      // A row or cell that left the tree grid gets its own `tabindex` back.
+      restoreOwn([...rows, ...cells]);
       for (const row of rows) {
+        record(row);
         row.setAttribute('tabindex', row === stop ? '0' : '-1');
       }
       for (const cell of cells) {
+        record(cell);
         const target = targetOf(cell);
         const keepWidgets = rowOf(cell) === activeRow;
         for (const element of widgetsOf(cell)) {
@@ -212,6 +237,7 @@ export function TreeGrid<V, T extends ValidComponent = 'table'>(
       () => {
         observer.disconnect();
         restore();
+        restoreOwn();
       },
       useEventListener(root, 'focusin', (e) => {
         const target = owner(e.target);

@@ -1,5 +1,6 @@
 import { render, screen } from '@solidjs/testing-library';
 import type { JSX } from '@solidjs/web';
+import { createSignal, Show } from 'solid-js';
 import { describe, expect, it, vi } from 'vitest';
 import {
   TreeGrid,
@@ -90,6 +91,35 @@ describe('TreeGrid accessibility', () => {
 });
 
 describe('TreeGrid keyboard on rows', () => {
+  it('gives rows and cells their own tabindex back when it goes away', async () => {
+    // A row built outside the tree grid, so it outlives it.
+    const row = document.createElement('div');
+    row.setAttribute('role', 'row');
+    row.setAttribute('tc-treegrid-row', '');
+    row.setAttribute('tabindex', '0');
+    const cell = document.createElement('div');
+    cell.setAttribute('role', 'gridcell');
+    cell.textContent = 'One';
+    row.append(cell);
+    const [shown, setShown] = createSignal(true);
+    render(() => (
+      <Show when={shown()} fallback={row}>
+        <TreeGrid as="div" aria-label="Numbers">
+          {row}
+        </TreeGrid>
+      </Show>
+    ));
+    await settle();
+
+    expect(cell).toHaveAttribute('tabindex', '-1');
+
+    setShown(false);
+    await settle();
+
+    expect(row).toHaveAttribute('tabindex', '0');
+    expect(cell).not.toHaveAttribute('tabindex');
+  });
+
   it('opens a collapsed row with Right, then moves to its first cell', async () => {
     renderTreeGrid();
     await settle();
