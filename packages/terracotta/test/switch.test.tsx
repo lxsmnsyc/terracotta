@@ -88,7 +88,7 @@ describe('Switch in a form', () => {
 
 describe('Switch state', () => {
   it('reports the new value through `onChange`', () => {
-    const onChange = vi.fn();
+    const onChange = vi.fn<(checked: boolean) => void>();
     render(() => (
       <Switch defaultChecked={false} onChange={onChange}>
         Aeroplane mode
@@ -103,7 +103,12 @@ describe('Switch state', () => {
   it('follows `checked` when controlled', async () => {
     const [checked, setChecked] = createSignal(false);
     render(() => (
-      <Switch checked={checked()} onChange={setChecked}>
+      <Switch
+        checked={checked()}
+        onChange={(value: boolean) => {
+          setChecked(value);
+        }}
+      >
         Aeroplane mode
       </Switch>
     ));
@@ -116,7 +121,7 @@ describe('Switch state', () => {
   });
 
   it('only reports a change while controlled', () => {
-    const onChange = vi.fn();
+    const onChange = vi.fn<(checked: boolean) => void>();
     render(() => (
       <Switch checked={false} onChange={onChange}>
         Aeroplane mode
