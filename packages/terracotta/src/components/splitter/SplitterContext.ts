@@ -1,6 +1,6 @@
 import type { JSX } from '@solidjs/web';
 import type { PartID } from '../../utils/create-part-id';
-import { createContext, useContext } from 'solid-js';
+import { createContext, createMemo, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 import { renderChildren } from '../../utils/render-children';
 
@@ -63,5 +63,7 @@ export interface SplitterStateRenderProps {
  */
 export function SplitterStateChild(props: SplitterStateRenderProps): JSX.Element {
   const state = useSplitterState();
-  return renderChildren(props.children, state);
+  // A memo, so a render prop that returns text, such as a label that depends on
+  // the state, updates with it.
+  return createMemo(() => renderChildren(props.children, state)) as unknown as JSX.Element;
 }
