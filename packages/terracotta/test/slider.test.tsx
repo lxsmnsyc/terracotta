@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
-import { createSignal } from 'solid-js';
+import { createSignal, flush } from 'solid-js';
 import { describe, expect, it, vi } from 'vitest';
 import { Slider, SliderLabel, SliderThumb, SliderTrack } from '../src/components/slider';
 import { pressKeyOnFocused } from './aria';
@@ -333,6 +333,28 @@ describe('Slider with several thumbs', () => {
     expect(getMax()).toHaveAttribute('aria-valuenow', '70');
     expect(getMin()).toHaveAttribute('aria-valuenow', '20');
     expect(document.activeElement).toBe(getMax());
+  });
+
+  it('focuses the thumb that holds an index after the indexes change', () => {
+    const [swapped, setSwapped] = createSignal(false);
+    render(() => (
+      <Slider defaultValue={[20, 80]}>
+        <SliderTrack data-testid="track">
+          <SliderThumb index={swapped() ? 1 : 0} aria-label="A" />
+          <SliderThumb index={swapped() ? 0 : 1} aria-label="B" />
+        </SliderTrack>
+      </Slider>
+    ));
+    const track = screen.getByTestId('track');
+    vi.spyOn(track, 'getBoundingClientRect').mockReturnValue(
+      DOMRect.fromRect({ x: 0, y: 0, width: 100, height: 10 }),
+    );
+
+    setSwapped(true);
+    flush();
+    fireEvent.pointerDown(track, { button: 0, pointerId: 1, clientX: 70, clientY: 5 });
+
+    expect(document.activeElement).toBe(screen.getByRole('slider', { name: 'A' }));
   });
 
   function renderTied(): HTMLElement {

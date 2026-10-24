@@ -46,7 +46,13 @@ export interface SliderContextData {
   valueText(index: number): string | undefined;
   /** Moves focus to a thumb, after the pointer sets its value. */
   focusThumb(index: number): void;
-  setThumb(index: number, element: HTMLElement | undefined): void;
+  /** Registers a thumb's element under its index. */
+  addThumb(index: number, element: HTMLElement): void;
+  /**
+   * Removes a thumb's element. It does nothing when another thumb has taken
+   * the index since, as when two thumbs swap indexes.
+   */
+  removeThumb(index: number, element: HTMLElement): void;
 }
 
 export const SliderContext = createContext<SliderContextData | null>(null);
