@@ -16,6 +16,7 @@
       "components/accordion",
       "components/alert",
       "components/alert-dialog",
+      "components/breadcrumb",
       "components/button",
       "components/checkbox",
       "components/color-scheme",

@@ -5,6 +5,7 @@ const entries = Object.fromEntries([
     'accordion',
     'alert',
     'alert-dialog',
+    'breadcrumb',
     'button',
     'checkbox',
     'color-scheme',

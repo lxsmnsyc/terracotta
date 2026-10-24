@@ -71,6 +71,17 @@ does not show is named after it.
 ```
 
 ```tsx
+// terracotta/breadcrumb
+<Breadcrumb>        {/* <nav>, named "Breadcrumb" */}
+  <BreadcrumbList>  {/* <ol> */}
+    <BreadcrumbItem>{/* <li> */}
+      <BreadcrumbLink current/>{/* <a>, aria-current="page" when current */}
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+```tsx
 // terracotta/button
 <Button/> {/* role="button", keyboard-activated, disabled-aware */}
 ```

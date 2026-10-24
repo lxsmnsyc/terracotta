@@ -264,6 +264,45 @@ a.button {
   text-decoration: none;
 }
 
+/* Breadcrumb ------------------------------------------------------- */
+
+.breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/*
+ * Screen readers read generated content. The empty alternative text after the
+ * slash hides the separator from them. Browsers without that syntax use the
+ * first declaration.
+ */
+.breadcrumb-item + .breadcrumb-item::before {
+  content: '/';
+  content: '/' / '';
+  margin-inline-end: 0.4rem;
+  color: var(--text-3);
+}
+
+.breadcrumb-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.breadcrumb-link:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-link[aria-current='page'] {
+  color: var(--text-1);
+  font-weight: 500;
+  pointer-events: none;
+}
+
 /* Checkbox --------------------------------------------------------- */
 
 .checkbox {

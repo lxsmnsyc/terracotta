@@ -51,6 +51,7 @@ Here's the current components:
 - `Accordion` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/accordion)
 - `Alert`
 - `Alert Dialog`
+- `Breadcrumb`
 - `Button`
 - `Button (Toggle)`
 - `Checkbox` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/checkbox)
