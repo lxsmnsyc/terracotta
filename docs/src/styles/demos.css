@@ -276,9 +276,14 @@ a.button {
   list-style: none;
 }
 
-/* The separator is generated content, which screen readers skip. */
+/*
+ * Screen readers read generated content. The empty alternative text after the
+ * slash hides the separator from them. Browsers without that syntax use the
+ * first declaration.
+ */
 .breadcrumb-item + .breadcrumb-item::before {
   content: '/';
+  content: '/' / '';
   margin-inline-end: 0.4rem;
   color: var(--text-3);
 }
