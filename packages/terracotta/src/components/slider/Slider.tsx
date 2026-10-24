@@ -81,11 +81,15 @@ const SLIDER_OPTIONS = [
   'onChange',
 ] as const;
 
-/** The number of decimals in `step`, so snapped values do not drift. */
-function decimalsOf(step: number): number {
-  const text = String(step);
-  const index = text.indexOf('.');
-  return index === -1 ? 0 : text.length - index - 1;
+/**
+ * The number of decimals in `value`, so snapped values do not drift. It reads
+ * exponent forms such as `1e-7` too.
+ */
+function decimalsOf(value: number): number {
+  const [mantissa, exponent] = String(value).split('e');
+  const index = mantissa.indexOf('.');
+  const digits = index === -1 ? 0 : mantissa.length - index - 1;
+  return Math.max(0, digits - Number(exponent ?? 0));
 }
 
 /**
@@ -116,9 +120,15 @@ export function Slider<V extends SliderValue = number, T extends ValidComponent 
     const lo = min();
     const hi = max();
     const size = step();
+    // The maximum is always a stop, even when it is not on the step grid, so
+    // End reaches it.
+    if (value >= hi) {
+      return hi;
+    }
     const snapped = Math.round((value - lo) / size) * size + lo;
     const clamped = Math.min(hi, Math.max(lo, snapped));
-    return Number(clamped.toFixed(decimalsOf(size)));
+    // The grid starts at `lo`, so its decimals count as much as the step's.
+    return Number(clamped.toFixed(Math.max(decimalsOf(lo), decimalsOf(size))));
   }
 
   function normalize(value: SliderValue): number[] {
