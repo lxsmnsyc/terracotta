@@ -1,4 +1,4 @@
-import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { dynamic, isServer, type JSX, type ValidComponent } from '@solidjs/web';
 import { createEffect, createUniqueId, omit } from 'solid-js';
 import { createPresence } from '../../utils/create-presence';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
@@ -68,6 +68,18 @@ export function TreeItem<V, T extends ValidComponent = 'li'>(
   const isSelected = (): boolean => tree.selection.isSelected(props.value);
   const isExpanded = (): boolean => tree.isExpanded(props.value);
   const isVisible = (): boolean => (parent ? parent.isExpanded() && parent.isVisible() : true);
+
+  // Only one item is in the tab sequence. Before the items register, there is
+  // no tab stop yet, and no item may read as one. On the server they never
+  // register, so the first root item takes it.
+  const isServerTabStop = isServer && level === 1 && tree.claimServerTabStop();
+  const isTabStop = (): boolean => {
+    if (isServer) {
+      return isServerTabStop;
+    }
+    const stop = tree.tabStop();
+    return stop !== undefined && stop === internalRef();
+  };
 
   const properties: TreeItemProperties = {
     level: () => level,
@@ -146,7 +158,7 @@ export function TreeItem<V, T extends ValidComponent = 'li'>(
         {...TREE_ITEM_TAG}
         {...ownerAttribute}
         role="treeitem"
-        tabindex={tree.tabStop() === internalRef() ? 0 : -1}
+        tabindex={isTabStop() ? 0 : -1}
         aria-level={level}
         aria-selected={isSelected() ? 'true' : 'false'}
         aria-expanded={ariaExpanded()}

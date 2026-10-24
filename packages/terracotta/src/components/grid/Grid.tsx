@@ -33,7 +33,7 @@ export type GridProps<T extends ValidComponent = 'table'> = HeadlessPropsWithRef
  *
  * Focus lands on a cell, or on the one widget inside a cell, such as a link or
  * a checkbox. A cell with several widgets, or with a widget that needs the
- * arrow keys, takes focus itself.
+ * arrow keys, takes focus itself, and Tab moves on to the widgets inside it.
  *
  * Renders a `<table>` by default, with `role="grid"`.
  *
@@ -89,6 +89,8 @@ export function Grid<T extends ValidComponent = 'table'>(props: GridProps<T>): J
     });
 
     // Leaves one element in the tab sequence: the target of the stop cell.
+    // When the stop cell takes focus itself, its widgets stay in the tab
+    // sequence too, so Tab reaches them.
     function update(): void {
       restore();
       const all = rows().flatMap(cellsOf);
@@ -99,7 +101,7 @@ export function Grid<T extends ValidComponent = 'table'>(props: GridProps<T>): J
         const target = targetOf(cell);
         const inner = getFocusableElements(cell).filter((element) => element !== cell);
         for (const element of inner) {
-          if (!(cell === stopCell && element === target)) {
+          if (!(cell === stopCell && (element === target || target === cell))) {
             demoted.set(element, element.getAttribute('tabindex'));
             element.setAttribute('tabindex', '-1');
           }
@@ -189,7 +191,8 @@ export function Grid<T extends ValidComponent = 'table'>(props: GridProps<T>): J
             break;
           case 'ArrowDown':
             next = at(r + 1, c);
-            if (!next && wrap) {
+            // From the last column there is no next column to wrap to.
+            if (!next && wrap && c + 1 < grid[r].length) {
               next = at(0, c + 1);
             }
             break;
