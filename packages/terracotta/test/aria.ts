@@ -20,7 +20,10 @@ export function describedBy(element: Element): HTMLElement | null {
 }
 
 /** Dispatches a keydown on whichever element currently holds DOM focus. */
-export function pressKeyOnFocused(key: string, init: { shiftKey?: boolean } = {}): void {
+export function pressKeyOnFocused(
+  key: string,
+  init: { shiftKey?: boolean; ctrlKey?: boolean } = {},
+): void {
   const target = document.activeElement;
   if (target === null) {
     throw new Error(`Nothing is focused, cannot press "${key}"`);
