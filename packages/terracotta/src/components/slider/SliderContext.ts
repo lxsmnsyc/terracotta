@@ -5,34 +5,54 @@ import type { Presence } from '../../utils/create-presence';
 import { renderChildren } from '../../utils/render-children';
 
 export interface SliderStateProperties {
-  /** The current value. */
+  /** The value of the first thumb. */
   value(): number;
+  /** The values of every thumb, in thumb order. */
+  values(): number[];
   min(): number;
   max(): number;
   step(): number;
-  /** Where the value sits between `min` and `max`, from 0 to 100. */
-  percent(): number;
+  /** Where a thumb's value sits between `min` and `max`, from 0 to 100. */
+  percent(index?: number): number;
   disabled(): boolean;
-  /** Sets the value, snapped to the step and kept in range. */
+  /** Sets the first thumb's value, snapped to the step and kept in range. */
   setValue(value: number): void;
-  /** Moves the value by a number of steps. */
-  increment(steps?: number): void;
-  decrement(steps?: number): void;
+  /**
+   * Sets one thumb's value, snapped to the step. It stays between the values
+   * of the thumbs on either side.
+   */
+  setThumbValue(index: number, value: number): void;
+  /** The lowest value a thumb can take, given the thumb before it. */
+  thumbMin(index: number): number;
+  /** The highest value a thumb can take, given the thumb after it. */
+  thumbMax(index: number): number;
+  /** Moves a thumb by a number of steps. */
+  increment(steps?: number, index?: number): void;
+  decrement(steps?: number, index?: number): void;
 }
 
 export interface SliderContextData {
   state: SliderStateProperties;
   labelID: string;
-  thumbID: string;
+  /** The id of a thumb. */
+  thumbID(index: number): string;
   label: Presence;
+  /** Whether the slider has several thumbs, so the label names the group. */
+  isGroup(): boolean;
   isVertical(): boolean;
   /** Steps moved by Page Up and Page Down. */
   largeStep(): number;
-  /** Text for `aria-valuetext`, when the slider has a formatter. */
-  valueText(): string | undefined;
-  /** Moves focus to the thumb, after the pointer sets a value. */
-  focusThumb(): void;
-  setThumb(element: HTMLElement | undefined): void;
+  /** Text for a thumb's `aria-valuetext`, when the slider has a formatter. */
+  valueText(index: number): string | undefined;
+  /** Moves focus to a thumb, after the pointer sets its value. */
+  focusThumb(index: number): void;
+  /** Registers a thumb's element under its index. */
+  addThumb(index: number, element: HTMLElement): void;
+  /**
+   * Removes a thumb's element. It does nothing when another thumb has taken
+   * the index since, as when two thumbs swap indexes.
+   */
+  removeThumb(index: number, element: HTMLElement): void;
 }
 
 export const SliderContext = createContext<SliderContextData | null>(null);
