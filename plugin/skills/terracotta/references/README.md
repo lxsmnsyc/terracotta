@@ -44,6 +44,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclo
 - [Select](./components/select.md)
 - [Slider](./components/slider.md)
 - [Spinbutton](./components/spinbutton.md)
+- [Splitter](./components/splitter.md)
 - [Switch](./components/switch.md)
 - [Tabs](./components/tabs.md)
 - [Toast](./components/toast.md)

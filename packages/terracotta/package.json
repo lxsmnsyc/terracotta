@@ -124,6 +124,11 @@
       "solid": "./dist/spinbutton.jsx",
       "default": "./dist/spinbutton.jsx"
     },
+    "./splitter": {
+      "types": "./dist/splitter.d.ts",
+      "solid": "./dist/splitter.jsx",
+      "default": "./dist/splitter.jsx"
+    },
     "./states": {
       "types": "./dist/states.d.ts",
       "solid": "./dist/states.jsx",

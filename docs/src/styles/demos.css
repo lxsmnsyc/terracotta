@@ -1009,6 +1009,48 @@ a.button {
   cursor: not-allowed;
 }
 
+/* Splitter --------------------------------------------------------- */
+
+.splitter {
+  display: flex;
+  inline-size: 100%;
+  block-size: 11rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  overflow: hidden;
+}
+
+.splitter-pane {
+  min-inline-size: 0;
+  padding: 0.75rem;
+  overflow: hidden;
+}
+
+.splitter-pane-rest {
+  flex: 1;
+}
+
+.splitter-title {
+  margin: 0 0 0.25rem;
+  color: var(--text-1);
+  font-weight: 500;
+}
+
+.splitter-separator {
+  flex: none;
+  inline-size: 0.375rem;
+  background: var(--surface-2);
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.splitter-separator:hover,
+.splitter-separator:focus-visible {
+  background: var(--accent);
+  outline: none;
+}
+
 /* Tooltip ---------------------------------------------------------- */
 
 .tooltip {
