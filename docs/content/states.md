@@ -93,7 +93,7 @@ Pressed/unpressed state for toggle buttons. Backs `Toggle`.
 ## Check state
 
 Tri-state checkbox value: `true`, `false`, or `undefined` for indeterminate.
-Backs `Checkbox`.
+Backs `Checkbox` and `Switch`. A `Switch` treats `undefined` as off.
 
 `createCheckState(options)` · `useCheckState()` · `<CheckStateChild>`
 

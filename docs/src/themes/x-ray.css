@@ -186,6 +186,7 @@
 [data-theme='x-ray'] .checkbox-box[tc-checked=''],
 [data-theme='x-ray'] .checkbox-box[tc-checked='mixed'],
 [data-theme='x-ray'] .switch-track[tc-checked=''],
+[data-theme='x-ray'] [tc-switch][tc-checked=''] .switch-track,
 [data-theme='x-ray'] [tc-pressed] .switch-track {
   background: var(--surface-2);
   color: var(--text-1);
