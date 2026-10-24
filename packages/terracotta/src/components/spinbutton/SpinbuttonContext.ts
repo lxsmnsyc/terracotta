@@ -33,6 +33,8 @@ export interface SpinbuttonContextData {
   valueText(): string | undefined;
   format(value: number): string;
   parse(text: string): number;
+  /** Rounds a value to the nearest step and keeps it in range. */
+  snap(value: number): number;
   /** The text typed into the field, until it is committed. */
   draft(): string | undefined;
   setDraft(text: string | undefined): void;
