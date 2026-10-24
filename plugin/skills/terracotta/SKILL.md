@@ -179,6 +179,24 @@ does not show is named after it.
 ```
 
 ```tsx
+// terracotta/grid
+<Grid>                    {/* <table role="grid">, the tab stop */}
+  <GridHead>              {/* <thead role="rowgroup"> */}
+    <GridRow>             {/* <tr role="row"> */}
+      <GridColumnHeader/> {/* <th role="columnheader"> */}
+    </GridRow>
+  </GridHead>
+  <GridBody>              {/* <tbody role="rowgroup"> */}
+    <GridRow>
+      <GridRowHeader/>    {/* <th role="rowheader"> */}
+      <GridCell/>         {/* <td role="gridcell"> */}
+    </GridRow>
+  </GridBody>
+  <GridFoot/>             {/* optional; <tfoot role="rowgroup"> */}
+</Grid>
+```
+
+```tsx
 // terracotta/listbox
 <Listbox>          {/* owns both states */}
   <ListboxLabel/>  {/* names the listbox */}

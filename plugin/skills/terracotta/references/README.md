@@ -38,6 +38,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclo
 - [Dialog](./components/dialog.md)
 - [Disclosure](./components/disclosure.md)
 - [Feed](./components/feed.md)
+- [Grid](./components/grid.md)
 - [Listbox](./components/listbox.md)
 - [Menu](./components/menu.md)
 - [Meter](./components/meter.md)

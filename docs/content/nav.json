@@ -27,6 +27,7 @@
       "components/dialog",
       "components/disclosure",
       "components/feed",
+      "components/grid",
       "components/listbox",
       "components/menu",
       "components/meter",
