@@ -11,6 +11,7 @@ import { Unmountable, type UnmountableProps } from '../../utils/unmountable';
 import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
 import { createForwardRef } from '../../utils/dynamic-prop';
 import { mergeFunc } from '../../utils/merge-func';
+import { createPanelNode, PanelTreeContext } from '../../utils/panel-tree';
 import { SELECTED_NODE } from '../../utils/namespace';
 import {
   createARIADisabledState,
@@ -51,6 +52,9 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
   const disclosureState = useDisclosureState();
 
   const [internalRef, setInternalRef] = createForwardRef(props);
+  // Registered with the panel around the combobox, so focus that passes
+  // through the options does not close it when they are in a `Portal`.
+  const [node, panelRef] = createPanelNode(setInternalRef);
 
   createEffect(internalRef, (current) => {
     if (current instanceof HTMLElement) {
@@ -120,7 +124,7 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
         role="listbox"
         aria-labelledby={context.hasLabel() ? context.labelID : undefined}
         aria-multiselectable={context.multiple ? 'true' : 'false'}
-        ref={setInternalRef}
+        ref={panelRef}
         aria-orientation="vertical"
         tabindex={-1}
         {...disabledState}
@@ -131,7 +135,9 @@ export function ComboboxOptions<V, T extends ValidComponent = 'ul'>(
         {...hasQueryState}
         {...rest}
       >
-        <AutocompleteStateChild>{props.children}</AutocompleteStateChild>
+        <PanelTreeContext value={node}>
+          <AutocompleteStateChild>{props.children}</AutocompleteStateChild>
+        </PanelTreeContext>
       </Root>
     </Unmountable>
   );
