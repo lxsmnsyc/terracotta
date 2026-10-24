@@ -1,5 +1,6 @@
 import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
-import { createContext, createMemo, createUniqueId, omit, useContext } from 'solid-js';
+import { createContext, createMemo, omit, useContext } from 'solid-js';
+import { createPartID, type PartID } from '../../utils/create-part-id';
 import assert from '../../utils/assert';
 import { createPresence, type Presence } from '../../utils/create-presence';
 import type { HeadlessProps } from '../../utils/dynamic-prop';
@@ -19,7 +20,7 @@ export interface MeterStateProperties {
 }
 
 interface MeterContextData {
-  labelID: string;
+  labelID: PartID;
   label: Presence;
 }
 
@@ -48,7 +49,7 @@ export type MeterProps<T extends ValidComponent = 'div'> = HeadlessProps<T, Mete
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/meter.md}
  */
 export function Meter<T extends ValidComponent = 'div'>(props: MeterProps<T>): JSX.Element {
-  const labelID = createUniqueId();
+  const labelID = createPartID();
   const label = createPresence();
 
   const min = (): number => props.min ?? 0;
@@ -76,7 +77,7 @@ export function Meter<T extends ValidComponent = 'div'>(props: MeterProps<T>): J
         aria-valuemin={min()}
         aria-valuemax={max()}
         aria-valuetext={props.getValueText?.(value())}
-        aria-labelledby={label.isPresent() ? labelID : undefined}
+        aria-labelledby={label.isPresent() ? labelID.id() : undefined}
         {...rest}
       >
         {renderChildren(props.children, state)}
@@ -101,8 +102,9 @@ export function MeterLabel<T extends ValidComponent = 'span'>(
   const context = useContext(MeterContext);
   assert(context, new Error('<MeterLabel> must be used inside a <Meter>'));
   context.label.register();
+  context.labelID.register(() => props.id);
 
   const rest = omit(props, 'as');
   const Root = dynamic(() => props.as || 'span');
-  return <Root {...METER_LABEL_TAG} id={context.labelID} {...rest} />;
+  return <Root {...METER_LABEL_TAG} id={props.id ?? context.labelID.id()} {...rest} />;
 }
