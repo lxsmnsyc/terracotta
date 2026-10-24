@@ -22,13 +22,14 @@ export function SplitterPane<T extends ValidComponent = 'div'>(
   props: SplitterPaneProps<T>,
 ): JSX.Element {
   const context = useSplitterContext('SplitterPane');
+  context.pane.register(() => props.id);
 
   const rest = omit(props, 'as', 'children');
   const Root = dynamic(() => props.as || 'div');
   return (
     <Root
       {...SPLITTER_PANE_TAG}
-      id={context.paneID}
+      id={props.id ?? context.pane.id()}
       tc-collapsed={context.state.collapsed() ? '' : undefined}
       {...rest}
     >

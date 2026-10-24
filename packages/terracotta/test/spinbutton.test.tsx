@@ -170,6 +170,27 @@ describe('Spinbutton typing', () => {
     expect(getField()).toHaveAttribute('aria-valuenow', '7');
   });
 
+  it('waits for the commit to snap text that is off the step', () => {
+    const onChange = vi.fn<(value: number) => void>();
+    renderSpinbutton({ value: 0, max: 100, step: 5, onChange });
+    getField().focus();
+
+    type('3');
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(getField()).toHaveAttribute('aria-valuenow', '0');
+
+    type('35');
+
+    expect(onChange).toHaveBeenLastCalledWith(35);
+
+    type('32');
+    getField().blur();
+
+    expect(getField()).toHaveValue('30');
+    expect(onChange).toHaveBeenLastCalledWith(30);
+  });
+
   it('clamps out-of-range text on blur', () => {
     renderSpinbutton();
     getField().focus();

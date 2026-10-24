@@ -161,7 +161,7 @@ export function SplitterSeparator<T extends ValidComponent = 'div'>(
       aria-valuenow={state.value()}
       aria-valuemin={state.min()}
       aria-valuemax={state.max()}
-      aria-controls={context.paneID}
+      aria-controls={context.pane.id()}
       tc-collapsed={state.collapsed() ? '' : undefined}
       ref={setInternalRef}
       {...disabledState}
