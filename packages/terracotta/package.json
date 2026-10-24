@@ -169,6 +169,11 @@
       "solid": "./dist/transition.jsx",
       "default": "./dist/transition.jsx"
     },
+    "./tree": {
+      "types": "./dist/tree.d.ts",
+      "solid": "./dist/tree.jsx",
+      "default": "./dist/tree.jsx"
+    },
     "./utils": {
       "types": "./dist/utils.d.ts",
       "solid": "./dist/utils.jsx",

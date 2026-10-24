@@ -15,11 +15,13 @@ export interface Presence {
  * Parts register once they have mounted, which never happens on the server.
  * The server therefore assumes the part is present, so the rendered HTML keeps
  * the reference. The client drops it after hydration if the part is missing.
+ * Pass `false` where assuming the part is there would say something wrong,
+ * such as calling a leaf of a tree a parent.
  */
-export function createPresence(): Presence {
+export function createPresence(assumeOnServer = true): Presence {
   if (isServer) {
     return {
-      isPresent: () => true,
+      isPresent: () => assumeOnServer,
       register: () => undefined,
     };
   }

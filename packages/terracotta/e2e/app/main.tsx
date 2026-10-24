@@ -22,6 +22,7 @@ import SwitchCase from './cases/switch';
 import TabsCase from './cases/tabs';
 import TransitionCase from './cases/transition';
 import TransitionGroupCase from './cases/transition-group';
+import TreeCase from './cases/tree';
 import ToolbarCase from './cases/toolbar';
 import TooltipCase from './cases/tooltip';
 
@@ -50,6 +51,7 @@ const CASES: Record<string, () => JSX.Element> = {
   tabs: TabsCase,
   transition: TransitionCase,
   'transition-group': TransitionGroupCase,
+  tree: TreeCase,
   toolbar: ToolbarCase,
   tooltip: TooltipCase,
 };
