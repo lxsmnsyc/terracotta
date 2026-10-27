@@ -1,5 +1,39 @@
 # terracotta
 
+## 2.0.0-next.11
+
+### Minor Changes
+
+- a1b3951: Add `Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem` and `BreadcrumbLink`, following the ARIA breadcrumb pattern.
+  Import them from `terracotta/breadcrumb`.
+- 949f99f: Add `Grid` and its parts, following the ARIA grid pattern.
+  The parts are `GridHead`, `GridBody`, `GridFoot`, `GridRow`, `GridCell`, `GridColumnHeader` and `GridRowHeader`.
+  Import them from `terracotta/grid`.
+- d39146c: Add `Meter` and `MeterLabel`, following the ARIA meter pattern.
+  Import them from `terracotta/meter`.
+- 79db046: Panels rendered into a `Portal` now still count as inside the panel they opened from.
+  Moving focus into a nested popover, listbox or combobox no longer closes the panel around it, and an open modal no longer makes its nested panels inert.
+- 6549219: `Slider` takes an array value for one thumb per value, following the ARIA multi-thumb slider pattern.
+  Give each `SliderThumb` an `index`. The thumbs cannot pass each other.
+- f564052: Add `Slider`, `SliderLabel`, `SliderTrack` and `SliderThumb`, following the ARIA slider pattern.
+  Import them from `terracotta/slider`.
+- d13b21c: Add `Spinbutton`, `SpinbuttonLabel`, `SpinbuttonInput`, `SpinbuttonIncrement` and `SpinbuttonDecrement`, following the ARIA spinbutton pattern.
+  Import them from `terracotta/spinbutton`.
+- 9be9b4f: Add `Splitter`, `SplitterPane` and `SplitterSeparator`, following the ARIA window splitter pattern.
+  Import them from `terracotta/splitter`.
+- 7308871: Add `Switch`, an on/off control with `role="switch"` and `aria-checked`.
+  Import it from `terracotta/switch`.
+- b2fe048: Add `Tooltip`, `TooltipTrigger` and `TooltipPanel`, following the ARIA tooltip pattern.
+  Import them from `terracotta/tooltip`.
+- 712f761: Add `Tree`, `TreeItem`, `TreeItemLabel` and `TreeGroup`, following the ARIA tree view pattern.
+  Import them from `terracotta/tree`.
+- 609fb27: Add `TreeGrid` and `TreeGridRow`, following the ARIA treegrid pattern, with the grid row group and cell parts under treegrid names.
+  Import them from `terracotta/treegrid`.
+
+### Patch Changes
+
+- 30a1c7f: The `SliderStateChild`, `SpinbuttonStateChild` and `SplitterStateChild` render props update when they return text that depends on the state.
+
 ## 2.0.0-next.10
 
 ### Major Changes
