@@ -2,8 +2,8 @@ packages:
   - packages/**/*
   - examples/**/*
   - docs
-onlyBuiltDependencies:
-  - esbuild
+allowBuilds:
+  esbuild: true
 
 # pnpm 11 refuses to install any package published in the last day. The
 # toolchain here is on prereleases that are often hours old when the lockfile is
