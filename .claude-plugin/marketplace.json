@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "terracotta",
+  "description": "The Terracotta plugin: teaches an agent to write correct, accessible Terracotta code for SolidJS.",
+  "owner": {
+    "name": "Alexis H. Munsayac",
+    "url": "https://github.com/lxsmnsyc"
+  },
+  "plugins": [
+    {
+      "name": "terracotta",
+      "description": "Headless UI for SolidJS — component parts, subpath imports, controlled vs uncontrolled state, `tc-*` styling attributes, `unmount`, transitions, keyboard and focus.",
+      "source": "./plugin",
+      "category": "development"
+    }
+  ]
+}

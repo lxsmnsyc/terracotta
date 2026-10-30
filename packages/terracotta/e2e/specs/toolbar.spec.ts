@@ -31,3 +31,32 @@ test('jumps to the first and last action with Home and End', async ({ page }) =>
   await page.keyboard.press('Home');
   await expect(page.getByRole('button', { name: 'Bold' })).toBeFocused();
 });
+
+test('leaves the toolbar with a single Tab', async ({ page }) => {
+  await page.getByTestId('before').focus();
+
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('button', { name: 'Bold' })).toBeFocused();
+
+  await page.keyboard.press('Tab');
+  await expect(page.getByTestId('after')).toBeFocused();
+});
+
+test('leaves the toolbar with a single Shift+Tab', async ({ page }) => {
+  await page.getByRole('button', { name: 'Bold' }).focus();
+
+  await page.keyboard.press('Shift+Tab');
+  await expect(page.getByTestId('before')).toBeFocused();
+});
+
+test('returns to the last focused action when tabbed back into', async ({ page }) => {
+  await page.getByRole('button', { name: 'Bold' }).focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.getByRole('button', { name: 'Italic' })).toBeFocused();
+
+  await page.keyboard.press('Tab');
+  await expect(page.getByTestId('after')).toBeFocused();
+
+  await page.keyboard.press('Shift+Tab');
+  await expect(page.getByRole('button', { name: 'Italic' })).toBeFocused();
+});

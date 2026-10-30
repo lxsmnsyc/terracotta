@@ -1,0 +1,55 @@
+[
+  {
+    "title": "Guides",
+    "pages": [
+      "guides/getting-started",
+      "guides/rendering",
+      "guides/state",
+      "guides/styling",
+      "guides/keyboard-and-focus",
+      "guides/ssr"
+    ]
+  },
+  {
+    "title": "Components",
+    "pages": [
+      "components/accordion",
+      "components/alert",
+      "components/alert-dialog",
+      "components/breadcrumb",
+      "components/button",
+      "components/checkbox",
+      "components/color-scheme",
+      "components/combobox",
+      "components/command",
+      "components/command-bar",
+      "components/context-menu",
+      "components/dialog",
+      "components/disclosure",
+      "components/feed",
+      "components/grid",
+      "components/listbox",
+      "components/menu",
+      "components/meter",
+      "components/popover",
+      "components/radio-group",
+      "components/select",
+      "components/slider",
+      "components/spinbutton",
+      "components/splitter",
+      "components/switch",
+      "components/tabs",
+      "components/toast",
+      "components/toggle",
+      "components/toolbar",
+      "components/tooltip",
+      "components/transition",
+      "components/tree",
+      "components/treegrid"
+    ]
+  },
+  {
+    "title": "Reference",
+    "pages": ["states"]
+  }
+]

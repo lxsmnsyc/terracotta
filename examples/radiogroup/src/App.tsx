@@ -1,6 +1,11 @@
-import { RadioGroup, RadioGroupDescription, RadioGroupLabel, RadioGroupOption } from 'terracotta';
-import type { JSX } from 'solid-js';
-import { For, createSignal } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import { createSignal, For } from 'solid-js';
+import {
+  RadioGroup,
+  RadioGroupDescription,
+  RadioGroupLabel,
+  RadioGroupOption,
+} from 'terracotta/radio-group';
 
 const plans = [
   {
@@ -23,10 +28,10 @@ const plans = [
   },
 ];
 
-function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function CheckIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg viewBox="0 0 24 24" fill="none" {...props}>
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <circle cx={12} cy={12} r={12} fill="#fff" opacity="0.2" />
       <path
         d="M7 13l3 3 7-7"

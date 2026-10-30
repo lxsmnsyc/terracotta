@@ -1,6 +1,7 @@
-import { Toast, Toaster, ToasterStore, Transition, useToaster } from 'terracotta';
-import type { JSX } from 'solid-js';
-import { For, createEffect, createSignal, onCleanup } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import { createEffect, createSignal, For } from 'solid-js';
+import { Toast, Toaster, ToasterStore, useToaster } from 'terracotta/toast';
+import { Transition } from 'terracotta/transition';
 
 const notifications = new ToasterStore<string>();
 
@@ -9,7 +10,7 @@ interface ToastProps {
   message: string;
 }
 
-function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -18,7 +19,7 @@ function CloseIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -39,7 +40,7 @@ function CustomToast(props: ToastProps): JSX.Element {
   return (
     <Transition
       show={isOpen()}
-      class="relative transition rounded-lg p-4 bg-rose-900/25 bg-rose-900"
+      class="relative transition rounded-lg p-4 bg-rose-900/25"
       enter="ease-out duration-300"
       enterFrom="opacity-0 scale-50"
       enterTo="opacity-100 scale-100"
@@ -54,7 +55,7 @@ function CustomToast(props: ToastProps): JSX.Element {
         <span class="flex-1 text-sm font-semibold text-white">{props.message}</span>
         <button
           type="button"
-          class="flex-none w-6 h-6 p-1 text-white bg-rose-900/25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+          class="flex-none w-6 h-6 p-1 text-white bg-rose-900/25 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
           onClick={dismiss}
         >
           <CloseIcon title="Close" />
@@ -81,19 +82,22 @@ export default function App(): JSX.Element {
     notifications.clear();
   }
 
-  createEffect(() => {
-    if (notifs().length > 0) {
-      setIsOpen(true);
-    }
+  createEffect(
+    () => notifs().length > 0,
+    (flag) => {
+      if (flag) {
+        setIsOpen(true);
+      }
 
-    const timeout = setTimeout(() => {
-      closeNotifs();
-    }, 5000);
+      const timeout = setTimeout(() => {
+        closeNotifs();
+      }, 5000);
 
-    onCleanup(() => {
-      clearTimeout(timeout);
-    });
-  });
+      return () => {
+        clearTimeout(timeout);
+      };
+    },
+  );
 
   return (
     <>
@@ -125,13 +129,13 @@ export default function App(): JSX.Element {
           leaveTo="opacity-0 scale-50  translate-y-full"
           afterLeave={clearNotifs}
         >
-          <div class="flex flex-col w-80 max-h-96 overflow-hidden rounded-xl shadow-xl bg-rose-900/25 bg-rose-900 p-4 space-y-2">
+          <div class="flex flex-col w-80 max-h-96 overflow-hidden rounded-xl shadow-xl bg-rose-900/25 p-4 space-y-2">
             <div class="flex-none flex items-center justify-between">
               <span class="text-xl font-bold text-white">Notifications</span>
               <button
                 type="button"
                 onClick={closeNotifs}
-                class="w-6 h-6 p-1 text-white bg-rose-900/25 bg-rose-900 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+                class="w-6 h-6 p-1 text-white bg-rose-900/25 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
               >
                 <CloseIcon title="Close" />
               </button>

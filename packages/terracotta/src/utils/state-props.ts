@@ -5,68 +5,82 @@ function toBooleanish(value?: boolean): Booleanish {
 }
 
 /**
+ * `aria-*` states are enumerated, not boolean: they need the literal strings
+ * `"true"` and `"false"`. A boolean would be rendered as a boolean attribute,
+ * which drops it entirely when false and writes an empty value when true, and
+ * a missing `aria-pressed` reads as "not a toggle button" rather than "not
+ * pressed". `undefined` still means "omit the attribute".
+ */
+type ARIABooleanish = 'true' | 'false' | undefined;
+
+function toARIABooleanish(value?: boolean): ARIABooleanish {
+  return value == null ? undefined : value ? 'true' : 'false';
+}
+
+/**
  * ARIA states
  */
 
 interface ARIADisabledProps {
   disabled?: boolean;
-  'aria-disabled'?: boolean;
+  'aria-disabled'?: ARIABooleanish;
 }
 
 export function createARIADisabledState(disabled: () => boolean | undefined): ARIADisabledProps {
   return {
+    // `disabled` is a real boolean attribute, so it stays a boolean.
     get disabled(): boolean | undefined {
       return disabled();
     },
-    get 'aria-disabled'(): boolean | undefined {
-      return disabled();
+    get 'aria-disabled'(): ARIABooleanish {
+      return toARIABooleanish(disabled());
     },
   };
 }
 
 interface ARIAExpandedProps {
-  'aria-expanded'?: boolean;
+  'aria-expanded'?: ARIABooleanish;
 }
 
 export function createARIAExpandedState(expanded: () => boolean | undefined): ARIAExpandedProps {
   return {
-    get 'aria-expanded'(): boolean | undefined {
-      return expanded();
+    get 'aria-expanded'(): ARIABooleanish {
+      return toARIABooleanish(expanded());
     },
   };
 }
 
 interface ARIACheckedProps {
-  'aria-checked': boolean | 'mixed';
+  'aria-checked': ARIABooleanish | 'mixed';
 }
 
 export function createARIACheckedState(checked: () => boolean | undefined): ARIACheckedProps {
   return {
-    get 'aria-checked'(): boolean | 'mixed' {
-      return checked() ?? 'mixed';
+    get 'aria-checked'(): ARIABooleanish | 'mixed' {
+      return toARIABooleanish(checked()) ?? 'mixed';
     },
   };
 }
 interface ARIASelectedProps {
-  'aria-selected': boolean;
+  'aria-selected': ARIABooleanish;
 }
 
 export function createARIASelectedState(selected: () => boolean): ARIASelectedProps {
   return {
-    get 'aria-selected'(): boolean {
-      return selected();
+    get 'aria-selected'(): ARIABooleanish {
+      return toARIABooleanish(selected());
     },
   };
 }
 
 interface ARIAPressedProps {
-  'aria-pressed': boolean;
+  'aria-pressed': ARIABooleanish;
 }
 
 export function createARIAPressedState(pressed: () => boolean): ARIAPressedProps {
   return {
-    get 'aria-pressed'(): boolean {
-      return pressed();
+    get 'aria-pressed'(): ARIABooleanish {
+      return toARIABooleanish(pressed());
     },
   };
 }

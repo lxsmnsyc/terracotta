@@ -1,5 +1,6 @@
-import type { JSX } from 'solid-js';
-import { Button, Popover, PopoverButton, PopoverPanel } from 'terracotta';
+import type { JSX } from '@solidjs/web';
+import { Button } from 'terracotta/button';
+import { Popover, PopoverButton, PopoverPanel } from 'terracotta/popover';
 
 export default function PopoverCase(): JSX.Element {
   return (
