@@ -1,0 +1,454 @@
+/*
+ * Windows 95.
+ *
+ * Silver chrome, navy selection and square corners. Every raised thing wears
+ * the four-line bevel (`--raised`): white and light grey on the top and left,
+ * dark grey and black on the bottom and right. Every field and well wears the
+ * same lines inverted (`--sunken`), and pressing a button swaps one for the
+ * other. Those two box-shadows, drawn inside the box so no layout moves, are
+ * most of the theme.
+ *
+ * The dark scheme is not a period piece, since the original had none. It keeps
+ * the same bevel geometry on charcoal, with the highlights dimmed so the edges
+ * still read.
+ */
+
+[data-theme='win95'] {
+  --surface-0: #c0c0c0;
+  --surface-1: #ffffff;
+  --surface-2: #dfdfdf;
+
+  --text-1: #000000;
+  --text-2: #262626;
+  --text-3: #5f5f5f;
+
+  --border: #808080;
+  --border-strong: #0a0a0a;
+
+  --accent: #000080;
+  --accent-hover: #10109a;
+  --accent-contrast: #ffffff;
+  --accent-soft: #d4d4ea;
+
+  --focus: #000000;
+  --danger: #a00000;
+
+  --overlay: rgb(0 128 128 / 55%);
+
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+
+  --shadow-1: none;
+  --shadow-2: 2px 2px 0 rgb(0 0 0 / 35%);
+
+  --font-sans: Tahoma, 'Microsoft Sans Serif', 'MS Sans Serif', Geneva, Verdana, sans-serif;
+  --font-mono: 'Lucida Console', 'Courier New', ui-monospace, monospace;
+
+  --hi: #ffffff;
+  --light: #dfdfdf;
+  --shade: #808080;
+  --dark: #0a0a0a;
+  --desktop: #008080;
+  --title: linear-gradient(90deg, #000080, #1084d0);
+
+  --raised:
+    inset -1px -1px 0 var(--dark), inset 1px 1px 0 var(--hi), inset -2px -2px 0 var(--shade),
+    inset 2px 2px 0 var(--light);
+  --pressed:
+    inset -1px -1px 0 var(--hi), inset 1px 1px 0 var(--dark), inset -2px -2px 0 var(--light),
+    inset 2px 2px 0 var(--shade);
+  --sunken:
+    inset -1px -1px 0 var(--hi), inset 1px 1px 0 var(--shade), inset -2px -2px 0 var(--light),
+    inset 2px 2px 0 var(--dark);
+}
+
+[data-theme='win95'].dark {
+  --surface-0: #2e2e2e;
+  --surface-1: #161616;
+  --surface-2: #3c3c3c;
+
+  --text-1: #f2f2f2;
+  --text-2: #cfcfcf;
+  --text-3: #9a9a9a;
+
+  --border: #5c5c5c;
+  --border-strong: #000000;
+
+  --accent: #6aa6ea;
+  --accent-hover: #8cbcf0;
+  --accent-contrast: #000000;
+  --accent-soft: #1c2c44;
+
+  --focus: #f2f2f2;
+  --danger: #ff7a7a;
+
+  --overlay: rgb(0 40 40 / 70%);
+
+  --hi: #6a6a6a;
+  --light: #474747;
+  --shade: #1c1c1c;
+  --dark: #000000;
+  --desktop: #003c3c;
+  --title: linear-gradient(90deg, #0a246a, #3a6ea5);
+}
+
+/* The site is the desktop, and the chrome sits on it as windows. A demo frame
+   has no shell, and stays the silver of the window it is shown in. */
+:root[data-theme='win95'],
+[data-theme='win95'] body {
+  background: var(--surface-0);
+}
+
+:root[data-theme='win95']:has(.shell),
+[data-theme='win95'] body:has(.shell) {
+  background: var(--desktop);
+}
+
+/* Raised ------------------------------------------------------------- */
+
+[data-theme='win95'] .control,
+[data-theme='win95'] .button,
+[data-theme='win95'] .toggle,
+[data-theme='win95'] .toolbar-button,
+[data-theme='win95'] .toolbar-toggle,
+[data-theme='win95'] .listbox-button,
+[data-theme='win95'] .popover-button,
+[data-theme='win95'] .disclosure-button,
+[data-theme='win95'] .accordion-button,
+[data-theme='win95'] .spinbutton-button,
+[data-theme='win95'] .toast-dismiss,
+[data-theme='win95'] .radio-card,
+[data-theme='win95'] .tab,
+[data-theme='win95'] .demo-tab,
+[data-theme='win95'] .demo-tool,
+[data-theme='win95'] .theme-swatch,
+[data-theme='win95'] .scheme-picker-option,
+[data-theme='win95'] .slider-thumb,
+[data-theme='win95'] .switch-knob,
+[data-theme='win95'] .lp-button,
+[data-theme='win95'] .lp-chip,
+[data-theme='win95'] .lp-keycap,
+[data-theme='win95'] .lp-install-copy,
+[data-theme='win95'] .lp-specimen-apply,
+[data-theme='win95'] .search-trigger {
+  border: 0;
+  border-radius: 0;
+  background: var(--surface-0);
+  box-shadow: var(--raised);
+  color: var(--text-1);
+}
+
+[data-theme='win95'] .control:active,
+[data-theme='win95'] .button:active,
+[data-theme='win95'] .toggle:active,
+[data-theme='win95'] .toggle[tc-pressed],
+[data-theme='win95'] .toolbar-toggle[tc-pressed],
+[data-theme='win95'] .toolbar-button:active,
+[data-theme='win95'] .listbox-button[tc-expanded],
+[data-theme='win95'] .popover-button[tc-expanded],
+[data-theme='win95'] .spinbutton-button:active,
+[data-theme='win95'] .scheme-picker-option[tc-checked],
+[data-theme='win95'] .theme-swatch[tc-checked],
+[data-theme='win95'] .demo-tool:active,
+[data-theme='win95'] .lp-button:active,
+[data-theme='win95'] .lp-chip[tc-checked],
+[data-theme='win95'] .lp-keycap[data-lit],
+[data-theme='win95'] .lp-specimen-apply:active,
+[data-theme='win95'] .search-trigger:active {
+  box-shadow: var(--pressed);
+  translate: none;
+}
+
+/* Hovering does nothing on the real thing, so nothing lifts here either. */
+[data-theme='win95'] .lp-button:hover,
+[data-theme='win95'] .lp-chip:hover,
+[data-theme='win95'] .lp-theme:hover {
+  translate: none;
+}
+
+[data-theme='win95'] .lp-keycap[data-lit] {
+  background: var(--surface-0);
+  color: var(--text-1);
+  translate: 1px 1px;
+}
+
+/* The default button: a black outline around the raised face. */
+[data-theme='win95'] .control-primary,
+[data-theme='win95'] .button-primary,
+[data-theme='win95'] .lp-button-primary {
+  outline: 1px solid var(--dark);
+  outline-offset: -1px;
+  background: var(--surface-0);
+  color: var(--text-1);
+  font-weight: 700;
+}
+
+[data-theme='win95'] .control-primary:hover,
+[data-theme='win95'] .lp-button-primary:hover {
+  background: var(--surface-0);
+}
+
+[data-theme='win95'] .button-danger {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+/* Tabs: raised on three sides, and the selected one stands taller. */
+[data-theme='win95'] .tab,
+[data-theme='win95'] .demo-tab {
+  box-shadow:
+    inset 1px 1px 0 var(--hi),
+    inset 2px 2px 0 var(--light),
+    inset -1px 0 0 var(--dark),
+    inset -2px 0 0 var(--shade);
+}
+
+[data-theme='win95'] .tab[tc-selected],
+[data-theme='win95'] .demo-tab[tc-selected] {
+  background: var(--surface-0);
+  color: var(--text-1);
+  font-weight: 700;
+  translate: 0 -2px;
+}
+
+/* Windows ------------------------------------------------------------- */
+
+[data-theme='win95'] .panel,
+[data-theme='win95'] .listbox-options,
+[data-theme='win95'] .combobox-options,
+[data-theme='win95'] .command-options,
+[data-theme='win95'] .commandbar-panel,
+[data-theme='win95'] .contextmenu-panel,
+[data-theme='win95'] .popover-panel,
+[data-theme='win95'] .dialog-panel,
+[data-theme='win95'] .drawer-panel,
+[data-theme='win95'] .menu,
+[data-theme='win95'] .toast,
+[data-theme='win95'] .tooltip-panel,
+[data-theme='win95'] .demo-tabs,
+[data-theme='win95'] .feed-article,
+[data-theme='win95'] .alert,
+[data-theme='win95'] .transition-box,
+[data-theme='win95'] .transition-card,
+[data-theme='win95'] .lp-specimen,
+[data-theme='win95'] .lp-inspector,
+[data-theme='win95'] .lp-keys,
+[data-theme='win95'] .lp-theme,
+[data-theme='win95'] .lp-eyebrow,
+[data-theme='win95'] .search-panel {
+  border: 0;
+  border-radius: 0;
+  background: var(--surface-0);
+  box-shadow: var(--raised), var(--shadow-2);
+}
+
+/* A window has a title bar, and the dialogs, the specimen and the search
+   palette are the windows that name themselves. */
+[data-theme='win95'] .dialog-title,
+[data-theme='win95'] .lp-specimen-bar,
+[data-theme='win95'] .lp-inspector-head,
+[data-theme='win95'] .search-head {
+  margin: 3px 3px 0;
+  border: 0;
+  background: var(--title);
+  padding: 0.3rem 0.5rem;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+[data-theme='win95'] .lp-specimen-path,
+[data-theme='win95'] .lp-specimen-status,
+[data-theme='win95'] .lp-inspector-head > span {
+  color: #ffffff;
+}
+
+[data-theme='win95'] .lp-specimen-dots > span {
+  border-radius: 0;
+  background: var(--surface-0);
+  box-shadow: var(--raised);
+}
+
+[data-theme='win95'] .lp-specimen-foot,
+[data-theme='win95'] .lp-keys-board,
+[data-theme='win95'] .lp-tag {
+  border-color: var(--shade);
+  background: var(--surface-0);
+}
+
+[data-theme='win95'] .lp-specimen-frame {
+  margin: 3px;
+  inline-size: calc(100% - 6px);
+  box-shadow: var(--sunken);
+}
+
+[data-theme='win95'] .lp-theme[tc-checked] {
+  box-shadow:
+    var(--raised),
+    0 0 0 2px var(--dark);
+}
+
+[data-theme='win95'] .lp-hero-stage::before {
+  border-radius: 0;
+  background: var(--surface-0);
+  box-shadow: var(--raised);
+}
+
+[data-theme='win95'] .lp-hero-glow {
+  display: none;
+}
+
+/* Fields and wells ------------------------------------------------------- */
+
+[data-theme='win95'] .field,
+[data-theme='win95'] .combobox-input,
+[data-theme='win95'] .command-input,
+[data-theme='win95'] .spinbutton-input,
+[data-theme='win95'] .checkbox-box,
+[data-theme='win95'] .radio-dot,
+[data-theme='win95'] .switch-track,
+[data-theme='win95'] .slider-track,
+[data-theme='win95'] .meter-track,
+[data-theme='win95'] .select,
+[data-theme='win95'] .tree,
+[data-theme='win95'] .grid,
+[data-theme='win95'] .contextmenu-boundary,
+[data-theme='win95'] .shiki,
+[data-theme='win95'] .lp-install,
+[data-theme='win95'] .lp-css,
+[data-theme='win95'] .search-input {
+  border: 0;
+  border-radius: 0;
+  background: var(--surface-1);
+  box-shadow: var(--sunken);
+  color: var(--text-1);
+}
+
+[data-theme='win95'] .radio-dot {
+  border-radius: 50%;
+}
+
+[data-theme='win95'] .checkbox-box[tc-checked=''],
+[data-theme='win95'] .checkbox-box[tc-checked='mixed'] {
+  background: var(--surface-1);
+  color: var(--text-1);
+}
+
+[data-theme='win95'] .switch-track[tc-checked=''] {
+  background: var(--accent);
+}
+
+[data-theme='win95'] .slider-range,
+[data-theme='win95'] .meter-fill {
+  border-radius: 0;
+  background: repeating-linear-gradient(90deg, var(--accent) 0 10px, transparent 10px 12px);
+}
+
+[data-theme='win95'] .slider-thumb {
+  border-radius: 0;
+  inline-size: 0.7rem;
+}
+
+/* Selection is navy, with white text, everywhere. */
+[data-theme='win95'] .menu-item[tc-active],
+[data-theme='win95'] .listbox-option[tc-active],
+[data-theme='win95'] .select-option[tc-active],
+[data-theme='win95'] .combobox-option[tc-active],
+[data-theme='win95'] .command-option[tc-active],
+[data-theme='win95'] .tree-item[tc-selected] > .tree-row,
+[data-theme='win95'] .sidebar-link[aria-current='page'],
+[data-theme='win95'] .search-option[tc-active] {
+  border-radius: 0;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+[data-theme='win95'] .menu-item[tc-active] *,
+[data-theme='win95'] .listbox-option[tc-active] *,
+[data-theme='win95'] .select-option[tc-active] *,
+[data-theme='win95'] .combobox-option[tc-active] *,
+[data-theme='win95'] .command-option[tc-active] *,
+[data-theme='win95'] .tree-item[tc-selected] > .tree-row *,
+[data-theme='win95'] .search-option[tc-active] * {
+  color: inherit;
+}
+
+/* Chrome ---------------------------------------------------------------- */
+
+/* The masthead is the taskbar. */
+[data-theme='win95'] .masthead {
+  border: 0;
+  backdrop-filter: none;
+  background: var(--surface-0);
+  box-shadow:
+    inset 0 1px 0 var(--hi),
+    0 1px 0 var(--dark);
+}
+
+[data-theme='win95'] .brand {
+  padding: 0.2rem 0.5rem;
+  box-shadow: var(--raised);
+  font-weight: 700;
+}
+
+[data-theme='win95'] .brand-mark {
+  border-radius: 0;
+  background:
+    linear-gradient(90deg, #ff0000 0 50%, #00a000 50%) top / 100% 50% no-repeat,
+    linear-gradient(90deg, #0000ff 0 50%, #ffd800 50%) bottom / 100% 50% no-repeat;
+}
+
+[data-theme='win95'] .theme-picker,
+[data-theme='win95'] .scheme-picker {
+  border: 0;
+  border-radius: 0;
+  background: var(--surface-0);
+  box-shadow: var(--sunken);
+}
+
+/* The documentation column is one big window on the desktop. */
+[data-theme='win95'] .layout {
+  margin-block: 1rem;
+  background: var(--surface-0);
+  box-shadow: var(--raised);
+}
+
+[data-theme='win95'] .sidebar-link,
+[data-theme='win95'] .masthead-nav-link {
+  border-radius: 0;
+}
+
+[data-theme='win95'] :focus-visible {
+  outline: 1px dotted var(--text-1);
+  outline-offset: -4px;
+}
+
+[data-theme='win95'] ::selection {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* The landing page sits on the desktop too, so its headings need the
+   silver ground behind them to stay readable. */
+[data-theme='win95'] .lp-hero-copy,
+[data-theme='win95'] .lp-section-head,
+[data-theme='win95'] .lp-close {
+  background: var(--surface-0);
+  box-shadow: var(--raised);
+  padding: 1.5rem;
+}
+
+[data-theme='win95'] .lp-ribbon {
+  border: 0;
+  background: var(--surface-0);
+  box-shadow: var(--raised);
+}
+
+[data-theme='win95'] .lp-title-em {
+  color: var(--text-3);
+}
+
+/* The chip that stands for this theme in the picker. */
+.theme-swatch-win95 {
+  background: linear-gradient(135deg, #c0c0c0 0 50%, #008080 50% 100%);
+}

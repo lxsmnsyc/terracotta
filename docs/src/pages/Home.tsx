@@ -15,6 +15,23 @@ const INSTALL = 'pnpm add terracotta@next';
 const REPO = 'https://github.com/lxsmnsyc/terracotta';
 const SPECIMEN = 'landing/specimen';
 
+const NUMBER_WORDS = [
+  'Zero',
+  'One',
+  'Two',
+  'Three',
+  'Four',
+  'Five',
+  'Six',
+  'Seven',
+  'Eight',
+  'Nine',
+  'Ten',
+  'Eleven',
+  'Twelve',
+];
+const THEME_COUNT = NUMBER_WORDS[THEMES.length] ?? String(THEMES.length);
+
 const RIBBON = [
   'tc-expanded',
   'aria-controls',
@@ -694,7 +711,7 @@ export default function Home(): JSX.Element {
       <section class="lp-section" ref={reveal}>
         <header class="lp-section-head">
           <p class="lp-kicker">03 · Style</p>
-          <h2 class="lp-heading">Nine design systems. Not one line of markup changed.</h2>
+          <h2 class="lp-heading">{THEME_COUNT} design systems. Not one line of markup changed.</h2>
           <p class="lp-body">
             This site is built from Terracotta, and every theme below is only a stylesheet. Pick one
             and the whole page, the demos included, changes with it.

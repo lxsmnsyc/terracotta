@@ -5,6 +5,7 @@ import './brutalist.css';
 import './editorial.css';
 import './glass.css';
 import './terminal.css';
+import './win95.css';
 import './x-ray.css';
 import './terracotta.css';
 
@@ -61,6 +62,11 @@ export const THEMES: readonly ThemeMeta[] = [
     id: 'bloom',
     name: 'Bloom',
     blurb: 'No lines anywhere: pills, soft fills, and a lift on hover.',
+  },
+  {
+    id: 'win95',
+    name: 'Windows 95',
+    blurb: 'Silver bevels, navy title bars and a teal desktop.',
   },
   {
     id: 'bevel',
