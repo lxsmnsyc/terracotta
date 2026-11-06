@@ -3,6 +3,7 @@ import type { JSX } from '@solidjs/web';
 import { Show } from 'solid-js';
 import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclosure';
 import SchemePicker from './SchemePicker';
+import Search from './Search';
 import Sidebar from './Sidebar';
 import ThemePicker from './ThemePicker';
 import { ChevronRightIcon } from '../lib/icons';
@@ -32,6 +33,7 @@ export default function DocsLayout(props: { children?: JSX.Element }): JSX.Eleme
         </nav>
 
         <div class="masthead-actions">
+          <Search />
           <ThemePicker />
           <SchemePicker />
           <a class="control masthead-link" href={REPO} rel="noreferrer">

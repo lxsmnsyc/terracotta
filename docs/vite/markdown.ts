@@ -262,6 +262,8 @@ export function markdownPlugin(): Plugin {
 
 const CONTENT_ID = 'virtual:content';
 const RESOLVED_CONTENT_ID = '\0' + CONTENT_ID;
+const SEARCH_ID = 'virtual:search-index';
+const RESOLVED_SEARCH_ID = '\0' + SEARCH_ID;
 
 interface NavSection {
   title: string;
@@ -413,6 +415,93 @@ export function contentIndexPlugin(): Plugin {
       const index = graph.getModuleById(RESOLVED_CONTENT_ID);
       if (index) {
         graph.invalidateModule(index);
+      }
+      return undefined;
+    },
+  };
+}
+
+/**
+ * The `##` and `###` headings of a page, with the ids the page renders them
+ * under. Code fences are skipped, since a `#` inside one is a comment.
+ */
+function scanHeadings(source: string): { id: string; text: string }[] {
+  const headings: { id: string; text: string }[] = [];
+  let fenced = false;
+  for (const line of source.split('\n')) {
+    if (/^\s*(```|~~~)/.test(line)) {
+      fenced = !fenced;
+      continue;
+    }
+    const match = fenced ? null : /^#{2,3}\s+(.+?)\s*$/.exec(line);
+    if (match?.[1]) {
+      headings.push({ id: slugify(match[1]), text: match[1].replace(/[`*_]/g, '') });
+    }
+  }
+  return headings;
+}
+
+/**
+ * What the search palette searches: every page in nav order, with its
+ * section, lede and headings. It is its own module so the palette can import
+ * it when it first opens, and no page pays for it before then.
+ */
+export function searchIndexPlugin(): Plugin {
+  let root = process.cwd();
+
+  return {
+    name: 'terracotta-docs:search-index',
+
+    configResolved(config) {
+      root = config.root;
+    },
+
+    resolveId(id) {
+      return id === SEARCH_ID ? RESOLVED_SEARCH_ID : undefined;
+    },
+
+    async load(id) {
+      if (id !== RESOLVED_SEARCH_ID) {
+        return undefined;
+      }
+
+      const contentRoot = path.join(root, CONTENT_DIR);
+      const navFile = path.join(contentRoot, 'nav.json');
+      this.addWatchFile(navFile);
+      const nav = parseNav(await fs.readFile(navFile, 'utf8'), navFile);
+
+      const pages: unknown[] = [];
+      for (const section of nav) {
+        for (const slug of section.pages) {
+          const file = path.join(contentRoot, `${slug}.md`);
+          this.addWatchFile(file);
+          let source: string;
+          try {
+            source = await fs.readFile(file, 'utf8');
+          } catch {
+            continue;
+          }
+          const meta = scanFrontMatter(source);
+          pages.push({
+            slug,
+            section: section.title,
+            title: meta.title ?? slug,
+            description: meta.description ?? '',
+            headings: scanHeadings(source),
+          });
+        }
+      }
+
+      return `export const pages = ${JSON.stringify(pages)};`;
+    },
+
+    hotUpdate({ file }) {
+      if (!file.startsWith(path.join(root, CONTENT_DIR) + path.sep)) {
+        return undefined;
+      }
+      const index = this.environment.moduleGraph.getModuleById(RESOLVED_SEARCH_ID);
+      if (index) {
+        this.environment.moduleGraph.invalidateModule(index);
       }
       return undefined;
     },

@@ -409,6 +409,102 @@
   color: var(--danger);
 }
 
+/* Search ----------------------------------------------------------- */
+
+.search-trigger {
+  color: var(--text-2);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.search-trigger:hover {
+  color: var(--text-1);
+}
+
+.search-trigger-key {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-1);
+  padding: 0 0.3rem;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+/* The palette is a wider commandbar, with a longer list. */
+.search-panel {
+  inset-block-start: max(4.5rem, 14vh);
+  inline-size: min(92%, 38rem);
+  padding: 0.6rem;
+}
+
+.search-input {
+  font-size: 1rem;
+  padding-block: 0.65rem;
+}
+
+.search-options {
+  max-block-size: min(60vh, 26rem);
+}
+
+.search-options:not(:has(.search-option[tc-matches])) {
+  display: none;
+}
+
+.search-option {
+  display: grid;
+  grid-template-columns: 1.1rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.search-option-kind {
+  color: var(--text-3);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.search-option-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-option-context {
+  color: var(--text-3);
+  font-size: 0.78rem;
+}
+
+.search-option[tc-active] .search-option-kind,
+.search-option[tc-active] .search-option-context {
+  color: inherit;
+}
+
+.search-empty {
+  padding: 1rem 0.5rem 0.5rem;
+  color: var(--text-2);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.search-foot {
+  display: flex;
+  gap: 1rem;
+  margin-block-start: 0.6rem;
+  border-block-start: 1px solid var(--border);
+  padding: 0.5rem 0.25rem 0;
+  color: var(--text-3);
+  font-size: 0.75rem;
+}
+
+.search-foot kbd {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0 0.25rem;
+  font-family: var(--font-mono);
+}
+
 /* Mobile ----------------------------------------------------------- */
 
 .mobile-nav {
@@ -442,6 +538,34 @@
 @media (max-width: 48rem) {
   .mobile-nav {
     display: block;
+  }
+
+  /* Two rows: the brand and the actions on the first, every theme on the
+     second, where all of them fit at once. */
+  .masthead {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    block-size: auto;
+    padding-block: 0.6rem;
+  }
+
+  .masthead-actions {
+    display: contents;
+  }
+
+  .brand {
+    margin-inline-end: auto;
+  }
+
+  .theme-picker {
+    order: 1;
+    flex-basis: 100%;
+    justify-content: space-between;
+  }
+
+  .search-trigger-label,
+  .search-trigger-key {
+    display: none;
   }
 
   .sidebar {

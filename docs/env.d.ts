@@ -42,6 +42,19 @@ declare module 'virtual:content' {
   export const pages: Record<string, (() => Promise<{ default: DocModuleShape }>) | undefined>;
 }
 
+/** Built by `vite/markdown.ts` for the search palette, and loaded on demand. */
+declare module 'virtual:search-index' {
+  export interface SearchPage {
+    slug: string;
+    section: string;
+    title: string;
+    description: string;
+    headings: { id: string; text: string }[];
+  }
+
+  export const pages: SearchPage[];
+}
+
 /** Built by `vite/demos.ts` from the files in `src/demos`. */
 declare module 'virtual:demo-registry' {
   import type { Component } from 'solid-js';
