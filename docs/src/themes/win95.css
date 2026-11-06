@@ -189,7 +189,9 @@
   background: var(--surface-0);
 }
 
-[data-theme='win95'] .button-danger {
+[data-theme='win95'] .button-danger,
+[data-theme='win95'] .button-danger:hover {
+  background: var(--surface-0);
   color: var(--danger);
   font-weight: 700;
 }

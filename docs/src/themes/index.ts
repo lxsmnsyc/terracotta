@@ -65,8 +65,8 @@ export const THEMES: readonly ThemeMeta[] = [
   },
   {
     id: 'win95',
-    name: 'Windows 95',
-    blurb: 'Silver bevels, navy title bars and a teal desktop.',
+    name: 'Win95',
+    blurb: 'Windows 95: silver bevels, navy title bars and a teal desktop.',
   },
   {
     id: 'bevel',
