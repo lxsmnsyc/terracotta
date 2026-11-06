@@ -375,6 +375,34 @@
   color: inherit;
 }
 
+/* The palette: titles and details follow the navy selection, and the key
+   hints sit on the window's silver rather than the white of a field. */
+[data-theme='win95'] .search-option[tc-active] .search-option-title,
+[data-theme='win95'] .search-option[tc-active] .search-option-detail {
+  color: var(--accent-contrast);
+}
+
+[data-theme='win95'] .search-option-icon {
+  border: 0;
+  border-radius: 0;
+  background: var(--surface-0);
+  box-shadow: var(--raised);
+}
+
+[data-theme='win95'] .search-option[tc-active] .search-option-icon {
+  background: var(--surface-0);
+  color: var(--text-1);
+}
+
+[data-theme='win95'] .search-foot {
+  border-color: var(--shade);
+  background: var(--surface-0);
+}
+
+[data-theme='win95'] .search-field {
+  border-color: var(--shade);
+}
+
 /* Chrome ---------------------------------------------------------------- */
 
 /* The masthead is the taskbar. */

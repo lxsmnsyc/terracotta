@@ -421,23 +421,62 @@ export function contentIndexPlugin(): Plugin {
   };
 }
 
+/** Markdown prose reduced to plain text, for search snippets. */
+function plainText(block: string): string {
+  return block
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/[`*_]/g, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 /**
  * The `##` and `###` headings of a page, with the ids the page renders them
- * under. Code fences are skipped, since a `#` inside one is a comment.
+ * under and the first paragraph of prose below each, cut to a snippet. Code
+ * fences are skipped, since a `#` inside one is a comment.
  */
-function scanHeadings(source: string): { id: string; text: string }[] {
-  const headings: { id: string; text: string }[] = [];
+function scanHeadings(source: string): { id: string; text: string; snippet: string }[] {
+  const headings: { id: string; text: string; snippet: string }[] = [];
   let fenced = false;
+  let paragraph: string[] = [];
+  let waiting: { id: string; text: string; snippet: string } | undefined;
+
+  // Closes the paragraph being collected, and gives it to the heading still
+  // waiting for its first one.
+  function flush(): void {
+    if (waiting && paragraph.length > 0) {
+      const text = plainText(paragraph.join(' '));
+      waiting.snippet = text.length > 140 ? `${text.slice(0, 137).trimEnd()}…` : text;
+      waiting = undefined;
+    }
+    paragraph = [];
+  }
+
   for (const line of source.split('\n')) {
     if (/^\s*(```|~~~)/.test(line)) {
+      flush();
       fenced = !fenced;
       continue;
     }
-    const match = fenced ? null : /^#{2,3}\s+(.+?)\s*$/.exec(line);
-    if (match?.[1]) {
-      headings.push({ id: slugify(match[1]), text: match[1].replace(/[`*_]/g, '') });
+    if (fenced) {
+      continue;
     }
+    const match = /^#{2,3}\s+(.+?)\s*$/.exec(line);
+    if (match?.[1]) {
+      flush();
+      waiting = { id: slugify(match[1]), text: match[1].replace(/[`*_]/g, ''), snippet: '' };
+      headings.push(waiting);
+      continue;
+    }
+    // Only running prose makes a snippet: not lists, tables, quotes or directives.
+    if (line.trim() === '' || /^\s*([-*|>]|\d+\.|:::|#)/.test(line)) {
+      flush();
+      continue;
+    }
+    paragraph.push(line.trim());
   }
+  flush();
   return headings;
 }
 

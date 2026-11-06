@@ -49,7 +49,7 @@ declare module 'virtual:search-index' {
     section: string;
     title: string;
     description: string;
-    headings: { id: string; text: string }[];
+    headings: { id: string; text: string; snippet: string }[];
   }
 
   export const pages: SearchPage[];

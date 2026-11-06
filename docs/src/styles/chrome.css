@@ -432,61 +432,161 @@
   font-size: 0.7rem;
 }
 
-/* The palette is a wider commandbar, with a longer list. */
+/* The palette. A wider commandbar: the field runs edge to edge, the list
+   scrolls under it, and the key hints sit in a footer. */
+.search-overlay {
+  backdrop-filter: blur(3px);
+}
+
 .search-panel {
-  inset-block-start: max(4.5rem, 14vh);
-  inline-size: min(92%, 38rem);
-  padding: 0.6rem;
+  inset-block-start: max(4.5rem, 12vh);
+  inline-size: min(calc(100vw - 2rem), 40rem);
+  overflow: hidden;
+  border-color: var(--border-strong);
+  padding: 0;
+  animation: search-in 220ms cubic-bezier(0.2, 0.75, 0, 1);
 }
 
 .search {
   inline-size: 100%;
 }
 
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  border-block-end: 1px solid var(--border);
+  padding: 0.9rem 1.1rem;
+  color: var(--text-3);
+}
+
+.search-field-icon {
+  inline-size: 1.15rem;
+  block-size: 1.15rem;
+}
+
 .search-input {
-  font-size: 1rem;
-  padding-block: 0.65rem;
+  flex: 1;
+  min-inline-size: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  color: var(--text-1);
+  font: inherit;
+  font-size: 1.05rem;
+}
+
+.search-input::placeholder {
+  color: var(--text-3);
+}
+
+.search-key,
+.search-foot kbd {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-1);
+  padding: 0.05rem 0.35rem;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
 }
 
 .search-options {
-  max-block-size: min(60vh, 26rem);
+  max-block-size: min(56vh, 28rem);
+  overflow-y: auto;
+  outline: none;
+  padding: 0.25rem 0.5rem 0.6rem;
+  scroll-padding-block: 2.25rem 0.5rem;
 }
 
-.search-options:not(:has(.search-option[tc-matches])) {
+.search-options:empty {
   display: none;
+}
+
+.search-group-title {
+  padding: 0.85rem 0.7rem 0.35rem;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .search-option {
   display: grid;
-  grid-template-columns: 1.1rem minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: 0.6rem;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.7rem;
+  color: var(--text-1);
+  cursor: pointer;
 }
 
-.search-option-kind {
-  color: var(--text-3);
-  font-size: 0.75rem;
-  text-align: center;
+.search-option[tc-active] {
+  background: var(--accent-soft);
 }
 
-.search-option-title {
+.search-option-icon {
+  display: grid;
+  place-items: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  color: var(--text-2);
+  transition:
+    background-color 120ms,
+    color 120ms;
+}
+
+.search-option[tc-active] .search-option-icon {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.search-option-text {
+  display: grid;
+  min-inline-size: 0;
+}
+
+.search-option-title,
+.search-option-detail {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.search-option-context {
-  color: var(--text-3);
+.search-option-title {
+  font-size: 0.94rem;
+  font-weight: 550;
+}
+
+.search-option-detail {
+  color: var(--text-2);
   font-size: 0.78rem;
 }
 
-.search-option[tc-active] .search-option-kind,
-.search-option[tc-active] .search-option-context {
-  color: inherit;
+.search-option[tc-active] .search-option-title {
+  color: var(--accent-hover);
+}
+
+.search-option-enter {
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  opacity: 0;
+}
+
+.search-option[tc-active] .search-option-enter {
+  opacity: 1;
 }
 
 .search-empty {
-  padding: 1rem 0.5rem 0.5rem;
+  padding: 2.5rem 1.5rem;
   color: var(--text-2);
   font-size: 0.9rem;
   text-align: center;
@@ -494,19 +594,32 @@
 
 .search-foot {
   display: flex;
-  gap: 1rem;
-  margin-block-start: 0.6rem;
+  gap: 1.1rem;
   border-block-start: 1px solid var(--border);
-  padding: 0.5rem 0.25rem 0;
-  color: var(--text-3);
+  background: var(--surface-1);
+  padding: 0.6rem 1.1rem;
+  color: var(--text-2);
   font-size: 0.75rem;
 }
 
-.search-foot kbd {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 0 0.25rem;
-  font-family: var(--font-mono);
+.search-foot span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+@keyframes search-in {
+  from {
+    opacity: 0;
+    translate: -50% 8px;
+    scale: 0.985;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-panel {
+    animation: none;
+  }
 }
 
 /* Mobile ----------------------------------------------------------- */

@@ -16,98 +16,233 @@ import {
   CommandBarTitle,
 } from 'terracotta/command-bar';
 import type { SearchPage } from 'virtual:search-index';
+import { useColorScheme, useNativeColorScheme } from '../lib/color-scheme';
+import { BoltIcon, ComponentIcon, HashIcon, PageIcon, SearchIcon } from '../lib/icons';
+import { useTheme } from '../lib/theme';
+import { THEMES } from '../themes';
+
+const REPO = 'https://github.com/lxsmnsyc/terracotta';
+const INSTALL = 'pnpm add terracotta@next';
+
+type Kind = 'guide' | 'component' | 'section' | 'action';
 
 interface Result {
+  /** A path to open, or `action:` and the name of an action. */
   key: string;
-  href: string;
   title: string;
-  /** Where the result sits: its section for a page, its page for a heading. */
-  context: string;
-  /** Everything the query is matched against, lowercased once. */
-  haystack: string;
-  heading: boolean;
+  /** The line under the title: a page's lede, or where a section is. */
+  detail: string;
+  kind: Kind;
+  /** The page a section belongs to, so one page cannot fill the list. */
+  page: string;
+  /** The text the query is matched against, beyond the title. */
+  body: string;
 }
+
+interface Group {
+  title: string;
+  items: Result[];
+}
+
+const ACTIONS: Result[] = [
+  {
+    key: 'action:theme',
+    title: 'Next theme',
+    detail: 'Restyle the whole site, demos included',
+    kind: 'action',
+    page: '',
+    body: 'theme style skin switch change',
+  },
+  {
+    key: 'action:scheme',
+    title: 'Toggle light and dark',
+    detail: 'Switch the colour scheme',
+    kind: 'action',
+    page: '',
+    body: 'dark light mode colour color scheme',
+  },
+  {
+    key: 'action:install',
+    title: 'Copy the install command',
+    detail: INSTALL,
+    kind: 'action',
+    page: '',
+    body: 'install npm pnpm yarn add copy',
+  },
+  {
+    key: 'action:github',
+    title: 'Open Terracotta on GitHub',
+    detail: 'lxsmnsyc/terracotta',
+    kind: 'action',
+    page: '',
+    body: 'github source repository code',
+  },
+];
+
+/** What the palette shows before anything is typed. */
+const START_SLUGS = ['guides/getting-started', 'guides/styling', 'components/dialog', 'states'];
 
 function buildResults(pages: SearchPage[]): Result[] {
   const results: Result[] = [];
-  // Pages first, then headings. The palette keeps this order, so an exact
-  // page name always sits above the sections that mention it.
   for (const page of pages) {
+    const href = `/${page.slug}`;
     results.push({
-      key: page.slug,
-      href: `/${page.slug}`,
+      key: href,
       title: page.title,
-      context: page.section,
-      haystack: `${page.title} ${page.section} ${page.description}`.toLowerCase(),
-      heading: false,
+      detail: page.description.replace(/<[^>]+>/g, ''),
+      kind: page.slug.startsWith('components/') ? 'component' : 'guide',
+      page: href,
+      body: `${page.section} ${page.description}`,
     });
-  }
-  for (const page of pages) {
     for (const heading of page.headings) {
       results.push({
-        key: `${page.slug}#${heading.id}`,
-        href: `/${page.slug}#${heading.id}`,
+        key: `${href}#${heading.id}`,
         title: heading.text,
-        context: page.title,
-        haystack: `${heading.text} ${page.title}`.toLowerCase(),
-        heading: true,
+        detail: heading.snippet ? `${page.title} · ${heading.snippet}` : page.title,
+        kind: 'section',
+        page: href,
+        body: `${page.title} ${heading.snippet}`,
       });
     }
   }
   return results;
 }
 
-/** Every word of the query has to appear. With no query, only pages show. */
-function matches(result: Result, query: string): boolean {
-  const words = query.toLowerCase().split(/\s+/).filter(Boolean);
-  if (words.length === 0) {
-    return !result.heading;
-  }
-  for (const word of words) {
-    if (!result.haystack.includes(word)) {
-      return false;
+function termsOf(query: string): string[] {
+  const terms: string[] = [];
+  for (const term of query.toLowerCase().split(/\s+/)) {
+    if (term) {
+      terms.push(term);
     }
   }
-  return true;
+  return terms;
 }
 
 /**
- * Lower is better. A title that starts with the query beats one that contains
- * it, which beats a match found only in the lede, and a page beats a heading
- * at the same rank.
+ * How well a text matches every term: most at the start of the text, then at
+ * the start of a word, then anywhere. Zero if any term is missing.
  */
-function scoreFor(result: Result, query: string): number {
-  const title = result.title.toLowerCase();
-  const needle = query.trim().toLowerCase();
-  let score = 3;
-  if (title === needle) {
-    score = 0;
-  } else if (title.startsWith(needle)) {
-    score = 1;
-  } else if (title.includes(needle)) {
-    score = 2;
+function scoreText(text: string, terms: string[]): number {
+  const lower = text.toLowerCase();
+  let score = 0;
+  for (const term of terms) {
+    const at = lower.indexOf(term);
+    if (at === -1) {
+      return 0;
+    }
+    if (at === 0) {
+      score += 6;
+    } else if (/[\s<#(/-]/.test(lower[at - 1] ?? '')) {
+      score += 4;
+    } else {
+      score += 2;
+    }
   }
-  return score * 2 + (result.heading ? 1 : 0);
+  return score;
 }
 
-const LIMIT = 40;
+/** The title counts most, then everything else. A page edges out its sections. */
+function scoreResult(result: Result, terms: string[]): number {
+  const score =
+    scoreText(result.title, terms) * 3 || scoreText(`${result.title} ${result.body}`, terms);
+  if (score === 0) {
+    return 0;
+  }
+  const exact = result.title.toLowerCase() === terms.join(' ') ? 20 : 0;
+  return score + exact + (result.kind === 'section' ? 0 : 1);
+}
 
-/** The matching results, best first, capped so the list stays short. */
-function rank(results: Result[], query: string): Result[] {
-  const scored: { result: Result; score: number; order: number }[] = [];
-  let order = 0;
+const PER_GROUP = 6;
+const PER_PAGE = 2;
+
+/** The best matches of one kind, at most two sections from any one page. */
+function bestOf(results: Result[], terms: string[]): { items: Result[]; top: number } {
+  const scored: { result: Result; score: number }[] = [];
   for (const result of results) {
-    if (matches(result, query)) {
-      scored.push({ result, score: scoreFor(result, query), order });
+    const score = scoreResult(result, terms);
+    if (score > 0) {
+      scored.push({ result, score });
     }
-    order += 1;
   }
-  scored.sort((a, b) => a.score - b.score || a.order - b.order);
-  const ranked: Result[] = [];
-  for (const entry of scored.slice(0, LIMIT)) {
-    ranked.push(entry.result);
+  scored.sort((a, b) => b.score - a.score);
+
+  const items: Result[] = [];
+  const perPage = new Map<string, number>();
+  for (const { result } of scored) {
+    const count = perPage.get(result.page) ?? 0;
+    if (result.page && count === PER_PAGE) {
+      continue;
+    }
+    perPage.set(result.page, count + 1);
+    items.push(result);
+    if (items.length === PER_GROUP) {
+      break;
+    }
   }
-  return ranked;
+  return { items, top: scored[0]?.score ?? 0 };
+}
+
+const GROUPS: { title: string; kind: Kind }[] = [
+  { title: 'Components', kind: 'component' },
+  { title: 'Guides', kind: 'guide' },
+  { title: 'Sections', kind: 'section' },
+];
+
+/** The groups to show for a query, the group with the best match first. */
+function groupResults(results: Result[], query: string): Group[] {
+  const terms = termsOf(query);
+  if (terms.length === 0) {
+    const start: Result[] = [];
+    for (const slug of START_SLUGS) {
+      const found = results.find((result) => result.key === `/${slug}`);
+      if (found) {
+        start.push(found);
+      }
+    }
+    // Before the index arrives there is nothing to start from but actions.
+    return start.length > 0
+      ? [
+          { title: 'Start here', items: start },
+          { title: 'Actions', items: ACTIONS },
+        ]
+      : [{ title: 'Actions', items: ACTIONS }];
+  }
+
+  const ranked: { group: Group; top: number }[] = [];
+  for (const entry of GROUPS) {
+    const ofKind: Result[] = [];
+    for (const result of results) {
+      if (result.kind === entry.kind) {
+        ofKind.push(result);
+      }
+    }
+    const { items, top } = bestOf(ofKind, terms);
+    if (items.length > 0) {
+      ranked.push({ group: { title: entry.title, items }, top });
+    }
+  }
+  ranked.sort((a, b) => b.top - a.top);
+
+  const groups: Group[] = [];
+  for (const entry of ranked) {
+    groups.push(entry.group);
+  }
+  const actions = bestOf(ACTIONS, terms).items;
+  if (actions.length > 0) {
+    groups.push({ title: 'Actions', items: actions });
+  }
+  return groups;
+}
+
+const KIND_ICONS: Record<Kind, (props: { class?: string }) => JSX.Element> = {
+  component: ComponentIcon,
+  section: HashIcon,
+  action: BoltIcon,
+  guide: PageIcon,
+};
+
+function KindIcon(props: { kind: Kind }): JSX.Element {
+  return KIND_ICONS[props.kind]({});
 }
 
 export interface SearchController {
@@ -178,15 +313,7 @@ export function SearchTrigger(props: { search: SearchController }): JSX.Element 
       onPointerEnter={props.search.load}
       onFocus={props.search.load}
     >
-      <svg class="icon" viewBox="0 0 16 16" width="1em" height="1em" aria-hidden="true">
-        <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.75" />
-        <path
-          d="M10.5 10.5L14 14"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-        />
-      </svg>
+      <SearchIcon />
       <span class="search-trigger-label">Search</span>
       <kbd class="search-trigger-key">{shortcut()}</kbd>
     </button>
@@ -195,75 +322,142 @@ export function SearchTrigger(props: { search: SearchController }): JSX.Element 
 
 /**
  * The palette: a `CommandBar` holding a `Command`, the same pair the
- * CommandBar page documents. Results are ranked here and rendered in order,
- * so the `Command` only ever holds options that match. The index loads the
- * first time the palette opens.
+ * CommandBar page documents. Results are grouped and ranked here, and each
+ * group is a `role="group"` inside the listbox. The `Command` does not need
+ * to know about the groups: it finds its options anywhere below
+ * `CommandOptions`.
  */
 export function SearchPalette(props: { search: SearchController }): JSX.Element {
   const navigate = useNavigate();
+  const { theme, setTheme } = useTheme();
+  const [, setScheme] = useColorScheme();
+  const native = useNativeColorScheme();
+
+  function run(result: Result): void {
+    props.search.toggle(false);
+    switch (result.key) {
+      case 'action:theme': {
+        const index = THEMES.findIndex((entry) => entry.id === theme());
+        setTheme(THEMES[(index + 1) % THEMES.length]!.id);
+        return;
+      }
+      case 'action:scheme':
+        setScheme(native() === 'dark' ? 'light' : 'dark');
+        return;
+      case 'action:install':
+        navigator.clipboard.writeText(INSTALL).catch(() => {
+          // Clipboard access denied. The command is in the result's detail.
+        });
+        return;
+      case 'action:github':
+        window.open(REPO, '_blank', 'noreferrer');
+        return;
+      default:
+        navigate(result.key);
+    }
+  }
 
   return (
     <CommandBar class="commandbar" isOpen={props.search.open()} onChange={props.search.toggle}>
-      <CommandBarOverlay class="commandbar-overlay" />
+      <CommandBarOverlay class="commandbar-overlay search-overlay" />
       <CommandBarPanel class="commandbar-panel search-panel">
         <CommandBarTitle class="visually-hidden">Search the documentation</CommandBarTitle>
         <CommandBarDescription class="visually-hidden">
-          Type to filter pages and sections, then press Enter to go there.
+          Type to find components, guides and sections, or run an action. Press Enter to go.
         </CommandBarDescription>
 
         <Command<Result>
           class="command search"
           defaultValue={undefined}
           by={(a, b) => a.key === b.key}
-          matchBy={matches}
+          // Grouping and ranking happen below, so every rendered option matches.
+          matchBy={() => true}
           onChange={(result) => {
             if (result) {
-              props.search.toggle(false);
-              navigate(result.href);
+              run(result);
             }
           }}
         >
-          {(state) => (
-            <>
-              <CommandLabel class="visually-hidden">Search</CommandLabel>
-              <CommandInput
-                class="command-input search-input"
-                placeholder="Search components, guides and sections…"
-              />
-              <CommandOptions class="command-options search-options">
-                <For each={rank(props.search.results(), state.query())}>
-                  {(result) => (
-                    <CommandOption class="command-option search-option" value={result}>
-                      <span class="search-option-kind" aria-hidden="true">
-                        {result.heading ? '#' : '◆'}
-                      </span>
-                      <span class="search-option-title">{result.title}</span>
-                      <span class="search-option-context">{result.context}</span>
-                    </CommandOption>
-                  )}
-                </For>
-              </CommandOptions>
-              <Show
-                when={
-                  props.search.results().length > 0 &&
-                  rank(props.search.results(), state.query()).length === 0
+          {(state) => {
+            const groups = (): Group[] => groupResults(props.search.results(), state.query());
+
+            // A new query replaces the options, and the one that was active may
+            // be gone, so the best match becomes active and Enter goes there.
+            createEffect(
+              () => groups()[0]?.items[0],
+              (first) => {
+                if (first) {
+                  state.focus(first);
+                } else {
+                  state.blur();
                 }
-              >
-                <p class="search-empty">Nothing matches “{state.query()}”.</p>
-              </Show>
-              <p class="search-foot" aria-hidden="true">
-                <span>
-                  <kbd>↑</kbd> <kbd>↓</kbd> to move
-                </span>
-                <span>
-                  <kbd>Enter</kbd> to open
-                </span>
-                <span>
-                  <kbd>Esc</kbd> to close
-                </span>
-              </p>
-            </>
-          )}
+              },
+            );
+
+            return (
+              <>
+                <CommandLabel class="visually-hidden">Search</CommandLabel>
+                <div class="search-field">
+                  <SearchIcon class="search-field-icon" />
+                  <CommandInput
+                    class="search-input"
+                    placeholder="Search components, guides and sections…"
+                  />
+                  <kbd class="search-key">esc</kbd>
+                </div>
+
+                <CommandOptions as="div" class="search-options">
+                  <For each={groups()}>
+                    {(entry) => (
+                      <div class="search-group" role="group" aria-label={entry.title}>
+                        <div class="search-group-title" aria-hidden="true">
+                          {entry.title}
+                        </div>
+                        <For each={entry.items}>
+                          {(result) => (
+                            <CommandOption as="div" class="search-option" value={result}>
+                              <span class="search-option-icon" data-kind={result.kind}>
+                                <KindIcon kind={result.kind} />
+                              </span>
+                              <span class="search-option-text">
+                                <span class="search-option-title">{result.title}</span>
+                                <Show when={result.detail}>
+                                  <span class="search-option-detail">{result.detail}</span>
+                                </Show>
+                              </span>
+                              <span class="search-option-enter" aria-hidden="true">
+                                ↵
+                              </span>
+                            </CommandOption>
+                          )}
+                        </For>
+                      </div>
+                    )}
+                  </For>
+                </CommandOptions>
+
+                <Show when={props.search.results().length > 0 && groups().length === 0}>
+                  <p class="search-empty">
+                    Nothing matches “{state.query()}”. Try a component such as “combo”, or an
+                    attribute such as “tc-expanded”.
+                  </p>
+                </Show>
+
+                <p class="search-foot" aria-hidden="true">
+                  <span>
+                    <kbd>↑</kbd>
+                    <kbd>↓</kbd> move
+                  </span>
+                  <span>
+                    <kbd>↵</kbd> open
+                  </span>
+                  <span>
+                    <kbd>esc</kbd> close
+                  </span>
+                </p>
+              </>
+            );
+          }}
         </Command>
       </CommandBarPanel>
     </CommandBar>

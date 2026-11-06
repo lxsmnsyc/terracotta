@@ -73,3 +73,52 @@ export function CloseIcon(props: { class?: string }): JSX.Element {
     </Icon>
   );
 }
+
+export function SearchIcon(props: { class?: string }): JSX.Element {
+  return (
+    <Icon class={props.class}>
+      <circle cx="7" cy="7" r="4.5" />
+      <path d="M10.5 10.5L14 14" />
+    </Icon>
+  );
+}
+
+/** A page of prose: a guide or the reference. */
+export function PageIcon(props: { class?: string }): JSX.Element {
+  return (
+    <Icon class={props.class}>
+      <path d="M4 1.75h5.25L12.5 5v9.25H4z" />
+      <path d="M9 2v3.25h3.25M6.25 8.5h4M6.25 11h4" />
+    </Icon>
+  );
+}
+
+/** A component page. */
+export function ComponentIcon(props: { class?: string }): JSX.Element {
+  return (
+    <Icon class={props.class}>
+      <rect x="2.25" y="2.25" width="4.5" height="4.5" rx="1" />
+      <rect x="9.25" y="2.25" width="4.5" height="4.5" rx="1" />
+      <rect x="2.25" y="9.25" width="4.5" height="4.5" rx="1" />
+      <rect x="9.25" y="9.25" width="4.5" height="4.5" rx="1" />
+    </Icon>
+  );
+}
+
+/** A section of a page. */
+export function HashIcon(props: { class?: string }): JSX.Element {
+  return (
+    <Icon class={props.class}>
+      <path d="M6.5 2.5L5 13.5M11 2.5L9.5 13.5M2.75 6h11M2.25 10h11" />
+    </Icon>
+  );
+}
+
+/** Something to run rather than somewhere to go. */
+export function BoltIcon(props: { class?: string }): JSX.Element {
+  return (
+    <Icon class={props.class}>
+      <path d="M9 1.75L3.5 9h4.25L7 14.25 12.5 7H8.25z" />
+    </Icon>
+  );
+}
