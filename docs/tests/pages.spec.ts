@@ -82,3 +82,23 @@ test('the context menu opens inside its frame', async ({ page }) => {
   await expect(frame.locator('.menu-item').first()).toBeVisible();
   await expect(frame.locator('.contextmenu-overlay')).toBeVisible();
 });
+
+test('search opens over the whole page and goes to the best match', async ({ page }) => {
+  await page.goto('/guides/getting-started');
+
+  // The palette has to escape the masthead: its overlay covers the viewport.
+  await expect(async () => {
+    await page.keyboard.press('ControlOrMeta+k');
+    await expect(page.locator('.search-input')).toBeFocused({ timeout: 500 });
+  }).toPass({ timeout: 15_000 });
+  const overlay = await page.locator('.commandbar-overlay').boundingBox();
+  const viewport = page.viewportSize();
+  expect(overlay?.height).toBe(viewport?.height);
+
+  await page.keyboard.type('tabs');
+  await expect(page.locator('.search-option').first()).toContainText('Tabs');
+
+  // The best match is already active, so Enter alone goes there.
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/\/components\/tabs$/);
+});

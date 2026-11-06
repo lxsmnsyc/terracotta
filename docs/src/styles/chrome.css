@@ -439,6 +439,10 @@
   padding: 0.6rem;
 }
 
+.search {
+  inline-size: 100%;
+}
+
 .search-input {
   font-size: 1rem;
   padding-block: 0.65rem;
