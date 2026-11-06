@@ -1,0 +1,192 @@
+import { dynamic, type JSX, type ValidComponent } from '@solidjs/web';
+import { createEffect, omit } from 'solid-js';
+import { useAutocompleteState } from '../../states/create-autocomplete-state';
+import { useDisclosureState } from '../../states/create-disclosure-state';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
+import { mergeFunc } from '../../utils/merge-func';
+import {
+  createARIADisabledState,
+  createARIAExpandedState,
+  createDisabledState,
+  createExpandedState,
+  createHasActiveState,
+  createHasQueryState,
+  createHasSelectedState,
+} from '../../utils/state-props';
+import useEventListener from '../../utils/use-event-listener';
+import { DISABLED_NODE, MATCHES_NODE } from '../../utils/namespace';
+import { useComboboxContext } from './ComboboxContext';
+import { COMBOBOX_INPUT_TAG } from './tags';
+
+export type ComboboxInputProps<T extends ValidComponent = 'input'> = HeadlessPropsWithRef<T>;
+
+/**
+ * The text field of a `Combobox`. Typing sets the query, which is debounced by
+ * 250ms, and the arrow keys move the active option through `aria-
+ * activedescendant` while focus stays in the input.
+ *
+ * Renders an `<input>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
+ */
+export function ComboboxInput<T extends ValidComponent = 'input'>(
+  props: ComboboxInputProps<T>,
+): JSX.Element {
+  const context = useComboboxContext('ComboboxInput');
+  const autocompleteState = useAutocompleteState();
+  const disclosureState = useDisclosureState();
+  const [internalRef, setInternalRef] = createForwardRef(props);
+
+  const isDisabled = (): boolean | undefined => autocompleteState.disabled() || props.disabled;
+
+  createEffect(internalRef, (current) => {
+    if (current instanceof HTMLElement) {
+      context.anchor = current;
+      context.inputHovering = false;
+
+      return mergeFunc(
+        current instanceof HTMLInputElement &&
+          useEventListener(current, 'input', () => {
+            if (!isDisabled()) {
+              autocompleteState.setQuery(current.value);
+            }
+          }),
+        useEventListener(current, 'keydown', (e) => {
+          if (!isDisabled()) {
+            switch (e.key) {
+              case 'Escape': {
+                // Only stop `Escape` while the popup is open.
+                // A `Dialog` around a closed combobox still closes on it.
+                if (disclosureState.isOpen()) {
+                  e.stopPropagation();
+                  disclosureState.close();
+                }
+                break;
+              }
+              case 'ArrowUp': {
+                e.preventDefault();
+                if (disclosureState.isOpen()) {
+                  context.controller.setPrevChecked(true);
+                } else {
+                  disclosureState.open();
+                }
+                break;
+              }
+              case 'ArrowDown': {
+                e.preventDefault();
+                if (disclosureState.isOpen()) {
+                  context.controller.setNextChecked(true);
+                } else {
+                  disclosureState.open();
+                }
+                break;
+              }
+              case 'Enter': {
+                // Enter submits the form while the popup is closed.
+                if (disclosureState.isOpen()) {
+                  e.preventDefault();
+                  context.setSelectedDescendant(context.getActiveDescendant());
+                }
+                break;
+              }
+              default:
+                break;
+            }
+          }
+        }),
+        useEventListener(current, 'click', () => {
+          if (!isDisabled()) {
+            disclosureState.toggle();
+          }
+        }),
+        useEventListener(current, 'blur', (e) => {
+          if (context.inputHovering || context.optionsHovering) {
+            return;
+          }
+          autocompleteState.blur();
+          if (
+            (e.relatedTarget && !current.contains(e.relatedTarget as Node)) ||
+            (e.target && !current.contains(e.target as Node))
+          ) {
+            disclosureState.close();
+          }
+        }),
+        useEventListener(current, 'mouseenter', () => {
+          context.inputHovering = true;
+        }),
+        useEventListener(current, 'mouseleave', () => {
+          context.inputHovering = false;
+        }),
+        () => {
+          context.inputHovering = false;
+        },
+      );
+    }
+    return undefined;
+  });
+
+  createEffect(
+    () => autocompleteState.query(),
+    (query) => {
+      if (query !== '') {
+        if (disclosureState.isOpen()) {
+          context.controller.setFirstChecked();
+          // When nothing matches, no option stays active.
+          const options = document.getElementById(context.optionsID);
+          if (!options?.querySelector(`${MATCHES_NODE}:not(${DISABLED_NODE})`)) {
+            autocompleteState.blur();
+            context.setActiveDescendant(undefined);
+          }
+        } else {
+          disclosureState.open();
+        }
+      }
+    },
+  );
+
+  createEffect(
+    () => context.getActiveDescendant(),
+    (activeDescendant) => {
+      if (activeDescendant) {
+        const current = document.getElementById(activeDescendant);
+        if (current) {
+          context.controller.setCurrent(current);
+        }
+      }
+    },
+  );
+
+  const disabledState = createDisabledState(isDisabled);
+  const ariaDisabledState = createARIADisabledState(isDisabled);
+  const expandedState = createExpandedState(() => disclosureState.isOpen());
+  const ariaExpandedState = createARIAExpandedState(() => disclosureState.isOpen());
+  const hasSelectedState = createHasSelectedState(() => autocompleteState.hasSelected());
+  const hasActiveState = createHasActiveState(() => autocompleteState.hasActive());
+  const hasQueryState = createHasQueryState(() => autocompleteState.hasQuery());
+  const rest = omit(props, 'as', 'ref');
+  const Root = dynamic(() => props.as || 'input');
+  return (
+    <Root
+      {...COMBOBOX_INPUT_TAG}
+      id={context.inputID}
+      ref={setInternalRef}
+      type="text"
+      tabindex={0}
+      role="combobox"
+      aria-haspopup="listbox"
+      aria-controls={context.optionsID}
+      aria-autocomplete="list"
+      aria-labelledby={context.hasLabel() ? context.labelID : undefined}
+      aria-activedescendant={disclosureState.isOpen() ? context.getActiveDescendant() : undefined}
+      {...disabledState}
+      {...ariaDisabledState}
+      {...expandedState}
+      {...ariaExpandedState}
+      {...hasSelectedState}
+      {...hasActiveState}
+      {...hasQueryState}
+      {...rest}
+    />
+  );
+}

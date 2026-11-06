@@ -1,53 +1,53 @@
 # transitions-example
 
-## 1.0.14
-
-### Patch Changes
-
-- Updated dependencies [86cb721]
-  - terracotta@1.2.4
-
-## 1.0.13
-
-### Patch Changes
-
-- Updated dependencies [7f254cb]
-  - terracotta@1.2.3
-
-## 1.0.12
-
-### Patch Changes
-
-- Updated dependencies [2c7c625]
-  - terracotta@1.2.2
-
-## 1.0.11
-
-### Patch Changes
-
-- Updated dependencies [4a05c38]
-  - terracotta@1.2.1
-
-## 1.0.10
-
-### Patch Changes
-
-- Updated dependencies [9902614]
-  - terracotta@1.2.0
-
-## 1.0.9
+## 1.0.8-next.6
 
 ### Patch Changes
 
 - Updated dependencies
-  - terracotta@1.1.2
+  - terracotta@2.0.0-next.6
 
-## 1.0.8
+## 1.0.8-next.5
 
 ### Patch Changes
 
 - Updated dependencies
-  - terracotta@1.1.1
+  - terracotta@2.0.0-next.5
+
+## 1.0.8-next.4
+
+### Patch Changes
+
+- Updated dependencies [e0ed99d]
+  - terracotta@2.0.0-next.4
+
+## 1.0.8-next.3
+
+### Patch Changes
+
+- Updated dependencies
+  - terracotta@2.0.0-next.3
+
+## 1.0.8-next.2
+
+### Patch Changes
+
+- Updated dependencies [ea215d4]
+  - terracotta@2.0.0-next.2
+
+## 1.0.8-next.1
+
+### Patch Changes
+
+- Updated dependencies [c6133fc]
+  - terracotta@2.0.0-next.1
+
+## 1.0.8-next.0
+
+### Patch Changes
+
+- Updated dependencies
+  - terracotta@2.0.0-next.0
 
 ## 1.0.7
 

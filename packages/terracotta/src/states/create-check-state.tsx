@@ -1,0 +1,147 @@
+import type { JSX } from '@solidjs/web';
+import type { Accessor } from 'solid-js';
+import { createContext, createMemo, createSignal, untrack, useContext } from 'solid-js';
+import assert from '../utils/assert';
+import { renderChildren } from '../utils/render-children';
+
+export interface CheckStateControlledOptions {
+  checked: boolean | undefined;
+  disabled?: boolean;
+  onChange?: (state?: boolean) => void;
+}
+
+export interface CheckStateUncontrolledOptions {
+  defaultChecked: boolean | undefined;
+  disabled?: boolean;
+  onChange?: (state?: boolean) => void;
+}
+
+export type CheckStateOptions = CheckStateControlledOptions | CheckStateUncontrolledOptions;
+
+export interface CheckStateProperties {
+  checked(): boolean | undefined;
+  setState(newState?: boolean): void;
+  disabled(): boolean;
+  check(): void;
+  uncheck(): void;
+  reset(): void;
+  toggle(): void;
+}
+
+/**
+ * Creates a tri-state checkbox value: `true`, `false`, or `undefined` for
+ * indeterminate. Backs `Checkbox`.
+ *
+ * Pass `defaultChecked` for uncontrolled state or `checked` for controlled.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#check-state}
+ */
+export function createCheckState(options: CheckStateOptions): CheckStateProperties {
+  // Reference to the signal read
+  let signal: Accessor<boolean | undefined>;
+  // Reference to the signal write
+  let setSignal: (value: boolean | undefined) => void;
+
+  // Type branding
+  // Check if state is uncontrolled
+  if ('defaultChecked' in options) {
+    // Uncontrolled toggle means the toggle
+    // manages its own state.
+    const [isOpen, setIsOpen] = createSignal<boolean | undefined>(options.defaultChecked);
+    signal = isOpen;
+    setSignal = (value): void => {
+      setIsOpen(value);
+      if (options.onChange) {
+        options.onChange(value);
+      }
+    };
+  } else {
+    // Controlled means relying on 3P state
+    signal = createMemo(() => options.checked);
+    setSignal = (value): void => {
+      if (options.onChange) {
+        options.onChange(value);
+      }
+    };
+  }
+
+  const isDisabled = createMemo(() => !!options.disabled);
+
+  return {
+    checked(): boolean | undefined {
+      return signal();
+    },
+    setState(value): void {
+      if (!untrack(isDisabled)) {
+        setSignal(value);
+      }
+    },
+    disabled: isDisabled,
+    check(): void {
+      if (!untrack(isDisabled)) {
+        setSignal(true);
+      }
+    },
+    uncheck(): void {
+      if (!untrack(isDisabled)) {
+        setSignal(false);
+      }
+    },
+    reset(): void {
+      if (!untrack(isDisabled)) {
+        setSignal(undefined);
+      }
+    },
+    toggle(): void {
+      if (!untrack(isDisabled)) {
+        setSignal(!untrack(signal));
+      }
+    },
+  };
+}
+
+export interface CheckStateRenderProps {
+  children?: JSX.Element | ((state: CheckStateProperties) => JSX.Element);
+}
+
+export interface CheckStateProviderProps extends CheckStateRenderProps {
+  state: CheckStateProperties;
+}
+
+const CheckStateContext = createContext<CheckStateProperties | null>(null);
+
+export function CheckStateProvider(props: CheckStateProviderProps): JSX.Element {
+  return (
+    <CheckStateContext value={props.state}>
+      {renderChildren(props.children, props.state)}
+    </CheckStateContext>
+  );
+}
+
+/**
+ * Reads the nearest check state from context. Throws when there is none.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#check-state}
+ */
+export function useCheckState(): CheckStateProperties {
+  const ctx = useContext(CheckStateContext);
+  assert(ctx, new Error('Missing <CheckStateProvider>'));
+  return ctx;
+}
+
+/**
+ * Passes the nearest check state to a render prop. A function child is treated
+ * as a render prop only when it declares exactly one parameter.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#check-state}
+ */
+export function CheckStateChild(props: CheckStateRenderProps): JSX.Element {
+  const state = useCheckState();
+  return createMemo(() => {
+    const current = props.children;
+    if (typeof current === 'function' && current.length === 1) {
+      return createMemo(() => current(state));
+    }
+    return current;
+  }) as unknown as JSX.Element;
+}

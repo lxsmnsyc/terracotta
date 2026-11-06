@@ -7,7 +7,7 @@ interface DisclosureContextData {
   panelID: string;
 }
 
-export const DisclosureContext = createContext<DisclosureContextData>();
+export const DisclosureContext = createContext<DisclosureContextData | null>(null);
 
 /**
  * Reads the nearest `Disclosure`'s internal context, which holds the generated

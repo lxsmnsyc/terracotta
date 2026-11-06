@@ -1,6 +1,7 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { For } from 'solid-js';
-import { Popover, PopoverButton, PopoverPanel, Transition } from 'terracotta';
+import { Popover, PopoverButton, PopoverPanel } from 'terracotta/popover';
+import { Transition } from 'terracotta/transition';
 
 function IconOne(): JSX.Element {
   return (
@@ -87,7 +88,7 @@ const solutions = [
   },
 ];
 
-function ChevronDownIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function ChevronDownIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +97,7 @@ function ChevronDownIcon(props: JSX.IntrinsicElements['svg'] & { title: string }
       stroke="currentColor"
       {...props}
     >
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M19 9l-7 7-7-7" />
     </svg>
   );

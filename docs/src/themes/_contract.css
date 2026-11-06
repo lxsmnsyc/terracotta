@@ -1,0 +1,104 @@
+/*
+ * The theme contract.
+ *
+ * A theme is one stylesheet scoped to `html[data-theme="<id>"]`. It must define
+ * every custom property below, in both colour schemes (`html.dark` is toggled
+ * by Terracotta's own `ColorSchemeProvider`), and it may style anything else it
+ * likes on top.
+ *
+ * A theme has to define every token below, in both colour schemes (`html.dark`
+ * is toggled by the colour-scheme provider). Defining only tokens is enough for
+ * a complete theme: the two stylesheets a theme paints are written entirely in
+ * them.
+ *
+ *   1. The chrome: `.masthead`, `.sidebar-link`, `.control`, `.demo`,
+ *      `.prose` and friends, in `styles/chrome.css` and `styles/prose.css`.
+ *
+ *   2. The demo vocabulary, meaning the class names every file in `src/demos` uses,
+ *      in `styles/demos.css`. Demos carry no styles and no theme-specific
+ *      classes, so styling the vocabulary styles all forty-seven demos at once.
+ *      The names are component-shaped, such as `.disclosure`,
+ *      `.disclosure-button` and `.listbox-option`, and they combine with
+ *      Terracotta's `tc-` state
+ *      attributes.
+ *
+ * Beyond tokens, a theme may override any rule in either stylesheet by
+ * repeating its selector under `[data-theme='<id>']`, which always wins on
+ * specificity. `terracotta.css` is tokens only; `brutalist.css` also reshapes
+ * the baseline's borders, corners, shadows and casing, without touching a single
+ * component or demo.
+ *
+ * The values below are the fallbacks. They exist so a half-finished theme
+ * still renders something readable rather than an unstyled page, and so the
+ * full set of names has one authoritative list.
+ */
+
+/* `:where` keeps the fallbacks at zero specificity, so a theme file always
+   wins no matter which order the bundler happens to concatenate them in. */
+:where(:root) {
+  /* Surfaces, back to front. */
+  --surface-0: #ffffff;
+  --surface-1: #fafafa;
+  --surface-2: #f4f4f5;
+
+  /* Text, most to least prominent. */
+  --text-1: #18181b;
+  --text-2: #52525b;
+  --text-3: #a1a1aa;
+
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
+
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-contrast: #ffffff;
+  --accent-soft: #eff6ff;
+
+  --focus: #2563eb;
+  --danger: #dc2626;
+
+  /* Behind a modal panel. */
+  --overlay: rgb(0 0 0 / 45%);
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 6%);
+  --shadow-2: 0 8px 24px rgb(0 0 0 / 10%);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+
+  /* The docs shell. Themes may change the proportions. */
+  --masthead-height: 3.5rem;
+  --sidebar-width: 16rem;
+  --content-width: 46rem;
+  --toc-width: 14rem;
+}
+
+:where(:root.dark) {
+  --surface-0: #09090b;
+  --surface-1: #18181b;
+  --surface-2: #27272a;
+
+  --text-1: #fafafa;
+  --text-2: #a1a1aa;
+  --text-3: #71717a;
+
+  --border: #27272a;
+  --border-strong: #3f3f46;
+
+  --accent: #60a5fa;
+  --accent-hover: #93c5fd;
+  --accent-contrast: #09090b;
+  --accent-soft: #1e293b;
+
+  --focus: #60a5fa;
+  --danger: #f87171;
+
+  --overlay: rgb(0 0 0 / 65%);
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 40%);
+  --shadow-2: 0 8px 24px rgb(0 0 0 / 50%);
+}

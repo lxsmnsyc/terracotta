@@ -15,7 +15,7 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "Bundler",
     "jsx": "preserve",
-    "jsxImportSource": "solid-js",
+    "jsxImportSource": "@solidjs/web",
     "esModuleInterop": true,
     "target": "ES2017"
   }

@@ -5,18 +5,18 @@ interface FeedContextData {
   ownerID: string;
   labelID: string;
   contentID: string;
-  size: number;
-  busy: boolean;
-  focusPrev: () => void;
-  focusNext: () => void;
+  getSize(): number;
+  isBusy(): boolean;
+  /** Whether a `FeedLabel` is mounted. */
+  hasLabel(): boolean;
+  registerLabel(): void;
 }
 
-export const FeedContext = createContext<FeedContextData>();
+export const FeedContext = createContext<FeedContextData | null>(null);
 
 /**
- * Reads the nearest `Feed`'s internal context, which holds the generated ids
- * and the focus navigator shared by its articles. Throws when called outside a
- * `Feed`.
+ * Reads the nearest `Feed`'s internal context, which holds the generated ids.
+ * Throws when called outside a `Feed`.
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
  */

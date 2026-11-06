@@ -5,9 +5,15 @@ interface FeedArticleContextData {
   ownerID: string;
   labelID: string;
   descriptionID: string;
+  /** Whether a `FeedArticleLabel` is mounted. */
+  hasLabel(): boolean;
+  registerLabel(): void;
+  /** Whether a `FeedArticleDescription` is mounted. */
+  hasDescription(): boolean;
+  registerDescription(): void;
 }
 
-export const FeedArticleContext = createContext<FeedArticleContextData>();
+export const FeedArticleContext = createContext<FeedArticleContextData | null>(null);
 
 /**
  * Reads the nearest `FeedArticle`'s internal context, which holds the

@@ -1,12 +1,15 @@
 import { createContext, useContext } from 'solid-js';
 import assert from '../../utils/assert';
+import type { Presence } from '../../utils/create-presence';
 
 interface RadioGroupContextData {
   labelID: string;
   descriptionID: string;
+  label: Presence;
+  description: Presence;
 }
 
-export const RadioGroupContext = createContext<RadioGroupContextData>();
+export const RadioGroupContext = createContext<RadioGroupContextData | null>(null);
 
 /**
  * Reads the nearest `RadioGroupOption`'s internal context, which holds the

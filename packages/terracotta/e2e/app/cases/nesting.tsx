@@ -1,15 +1,8 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { createSignal } from 'solid-js';
-import {
-  Button,
-  Dialog,
-  DialogOverlay,
-  DialogPanel,
-  DialogTitle,
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-} from 'terracotta';
+import { Button } from 'terracotta/button';
+import { Dialog, DialogOverlay, DialogPanel, DialogTitle } from 'terracotta/dialog';
+import { Popover, PopoverButton, PopoverPanel } from 'terracotta/popover';
 
 // A popup inside a dialog: both trap `Tab` and both close on `Escape`, so this
 // case exists to drive the two of them with a real keyboard.

@@ -1,5 +1,6 @@
-import type { JSX } from 'solid-js';
-import { Button, Toolbar } from 'terracotta';
+import type { JSX } from '@solidjs/web';
+import { Button } from 'terracotta/button';
+import { Toolbar } from 'terracotta/toolbar';
 
 const ACTIONS = ['Bold', 'Italic', 'Underline'];
 

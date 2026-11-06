@@ -85,3 +85,8 @@ test('leaves the input in the tab order and the options out of it', async ({ pag
   await page.keyboard.press('Tab');
   await expect(page.getByTestId('after')).toBeFocused();
 });
+
+test('names the input and the option list from the label', async ({ page }) => {
+  await expect(page.getByRole('combobox')).toHaveAccessibleName('Command palette');
+  await expect(page.getByRole('listbox')).toHaveAccessibleName('Command palette');
+});

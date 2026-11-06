@@ -1,6 +1,8 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { createSignal } from 'solid-js';
-import { Button, Popover, PopoverButton, PopoverPanel, Transition } from 'terracotta';
+import { Button } from 'terracotta/button';
+import { Popover, PopoverButton, PopoverPanel } from 'terracotta/popover';
+import { Transition } from 'terracotta/transition';
 
 // A slow fade, so a spec can sample frames while the panel is entering.
 const STYLES = `

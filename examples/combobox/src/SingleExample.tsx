@@ -1,4 +1,4 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { For, createSignal } from 'solid-js';
 import {
   Combobox,
@@ -6,9 +6,9 @@ import {
   ComboboxLabel,
   ComboboxOption,
   ComboboxOptions,
-  DisclosureStateChild,
-  Transition,
-} from 'terracotta';
+} from 'terracotta/combobox';
+import { DisclosureStateChild } from 'terracotta/states';
+import { Transition } from 'terracotta/transition';
 import { CheckIcon, classNames } from './utils';
 
 const people = [
@@ -38,9 +38,9 @@ export default function SingleExample(): JSX.Element {
       >
         <ComboboxLabel class="text-xl font-semibold">Single Selection</ComboboxLabel>
         <ComboboxInput
-          class="w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
+          class="w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75  focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
           placeholder="Select an item"
-          value={selected().name}
+          value={selected()?.name ?? ''}
         />
         <DisclosureStateChild>
           {({ isOpen }): JSX.Element => (

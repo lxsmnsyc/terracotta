@@ -1,7 +1,13 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
+import { activeElement, labelledBy, settle } from './aria';
 import { describe, expect, it } from 'vitest';
-import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '../src';
-import { activeElement, settle } from './aria';
+import {
+  Listbox,
+  ListboxButton,
+  ListboxLabel,
+  ListboxOption,
+  ListboxOptions,
+} from '../src/components/listbox';
 
 const FRUITS = ['apple', 'banana', 'cherry'];
 
@@ -37,24 +43,27 @@ function getOption(name: string): HTMLElement {
 }
 
 describe('Listbox accessibility', () => {
-  it('marks the trigger as a listbox popup owner', () => {
+  it('marks the trigger as a listbox popup owner', async () => {
     renderListbox();
-    const button = screen.getByRole('button', { name: 'Pick one' });
+    await settle();
+    const button = screen.getByRole('button', { name: 'Fruit Pick one' });
 
     expect(button).toHaveAttribute('aria-haspopup', 'listbox');
     expect(button).toHaveAttribute('aria-expanded', 'false');
     expect(button).toHaveAttribute('aria-controls');
   });
 
-  it('does not render the option list while closed', () => {
+  it('does not render the option list while closed', async () => {
     renderListbox();
+    await settle();
 
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });
 
-  it('opens on click and marks the trigger as expanded', () => {
+  it('opens on click and marks the trigger as expanded', async () => {
     renderListbox();
-    const button = screen.getByRole('button', { name: 'Pick one' });
+    await settle();
+    const button = screen.getByRole('button', { name: 'Fruit Pick one' });
 
     button.click();
 
@@ -62,42 +71,86 @@ describe('Listbox accessibility', () => {
     expect(screen.getByRole('listbox')).toBeInTheDocument();
   });
 
-  it('opens with ArrowDown on the trigger', () => {
+  it('opens with ArrowDown on the trigger', async () => {
     renderListbox();
-    const button = screen.getByRole('button', { name: 'Pick one' });
+    await settle();
+    const button = screen.getByRole('button', { name: 'Fruit Pick one' });
 
     fireEvent.keyDown(button, { key: 'ArrowDown' });
 
     expect(button).toHaveAttribute('aria-expanded', 'true');
   });
 
-  it('names the option list from the trigger and reports orientation', () => {
+  it('names the option list from the label and reports orientation', async () => {
     renderListbox({ open: true });
+    await settle();
     const list = screen.getByRole('listbox');
 
-    expect(list).toHaveAttribute(
-      'aria-labelledby',
-      screen.getByRole('button', { name: 'Pick one' }).id,
-    );
+    expect(labelledBy(list)).toHaveTextContent('Fruit');
+    expect(labelledBy(list)).toHaveAttribute('tc-listbox-label');
     expect(list).toHaveAttribute('aria-orientation', 'vertical');
   });
 
-  it('reports a horizontal option list when asked', () => {
+  it('names the trigger from the label and its own text', async () => {
+    renderListbox();
+    await settle();
+    const button = screen.getByRole('button', { name: 'Fruit Pick one' });
+    const label = screen.getByText('Fruit');
+
+    expect(button).toHaveAttribute('aria-labelledby', `${label.id} ${button.id}`);
+  });
+
+  it('names the option list from the trigger when there is no label', async () => {
+    render(() => (
+      <Listbox defaultOpen={true} defaultValue={undefined}>
+        <ListboxButton>Pick one</ListboxButton>
+        <ListboxOptions>
+          <ListboxOption value="apple">apple</ListboxOption>
+        </ListboxOptions>
+      </Listbox>
+    ));
+    await settle();
+    const button = screen.getByRole('button', { name: 'Pick one' });
+
+    expect(button).not.toHaveAttribute('aria-labelledby');
+    expect(screen.getByRole('listbox')).toHaveAttribute('aria-labelledby', button.id);
+  });
+
+  it('keeps naming and disabled attributes off the generic root', async () => {
+    render(() => (
+      <Listbox data-testid="root" disabled={true} defaultOpen={false} defaultValue={undefined}>
+        <ListboxLabel>Fruit</ListboxLabel>
+        <ListboxButton>Pick one</ListboxButton>
+      </Listbox>
+    ));
+    await settle();
+    const root = screen.getByTestId('root');
+
+    expect(root).not.toHaveAttribute('aria-labelledby');
+    expect(root).not.toHaveAttribute('aria-disabled');
+    expect(root).not.toHaveAttribute('disabled');
+    expect(root).toHaveAttribute('tc-disabled');
+  });
+
+  it('reports a horizontal option list when asked', async () => {
     renderListbox({ open: true, horizontal: true });
+    await settle();
 
     expect(screen.getByRole('listbox')).toHaveAttribute('aria-orientation', 'horizontal');
   });
 
-  it('exposes every option with a selection state', () => {
+  it('exposes every option with a selection state', async () => {
     renderListbox({ open: true, value: 'banana' });
+    await settle();
 
     expect(screen.getAllByRole('option')).toHaveLength(FRUITS.length);
     expect(getOption('banana')).toHaveAttribute('aria-selected', 'true');
     expect(getOption('apple')).toHaveAttribute('aria-selected', 'false');
   });
 
-  it('keeps options out of the tab order and manages focus itself', () => {
+  it('keeps options out of the tab order and manages focus itself', async () => {
     renderListbox({ open: true });
+    await settle();
 
     for (const fruit of FRUITS) {
       expect(getOption(fruit)).toHaveAttribute('tabindex', '-1');
@@ -106,6 +159,7 @@ describe('Listbox accessibility', () => {
 
   it('focuses the selected option when opened', async () => {
     renderListbox({ open: true, value: 'cherry' });
+    await settle();
 
     expect(await activeElement()).toBe(getOption('cherry'));
   });
@@ -116,10 +170,10 @@ describe('Listbox accessibility', () => {
     const list = screen.getByRole('listbox');
 
     fireEvent.keyDown(list, { key: 'ArrowDown' });
-    expect(document.activeElement).toBe(getOption('banana'));
+    expect(await activeElement()).toBe(getOption('banana'));
 
     fireEvent.keyDown(list, { key: 'ArrowUp' });
-    expect(document.activeElement).toBe(getOption('apple'));
+    expect(await activeElement()).toBe(getOption('apple'));
   });
 
   it('jumps to the first and last option with Home and End', async () => {
@@ -128,26 +182,28 @@ describe('Listbox accessibility', () => {
     const list = screen.getByRole('listbox');
 
     fireEvent.keyDown(list, { key: 'End' });
-    expect(document.activeElement).toBe(getOption('cherry'));
+    expect(await activeElement()).toBe(getOption('cherry'));
 
     fireEvent.keyDown(list, { key: 'Home' });
-    expect(document.activeElement).toBe(getOption('apple'));
+    expect(await activeElement()).toBe(getOption('apple'));
   });
 
-  it('selects an option on click and closes the single-select popup', () => {
+  it('selects an option on click and closes the single-select popup', async () => {
     renderListbox({ open: true });
+    await settle();
 
     getOption('banana').click();
 
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Pick one' })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'Fruit Pick one' })).toHaveAttribute(
       'aria-expanded',
       'false',
     );
   });
 
-  it('closes on Escape', () => {
+  it('closes on Escape', async () => {
     renderListbox({ open: true });
+    await settle();
 
     fireEvent.keyDown(screen.getByRole('listbox'), { key: 'Escape' });
 
@@ -162,7 +218,7 @@ describe('Listbox accessibility', () => {
 
     fireEvent.keyDown(screen.getByRole('listbox'), { key: 'ArrowDown' });
 
-    expect(document.activeElement).toBe(getOption('cherry'));
+    expect(await activeElement()).toBe(getOption('cherry'));
   });
 
   it('advertises multi-select and keeps the popup open on selection', () => {

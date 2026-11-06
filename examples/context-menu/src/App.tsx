@@ -1,13 +1,8 @@
-import {
-  ContextMenu,
-  ContextMenuBoundary,
-  ContextMenuPanel,
-  Menu,
-  MenuItem,
-  Transition,
-} from 'terracotta';
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { createSignal } from 'solid-js';
+import { ContextMenu, ContextMenuBoundary, ContextMenuPanel } from 'terracotta/context-menu';
+import { Menu, MenuItem } from 'terracotta/menu';
+import { Transition } from 'terracotta/transition';
 
 function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -35,8 +30,9 @@ export default function App(): JSX.Element {
                 'group border border-dashed border-white p-32 rounded-md inline-flex items-center text-base font-medium hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75',
               )}
               onContextMenu={(e: MouseEvent): void => {
-                if (e.currentTarget instanceof HTMLElement) {
-                  const rect = e.currentTarget.getBoundingClientRect();
+                if (e.currentTarget) {
+                  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                  console.log(e.currentTarget, e, rect);
                   setX(e.clientX - rect.left);
                   setY(e.clientY - rect.top);
                 }

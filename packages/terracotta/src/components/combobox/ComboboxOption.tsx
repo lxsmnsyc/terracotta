@@ -1,0 +1,145 @@
+import type { JSX, ValidComponent } from '@solidjs/web';
+import { createEffect, createUniqueId, omit } from 'solid-js';
+import type {
+  AutocompleteOptionStateOptions,
+  AutocompleteOptionStateRenderProps,
+} from '../../states/create-autocomplete-option-state';
+import {
+  AutocompleteOptionStateProvider,
+  createAutocompleteOptionState,
+} from '../../states/create-autocomplete-option-state';
+import { useDisclosureState } from '../../states/create-disclosure-state';
+import type { HeadlessPropsWithRef } from '../../utils/dynamic-prop';
+import { createForwardRef } from '../../utils/dynamic-prop';
+import { createOwnerAttribute } from '../../utils/focus-navigator';
+import { mergeFunc } from '../../utils/merge-func';
+import {
+  createActiveState,
+  createARIADisabledState,
+  createARIASelectedState,
+  createDisabledState,
+  createMatchesState,
+  createSelectedState,
+} from '../../utils/state-props';
+import type { OmitAndMerge, Prettify } from '../../utils/types';
+import useEventListener from '../../utils/use-event-listener';
+import { useVirtualFocus } from '../../utils/virtual-focus';
+import type { ButtonProps } from '../button';
+import { Button } from '../button';
+import { useComboboxContext } from './ComboboxContext';
+import { COMBOBOX_OPTION_TAG } from './tags';
+
+export type ComboboxOptionBaseProps<V> = Prettify<
+  AutocompleteOptionStateOptions<V> & AutocompleteOptionStateRenderProps
+>;
+
+export type ComboboxOptionProps<V, T extends ValidComponent = 'li'> = HeadlessPropsWithRef<
+  T,
+  OmitAndMerge<ComboboxOptionBaseProps<V>, ButtonProps<T>>
+>;
+
+/**
+ * One option of a `Combobox`. Carries `tc-matches` while it matches the
+ * current query, so options can be hidden with CSS instead of being unmounted.
+ *
+ * Renders an `<li>` by default.
+ *
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
+ */
+export function ComboboxOption<V, T extends ValidComponent = 'li'>(
+  props: ComboboxOptionProps<V, T>,
+): JSX.Element {
+  const context = useComboboxContext('ComboboxOptions');
+  const disclosure = useDisclosureState();
+  const state = createAutocompleteOptionState(props);
+  const [internalRef, setInternalRef] = createForwardRef(props);
+
+  const id = createUniqueId();
+
+  createEffect(
+    () => !state.disabled() && context.getSelectedDescendant() === id,
+    (value) => {
+      if (value) {
+        state.select();
+        if (!context.multiple) {
+          disclosure.close();
+        }
+      }
+    },
+  );
+
+  function focusOption(): void {
+    context.setActiveDescendant(id);
+    state.focus();
+  }
+
+  // I would really love to use createEffect but for some reason
+  // the timing is never accurate
+  createEffect(internalRef, (current) => {
+    if (current instanceof HTMLElement) {
+      return mergeFunc(
+        useEventListener(current, 'click', () => {
+          if (!state.disabled()) {
+            state.select();
+            focusOption();
+            if (!context.multiple) {
+              disclosure.close();
+            }
+          }
+        }),
+        useEventListener(current, 'mouseenter', () => {
+          if (!state.disabled()) {
+            focusOption();
+          }
+        }),
+        useEventListener(current, 'mouseleave', () => {
+          state.blur();
+        }),
+        useVirtualFocus((el) => {
+          if (el === current) {
+            focusOption();
+          }
+        }),
+      );
+    }
+    return undefined;
+  });
+
+  const ownerAttribute = createOwnerAttribute(context.controller.getId());
+  const disabledState = createDisabledState(() => state.disabled());
+  const ariaDisabledState = createARIADisabledState(() => state.disabled());
+  const selectedState = createSelectedState(() => state.isSelected());
+  const ariaSelectedState = createARIASelectedState(() => state.isSelected());
+  const activeState = createActiveState(() => state.isActive());
+  const matchesState = createMatchesState(() => state.matches());
+  const rest = omit(
+    props,
+    'as',
+    'children',
+    'disabled',
+    'value',
+    'ref',
+  ) as unknown as ButtonProps<T>;
+  return (
+    <Button
+      {...COMBOBOX_OPTION_TAG}
+      {...ownerAttribute}
+      id={id}
+      as={props.as || ('li' as T)}
+      role="option"
+      tabindex={-1}
+      ref={setInternalRef}
+      {...disabledState}
+      {...ariaDisabledState}
+      {...selectedState}
+      {...ariaSelectedState}
+      {...activeState}
+      {...matchesState}
+      {...rest}
+    >
+      <AutocompleteOptionStateProvider state={state}>
+        {props.children}
+      </AutocompleteOptionStateProvider>
+    </Button>
+  );
+}

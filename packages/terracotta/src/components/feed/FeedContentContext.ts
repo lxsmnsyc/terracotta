@@ -2,7 +2,7 @@ import { createContext, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 import FocusNavigator from '../../utils/focus-navigator';
 
-export const FeedContentContext = createContext<FocusNavigator>();
+export const FeedContentContext = createContext<FocusNavigator | null>(null);
 
 /**
  * Reads the nearest `FeedContent`'s internal context, which holds the focus

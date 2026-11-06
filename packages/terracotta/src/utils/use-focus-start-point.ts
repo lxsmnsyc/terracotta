@@ -1,5 +1,5 @@
+import { isServer } from '@solidjs/web';
 import { onCleanup } from 'solid-js';
-import { isServer } from 'solid-js/web';
 import { getFocusStartPoint, setFocusStartPoint } from './focus-start-point';
 
 /**
@@ -16,14 +16,6 @@ class FocusStartPoint {
   private fsp: HTMLElement | null | undefined;
 
   private saved = false;
-
-  constructor() {
-    if (!isServer) {
-      onCleanup(() => {
-        this.load();
-      });
-    }
-  }
 
   load(): void {
     if (!this.saved) {
@@ -45,5 +37,11 @@ class FocusStartPoint {
 }
 
 export default function useFocusStartPoint(): FocusStartPoint {
-  return new FocusStartPoint();
+  const fsp = new FocusStartPoint();
+  if (!isServer) {
+    onCleanup(() => {
+      fsp.load();
+    });
+  }
+  return fsp;
 }

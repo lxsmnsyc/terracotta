@@ -1,4 +1,4 @@
-import type { JSX } from 'solid-js';
+import type { JSX } from '@solidjs/web';
 import { For, Show, createSignal } from 'solid-js';
 import {
   Feed,
@@ -7,13 +7,13 @@ import {
   FeedArticleLabel,
   FeedContent,
   FeedLabel,
-  Transition,
-} from 'terracotta';
+} from 'terracotta/feed';
+import { Transition } from 'terracotta/transition';
 
-function SpinnerIcon(props: JSX.IntrinsicElements['svg'] & { title: string }): JSX.Element {
+function SpinnerIcon(props: JSX.IntrinsicElements['svg'] & { title?: string }): JSX.Element {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" {...props}>
-      <title>{props.title}</title>
+      {props.title ? <title>{props.title}</title> : null}
       <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
       <path
         class="opacity-75"
@@ -90,7 +90,7 @@ function random(max: number): number {
 }
 
 function loadData(count: number): { title: string; description: string }[] {
-  const data: Article[] = Array.from({ length: count });
+  const data = new Array<Article>(count);
   for (let i = 0; i < count; i += 1) {
     data[i] = {
       title: `${adjectives[random(adjectives.length)]} ${
@@ -116,7 +116,7 @@ export default function App(): JSX.Element {
   const [busy, setBusy] = createSignal(false);
   const [articles, setArticles] = createSignal<Article[]>(loadData(10));
 
-  async function sleep(timeout: number): Promise<boolean> {
+  function sleep(timeout: number): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       setTimeout(resolve, timeout, true);
     });
@@ -149,9 +149,8 @@ export default function App(): JSX.Element {
         <FeedContent
           class="flex-1 overflow-y-auto flex flex-col rounded-lg bg-indigo-900/25 p-2"
           onScroll={(e: Event): void => {
-            const el = e.target;
+            const el = e.target as HTMLElement;
             if (
-              el instanceof HTMLElement &&
               !busy() &&
               el.offsetHeight + el.scrollTop >= el.scrollHeight - el.getBoundingClientRect().height
             ) {

@@ -1,16 +1,8 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
-import { activeElement, pressKeyOnFocused, settle } from './aria';
-import {
-  Listbox,
-  ListboxButton,
-  ListboxOption,
-  ListboxOptions,
-  Tab,
-  TabGroup,
-  TabList,
-  TabPanel,
-} from '../src';
+import { activeElement, pressKeyOnFocused, referencedBy, settle } from './aria';
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '../src/components/listbox';
+import { Tab, TabGroup, TabList, TabPanel } from '../src/components/tabs';
 
 const TABS = ['alpha', 'beta', 'gamma'];
 
@@ -95,39 +87,39 @@ describe('Tabs accessibility', () => {
     expect(screen.getByRole('tabpanel')).toHaveTextContent('gamma panel');
   });
 
-  it('moves selection with ArrowRight and ArrowLeft when horizontal', () => {
+  it('moves selection with ArrowRight and ArrowLeft when horizontal', async () => {
     renderTabs();
     getTab('alpha').focus();
 
     pressKeyOnFocused('ArrowRight');
-    expect(document.activeElement).toBe(getTab('beta'));
+    expect(await activeElement()).toBe(getTab('beta'));
     expect(getTab('beta')).toHaveAttribute('aria-selected', 'true');
 
     pressKeyOnFocused('ArrowLeft');
-    expect(document.activeElement).toBe(getTab('alpha'));
+    expect(await activeElement()).toBe(getTab('alpha'));
   });
 
-  it('ignores the cross-axis arrows when horizontal', () => {
+  it('ignores the cross-axis arrows when horizontal', async () => {
     renderTabs();
     getTab('alpha').focus();
 
     pressKeyOnFocused('ArrowDown');
 
-    expect(document.activeElement).toBe(getTab('alpha'));
+    expect(await activeElement()).toBe(getTab('alpha'));
   });
 
-  it('jumps to the first and last tab with Home and End', () => {
+  it('jumps to the first and last tab with Home and End', async () => {
     renderTabs();
     getTab('beta').focus();
 
     pressKeyOnFocused('End');
-    expect(document.activeElement).toBe(getTab('gamma'));
+    expect(await activeElement()).toBe(getTab('gamma'));
 
     pressKeyOnFocused('Home');
-    expect(document.activeElement).toBe(getTab('alpha'));
+    expect(await activeElement()).toBe(getTab('alpha'));
   });
 
-  it('marks disabled tabs and skips them while navigating', () => {
+  it('marks disabled tabs and skips them while navigating', async () => {
     renderTabs({ disabled: ['beta'] });
     const disabled = getTab('beta');
 
@@ -137,32 +129,38 @@ describe('Tabs accessibility', () => {
     getTab('alpha').focus();
     pressKeyOnFocused('ArrowRight');
 
-    expect(document.activeElement).toBe(getTab('gamma'));
+    expect(await activeElement()).toBe(getTab('gamma'));
   });
-});
 
-describe('Tab selection', () => {
-  it('does not select a tab when it loses focus', () => {
+  it('gives the tab stop to the first enabled tab when nothing is selected', () => {
     render(() => (
-      <TabGroup defaultValue="beta" toggleable horizontal>
+      <TabGroup defaultValue={undefined} horizontal={true}>
         <TabList>
-          {TABS.map((tab) => (
-            <Tab value={tab}>{tab} tab</Tab>
-          ))}
+          <Tab value="alpha" disabled={true}>
+            alpha tab
+          </Tab>
+          <Tab value="beta">beta tab</Tab>
+          <Tab value="gamma">gamma tab</Tab>
         </TabList>
       </TabGroup>
     ));
-    getTab('alpha').focus();
 
-    // With `toggleable`, selecting the selected tab again would deselect it.
-    getTab('alpha').blur();
-
-    expect(getTab('alpha')).toHaveAttribute('aria-selected', 'true');
+    expect(getTab('alpha')).toHaveAttribute('tabindex', '-1');
+    expect(getTab('beta')).toHaveAttribute('tabindex', '0');
+    expect(getTab('gamma')).toHaveAttribute('tabindex', '-1');
   });
 
-  it('does not deselect a toggleable tab that a press just selected', () => {
+  it('gives the tab stop to the first enabled tab when the selected tab is disabled', () => {
+    renderTabs({ value: 'gamma', disabled: ['gamma'] });
+
+    expect(getTab('alpha')).toHaveAttribute('tabindex', '0');
+    expect(getTab('beta')).toHaveAttribute('tabindex', '-1');
+    expect(getTab('gamma')).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('keeps a toggleable tab selected when pressing it focuses it', () => {
     render(() => (
-      <TabGroup defaultValue={undefined as string | undefined} toggleable horizontal>
+      <TabGroup defaultValue={undefined} toggleable={true} horizontal={true}>
         <TabList>
           {TABS.map((tab) => (
             <Tab value={tab}>{tab} tab</Tab>
@@ -172,20 +170,82 @@ describe('Tab selection', () => {
     ));
     const tab = getTab('beta');
 
-    // A press goes pointerdown, focus, click.
+    // A mouse press focuses the tab before it clicks it.
     fireEvent.pointerDown(tab);
     tab.focus();
-    fireEvent.click(tab);
+    tab.click();
 
     expect(tab).toHaveAttribute('aria-selected', 'true');
+
+    tab.blur();
+
+    expect(tab).toHaveAttribute('aria-selected', 'true');
+
+    // A second press on the selected tab still toggles it off.
+    fireEvent.pointerDown(tab);
+    tab.focus();
+    tab.click();
+
+    expect(tab).toHaveAttribute('aria-selected', 'false');
   });
 
-  // https://github.com/lxsmnsyc/terracotta/issues/47
-  it('keeps the new tab selected when the closing panel holds a Listbox', async () => {
+  it('omits `aria-controls` while the panel is not in the DOM', () => {
+    renderTabs({ value: 'alpha' });
+
+    expect(getTab('beta')).not.toHaveAttribute('aria-controls');
+    expect(getTab('gamma')).not.toHaveAttribute('aria-controls');
+
+    getTab('beta').click();
+
+    expect(getTab('alpha')).not.toHaveAttribute('aria-controls');
+    expect(referencedBy(getTab('beta'), 'aria-controls')).toHaveTextContent('beta panel');
+  });
+
+  it('keeps `aria-controls` on every tab when the panels stay mounted', () => {
     render(() => (
-      <TabGroup defaultValue="beta" horizontal>
+      <TabGroup defaultValue="alpha" horizontal={true}>
         <TabList>
           {TABS.map((tab) => (
+            <Tab value={tab}>{tab} tab</Tab>
+          ))}
+        </TabList>
+        {TABS.map((tab) => (
+          <TabPanel value={tab} unmount={false}>
+            {tab} panel
+          </TabPanel>
+        ))}
+      </TabGroup>
+    ));
+
+    for (const tab of TABS) {
+      expect(referencedBy(getTab(tab), 'aria-controls')).toHaveTextContent(`${tab} panel`);
+    }
+  });
+
+  it('marks a disabled group with the data attribute only', () => {
+    const result = render(() => (
+      <TabGroup defaultValue="alpha" horizontal={true} disabled={true}>
+        <TabList>
+          <Tab value="alpha">alpha tab</Tab>
+        </TabList>
+      </TabGroup>
+    ));
+    const root = result.container.querySelector('[tc-tab-group]');
+
+    expect(root).toHaveAttribute('tc-disabled');
+    expect(root).not.toHaveAttribute('aria-disabled');
+    expect(root).not.toHaveAttribute('disabled');
+  });
+});
+
+// https://github.com/lxsmnsyc/terracotta/issues/47
+describe('Tabs with a Listbox in a panel', () => {
+  it('keeps the new tab selected when the closing panel holds a Listbox', async () => {
+    const tabs = ['alpha', 'beta'];
+    render(() => (
+      <TabGroup defaultValue="beta" horizontal={true}>
+        <TabList>
+          {tabs.map((tab) => (
             <Tab value={tab}>{tab} tab</Tab>
           ))}
         </TabList>
@@ -200,6 +260,7 @@ describe('Tab selection', () => {
         <TabPanel value="beta">beta panel</TabPanel>
       </TabGroup>
     ));
+    const getTab = (name: string): HTMLElement => screen.getByRole('tab', { name: `${name} tab` });
 
     // Alpha's panel, and its Listbox, are built while tab alpha has focus.
     getTab('alpha').focus();

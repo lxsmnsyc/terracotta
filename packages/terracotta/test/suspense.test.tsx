@@ -1,16 +1,11 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
-import type { JSX } from 'solid-js';
-import { Suspense, createResource, createSignal } from 'solid-js';
+import type { JSX } from '@solidjs/web';
+import { createMemo, createSignal, Loading } from 'solid-js';
 import { describe, expect, it } from 'vitest';
 import { settle } from './aria';
-import {
-  Dialog,
-  DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Transition,
-} from '../src';
+import { Dialog, DialogPanel } from '../src/components/dialog';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '../src/components/disclosure';
+import { Transition } from '../src/components/transition';
 
 const CLASSES = {
   enter: 'enter',
@@ -23,9 +18,12 @@ const CLASSES = {
 };
 
 /**
- * A resource that resolves when the test says so, so each assertion can be made
- * at a known point: while the boundary is still suspended, or after it has
+ * An async read that resolves when the test says so, so each assertion can be
+ * made at a known point: while the boundary is still held back, or after it has
  * resolved.
+ *
+ * A memo with an async compute is Solid 2's suspending read — it throws while
+ * the promise is outstanding, and the nearest `Loading` catches that.
  */
 function gate(): { read: () => string | undefined; resolve: () => void } {
   let settleGate!: () => void;
@@ -34,8 +32,8 @@ function gate(): { read: () => string | undefined; resolve: () => void } {
       resolvePromise('loaded');
     };
   });
-  const [data] = createResource(async (): Promise<string> => promise);
-  return { read: data, resolve: settleGate };
+  const read = createMemo<string>(async (): Promise<string> => promise);
+  return { read, resolve: settleGate };
 }
 
 /** The element the transition is driving, or `null` once it has unmounted. */
@@ -53,9 +51,9 @@ describe('Suspense and Transition', () => {
 
     render(() => (
       <Transition show {...CLASSES}>
-        <Suspense fallback={<span data-testid="fallback">loading</span>}>
+        <Loading fallback={<span data-testid="fallback">loading</span>}>
           <span data-testid="content">{content.read()}</span>
-        </Suspense>
+        </Loading>
       </Transition>
     ));
 
@@ -78,11 +76,11 @@ describe('Suspense and Transition', () => {
     const content = gate();
 
     render(() => (
-      <Suspense fallback={<span data-testid="fallback">loading</span>}>
+      <Loading fallback={<span data-testid="fallback">loading</span>}>
         <Transition show {...CLASSES}>
           <span data-testid="content">{content.read()}</span>
         </Transition>
-      </Suspense>
+      </Loading>
     ));
 
     await settle();
@@ -107,9 +105,9 @@ describe('Suspense and Transition', () => {
 
     render(() => (
       <Transition show={show()} {...CLASSES}>
-        <Suspense fallback={<span data-testid="fallback">loading</span>}>
+        <Loading fallback={<span data-testid="fallback">loading</span>}>
           <span data-testid="content">{content.read()}</span>
-        </Suspense>
+        </Loading>
       </Transition>
     ));
 
@@ -138,9 +136,9 @@ describe('Suspense and disclosures', () => {
             <DisclosureButton>Toggle</DisclosureButton>
             <Transition show={isOpen()} {...CLASSES}>
               <DisclosurePanel unmount={false}>
-                <Suspense fallback={<span data-testid="fallback">loading</span>}>
+                <Loading fallback={<span data-testid="fallback">loading</span>}>
                   <span data-testid="content">{props.content.read()}</span>
-                </Suspense>
+                </Loading>
               </DisclosurePanel>
             </Transition>
           </>
@@ -174,13 +172,13 @@ describe('Suspense and disclosures', () => {
         {({ isOpen }): JSX.Element => (
           <>
             <DisclosureButton>Toggle</DisclosureButton>
-            <Suspense fallback={<span data-testid="fallback">loading</span>}>
+            <Loading fallback={<span data-testid="fallback">loading</span>}>
               <Transition show={isOpen()} {...CLASSES}>
                 <DisclosurePanel unmount={false} data-testid="panel">
                   <span data-testid="content">{content.read()}</span>
                 </DisclosurePanel>
               </Transition>
-            </Suspense>
+            </Loading>
           </>
         )}
       </Disclosure>
@@ -238,12 +236,12 @@ describe('Suspense and panel focus', () => {
 
     render(() => (
       <Dialog isOpen>
-        <DialogPanel>
-          <Suspense fallback={<span data-testid="fallback">loading</span>}>
+        <DialogPanel data-testid="panel">
+          <Loading fallback={<span data-testid="fallback">loading</span>}>
             <button type="button" data-testid="async">
               {content.read()}
             </button>
-          </Suspense>
+          </Loading>
         </DialogPanel>
       </Dialog>
     ));
@@ -251,17 +249,16 @@ describe('Suspense and panel focus', () => {
     await settle();
 
     // A panel looks for something to focus once, as it opens. The fallback
-    // holds nothing focusable, so there is nothing to move to.
-    expect(document.activeElement).toBe(document.body);
+    // holds nothing focusable, so the panel takes focus itself.
+    expect(document.activeElement).toBe(screen.getByTestId('panel'));
 
     content.resolve();
     await settle();
 
-    // The button that arrives with the resource does not get focus either: no
-    // second look is taken. The WAI-ARIA dialog pattern asks for focus inside
-    // the dialog when it opens, so an async panel is left outside it.
+    // The button that arrives with the resource does not get focus: no second
+    // look is taken. Focus is still inside the dialog, on the panel.
     expect(screen.getByTestId('async')).toBeInTheDocument();
-    expect(document.activeElement).toBe(document.body);
+    expect(document.activeElement).toBe(screen.getByTestId('panel'));
   });
 
   it('focuses a panel that arrives with the boundary it was behind', async () => {
@@ -269,7 +266,7 @@ describe('Suspense and panel focus', () => {
 
     render(() => (
       <Dialog isOpen>
-        <Suspense fallback={<span data-testid="fallback">loading</span>}>
+        <Loading fallback={<span data-testid="fallback">loading</span>}>
           <Transition show {...CLASSES}>
             <DialogPanel>
               <button type="button" data-testid="async">
@@ -277,7 +274,7 @@ describe('Suspense and panel focus', () => {
               </button>
             </DialogPanel>
           </Transition>
-        </Suspense>
+        </Loading>
       </Dialog>
     ));
 
@@ -294,27 +291,31 @@ describe('Suspense and panel focus', () => {
     expect(document.activeElement).toBe(screen.getByTestId('async'));
   });
 
-  it('moves focus into a panel whose content is already there', async () => {
+  it('does not focus a panel behind a boundary, even with the value resolved', async () => {
     const content = gate();
     content.resolve();
     await settle();
 
     render(() => (
       <Dialog isOpen>
-        <DialogPanel>
-          <Suspense fallback={<span data-testid="fallback">loading</span>}>
+        <DialogPanel data-testid="panel">
+          <Loading fallback={<span data-testid="fallback">loading</span>}>
             <button type="button" data-testid="async">
               {content.read()}
             </button>
-          </Suspense>
+          </Loading>
         </DialogPanel>
       </Dialog>
     ));
 
     await settle();
 
-    // Same markup, resolved before it mounts: the panel finds the button and
-    // focuses it, which is what the case above is missing.
-    expect(document.activeElement).toBe(screen.getByTestId('async'));
+    // An async read always defers, settled or not, so the boundary shows its
+    // fallback for the render the panel takes its one look at. The panel then
+    // focuses itself, as it does whenever nothing inside it can. Resolving the
+    // value before mounting does not buy the panel anything: hoisting the
+    // boundary above the `Dialog` is what does, as the case above shows.
+    expect(screen.getByTestId('async')).toHaveTextContent('loaded');
+    expect(document.activeElement).toBe(screen.getByTestId('panel'));
   });
 });

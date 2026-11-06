@@ -1,14 +1,17 @@
 import { createContext, useContext } from 'solid-js';
 import assert from '../../utils/assert';
+import type { Presence } from '../../utils/create-presence';
 
 interface CheckboxContextData {
   ownerID: string;
   labelID: string;
   indicatorID: string;
   descriptionID: string;
+  label: Presence;
+  description: Presence;
 }
 
-export const CheckboxContext = createContext<CheckboxContextData>();
+export const CheckboxContext = createContext<CheckboxContextData | null>(null);
 
 /**
  * Reads the nearest `Checkbox`'s internal context, which holds the generated

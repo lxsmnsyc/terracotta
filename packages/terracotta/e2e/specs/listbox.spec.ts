@@ -62,3 +62,15 @@ test('closes when focus leaves the popup', async ({ page }) => {
 
   await expect(page.getByRole('listbox')).toBeHidden();
 });
+
+test('names the trigger from the label and the value, and the popup from the label', async ({
+  page,
+}) => {
+  const button = page.getByRole('button', { name: 'Pick one' });
+
+  await expect(button).toHaveAccessibleName('Fruit Pick one');
+
+  await button.click();
+
+  await expect(page.getByRole('listbox')).toHaveAccessibleName('Fruit');
+});

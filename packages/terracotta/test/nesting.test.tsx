@@ -1,26 +1,17 @@
 import { fireEvent, render, screen } from '@solidjs/testing-library';
 import { describe, expect, it } from 'vitest';
 import { activeElement, settle } from './aria';
+import { Button } from '../src/components/button';
 import {
-  Button,
   Combobox,
   ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Listbox,
-  ListboxButton,
-  ListboxOption,
-  ListboxOptions,
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-} from '../src';
+} from '../src/components/combobox';
+import { Dialog, DialogPanel, DialogTitle } from '../src/components/dialog';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '../src/components/disclosure';
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '../src/components/listbox';
+import { Popover, PopoverButton, PopoverPanel } from '../src/components/popover';
 
 const FRUITS = ['apple', 'banana', 'cherry'];
 

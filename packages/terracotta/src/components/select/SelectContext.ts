@@ -2,12 +2,7 @@ import { createContext, createUniqueId, useContext } from 'solid-js';
 import assert from '../../utils/assert';
 import FocusNavigator from '../../utils/focus-navigator';
 
-interface SelectContextData {
-  horizontal: boolean;
-  controller: FocusNavigator;
-}
-
-export const SelectContext = createContext<SelectContextData>();
+export const SelectContext = createContext<FocusNavigator | null>(null);
 
 /**
  * Reads the nearest `Select`'s internal context, which holds the focus
@@ -15,7 +10,7 @@ export const SelectContext = createContext<SelectContextData>();
  *
  * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/select.md}
  */
-export function useSelectContext(componentName: string): SelectContextData {
+export function useSelectContext(componentName: string): FocusNavigator {
   const context = useContext(SelectContext);
   assert(context, new Error(`<${componentName}> must be used inside a <Select>`));
   return context;
