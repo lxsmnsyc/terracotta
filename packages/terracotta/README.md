@@ -1,57 +1,110 @@
-# terracotta
+# Terracotta
 
-> Headless UI library for SolidJS
+Headless UI components for SolidJS. Terracotta handles state, keyboard
+interaction, focus and ARIA wiring. It adds no styles and no class names.
+Component state reaches your CSS through `tc-` attributes.
+
+The components follow the [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/).
 
 ## Install
 
 ```bash
-npm i terracotta
+pnpm add terracotta@next
+# or
+npm i terracotta@next
+# or
+yarn add terracotta@next
 ```
+
+Terracotta 2 targets Solid 2 and is published under the `next` tag while Solid 2
+is a release candidate. `solid-js` and `@solidjs/web` are peer dependencies. The
+`latest` tag is still the [1.x line](https://github.com/lxsmnsyc/terracotta/tree/1.x),
+which targets Solid 1.
+
+## Usage
+
+Every component has its own entry point and is built from parts you compose:
+
+```tsx
+import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclosure';
+
+function Details() {
+  return (
+    <Disclosure defaultOpen={false}>
+      <DisclosureButton class="trigger">Details</DisclosureButton>
+      <DisclosurePanel class="panel">Everything worth knowing.</DisclosurePanel>
+    </Disclosure>
+  );
+}
+```
+
+Style it by selecting on state:
+
+```css
+.trigger[tc-expanded] {
+  font-weight: 600;
+}
+```
+
+## Documentation
+
+- [Getting started](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/guides/getting-started.md)
+- Guides: [rendering](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/guides/rendering.md),
+  [state](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/guides/state.md),
+  [styling](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/guides/styling.md),
+  [keyboard and focus](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/guides/keyboard-and-focus.md),
+  [server-side rendering](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/guides/ssr.md)
+- [State primitives](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/states.md)
+
+### Components
+
+| | | |
+| --- | --- | --- |
+| [Accordion](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/accordion.md) | [Dialog](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/dialog.md) | [Spinbutton](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/spinbutton.md) |
+| [Alert](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/alert.md) | [Disclosure](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/disclosure.md) | [Splitter](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/splitter.md) |
+| [AlertDialog](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/alert-dialog.md) | [Feed](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/feed.md) | [Switch](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/switch.md) |
+| [Breadcrumb](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/breadcrumb.md) | [Grid](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/grid.md) | [Tabs](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/tabs.md) |
+| [Button](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/button.md) | [Listbox](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/listbox.md) | [Toast](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/toast.md) |
+| [Checkbox](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/checkbox.md) | [Menu](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/menu.md) | [Toggle](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/toggle.md) |
+| [ColorScheme](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/color-scheme.md) | [Meter](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/meter.md) | [Toolbar](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/toolbar.md) |
+| [Combobox](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/combobox.md) | [Popover](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/popover.md) | [Tooltip](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/tooltip.md) |
+| [Command](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/command.md) | [RadioGroup](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/radio-group.md) | [Transition](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/transition.md) |
+| [CommandBar](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/command-bar.md) | [Select](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/select.md) | [Tree](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/tree.md) |
+| [ContextMenu](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/context-menu.md) | [Slider](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/slider.md) | [TreeGrid](https://github.com/lxsmnsyc/terracotta/blob/main/docs/content/components/treegrid.md) |
+
+## Claude Code plugin
+
+The repository is also a Claude Code plugin marketplace. Its skill teaches an
+agent the component parts, imports, state and styling attributes:
+
+```text
+/plugin marketplace add lxsmnsyc/terracotta
+/plugin install terracotta@terracotta
+```
+
+## Development
+
+The documentation site in [`docs/`](https://github.com/lxsmnsyc/terracotta/tree/main/docs) uses the library from the
+workspace, so build the library first:
 
 ```bash
-yarn add terracotta
+pnpm install
+pnpm --filter terracotta build
+pnpm --filter @terracotta/docs dev
 ```
-
-```bash
-pnpm add terracotta
-```
-
-## Note
-
-The project is still in development, as I aim to implement the [WAI-ARIA Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.1/).
-
-Here's the current components:
-
-- `Accordion` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/accordion)
-- `Alert`
-- `Alert Dialog`
-- `Button`
-- `Button (Toggle)`
-- `Checkbox` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/checkbox)
-- `Dialog (Modal)` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/dialog)
-- `Dialog (Popover)` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/popover)
-- `Disclosure (Show/Hide)` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/disclosure)
-- `Feed` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/feed)
-- `Listbox (Select)` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/select)
-- `Listbox (Dropdown)` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/listbox)
-- `Menu` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/menu)
-- `Radio Group` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/radiogroup)
-- `Toolbar` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/toolbar)
-- `Transition` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/transitions)
-- `Toaster`/`Toast` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/toaster)
-- `ContextMenu (Dialog)` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/context-menu)
-- `CommandBar (Dialog)` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/commandbar)
-- `Tabs` [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/LXSMNSYC/terracotta/tree/main/examples/tabs)
 
 ## FAQ
 
-### Is this the official [HeadlessUI](https://headlessui.dev/) for SolidJS?
+### Is this the official Headless UI for SolidJS?
 
-Uhh, no. I intended to port the original however this is not recognized as the official port for SolidJS. There's also some differences in development path since I intended to implement the WAI-ARIA widgets. The reason is that there seems to be no resolution from the original Headless UI if they're going to implement WAI-ARIA widgets in the first place.
+No. Terracotta started as a port of [Headless UI](https://headlessui.com/), but
+it is not an official port, and it has since grown to cover the WAI-ARIA
+widgets that Headless UI does not.
 
-### If this is a port, does it mean it is 100% compatible?
+### Is it API-compatible with Headless UI?
 
-Kinda. Due to differences in principle between SolidJS and React, the implementation would be different and such, features that are originally found in the original HeadlessUI may be incompatible with the SolidJS version.
+No. SolidJS and React work differently, so the component APIs differ, and some
+Headless UI features have no equivalent here.
 
 ## License
 
