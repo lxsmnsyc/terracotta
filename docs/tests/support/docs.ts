@@ -131,7 +131,8 @@ export async function clickUntil(
 
 /** Every documentation page, read from the sidebar rather than hard-coded. */
 export async function docPaths(page: Page): Promise<string[]> {
-  await page.goto('/');
+  // The landing page has no sidebar, so read it from a documentation page.
+  await page.goto('/guides/getting-started');
   const paths = await page.$$eval('.sidebar-link', (links) =>
     links.map((link) => link.getAttribute('href') ?? ''),
   );

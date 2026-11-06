@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { docPaths, openPopup, useAppearance, watchForErrors } from './support/docs';
+import { clickUntil, docPaths, openPopup, useAppearance, watchForErrors } from './support/docs';
 
 /**
  * The whole site, in the default appearance. A page that fails to hydrate
@@ -21,6 +21,21 @@ test('every documentation page renders and hydrates without console errors', asy
     await expect(page.locator('.page-title')).toBeVisible();
     await expect(page.locator('.page-lede')).not.toBeEmpty();
   }
+
+  expect(errors).toEqual([]);
+});
+
+test('the landing page hydrates and its live parts respond', async ({ page }) => {
+  const errors = watchForErrors(page, () => '/');
+  await page.goto('/');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Behaviour');
+
+  // The inspector reads the switch's attributes back off the DOM.
+  const toggle = '.lp-inspector [role="switch"]';
+  await clickUntil(page, toggle, async () => {
+    await expect(page.locator(toggle)).toHaveAttribute('aria-checked', 'true', { timeout: 500 });
+  });
+  await expect(page.locator('.lp-inspector .lp-tag').first()).toContainText('tc-checked');
 
   expect(errors).toEqual([]);
 });

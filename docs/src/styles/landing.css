@@ -1,0 +1,1085 @@
+/*
+ * The landing page. Like the rest of the chrome it is written only in the
+ * contract's tokens, so every theme restyles it, and the theme cards in the
+ * third section restyle the page they sit on.
+ *
+ * Motion runs on one curve, `--lp-ease`, and every entrance is skipped under
+ * `prefers-reduced-motion`. Entrances are armed by script (`data-armed` on
+ * `.lp`), so without JavaScript every section is simply visible.
+ */
+
+.landing-main {
+  overflow-x: clip;
+}
+
+.lp {
+  --lp-ease: cubic-bezier(0.2, 0.75, 0, 1);
+  --lp-gutter: clamp(1.25rem, 4vw, 3rem);
+  --lp-max: 82rem;
+  --lp-cycle: 3.6s;
+  position: relative;
+}
+
+.lp code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+/* Masthead navigation ------------------------------------------------ */
+
+.masthead-nav {
+  display: flex;
+  gap: 0.25rem;
+  margin-inline: 1.5rem auto;
+}
+
+.masthead-nav-link {
+  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.6rem;
+  color: var(--text-2);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.masthead-nav-link:hover {
+  color: var(--text-1);
+}
+
+/* Hero ---------------------------------------------------------------- */
+
+.lp-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  margin-inline: auto;
+  padding: clamp(3rem, 8vh, 6rem) var(--lp-gutter) clamp(3rem, 7vh, 5rem);
+  min-block-size: calc(100svh - var(--masthead-height) - 3.25rem);
+  max-inline-size: var(--lp-max);
+}
+
+.lp-hero-glow {
+  position: absolute;
+  z-index: -1;
+  inset: -20% -10% auto 35%;
+  block-size: 80%;
+  background:
+    radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent),
+    radial-gradient(
+      closest-side at 30% 70%,
+      color-mix(in srgb, var(--accent-hover) 14%, transparent),
+      transparent
+    );
+  filter: blur(40px);
+  animation: lp-drift 18s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.lp-hero-copy {
+  container-type: inline-size;
+}
+
+/* A monospace face runs about a third wider. */
+[data-theme='terminal'] .lp-title {
+  font-size: min(10.5cqi, 5.5rem);
+}
+
+.lp-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface-0) 70%, transparent);
+  padding: 0.3rem 0.8rem 0.3rem 0.6rem;
+  color: var(--text-2);
+  font-size: 0.8rem;
+  font-weight: 550;
+  animation: lp-fade-up 700ms var(--lp-ease) both;
+}
+
+.lp-eyebrow-dot {
+  position: relative;
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.lp-eyebrow-dot::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  animation: lp-ping 2.4s var(--lp-ease) infinite;
+  content: '';
+}
+
+.lp-title {
+  margin-block: 1.5rem 0;
+  color: var(--text-1);
+  /* Sized from the column, so the longest line, "not decoration.", always
+     fits on one line whatever face the theme sets. */
+  font-size: min(14cqi, 6.75rem);
+  font-weight: 750;
+  letter-spacing: -0.05em;
+  line-height: 0.93;
+}
+
+.lp-title-line {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-block-end: 0.08em;
+}
+
+.lp-title-line > span {
+  display: inline-block;
+  animation: lp-rise 1000ms var(--lp-ease) both;
+}
+
+.lp-title-line + .lp-title-line > span {
+  animation-delay: 110ms;
+}
+
+/* The joke the headline makes: "decoration" gets struck out, by a line drawn
+   in the accent, once the title has landed. */
+.lp-title-em {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-position: 0 58%;
+  background-repeat: no-repeat;
+  background-size: 0% 0.075em;
+  color: var(--text-3);
+  font-style: normal;
+  animation: lp-strike 800ms 1100ms var(--lp-ease) forwards;
+}
+
+.lp-lede {
+  margin-block-start: 1.75rem;
+  max-inline-size: 34rem;
+  color: var(--text-2);
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  line-height: 1.6;
+  animation: lp-fade-up 800ms 250ms var(--lp-ease) both;
+}
+
+.lp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-block-start: 2rem;
+  animation: lp-fade-up 800ms 350ms var(--lp-ease) both;
+}
+
+.lp-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding: 0.8rem 1.2rem;
+  color: var(--text-1);
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    translate 300ms var(--lp-ease),
+    box-shadow 300ms var(--lp-ease),
+    background-color 200ms;
+}
+
+.lp-button:hover {
+  translate: 0 -2px;
+  box-shadow: var(--shadow-2);
+}
+
+.lp-button-primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.lp-button-primary:hover {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+}
+
+.lp-button-arrow {
+  transition: translate 300ms var(--lp-ease);
+}
+
+.lp-button:hover .lp-button-arrow {
+  translate: 4px 0;
+}
+
+/* Install chip ------------------------------------------------------ */
+
+.lp-install {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-block-start: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  padding: 0.35rem 0.35rem 0.35rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  animation: lp-fade-up 800ms 450ms var(--lp-ease) both;
+}
+
+.lp-install-prompt {
+  color: var(--accent);
+}
+
+.lp-install-command {
+  color: var(--text-1);
+}
+
+.lp-install-copy {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-0);
+  padding: 0.35rem 0.7rem;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition:
+    color 200ms,
+    background-color 200ms;
+}
+
+.lp-install-copy:hover {
+  color: var(--text-1);
+}
+
+.lp-install-copy[data-copied] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.lp-install-copy[data-copied] .lp-install-copy-label {
+  display: inline-block;
+  animation: lp-pop 400ms var(--lp-ease);
+}
+
+.lp-install-large {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  padding: 0.5rem 0.5rem 0.5rem 1.4rem;
+  animation: none;
+}
+
+/* Specimen ---------------------------------------------------------- */
+
+.lp-hero-stage {
+  position: relative;
+  animation: lp-float-in 1200ms 200ms var(--lp-ease) both;
+}
+
+/* A second card behind the first, offset and tilted, so the specimen reads
+   as one of a stack. */
+.lp-hero-stage::before {
+  position: absolute;
+  z-index: -1;
+  inset: 1.5rem -1rem -1rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+  rotate: 2.5deg;
+  content: '';
+}
+
+.lp-specimen {
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-0);
+  box-shadow: var(--shadow-2);
+}
+
+.lp-specimen-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-block-end: 1px solid var(--border);
+  background: var(--surface-1);
+  padding: 0.6rem 0.9rem;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.lp-specimen-dots {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.lp-specimen-dots > span {
+  inline-size: 0.6rem;
+  block-size: 0.6rem;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.lp-specimen-path {
+  color: var(--text-2);
+}
+
+.lp-specimen-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-inline-start: auto;
+}
+
+.lp-specimen-status::before {
+  inline-size: 0.45rem;
+  block-size: 0.45rem;
+  border-radius: 50%;
+  background: var(--accent);
+  content: '';
+}
+
+.lp-specimen[data-paused] .lp-specimen-status::before {
+  background: var(--text-3);
+}
+
+.lp-specimen-frame {
+  display: block;
+  inline-size: 100%;
+  min-block-size: 18rem;
+  border: 0;
+  background: transparent;
+  transition: height 400ms var(--lp-ease);
+}
+
+.lp-specimen-foot {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.9rem 1rem;
+  border-block-start: 1px solid var(--border);
+  background: var(--surface-1);
+  padding: 0.9rem 1rem 1rem;
+}
+
+.lp-specimen-caption {
+  color: var(--text-2);
+  font-size: 0.85rem;
+}
+
+.lp-specimen-name {
+  display: inline-block;
+  color: var(--text-1);
+  font-weight: 650;
+  animation: lp-swap 500ms var(--lp-ease);
+}
+
+.lp-chips {
+  display: flex;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  justify-content: space-between;
+  gap: 0.35rem;
+}
+
+.lp-chip {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 1 1 0;
+  max-inline-size: 2.6rem;
+  block-size: 2.1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-0);
+  cursor: pointer;
+  transition:
+    border-color 200ms,
+    translate 250ms var(--lp-ease);
+}
+
+.lp-chip:hover {
+  translate: 0 -2px;
+}
+
+.lp-chip[tc-checked] {
+  border-color: var(--accent);
+}
+
+.lp-chip-swatch {
+  inline-size: 1.1rem;
+  block-size: 1.1rem;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 12%);
+}
+
+/* The progress line under the active chip is also the timer: the specimen
+   moves on when this animation ends. */
+.lp-chip[tc-checked]::after {
+  position: absolute;
+  inset: auto 0.2rem -0.45rem;
+  block-size: 2px;
+  border-radius: 1px;
+  background: var(--accent);
+  transform-origin: left;
+  animation: lp-chip-fill var(--lp-cycle) linear forwards;
+  content: '';
+}
+
+.lp-specimen[data-paused] .lp-chip[tc-checked]::after {
+  animation-play-state: paused;
+}
+
+.lp-specimen-apply {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding: 0.45rem 0.8rem;
+  color: var(--text-1);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lp-specimen-apply:hover {
+  border-color: var(--accent);
+}
+
+/* The wipe inside the specimen frame. The frame loads this stylesheet too,
+   and `DemoHost` adds `demo-wipe` around the view transition. */
+html.demo-wipe::view-transition-old(root) {
+  animation: none;
+}
+
+html.demo-wipe::view-transition-new(root) {
+  animation: demo-wipe 750ms cubic-bezier(0.7, 0, 0.2, 1);
+}
+
+@keyframes demo-wipe {
+  from {
+    clip-path: polygon(0 0, 0 0, -30% 100%, -30% 100%);
+  }
+  to {
+    clip-path: polygon(0 0, 130% 0, 100% 100%, -30% 100%);
+  }
+}
+
+/* Ribbon ------------------------------------------------------------ */
+
+.lp-ribbon {
+  overflow: hidden;
+  border-block: 1px solid var(--border);
+  background: var(--surface-1);
+  padding-block: 0.9rem;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.lp-ribbon-track {
+  display: flex;
+  inline-size: max-content;
+  animation: lp-marquee 48s linear infinite;
+}
+
+.lp-ribbon-run {
+  display: flex;
+}
+
+.lp-ribbon-token {
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.lp-ribbon-token::after {
+  margin-inline: 1.5rem;
+  color: var(--text-3);
+  content: '/';
+}
+
+.lp-ribbon-token:nth-child(odd) {
+  color: var(--accent-hover);
+}
+
+/* Sections ------------------------------------------------------------ */
+
+.lp-section {
+  margin-inline: auto;
+  padding: clamp(5rem, 11vw, 9rem) var(--lp-gutter) 0;
+  max-inline-size: var(--lp-max);
+}
+
+.lp-section-head {
+  margin-block-end: clamp(2rem, 4vw, 3.5rem);
+  max-inline-size: 46rem;
+}
+
+.lp-kicker {
+  color: var(--accent-hover);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lp-heading {
+  margin-block-start: 0.9rem;
+  color: var(--text-1);
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
+  font-weight: 720;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.lp-body {
+  margin-block-start: 1.1rem;
+  color: var(--text-2);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.lp-body a {
+  color: var(--accent-hover);
+}
+
+/* Entrances. Only once script has armed the page, so the page is complete
+   without it. */
+.lp[data-armed] .lp-section,
+.lp[data-armed] .lp-close {
+  transition:
+    opacity 900ms var(--lp-ease),
+    translate 900ms var(--lp-ease);
+}
+
+.lp[data-armed] .lp-section:not([data-in]),
+.lp[data-armed] .lp-close:not([data-in]) {
+  opacity: 0;
+  translate: 0 2.5rem;
+}
+
+/* Inspector ----------------------------------------------------------- */
+
+.lp-inspector {
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-0);
+  box-shadow: var(--shadow-1);
+}
+
+.lp-inspector-head,
+.lp-inspector-row {
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.8fr) minmax(0, 1.2fr);
+}
+
+.lp-inspector-head {
+  border-block-end: 1px solid var(--border);
+  background: var(--surface-1);
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lp-inspector-head > span {
+  padding: 0.6rem 1.25rem;
+}
+
+.lp-inspector-head > span + span,
+.lp-inspector-row > .lp-tag {
+  border-inline-start: 1px solid var(--border);
+}
+
+.lp-inspector-row + .lp-inspector-row {
+  border-block-start: 1px solid var(--border);
+}
+
+.lp-inspector-live {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem;
+}
+
+.lp-inspector-disclosure {
+  inline-size: 100%;
+}
+
+.lp-tag {
+  display: block;
+  align-self: stretch;
+  background: var(--surface-1);
+  padding: 1.25rem;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.lp-tok-punct {
+  color: var(--text-3);
+}
+
+.lp-tok-tag {
+  color: var(--accent-hover);
+  font-weight: 600;
+}
+
+.lp-tok-attr {
+  color: var(--text-1);
+}
+
+.lp-tok-value {
+  color: var(--text-2);
+}
+
+.lp-tok-pair {
+  border-radius: 3px;
+}
+
+.lp-tok-pair[data-tc] .lp-tok-attr {
+  color: var(--accent-hover);
+  font-weight: 600;
+}
+
+.lp-tok-pair[data-fresh] {
+  animation: lp-flash 1200ms var(--lp-ease);
+}
+
+.lp-css {
+  margin-block-start: 1rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.lp-tok-sel {
+  color: var(--text-1);
+}
+
+.lp-tok-attrsel {
+  color: var(--accent-hover);
+  font-weight: 600;
+}
+
+.lp-tok-prop {
+  color: var(--text-1);
+}
+
+/* Keyboard -------------------------------------------------------------- */
+
+.lp-keys {
+  display: grid;
+  grid-template-columns: minmax(16rem, 0.8fr) minmax(0, 1.2fr);
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-0);
+  box-shadow: var(--shadow-1);
+}
+
+.lp-keys-tree {
+  padding: 1.5rem;
+}
+
+.lp-keys-board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  border-inline-start: 1px solid var(--border);
+  background: var(--surface-1);
+  padding: 2rem;
+}
+
+.lp-keycaps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.lp-keycap {
+  display: inline-grid;
+  place-items: center;
+  min-inline-size: 2.75rem;
+  block-size: 2.75rem;
+  border: 1px solid var(--border-strong);
+  border-block-end-width: 4px;
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  padding-inline: 0.6rem;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  transition:
+    translate 120ms,
+    border-width 120ms,
+    background-color 120ms,
+    color 120ms;
+}
+
+.lp-keycap-wide {
+  min-inline-size: 3.75rem;
+}
+
+.lp-keycap[data-lit] {
+  translate: 0 3px;
+  border-color: var(--accent);
+  border-block-end-width: 1px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.lp-keys-readout {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  font-family: var(--font-mono);
+}
+
+.lp-keys-readout-label {
+  color: var(--text-3);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lp-keys-readout-value {
+  color: var(--text-1);
+  font-size: 1.15rem;
+}
+
+/* Themes --------------------------------------------------------------- */
+
+.lp-themes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.lp-theme {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-0);
+  padding: 0.75rem 0.75rem 1.1rem;
+  cursor: pointer;
+  transition:
+    translate 350ms var(--lp-ease),
+    box-shadow 350ms var(--lp-ease),
+    border-color 200ms;
+}
+
+.lp-theme:hover {
+  translate: 0 -4px;
+  box-shadow: var(--shadow-2);
+}
+
+.lp-theme[tc-checked] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.lp-theme-swatch {
+  grid-column: 1 / -1;
+  block-size: 6.5rem;
+  margin-block-end: 0.6rem;
+  border-radius: calc(var(--radius-lg) - 0.35rem);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 8%);
+  transition: scale 500ms var(--lp-ease);
+}
+
+.lp-theme:hover .lp-theme-swatch {
+  scale: 1.02;
+}
+
+.lp-theme-name {
+  padding-inline: 0.35rem;
+  color: var(--text-1);
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+
+.lp-theme-index {
+  grid-row: 2;
+  grid-column: 2;
+  padding-inline-end: 0.35rem;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.lp-theme-blurb {
+  grid-column: 1 / -1;
+  padding-inline: 0.35rem;
+  color: var(--text-2);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.lp-theme[tc-checked] .lp-theme-index::before {
+  margin-inline-end: 0.5rem;
+  color: var(--accent-hover);
+  content: 'Wearing';
+}
+
+/* Catalogue ------------------------------------------------------------- */
+
+.lp-catalogue {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  column-gap: 2rem;
+  margin: 0;
+  border-block-start: 1px solid var(--border);
+  padding: 0;
+  list-style: none;
+}
+
+.lp-catalogue-link {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  border-block-end: 1px solid var(--border);
+  padding: 1.05rem 0.25rem;
+  color: var(--text-1);
+  text-decoration: none;
+}
+
+.lp-catalogue-index {
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.lp-catalogue-name {
+  font-size: 1.1rem;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+  transition:
+    translate 350ms var(--lp-ease),
+    color 200ms;
+}
+
+.lp-catalogue-arrow {
+  margin-inline-start: auto;
+  color: var(--text-3);
+  opacity: 0;
+  translate: -6px 4px;
+  transition:
+    opacity 250ms,
+    translate 350ms var(--lp-ease);
+}
+
+.lp-catalogue-link:hover .lp-catalogue-name {
+  color: var(--accent-hover);
+  translate: 6px 0;
+}
+
+.lp-catalogue-link:hover .lp-catalogue-arrow {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.lp[data-armed] .lp-section[data-in] .lp-catalogue-item {
+  animation: lp-fade-up 700ms var(--lp-ease) both;
+  animation-delay: calc(var(--i) * 22ms + 150ms);
+}
+
+/* Close ------------------------------------------------------------------ */
+
+.lp-close {
+  display: grid;
+  justify-items: center;
+  gap: 1.5rem;
+  margin-inline: auto;
+  padding: clamp(6rem, 14vw, 11rem) var(--lp-gutter) clamp(4rem, 8vw, 6rem);
+  max-inline-size: var(--lp-max);
+  text-align: center;
+}
+
+.lp-close-title {
+  color: var(--text-1);
+  font-size: clamp(2.75rem, 8vw, 6.5rem);
+  font-weight: 750;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+}
+
+.lp-close-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.75rem;
+  margin-block-start: 1rem;
+}
+
+.lp-close-links a {
+  color: var(--text-2);
+  text-decoration: none;
+}
+
+.lp-close-links a:hover {
+  color: var(--accent-hover);
+}
+
+.lp-close-note {
+  margin-block-start: 2.5rem;
+  color: var(--text-3);
+  font-size: 0.85rem;
+}
+
+/* Keyframes ---------------------------------------------------------------- */
+
+@keyframes lp-rise {
+  from {
+    translate: 0 105%;
+  }
+}
+
+@keyframes lp-fade-up {
+  from {
+    opacity: 0;
+    translate: 0 1rem;
+  }
+}
+
+@keyframes lp-float-in {
+  from {
+    opacity: 0;
+    translate: 0 2rem;
+    scale: 0.97;
+    filter: blur(6px);
+  }
+}
+
+@keyframes lp-strike {
+  to {
+    background-size: 100% 0.075em;
+  }
+}
+
+@keyframes lp-ping {
+  75%,
+  100% {
+    opacity: 0;
+    scale: 2.6;
+  }
+}
+
+@keyframes lp-drift {
+  to {
+    translate: -8% 6%;
+    scale: 1.1;
+  }
+}
+
+@keyframes lp-chip-fill {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+@keyframes lp-swap {
+  from {
+    opacity: 0;
+    translate: 0 0.4em;
+    filter: blur(3px);
+  }
+}
+
+@keyframes lp-pop {
+  from {
+    scale: 0.6;
+  }
+}
+
+@keyframes lp-flash {
+  from {
+    background: color-mix(in srgb, var(--accent) 28%, transparent);
+  }
+  to {
+    background: transparent;
+  }
+}
+
+@keyframes lp-marquee {
+  to {
+    translate: -50% 0;
+  }
+}
+
+/* Small screens ------------------------------------------------------------- */
+
+@media (max-width: 960px) {
+  .lp-hero {
+    grid-template-columns: minmax(0, 1fr);
+    min-block-size: 0;
+  }
+
+  .lp-inspector-head {
+    display: none;
+  }
+
+  .lp-inspector-row,
+  .lp-keys {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lp-themes {
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  }
+
+  .lp-inspector-row > .lp-tag,
+  .lp-keys-board {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--border);
+  }
+}
+
+@media (max-width: 640px) {
+  .masthead-nav {
+    display: none;
+  }
+}
+
+/* Reduced motion: no autoplay, no entrances, no marquee. The strike-through
+   is drawn at once, since it carries the joke rather than decorating it. */
+@media (prefers-reduced-motion: reduce) {
+  .lp *,
+  .lp *::before,
+  .lp *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .lp-title-em {
+    background-size: 100% 0.075em;
+  }
+
+  .lp[data-armed] .lp-section:not([data-in]),
+  .lp[data-armed] .lp-close:not([data-in]) {
+    opacity: 1;
+    translate: none;
+  }
+}

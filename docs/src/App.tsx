@@ -6,6 +6,7 @@ import { Router } from './router';
 import './styles/reset.css';
 import './styles/prose.css';
 import './styles/chrome.css';
+import './styles/landing.css';
 import './themes/_contract.css';
 import './styles/demos.css';
 import './themes';

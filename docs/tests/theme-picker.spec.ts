@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { SCHEMES, THEMES, clickUntil, useAppearance } from './support/docs';
 
 test('the picker is a radio group naming every theme', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/guides/getting-started');
 
   const group = page.getByRole('radiogroup', { name: /theme/i });
   await expect(group).toBeVisible();
@@ -35,7 +35,7 @@ for (const theme of THEMES) {
 }
 
 test('choosing a theme applies it at once and survives a reload', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/guides/getting-started');
 
   await clickUntil(page, '.theme-swatch[data-theme-id="terminal"]', () =>
     expect(page.locator('html')).toHaveAttribute('data-theme', 'terminal'),
@@ -57,7 +57,7 @@ test('choosing a theme applies it at once and survives a reload', async ({ page 
 });
 
 test('the picker is operable from the keyboard', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/guides/getting-started');
 
   // Same pre-hydration race as a click: the swatch is focusable from the
   // server's markup long before it answers a key. Arrowing from the first

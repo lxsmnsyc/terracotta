@@ -14,6 +14,8 @@ export interface DemoAppearanceMessage {
   kind: 'appearance';
   theme: string;
   scheme: ColorSchemeName;
+  /** Wipe to the new appearance instead of switching in one frame. */
+  animate?: boolean;
 }
 
 export interface DemoHeightMessage {

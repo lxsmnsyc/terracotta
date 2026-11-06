@@ -62,10 +62,33 @@ export default function DemoHost(): JSX.Element {
         return;
       }
 
-      if (isTheme(event.data.theme)) {
-        document.documentElement.dataset.theme = event.data.theme;
+      const { theme, scheme, animate } = event.data;
+      const root = document.documentElement;
+      const apply = (): void => {
+        if (isTheme(theme)) {
+          root.dataset.theme = theme;
+        }
+        root.classList.toggle('dark', scheme === 'dark');
+      };
+
+      // The landing page cycles its specimen through the themes, and asks for
+      // a wipe between them. Everything else switches in one frame.
+      const unchanged =
+        root.dataset.theme === theme && root.classList.contains('dark') === (scheme === 'dark');
+      if (
+        !animate ||
+        unchanged ||
+        !('startViewTransition' in document) ||
+        matchMedia('(prefers-reduced-motion: reduce)').matches
+      ) {
+        apply();
+        return;
       }
-      document.documentElement.classList.toggle('dark', event.data.scheme === 'dark');
+      root.classList.add('demo-wipe');
+      const done = (): void => {
+        root.classList.remove('demo-wipe');
+      };
+      document.startViewTransition(apply).finished.then(done, done);
     };
 
     window.addEventListener('message', onMessage);
