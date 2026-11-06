@@ -72,7 +72,7 @@ function ignoreTransitionError(): void {
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/transition.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/transition.md}
  */
 export function TransitionChild<T extends ValidConstructor = 'div'>(
   props: TransitionChildProps<T>,
@@ -260,7 +260,7 @@ export type TransitionProps<T extends ValidConstructor = 'div'> = Prettify<
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/transition.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/transition.md}
  */
 export function Transition<T extends ValidConstructor = 'div'>(
   props: TransitionProps<T>,

@@ -106,7 +106,7 @@ function isCommandUncontrolled<V, T extends ValidConstructor = 'div'>(
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/command.md}
  */
 export function Command<V, T extends ValidConstructor = 'div'>(
   props: CommandProps<V, T>,

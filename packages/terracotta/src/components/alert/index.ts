@@ -16,7 +16,7 @@ export type AlertProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/alert.md}
  */
 export function Alert<T extends ValidConstructor = 'div'>(props: AlertProps<T>): JSX.Element {
   const alertID = createUniqueId();

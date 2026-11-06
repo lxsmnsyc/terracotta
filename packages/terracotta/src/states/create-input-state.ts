@@ -27,7 +27,7 @@ export interface InputStateProperties {
  *
  * Pass `defaultValue` for uncontrolled state or `value` for controlled.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#input-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#input-state}
  */
 export function createInputState(options: InputStateOptions): InputStateProperties {
   let signal: Accessor<string | undefined>;
@@ -81,7 +81,7 @@ const InputStateContext = createContext<InputStateProperties>();
  * `InputStateChild` can reach it. No component in the library creates an input
  * state, so this is the only way to make one available to a subtree.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#input-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#input-state}
  */
 export function InputStateProvider(props: InputStateProviderProps): JSX.Element {
   return createComponent(InputStateContext.Provider, {
@@ -99,7 +99,7 @@ export function InputStateProvider(props: InputStateProviderProps): JSX.Element 
 /**
  * Reads the nearest input state from context. Throws when there is none.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#input-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#input-state}
  */
 export function useInputState(): InputStateProperties {
   const ctx = useContext(InputStateContext);
@@ -111,7 +111,7 @@ export function useInputState(): InputStateProperties {
  * Passes the nearest input state to a render prop. A function child is treated
  * as a render prop only when it declares exactly one parameter.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#input-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#input-state}
  */
 export function InputStateChild(props: InputStateRenderProps): JSX.Element {
   const state = useInputState();

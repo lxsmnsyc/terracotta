@@ -31,7 +31,7 @@ export type DialogOverlayProps<T extends ValidConstructor = 'div'> = HeadlessPro
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/dialog.md}
  */
 export function DialogOverlay<T extends ValidConstructor = 'div'>(
   props: DialogOverlayProps<T>,

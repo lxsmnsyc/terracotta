@@ -17,7 +17,7 @@ export interface MenuChildProps {
  * standalone component. It renders no element of its own, and reports its own
  * `disabled` prop rather than the surrounding item's.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/menu.md}
  */
 export function MenuChild(props: MenuChildProps): JSX.Element {
   return createMemo(() => {

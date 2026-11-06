@@ -62,7 +62,7 @@ function isToggleUncontrolled<T extends ValidConstructor = 'button'>(
  *
  * Renders a `<button>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toggle.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/toggle.md}
  */
 export function Toggle<T extends ValidConstructor = 'button'>(props: ToggleProps<T>): JSX.Element {
   const [ref, setRef] = createForwardRef(props);

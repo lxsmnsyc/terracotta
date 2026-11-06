@@ -28,7 +28,7 @@ export type ContextMenuOverlayProps<T extends ValidConstructor = 'div'> = Headle
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/context-menu.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/context-menu.md}
  */
 export function ContextMenuOverlay<T extends ValidConstructor = 'div'>(
   props: ContextMenuOverlayProps<T>,

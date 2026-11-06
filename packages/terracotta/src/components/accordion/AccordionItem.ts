@@ -38,7 +38,7 @@ export type AccordionItemProps<V, T extends ValidConstructor = 'div'> = Headless
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/accordion.md}
  */
 export function AccordionItem<V, T extends ValidConstructor = 'div'>(
   props: AccordionItemProps<V, T>,

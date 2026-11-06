@@ -297,7 +297,7 @@ function getProps<V, T extends ValidConstructor = 'div'>(
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/combobox.md}
  */
 export function Combobox<V, T extends ValidConstructor = 'div'>(
   props: ComboboxProps<V, T>,

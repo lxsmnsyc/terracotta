@@ -50,7 +50,7 @@ export type ComboboxOptionProps<V, T extends ValidConstructor = 'li'> = Headless
  *
  * Renders an `<li>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/combobox.md}
  */
 export function ComboboxOption<V, T extends ValidConstructor = 'li'>(
   props: ComboboxOptionProps<V, T>,

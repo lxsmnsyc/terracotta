@@ -29,7 +29,7 @@ export type CommandBarPanelProps<T extends ValidConstructor = 'div'> = HeadlessP
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command-bar.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/command-bar.md}
  */
 export function CommandBarPanel<T extends ValidConstructor = 'div'>(
   props: CommandBarPanelProps<T>,

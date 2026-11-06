@@ -30,7 +30,7 @@ export type ButtonProps<T extends ValidConstructor = 'button'> = HeadlessPropsWi
  *
  * Renders a `<button>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/button.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/button.md}
  */
 export function Button<T extends ValidConstructor = 'button'>(props: ButtonProps<T>): JSX.Element {
   const [internalRef, setInternalRef] = createForwardRef(props);

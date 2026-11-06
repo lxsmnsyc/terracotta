@@ -34,7 +34,7 @@ export type CommandOptionsProps<V, T extends ValidConstructor = 'ul'> = Headless
  *
  * Renders a `<ul>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/command.md}
  */
 export function CommandOptions<V, T extends ValidConstructor = 'ul'>(
   props: CommandOptionsProps<V, T>,

@@ -19,7 +19,7 @@ export type CommandBarTitleProps<T extends ValidConstructor = 'h2'> = HeadlessPr
  *
  * Renders an `<h2>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command-bar.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/command-bar.md}
  */
 export function CommandBarTitle<T extends ValidConstructor = 'h2'>(
   props: CommandBarTitleProps<T>,

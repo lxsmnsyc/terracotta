@@ -23,7 +23,7 @@ export type AlertDialogTitleProps<T extends ValidConstructor = 'h2'> = HeadlessP
  *
  * Renders an `<h2>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/alert-dialog.md}
  */
 export function AlertDialogTitle<T extends ValidConstructor = 'h2'>(
   props: AlertDialogTitleProps<T>,

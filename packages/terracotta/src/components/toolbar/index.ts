@@ -27,7 +27,7 @@ export type ToolbarProps<T extends ValidConstructor = 'div'> = HeadlessPropsWith
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toolbar.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/toolbar.md}
  */
 export function Toolbar<T extends ValidConstructor = 'div'>(props: ToolbarProps<T>): JSX.Element {
   const [internalRef, setInternalRef] = createForwardRef(props);

@@ -32,7 +32,7 @@ export type ListboxButtonProps<T extends ValidConstructor = 'button'> = Headless
  *
  * Renders a `<button>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/listbox.md}
  */
 export function ListboxButton<T extends ValidConstructor = 'button'>(
   props: ListboxButtonProps<T>,

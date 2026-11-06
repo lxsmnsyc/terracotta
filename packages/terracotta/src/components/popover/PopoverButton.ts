@@ -29,7 +29,7 @@ export type PopoverButtonProps<T extends ValidConstructor = 'button'> = Headless
  *
  * Renders a `<button>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/popover.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/popover.md}
  */
 export function PopoverButton<T extends ValidConstructor = 'button'>(
   props: PopoverButtonProps<T>,

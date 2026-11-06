@@ -13,7 +13,7 @@ export type FeedArticleLabelProps<T extends ValidConstructor = 'span'> = Headles
  *
  * Renders a `<span>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/feed.md}
  */
 export function FeedArticleLabel<T extends ValidConstructor = 'span'>(
   props: FeedArticleLabelProps<T>,

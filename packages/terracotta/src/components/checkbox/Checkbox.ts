@@ -53,7 +53,7 @@ function isCheckboxUncontrolled<T extends ValidConstructor = 'div'>(
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/checkbox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/checkbox.md}
  */
 export function Checkbox<T extends ValidConstructor = 'div'>(props: CheckboxProps<T>): JSX.Element {
   const ownerID = createUniqueId();

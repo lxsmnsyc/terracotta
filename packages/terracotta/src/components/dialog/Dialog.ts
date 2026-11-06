@@ -59,7 +59,7 @@ function isDialogUncontrolled<T extends ValidConstructor = 'div'>(
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/dialog.md}
  */
 export function Dialog<T extends ValidConstructor = 'div'>(props: DialogProps<T>): JSX.Element {
   const ownerID = createUniqueId();

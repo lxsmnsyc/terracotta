@@ -42,7 +42,7 @@ export type ListboxOptionsProps<V, T extends ValidConstructor = 'ul'> = Headless
  *
  * Renders a `<ul>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/listbox.md}
  */
 export function ListboxOptions<V, T extends ValidConstructor = 'ul'>(
   props: ListboxOptionsProps<V, T>,

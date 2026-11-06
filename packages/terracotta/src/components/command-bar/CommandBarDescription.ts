@@ -20,7 +20,7 @@ export type CommandBarDescriptionProps<T extends ValidConstructor = 'p'> = Headl
  *
  * Renders a `<p>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command-bar.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/command-bar.md}
  */
 export function CommandBarDescription<T extends ValidConstructor = 'p'>(
   props: CommandBarDescriptionProps<T>,

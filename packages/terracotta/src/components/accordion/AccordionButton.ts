@@ -37,7 +37,7 @@ export type AccordionButtonProps<T extends ValidConstructor = 'button'> = Headle
  *
  * Renders a `<button>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/accordion.md}
  */
 export function AccordionButton<T extends ValidConstructor = 'button'>(
   props: AccordionButtonProps<T>,

@@ -54,7 +54,7 @@ export type SingleSelectStateOptions<T> =
  * Pass `by` when the values are objects, since the default comparison is by
  * reference.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#select-state}
  */
 export function createSingleSelectState<T>(
   options: SingleSelectStateOptions<T>,
@@ -154,7 +154,7 @@ export type MultipleSelectStateOptions<T> =
  * Pass `by` when the values are objects, since the default comparison is by
  * reference.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#select-state}
  */
 export function createMultipleSelectState<T>(
   options: MultipleSelectStateOptions<T>,
@@ -277,7 +277,7 @@ export function SelectStateProvider<T>(props: SelectStateProviderProps<T>): JSX.
 /**
  * Reads the nearest select state from context. Throws when there is none.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#select-state}
  */
 export function useSelectState<T>(): SelectStateProperties<T> {
   const ctx = useContext(SelectStateContext);
@@ -289,7 +289,7 @@ export function useSelectState<T>(): SelectStateProperties<T> {
  * Passes the nearest select state to a render prop. A function child is
  * treated as a render prop only when it declares exactly one parameter.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#select-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#select-state}
  */
 export function SelectStateChild<T>(props: SelectStateRenderProps<T>): JSX.Element {
   const state = useSelectState<T>();

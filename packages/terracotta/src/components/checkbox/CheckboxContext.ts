@@ -15,7 +15,7 @@ export const CheckboxContext = createContext<CheckboxContextData>();
  * ids for its label, description and indicator. Throws when called outside a
  * `Checkbox`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/checkbox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/checkbox.md}
  */
 export function useCheckboxContext(componentName: string): CheckboxContextData {
   const context = useContext(CheckboxContext);

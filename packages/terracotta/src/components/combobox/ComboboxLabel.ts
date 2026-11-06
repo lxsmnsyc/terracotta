@@ -22,7 +22,7 @@ export type ComboboxLabelProps<T extends ValidConstructor = 'label'> = HeadlessP
  *
  * Renders a `<label>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/combobox.md}
  */
 export function ComboboxLabel<T extends ValidConstructor = 'label'>(
   props: ComboboxLabelProps<T>,

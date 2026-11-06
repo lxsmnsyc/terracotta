@@ -20,7 +20,7 @@ export type CheckboxDescriptionProps<T extends ValidConstructor = 'p'> = Headles
  *
  * Renders a `<p>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/checkbox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/checkbox.md}
  */
 export function CheckboxDescription<T extends ValidConstructor = 'p'>(
   props: CheckboxDescriptionProps<T>,

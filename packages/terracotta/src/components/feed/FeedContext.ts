@@ -18,7 +18,7 @@ export const FeedContext = createContext<FeedContextData>();
  * and the focus navigator shared by its articles. Throws when called outside a
  * `Feed`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/feed.md}
  */
 export function useFeedContext(componentName: string): FeedContextData {
   const context = useContext(FeedContext);

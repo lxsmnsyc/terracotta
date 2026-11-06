@@ -38,7 +38,7 @@ export type ToastProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/toast.md}
  */
 export function Toast<T extends ValidConstructor = 'div'>(props: ToastProps<T>): JSX.Element {
   useToastContext('Toast');
@@ -64,7 +64,7 @@ export type ToasterProps<T extends ValidConstructor = 'div'> = HeadlessProps<T>;
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/toast.md}
  */
 export function Toaster<T extends ValidConstructor = 'div'>(props: ToasterProps<T>): JSX.Element {
   const ownerID = createUniqueId();
@@ -93,7 +93,7 @@ export type ToasterListener<T> = (queue: ToastData<T>[]) => void;
  * so any code can push a toast with `create`, drop one with `remove`, or empty
  * the queue with `clear`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/toast.md}
  */
 export class ToasterStore<T> {
   private static toasterID = 0;
@@ -156,7 +156,7 @@ export class ToasterStore<T> {
  * store is passed in rather than read from context, so the same queue can be
  * reached from anywhere in the app, including outside the component tree.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/toast.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/toast.md}
  */
 export function useToaster<T>(toaster: ToasterStore<T>): () => ToastData<T>[] {
   const [signal, setSignal] = createSignal(toaster.getQueue());

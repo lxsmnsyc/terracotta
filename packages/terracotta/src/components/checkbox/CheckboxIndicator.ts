@@ -28,7 +28,7 @@ export type CheckboxIndicatorProps<T extends ValidConstructor = 'button'> = Head
  *
  * Renders a `<button>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/checkbox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/checkbox.md}
  */
 export function CheckboxIndicator<T extends ValidConstructor = 'button'>(
   props: CheckboxIndicatorProps<T>,

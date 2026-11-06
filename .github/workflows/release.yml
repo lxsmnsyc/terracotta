@@ -1,12 +1,12 @@
 name: Release
 
-# Every push to `main` either opens (or updates) a "Version Packages" pull
+# Every push to `1.x` either opens (or updates) a "Version Packages" pull
 # request from the pending changesets, or, once that pull request is merged,
 # publishes whatever versions are not on npm yet.
 on:
   push:
     branches:
-      - main
+      - 1.x
 
 # Two releases racing each other could both try to publish the same version.
 concurrency:

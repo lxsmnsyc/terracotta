@@ -13,7 +13,7 @@ export type FeedLabelProps<T extends ValidConstructor = 'span'> = HeadlessProps<
  *
  * Renders a `<span>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/feed.md}
  */
 export function FeedLabel<T extends ValidConstructor = 'span'>(
   props: FeedLabelProps<T>,

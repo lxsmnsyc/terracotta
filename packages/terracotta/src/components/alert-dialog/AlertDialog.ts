@@ -59,7 +59,7 @@ function isAlertDialogUncontrolled<T extends ValidConstructor = 'div'>(
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/alert-dialog.md}
  */
 export function AlertDialog<T extends ValidConstructor = 'div'>(
   props: AlertDialogProps<T>,

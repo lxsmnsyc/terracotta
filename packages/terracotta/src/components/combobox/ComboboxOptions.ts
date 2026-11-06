@@ -46,7 +46,7 @@ export type ComboboxOptionsProps<V, T extends ValidConstructor = 'ul'> = Headles
  *
  * Renders a `<ul>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/combobox.md}
  */
 export function ComboboxOptions<V, T extends ValidConstructor = 'ul'>(
   props: ComboboxOptionsProps<V, T>,

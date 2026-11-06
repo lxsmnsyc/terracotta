@@ -31,7 +31,7 @@ export type ContextMenuBoundaryProps<T extends ValidConstructor = 'div'> = Headl
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/context-menu.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/context-menu.md}
  */
 export function ContextMenuBoundary<T extends ValidConstructor = 'div'>(
   props: ContextMenuBoundaryProps<T>,

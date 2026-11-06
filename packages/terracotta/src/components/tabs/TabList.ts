@@ -27,7 +27,7 @@ export type TabListProps<V, T extends ValidConstructor = 'div'> = HeadlessPropsW
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/tabs.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/tabs.md}
  */
 export function TabList<V, T extends ValidConstructor = 'div'>(
   props: TabListProps<V, T>,

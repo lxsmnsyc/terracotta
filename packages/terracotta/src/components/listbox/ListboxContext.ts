@@ -20,7 +20,7 @@ export const ListboxContext = createContext<ListboxContextData>();
  * ids for its button, label and options. Throws when called outside a
  * `Listbox`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/listbox.md}
  */
 export function useListboxContext(componentName: string): ListboxContextData {
   const context = useContext(ListboxContext);

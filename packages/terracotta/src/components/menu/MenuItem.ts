@@ -25,7 +25,7 @@ export type MenuItemProps<T extends ValidConstructor = 'li'> = HeadlessPropsWith
  *
  * Renders an `<li>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/menu.md}
  */
 export function MenuItem<T extends ValidConstructor = 'li'>(props: MenuItemProps<T>): JSX.Element {
   const context = useMenuContext('MenuItem');

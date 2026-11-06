@@ -57,7 +57,7 @@ function isPopoverUncontrolled<T extends ValidConstructor = 'div'>(
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/popover.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/popover.md}
  */
 export function Popover<T extends ValidConstructor = 'div'>(props: PopoverProps<T>): JSX.Element {
   const ownerID = createUniqueId();

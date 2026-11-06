@@ -45,7 +45,7 @@ export type RadioGroupOptionProps<V, T extends ValidConstructor = 'div'> = Headl
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/radio-group.md}
  */
 export function RadioGroupOption<V, T extends ValidConstructor = 'div'>(
   props: RadioGroupOptionProps<V, T>,

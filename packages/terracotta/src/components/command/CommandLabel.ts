@@ -20,7 +20,7 @@ export type CommandLabelProps<T extends ValidConstructor = 'label'> = HeadlessPr
  *
  * Renders a `<label>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/command.md}
  */
 export function CommandLabel<T extends ValidConstructor = 'label'>(
   props: CommandLabelProps<T>,

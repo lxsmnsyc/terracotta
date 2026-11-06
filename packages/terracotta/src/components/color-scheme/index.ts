@@ -49,7 +49,7 @@ const STORAGE_KEY = 'theme-preference';
  *
  * Renders nothing of its own.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/color-scheme.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/color-scheme.md}
  */
 export function ColorSchemeProvider(props: ColorSchemeProviderProps): JSX.Element {
   let get: Accessor<ColorScheme>;
@@ -138,7 +138,7 @@ function useColorSchemeContext(): ColorSchemeContextData {
  * `'system'`. Returns a signal-like tuple. Throws when called outside a {@link
  * ColorSchemeProvider}.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/color-scheme.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/color-scheme.md}
  */
 export function useColorScheme(): [() => ColorScheme, (newScheme: ColorScheme) => void] {
   const ctx = useColorSchemeContext();
@@ -149,7 +149,7 @@ export function useColorScheme(): [() => ColorScheme, (newScheme: ColorScheme) =
  * Reads what the operating system currently prefers, ignoring the user's
  * choice. Returns an accessor for `'light'` or `'dark'`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/color-scheme.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/color-scheme.md}
  */
 export function useNativeColorScheme(): () => NativeColorScheme {
   const ctx = useColorSchemeContext();
@@ -161,7 +161,7 @@ export function useNativeColorScheme(): () => NativeColorScheme {
  * system preference when that choice is `'system'`. This is the one to style
  * from.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/color-scheme.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/color-scheme.md}
  */
 export function usePreferredColorScheme(): () => NativeColorScheme {
   const ctx = useColorSchemeContext();

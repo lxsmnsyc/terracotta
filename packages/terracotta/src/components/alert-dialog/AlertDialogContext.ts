@@ -15,7 +15,7 @@ export const AlertDialogContext = createContext<AlertDialogContextData>();
  * generated ids for its title, description and panel. Throws when called
  * outside an `AlertDialog`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/alert-dialog.md}
  */
 export function useAlertDialogContext(componentName: string): AlertDialogContextData {
   const context = useContext(AlertDialogContext);

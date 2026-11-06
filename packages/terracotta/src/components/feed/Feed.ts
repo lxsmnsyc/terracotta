@@ -29,7 +29,7 @@ export type FeedProps<T extends ValidConstructor = 'div'> = HeadlessPropsWithRef
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/feed.md}
  */
 export function Feed<T extends ValidConstructor = 'div'>(props: FeedProps<T>): JSX.Element {
   const ownerID = createUniqueId();

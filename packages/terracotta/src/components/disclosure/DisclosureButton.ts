@@ -30,7 +30,7 @@ export type DisclosureButtonProps<T extends ValidConstructor = 'button'> = Headl
  *
  * Renders a `<button>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/disclosure.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/disclosure.md}
  */
 export function DisclosureButton<T extends ValidConstructor = 'button'>(
   props: DisclosureButtonProps<T>,

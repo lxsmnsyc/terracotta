@@ -41,7 +41,7 @@ export type SelectOptionProps<V, T extends ValidConstructor = 'li'> = HeadlessPr
  *
  * Renders an `<li>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/select.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/select.md}
  */
 export function SelectOption<V, T extends ValidConstructor = 'li'>(
   props: SelectOptionProps<V, T>,

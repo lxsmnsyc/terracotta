@@ -30,7 +30,7 @@ export type AlertDialogOverlayProps<T extends ValidConstructor = 'div'> = Headle
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/alert-dialog.md}
  */
 export function AlertDialogOverlay<T extends ValidConstructor = 'div'>(
   props: AlertDialogOverlayProps<T>,

@@ -28,7 +28,7 @@ export type DialogPanelProps<T extends ValidConstructor = 'div'> = HeadlessProps
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/dialog.md}
  */
 export function DialogPanel<T extends ValidConstructor = 'div'>(
   props: DialogPanelProps<T>,

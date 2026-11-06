@@ -25,7 +25,7 @@ export type DisclosurePanelProps<T extends ValidConstructor = 'div'> = HeadlessP
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/disclosure.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/disclosure.md}
  */
 export function DisclosurePanel<T extends ValidConstructor = 'div'>(
   props: DisclosurePanelProps<T>,

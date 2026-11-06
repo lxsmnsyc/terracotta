@@ -23,7 +23,7 @@ export type DialogTitleProps<T extends ValidConstructor = 'h2'> = HeadlessPropsW
  *
  * Renders an `<h2>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/dialog.md}
  */
 export function DialogTitle<T extends ValidConstructor = 'h2'>(
   props: DialogTitleProps<T>,

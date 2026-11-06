@@ -60,7 +60,7 @@ export type SingleAutocompleteStateOptions<T> =
  * The required `matchBy` decides which values survive the current query.
  * Writes to the query are debounced by 250ms, so `query()` lags typing.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#autocomplete-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#autocomplete-state}
  */
 export function createSingleAutocompleteState<T>(
   options: SingleAutocompleteStateOptions<T>,
@@ -176,7 +176,7 @@ export type MultipleAutocompleteStateOptions<T> =
  * The required `matchBy` decides which values survive the current query.
  * Writes to the query are debounced by 250ms, so `query()` lags typing.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#autocomplete-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#autocomplete-state}
  */
 export function createMultipleAutocompleteState<T>(
   options: MultipleAutocompleteStateOptions<T>,
@@ -314,7 +314,7 @@ export function AutocompleteStateProvider<T>(
  * Reads the nearest autocomplete state from context. Throws when there is
  * none.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#autocomplete-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#autocomplete-state}
  */
 export function useAutocompleteState<T>(): AutocompleteStateProperties<T> {
   const ctx = useContext(AutocompleteStateContext);
@@ -326,7 +326,7 @@ export function useAutocompleteState<T>(): AutocompleteStateProperties<T> {
  * Passes the nearest autocomplete state to a render prop. A function child is
  * treated as a render prop only when it declares exactly one parameter.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#autocomplete-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#autocomplete-state}
  */
 export function AutocompleteStateChild<T>(props: AutocompleteStateRenderProps<T>): JSX.Element {
   const state = useAutocompleteState<T>();

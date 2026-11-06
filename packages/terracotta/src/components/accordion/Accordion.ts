@@ -92,7 +92,7 @@ function isAccordionMultiple<V, T extends ValidConstructor = 'div'>(
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/accordion.md}
  */
 export function Accordion<V, T extends ValidConstructor = 'div'>(
   props: AccordionProps<V, T>,

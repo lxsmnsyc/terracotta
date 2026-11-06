@@ -23,7 +23,7 @@ export const ComboboxContext = createContext<ComboboxContextData>();
  * ids and the focus navigator shared by its options. Throws when called
  * outside a `Combobox`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/combobox.md}
  */
 export function useComboboxContext(componentName: string): ComboboxContextData {
   const context = useContext(ComboboxContext);

@@ -14,7 +14,7 @@ export type RadioGroupLabelProps<T extends ValidConstructor = 'label'> = Headles
  *
  * Renders a `<label>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/radio-group.md}
  */
 export function RadioGroupLabel<T extends ValidConstructor = 'label'>(
   props: RadioGroupLabelProps<T>,

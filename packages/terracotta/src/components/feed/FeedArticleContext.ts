@@ -14,7 +14,7 @@ export const FeedArticleContext = createContext<FeedArticleContextData>();
  * generated ids for its label and description. Throws when called outside a
  * `FeedArticle`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/feed.md}
  */
 export function useFeedArticleContext(componentName: string): FeedArticleContextData {
   const context = useContext(FeedArticleContext);

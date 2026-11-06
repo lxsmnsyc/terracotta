@@ -28,7 +28,7 @@ export type AccordionHeaderProps<T extends ValidConstructor = 'h3'> = HeadlessPr
  *
  * Renders an `<h3>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/accordion.md}
  */
 export function AccordionHeader<T extends ValidConstructor = 'h3'>(
   props: AccordionHeaderProps<T>,

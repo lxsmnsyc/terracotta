@@ -19,7 +19,7 @@ export type CheckboxLabelProps<T extends ValidConstructor = 'label'> = HeadlessP
  *
  * Renders a `<label>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/checkbox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/checkbox.md}
  */
 export function CheckboxLabel<T extends ValidConstructor = 'label'>(
   props: CheckboxLabelProps<T>,

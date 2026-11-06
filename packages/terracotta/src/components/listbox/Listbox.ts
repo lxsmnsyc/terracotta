@@ -291,7 +291,7 @@ function getProps<V, T extends ValidConstructor = 'div'>(
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/listbox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/listbox.md}
  */
 export function Listbox<V, T extends ValidConstructor = 'div'>(
   props: ListboxProps<V, T>,

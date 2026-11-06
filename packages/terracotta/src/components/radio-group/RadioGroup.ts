@@ -63,7 +63,7 @@ function isRadioGroupUncontrolled<V, T extends ValidConstructor = 'div'>(
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/radio-group.md}
  */
 export function RadioGroup<V, T extends ValidConstructor = 'div'>(
   props: RadioGroupProps<V, T>,

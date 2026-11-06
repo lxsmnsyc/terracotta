@@ -26,7 +26,7 @@ export type CommandBarOverlayProps<T extends ValidConstructor = 'div'> = Headles
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command-bar.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/command-bar.md}
  */
 export function CommandBarOverlay<T extends ValidConstructor = 'p'>(
   props: CommandBarOverlayProps<T>,

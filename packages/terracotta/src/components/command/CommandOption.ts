@@ -43,7 +43,7 @@ export type CommandOptionProps<V, T extends ValidConstructor = 'li'> = HeadlessP
  *
  * Renders an `<li>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/command.md}
  */
 export function CommandOption<V, T extends ValidConstructor = 'li'>(
   props: CommandOptionProps<V, T>,

@@ -14,7 +14,7 @@ export const DialogContext = createContext<DialogContextData>();
  * Reads the nearest `Dialog`'s internal context, which holds the generated ids
  * for its title, description and panel. Throws when called outside a `Dialog`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/dialog.md}
  */
 export function useDialogContext(componentName: string): DialogContextData {
   const context = useContext(DialogContext);

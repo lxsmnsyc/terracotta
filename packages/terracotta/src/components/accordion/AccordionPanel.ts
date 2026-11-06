@@ -33,7 +33,7 @@ export type AccordionPanelProps<T extends ValidConstructor = 'div'> = HeadlessPr
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/accordion.md}
  */
 export function AccordionPanel<T extends ValidConstructor = 'div'>(
   props: AccordionPanelProps<T>,

@@ -20,7 +20,7 @@ export type DialogDescriptionProps<T extends ValidConstructor = 'p'> = HeadlessP
  *
  * Renders a `<p>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/dialog.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/dialog.md}
  */
 export function DialogDescription<T extends ValidConstructor = 'p'>(
   props: DialogDescriptionProps<T>,

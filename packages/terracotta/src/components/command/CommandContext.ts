@@ -22,7 +22,7 @@ export const CommandContext = createContext<CommandContextData>();
  * ids and the focus navigator shared by its options. Throws when called
  * outside a `Command`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/command.md}
  */
 export function useCommandContext(componentName: string): CommandContextData {
   const context = useContext(CommandContext);

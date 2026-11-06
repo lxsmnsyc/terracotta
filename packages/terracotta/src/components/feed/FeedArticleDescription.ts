@@ -14,7 +14,7 @@ export type FeedArticleDescriptionProps<T extends ValidConstructor = 'p'> = Head
  *
  * Renders a `<p>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/feed.md}
  */
 export function FeedArticleDescription<T extends ValidConstructor = 'p'>(
   props: FeedArticleDescriptionProps<T>,

@@ -30,7 +30,7 @@ export type CommandInputProps<T extends ValidConstructor = 'input'> = HeadlessPr
  *
  * Renders an `<input>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/command.md}
  */
 export function CommandInput<T extends ValidConstructor = 'input'>(
   props: CommandInputProps<T>,

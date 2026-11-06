@@ -17,7 +17,7 @@ export const CommandBarContext = createContext<CommandBarContextData>();
  * ids for its title, description and panel. Throws when called outside a
  * `CommandBar`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/command-bar.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/command-bar.md}
  */
 export function useCommandBarContext(componentName: string): CommandBarContextData {
   const context = useContext(CommandBarContext);

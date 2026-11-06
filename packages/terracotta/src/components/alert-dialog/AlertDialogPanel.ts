@@ -28,7 +28,7 @@ export type AlertDialogPanelProps<T extends ValidConstructor = 'div'> = Headless
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/alert-dialog.md}
  */
 export function AlertDialogPanel<T extends ValidConstructor = 'div'>(
   props: AlertDialogPanelProps<T>,

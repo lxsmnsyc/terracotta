@@ -24,7 +24,7 @@ export type MenuProps<T extends ValidConstructor = 'ul'> = HeadlessPropsWithRef<
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/menu.md}
  */
 export function Menu<T extends ValidConstructor = 'ul'>(props: MenuProps<T>): JSX.Element {
   const controller = createMenuItemFocusNavigator();

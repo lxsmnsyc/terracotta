@@ -13,7 +13,7 @@ export const AccordionItemContext = createContext<AccordionItemContextData>();
  * generated ids that link its button and panel. Throws when called outside an
  * `AccordionItem`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/accordion.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/accordion.md}
  */
 export function useAccordionItemContext(componentName: string): AccordionItemContextData {
   const context = useContext(AccordionItemContext);

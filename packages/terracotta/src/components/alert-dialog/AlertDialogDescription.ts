@@ -20,7 +20,7 @@ export type AlertDialogDescriptionProps<T extends ValidConstructor = 'p'> = Head
  *
  * Renders a `<p>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/alert-dialog.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/alert-dialog.md}
  */
 export function AlertDialogDescription<T extends ValidConstructor = 'p'>(
   props: AlertDialogDescriptionProps<T>,

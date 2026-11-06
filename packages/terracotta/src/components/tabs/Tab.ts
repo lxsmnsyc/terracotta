@@ -43,7 +43,7 @@ export type TabProps<V, T extends ValidConstructor = 'div'> = HeadlessPropsWithR
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/tabs.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/tabs.md}
  */
 export function Tab<V, T extends ValidConstructor = 'div'>(props: TabProps<V, T>): JSX.Element {
   const rootContext = useTabGroupContext('Tab');

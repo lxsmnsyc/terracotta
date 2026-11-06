@@ -15,7 +15,7 @@ export const PopoverContext = createContext<PopoverContextData>();
  * Reads the nearest `Popover`'s internal context, which holds the generated
  * ids for its button and panel. Throws when called outside a `Popover`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/popover.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/popover.md}
  */
 export function usePopoverContext(componentName: string): PopoverContextData {
   const context = useContext(PopoverContext);

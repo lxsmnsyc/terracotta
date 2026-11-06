@@ -32,7 +32,7 @@ export type ComboboxInputProps<T extends ValidConstructor = 'input'> = HeadlessP
  *
  * Renders an `<input>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/combobox.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/combobox.md}
  */
 export function ComboboxInput<T extends ValidConstructor = 'input'>(
   props: ComboboxInputProps<T>,

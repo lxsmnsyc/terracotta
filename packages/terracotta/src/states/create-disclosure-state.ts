@@ -45,7 +45,7 @@ export interface DisclosureStateProperties {
  * Pass `defaultOpen` for uncontrolled state or `isOpen` for controlled; the
  * two are mutually exclusive.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#disclosure-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#disclosure-state}
  */
 export function createDisclosureState(options: DisclosureStateOptions): DisclosureStateProperties {
   let signal: Accessor<boolean>;
@@ -137,7 +137,7 @@ export function DisclosureStateProvider(props: DisclosureStateProviderProps): JS
 /**
  * Reads the nearest disclosure state from context. Throws when there is none.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#disclosure-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#disclosure-state}
  */
 export function useDisclosureState(): DisclosureStateProperties {
   const ctx = useContext(DisclosureStateContext);
@@ -149,7 +149,7 @@ export function useDisclosureState(): DisclosureStateProperties {
  * Passes the nearest disclosure state to a render prop. A function child is
  * treated as a render prop only when it declares exactly one parameter.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#disclosure-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#disclosure-state}
  */
 export function DisclosureStateChild(props: DisclosureStateRenderProps): JSX.Element {
   const state = useDisclosureState();

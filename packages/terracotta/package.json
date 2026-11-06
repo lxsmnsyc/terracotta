@@ -8,7 +8,7 @@
     "pridepack",
     "solid-js"
   ],
-  "homepage": "https://github.com/lxsmnsyc/terracotta/tree/main/packages/terracotta",
+  "homepage": "https://github.com/lxsmnsyc/terracotta/tree/1.x/packages/terracotta",
   "bugs": {
     "url": "https://github.com/lxsmnsyc/terracotta/issues"
   },

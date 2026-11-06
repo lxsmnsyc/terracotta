@@ -14,7 +14,7 @@ export type RadioGroupDescriptionProps<T extends ValidConstructor = 'div'> = Hea
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/radio-group.md}
  */
 export function RadioGroupDescription<T extends ValidConstructor = 'div'>(
   props: RadioGroupDescriptionProps<T>,

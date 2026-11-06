@@ -15,7 +15,7 @@ export const ContextMenuContext = createContext<ContextMenuContextData>();
  * generated ids for its boundary and panel. Throws when called outside a
  * `ContextMenu`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/context-menu.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/context-menu.md}
  */
 export function useContextMenuContext(componentName: string): ContextMenuContextData {
   const context = useContext(ContextMenuContext);

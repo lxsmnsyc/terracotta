@@ -8,7 +8,7 @@ export const MenuContext = createContext<FocusNavigator>();
  * Reads the nearest `Menu`'s internal context, which holds the focus navigator
  * shared by its items. Throws when called outside a `Menu`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/menu.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/menu.md}
  */
 export function useMenuContext(componentName: string): FocusNavigator {
   const context = useContext(MenuContext);

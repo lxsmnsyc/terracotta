@@ -57,7 +57,7 @@ function isContextMenuUncontrolled<T extends ValidConstructor = 'div'>(
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/context-menu.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/context-menu.md}
  */
 export function ContextMenu<T extends ValidConstructor = 'div'>(
   props: ContextMenuProps<T>,

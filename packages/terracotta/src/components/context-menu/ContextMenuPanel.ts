@@ -34,7 +34,7 @@ export type ContextMenuPanelProps<T extends ValidConstructor = 'div'> = Headless
  *
  * Renders a `<div>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/context-menu.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/context-menu.md}
  */
 export function ContextMenuPanel<T extends ValidConstructor = 'div'>(
   props: ContextMenuPanelProps<T>,

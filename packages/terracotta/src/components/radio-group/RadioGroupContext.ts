@@ -13,7 +13,7 @@ export const RadioGroupContext = createContext<RadioGroupContextData>();
  * generated ids for its label and description. Throws when called outside a
  * `RadioGroupOption`.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/radio-group.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/radio-group.md}
  */
 export function useRadioGroupContext(componentName: string): RadioGroupContextData {
   const context = useContext(RadioGroupContext);

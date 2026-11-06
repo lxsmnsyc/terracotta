@@ -103,7 +103,7 @@ function isSelectUncontrolled<V, T extends ValidConstructor = 'ul'>(
  *
  * Renders a `<ul>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/select.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/select.md}
  */
 export function Select<V, T extends ValidConstructor = 'ul'>(
   props: SelectProps<V, T>,

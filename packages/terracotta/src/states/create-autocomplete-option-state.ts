@@ -22,7 +22,7 @@ export interface AutocompleteOptionStateProperties {
  * Creates one option's view of the nearest autocomplete state, so the option
  * can ask whether it is selected, active, or a match for the current query.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#autocomplete-option-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#autocomplete-option-state}
  */
 export function createAutocompleteOptionState<T>(
   options: AutocompleteOptionStateOptions<T>,
@@ -84,7 +84,7 @@ export function AutocompleteOptionStateProvider(
  * Reads the nearest autocomplete option state from context. Throws when there
  * is none.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#autocomplete-option-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#autocomplete-option-state}
  */
 export function useAutocompleteOptionState(): AutocompleteOptionStateProperties {
   const ctx = useContext(AutocompleteOptionStateContext);
@@ -97,7 +97,7 @@ export function useAutocompleteOptionState(): AutocompleteOptionStateProperties 
  * child is treated as a render prop only when it declares exactly one
  * parameter.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/states.md#autocomplete-option-state}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/states.md#autocomplete-option-state}
  */
 export function AutocompleteOptionStateChild(
   props: AutocompleteOptionStateRenderProps,

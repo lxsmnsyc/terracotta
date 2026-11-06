@@ -23,7 +23,7 @@ export type FeedArticleProps<T extends ValidConstructor = 'article'> = HeadlessP
  *
  * Renders an `<article>` by default.
  *
- * @see {@link https://github.com/lxsmnsyc/terracotta/blob/main/docs/components/feed.md}
+ * @see {@link https://github.com/lxsmnsyc/terracotta/blob/1.x/docs/components/feed.md}
  */
 export function FeedArticle<T extends ValidConstructor = 'article'>(
   props: FeedArticleProps<T>,
