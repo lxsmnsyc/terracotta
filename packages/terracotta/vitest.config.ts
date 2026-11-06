@@ -14,7 +14,7 @@ const shared = {
   // never get those on Terracotta: the plugin skips them for anything under
   // `node_modules`. Leaving them on would test wrapped components no one
   // ships, and they change ownership enough to break an offscreen transition.
-  plugins: [solid({ refresh: { disabled: true } })],
+  plugins: [solid({ refresh: false })],
   resolve: {
     conditions: ['development', 'browser'],
   },

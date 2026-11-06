@@ -177,11 +177,11 @@ catalogs:
       specifier: 1.0.0-beta.3
       version: 1.0.0-beta.3
     '@solidjs/vite-plugin':
-      specifier: 3.0.0-next.47
-      version: 3.0.0-next.47
+      specifier: 3.0.0-next.56
+      version: 3.0.0-next.56
     '@solidjs/web':
-      specifier: 2.0.0-rc.13
-      version: 2.0.0-rc.13
+      specifier: 2.0.0-rc.21
+      version: 2.0.0-rc.21
     '@tailwindcss/postcss':
       specifier: ^4.1.18
       version: 4.1.18
@@ -210,8 +210,8 @@ catalogs:
       specifier: ^8.5.3
       version: 8.5.26
     solid-js:
-      specifier: 2.0.0-rc.13
-      version: 2.0.0-rc.13
+      specifier: 2.0.0-rc.21
+      version: 2.0.0-rc.21
     tailwindcss:
       specifier: ^4.1.18
       version: 4.1.18
@@ -260,14 +260,14 @@ importers:
   docs:
     dependencies:
       '@solidjs/router':
-        specifier: 2.0.0-next.35
-        version: 2.0.0-next.35(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(solid-js@2.0.0-rc.13)
+        specifier: 2.0.0-next.44
+        version: 2.0.0-next.44(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(solid-js@2.0.0-rc.21)
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       terracotta:
         specifier: workspace:*
         version: link:../packages/terracotta
@@ -280,7 +280,7 @@ importers:
         version: 1.62.1
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@types/markdown-it':
         specifier: ^14.1.2
         version: 14.2.0
@@ -319,10 +319,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -332,7 +332,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -350,10 +350,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -363,7 +363,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -381,10 +381,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -394,7 +394,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -412,10 +412,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -425,7 +425,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -443,10 +443,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -456,7 +456,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -474,10 +474,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -487,7 +487,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -505,10 +505,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -518,7 +518,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -536,10 +536,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -549,7 +549,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -567,10 +567,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -580,7 +580,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -598,10 +598,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -611,7 +611,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -629,10 +629,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -642,7 +642,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -660,10 +660,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -673,7 +673,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -691,10 +691,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -704,7 +704,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -722,10 +722,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -735,7 +735,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -753,10 +753,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -766,7 +766,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -784,10 +784,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -797,7 +797,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -815,10 +815,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -828,7 +828,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -846,10 +846,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -859,7 +859,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -877,10 +877,10 @@ importers:
     dependencies:
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
@@ -890,7 +890,7 @@ importers:
     devDependencies:
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.1.18
@@ -908,20 +908,20 @@ importers:
     dependencies:
       solid-use:
         specifier: ^1.0.0-next.3
-        version: 1.0.0-next.3(solid-js@2.0.0-rc.13)
+        version: 1.0.0-next.3(solid-js@2.0.0-rc.21)
     devDependencies:
       '@playwright/test':
         specifier: 'catalog:'
         version: 1.62.1
       '@solidjs/testing-library':
         specifier: 'catalog:'
-        version: 1.0.0-beta.3(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(solid-js@2.0.0-rc.13)
+        version: 1.0.0-beta.3(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(solid-js@2.0.0-rc.21)
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: 3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       '@solidjs/web':
         specifier: 'catalog:'
-        version: 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+        version: 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11)
@@ -936,7 +936,7 @@ importers:
         version: 30.0.1
       solid-js:
         specifier: 'catalog:'
-        version: 2.0.0-rc.13
+        version: 2.0.0-rc.21
       tsdown:
         specifier: 'catalog:'
         version: 0.21.2(typescript@5.9.3)
@@ -2220,61 +2220,61 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
-  '@solidjs/babel-plugin@2.0.0-rc.13':
-    resolution: {integrity: sha512-VaNysg2V5gu1leatjxBeRPvj1wTEB1LQ1bKuPABKBGztz/Vjr6bHUYEV2cC1mFuEyNJBaNrAiGv0+5Vpbl8Pug==}
+  '@solidjs/babel-plugin@2.0.0-rc.21':
+    resolution: {integrity: sha512-LswbizBsWGJsroI8wAv70RraeXzxMru3VMAzm0hxIM9pg88lkhVAWmTHjRPZFj/y5EznqfQNaiiTxt+q84alrg==}
     peerDependencies:
-      '@babel/core': ^7.20.12
+      '@babel/core': ^7.20.12 || ^8.0.0
       '@tsrx/core': 0.1.63
     peerDependenciesMeta:
       '@tsrx/core':
         optional: true
 
-  '@solidjs/compiler-darwin-arm64@2.0.0-rc.13':
-    resolution: {integrity: sha512-uG3Sa/2jNZNxoKkcHjHw3KZEEuwDrRAk9aqUU2qqJZl9GDLLI0HVW7i/Lvq9b17f5yN+fNTdNyojO8rLgHnQuQ==}
+  '@solidjs/compiler-darwin-arm64@2.0.0-rc.21':
+    resolution: {integrity: sha512-lXLk6GrmidICtHiIyCxDQC+6XqcrI7YMoGffo1wLigdojwNcCsifQfwRvzx0D78ieTU91VwzifmBu8hw1TQ28Q==}
     cpu: [arm64]
     os: [darwin]
 
-  '@solidjs/compiler-darwin-x64@2.0.0-rc.13':
-    resolution: {integrity: sha512-jIyzyn/fYHmzikOaskiqmkc8FusXMaxl1Z6huh7lEeHaZsl9NIdzzAIxq8j/EJFByvoCyfQitggRTuubGNblpA==}
+  '@solidjs/compiler-darwin-x64@2.0.0-rc.21':
+    resolution: {integrity: sha512-RKEXt5sXX7qHuYc+EjOdIhvOl+8HohI97GPlLzFN+64k4ywc0dr4Ge3W7RvgdJTwfyZVEolEelq2hw6vbEWQwg==}
     cpu: [x64]
     os: [darwin]
 
-  '@solidjs/compiler-linux-arm64-gnu@2.0.0-rc.13':
-    resolution: {integrity: sha512-cGIX7ZWTyw3Qdpd5ZqJtHdb2vQkAtZlkTgy919dMldjoRqDwQIRlqCmH35kaH/IUBlhuG224BoP4twqK9GYyGw==}
+  '@solidjs/compiler-linux-arm64-gnu@2.0.0-rc.21':
+    resolution: {integrity: sha512-rJpzsmhydP13WSqWpBegbRd8NSZrWZkeCGJOfMeisOUzIY3XntA50RDe0+sLNXaekU8PXGeyQCxOxkDlrBbEXQ==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@solidjs/compiler-linux-x64-gnu@2.0.0-rc.13':
-    resolution: {integrity: sha512-Dnft4iic4zHsemNSBGMwOMjN4fP0DEoyfeSUWbqBk1CMsXRarLTcMKhjNQmJvL0opzjOUq0/m7/17LTe6AKpvg==}
+  '@solidjs/compiler-linux-x64-gnu@2.0.0-rc.21':
+    resolution: {integrity: sha512-lZa593mWtgtOZuWLa54rolQOTp+II9DUznRoJKcGxNzCyhjzqMAGiWOP1fHGmEAdYlbyUqA+CnhwhjcC34WBKQ==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@solidjs/compiler-wasm32-wasi@2.0.0-rc.13':
-    resolution: {integrity: sha512-nNOMOFxanzfM2wNbSXyekMtGazyOcM3ja+P7tk0NJYTAo2MYmRTY/HUDdFRDluk6Nc5aehu87I7AVMRj5l1WXw==}
+  '@solidjs/compiler-wasm32-wasi@2.0.0-rc.21':
+    resolution: {integrity: sha512-gQeaqDoie2wgh8ph2Ti89mFiBthVmq0EWYL5HesI45K5NvvrlvaftZs0Zt3VlVQrvz79A7OLKhHX+2aD6PvnzA==}
     engines: {node: '>=14.0.0'}
 
-  '@solidjs/compiler-win32-x64-msvc@2.0.0-rc.13':
-    resolution: {integrity: sha512-1DT+5TgIFV5L8GdrGb+uD9ruHFVq6kJ4A/cb9amUU574TGM88B4nwy//dM57zmT99u7mej7JF91glQBnHOGhHQ==}
+  '@solidjs/compiler-win32-x64-msvc@2.0.0-rc.21':
+    resolution: {integrity: sha512-cGNQL/7MF/CudNo1j2C9TEG/wTKZtFuSAQRPhU/UKzlq61oO5tKWLRugGWY4qGZ+K+4iw6CpSAuj4/s0z0POww==}
     cpu: [x64]
     os: [win32]
 
-  '@solidjs/compiler@2.0.0-rc.13':
-    resolution: {integrity: sha512-OveR/xhLKo8MTJO/53jgjHuBW54c6/a9B/jiSjDrBeQ3JSbODUxQ8t58WBSlHaxyowPd27TwhVkLo3zeT1YqMQ==}
+  '@solidjs/compiler@2.0.0-rc.21':
+    resolution: {integrity: sha512-nhI5oCRx+ArUxcJtnesRb7pArO5zhTd/hef2I+dBD10MYwrQNM7ftpDdNVv7fQh/dH5xvqAnpWN4tUhZavo4ng==}
 
-  '@solidjs/router@2.0.0-next.35':
-    resolution: {integrity: sha512-6+frAz9M2vrLSz+2hr51++nzGyxt3+nCo08dY3PkdieSOwDutAXdfSXj681FqTOvffv8kPDF5tdRqPUoLbKhlQ==}
+  '@solidjs/router@2.0.0-next.44':
+    resolution: {integrity: sha512-kFKhjqKrTckolJMqDzBFrj7RN7826jsg1S++2y0fVM6NKKC7V/5CMmoadvXXTmjXIC6CBvLgzU0kd9496IgX1g==}
     peerDependencies:
-      '@solidjs/web': ^2.0.0-rc.13
+      '@solidjs/web': ^2.0.0-rc.19
       filesystem-routing: '>=0.4.0'
-      solid-js: ^2.0.0-rc.13
+      solid-js: ^2.0.0-rc.19
     peerDependenciesMeta:
       filesystem-routing:
         optional: true
 
-  '@solidjs/signals@2.0.0-rc.13':
-    resolution: {integrity: sha512-4+pRdrAHtfyE9BUJWBup3TpzJojJjgW2mV1vm/Jik4tWa5epxXB/YrLkwqP1v8+S9XjyKKZu5BSLqmcpswMYeQ==}
+  '@solidjs/signals@2.0.0-rc.21':
+    resolution: {integrity: sha512-F1TUMO/nd1XC//+tcaWxibOOgXBHQGmNQnAeiDnpLh+1smnlwIgKF6pc20evlyfQwqf0gP6rH4sNEqCPBNcpgg==}
     engines: {node: '>=22.12.0'}
 
   '@solidjs/testing-library@1.0.0-beta.3':
@@ -2284,14 +2284,14 @@ packages:
       '@solidjs/web': '>=2.0.0-0'
       solid-js: '>=2.0.0-0'
 
-  '@solidjs/vite-plugin@3.0.0-next.47':
-    resolution: {integrity: sha512-vcsZbXkTCt2RalJmUPp25iz+7KYGriP9w54BLf5uIJ0xDf5woTN92WdlDCh0udZV/Zb2xw2qrWQA977QeuScJw==}
+  '@solidjs/vite-plugin@3.0.0-next.56':
+    resolution: {integrity: sha512-ox+Y0+UTC38/n7ky3z11jp9nDGMk/yjX8DbSIKri2S4SzE8fA7RA65z3yFQNd+Cs17fGTVnN4wpKgkItHlg2sw==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
       '@solidjs/start-devtools': ^1.0.0-next.2
-      '@solidjs/web': ^2.0.0-rc.13
+      '@solidjs/web': ^2.0.0-rc.19
       '@testing-library/jest-dom': ^5.16.6 || ^5.17.0 || ^6.0.0 || ^7.0.0
-      solid-js: ^2.0.0-rc.13
+      solid-js: ^2.0.0-rc.19
       vite: ^8.0.0 || ^9.0.0
     peerDependenciesMeta:
       '@solidjs/start-devtools':
@@ -2299,11 +2299,11 @@ packages:
       '@testing-library/jest-dom':
         optional: true
 
-  '@solidjs/web@2.0.0-rc.13':
-    resolution: {integrity: sha512-vI/7v/XM8B/3U/oKAzCW2VjTLFkM5IArB2DFnrjxyPRYD3FX9KAXg9QuAnPIPQHC/xvg/LgxmvoVfZUfJ96gOQ==}
+  '@solidjs/web@2.0.0-rc.21':
+    resolution: {integrity: sha512-1E9dvR3/+5fQTI3oxxACBX2Rg4rezXgrljerhWDHR5uQZ04p5Z8qXROI7dIDJKyANtsnLKYbM2OyI/p/FmjGUA==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
-      solid-js: ^2.0.0-rc.13
+      solid-js: ^2.0.0-rc.21
 
   '@speed-highlight/core@1.2.24':
     resolution: {integrity: sha512-qeW2e1l78afw8VhRPfPQ1Gjj+KU5XFQ/OFV5ti6eTa9bruO7mJyZtA4vw0ofqmA3tKCkROE9xLk3VZoeRc98nw==}
@@ -4004,15 +4004,15 @@ packages:
     resolution: {integrity: sha512-k3CMsaIvvdSwm8oLB4MXSl0wH2/cwlH7xGcnRd2DaeRmBkbzYmyT8j0tsX60DwD1eRwHTpNpH8ljKu9oUT1MeQ==}
     engines: {node: '>=20.0.0'}
 
-  seroval-plugins@1.6.8:
-    resolution: {integrity: sha512-N7mWAMydj89EnYTHtRpS3LBrAz3J9O6oVrqpuXuvlAHfAUG8WEKqtbAd7SBiJNY5NfCAFhSdyAh7wI4Shjqy4g==}
-    engines: {node: '>=10'}
+  seroval-plugins@1.7.0:
+    resolution: {integrity: sha512-WM4rArfPtLZriTuxC5DBvNulEwAaRcjNe/dkMOEesOcuvXf5nEwKf5Bw3AT92WHohqcc45+57GdtsCuBTI0mjw==}
+    engines: {node: '>=20'}
     peerDependencies:
       seroval: ^1.0
 
-  seroval@1.6.8:
-    resolution: {integrity: sha512-HlSgSAkTk4EqHcje1ptJjfZi1YDv5KbhVJ/d3P7T/nAXua2VmDu+AKDX5VTdFfZf48nDkWB2TKYt0DrCSa+3wg==}
-    engines: {node: '>=10'}
+  seroval@1.7.0:
+    resolution: {integrity: sha512-FU+LUkmDzWNsJ6oubZFN3dGPKny53DRhPJG6nftEaXDL8MIn19+kEE1Gvc+63Go+qPOwVUlKIdKhsu2HN6tksw==}
+    engines: {node: '>=20'}
 
   serve-placeholder@2.0.2:
     resolution: {integrity: sha512-/TMG8SboeiQbZJWRlfTCqMs2DD3SZgWp0kDQePz9yUuCnDfDh/92gf7/PxGhzXTKBIPASIHxFcZndoNbp6QOLQ==}
@@ -4062,8 +4062,8 @@ packages:
     resolution: {integrity: sha512-RQsvleCbF8cVHEv+xuDGaA4pOizFqJ0GgjtMSRo6oP8pnN7WsigHgVGey6aILRBKv4W2YOMHLqbKdnB6hpB9fw==}
     engines: {node: '>=20.0.0'}
 
-  solid-js@2.0.0-rc.13:
-    resolution: {integrity: sha512-62bYOI4JZ15KOqL5eReKyWSwAXrGb0fbX8SDnHsbJk2UX+SzSyy1gobas2cxW/0BXcobGfQ1V6ffPyQkMIBdoQ==}
+  solid-js@2.0.0-rc.21:
+    resolution: {integrity: sha512-0Z8/qiJKnK6A2g8QspGthwxR0W8WauMOD2/LQtNmxBT8gpZkKaXmo/fdek/+cB+84w4HYejWJixSAn4fcAI0Uw==}
     engines: {node: '>=22.12.0'}
 
   solid-use@1.0.0-next.3:
@@ -5669,7 +5669,7 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@solidjs/babel-plugin@2.0.0-rc.13(@babel/core@7.28.5(supports-color@10.2.2))':
+  '@solidjs/babel-plugin@2.0.0-rc.21(@babel/core@7.28.5(supports-color@10.2.2))':
     dependencies:
       '@babel/core': 7.28.5(supports-color@10.2.2)
       '@babel/helper-module-imports': 7.18.6
@@ -5678,60 +5678,61 @@ snapshots:
       html-entities: 2.3.3
       parse5: 7.3.0
 
-  '@solidjs/compiler-darwin-arm64@2.0.0-rc.13':
+  '@solidjs/compiler-darwin-arm64@2.0.0-rc.21':
     optional: true
 
-  '@solidjs/compiler-darwin-x64@2.0.0-rc.13':
+  '@solidjs/compiler-darwin-x64@2.0.0-rc.21':
     optional: true
 
-  '@solidjs/compiler-linux-arm64-gnu@2.0.0-rc.13':
+  '@solidjs/compiler-linux-arm64-gnu@2.0.0-rc.21':
     optional: true
 
-  '@solidjs/compiler-linux-x64-gnu@2.0.0-rc.13':
+  '@solidjs/compiler-linux-x64-gnu@2.0.0-rc.21':
     optional: true
 
-  '@solidjs/compiler-wasm32-wasi@2.0.0-rc.13':
+  '@solidjs/compiler-wasm32-wasi@2.0.0-rc.21':
     dependencies:
       '@emnapi/core': 1.11.3
       '@emnapi/runtime': 1.11.3
       '@napi-rs/wasm-runtime': 1.2.3(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)
     optional: true
 
-  '@solidjs/compiler-win32-x64-msvc@2.0.0-rc.13':
+  '@solidjs/compiler-win32-x64-msvc@2.0.0-rc.21':
     optional: true
 
-  '@solidjs/compiler@2.0.0-rc.13':
+  '@solidjs/compiler@2.0.0-rc.21':
     optionalDependencies:
-      '@solidjs/compiler-darwin-arm64': 2.0.0-rc.13
-      '@solidjs/compiler-darwin-x64': 2.0.0-rc.13
-      '@solidjs/compiler-linux-arm64-gnu': 2.0.0-rc.13
-      '@solidjs/compiler-linux-x64-gnu': 2.0.0-rc.13
-      '@solidjs/compiler-wasm32-wasi': 2.0.0-rc.13
-      '@solidjs/compiler-win32-x64-msvc': 2.0.0-rc.13
+      '@solidjs/compiler-darwin-arm64': 2.0.0-rc.21
+      '@solidjs/compiler-darwin-x64': 2.0.0-rc.21
+      '@solidjs/compiler-linux-arm64-gnu': 2.0.0-rc.21
+      '@solidjs/compiler-linux-x64-gnu': 2.0.0-rc.21
+      '@solidjs/compiler-wasm32-wasi': 2.0.0-rc.21
+      '@solidjs/compiler-win32-x64-msvc': 2.0.0-rc.21
 
-  '@solidjs/router@2.0.0-next.35(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(solid-js@2.0.0-rc.13)':
+  '@solidjs/router@2.0.0-next.44(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(solid-js@2.0.0-rc.21)':
     dependencies:
-      '@solidjs/web': 2.0.0-rc.13(solid-js@2.0.0-rc.13)
-      solid-js: 2.0.0-rc.13
+      '@solidjs/web': 2.0.0-rc.21(solid-js@2.0.0-rc.21)
+      solid-js: 2.0.0-rc.21
 
-  '@solidjs/signals@2.0.0-rc.13': {}
+  '@solidjs/signals@2.0.0-rc.21': {}
 
-  '@solidjs/testing-library@1.0.0-beta.3(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(solid-js@2.0.0-rc.13)':
+  '@solidjs/testing-library@1.0.0-beta.3(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(solid-js@2.0.0-rc.21)':
     dependencies:
-      '@solidjs/web': 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+      '@solidjs/web': 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       '@testing-library/dom': 10.4.1
-      solid-js: 2.0.0-rc.13
+      solid-js: 2.0.0-rc.21
 
-  '@solidjs/vite-plugin@3.0.0-next.47(@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.13)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))':
+  '@solidjs/vite-plugin@3.0.0-next.56(@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21))(@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11))(solid-js@2.0.0-rc.21)(supports-color@10.2.2)(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@babel/core': 7.28.5(supports-color@10.2.2)
-      '@solidjs/babel-plugin': 2.0.0-rc.13(@babel/core@7.28.5(supports-color@10.2.2))
-      '@solidjs/compiler': 2.0.0-rc.13
-      '@solidjs/web': 2.0.0-rc.13(solid-js@2.0.0-rc.13)
+      '@solidjs/babel-plugin': 2.0.0-rc.21(@babel/core@7.28.5(supports-color@10.2.2))
+      '@solidjs/compiler': 2.0.0-rc.21
+      '@solidjs/web': 2.0.0-rc.21(solid-js@2.0.0-rc.21)
       '@types/babel__core': 7.20.5
+      magic-string: 0.30.21
       merge-anything: 5.1.7
-      solid-js: 2.0.0-rc.13
+      solid-js: 2.0.0-rc.21
       vite: 8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)
       vitefu: 1.1.3(vite@8.2.2(@types/node@25.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
     optionalDependencies:
@@ -5740,11 +5741,11 @@ snapshots:
       - '@tsrx/core'
       - supports-color
 
-  '@solidjs/web@2.0.0-rc.13(solid-js@2.0.0-rc.13)':
+  '@solidjs/web@2.0.0-rc.21(solid-js@2.0.0-rc.21)':
     dependencies:
-      seroval: 1.6.8
-      seroval-plugins: 1.6.8(seroval@1.6.8)
-      solid-js: 2.0.0-rc.13
+      seroval: 1.7.0
+      seroval-plugins: 1.7.0(seroval@1.7.0)
+      solid-js: 2.0.0-rc.21
 
   '@speed-highlight/core@1.2.24': {}
 
@@ -7511,11 +7512,11 @@ snapshots:
 
   serialize-javascript@7.1.1: {}
 
-  seroval-plugins@1.6.8(seroval@1.6.8):
+  seroval-plugins@1.7.0(seroval@1.7.0):
     dependencies:
-      seroval: 1.6.8
+      seroval: 1.7.0
 
-  seroval@1.6.8: {}
+  seroval@1.7.0: {}
 
   serve-placeholder@2.0.2:
     dependencies:
@@ -7567,16 +7568,16 @@ snapshots:
 
   smob@1.6.2: {}
 
-  solid-js@2.0.0-rc.13:
+  solid-js@2.0.0-rc.21:
     dependencies:
-      '@solidjs/signals': 2.0.0-rc.13
+      '@solidjs/signals': 2.0.0-rc.21
       csstype: 3.2.3
-      seroval: 1.6.8
-      seroval-plugins: 1.6.8(seroval@1.6.8)
+      seroval: 1.7.0
+      seroval-plugins: 1.7.0(seroval@1.7.0)
 
-  solid-use@1.0.0-next.3(solid-js@2.0.0-rc.13):
+  solid-use@1.0.0-next.3(solid-js@2.0.0-rc.21):
     dependencies:
-      solid-js: 2.0.0-rc.13
+      solid-js: 2.0.0-rc.21
 
   source-map-js@1.2.1: {}
 
