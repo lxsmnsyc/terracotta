@@ -1,5 +1,12 @@
 # terracotta
 
+## 2.0.0-next.12
+
+### Patch Changes
+
+- 1630179: Keep `aria-activedescendant` on `CommandInput` and `ComboboxInput` pointing at the active option. It used to follow only the pointer and the arrow keys, so an option made active through `focus(value)` was never announced, and an active option that unmounted left the input pointing at an id that no longer existed.
+- 3a90fe0: Fix hydration of components with labels or descriptions, such as `RadioGroup` and `Checkbox`. Their parts registered a reactive owner on the client but not on the server, which shifted every hydration key after them and halted the page.
+
 ## 2.0.0-next.11
 
 ### Minor Changes
