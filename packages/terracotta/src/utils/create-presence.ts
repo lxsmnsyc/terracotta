@@ -22,7 +22,11 @@ export function createPresence(assumeOnServer = true): Presence {
   if (isServer) {
     return {
       isPresent: () => assumeOnServer,
-      register: () => undefined,
+      // Registers a no-op so the server allocates the same reactive owner
+      // the client does. Skipping it shifts every hydration key after it.
+      register(): void {
+        onSettled(() => undefined);
+      },
     };
   }
   const [count, setCount] = createSignal(0);

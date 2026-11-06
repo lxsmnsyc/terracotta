@@ -22,7 +22,10 @@ export function createPartID(): PartID {
   if (isServer) {
     return {
       id: () => generated,
-      register: () => undefined,
+      // See `createPresence`: the server allocates the same owner as the client.
+      register(): void {
+        onSettled(() => undefined);
+      },
     };
   }
   const [source, setSource] = createSignal<() => string | undefined>();
