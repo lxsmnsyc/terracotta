@@ -1,1 +1,0 @@
-async function e(e){await Promise.resolve();try{let t=e.getAnimations();if(t.length>0){let e=[];for(let n of t)e.push(n.finished);await Promise.all(e)}}catch{}}function t(t,n){e(t).then(n,()=>{})}export{e as n,t};

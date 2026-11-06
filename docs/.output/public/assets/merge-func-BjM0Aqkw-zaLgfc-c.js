@@ -1,1 +1,0 @@
-function e(e,t,n,r){return e.addEventListener(t,n,r),e.removeEventListener.bind(e,t,n,r)}function t(...e){return()=>{for(let t=0,n=e.length,r;t<n;t++)r=e[t],r&&r()}}export{e as n,t};

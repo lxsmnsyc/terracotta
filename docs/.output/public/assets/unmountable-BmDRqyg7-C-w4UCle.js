@@ -1,1 +1,0 @@
-import{H as e,U as t,W as n,l as r}from"./web-WTO7VBOb.js";function i(r){let i=t(()=>r.children)();return n(e,{get when(){return r.when},keyed:!0,children:i})}function a(t){let a=r(()=>t.unmount===`offscreen`?i:e);return n(a,{get when(){return(t.unmount??!0)===!1||t.when},get children(){return t.children}})}export{a as t};
