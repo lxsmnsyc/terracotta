@@ -1,0 +1,1 @@
+import{q as e}from"./web-WTO7VBOb.js";function t(e,t){if(e.length!==t.length)return!1;for(let n=0,r=e.length;n<r;n++)if(!Object.is(e[n],t[n]))return!1;return!0}function n(n){return e(n,{equals:t,loadingValue:[]})}export{n as t};

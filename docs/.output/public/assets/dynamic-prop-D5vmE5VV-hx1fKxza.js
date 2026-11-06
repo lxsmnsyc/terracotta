@@ -1,0 +1,1 @@
+import{K as e,X as t}from"./web-WTO7VBOb.js";function n(e){return typeof e==`function`}function r(r){let[i,a]=t();return e(i,e=>{e&&`ref`in r&&n(r.ref)&&r.ref(e)}),[i,a]}export{r as t};

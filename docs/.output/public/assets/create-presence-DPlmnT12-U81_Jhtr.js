@@ -1,0 +1,1 @@
+import{X as e,at as t}from"./web-WTO7VBOb.js";function n(n=!0){let[r,i]=e(0);return{isPresent:()=>r()>0,register(){t(()=>(i(e=>e+1),()=>{i(e=>e-1)}))}}}export{n as t};

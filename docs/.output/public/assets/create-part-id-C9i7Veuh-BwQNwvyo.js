@@ -1,0 +1,1 @@
+import{X as e,Z as t,at as n}from"./web-WTO7VBOb.js";function r(){let r=t(),[i,a]=e();return{id:()=>i()?.()??r,register(e){n(()=>(a(()=>e),()=>{a(void 0)}))}}}export{r as t};

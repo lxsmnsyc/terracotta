@@ -5,7 +5,5 @@ dist
 .DS_Store
 test-results
 playwright-report
-.output
-.nitro
 .vercel
 .content-typecheck

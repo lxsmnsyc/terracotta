@@ -1,0 +1,1 @@
+import{W as e,Z as t,l as n,nt as r,rt as i}from"./web-WTO7VBOb.js";import{i as a}from"./namespace-ByGKxOfw-D78zQsd_.js";var o=a(`alert`);function s(a){let s=t(),c=i(a,`as`),l=n(()=>a.as||`div`);return e(l,r({id:s},c,o,{role:`alert`}))}export{s as t};

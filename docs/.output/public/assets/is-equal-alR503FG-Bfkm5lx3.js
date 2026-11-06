@@ -1,0 +1,1 @@
+function e(e,t){return e===t||e!==e&&t!==t}export{e as t};

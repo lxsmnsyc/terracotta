@@ -23,7 +23,7 @@ export default defineConfig({
    */
   webServer: prod
     ? {
-        command: 'node .output/server/index.mjs',
+        command: 'node scripts/serve.ts',
         url: `http://localhost:${PORT}/`,
         env: { PORT: String(PORT) },
         reuseExistingServer: !process.env.CI,

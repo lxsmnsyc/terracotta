@@ -17,7 +17,7 @@ Then, from this directory:
 
 ```bash
 pnpm dev        # http://localhost:3000
-pnpm build      # vite build && nitro build -> .vercel/output
+pnpm build      # vite build, then prerender every page into dist/client
 pnpm preview
 pnpm lint       # oxlint --type-aware
 pnpm format     # oxfmt
@@ -234,27 +234,34 @@ Three things every theme after the first has had to know:
 
 ## Building and serving
 
-`pnpm build` runs Vite and stops where the Solid plugin stops: client assets
-(content-hashed, plus the manifest) in `dist/client`, and a server bundle in
-`dist/server/server.js` whose default export is a Fetchable, `{ fetch(request) }`,
-with a named `handleRequest(request)` beside it. Neither listens on a port,
-serves an asset, or knows anything about a host.
+The site is prerendered. `pnpm build` runs Vite, which in the Solid plugin's
+start mode writes the client assets to `dist/client` and a server bundle to
+`dist/server/server.js` with a `handleRequest(request, options)` export. Then
+[scripts/prerender.ts](scripts/prerender.ts) calls that handler once per route
+and writes each answer into `dist/client` as `<path>/index.html`:
 
-Nitro adds the part that does. It is configured in
-[nitro.config.ts](nitro.config.ts) with `dist/client` as public assets and one
-catch-all route in [server/routes/](server/routes/) that hands anything the
-assets did not answer to `handleRequest`. The response is returned untouched,
-so the out-of-order streaming the pages rely on survives. Assets under
-`/assets` are served `immutable` for a year, since Vite hashes them; everything
-else in `dist/client` gets an hour.
+- the landing page, `/`;
+- every page in `content/nav.json`;
+- a frame for every demo in `src/demos`, at `/demo/<id>`;
+- the "not found" page, as `404.html`.
 
-The preset is **`vercel`**, so `pnpm build` writes `.vercel/output`. That is the
-Build Output API, which the platform consumes with no framework detection: the
-static build under `static/`, the SSR route as a function, and the cache headers
-already expressed as route rules. [vercel.json](vercel.json) pins
-`framework: null` and the build command, because Vercel would otherwise
-recognise Vite in the dependencies and substitute its own SPA build, which
-never runs Nitro at all.
+It renders with `renderMode: 'async'`, which waits for every boundary, so each
+file holds the whole page and no streaming scripts. The client hydrates it.
+Nothing runs on a server after the build. A demo frame reads its `?theme=` and
+`?scheme=` in the browser, so one file serves every appearance.
+
+Vercel serves `dist/client` as static files. [vercel.json](vercel.json) pins
+`framework: null`, the build command and the output directory, because Vercel
+would otherwise recognise Vite in the dependencies and run its own SPA build.
+It also serves `/assets` as `immutable` for a year, since Vite hashes those
+files.
+
+Vercel deploys only from `main`, and only when something the site is built
+from changed. Before each build it runs
+[scripts/ignore-build.sh](scripts/ignore-build.sh), which skips every other
+branch, and on `main` skips unless `docs/`, `packages/terracotta`, the
+lockfile, `pnpm-workspace.yaml` or the root `package.json` changed since the
+last deployment.
 
 One setting in the root [pnpm-workspace.yaml](../pnpm-workspace.yaml) exists
 for that build. pnpm 11 refuses to install any package published in the last
@@ -266,25 +273,19 @@ recent pnpm no longer reads it from. The `allowBuilds` entry beside
 it covers esbuild, whose install script pnpm otherwise refuses to run.
 
 ```text
-pnpm build              # vite build && nitro build  -> .vercel/output
-npx vercel deploy --prebuilt
-
-pnpm build:node         # the same source under NITRO_PRESET=node-server
-pnpm preview            # node .output/server/index.mjs, PORT respected
-
-pnpm build:client       # just the two Vite bundles
+pnpm build              # vite build && node scripts/prerender.ts -> dist/client
+pnpm preview            # node scripts/serve.ts, serves dist/client, PORT respected
 ```
 
-`NITRO_PRESET` overrides the config, and overriding it is all `build:node`
-does: the same route, the same bundle, a different wrapper. Changing host is
-that one word, whether `netlify`, `cloudflare-module`, `deno-deploy`, or the
-rest.
+[scripts/serve.ts](scripts/serve.ts) serves the build the way Vercel does: a
+file, or a directory's `index.html`, and `404.html` with a 404 for anything
+else.
 
 ## Tests
 
 `pnpm test` runs the Playwright suite in `tests/`. It starts the dev server
-itself, so nothing has to be running first. `pnpm test:prod` builds the Node
-output and runs the same suite against it, which is worth doing before a
+itself, so nothing has to be running first. `pnpm test:prod` builds and
+prerenders the site and runs the same suite against the static files, which is worth doing before a
 release: the failure this site has been bitten by most, a subtree that never
 hydrates, is loud in dev and completely silent in a production build. The only
 thing that catches it there is a test that clicks something and expects it to

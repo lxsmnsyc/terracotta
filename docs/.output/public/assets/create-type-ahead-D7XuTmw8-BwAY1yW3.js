@@ -1,0 +1,1 @@
+import{it as e}from"./web-WTO7VBOb.js";var t=250;function n(n,r=t){let i=``,a;return e(()=>{a&&clearTimeout(a)}),e=>{i+=e,a&&clearTimeout(a),a=setTimeout(()=>{n(i),i=``},r)}}export{n as t};

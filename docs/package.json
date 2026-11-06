@@ -6,16 +6,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && nitro build",
-    "build:client": "vite build",
-    "build:node": "vite build && NITRO_PRESET=node-server nitro build",
-    "preview": "node .output/server/index.mjs",
+    "build": "vite build && node scripts/prerender.ts",
+    "preview": "node scripts/serve.ts",
     "lint": "oxlint --type-aware",
     "format": "oxfmt .",
     "typecheck": "tsc --noEmit && node scripts/typecheck-content.mjs",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "test:prod": "pnpm build:node && PROD=1 playwright test"
+    "test:prod": "pnpm build && PROD=1 playwright test"
   },
   "dependencies": {
     "@solidjs/router": "2.0.0-next.44",
@@ -29,9 +27,7 @@
     "@solidjs/vite-plugin": "catalog:",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "catalog:",
-    "h3": "^1.15.11",
     "markdown-it": "^15.0.1",
-    "nitropack": "^2.13.4",
     "oxfmt": "catalog:",
     "oxlint": "catalog:",
     "oxlint-tsgolint": "catalog:",

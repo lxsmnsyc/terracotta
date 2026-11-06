@@ -1,0 +1,1 @@
+var e=`[tc-disabled]`,t=`[tc-selected]`,n=`[tc-matches]`;function r(e){return{[`tc-${e}`]:``}}export{r as i,n,t as r,e as t};

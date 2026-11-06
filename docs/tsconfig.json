@@ -3,10 +3,10 @@
     "src",
     "vite",
     "tests",
-    "server",
+    "scripts/prerender.ts",
+    "scripts/serve.ts",
     "vite.config.ts",
     "playwright.config.ts",
-    "nitro.config.ts",
     "env.d.ts"
   ],
   "exclude": ["node_modules", "dist"],
