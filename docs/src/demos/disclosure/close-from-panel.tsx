@@ -1,5 +1,6 @@
 import type { JSX } from '@solidjs/web';
 import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclosure';
+import { ChevronRightIcon } from '../../lib/icons';
 
 export default function CloseFromPanel(): JSX.Element {
   return (
@@ -8,7 +9,7 @@ export default function CloseFromPanel(): JSX.Element {
         <DisclosureButton class="disclosure-button">
           Filters
           <span class="disclosure-chevron" aria-hidden="true">
-            ▸
+            <ChevronRightIcon />
           </span>
         </DisclosureButton>
         <DisclosurePanel class="disclosure-panel">

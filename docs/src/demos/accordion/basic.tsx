@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionPanel,
 } from 'terracotta/accordion';
+import { ChevronRightIcon } from '../../lib/icons';
 
 const SECTIONS = [
   { value: 'shipping', title: 'Shipping', body: 'Ships in 2–3 working days, tracked.' },
@@ -25,7 +26,7 @@ export default function BasicAccordion(): JSX.Element {
                 <AccordionButton class="accordion-button">
                   {section.title}
                   <span class="accordion-marker" aria-hidden="true">
-                    ▸
+                    <ChevronRightIcon />
                   </span>
                 </AccordionButton>
               </AccordionHeader>

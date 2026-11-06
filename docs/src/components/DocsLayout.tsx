@@ -5,6 +5,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclo
 import SchemePicker from './SchemePicker';
 import Sidebar from './Sidebar';
 import ThemePicker from './ThemePicker';
+import { ChevronRightIcon } from '../lib/icons';
 
 const REPO = 'https://github.com/lxsmnsyc/terracotta';
 
@@ -46,7 +47,7 @@ export default function DocsLayout(props: { children?: JSX.Element }): JSX.Eleme
           <DisclosureButton class="control mobile-nav-button">
             Menu
             <span class="mobile-nav-chevron" aria-hidden="true">
-              ▸
+              <ChevronRightIcon />
             </span>
           </DisclosureButton>
           <DisclosurePanel class="mobile-nav-panel panel">

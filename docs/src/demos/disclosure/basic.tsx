@@ -1,5 +1,6 @@
 import type { JSX } from '@solidjs/web';
 import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclosure';
+import { ChevronRightIcon } from '../../lib/icons';
 
 export default function BasicDisclosure(): JSX.Element {
   return (
@@ -8,7 +9,7 @@ export default function BasicDisclosure(): JSX.Element {
         <DisclosureButton class="disclosure-button">
           What is a headless component?
           <span class="disclosure-chevron" aria-hidden="true">
-            ▸
+            <ChevronRightIcon />
           </span>
         </DisclosureButton>
         <DisclosurePanel class="disclosure-panel">
@@ -21,7 +22,7 @@ export default function BasicDisclosure(): JSX.Element {
         <DisclosureButton class="disclosure-button">
           Does it manage focus?
           <span class="disclosure-chevron" aria-hidden="true">
-            ▸
+            <ChevronRightIcon />
           </span>
         </DisclosureButton>
         <DisclosurePanel class="disclosure-panel">

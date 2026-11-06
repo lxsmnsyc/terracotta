@@ -9,6 +9,7 @@ import {
   TreeGridRow,
   type TreeGridRowProperties,
 } from 'terracotta/treegrid';
+import { ChevronDownIcon, ChevronRightIcon } from '../../lib/icons';
 
 interface Thread {
   id: string;
@@ -30,11 +31,11 @@ const THREADS: Thread[] = [
   { id: 'lunch', subject: 'Lunch on Friday?', from: 'Ada' },
 ];
 
-function caretOf(row: TreeGridRowProperties): string {
+function caretOf(row: TreeGridRowProperties): JSX.Element {
   if (!row.isExpandable()) {
-    return '';
+    return null;
   }
-  return row.isExpanded() ? '▾' : '▸';
+  return row.isExpanded() ? <ChevronDownIcon /> : <ChevronRightIcon />;
 }
 
 /**

@@ -1,6 +1,7 @@
 import type { JSX } from '@solidjs/web';
 import { createSignal } from 'solid-js';
 import { Disclosure, DisclosureButton, DisclosurePanel } from 'terracotta/disclosure';
+import { ChevronRightIcon } from '../../lib/icons';
 
 export default function DisabledDisclosure(): JSX.Element {
   const [hasContent, setHasContent] = createSignal(false);
@@ -11,7 +12,7 @@ export default function DisabledDisclosure(): JSX.Element {
         <DisclosureButton class="disclosure-button">
           Attachments
           <span class="disclosure-chevron" aria-hidden="true">
-            ▸
+            <ChevronRightIcon />
           </span>
         </DisclosureButton>
         <DisclosurePanel class="disclosure-panel">Two files, 1.4 MB.</DisclosurePanel>

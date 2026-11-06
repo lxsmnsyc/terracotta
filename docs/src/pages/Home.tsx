@@ -10,6 +10,7 @@ import { usePreferredColorScheme } from '../lib/color-scheme';
 import { DEMO_CHANNEL, demoUrl, isDemoMessage } from '../lib/demo-bridge';
 import { useTheme } from '../lib/theme';
 import { THEMES } from '../themes';
+import { ChevronDownIcon, ChevronRightIcon } from '../lib/icons';
 
 const INSTALL = 'pnpm add terracotta@next';
 const REPO = 'https://github.com/lxsmnsyc/terracotta';
@@ -416,7 +417,7 @@ function Inspector(): JSX.Element {
             >
               Release notes
               <span class="disclosure-chevron" aria-hidden="true">
-                ▸
+                <ChevronRightIcon />
               </span>
             </DisclosureButton>
             <DisclosurePanel class="disclosure-panel">
@@ -468,11 +469,11 @@ const FILES: FileNode[] = [
   { name: 'package.json' },
 ];
 
-function caretFor(item: TreeItemProperties): string {
+function caretFor(item: TreeItemProperties): JSX.Element {
   if (!item.isParent()) {
-    return '';
+    return null;
   }
-  return item.isExpanded() ? '▾' : '▸';
+  return item.isExpanded() ? <ChevronDownIcon /> : <ChevronRightIcon />;
 }
 
 function FileItem(props: { node: FileNode }): JSX.Element {

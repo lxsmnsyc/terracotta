@@ -1,6 +1,7 @@
 import type { JSX } from '@solidjs/web';
 import { For, createSignal } from 'solid-js';
 import { Select, SelectOption } from 'terracotta/select';
+import { CheckIcon } from '../../lib/icons';
 
 interface Person {
   id: number;
@@ -30,7 +31,7 @@ export default function BasicSelect(): JSX.Element {
             <SelectOption class="select-option" value={person}>
               {person.name}
               <span class="select-tick" aria-hidden="true">
-                ✓
+                <CheckIcon />
               </span>
             </SelectOption>
           )}

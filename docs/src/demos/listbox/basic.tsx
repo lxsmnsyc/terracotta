@@ -7,6 +7,7 @@ import {
   ListboxOption,
   ListboxOptions,
 } from 'terracotta/listbox';
+import { ChevronDownIcon } from '../../lib/icons';
 
 interface Person {
   id: number;
@@ -35,7 +36,7 @@ export default function BasicListbox(): JSX.Element {
       <ListboxButton class="listbox-button">
         <span class="listbox-value">{selected().name}</span>
         <span class="listbox-caret" aria-hidden="true">
-          ▾
+          <ChevronDownIcon />
         </span>
       </ListboxButton>
       <ListboxOptions class="listbox-options">

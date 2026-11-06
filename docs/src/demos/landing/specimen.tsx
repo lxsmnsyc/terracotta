@@ -4,6 +4,7 @@ import { Checkbox, CheckboxIndicator, CheckboxLabel } from 'terracotta/checkbox'
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from 'terracotta/radio-group';
 import { Slider, SliderLabel, SliderThumb, SliderTrack } from 'terracotta/slider';
 import { Switch } from 'terracotta/switch';
+import { CheckIcon } from '../../lib/icons';
 
 const CHANNELS = ['latest', 'next', 'canary'];
 
@@ -62,7 +63,7 @@ export default function Specimen(): JSX.Element {
         <CheckboxIndicator class="checkbox-box">
           {(state) => (
             <Show when={state.checked()}>
-              <span aria-hidden="true">✓</span>
+              <CheckIcon />
             </Show>
           )}
         </CheckboxIndicator>

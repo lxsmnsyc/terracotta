@@ -1,6 +1,7 @@
 import type { JSX } from '@solidjs/web';
 import { For } from 'solid-js';
 import { Toast, Toaster, ToasterStore, useToaster } from 'terracotta/toast';
+import { CloseIcon } from '../../lib/icons';
 
 interface Notice {
   title: string;
@@ -46,7 +47,7 @@ export default function BasicToast(): JSX.Element {
                 aria-label="Dismiss"
                 onClick={() => notices.remove(item.id)}
               >
-                ×
+                <CloseIcon />
               </button>
             </Toast>
           )}

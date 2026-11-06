@@ -1,12 +1,7 @@
 import type { JSX } from '@solidjs/web';
 import { createSignal } from 'solid-js';
-import {
-  Tree,
-  TreeGroup,
-  TreeItem,
-  TreeItemLabel,
-  type TreeItemProperties,
-} from 'terracotta/tree';
+import { Tree, TreeGroup, TreeItem, TreeItemLabel, type TreeItemProperties } from 'terracotta/tree';
+import { ChevronDownIcon, ChevronRightIcon } from '../../lib/icons';
 
 interface Node {
   name: string;
@@ -25,11 +20,11 @@ const FILES: Node[] = [
   { name: 'Notes.md' },
 ];
 
-function caretOf(item: TreeItemProperties): string {
+function caretOf(item: TreeItemProperties): JSX.Element {
   if (!item.isParent()) {
-    return '';
+    return null;
   }
-  return item.isExpanded() ? '▾' : '▸';
+  return item.isExpanded() ? <ChevronDownIcon /> : <ChevronRightIcon />;
 }
 
 function Item(props: { node: Node }): JSX.Element {
@@ -76,7 +71,9 @@ export default function BasicTree(): JSX.Element {
           <Item node={node} />
         ))}
       </Tree>
-      <p class="hint">{selected() ? `Selected: ${selected()}` : 'Arrow keys move and open folders.'}</p>
+      <p class="hint">
+        {selected() ? `Selected: ${selected()}` : 'Arrow keys move and open folders.'}
+      </p>
     </div>
   );
 }

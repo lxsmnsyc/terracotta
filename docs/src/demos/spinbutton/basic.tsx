@@ -6,6 +6,7 @@ import {
   SpinbuttonInput,
   SpinbuttonLabel,
 } from 'terracotta/spinbutton';
+import { MinusIcon, PlusIcon } from '../../lib/icons';
 
 /**
  * Only the field takes focus. The buttons step the value without moving focus
@@ -18,11 +19,11 @@ export default function BasicSpinbutton(): JSX.Element {
         <SpinbuttonLabel class="spinbutton-label">Adults</SpinbuttonLabel>
         <div class="spinbutton-group">
           <SpinbuttonDecrement class="spinbutton-button" aria-label="Fewer adults">
-            −
+            <MinusIcon />
           </SpinbuttonDecrement>
           <SpinbuttonInput class="spinbutton-input" />
           <SpinbuttonIncrement class="spinbutton-button" aria-label="More adults">
-            +
+            <PlusIcon />
           </SpinbuttonIncrement>
         </div>
       </Spinbutton>

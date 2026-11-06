@@ -27,6 +27,28 @@
   font-size: 0.875rem;
 }
 
+/* Icons. `lib/icons.tsx` draws them 1em square in `currentColor`, so they
+   follow the text around them. */
+.icon {
+  display: inline-block;
+  flex: none;
+  /* The reset caps replaced elements at their container, which collapses an
+     icon placed in an auto-sized grid track. */
+  max-inline-size: none;
+  vertical-align: -0.125em;
+}
+
+.checkbox-box .icon {
+  inline-size: 0.85rem;
+  block-size: 0.85rem;
+  stroke-width: 2.5;
+}
+
+.tree-caret {
+  display: inline-grid;
+  place-items: center;
+}
+
 /* Buttons ---------------------------------------------------------- */
 
 .button {

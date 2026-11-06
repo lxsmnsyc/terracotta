@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionPanel,
 } from 'terracotta/accordion';
+import { ChevronRightIcon } from '../../lib/icons';
 
 export default function DisabledAccordion(): JSX.Element {
   return (
@@ -16,7 +17,7 @@ export default function DisabledAccordion(): JSX.Element {
             <AccordionButton class="accordion-button">
               Available
               <span class="accordion-marker" aria-hidden="true">
-                ▸
+                <ChevronRightIcon />
               </span>
             </AccordionButton>
           </AccordionHeader>
@@ -28,7 +29,7 @@ export default function DisabledAccordion(): JSX.Element {
             <AccordionButton class="accordion-button">
               Unavailable on your plan
               <span class="accordion-marker" aria-hidden="true">
-                ▸
+                <ChevronRightIcon />
               </span>
             </AccordionButton>
           </AccordionHeader>

@@ -1,6 +1,7 @@
 import type { JSX } from '@solidjs/web';
 import { For, createSignal } from 'solid-js';
 import { Select, SelectOption } from 'terracotta/select';
+import { CheckIcon } from '../../lib/icons';
 
 const LABELS = ['Bug', 'Documentation', 'Enhancement', 'Question'];
 
@@ -15,7 +16,7 @@ export default function MultipleSelect(): JSX.Element {
             <SelectOption class="select-option" value={label}>
               {label}
               <span class="select-tick" aria-hidden="true">
-                ✓
+                <CheckIcon />
               </span>
             </SelectOption>
           )}

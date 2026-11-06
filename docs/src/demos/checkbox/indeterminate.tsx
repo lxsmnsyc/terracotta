@@ -1,11 +1,17 @@
 import type { JSX } from '@solidjs/web';
 import { For, createSignal } from 'solid-js';
 import { Checkbox, CheckboxIndicator, CheckboxLabel } from 'terracotta/checkbox';
+import { CheckIcon, MinusIcon } from '../../lib/icons';
 
 const LABELS = ['Comments', 'Mentions', 'Weekly digest'];
 
-/** Three states, three glyphs, keyed by the value the state reports. */
-const MARKS: Record<string, string> = { true: '✓', false: '', undefined: '–' };
+/** Three states, three marks: a tick, nothing, or a dash for mixed. */
+function markFor(checked: boolean | undefined): JSX.Element {
+  if (checked === undefined) {
+    return <MinusIcon />;
+  }
+  return checked ? <CheckIcon /> : null;
+}
 
 /**
  * `undefined` is the third state. It renders as `aria-checked="mixed"` and
@@ -33,7 +39,7 @@ export default function IndeterminateCheckbox(): JSX.Element {
         onChange={(next) => setItems(items().map(() => !!next))}
       >
         <CheckboxIndicator class="checkbox-box">
-          {(state) => <span aria-hidden="true">{MARKS[String(state.checked())] ?? ''}</span>}
+          {(state) => markFor(state.checked())}
         </CheckboxIndicator>
         <CheckboxLabel class="checkbox-label">All notifications</CheckboxLabel>
       </Checkbox>
@@ -49,7 +55,7 @@ export default function IndeterminateCheckbox(): JSX.Element {
               }
             >
               <CheckboxIndicator class="checkbox-box">
-                {(state) => <span aria-hidden="true">{state.checked() ? '✓' : ''}</span>}
+                {(state) => markFor(state.checked())}
               </CheckboxIndicator>
               <CheckboxLabel class="checkbox-label">{label}</CheckboxLabel>
             </Checkbox>

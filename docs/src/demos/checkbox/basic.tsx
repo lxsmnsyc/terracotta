@@ -6,6 +6,7 @@ import {
   CheckboxIndicator,
   CheckboxLabel,
 } from 'terracotta/checkbox';
+import { CheckIcon } from '../../lib/icons';
 
 export default function BasicCheckbox(): JSX.Element {
   return (
@@ -14,7 +15,7 @@ export default function BasicCheckbox(): JSX.Element {
         <CheckboxIndicator class="checkbox-box">
           {(state) => (
             <Show when={state.checked()}>
-              <span aria-hidden="true">✓</span>
+              <CheckIcon />
             </Show>
           )}
         </CheckboxIndicator>

@@ -7,6 +7,7 @@ import {
   ListboxOption,
   ListboxOptions,
 } from 'terracotta/listbox';
+import { ChevronDownIcon } from '../../lib/icons';
 
 const LABELS = ['Bug', 'Documentation', 'Enhancement', 'Question', 'Wontfix'];
 
@@ -25,7 +26,7 @@ export default function MultipleListbox(): JSX.Element {
       <ListboxButton class="listbox-button">
         <span class="listbox-value">{values().length ? values().join(', ') : 'Choose labels'}</span>
         <span class="listbox-caret" aria-hidden="true">
-          ▾
+          <ChevronDownIcon />
         </span>
       </ListboxButton>
       <ListboxOptions class="listbox-options">

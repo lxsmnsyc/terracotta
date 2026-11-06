@@ -1,5 +1,6 @@
 import type { JSX } from '@solidjs/web';
 import { Popover, PopoverButton, PopoverPanel } from 'terracotta/popover';
+import { ChevronDownIcon } from '../../lib/icons';
 
 export default function BasicPopover(): JSX.Element {
   return (
@@ -8,7 +9,7 @@ export default function BasicPopover(): JSX.Element {
         <PopoverButton class="button">
           Notifications
           <span class="popover-caret" aria-hidden="true">
-            ▾
+            <ChevronDownIcon />
           </span>
         </PopoverButton>
         <PopoverPanel class="popover-panel">

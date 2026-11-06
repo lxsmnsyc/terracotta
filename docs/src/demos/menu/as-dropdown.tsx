@@ -1,6 +1,7 @@
 import type { JSX } from '@solidjs/web';
 import { Popover, PopoverButton, PopoverPanel } from 'terracotta/popover';
 import { Menu, MenuItem } from 'terracotta/menu';
+import { ChevronDownIcon } from '../../lib/icons';
 
 /**
  * `Menu` is only the list. Pair it with a `Popover` when it needs a trigger.
@@ -13,7 +14,7 @@ export default function MenuAsDropdown(): JSX.Element {
         <PopoverButton class="button" aria-haspopup="menu">
           Actions
           <span class="popover-caret" aria-hidden="true">
-            ▾
+            <ChevronDownIcon />
           </span>
         </PopoverButton>
         <PopoverPanel class="popover-panel popover-panel-flush">

@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionPanel,
 } from 'terracotta/accordion';
+import { ChevronRightIcon } from '../../lib/icons';
 
 const SECTIONS = [
   { value: 'account', title: 'Account', body: 'Name, email address and password.' },
@@ -27,7 +28,7 @@ export default function MultipleAccordion(): JSX.Element {
                 <AccordionButton class="accordion-button">
                   {section.title}
                   <span class="accordion-marker" aria-hidden="true">
-                    ▸
+                    <ChevronRightIcon />
                   </span>
                 </AccordionButton>
               </AccordionHeader>
