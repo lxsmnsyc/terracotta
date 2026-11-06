@@ -91,13 +91,9 @@ keyboard and focus behaviour, with a copy of this reference material alongside
 it, so the detail is available without a fetch.
 
 ```text
-/plugin marketplace add lxsmnsyc/terracotta@2.x
+/plugin marketplace add lxsmnsyc/terracotta
 /plugin install terracotta@terracotta
 ```
-
-The `@2.x` matters for the moment. The marketplace manifest lives on the `2.x`
-branch, and the shorthand without a ref resolves to the repository's default
-branch, where it is not yet present.
 
 Nothing else needs configuring. The skill declares the situations it applies to,
 so it loads on its own once you are working in SolidJS code that imports from

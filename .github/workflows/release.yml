@@ -1,20 +1,20 @@
 name: Release
 
-# The 2.x line ships prereleases from `2.x` while `.changeset/pre.json` keeps
+# The 2.x line ships prereleases from `main` while `.changeset/pre.json` keeps
 # Changesets in pre mode, so versions come out as `2.0.0-next.N` under the
-# `next` dist-tag.
+# `next` dist-tag. The 1.x line releases from the `1.x` branch.
 #
-# Pull requests into `2.x` run the tests. Every push to `2.x` runs them too, and
+# Pull requests into `main` run the tests. Every push to `main` runs them too, and
 # then either opens (or updates) a "Version Packages" pull request from the
 # pending changesets, or, once that pull request is merged, publishes whatever
 # versions are not on npm yet.
 on:
   push:
     branches:
-      - 2.x
+      - main
   pull_request:
     branches:
-      - 2.x
+      - main
     # A draft runs nothing. Pull requests stay drafts until their review is clean,
     # so CI runs once as the last gate before the merge.
     types: [opened, synchronize, reopened, ready_for_review]
