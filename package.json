@@ -2,11 +2,6 @@
   "name": "root",
   "private": true,
   "type": "module",
-  "workspaces": [
-    "packages/*",
-    "examples/*",
-    "docs"
-  ],
   "scripts": {
     "cs:ver": "changeset version && pnpm install --lockfile-only",
     "cs:pub": "changeset publish",

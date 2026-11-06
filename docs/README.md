@@ -262,7 +262,7 @@ day, and this toolchain is on prereleases that are often hours old when the
 lockfile is updated, so a same-day deploy failed the policy check rather than
 the build. `minimumReleaseAge: 60` keeps an hour of quarantine instead of a
 day. It belongs in that file rather than in `.npmrc` or `package.json`, which
-recent pnpm no longer reads it from. The `onlyBuiltDependencies` entry beside
+recent pnpm no longer reads it from. The `allowBuilds` entry beside
 it covers esbuild, whose install script pnpm otherwise refuses to run.
 
 ```text
