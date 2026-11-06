@@ -73,6 +73,26 @@ export function ComboboxOption<V, T extends ValidComponent = 'li'>(
     state.focus();
   }
 
+  // The input points at the active option through `aria-activedescendant`.
+  // An option can become active without a pointer or a key, for example when
+  // the page calls `focus(value)` after the results change, so the option
+  // claims the reference whenever it is active, and releases it when it
+  // unmounts while holding it, rather than leave the input pointing at an id
+  // that no longer exists.
+  createEffect(
+    () => state.isActive(),
+    (active) => {
+      if (active) {
+        context.setActiveDescendant(id);
+      }
+      return () => {
+        if (context.getActiveDescendant() === id) {
+          context.setActiveDescendant(undefined);
+        }
+      };
+    },
+  );
+
   // I would really love to use createEffect but for some reason
   // the timing is never accurate
   createEffect(internalRef, (current) => {

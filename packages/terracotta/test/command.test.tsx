@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@solidjs/testing-library';
+import { createSignal, flush } from 'solid-js';
 import { describe, expect, it } from 'vitest';
 import { labelledBy, settle } from './aria';
 import {
@@ -168,5 +169,58 @@ describe('Command accessibility', () => {
     getOption('rename file').click();
 
     expect(getOption('rename file')).toHaveAttribute('aria-selected', 'true');
+  });
+
+  it('points `aria-activedescendant` at an option activated through the state', async () => {
+    let focus: ((value: string) => void) | undefined;
+    render(() => (
+      <Command defaultValue={undefined} matchBy={() => true}>
+        {(state) => {
+          focus = (value) => {
+            state.focus(value);
+          };
+          return (
+            <>
+              <CommandInput />
+              <CommandOptions>
+                {ACTIONS.map((action) => (
+                  <CommandOption value={action}>{action}</CommandOption>
+                ))}
+              </CommandOptions>
+            </>
+          );
+        }}
+      </Command>
+    ));
+    await settle();
+
+    focus?.('close file');
+    flush();
+
+    expect(getInput()).toHaveAttribute('aria-activedescendant', getOption('close file').id);
+  });
+
+  it('drops `aria-activedescendant` when the active option unmounts', async () => {
+    const [shown, setShown] = createSignal(ACTIONS);
+    render(() => (
+      <Command defaultValue={undefined} matchBy={() => true}>
+        <CommandInput />
+        <CommandOptions>
+          {shown().map((action) => (
+            <CommandOption value={action}>{action}</CommandOption>
+          ))}
+        </CommandOptions>
+      </Command>
+    ));
+    await settle();
+
+    fireEvent.mouseEnter(getOption('rename file'));
+    flush();
+    expect(getInput()).toHaveAttribute('aria-activedescendant', getOption('rename file').id);
+
+    setShown(['open file']);
+    flush();
+
+    expect(getInput()).not.toHaveAttribute('aria-activedescendant');
   });
 });

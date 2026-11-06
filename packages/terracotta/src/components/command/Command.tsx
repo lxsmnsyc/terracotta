@@ -107,7 +107,11 @@ export function Command<V, T extends ValidComponent = 'div'>(
     const state = isCommandMultiple(props)
       ? createMultipleAutocompleteState(props)
       : createSingleAutocompleteState(props);
-    const [activeDescendant, setActiveDescendant] = createSignal<string>();
+    // An option releases the reference as it unmounts, which is a write
+    // during disposal, inside an owned scope.
+    const [activeDescendant, setActiveDescendant] = createSignal<string | undefined>(undefined, {
+      ownedWrite: true,
+    });
     const [selectedDescendant, setSelectedDescendant] = createSignal<string | undefined>(
       undefined,
       {
