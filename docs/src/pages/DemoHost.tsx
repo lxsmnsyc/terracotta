@@ -88,7 +88,11 @@ export default function DemoHost(): JSX.Element {
       const done = (): void => {
         root.classList.remove('demo-wipe');
       };
-      document.startViewTransition(apply).finished.then(done, done);
+      const transition = document.startViewTransition(apply);
+      // A transition the browser aborts, because the frame is navigating away
+      // or hidden, rejects `ready` too. The theme still applies either way.
+      transition.ready.catch(() => undefined);
+      transition.finished.then(done, done);
     };
 
     window.addEventListener('message', onMessage);

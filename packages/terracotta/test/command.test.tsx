@@ -174,7 +174,7 @@ describe('Command accessibility', () => {
   it('points `aria-activedescendant` at an option activated through the state', async () => {
     let focus: ((value: string) => void) | undefined;
     render(() => (
-      <Command defaultValue={undefined} matchBy={() => true}>
+      <Command<string> defaultValue={undefined} matchBy={() => true}>
         {(state) => {
           focus = (value) => {
             state.focus(value);
@@ -203,7 +203,7 @@ describe('Command accessibility', () => {
   it('drops `aria-activedescendant` when the active option unmounts', async () => {
     const [shown, setShown] = createSignal(ACTIONS);
     render(() => (
-      <Command defaultValue={undefined} matchBy={() => true}>
+      <Command<string> defaultValue={undefined} matchBy={() => true}>
         <CommandInput />
         <CommandOptions>
           {shown().map((action) => (
