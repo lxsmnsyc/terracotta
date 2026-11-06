@@ -8,6 +8,7 @@ import { Tree, TreeGroup, TreeItem, TreeItemLabel, type TreeItemProperties } fro
 import { sections } from 'virtual:content';
 import { usePreferredColorScheme } from '../lib/color-scheme';
 import { DEMO_CHANNEL, demoUrl, isDemoMessage } from '../lib/demo-bridge';
+import { pageHead } from '../lib/meta';
 import { useTheme } from '../lib/theme';
 import { THEMES } from '../themes';
 import { ChevronDownIcon, ChevronRightIcon } from '../lib/icons';
@@ -586,17 +587,14 @@ function Keyboard(): JSX.Element {
 /* Page -------------------------------------------------------------- */
 
 export default function Home(): JSX.Element {
-  useHead(() => [
-    { tag: 'title' as const, props: { children: 'Terracotta · Headless UI for SolidJS' } },
-    {
-      tag: 'meta' as const,
-      props: {
-        name: 'description',
-        content:
-          'Terracotta is a headless UI library for SolidJS: behaviour, keyboard handling and ARIA wiring, with no styles of its own.',
-      },
-    },
-  ]);
+  useHead(() =>
+    pageHead({
+      title: 'Terracotta · Headless UI for SolidJS',
+      description:
+        'Accessible headless components for SolidJS: state, keyboard handling and ARIA wiring, with no styles of their own.',
+      path: '/',
+    }),
+  );
 
   const { setTheme, theme } = useTheme();
   const reveal = useReveal();

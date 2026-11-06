@@ -1,5 +1,10 @@
 /// <reference types="vite/client" />
 
+interface ImportMetaEnv {
+  /** The site's origin, for absolute URLs in link previews. Set in vite.config.ts. */
+  readonly SITE_URL: string;
+}
+
 interface DocHeadingShape {
   id: string;
   text: string;

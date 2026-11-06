@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- The share image. `pnpm og` renders it to public/og.png at 1200 by 630. -->
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
+      :root {
+        --paper: #fdfcfb;
+        --paper-2: #f7f4f1;
+        --ink: #1c1917;
+        --ink-2: #57534e;
+        --ink-3: #a8a29e;
+        --line: #e7e0da;
+        --clay: #b4451f;
+        --sans: 'Inter', -apple-system, 'Helvetica Neue', 'Segoe UI', sans-serif;
+        --mono: ui-monospace, 'SF Mono', Menlo, monospace;
+      }
+
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+
+      body {
+        position: relative;
+        display: grid;
+        grid-template-columns: 620px 1fr;
+        background:
+          radial-gradient(520px 420px at 92% 18%, rgb(180 69 31 / 16%), transparent 70%),
+          radial-gradient(420px 360px at 70% 100%, rgb(232 130 92 / 14%), transparent 70%),
+          var(--paper);
+        color: var(--ink);
+        font-family: var(--sans);
+      }
+
+      .copy {
+        display: flex;
+        flex-direction: column;
+        padding: 64px 0 56px 72px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        background: linear-gradient(135deg, #c4552c, #97381a);
+      }
+
+      .tag {
+        margin-left: 6px;
+        border: 1.5px solid var(--line);
+        border-radius: 999px;
+        padding: 4px 12px;
+        color: var(--ink-2);
+        font-size: 16px;
+        font-weight: 550;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        margin-top: 70px;
+        font-size: 80px;
+        font-weight: 760;
+        letter-spacing: -0.055em;
+        line-height: 0.95;
+        white-space: nowrap;
+      }
+
+      /* The joke the headline makes: decoration, struck out. */
+      .struck {
+        position: relative;
+        color: var(--ink-3);
+      }
+
+      .struck::after {
+        position: absolute;
+        inset: 54% -4px auto -4px;
+        height: 7px;
+        border-radius: 4px;
+        background: var(--clay);
+        content: '';
+      }
+
+      .lede {
+        margin-top: 30px;
+        max-width: 520px;
+        color: var(--ink-2);
+        font-size: 26px;
+        line-height: 1.4;
+      }
+
+      .install {
+        margin-top: auto;
+        display: inline-flex;
+        align-self: flex-start;
+        align-items: center;
+        gap: 12px;
+        border: 1.5px solid var(--line);
+        border-radius: 12px;
+        background: var(--paper-2);
+        padding: 12px 18px;
+        font-family: var(--mono);
+        font-size: 21px;
+      }
+
+      .install b {
+        color: var(--clay);
+        font-weight: 500;
+      }
+
+      /* Three copies of one card, each in a different theme. */
+      .stack {
+        position: relative;
+      }
+
+      .card {
+        position: absolute;
+        width: 380px;
+        padding: 26px 28px;
+        font-size: 20px;
+      }
+
+      .card .row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .card .row + .row {
+        margin-top: 18px;
+      }
+
+      .card .label {
+        margin-top: 22px;
+        margin-bottom: 12px;
+        font-size: 15px;
+        font-weight: 650;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .switch {
+        position: relative;
+        width: 52px;
+        height: 30px;
+      }
+
+      .switch::after {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 22px;
+        height: 22px;
+        content: '';
+      }
+
+      .dot {
+        width: 22px;
+        height: 22px;
+      }
+
+      .track {
+        position: relative;
+        height: 8px;
+        margin-top: 26px;
+      }
+
+      .track::before {
+        position: absolute;
+        inset: 0 36% 0 0;
+        content: '';
+      }
+
+      .track::after {
+        position: absolute;
+        top: 50%;
+        left: 64%;
+        width: 24px;
+        height: 24px;
+        translate: -50% -50%;
+        content: '';
+      }
+
+      /* Win95. */
+      .card.win {
+        top: 58px;
+        left: 150px;
+        rotate: 6deg;
+        background: #c0c0c0;
+        box-shadow:
+          inset -2px -2px #0a0a0a,
+          inset 2px 2px #fff,
+          inset -4px -4px #808080,
+          inset 4px 4px #dfdfdf,
+          10px 12px 0 rgb(0 0 0 / 18%);
+        color: #000;
+        font-family: Tahoma, Verdana, sans-serif;
+      }
+
+      .win .switch {
+        background: #000080;
+        box-shadow: inset 2px 2px #808080, inset -2px -2px #fff;
+      }
+
+      .win .switch::after {
+        background: #c0c0c0;
+        box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #fff;
+      }
+
+      .win .dot {
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: inset 2px 2px #808080, inset -2px -2px #dfdfdf;
+      }
+
+      .win .dot.on {
+        background: radial-gradient(#000 0 30%, #fff 34%);
+      }
+
+      .win .track {
+        background: #fff;
+        box-shadow: inset 2px 2px #808080;
+      }
+
+      .win .track::before {
+        background: repeating-linear-gradient(90deg, #000080 0 10px, transparent 10px 12px);
+      }
+
+      .win .track::after {
+        width: 14px;
+        height: 28px;
+        background: #c0c0c0;
+        box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #fff;
+      }
+
+      /* Brutalist. */
+      .card.brut {
+        top: 140px;
+        left: 90px;
+        rotate: -4deg;
+        border: 3px solid #000;
+        background: #fffbe6;
+        box-shadow: 10px 10px 0 #000;
+        color: #000;
+        font-weight: 700;
+      }
+
+      .brut .switch {
+        border: 3px solid #000;
+        background: #ffd400;
+      }
+
+      .brut .switch::after {
+        top: 2px;
+        right: 2px;
+        background: #000;
+      }
+
+      .brut .dot {
+        border: 3px solid #000;
+        background: #fff;
+      }
+
+      .brut .dot.on {
+        background: #000;
+        box-shadow: inset 0 0 0 4px #ffd400;
+      }
+
+      .brut .track {
+        border: 3px solid #000;
+        background: #fff;
+      }
+
+      .brut .track::before {
+        background: #ffd400;
+      }
+
+      .brut .track::after {
+        border: 3px solid #000;
+        background: #000;
+      }
+
+      /* Terracotta, in front. */
+      .card.house {
+        top: 226px;
+        left: 34px;
+        border: 1.5px solid var(--line);
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 30px 60px rgb(28 25 23 / 18%);
+      }
+
+      .house .label {
+        color: var(--ink-2);
+      }
+
+      .house .switch {
+        border-radius: 999px;
+        background: var(--clay);
+      }
+
+      .house .switch::after {
+        border-radius: 50%;
+        background: #fff;
+      }
+
+      .house .dot {
+        border: 1.5px solid #d6cdc4;
+        border-radius: 50%;
+      }
+
+      .house .dot.on {
+        border: 7px solid var(--clay);
+      }
+
+      .house .track {
+        border-radius: 4px;
+        background: #efe9e4;
+      }
+
+      .house .track::before {
+        border-radius: 4px;
+        background: var(--clay);
+      }
+
+      .house .track::after {
+        border: 2px solid var(--clay);
+        border-radius: 50%;
+        background: #fff;
+      }
+
+      .attrs {
+        position: absolute;
+        right: 40px;
+        bottom: 34px;
+        display: flex;
+        gap: 10px;
+        font-family: var(--mono);
+        font-size: 17px;
+      }
+
+      .attrs span {
+        border: 1.5px solid var(--line);
+        border-radius: 8px;
+        background: rgb(255 255 255 / 80%);
+        padding: 5px 10px;
+        color: var(--clay);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="copy">
+      <div class="brand">
+        <span class="mark"></span>
+        Terracotta
+        <span class="tag">for Solid 2</span>
+      </div>
+      <h1>Behaviour,<br />not <span class="struck">decoration.</span></h1>
+      <p class="lede">Accessible headless components for SolidJS. Every pixel is yours.</p>
+      <div class="install"><b>$</b> pnpm add terracotta@next</div>
+    </section>
+
+    <section class="stack" aria-hidden="true">
+      <div class="card win">
+        <div class="row"><span class="switch"></span>Ship prereleases</div>
+        <div class="label">Channel</div>
+        <div class="row"><span class="dot"></span>latest</div>
+        <div class="row"><span class="dot on"></span>next</div>
+        <div class="track"></div>
+      </div>
+      <div class="card brut">
+        <div class="row"><span class="switch"></span>Ship prereleases</div>
+        <div class="label">Channel</div>
+        <div class="row"><span class="dot"></span>latest</div>
+        <div class="row"><span class="dot on"></span>next</div>
+        <div class="track"></div>
+      </div>
+      <div class="card house">
+        <div class="row"><span class="switch"></span>Ship prereleases</div>
+        <div class="label">Channel</div>
+        <div class="row"><span class="dot"></span>latest</div>
+        <div class="row"><span class="dot on"></span>next</div>
+        <div class="track"></div>
+      </div>
+    </section>
+
+    <div class="attrs" aria-hidden="true">
+      <span>tc-checked</span>
+      <span>tc-selected</span>
+      <span>tc-expanded</span>
+    </div>
+  </body>
+</html>

@@ -6,6 +6,7 @@ import Demo from '../components/Demo';
 import Prose from '../components/Prose';
 import TableOfContents from '../components/TableOfContents';
 import type { DocModule } from '../lib/content-types';
+import { pageHead } from '../lib/meta';
 import type { NavEntry } from 'virtual:content';
 
 export const loadDoc = query(async (slug: string): Promise<DocModule | null> => {
@@ -50,11 +51,17 @@ export default function DocPage(): JSX.Element {
   useHead(() => {
     const entry = meta();
     return entry
-      ? [
-          { tag: 'title' as const, props: { children: `${entry.title} · Terracotta` } },
-          { tag: 'meta' as const, props: { name: 'description', content: entry.description } },
-        ]
-      : [{ tag: 'title' as const, props: { children: 'Not found · Terracotta' } }];
+      ? pageHead({
+          title: `${entry.title} · Terracotta`,
+          // The lede can carry inline markup, such as a <kbd>, which a
+          // description has to drop.
+          description: entry.description.replace(/<[^>]+>/g, ''),
+          path: `/${entry.slug}`,
+        })
+      : [
+          { tag: 'title' as const, key: 'title', props: { children: 'Not found · Terracotta' } },
+          { tag: 'meta' as const, key: 'robots', props: { name: 'robots', content: 'noindex' } },
+        ];
   });
 
   return (

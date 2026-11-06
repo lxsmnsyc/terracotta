@@ -5,6 +5,7 @@
     "tests",
     "scripts/prerender.ts",
     "scripts/serve.ts",
+    "scripts/og.ts",
     "vite.config.ts",
     "playwright.config.ts",
     "env.d.ts"

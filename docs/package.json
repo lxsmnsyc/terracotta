@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "vite build && node scripts/prerender.ts",
     "preview": "node scripts/serve.ts",
+    "og": "node scripts/og.ts",
     "lint": "oxlint --type-aware",
     "format": "oxfmt .",
     "typecheck": "tsc --noEmit && node scripts/typecheck-content.mjs",

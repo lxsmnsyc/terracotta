@@ -1,5 +1,5 @@
 import { useParams } from '@solidjs/router';
-import { type JSX, Loading, dynamic, isServer } from '@solidjs/web';
+import { type JSX, Loading, dynamic, isServer, useHead } from '@solidjs/web';
 import {
   type Component,
   Show,
@@ -48,6 +48,12 @@ function componentFor(id: string): Component | undefined {
 export default function DemoHost(): JSX.Element {
   const params = useParams<{ id: string }>();
   const demo = createMemo(() => componentFor(params.id));
+
+  // A frame is part of a page, not a page. Search engines get the page.
+  useHead([
+    { tag: 'title', key: 'title', props: { children: `${params.id} · Terracotta demo` } },
+    { tag: 'meta', key: 'robots', props: { name: 'robots', content: 'noindex' } },
+  ]);
 
   const [stage, setStage] = createSignal<HTMLElement>();
 

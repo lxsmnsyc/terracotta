@@ -281,6 +281,18 @@ pnpm preview            # node scripts/serve.ts, serves dist/client, PORT respec
 file, or a directory's `index.html`, and `404.html` with a 404 for anything
 else.
 
+## Link previews
+
+Every page carries Open Graph tags, a `summary_large_image` Twitter card and a
+canonical link, built in [src/lib/meta.ts](src/lib/meta.ts) from its own title
+and description. URLs are absolute, on the production domain Vercel sets at
+build time, `SITE_URL` when given, and `https://terracotta-docs.vercel.app`
+otherwise. Demo frames and the "not found" page are `noindex` instead.
+
+Every page shares one image, `public/og.png`, 1200 by 630. `pnpm og` renders it
+from [scripts/og.html](scripts/og.html) with the Chromium the test suite
+installs. Run it again after changing that page.
+
 ## Tests
 
 `pnpm test` runs the Playwright suite in `tests/`. It starts the dev server

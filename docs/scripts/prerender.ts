@@ -39,9 +39,16 @@ function pagePaths(): string[] {
     throw new TypeError('content/nav.json is not a list of sections');
   }
   const paths: string[] = [];
-  for (const section of nav as { pages: string[] }[]) {
-    for (const slug of section.pages) {
-      paths.push(`/${slug}`);
+  for (const section of nav as unknown[]) {
+    const pages: unknown =
+      typeof section === 'object' && section !== null && 'pages' in section
+        ? section.pages
+        : undefined;
+    if (!Array.isArray(pages)) {
+      throw new TypeError('content/nav.json has a section without a "pages" list');
+    }
+    for (const slug of pages) {
+      paths.push(`/${String(slug)}`);
     }
   }
   return paths;
