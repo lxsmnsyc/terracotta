@@ -1,5 +1,11 @@
 # terracotta
 
+## 1.3.2
+
+### Patch Changes
+
+- 07d7a1c: Point the README, the `homepage` field and the `@see` links in doc comments at the `1.x` branch, since `main` now holds Terracotta 2.
+
 ## 1.3.1
 
 ### Patch Changes
