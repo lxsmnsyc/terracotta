@@ -235,8 +235,8 @@
     "vitest": "catalog:"
   },
   "peerDependencies": {
-    "@solidjs/web": "^2.0.0-rc.13",
-    "solid-js": "^2.0.0-rc.13"
+    "@solidjs/web": "^2.0.0",
+    "solid-js": "^2.0.0"
   },
   "engines": {
     "node": ">=20"

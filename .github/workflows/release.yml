@@ -1,8 +1,7 @@
 name: Release
 
-# The 2.x line ships prereleases from `main` while `.changeset/pre.json` keeps
-# Changesets in pre mode, so versions come out as `2.0.0-next.N` under the
-# `next` dist-tag. The 1.x line releases from the `1.x` branch.
+# `main` is the 2.x line, which targets Solid 2 and publishes under the `latest`
+# dist-tag. The 1.x line releases from the `1.x` branch.
 #
 # Pull requests into `main` run the tests. Every push to `main` runs them too, and
 # then either opens (or updates) a "Version Packages" pull request from the
@@ -103,8 +102,8 @@ jobs:
           # Versions the packages and refreshes the lockfile to match, so the
           # merged pull request still installs with `--frozen-lockfile`.
           version-script: pnpm cs:ver
-          # Publishes each new version under its prerelease tag (`next`), not
-          # `latest`. See `scripts/publish.ts`.
+          # Publishes each new version under `latest`, or under its prerelease
+          # identifier for a prerelease. See `scripts/publish.ts`.
           publish-script: pnpm release
-          commit-message: 'chore: version packages (next)'
-          pr-title: 'chore: version packages (next)'
+          commit-message: 'chore: version packages'
+          pr-title: 'chore: version packages'

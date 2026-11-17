@@ -9,19 +9,19 @@ choose what the markup renders as, and what it looks like.
 ## Install
 
 ```bash
-npm i terracotta@next
+npm i terracotta
 # or
-pnpm add terracotta@next
+pnpm add terracotta
 # or
-yarn add terracotta@next
+yarn add terracotta
 ```
 
-Terracotta 2 is published under the `next` tag while it is a release candidate.
-The `latest` tag still points at the 1.x line, which targets Solid 1 and is
-imported from the package root rather than one entry per component.
+Terracotta 1.x targets Solid 1 and is imported from the package root rather than
+one entry per component. For Solid 1, install `terracotta@1` from the
+[1.x branch](https://github.com/lxsmnsyc/terracotta/tree/1.x).
 
 `solid-js` and `@solidjs/web` are peer dependencies. Terracotta 2 targets
-Solid 2 (`^2.0.0-rc.13`).
+Solid 2 (`^2.0.0`).
 
 The published code needs Node 20 or later, and uses syntax up to ES2022, such as
 class static blocks. A toolchain that cannot parse that has to transpile the

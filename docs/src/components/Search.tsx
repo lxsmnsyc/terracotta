@@ -22,7 +22,7 @@ import { useTheme } from '../lib/theme';
 import { THEMES } from '../themes';
 
 const REPO = 'https://github.com/lxsmnsyc/terracotta';
-const INSTALL = 'pnpm add terracotta@next';
+const INSTALL = 'pnpm add terracotta';
 
 type Kind = 'guide' | 'component' | 'section' | 'action';
 

@@ -13,7 +13,7 @@ import { useTheme } from '../lib/theme';
 import { THEMES } from '../themes';
 import { ChevronDownIcon, ChevronRightIcon } from '../lib/icons';
 
-const INSTALL = 'pnpm add terracotta@next';
+const INSTALL = 'pnpm add terracotta';
 const REPO = 'https://github.com/lxsmnsyc/terracotta';
 const SPECIMEN = 'landing/specimen';
 
