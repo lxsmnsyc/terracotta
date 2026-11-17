@@ -9,17 +9,16 @@ The components follow the [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/
 ## Install
 
 ```bash
-pnpm add terracotta@next
+pnpm add terracotta
 # or
-npm i terracotta@next
+npm i terracotta
 # or
-yarn add terracotta@next
+yarn add terracotta
 ```
 
-Terracotta 2 targets Solid 2 and is published under the `next` tag while Solid 2
-is a release candidate. `solid-js` and `@solidjs/web` are peer dependencies. The
-`latest` tag is still the [1.x line](https://github.com/lxsmnsyc/terracotta/tree/1.x),
-which targets Solid 1.
+Terracotta 2 targets Solid 2 (`^2.0.0`). `solid-js` and `@solidjs/web` are peer
+dependencies. For Solid 1, install `terracotta@1` from the
+[1.x branch](https://github.com/lxsmnsyc/terracotta/tree/1.x).
 
 ## Usage
 

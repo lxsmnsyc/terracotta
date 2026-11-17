@@ -216,7 +216,7 @@
     "typecheck": "tsc --noEmit && tsc --noEmit -p test/tsconfig.json && tsc --noEmit -p e2e/tsconfig.json"
   },
   "dependencies": {
-    "solid-use": "^1.0.0-next.3"
+    "solid-use": "^1.0.0"
   },
   "devDependencies": {
     "@playwright/test": "catalog:",
@@ -235,8 +235,8 @@
     "vitest": "catalog:"
   },
   "peerDependencies": {
-    "@solidjs/web": "^2.0.0-rc.13",
-    "solid-js": "^2.0.0-rc.13"
+    "@solidjs/web": "^2.0.0",
+    "solid-js": "^2.0.0"
   },
   "engines": {
     "node": ">=20"
