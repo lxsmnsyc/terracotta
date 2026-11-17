@@ -901,8 +901,8 @@ importers:
   packages/terracotta:
     dependencies:
       solid-use:
-        specifier: ^1.0.0-next.3
-        version: 1.0.0-next.3(solid-js@2.0.0)
+        specifier: ^1.0.0
+        version: 1.0.0(solid-js@2.0.0)
     devDependencies:
       '@playwright/test':
         specifier: 'catalog:'
@@ -2895,11 +2895,11 @@ packages:
     resolution: {integrity: sha512-9zN4uH2OQeQAYbF4BmIzoaa+L5Hb8Dp6kkP6ZXobHQ1FZVICdmzREPDVDBJY7umzdAE8D6zbFfWhxGtagkyslA==}
     engines: {node: '>=22.12.0'}
 
-  solid-use@1.0.0-next.3:
-    resolution: {integrity: sha512-bEUzCWEKEYIYr807QNUQfewX3MlaIYExZFKuM3S9kK3pc4tlnpc0YPKnpQp28Inmtd3DzLkmK9Zq1UC1xVM7Gw==}
+  solid-use@1.0.0:
+    resolution: {integrity: sha512-luOtSE7xOvtJ0VgWu9mo4CeMF68K8TWhPSOvcte25PHPYiMpY3cePH7iChMQCXd2aFa3vENjzJ4EWimGaKB/gA==}
     engines: {node: '>=20'}
     peerDependencies:
-      solid-js: ^2.0.0-rc.5
+      solid-js: ^2.0.0
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -4961,7 +4961,7 @@ snapshots:
       seroval: 1.8.1
       seroval-plugins: 1.8.0(seroval@1.8.1)
 
-  solid-use@1.0.0-next.3(solid-js@2.0.0):
+  solid-use@1.0.0(solid-js@2.0.0):
     dependencies:
       solid-js: 2.0.0
 

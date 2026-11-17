@@ -11,6 +11,8 @@ allowBuilds:
 # the build. An hour keeps the guard against a release published minutes ago,
 # while letting a reviewed lockfile deploy the day it is written.
 minimumReleaseAge: 60
+minimumReleaseAgeExclude:
+  - 'solid-use@1.0.0'
 catalog:
   '@changesets/cli': ^3.0.3
   '@lxsmnsyc/oxlint-config': ^0.1.2
