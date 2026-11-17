@@ -53,7 +53,11 @@ jobs:
       # output, so build before type checking.
       - run: pnpm --filter terracotta build
 
-      - run: pnpm typecheck
+      # The docs import every entry but `terracotta/states` through the built
+      # types, and the combobox example imports that one. The other examples
+      # add no type coverage, so `pnpm typecheck` checks them locally only.
+      - run: pnpm exec tsc -p tsconfig.json
+      - run: pnpm --filter terracotta --filter @terracotta/docs --filter combobox-example typecheck
 
       - run: pnpm skill:check
 
