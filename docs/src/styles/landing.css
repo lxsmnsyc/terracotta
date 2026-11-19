@@ -775,7 +775,7 @@ html.demo-wipe::view-transition-new(root) {
 .lp-theme {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.35rem 1rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -813,6 +813,7 @@ html.demo-wipe::view-transition-new(root) {
 
 .lp-theme-name {
   padding-inline: 0.35rem;
+  overflow-wrap: anywhere;
   color: var(--text-1);
   font-size: 1.05rem;
   font-weight: 650;
@@ -835,10 +836,20 @@ html.demo-wipe::view-transition-new(root) {
   line-height: 1.5;
 }
 
-.lp-theme[tc-checked] .lp-theme-index::before {
-  margin-inline-end: 0.5rem;
-  color: var(--accent-hover);
+/* The chosen theme gets a badge on its swatch. Next to the name it would
+   widen the row past a narrow card. */
+.lp-theme[tc-checked]::after {
+  position: absolute;
+  inset-block-start: 1.25rem;
+  inset-inline-start: 1.25rem;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  padding: 0.15rem 0.5rem;
+  color: var(--accent-contrast);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
   content: 'Wearing';
+  animation: lp-pop 400ms var(--lp-ease);
 }
 
 /* Catalogue ------------------------------------------------------------- */
