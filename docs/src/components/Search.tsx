@@ -18,11 +18,11 @@ import {
 import type { SearchPage } from 'virtual:search-index';
 import { useColorScheme, useNativeColorScheme } from '../lib/color-scheme';
 import { BoltIcon, ComponentIcon, HashIcon, PageIcon, SearchIcon } from '../lib/icons';
+import { buildInstallCommand, readPackageManager } from '../lib/package-manager';
 import { useTheme } from '../lib/theme';
 import { THEMES } from '../themes';
 
 const REPO = 'https://github.com/lxsmnsyc/terracotta';
-const INSTALL = 'pnpm add terracotta';
 
 type Kind = 'guide' | 'component' | 'section' | 'action';
 
@@ -64,10 +64,10 @@ const ACTIONS: Result[] = [
   {
     key: 'action:install',
     title: 'Copy the install command',
-    detail: INSTALL,
+    detail: 'For npm, pnpm, yarn or bun, as picked on the home page',
     kind: 'action',
     page: '',
-    body: 'install npm pnpm yarn add copy',
+    body: 'install npm pnpm yarn bun add copy',
   },
   {
     key: 'action:github',
@@ -345,8 +345,8 @@ export function SearchPalette(props: { search: SearchController }): JSX.Element 
         setScheme(native() === 'dark' ? 'light' : 'dark');
         return;
       case 'action:install':
-        navigator.clipboard.writeText(INSTALL).catch(() => {
-          // Clipboard access denied. The command is in the result's detail.
+        navigator.clipboard.writeText(buildInstallCommand(readPackageManager())).catch(() => {
+          // Clipboard access denied. The home page shows the command to select.
         });
         return;
       case 'action:github':

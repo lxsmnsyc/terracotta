@@ -1,4 +1,5 @@
 import { HydrationScript, type JSX, getRequestEvent, isServer } from '@solidjs/web';
+import { PACKAGE_MANAGER_BOOT_SCRIPT } from './lib/package-manager';
 import { THEME_BOOT_SCRIPT } from './lib/theme';
 import { DEFAULT_THEME, isTheme } from './themes';
 
@@ -38,6 +39,7 @@ export default function Document(props: { children: JSX.Element }): JSX.Element 
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         {/* Blocking on purpose: it has to win the race against the first paint. */}
         <script>{THEME_BOOT_SCRIPT}</script>
+        <script>{PACKAGE_MANAGER_BOOT_SCRIPT}</script>
         <HydrationScript />
       </head>
       <body>{props.children}</body>

@@ -217,16 +217,53 @@
 
 .lp-install {
   display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-block-start: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  animation: lp-fade-up 800ms 450ms var(--lp-ease) both;
+}
+
+.lp-install-managers {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.lp-install-manager {
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.6rem;
+  color: var(--text-3);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition:
+    color 200ms,
+    background-color 200ms;
+}
+
+.lp-install-manager:hover {
+  color: var(--text-1);
+}
+
+.lp-install-manager:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.lp-install-manager[tc-checked] {
+  background: var(--surface-1);
+  color: var(--text-1);
+}
+
+.lp-install-line {
+  display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  margin-block-start: 1.5rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--surface-1);
   padding: 0.35rem 0.35rem 0.35rem 1rem;
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  animation: lp-fade-up 800ms 450ms var(--lp-ease) both;
 }
 
 .lp-install-prompt {
@@ -235,6 +272,16 @@
 
 .lp-install-command {
   color: var(--text-1);
+}
+
+/* Shows the command for the chosen manager, from the data-pm attribute that
+   the boot script writes on the root element. npm when nothing is stored. */
+:root:not([data-pm]) .lp-install-command:not([data-pm-command='npm']),
+:root[data-pm='npm'] .lp-install-command:not([data-pm-command='npm']),
+:root[data-pm='pnpm'] .lp-install-command:not([data-pm-command='pnpm']),
+:root[data-pm='yarn'] .lp-install-command:not([data-pm-command='yarn']),
+:root[data-pm='bun'] .lp-install-command:not([data-pm-command='bun']) {
+  display: none;
 }
 
 .lp-install-copy {
@@ -267,9 +314,13 @@
 }
 
 .lp-install-large {
+  align-items: center;
   font-size: clamp(1rem, 2vw, 1.3rem);
-  padding: 0.5rem 0.5rem 0.5rem 1.4rem;
   animation: none;
+}
+
+.lp-install-large .lp-install-line {
+  padding: 0.5rem 0.5rem 0.5rem 1.4rem;
 }
 
 /* Specimen ---------------------------------------------------------- */

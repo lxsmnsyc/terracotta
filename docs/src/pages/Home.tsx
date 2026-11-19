@@ -9,11 +9,18 @@ import { sections } from 'virtual:content';
 import { usePreferredColorScheme } from '../lib/color-scheme';
 import { DEMO_CHANNEL, demoUrl, isDemoMessage } from '../lib/demo-bridge';
 import { pageHead } from '../lib/meta';
+import {
+  PACKAGE_MANAGERS,
+  type PackageManager,
+  buildInstallCommand,
+  packageManager,
+  restorePackageManager,
+  setPackageManager,
+} from '../lib/package-manager';
 import { useTheme } from '../lib/theme';
 import { THEMES } from '../themes';
 import { ChevronDownIcon, ChevronRightIcon } from '../lib/icons';
 
-const INSTALL = 'pnpm add terracotta';
 const REPO = 'https://github.com/lxsmnsyc/terracotta';
 const SPECIMEN = 'landing/specimen';
 
@@ -101,33 +108,70 @@ function InstallChip(props: { large?: boolean }): JSX.Element {
     clearTimeout(timer);
   });
 
+  createEffect(
+    () => true,
+    () => {
+      if (!isServer) {
+        restorePackageManager();
+      }
+    },
+  );
+
   return (
     <div class={{ 'lp-install': true, 'lp-install-large': !!props.large }}>
-      <span class="lp-install-prompt" aria-hidden="true">
-        $
-      </span>
-      <code class="lp-install-command">{INSTALL}</code>
-      <button
-        type="button"
-        class="lp-install-copy"
-        data-copied={copied() ? '' : undefined}
-        onClick={() => {
-          navigator.clipboard.writeText(INSTALL).then(
-            () => {
-              setCopied(true);
-              clearTimeout(timer);
-              timer = setTimeout(() => {
-                setCopied(false);
-              }, 1600);
-            },
-            () => {
-              // Clipboard access denied. The command is still on screen to select.
-            },
-          );
+      <RadioGroup<PackageManager>
+        class="lp-install-managers"
+        value={packageManager()}
+        onChange={(value) => {
+          if (value) {
+            setPackageManager(value);
+          }
         }}
       >
-        <span class="lp-install-copy-label">{copied() ? 'Copied' : 'Copy'}</span>
-      </button>
+        <RadioGroupLabel class="visually-hidden">Package manager</RadioGroupLabel>
+        <For each={PACKAGE_MANAGERS}>
+          {(manager) => (
+            <RadioGroupOption class="lp-install-manager" value={manager}>
+              <RadioGroupLabel>{manager}</RadioGroupLabel>
+            </RadioGroupOption>
+          )}
+        </For>
+      </RadioGroup>
+      <div class="lp-install-line">
+        <span class="lp-install-prompt" aria-hidden="true">
+          $
+        </span>
+        {/* Every command is rendered, and the stylesheet shows the chosen one,
+            so the prerendered page already matches the stored choice. */}
+        <For each={PACKAGE_MANAGERS}>
+          {(manager) => (
+            <code class="lp-install-command" data-pm-command={manager}>
+              {buildInstallCommand(manager)}
+            </code>
+          )}
+        </For>
+        <button
+          type="button"
+          class="lp-install-copy"
+          data-copied={copied() ? '' : undefined}
+          onClick={() => {
+            navigator.clipboard.writeText(buildInstallCommand(packageManager())).then(
+              () => {
+                setCopied(true);
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                  setCopied(false);
+                }, 1600);
+              },
+              () => {
+                // Clipboard access denied. The command is still on screen to select.
+              },
+            );
+          }}
+        >
+          <span class="lp-install-copy-label">{copied() ? 'Copied' : 'Copy'}</span>
+        </button>
+      </div>
     </div>
   );
 }
