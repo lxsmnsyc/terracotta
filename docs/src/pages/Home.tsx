@@ -618,7 +618,7 @@ export default function Home(): JSX.Element {
         <div class="lp-hero-copy">
           <p class="lp-eyebrow">
             <span class="lp-eyebrow-dot" aria-hidden="true" />
-            Terracotta 2 for Solid 2 · release candidate
+            Terracotta 2 for Solid 2
           </p>
           <h1 class="lp-title">
             <span class="lp-title-line">
